@@ -100,7 +100,7 @@ export function SnellsLawDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.1'}
+      figure={figure ?? 'Fig. 18.1'}
       title="Snell's law — a ray bends at an interface"
       question="When does total internal reflection take over?"
       caption={

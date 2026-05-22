@@ -1,5 +1,5 @@
 /**
- * Chapter 11 — Materials
+ * Chapter 17 — Materials
  *
  * What ε_r and μ_r actually mean. The slider you've been twisting since
  * Chapter 1, opened up. Polarization, bound charge, diamagnetism vs
@@ -7,12 +7,14 @@
  * numbers that compress all of it into one constant per material per response.
  *
  * Embedded demos:
- *   11.1 DipoleInField        — torque + alignment, ⟨cos θ⟩
- *   11.2 DielectricBetweenPlates — bound surface charge, C → ε_r·C
- *   11.6 WhyWaterPolarizes    — single H₂O dipole, Langevin/Debye intuition
- *   11.3 ParamagnetVsDiamagnet— ±M response, side by side
- *   11.4 Ferromagnet          — domains and the hysteresis loop
- *   11.5 Susceptibility       — χ_e and χ_m bar chart
+ *   17.1 DipoleInField           — torque + alignment, ⟨cos θ⟩
+ *   17.2 DielectricBetweenPlates — bound surface charge, C → ε_r·C
+ *   17.3 DipoleAlignment3D       — Langevin function in 3D
+ *   17.4 WhyWaterPolarizes       — single H₂O dipole, Langevin/Debye intuition
+ *   17.5 ParamagnetVsDiamagnet   — ±M response, side by side
+ *   17.6 Ferromagnet             — domains and the hysteresis loop
+ *   17.7 Susceptibility          — χ_e and χ_m bar chart
+ *   17.8 ImageChargeField3D      — bound surface charge over a conductor
  */
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
@@ -31,7 +33,7 @@ import { ParamagnetVsDiamagnetDemo } from './demos/ParamagnetVsDiamagnet';
 import { SusceptibilityDemo } from './demos/Susceptibility';
 import { WhyWaterPolarizesDemo } from './demos/WhyWaterPolarizes';
 
-export default function Ch13Materials() {
+export default function Ch17Materials() {
   const chapter = getChapter('materials')!;
   const SOURCES = chapter.sources;
 
@@ -48,7 +50,7 @@ export default function Ch13Materials() {
           μ<sub>r</sub>
         </strong>
         . Drag one and the field inside the dielectric drops; drag the other and the inductance of a
-        coil skyrockets. We have been borrowing those numbers for ten chapters without ever saying
+        coil skyrockets. We have been borrowing those numbers for many chapters without ever saying
         where they come from. This chapter opens the box.
       </p>
       <p className="mb-prose-3">
@@ -325,7 +327,7 @@ export default function Ch13Materials() {
       </p>
 
       <TryIt
-        tag="Try 13.1"
+        tag="Try 17.1"
         question={
           <>
             A parallel-plate capacitor has capacitance{' '}
@@ -362,7 +364,7 @@ export default function Ch13Materials() {
       />
 
       <TryIt
-        tag="Try 13.2"
+        tag="Try 17.2"
         question={
           <>
             For two identical capacitors charged to the same voltage{' '}
@@ -398,8 +400,9 @@ export default function Ch13Materials() {
       />
 
       <p className="mb-prose-3">
-        Why is ε<sub>r</sub>(water) ≈ 80 — twenty times bigger than glass and a hundred and fifty
-        thousand times bigger than air? Because water has a permanent dipole moment, built into its
+        Why is ε<sub>r</sub>(water) ≈ 80 — twenty times bigger than glass, and (in terms of χ<sub>e</sub>)
+        a hundred and fifty thousand times that of air? Because water has a permanent dipole moment,
+        built into its
         asymmetric molecular geometry. Apply a field and you don't have to stretch the electron
         cloud at all — the molecule just rotates.
       </p>
@@ -583,7 +586,7 @@ export default function Ch13Materials() {
       <ParamagnetVsDiamagnetDemo />
 
       <TryIt
-        tag="Try 13.3"
+        tag="Try 17.3"
         question={
           <>
             A paramagnetic sample has{' '}
@@ -605,7 +608,7 @@ export default function Ch13Materials() {
               M = χ<sub>m</sub> B / μ<sub>0</sub> = (1×10⁻⁴ · 1) / (4π×10⁻⁷) ≈ 79.6 A/m
             </Formula>
             <p className="mb-prose-1 last:mb-0">
-              <strong className="text-text font-medium">M ≈ 80 A/m</strong> — five orders of
+              <strong className="text-text font-medium">M ≈ 80 A/m</strong> — about four orders of
               magnitude below iron's saturation
               <em className="text-text italic">
                 {' '}
@@ -732,7 +735,7 @@ export default function Ch13Materials() {
       </p>
 
       <TryIt
-        tag="Try 13.4"
+        tag="Try 17.4"
         question={
           <>
             A 1000-turn air-core solenoid has inductance{' '}
@@ -768,7 +771,7 @@ export default function Ch13Materials() {
       />
 
       <TryIt
-        tag="Try 13.5"
+        tag="Try 17.5"
         question={
           <>
             Iron's Curie temperature is{' '}
@@ -875,8 +878,7 @@ export default function Ch13Materials() {
         equation now gives
       </p>
       <Formula>
-        v = 1 / √(ε ε<sub>r</sub> μ μ<sub>r</sub>) · √(ε₀ μ₀)... actually, v = c / √(ε<sub>r</sub> μ
-        <sub>r</sub>) = c/n
+        v = c / √(ε<sub>r</sub> μ<sub>r</sub>) = c/n
       </Formula>
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">v</strong> is the phase speed of the EM wave
@@ -911,12 +913,12 @@ export default function Ch13Materials() {
       <p className="mb-prose-3">
         That's where this textbook leaves you: not with electricity as a separate subject but as the
         wide gateway into electromagnetism, and electromagnetism in matter as the wide gateway into
-        optics, condensed-matter physics, and chemistry. Two sliders. Eleven chapters. One field.
+        optics, condensed-matter physics, and chemistry. Two sliders. Sixteen chapters. One field.
       </p>
 
       <CaseStudies intro="Three places where the susceptibility numbers of this chapter become the working tolerances of an industry.">
         <CaseStudy
-          tag="Case 11.1"
+          tag="Case 17.1"
           title="Giant magnetoresistance in hard-drive read heads"
           summary={
             <>
@@ -967,7 +969,7 @@ export default function Ch13Materials() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 11.2"
+          tag="Case 17.2"
           title="The ceramic capacitor on every PCB"
           summary={
             <>
@@ -1031,7 +1033,7 @@ export default function Ch13Materials() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 11.3"
+          tag="Case 17.3"
           title="Curie temperatures: iron versus gadolinium"
           summary={
             <>
@@ -1041,7 +1043,7 @@ export default function Ch13Materials() {
           }
           specs={[
             { label: 'T_C (iron)', value: '~1043 K (770 °C)' },
-            { label: 'T_C (cobalt)', value: '~1394 K (1121 °C)' },
+            { label: 'T_C (cobalt)', value: '~1388 K (1115 °C)' },
             { label: 'T_C (nickel)', value: '~627 K (354 °C)' },
             { label: 'T_C (gadolinium)', value: '~292 K (19 °C)' },
             { label: 'M_s (iron, 0 K)', value: '~1.7×10⁶ A/m' },
@@ -1050,7 +1052,7 @@ export default function Ch13Materials() {
         >
           <p className="mb-prose-2 last:mb-0">
             Kittel tabulates Curie temperatures of the elemental ferromagnets: iron at 1043 K,
-            cobalt at 1394 K, nickel at 627 K, gadolinium at about 292 K
+            cobalt at 1388 K, nickel at 627 K, gadolinium at about 292 K
             <Cite id="kittel-2005" in={SOURCES} />. The vast separation is set by the
             exchange-coupling energy between neighbouring spins; in 3d transition metals it is large
             (tens of meV per pair), while in 4f rare earths the relevant exchange runs indirectly
@@ -1072,7 +1074,7 @@ export default function Ch13Materials() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             The Curie point also sets a hard ceiling for any permanent magnet. Drop a neodymium
-            magnet (T<sub>C</sub> for Nd₂Fe₁₄B ≈ 585 K) into a campfire and it cools back into a
+            magnet (T<sub>C</sub> for Nd₂Fe₁₄B is around 580 K) into a campfire and it cools back into a
             random domain pattern — the magnetisation does not survive. Operating temperature limits
             in datasheets for motor magnets and read-head magnets are set well below T<sub>C</sub>,
             because the remanence drops continuously as you approach the transition
@@ -1291,7 +1293,7 @@ export default function Ch13Materials() {
 
         <FAQItem q="Are biological tissues magnetic?">
           <p>
-            Almost not at all — most soft tissues are diamagnetic with χ<sub>m</sub> ≈ −9×10⁻⁶ (very
+            Almost not at all — most soft tissues are very weakly diamagnetic, close to water's value (very
             close to water's value), which is why MRI works on hydrogen nuclei rather than on bulk
             tissue magnetization. There are exceptions: ferritin (iron-storage protein) carries a
             paramagnetic iron core, and certain bacteria contain magnetosomes — actual nanocrystals

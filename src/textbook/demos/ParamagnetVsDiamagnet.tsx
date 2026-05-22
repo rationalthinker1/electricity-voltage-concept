@@ -196,7 +196,7 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 11.3'}
+      figure={figure ?? 'Fig. 17.5'}
       title="Paramagnet vs diamagnet"
       question="Two boxes, same external field — why do they magnetize in opposite directions?"
       caption={

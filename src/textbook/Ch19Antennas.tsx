@@ -1,5 +1,5 @@
 /**
- * Chapter 15 — Antennas and radiation
+ * Chapter 19 — Antennas and radiation
  *
  * From an oscillating dipole to a phased-array radar. The chapter builds
  * the radiation pattern of a short dipole, derives the impedance of the
@@ -8,11 +8,11 @@
  * far-field transition.
  *
  * Demos:
- *   15.1 Dipole pattern         (sin²θ polar plot)
- *   15.2 Half-wave resonance    (|Z(f)|, 73 Ω at f₀ = c/(2L))
- *   15.3 Yagi array factor      (driven + reflector + N directors)
- *   15.4 Friis link budget      (P_r vs P_t, gains, distance, frequency)
- *   15.5 Near/far field         (transition around r ~ λ/(2π))
+ *   19.1 Dipole pattern         (sin²θ polar plot)
+ *   19.2 Half-wave resonance    (|Z(f)|, 73 Ω at f₀ = c/(2L))
+ *   19.3 Yagi array factor      (driven + reflector + N directors)
+ *   19.4 Friis link budget      (P_r vs P_t, gains, distance, frequency)
+ *   19.5 Near/far field         (transition around r ~ λ/(2π))
  */
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
@@ -33,7 +33,7 @@ import { PolarizationLossPenaltyDemo } from './demos/PolarizationLossPenalty';
 import { YagiArrayFactorDemo } from './demos/YagiArrayFactor';
 import { getChapter } from './data/chapters';
 
-export default function Ch15Antennas() {
+export default function Ch19Antennas() {
   const chapter = getChapter('antennas')!;
   const SOURCES = chapter.sources;
 
@@ -196,7 +196,7 @@ export default function Ch15Antennas() {
       <DipoleRadiation3DDemo />
 
       <TryIt
-        tag="Try 15.1"
+        tag="Try 19.1"
         question={
           <>
             For a short dipole, what is the ratio of radiated intensity at θ = 30° to its peak (θ =
@@ -305,7 +305,7 @@ export default function Ch15Antennas() {
       <HalfWaveDipoleResonanceDemo />
 
       <TryIt
-        tag="Try 15.2"
+        tag="Try 19.2"
         question={
           <>
             You need a half-wave dipole for the Wi-Fi 2.4 GHz band. What length wire do you cut?
@@ -446,7 +446,7 @@ export default function Ch15Antennas() {
       <PhasedArraySteeringDemo />
 
       <TryIt
-        tag="Try 15.3b"
+        tag="Try 19.3b"
         question={
           <>
             A 4-element phased array at 10 GHz with d = λ/2 spacing. What phase shift Δφ between
@@ -474,7 +474,7 @@ export default function Ch15Antennas() {
       />
 
       <TryIt
-        tag="Try 15.3"
+        tag="Try 19.3"
         question={
           <>
             An antenna is rated 12 dBi gain. By what factor does it concentrate the power, relative
@@ -556,13 +556,13 @@ export default function Ch15Antennas() {
       </p>
       <Formula>
         P<sub>r</sub> = 0.1 W · 3.16 · 3.16 · (0.06 / (4π · 10))² ≈{' '}
-        <strong className="text-text font-medium">2.3 × 10⁻⁸ W</strong>
+        <strong className="text-text font-medium">2.3 × 10⁻⁷ W</strong>
       </Formula>
       <p className="mb-prose-3">
-        About 23 nanowatts — equivalent to −46 dBm. Sensitivity of a commodity Wi-Fi receiver is
-        about −90 dBm at the lowest MCS, so we have 44 dB of fade margin. Plenty for a clean link;
+        About 230 nanowatts — equivalent to −36 dBm. Sensitivity of a commodity Wi-Fi receiver is
+        about −90 dBm at the lowest MCS, so we have 54 dB of fade margin. Plenty for a clean link;
         some of that vanishes through walls and multipath, but the math is roughly right. The same
-        equation applies to a deep-space link at 8 GHz and 25 billion km — only the numbers and the
+        equation applies to a deep-space link at 8 GHz and 24 billion km — only the numbers and the
         receiver are different
         <Cite id="friis-1946" in={SOURCES} />.
       </p>
@@ -582,7 +582,7 @@ export default function Ch15Antennas() {
       <PolarizationLossPenaltyDemo />
 
       <TryIt
-        tag="Try 15.4"
+        tag="Try 19.4"
         question={
           <>
             A spacecraft transmits 20 W at 8.4 GHz (deep-space X-band). The Earth station has a 70-m
@@ -650,7 +650,7 @@ export default function Ch15Antennas() {
       </p>
 
       <TryIt
-        tag="Try 15.5"
+        tag="Try 19.5"
         question={
           <>
             A short dipole oscillates at 100 MHz. At what radial distance does the field cross from
@@ -724,7 +724,7 @@ export default function Ch15Antennas() {
       <PatchAntennaDemo />
 
       <TryIt
-        tag="Try 15.6"
+        tag="Try 19.6"
         question={
           <>
             An FR-4 patch antenna (εᵣ = 4.4) is to resonate at 2.45 GHz (the centre of the Wi-Fi
@@ -783,7 +783,7 @@ export default function Ch15Antennas() {
         }
       >
         <CaseStudy
-          tag="Case 15.1"
+          tag="Case 19.1"
           title="DSN-70 m at Goldstone — talking to Voyager"
           summary="A 70-m parabolic dish at +73 dBi gain pulls a 20-W signal out of 24 billion km of free space."
           specs={[
@@ -798,11 +798,11 @@ export default function Ch15Antennas() {
               label: 'Spacecraft transmit power',
               value: (
                 <>
-                  ~20 W (Voyager TWTA) at +30 dBi <Cite id="friis-1946" in={SOURCES} />
+                  ~20 W (Voyager TWTA) at +30 dBi
                 </>
               ),
             },
-            { label: 'Path loss at 24 billion km', value: <>~308 dB at X-band</> },
+            { label: 'Path loss at 24 billion km', value: <>~318 dB at X-band</> },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
@@ -814,11 +814,11 @@ export default function Ch15Antennas() {
             dish concentrates received signals by a factor of 2 × 10⁷ over an isotropic reference.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            Voyager 1 at its current distance (≈24 billion km) transmits at 20 W; Friis says the
-            free-space path loss at 8.4 GHz is 308 dB. After spacecraft antenna gain (+30 dBi) and
+            Voyager 1 at its current distance (≈24 billion km) transmits at 20 W; the free-space
+            path loss at 8.4 GHz is around 318 dB. After spacecraft antenna gain (+30 dBi) and
             Earth-station gain (+73 dBi) and the various pointing/atmospheric/cable losses, the
-            received signal is about <strong className="text-text font-medium">−165 dBm</strong>, or
-            3 × 10⁻¹⁹ W. The cryogenic ruby maser front end on the DSN dish has a noise temperature
+            received signal is on the order of <strong className="text-text font-medium">−165 dBm</strong>,
+            or 3 × 10⁻¹⁹ W. The cryogenic HEMT LNA front end on the DSN dish has a noise temperature
             of ~15 K, and a 160 bit/s downlink can be received with bit-error rate &lt;10⁻⁵ via
             long-baseline forward-error-correction codes
             <Cite id="friis-1946" in={SOURCES} />
@@ -827,7 +827,7 @@ export default function Ch15Antennas() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 15.2"
+          tag="Case 19.2"
           title="Wi-Fi 6 / 6E phone antenna"
           summary="A printed-circuit antenna a few cm across handles 2.4, 5, and 6 GHz at <100 mW transmit, plus 802.11 MIMO."
           specs={[
@@ -877,7 +877,7 @@ export default function Ch15Antennas() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 15.3"
+          tag="Case 19.3"
           title="Rooftop UHF TV Yagi"
           summary="An 8- to 12-element Yagi-Uda picks up channel 4 from 60 miles away with the front-to-back ratio to reject co-channel interference."
           specs={[
@@ -919,7 +919,7 @@ export default function Ch15Antennas() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 15.4"
+          tag="Case 19.4"
           title="AESA radar — phased-array beam steering"
           summary="An active electronically scanned array on a fighter aircraft points its beam in microseconds by adjusting phase shifters, not gimbals."
           specs={[

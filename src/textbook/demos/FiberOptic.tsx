@@ -141,7 +141,7 @@ export function FiberOpticDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.5'}
+      figure={figure ?? 'Fig. 18.5'}
       title="A fiber-optic strand traps light"
       question="What's the maximum angle the input ray can make to the axis?"
       caption={

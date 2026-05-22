@@ -123,7 +123,7 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.7'}
+      figure={figure ?? 'Fig. 19.7'}
       title="Polarization mismatch — Malus's law for antennas"
       question="What does it cost to misalign two linear antennas?"
       caption={

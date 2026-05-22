@@ -172,7 +172,7 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.10'}
+      figure={figure ?? 'Fig. 18.10'}
       title="Malus's law — two polarizers and an angle"
       question="What fraction of the original intensity gets through both polarizers?"
       caption={

@@ -1,5 +1,5 @@
 /**
- * Chapter 14 — Optics from electromagnetism
+ * Chapter 18 — Optics from electromagnetism
  *
  * Drop Ch.9's plane wave onto a sheet of glass and let the four boundary
  * conditions on E and B do their work. Snell's law, Fresnel coefficients,
@@ -8,13 +8,13 @@
  * like at 10¹⁴ Hz.
  *
  * Demos:
- *   14.1 Snell's law           (interface, draggable θ, TIR at the critical angle)
- *   14.2 Dispersion            (white-light prism with n(λ) ≈ A + B/λ²)
- *   14.3 Brewster's angle      (Fresnel R_s vs R_p, polariser sunglasses)
- *   14.4 Thin film             (soap-bubble interference, 2 n t = m λ)
- *   14.5 Fiber optic           (TIR keeps the ray bouncing along the core)
- *   14.6 Young's double slit   (the wave-nature proof, fringes at sin θ = m λ/d)
- *   14.7 Laser cavity          (mirrors + gain medium + stimulated emission)
+ *   18.1 Snell's law           (interface, draggable θ, TIR at the critical angle)
+ *   18.2 Dispersion            (white-light prism with n(λ) ≈ A + B/λ²)
+ *   18.3 Brewster's angle      (Fresnel R_s vs R_p, polariser sunglasses)
+ *   18.4 Thin film             (soap-bubble interference, 2 n t = m λ)
+ *   18.5 Fiber optic           (TIR keeps the ray bouncing along the core)
+ *   18.6 Young's double slit   (the wave-nature proof, fringes at sin θ = m λ/d)
+ *   18.7 Laser cavity          (mirrors + gain medium + stimulated emission)
  */
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
@@ -37,7 +37,7 @@ import { SnellsLawDemo } from './demos/SnellsLaw';
 import { ThinFilmDemo } from './demos/ThinFilm';
 import { getChapter } from './data/chapters';
 
-export default function Ch14Optics() {
+export default function Ch18Optics() {
   const chapter = getChapter('optics')!;
   const SOURCES = chapter.sources;
 
@@ -190,7 +190,7 @@ export default function Ch14Optics() {
       <SnellLaw3DDemo />
 
       <TryIt
-        tag="Try 14.1"
+        tag="Try 18.1"
         question={
           <>Light goes from water (n = 1.33) into air (n = 1.00). What is the critical angle?</>
         }
@@ -275,7 +275,7 @@ export default function Ch14Optics() {
       <LensFocusingDemo />
 
       <TryIt
-        tag="Try 14.1b"
+        tag="Try 18.1b"
         question={
           <>
             A 50-mm converging lens forms an image of a candle 1.00 m away. Where is the image, and
@@ -329,7 +329,7 @@ export default function Ch14Optics() {
         constants (A dimensionless; B in µm²; C in µm⁴; etc.).
       </p>
       <p className="mb-prose-3">
-        Crown glass has A ≈ 1.504, B ≈ 0.00420 µm², giving n ≈ 1.514 at 700 nm (red) and n ≈ 1.528
+        Crown glass has A ≈ 1.504, B ≈ 0.00420 µm², giving n ≈ 1.513 at 700 nm (red) and n ≈ 1.528
         at 420 nm (violet) — a spread of about 1%. Small, but it's enough that a triangular prism,
         refracting at both faces, fans visible sunlight out into a clean spectrum. Newton was the
         first to publish a careful study of the phenomenon in his
@@ -357,7 +357,7 @@ export default function Ch14Optics() {
       </p>
 
       <TryIt
-        tag="Try 14.2"
+        tag="Try 18.2"
         question={
           <>
             Using Cauchy's fit A = 1.504, B = 0.00420 µm² for crown glass, what is n at 589 nm (the
@@ -453,7 +453,7 @@ export default function Ch14Optics() {
       <p className="mb-prose-3">
         At Brewster's angle the reflected ray is completely <em className="text-text italic">s</em>
         -polarised: an unpolarised beam (sun, light bulb, sky) splits into a fully-polarised
-        reflection and a partially- polarised transmission. This is why{' '}
+        reflection and a partially polarised transmission. This is why{' '}
         <em className="text-text italic">polaroid sunglasses</em> work — their absorption axis is
         set vertical, so they kill the horizontal-electric-field reflection from wet roads, lake
         surfaces, and the dashboard. The same physics underlies 3D-movie glasses,
@@ -485,7 +485,7 @@ export default function Ch14Optics() {
       <PolarizationMalusLawDemo />
 
       <TryIt
-        tag="Try 14.3"
+        tag="Try 18.3"
         question={<>Compute Brewster's angle for the air-glass interface (n₁ = 1.00, n₂ = 1.52).</>}
         hint="θ_B = arctan(n₂/n₁)."
         answer={
@@ -568,7 +568,7 @@ export default function Ch14Optics() {
       <FiberOpticDemo />
 
       <TryIt
-        tag="Try 14.4"
+        tag="Try 18.4"
         question={
           <>
             An optical fiber has n_core = 1.468, n_clad = 1.463. What is the maximum angle (measured
@@ -647,7 +647,7 @@ export default function Ch14Optics() {
       <DoubleSlitDemo />
 
       <TryIt
-        tag="Try 14.5"
+        tag="Try 18.5"
         question={
           <>
             In a double-slit experiment with d = 0.10 mm and L = 1.0 m, the first-order bright
@@ -690,7 +690,7 @@ export default function Ch14Optics() {
       <DiffractionGratingDemo />
 
       <TryIt
-        tag="Try 14.5b"
+        tag="Try 18.5b"
         question={
           <>
             A 600-line/mm diffraction grating is illuminated by 550-nm light. At what angle is the
@@ -744,7 +744,7 @@ export default function Ch14Optics() {
         Fabry–Pérot cavity, pumped by a coiled xenon flashlamp. The output was a pulse of 694.3-nm
         red light, lasting under a millisecond, with the unmistakable spectral narrowness and
         angular collimation of coherent radiation
-        <Cite id="maiman-1960" in={SOURCES} />. Within months ammonia, neodymium, gas, and
+        <Cite id="maiman-1960" in={SOURCES} />. Within months helium–neon, neodymium, and
         semiconductor lasers followed; within years, the technology had escaped the lab.
       </p>
 
@@ -767,7 +767,7 @@ export default function Ch14Optics() {
         <Cite id="hecht-2017" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        The downstream consequences are enormous. CD and Blu-ray drives, fiber-optic telecom, FTL
+        The downstream consequences are enormous. CD and Blu-ray drives, fiber-optic telecom, FTIR
         spectroscopy, laser cutting and welding, eye surgery, LIDAR, gravitational-wave
         interferometers, atomic-clock spectroscopy — none of them would work without coherent light
         produced exactly this way
@@ -798,7 +798,7 @@ export default function Ch14Optics() {
         }
       >
         <CaseStudy
-          tag="Case 14.1"
+          tag="Case 18.1"
           title="Single-mode silica fibre — the spine of the global internet"
           summary="~99% of intercontinental data travels through ~9-µm glass cores at 1310/1550 nm, with attenuation around 0.2 dB/km."
           specs={[
@@ -840,7 +840,7 @@ export default function Ch14Optics() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 14.2"
+          tag="Case 18.2"
           title="MgF₂ anti-reflection coating on a camera lens"
           summary="A quarter-wave layer of magnesium fluoride drops the reflectance of an air-glass surface from ~4% to ~1.5%."
           specs={[
@@ -870,7 +870,8 @@ export default function Ch14Optics() {
             A single layer of magnesium fluoride (n ≈ 1.38, conveniently lower than glass), of
             optical thickness λ/4 at the design wavelength, sets up two reflections — one off
             air-MgF₂, one off MgF₂-glass — that destructively interfere. The leftover reflectance is
-            approximately ((n_MgF² − n_air · n_glass)/(n_MgF² + n_air · n_glass))² ≈ 1.4%. Stacking
+            approximately ((n_f² − n_air · n_glass)/(n_f² + n_air · n_glass))² ≈ 1.4%, where n_f is the
+            film index. Stacking
             several quarter-wave layers of alternating high/low index extends the destructive
             interference across the whole visible band, getting modern multicoated optics under half
             a percent reflectance per surface
@@ -885,7 +886,7 @@ export default function Ch14Optics() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 14.3"
+          tag="Case 18.3"
           title="Atomic absorption spectroscopy: reading a flame's chemistry"
           summary="Heat a sample, look at the colours it absorbs and emits, and the line positions and intensities tell you which elements are there and at what concentration."
           specs={[
@@ -930,7 +931,7 @@ export default function Ch14Optics() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 14.4"
+          tag="Case 18.4"
           title="3D movies and Brewster — polarisation in entertainment"
           summary="A 3D theatre projects two slightly-offset images with orthogonal polarisations; the glasses sort one to each eye."
           specs={[
@@ -1078,7 +1079,7 @@ export default function Ch14Optics() {
           <p>
             A convex lens has surfaces whose curvature is chosen so that incoming parallel rays
             (rays from infinity) all refract by Snell's law toward a common focal point. The
-            geometry is the thin-lens equation 1/f = (n − 1)(1/R<sub>1</sub> − 1/R<sub>2</sub>),
+            geometry is the lensmaker's equation 1/f = (n − 1)(1/R<sub>1</sub> − 1/R<sub>2</sub>),
             with R<sub>1,2</sub> the radii of the two surfaces and f the focal length
             <Cite id="hecht-2017" in={SOURCES} />. Real lenses suffer from aberrations: chromatic
             (because n depends on λ — a single lens has different f for red and blue), spherical

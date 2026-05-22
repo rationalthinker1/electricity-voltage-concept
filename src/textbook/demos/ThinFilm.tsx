@@ -131,7 +131,7 @@ export function ThinFilmDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.4'}
+      figure={figure ?? 'Fig. 18.4'}
       title="Soap-bubble colours — thin-film interference"
       question="Why do soap bubbles look iridescent?"
       caption={

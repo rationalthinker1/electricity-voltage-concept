@@ -133,7 +133,7 @@ export function PatchAntennaDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.8'}
+      figure={figure ?? 'Fig. 19.8'}
       title="Patch antenna — half-wave inside the substrate"
       question="What sets the resonance frequency of a microstrip patch?"
       caption={

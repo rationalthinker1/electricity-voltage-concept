@@ -147,7 +147,7 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.6'}
+      figure={figure ?? 'Fig. 19.6'}
       title="Phased array — steer the beam with phase, not gimbals"
       question="What phase shift between elements points the main beam to a given angle?"
       caption={

@@ -1,5 +1,5 @@
 /**
- * Demo D14.7 — Laser cavity
+ * Demo D18.7 — Laser cavity
  *
  * Two parallel mirrors with a gain medium between (excited atoms shown as
  * dots that switch from "ground" to "excited" and back). Photons bouncing
@@ -9,54 +9,38 @@
  *
  * Light-touch — the simulation conveys the picture rather than the kinetics.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
+}
+
+interface LaserCtx {
+  photons: Array<{ x: number; vx: number; y: number }>;
+  atoms: Array<{ x: number; y: number; excited: boolean; flashT: number }>;
 }
 
 export function LaserCavityDemo({ figure }: Props) {
   const [pumpOn, setPumpOn] = useState(true);
   const [photonCount, setPhotonCount] = useState(8);
 
-  const stateRef = useRef({ pumpOn, photonCount });
-  useEffect(() => {
-    stateRef.current = { pumpOn, photonCount };
-  }, [pumpOn, photonCount]);
+  const stateRef = useSimState({ pumpOn, photonCount });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const colors = getCanvasColors();
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, state, dt, simTime, c: LaserCtx) => {
+      const { pumpOn, photonCount } = state;
+      const safeDt = Math.min(0.06, dt);
+      const t = simTime;
 
-    // Photons inside the cavity: each has an x position and a velocity (left/right)
-    const photons: Array<{ x: number; vx: number; y: number }> = [];
-    // Atoms in the gain medium: each is at (x, y) and has an excited boolean
-    const NA = 30;
-    const atoms: Array<{ x: number; y: number; excited: boolean; flashT: number }> = [];
-    for (let i = 0; i < NA; i++) {
-      atoms.push({
-        x: 70 + Math.random() * (W - 140),
-        y: 50 + Math.random() * (H - 100),
-        excited: Math.random() < 0.5,
-        flashT: 0,
-      });
-    }
-
-    const tStart = performance.now() / 1000;
-    let lastT = tStart;
-    function draw() {
-      const t = performance.now() / 1000;
-      const dt = Math.min(0.06, t - lastT);
-      lastT = t;
-      const { pumpOn, photonCount } = stateRef.current;
-
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
       // Cavity mirrors at x = mirrorL and x = mirrorR
@@ -84,7 +68,7 @@ export function LaserCavityDemo({ figure }: Props) {
       ctx.fillRect(mirrorR, 35, 6, H - 70);
 
       // Atom positions + state
-      for (const a of atoms) {
+      for (const a of c.atoms) {
         // Pump excites atoms over time
         if (pumpOn && !a.excited && Math.random() < 0.005) a.excited = true;
         // Spontaneous decay
@@ -93,13 +77,13 @@ export function LaserCavityDemo({ figure }: Props) {
           a.flashT = t;
         }
         const radius = 3;
-        const col = a.excited ? '#ff6b2a' : withAlpha(colors.textDim, 0.6);
+        const col = a.excited ? colors.accent : withAlpha(colors.textDim, 0.6);
         ctx.fillStyle = col;
         ctx.beginPath();
         ctx.arc(a.x, a.y, radius, 0, Math.PI * 2);
         ctx.fill();
         if (t - a.flashT < 0.3) {
-          ctx.strokeStyle = `rgba(255,107,42,${0.6 - (t - a.flashT) * 2})`;
+          ctx.strokeStyle = withAlpha(colors.accent, 0.6 - (t - a.flashT) * 2);
           ctx.lineWidth = 1.2;
           ctx.beginPath();
           ctx.arc(a.x, a.y, radius + 6, 0, Math.PI * 2);
@@ -108,18 +92,18 @@ export function LaserCavityDemo({ figure }: Props) {
       }
 
       // Maintain photon population
-      while (photons.length < photonCount) {
-        photons.push({
+      while (c.photons.length < photonCount) {
+        c.photons.push({
           x: mirrorL + 5 + Math.random() * (mirrorR - mirrorL - 10),
           vx: Math.random() < 0.5 ? -260 : 260,
           y: cy + (Math.random() - 0.5) * (H - 100),
         });
       }
-      while (photons.length > photonCount) photons.pop();
+      while (c.photons.length > photonCount) c.photons.pop();
 
       // Update photons
-      for (const ph of photons) {
-        ph.x += ph.vx * dt;
+      for (const ph of c.photons) {
+        ph.x += ph.vx * safeDt;
         if (ph.x <= mirrorL) {
           ph.x = mirrorL;
           ph.vx = Math.abs(ph.vx);
@@ -128,7 +112,7 @@ export function LaserCavityDemo({ figure }: Props) {
           // 90% reflect, 10% escape (output beam)
           if (Math.random() < 0.1) {
             // Emit out the right side
-            ctx.strokeStyle = getCanvasColors().accent;
+            ctx.strokeStyle = colors.accent;
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(mirrorR + 6, ph.y);
@@ -142,7 +126,7 @@ export function LaserCavityDemo({ figure }: Props) {
         }
         // Stimulated emission: find a nearby excited atom and de-excite it, adding a parallel photon
         if (Math.random() < 0.05) {
-          for (const a of atoms) {
+          for (const a of c.atoms) {
             if (!a.excited) continue;
             if (Math.abs(a.x - ph.x) < 14 && Math.abs(a.y - ph.y) < 14) {
               a.excited = false;
@@ -152,7 +136,7 @@ export function LaserCavityDemo({ figure }: Props) {
           }
         }
         // Draw the photon as a small bright streak
-        ctx.strokeStyle = getCanvasColors().accent;
+        ctx.strokeStyle = colors.accent;
         ctx.lineWidth = 1.6;
         ctx.beginPath();
         ctx.moveTo(ph.x, ph.y);
@@ -166,22 +150,33 @@ export function LaserCavityDemo({ figure }: Props) {
       ctx.fillRect(mirrorR + 6, cy - 10, W - mirrorR - 12, 20);
 
       // Labels
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: '100% mirror', x: mirrorL, y: 28, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabel(ctx, { text: 'output coupler', x: mirrorR, y: 28, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabel(ctx, { text: 'gain medium', x: mirrorL + 8, y: H - 8, font: '10px "JetBrains Mono", monospace' });
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       drawLabel(ctx, { text: 'coherent output →', x: W - 8, y: cy - 14, font: '10px "JetBrains Mono", monospace', align: 'right' });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    ({ w: W, h: H }) => {
+      // Atoms in the gain medium: each is at (x, y) and has an excited boolean
+      const NA = 30;
+      const atoms: LaserCtx['atoms'] = [];
+      for (let i = 0; i < NA; i++) {
+        atoms.push({
+          x: 70 + Math.random() * (W - 140),
+          y: 50 + Math.random() * (H - 100),
+          excited: Math.random() < 0.5,
+          flashT: 0,
+        });
+      }
+      return { context: { photons: [], atoms } as LaserCtx };
+    },
+  );
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.7'}
+      figure={figure ?? 'Fig. 18.7'}
       title="Inside a laser cavity"
       question="What makes laser light coherent?"
       caption={

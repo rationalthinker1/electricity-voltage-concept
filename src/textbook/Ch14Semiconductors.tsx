@@ -4,13 +4,13 @@
  * p-n junctions, BJTs, and FETs — what is inside the chip. Builds on
  * Ch.4 (resistivity, doping intuition) and Ch.5 (capacitance, gate oxide
  * as a parallel-plate capacitor). Forward-references Ch.16 (op-amps:
- * the BJT/FET pair is what op-amps are made of) and Ch.23 (rectifiers
+ * the BJT/FET pair is what op-amps are made of) and Ch.24 (rectifiers
  * already use diodes).
  *
  * Demos:
  *   14.1 BandStructure         (Si / Ge / GaAs / diamond bandgaps)
  *   14.2 PNJunctionFormation   (depletion region under bias)
- *   14.3 DiodeCharacteristic   (reused from Ch.23 — three diode flavours)
+ *   14.3 DiodeCharacteristic   (reused from Ch.24 — three diode flavours)
  *   14.4 BJTCharacteristic     (I_C-V_CE family of curves)
  *   14.5 MOSFETOperation       (cross-section + I_D-V_DS at three V_GS)
  *   14.6 LoadLineAnalysis      (load line + BJT family → Q-point)
@@ -47,8 +47,8 @@ export default function Ch14Semiconductors() {
         millimetre across, sitting on a copper slug, with a smear of yellow phosphor on top. Look
         closer at any current processor — the A17 Pro in a recent iPhone, say — and that same fleck
         of silicon, scaled up to a fingernail-sized die, holds{' '}
-        <strong className="text-text font-medium">around 19 billion</strong>
-        transistors <Cite id="razavi-2021" in={SOURCES} />. Every one of them is a direct descendant
+        <strong className="text-text font-medium">tens of billions</strong>
+        of transistors. Every one of them is a direct descendant
         of a single device John Bardeen and Walter Brattain built at Bell Labs in December 1947
         <Cite id="bardeen-brattain-1948" in={SOURCES} />, with a flat-topped germanium crystal and
         two gold-foil contacts a hair's width apart. Three months earlier, no one had a working
@@ -143,9 +143,9 @@ export default function Ch14Semiconductors() {
         <InlineMath tex="\exp(-E_g / 2kT)" /> — Boltzmann's exponential, with the factor of two
         coming out of the intrinsic-semiconductor carrier-statistics derivation
         <Cite id="streetman-banerjee-2015" in={SOURCES} />. Plug in silicon's numbers and you get
-        ~10⁻¹⁰: ten billion-to-one odds, but the crystal has 5×10²² atoms per cubic centimetre, so
-        the resulting <em className="text-text italic">intrinsic carrier density</em> is around 10¹⁰
-        cm⁻³ at 300 K. Pure silicon is, accordingly, a poor conductor — many orders of magnitude
+        ~10⁻¹⁰: ten billion-to-one odds. Multiplied by the effective density of states at the band
+        edges (~10¹⁹ cm⁻³), the resulting <em className="text-text italic">intrinsic carrier density</em>{' '}
+        is around 10¹⁰ cm⁻³ at 300 K. Pure silicon is, accordingly, a poor conductor — many orders of magnitude
         worse than copper, many orders of magnitude better than glass.
       </p>
       <p className="mb-prose-3">
@@ -216,9 +216,9 @@ export default function Ch14Semiconductors() {
         . Substitute one silicon atom in every ten million with a phosphorus atom (Group V — five
         valence electrons instead of four) and the extra electron sits in a shallow donor level
         about 0.045 eV below the conduction-band edge. kT at room temperature is enough to lift
-        essentially all of those donor electrons into the conduction band. A doping density of 10¹⁶
-        cm⁻³ — one phosphorus per ten million silicons — gives 10¹⁶ free electrons per cm³, a
-        million times the intrinsic level. The crystal is now{' '}
+        essentially all of those donor electrons into the conduction band. A doping density of ~5×10¹⁵
+        cm⁻³ — one phosphorus per ten million silicons — gives ~5×10¹⁵ free electrons per cm³, a
+        half-million times the intrinsic level. The crystal is now{' '}
         <Term
           def={
             <>
@@ -251,10 +251,10 @@ export default function Ch14Semiconductors() {
         <Cite id="streetman-banerjee-2015" in={SOURCES} />.
       </p>
 
-      <Pullout>
+      <p className="mb-prose-3">
         Pure silicon is a poor conductor; what makes silicon useful is the tiny amount of something
         else you put in it.
-      </Pullout>
+      </p>
 
       <h2 className="chapter-h2">The p-n junction</h2>
 
@@ -318,9 +318,9 @@ export default function Ch14Semiconductors() {
         <Cite id="streetman-banerjee-2015" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        Plug in numbers. For typical silicon doping (N<sub>A</sub> = N<sub>D</sub> = 10¹⁶ cm⁻³, n
-        <sub>i</sub> = 10¹⁰ cm⁻³ at 300 K), the ratio is 10¹². With V<sub>T</sub> ≈ 25.85 mV and
-        <InlineMath tex="\ln(10^{12}) \approx 27.6" />, V<sub>bi</sub> ≈ 0.72 V. That number — the
+        Plug in numbers. For typical silicon doping (N<sub>A</sub> = N<sub>D</sub> = 5×10¹⁵ cm⁻³, n
+        <sub>i</sub> = 10¹⁰ cm⁻³ at 300 K), the ratio is 5×10¹¹. With V<sub>T</sub> ≈ 25.85 mV and
+        <InlineMath tex="\ln(5\times10^{11}) \approx 27.0" />, V<sub>bi</sub> ≈ 0.70 V. That number — the
         equilibrium voltage your crystal sets up <em className="text-text italic">by itself</em>,
         with no external bias — is also the height of the energy barrier any electron must climb to
         cross the junction. Forward bias reduces it; reverse bias raises it. For typical silicon
@@ -344,7 +344,7 @@ export default function Ch14Semiconductors() {
             <>
               <strong className="text-text font-medium">Shockley equation</strong> — the closed-form
               I-V relation for an ideal p-n junction: I = I<sub>s</sub>(exp(qV/nkT) − 1). The
-              exponential covers fifteen orders of magnitude across a ~0.5 V swing.
+              exponential covers about eight orders of magnitude across a ~0.5 V swing.
             </>
           }
         >
@@ -398,7 +398,7 @@ export default function Ch14Semiconductors() {
         Here I<sub>s</sub> is the reverse-saturation current (~10⁻⁹ A for silicon, ~10⁻⁵ A for
         Schottky), n is an ideality factor (≈1 for an ideal junction, 1.5–2 for a real diode at low
         current), q is the elementary charge, k is Boltzmann's constant, and T is absolute
-        temperature. The exponential covers fifteen orders of magnitude across a 0.5 V swing. At V =
+        temperature. The exponential covers about eight orders of magnitude across a 0.5 V swing. At V =
         0 the current is zero; at V = 0.6 V the device is already conducting a few milliamps; at V =
         0.7 V it is conducting tens of milliamps. That is what an engineer means when they say "a
         silicon diode drops 0.7 V"
@@ -414,10 +414,10 @@ export default function Ch14Semiconductors() {
         V. Same equation, different operating point.
       </p>
 
-      <Pullout>
+      <p className="mb-prose-3">
         Every junction in a circuit is doing the same thing: counting how many electrons in a
         Boltzmann tail have enough energy to climb a barrier.
-      </Pullout>
+      </p>
 
       <TryIt
         tag="Try 14.2"
@@ -861,10 +861,10 @@ export default function Ch14Semiconductors() {
         <Cite id="razavi-2021" in={SOURCES} />.
       </p>
 
-      <Pullout>
+      <p className="mb-prose-3">
         The MOSFET is a parallel-plate capacitor with a current of mobile charge underneath,
         controlled by the voltage across the plates.
-      </Pullout>
+      </p>
 
       <TryIt
         tag="Try 14.4"
@@ -1156,8 +1156,8 @@ export default function Ch14Semiconductors() {
       >
         <CaseStudy
           tag="Case 14.1"
-          title="Apple A17 Pro — 19 billion FinFETs on one die"
-          summary="TSMC N3 process node, ~19 billion transistors on ~103 mm², every one of them a FinFET-MOSFET descendant of Kahng-Atalla 1959."
+          title="Apple A17 Pro — tens of billions of FinFETs on one die"
+          summary="TSMC N3 process node, tens of billions of transistors on ~103 mm², every one of them a FinFET-MOSFET descendant of Kahng-Atalla 1959."
           specs={[
             {
               label: 'Process node',
@@ -1184,7 +1184,7 @@ export default function Ch14Semiconductors() {
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            The A17 Pro is a fingernail-sized piece of silicon containing roughly nineteen billion
+            The A17 Pro is a fingernail-sized piece of silicon containing tens of billions of
             transistors. Every one of them is a MOSFET — specifically a FinFET, a variant of the
             planar MOSFET in which the channel is a thin vertical fin and the gate wraps around
             three sides for better electrostatic control of the channel. FinFETs replaced planar
@@ -1229,7 +1229,7 @@ export default function Ch14Semiconductors() {
           <p className="mb-prose-2 last:mb-0">
             Every TV remote has a tiny clear plastic dome on the front. Underneath it is a GaAs LED
             — chosen for its 1.42 eV direct bandgap, which makes the recombination photon energy hf
-            = E<sub>g</sub>, giving a wavelength λ ≈ 940 nm
+            = E<sub>g</sub>, giving a wavelength λ ≈ 873 nm
             <Cite id="streetman-banerjee-2015" in={SOURCES} />. Near-infrared rather than visible:
             the human eye sees nothing, but a silicon-based phototransistor in the target device
             (with its 1.12 eV bandgap, lower than the photon energy) reads the pulses easily.

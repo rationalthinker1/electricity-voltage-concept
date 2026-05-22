@@ -131,7 +131,7 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 11.6'}
+      figure={figure ?? 'Fig. 17.4'}
       title="Why water's ε_r is so large"
       question="A single water molecule already wants to align. Where does ε_r ≈ 80 come from?"
       caption={

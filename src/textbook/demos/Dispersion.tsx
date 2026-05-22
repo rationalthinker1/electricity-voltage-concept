@@ -155,7 +155,7 @@ export function DispersionDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.2'}
+      figure={figure ?? 'Fig. 18.2'}
       title="A prism splits white light"
       question="Why does each colour bend by a different amount?"
       caption={

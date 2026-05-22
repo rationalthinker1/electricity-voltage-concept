@@ -16,18 +16,27 @@
  * depth-fading (back-half segments dimmer than front-half) so the
  * 3D shape reads cleanly even without GL.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { project, type Vec3 } from '@/lib/projection3d';
-import { createOrbitScene } from '@/lib/useOrbitScene';
+import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
+}
+
+interface DipoleCtx {
+  scene: OrbitScene;
+  rays: Array<{ theta: number; phi: number }>;
+  cachedN: number;
+  surface: Vec3[][];
 }
 
 // Normalised pattern radius r(θ) = sin^n(θ).
@@ -76,67 +85,33 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
 
   const beamwidth = useMemo(() => hpbwDeg(n), [n]);
 
-  const stateRef = useRef({ n, showMesh, showRays, showE });
-  useEffect(() => {
-    stateRef.current = { n, showMesh, showRays, showE };
-  }, [n, showMesh, showRays, showE]);
+  const stateRef = useSimState({ n, showMesh, showRays, showE });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H, canvas } = info;
-    let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, s, _dt, _simTime, ctx0: DipoleCtx) => {
+      const scene = ctx0.scene;
+      const cam = scene.cam;
+      const NLAT = 18;
+      const NLON = 24;
+      const RAYS = ctx0.rays;
 
-    const scene = createOrbitScene(canvas, {
-      yaw: 0.6,
-      pitch: 0.32,
-      distance: 4.2,
-    });
-    const cam = scene.cam;
-
-    // Latitude × longitude resolution. 18 lat × 24 lon ≈ a 'classic' globe grid.
-    const NLAT = 18;
-    const NLON = 24;
-
-    // Cache the surface so we only rebuild it when n changes.
-    let cachedN = -1;
-    let surface: Vec3[][] = [];
-
-    // Pre-pick a handful of rays at fixed (θ, φ) so the user sees how the
-    // surface radius varies with direction.
-    const RAYS: Array<{ theta: number; phi: number }> = [];
-    {
-      const RAY_THETAS = [
-        Math.PI * 0.18,
-        Math.PI * 0.3,
-        Math.PI * 0.5,
-        Math.PI * 0.7,
-        Math.PI * 0.82,
-      ];
-      const RAY_PHIS = [0, Math.PI * 0.5, Math.PI, Math.PI * 1.5];
-      for (const th of RAY_THETAS) for (const ph of RAY_PHIS) RAYS.push({ theta: th, phi: ph });
-    }
-
-    function ensureSurface(curN: number) {
-      if (curN !== cachedN) {
-        surface = buildSurface(curN, NLAT, NLON);
-        cachedN = curN;
+      // Depth-fade alpha: closer segments (smaller cam-space depth) brighter.
+      function depthAlpha(avgDepth: number, base: number): number {
+        const t = (cam.distance + 1.2 - avgDepth) / 2.4;
+        const k = Math.max(0.08, Math.min(1, t));
+        return base * k;
       }
-    }
 
-    // Depth-fade alpha: closer segments (smaller cam-space depth) brighter.
-    // cam.distance is the eye-z; world-origin is at depth ≈ cam.distance.
-    function depthAlpha(avgDepth: number, base: number): number {
-      // depth ranges roughly cam.distance ± 1. Normalise so 1=close 0=far.
-      const t = (cam.distance + 1.2 - avgDepth) / 2.4;
-      const k = Math.max(0.08, Math.min(1, t));
-      return base * k;
-    }
-
-    function draw() {
-      const s = stateRef.current;
-      ensureSurface(s.n);
+      // Cache the surface so we only rebuild it when n changes.
+      if (s.n !== ctx0.cachedN) {
+        ctx0.surface = buildSurface(s.n, NLAT, NLON);
+        ctx0.cachedN = s.n;
+      }
+      const surface = ctx0.surface;
 
       // Background.
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
       // Reference: faint equatorial disc outline (a circle of radius 1 in xz).
@@ -146,7 +121,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
         const ph = (i / NEQ) * 2 * Math.PI;
         eq.push(project({ x: Math.cos(ph), y: 0, z: Math.sin(ph) }, cam, W, H));
       }
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(eq[0]!.x, eq[0]!.y);
@@ -156,7 +131,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
       // Reference: xz-plane meridian outline at φ ∈ {0, π}, used by the 2D
       // dipole demo — useful for the reader to relate the 2D slice to the 3D.
       const NMER = 96;
-      ctx.strokeStyle = getCanvasColors().tealSoft;
+      ctx.strokeStyle = withAlpha(colors.teal, 0.25);
       ctx.lineWidth = 1;
       ctx.beginPath();
       for (let i = 0; i <= NMER; i++) {
@@ -234,12 +209,9 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
         segs.sort((a, b) => b.depth - a.depth);
         for (const seg of segs) {
           const baseAlpha = seg.kind === 'lat' ? 0.55 : 0.45;
-          const baseColor =
-            seg.kind === 'lat'
-              ? 'rgba(108,197,194,' // teal
-              : 'rgba(255,107,42,'; // amber
+          const baseToken = seg.kind === 'lat' ? colors.teal : colors.accent;
           const a = depthAlpha(seg.depth, baseAlpha);
-          ctx.strokeStyle = baseColor + a.toFixed(3) + ')';
+          ctx.strokeStyle = withAlpha(baseToken, a);
           ctx.lineWidth = seg.kind === 'lat' ? 1.0 : 1.0;
           ctx.beginPath();
           ctx.moveTo(seg.x1, seg.y1);
@@ -262,13 +234,13 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
           const p1 = project(tip, cam, W, H);
           const avgDepth = (p0.depth + p1.depth) / 2;
           const a = depthAlpha(avgDepth, 0.9);
-          ctx.strokeStyle = `rgba(255,107,42,${a.toFixed(3)})`;
+          ctx.strokeStyle = withAlpha(colors.accent, a);
           ctx.lineWidth = 1.4;
           ctx.beginPath();
           ctx.moveTo(p0.x, p0.y);
           ctx.lineTo(p1.x, p1.y);
           ctx.stroke();
-          ctx.fillStyle = `rgba(255,107,42,${a.toFixed(3)})`;
+          ctx.fillStyle = withAlpha(colors.accent, a);
           ctx.beginPath();
           ctx.arc(p1.x, p1.y, 2.2, 0, Math.PI * 2);
           ctx.fill();
@@ -289,16 +261,16 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
           { x: pBot.x, y: pBot.y },
         ],
         {
-          color: withAlpha(getCanvasColors().text, 0.95),
+          color: withAlpha(colors.text, 0.95),
           lineWidth: 2.0,
-          glowColor: withAlpha(getCanvasColors().text, 0.18),
+          glowColor: withAlpha(colors.text, 0.18),
           glowWidth: 8,
         },
       );
 
       // Feedpoint marker — the centre of the dipole.
       const pCen = project({ x: 0, y: 0, z: 0 }, cam, W, H);
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       ctx.beginPath();
       ctx.arc(pCen.x, pCen.y, 3.5, 0, Math.PI * 2);
       ctx.fill();
@@ -312,7 +284,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
           const dir = ay > 0 ? 1 : -1;
           const tail = project({ x: 0, y: ay - dir * 0.06, z: 0 }, cam, W, H);
           const tip = project({ x: 0, y: ay + dir * 0.06, z: 0 }, cam, W, H);
-          ctx.strokeStyle = getCanvasColors().pink;
+          ctx.strokeStyle = colors.pink;
           ctx.lineWidth = 1.6;
           ctx.beginPath();
           ctx.moveTo(tail.x, tail.y);
@@ -328,7 +300,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
             ny = ux;
           const head = 5;
           const wing = 3;
-          ctx.fillStyle = getCanvasColors().pink;
+          ctx.fillStyle = colors.pink;
           ctx.beginPath();
           ctx.moveTo(tip.x, tip.y);
           ctx.lineTo(tip.x - ux * head + nx * wing, tip.y - uy * head + ny * wing);
@@ -339,28 +311,47 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
       }
 
       // Axis labels at the dipole tips.
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: 'axis · θ=0', x: pTop.x, y: pTop.y - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       drawLabel(ctx, { text: 'axis · θ=π', x: pBot.x, y: pBot.y + 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
       // Top-left overlay.
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       drawLabel(ctx, { text: `r(θ) = sin^${s.n.toFixed(1)} θ`, x: 14, y: 14, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: 'drag to orbit', x: 14, y: 30, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+    },
+    [],
+    ({ canvas }) => {
+      const scene = createOrbitScene(canvas, {
+        yaw: 0.6,
+        pitch: 0.32,
+        distance: 4.2,
+      });
+      const RAYS: Array<{ theta: number; phi: number }> = [];
+      const RAY_THETAS = [
+        Math.PI * 0.18,
+        Math.PI * 0.3,
+        Math.PI * 0.5,
+        Math.PI * 0.7,
+        Math.PI * 0.82,
+      ];
+      const RAY_PHIS = [0, Math.PI * 0.5, Math.PI, Math.PI * 1.5];
+      for (const th of RAY_THETAS) for (const ph of RAY_PHIS) RAYS.push({ theta: th, phi: ph });
 
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      scene.dispose();
-    };
-  }, []);
+      const ctx0: DipoleCtx = {
+        scene,
+        rays: RAYS,
+        cachedN: -1,
+        surface: [],
+      };
+      return { context: ctx0, cleanup: () => scene.dispose() };
+    },
+  );
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.1b'}
+      figure={figure ?? 'Fig. 19.1b'}
       title="The dipole pattern, in 3D — a fat donut"
       question="The 2D sin²θ plot is a slice. What does the full pattern look like?"
       caption={

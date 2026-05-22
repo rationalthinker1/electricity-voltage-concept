@@ -132,7 +132,7 @@ export function BrewsterAngleDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.3'}
+      figure={figure ?? 'Fig. 18.3'}
       title="Brewster's angle — where R_p falls to zero"
       question="What's special about the angle where reflected light is fully polarised?"
       caption={

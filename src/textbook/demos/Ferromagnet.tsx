@@ -229,7 +229,7 @@ export function FerromagnetDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 11.4'}
+      figure={figure ?? 'Fig. 17.6'}
       title="Ferromagnetic domains and hysteresis"
       question="Why does iron stay magnetized after the field is gone?"
       caption={

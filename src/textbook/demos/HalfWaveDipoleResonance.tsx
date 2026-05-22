@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { PHYS } from '@/lib/physics';
+import { fmtFrequency } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -66,7 +67,7 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
         ctx.moveTo(x, y0);
         ctx.lineTo(x, y0 + 3);
         ctx.stroke();
-        ctx.fillText(formatHz(fr), x, y0 + 14);
+        ctx.fillText(fmtFrequency(fr), x, y0 + 14);
       }
       drawLabel(ctx, { text: 'frequency f', x: (x0 + x1) / 2, y: H - 4 });
       ctx.textAlign = 'right';
@@ -108,7 +109,7 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       ctx.lineTo(xRes, y1);
       ctx.stroke();
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: `f₀ = ${formatHz(f0_)}`, x: xRes, y: y1 - 4, color: colors.teal, align: 'center' });
+      drawLabel(ctx, { text: `f₀ = ${fmtFrequency(f0_)}`, x: xRes, y: y1 - 4, color: colors.teal, align: 'center' });
       const y73 = y0 - (73 / Zmax) * plotH;
       ctx.setLineDash([2, 4]);
       ctx.strokeStyle = colors.borderStrong;
@@ -127,7 +128,7 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.2'}
+      figure={figure ?? 'Fig. 19.2'}
       title="Half-wave dipole — input impedance"
       question="Why does |Z| dip to ~73 Ω at one frequency?"
       caption={
@@ -150,7 +151,7 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
           format={(v) => v.toFixed(2) + ' m'}
           onChange={setL}
         />
-        <MiniReadout label="f₀" value={formatHz(f0)} />
+        <MiniReadout label="f₀" value={fmtFrequency(f0)} />
         <MiniReadout label="R_rad" value={R_rad.toFixed(0)} unit="Ω" />
       </DemoControls>
     </Demo>
@@ -162,11 +163,4 @@ function cot(x: number): number {
   const s = Math.sin(x);
   if (Math.abs(s) < 1e-6) return Math.sign(c) * 1e6;
   return c / s;
-}
-
-function formatHz(f: number): string {
-  if (f >= 1e9) return (f / 1e9).toFixed(2) + ' GHz';
-  if (f >= 1e6) return (f / 1e6).toFixed(2) + ' MHz';
-  if (f >= 1e3) return (f / 1e3).toFixed(2) + ' kHz';
-  return f.toFixed(1) + ' Hz';
 }

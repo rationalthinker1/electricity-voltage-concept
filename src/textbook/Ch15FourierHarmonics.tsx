@@ -435,10 +435,10 @@ export default function Ch15FourierHarmonics() {
         full V<sub>0</sub>² contributes directly (with no factor of 1/2). Everything else gets the
         cos² half-factor.
       </p>
-      <Pullout>
+      <p className="mb-prose-3">
         Each harmonic carries its own energy. The total mean-square is just the sum — Pythagoras in
         a basis of sines.
-      </Pullout>
+      </p>
       <p className="mb-prose-3">
         The geometric content is the same orthonormality that let us extract the coefficients in the
         first place: total mean-square energy is the sum of mean-square energies in each independent
@@ -526,10 +526,10 @@ export default function Ch15FourierHarmonics() {
 
       <SquareThroughLPFDemo />
 
-      <Pullout>
+      <p className="mb-prose-3">
         A square wave is just a list of sine waves with the right amplitudes. The low-pass filter
         takes the list and throws away the high-frequency entries.
-      </Pullout>
+      </p>
 
       <p className="mb-prose-3">
         That single observation is why every PCB designer puts a small series resistor or a ferrite

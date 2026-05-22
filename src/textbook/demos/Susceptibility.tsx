@@ -159,7 +159,7 @@ export function SusceptibilityDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 11.5'}
+      figure={figure ?? 'Fig. 17.7'}
       title="One number per material, per response"
       question="How big is the response — and how spread out is the range?"
       caption={

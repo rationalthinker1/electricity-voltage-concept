@@ -1,5 +1,5 @@
 /**
- * Chapter 13 — Filters, op-amps, and transmission lines
+ * Chapter 16 — Filters, op-amps, and transmission lines
  *
  * The frequency-domain and active-circuit sequel to Ch.12. Take the impedance
  * machinery and ask the next three questions: what does a circuit do across
@@ -26,7 +26,7 @@ import { OpAmpFollowerDemo } from './demos/OpAmpFollower';
 import { SmithChartBasicsDemo } from './demos/SmithChartBasics';
 import { getChapter } from './data/chapters';
 
-export default function Ch13FiltersOpAmpsTLines() {
+export default function Ch16FiltersOpAmpsTLines() {
   const chapter = getChapter('filters-op-amps-tlines')!;
   const SOURCES = chapter.sources;
 
@@ -37,7 +37,7 @@ export default function Ch13FiltersOpAmpsTLines() {
         Kirchhoff's two laws. That's enough to analyse a circuit at one frequency, or one moment in
         time. But three more questions follow immediately, and the working analog engineer spends
         most of their career inside the answers. What does the circuit do across{' '}
-        <em className="text-text italic">every</em>
+        <em className="text-text italic">every</em>{' '}
         frequency, not just one (filters and the Bode plot)? How do you build a single component
         whose gain is whatever you want it to be (the op-amp)? And what happens when a wire is
         finally long enough that the signal takes real time to get from one end to the other
@@ -57,7 +57,7 @@ export default function Ch13FiltersOpAmpsTLines() {
       <p className="mb-prose-3">
         Impedance turned circuit ODEs into algebra; the next step is to ask not "what is the
         steady-state current at one frequency?" but "what does the circuit do across{' '}
-        <em className="text-text italic">all</em>
+        <em className="text-text italic">all</em>{' '}
         frequencies at once?" That is the move from circuit analysis to{' '}
         <strong className="text-text font-medium">signal processing</strong>, and the bridge is the{' '}
         <Term
@@ -281,7 +281,7 @@ export default function Ch13FiltersOpAmpsTLines() {
       </p>
 
       <TryIt
-        tag="Try 13.1b"
+        tag="Try 16.1b"
         question={
           <>
             A Sallen-Key low-pass uses equal components R = 10 kΩ, C = 10 nF. What is the cutoff
@@ -310,7 +310,7 @@ export default function Ch13FiltersOpAmpsTLines() {
       />
 
       <TryIt
-        tag="Try 13.1"
+        tag="Try 16.1"
         question={
           <>
             Design a low-pass RC filter with cutoff frequency{' '}
@@ -477,7 +477,7 @@ export default function Ch13FiltersOpAmpsTLines() {
       </p>
 
       <TryIt
-        tag="Try 13.2"
+        tag="Try 16.2"
         question={
           <>
             An inverting op-amp has <InlineMath tex="R_f = 100\ \text{k}\Omega" />,{' '}
@@ -693,7 +693,7 @@ export default function Ch13FiltersOpAmpsTLines() {
       </p>
 
       <TryIt
-        tag="Try 13.3b"
+        tag="Try 16.3b"
         question={
           <>
             A 50 Ω load needs to be matched to a generator that wants to see a 200 Ω input
@@ -739,7 +739,7 @@ export default function Ch13FiltersOpAmpsTLines() {
       </p>
 
       <TryIt
-        tag="Try 13.3"
+        tag="Try 16.3"
         question={
           <>
             A 50 Ω cable is terminated with a 100 Ω resistor. What is the reflection coefficient,
@@ -781,9 +781,9 @@ export default function Ch13FiltersOpAmpsTLines() {
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <CaseStudies intro="Three places where this chapter's machinery is the entire design.">
+      <CaseStudies intro="Two places where this chapter's machinery is the entire design.">
         <CaseStudy
-          tag="Case 13.1"
+          tag="Case 16.1"
           title="Why a 50 Ω SMA cable, and not 40 or 60?"
           summary={
             <>
@@ -841,7 +841,7 @@ export default function Ch13FiltersOpAmpsTLines() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 13.2"
+          tag="Case 16.2"
           title="The transimpedance amp in your phone's selfie camera"
           summary={
             <>
@@ -955,7 +955,7 @@ export default function Ch13FiltersOpAmpsTLines() {
             and reflections become visible on the bench
             <Cite id="johnson-graham-1993" in={SOURCES} />. Modern CMOS edges are 50–500 ps, which
             drops the threshold under 1 cm and is why every motherboard's high-speed signal lanes
-            (DDR, PCIe, USB 3, HDMI) are routed as carefully impedance- controlled differential
+            (DDR, PCIe, USB 3, HDMI) are routed as carefully impedance-controlled differential
             pairs with matched lengths.
           </p>
         </FAQItem>

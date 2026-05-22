@@ -153,7 +153,7 @@ export function DipoleInFieldDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 11.1'}
+      figure={figure ?? 'Fig. 17.1'}
       title="Molecular dipoles aligning to an applied field"
       question="What does it physically mean for a material to 'polarize'?"
       caption={

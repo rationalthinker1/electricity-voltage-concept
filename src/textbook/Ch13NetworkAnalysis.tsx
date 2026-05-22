@@ -279,10 +279,10 @@ export default function Ch13NetworkAnalysis() {
         coefficient matrix is symmetric and positive-definite (for passive networks), exactly the
         kind of matrix LU-decomposition and Gaussian elimination devour at machine speed.
       </p>
-      <Pullout>
+      <p className="mb-prose-3">
         A mesh current pays KCL its dues automatically, just by being a loop. That is the whole
         trick.
-      </Pullout>
+      </p>
 
       <TryIt
         tag="Try 13.1"
@@ -861,10 +861,10 @@ export default function Ch13NetworkAnalysis() {
         Y of three equivalent resistors — and suddenly the bridge becomes a series-parallel network
         you can reduce by inspection.
       </p>
-      <Pullout>
+      <p className="mb-prose-3">
         Three resistors in a triangle, three in a star — same external behaviour. Kennelly showed
         you can swap them freely.
-      </Pullout>
+      </p>
       <p className="mb-prose-3">
         Y-Δ extends to AC: replace the real resistances with complex impedances Z<sub>a</sub>, Z
         <sub>b</sub>, Z<sub>c</sub> and the same formulas hold term by term
@@ -1100,10 +1100,10 @@ export default function Ch13NetworkAnalysis() {
         delivered. These are different design criteria: a power engineer's goal is usually maximum
         efficiency, not maximum power transfer; an RF engineer's goal is the opposite.
       </p>
-      <Pullout>
+      <p className="mb-prose-3">
         Maximum power is not maximum efficiency. The two goals point in opposite directions, and
         choosing the wrong one melts your output stage.
-      </Pullout>
+      </p>
       <p className="mb-prose-3">
         For AC, the{' '}
         <Term

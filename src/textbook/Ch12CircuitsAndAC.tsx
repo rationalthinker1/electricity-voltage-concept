@@ -1,5 +1,5 @@
 /**
- * Chapter 10 — Circuits, AC, and impedance
+ * Chapter 12 — Circuits, AC, and impedance
  *
  * The practical compression: take the field machinery of Ch.1–6 and reduce it
  * to nodes, branches, components, and complex impedance. Seven sections, six
@@ -10,6 +10,7 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
+import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { PredictThenObserve } from '@/components/PredictThenObserve';
@@ -52,7 +53,7 @@ export default function Ch12CircuitsAndAC() {
       </h2>
 
       <p className="mb-prose-3">
-        Picture a 1-metre wire connecting a 9-V battery to a small bulb. Chapter 6 tells you a
+        Picture a 1-metre wire connecting a 9-V battery to a small bulb. Chapter 8 tells you a
         careful story: energy emanates from the battery as an electromagnetic disturbance, flows
         through the empty space surrounding the wire, gets absorbed at the filament where the field
         encounters resistance. Every claim is correct. Every claim is also unnecessary if you only
@@ -77,10 +78,10 @@ export default function Ch12CircuitsAndAC() {
         <em className="text-text italic">antenna</em>, not a wire
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
-      <p className="pullout">
+      <Pullout>
         The schematic is not a different physics from Chapters 1–6. It is the limit those chapters
         take when wavelengths are huge compared to the wires.
-      </p>
+      </Pullout>
       <p className="mb-prose-3">
         Inside that limit, the entire apparatus of Maxwell collapses to a handful of operational
         rules. Charge conservation becomes a rule at every node. Energy conservation becomes a rule
@@ -215,12 +216,12 @@ export default function Ch12CircuitsAndAC() {
         the moment a 10 kΩ-input meter touches it
         <Cite id="horowitz-hill-2015" in={SOURCES} />. The engineering rule of thumb is to keep the
         load impedance at least 10× the Thévenin resistance of the divider, or — better — to follow
-        the divider with an op-amp voltage buffer (Ch.13), so that the next stage sees a near-zero
+        the divider with an op-amp voltage buffer (Ch.16), so that the next stage sees a near-zero
         source impedance.
       </p>
 
       <TryIt
-        tag="Try 12.1b"
+        tag="Try 12.7"
         question={
           <>
             A 9 V battery drives a series chain with R<sub>1</sub> = 1 kΩ and R<sub>2</sub> = 2 kΩ.
@@ -252,7 +253,7 @@ export default function Ch12CircuitsAndAC() {
             </Formula>
             <p className="mb-prose-1 last:mb-0">
               A 10% sag, which would already be unacceptable for many ADC reference circuits and is
-              the textbook reason for the op-amp buffer in Ch.13
+              the textbook reason for the op-amp buffer in Ch.16
               <Cite id="horowitz-hill-2015" in={SOURCES} />
               <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
             </p>
@@ -688,7 +689,7 @@ export default function Ch12CircuitsAndAC() {
         feeds it to the demodulator. Modern silicon-tuned receivers do the same thing in principle —
         they just synthesize the LC behavior digitally.
       </p>
-      <p className="pullout">
+      <p className="mb-prose-3">
         Every radio is a tunable RLC circuit waiting for the frequency it agrees with. So is every
         quartz watch, every MRI coil, every cell tower.
       </p>
@@ -1030,7 +1031,7 @@ export default function Ch12CircuitsAndAC() {
       </p>
 
       <TryIt
-        tag="Try 12.5b"
+        tag="Try 12.8"
         question={
           <>
             An AC load draws <strong className="text-text font-medium">1 kW</strong> of real power
@@ -1243,14 +1244,14 @@ export default function Ch12CircuitsAndAC() {
         single source and a single resistance. Chapters 1–6 explain{' '}
         <em className="text-text italic">why</em>
         any of this is true; Chapter 12 is what you actually use
-        <Cite id="horowitz-hill-2015" in={SOURCES} />. Ch.13 picks up where this one leaves off —
+        <Cite id="horowitz-hill-2015" in={SOURCES} />. Ch.16 picks up where this one leaves off —
         frequency-domain filters, op-amp building blocks, and the moment a wire stops being a single
         node.
       </p>
 
       <CaseStudies intro="Three places where the lumped, complex-impedance picture of this chapter does the heavy lifting in working hardware.">
         <CaseStudy
-          tag="Case 10.1"
+          tag="Case 12.1"
           title="The North-American power grid"
           summary={
             <>
@@ -1305,7 +1306,7 @@ export default function Ch12CircuitsAndAC() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 10.2"
+          tag="Case 12.2"
           title="The RLC tank inside an analog radio"
           summary={
             <>
@@ -1361,7 +1362,7 @@ export default function Ch12CircuitsAndAC() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 10.3"
+          tag="Case 12.3"
           title="The brick on your laptop charger"
           summary={
             <>
@@ -1604,7 +1605,7 @@ export default function Ch12CircuitsAndAC() {
         <FAQItem q="Are AC and DC fundamentally different physical phenomena?">
           <p>
             No. They are two limits of the same Maxwell equations. DC is the ω → 0 limit of AC. All
-            the same field laws, charge conservation, energy flow — Chapter 6's Poynting picture
+            the same field laws, charge conservation, energy flow — Chapter 8's Poynting picture
             applies identically to both, with the only difference being that the field and current
             vectors flip sign twice per AC cycle. The historical War of the Currents between
             Edison's DC and Tesla's AC was settled by transformer convenience, not by either being
@@ -1651,7 +1652,7 @@ export default function Ch12CircuitsAndAC() {
             quarter cycle, as the current decays, that stored field energy converts back into
             kinetic energy of charges flowing the <em className="text-text italic">other</em> way
             through the source. Same for a capacitor — energy parks in the electric field between
-            the plates and returns half a cycle later. From the field-flow viewpoint of Chapter 6,
+            the plates and returns half a cycle later. From the field-flow viewpoint of Chapter 8,
             the Poynting vector reverses sign and the source absorbs energy it sent out moments
             earlier. No energy is lost; it just commutes back and forth through the wires
             <Cite id="griffiths-2017" in={SOURCES} />.

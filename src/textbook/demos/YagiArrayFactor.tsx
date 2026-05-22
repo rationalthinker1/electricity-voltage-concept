@@ -127,7 +127,7 @@ export function YagiArrayFactorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.3'}
+      figure={figure ?? 'Fig. 19.3'}
       title="A Yagi — driven element + parasitics"
       question="What does adding directors do to the radiation pattern?"
       caption={

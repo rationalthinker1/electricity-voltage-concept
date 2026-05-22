@@ -13,6 +13,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -62,7 +63,7 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
         const r = phase;
         if (r < 5) continue;
         const alpha = Math.max(0, 0.55 - (r / (rxX - txX)) * 0.4);
-        ctx.strokeStyle = `rgba(255,107,42,${alpha})`;
+        ctx.strokeStyle = withAlpha(colors.accent, alpha);
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.arc(txX, cy, r, -Math.PI / 4, Math.PI / 4);
@@ -110,7 +111,7 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.4'}
+      figure={figure ?? 'Fig. 19.4'}
       title="Friis transmission — a link budget"
       question="How much signal arrives at the far end?"
       caption={

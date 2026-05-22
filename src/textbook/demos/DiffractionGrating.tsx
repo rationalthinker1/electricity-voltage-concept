@@ -122,7 +122,7 @@ export function DiffractionGratingDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.9'}
+      figure={figure ?? 'Fig. 18.9'}
       title="Diffraction grating — N slits sharpen the maxima"
       question="Why does a grating make sharper spectral lines than two slits?"
       caption={

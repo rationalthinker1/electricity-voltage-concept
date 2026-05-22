@@ -45,15 +45,17 @@
  * Bode magnitude curve below them. The reader sees the filtering directly
  * in the time domain and as a transfer function — same physics, two windows.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { fmtFreqShort } from '@/lib/formatters';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -179,17 +181,12 @@ export function FilterDesignerDemo({ figure }: Props) {
     return NaN;
   }, [topology, fc, L]);
 
-  const stateRef = useRef({ topology, R, C, L, f0, Haudio, Hhum });
-  useEffect(() => {
-    stateRef.current = { topology, R, C, L, f0, Haudio, Hhum };
-  }, [topology, R, C, L, f0, Haudio, Hhum]);
+  const stateRef = useSimState({ topology, R, C, L, f0, Haudio, Hhum });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    function draw(now: number) {
-      const { topology, R, C, L, f0 } = stateRef.current;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state) => {
+      const { topology, R, C, L, f0 } = state;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -423,15 +420,9 @@ export function FilterDesignerDemo({ figure }: Props) {
       ctx.arc(xHum, yHum, 3.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // Tag advancing time so the scope traces appear "live" if we ever want to
-      // animate; for now `now` is just used to keep React's rAF alive.
-      void now;
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+  );
 
   const scoreLabel =
     scoreDb >= 40
@@ -446,7 +437,7 @@ export function FilterDesignerDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 13.3'}
+      figure={figure ?? 'Fig. 16.3'}
       title="Filter designer — kill the 60 Hz hum"
       question="A 1 kHz tone is buried under 60 Hz mains hum. Pick a topology and component values that pass the tone and reject the hum."
       caption={

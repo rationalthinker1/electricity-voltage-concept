@@ -114,7 +114,7 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.1'}
+      figure={figure ?? 'Fig. 19.1'}
       title="The dipole pattern — sin²θ"
       question="In which direction does a dipole radiate strongest?"
       caption={

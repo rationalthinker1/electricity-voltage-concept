@@ -116,7 +116,7 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.5'}
+      figure={figure ?? 'Fig. 19.5'}
       title="Near field vs far field"
       question="Where does the field stop sloshing back and start propagating?"
       caption={

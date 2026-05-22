@@ -130,7 +130,7 @@ export function DoubleSlitDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.6'}
+      figure={figure ?? 'Fig. 18.6'}
       title="Young's double slit — two beams interfere"
       question="What sets the spacing between bright fringes?"
       caption={
