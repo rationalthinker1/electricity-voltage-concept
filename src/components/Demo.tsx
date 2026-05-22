@@ -203,12 +203,12 @@ interface EquationStripProps {
  */
 export function EquationStrip({ leftLabel, left, rightLabel, right }: EquationStripProps) {
   return (
-    <div className="@container py-md px-xl bg-bg-elevated border-border gap-md sm:gap-xl grid grid-cols-[repeat(auto-fit,minmax(min(100%,22rem),1fr))] border-t">
+    <div className="@container min-h-4xl py-md px-xl bg-bg-elevated border-border gap-md sm:gap-xl grid grid-cols-[repeat(auto-fit,minmax(min(100%,22rem),1fr))] border-t">
       <div className="min-w-0 text-center">
         {leftLabel && (
           <div className="font-3 text-1 text-text-muted tracking-3 mb-1 uppercase">{leftLabel}</div>
         )}
-        <div className="text-3 overflow-x-auto">{left}</div>
+        <div className="text-3 min-h-3xl overflow-x-auto">{left}</div>
       </div>
       <div className="min-w-0 text-center @[44rem]:border-border-strong @[44rem]:pl-xl @[44rem]:border-l">
         {rightLabel && (
@@ -216,7 +216,7 @@ export function EquationStrip({ leftLabel, left, rightLabel, right }: EquationSt
             {rightLabel}
           </div>
         )}
-        <div className="text-3 overflow-x-auto">{right}</div>
+        <div className="text-3 min-h-3xl overflow-x-auto">{right}</div>
       </div>
     </div>
   );
