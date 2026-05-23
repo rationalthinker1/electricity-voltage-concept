@@ -9,82 +9,57 @@
  *
  * Bottom panel: M vs B curve. The current operating point is marked.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
 }
 
+interface SimCtx {
+  dir: number[];
+  Bhistory: number[];
+  Mhistory: number[];
+  cols: number;
+  rows: number;
+  top: number;
+  panelH: number;
+  bottomTop: number;
+  bottomH: number;
+  cellW: number;
+  cellH: number;
+  lastFlipB: number;
+  lastUpdate: number;
+  lastSet: number;
+}
+
 export function FerromagnetDemo({ figure }: Props) {
   // External B, -1..+1 (normalized to saturation)
   const [B, setB] = useState(0);
-  const stateRef = useRef({ B });
-  useEffect(() => {
-    stateRef.current = { B };
-  }, [B]);
+  const stateRef = useSimState({ B });
   const [M, setM] = useState(0);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    // Grid of domain cells. Each holds a direction angle.
-    const cols = 18,
-      rows = 6;
-    const top = 30;
-    const panelH = Math.floor(h * 0.55);
-    const bottomTop = top + panelH + 18;
-    const bottomH = h - bottomTop - 14;
-    const cellW = w / cols;
-    const cellH = panelH / rows;
-
-    // Initial domain pattern: random ±1 (left or right) blocks of ~3 wide
-    const dir: number[] = new Array(cols * rows);
-    function blockInit() {
-      for (let j = 0; j < rows; j++) {
-        let sign = Math.random() > 0.5 ? 1 : -1;
-        let run = Math.floor(2 + Math.random() * 4);
-        for (let i = 0; i < cols; i++) {
-          dir[j * cols + i] = sign;
-          run--;
-          if (run <= 0) {
-            sign = -sign;
-            run = Math.floor(2 + Math.random() * 4);
-          }
-        }
-      }
-    }
-    blockInit();
-
-    // Hysteresis tracking: remember M trajectory; loop traces it as B is slid back and forth
-    const Bhistory: number[] = [];
-    const Mhistory: number[] = [];
-
-    // State of magnetization (continuous; flips toward B but lags behind)
-    // We compute the "fraction aligned with +x" as the macroscopic M.
-    // To simulate hysteresis, transitions only happen when |B - lastFlipB| > coercivity threshold.
-    let lastFlipB = 0;
-
-    let lastUpdate = 0;
-    let lastSet = 0;
-
-    function draw() {
-      const { B } = stateRef.current;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state, _dt, _simTime, c: SimCtx) => {
+      const { B } = state;
+      const { dir, Bhistory, Mhistory, cols, rows, top, panelH, bottomTop, bottomH, cellW, cellH } = c;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Domain evolution: at intervals, flip a few cells toward B
       const now = performance.now();
-      if (now - lastUpdate > 80) {
-        lastUpdate = now;
+      if (now - c.lastUpdate > 80) {
+        c.lastUpdate = now;
         // Coercivity: domain walls only move when B moves past a threshold
-        if (Math.abs(B - lastFlipB) > 0.06 || Math.abs(B) > 0.85) {
-          lastFlipB = B;
+        if (Math.abs(B - c.lastFlipB) > 0.06 || Math.abs(B) > 0.85) {
+          c.lastFlipB = B;
           // Number of cells to flip: scales with |B|
           const k = Math.floor(2 + Math.abs(B) * 24);
           for (let n = 0; n < k; n++) {
@@ -105,12 +80,12 @@ export function FerromagnetDemo({ figure }: Props) {
       // Compute net magnetization
       let sum = 0;
       for (const d of dir) sum += d;
-      const M = sum / (cols * rows);
+      const Mnow = sum / (cols * rows);
 
       // Push history
       if (Bhistory.length === 0 || Math.abs(Bhistory[Bhistory.length - 1] - B) > 0.01) {
         Bhistory.push(B);
-        Mhistory.push(M);
+        Mhistory.push(Mnow);
         if (Bhistory.length > 500) {
           Bhistory.shift();
           Mhistory.shift();
@@ -202,7 +177,7 @@ export function FerromagnetDemo({ figure }: Props) {
 
       // Current operating point
       const opX = xOf(B);
-      const opY = yOf(M);
+      const opY = yOf(Mnow);
       ctx.fillStyle = colors.accent;
       ctx.beginPath();
       ctx.arc(opX, opY, 5, 0, Math.PI * 2);
@@ -210,22 +185,73 @@ export function FerromagnetDemo({ figure }: Props) {
       drawLabel(ctx, {
         x: px0,
         y: py1 - 4,
-        text: `(B, M) = (${B.toFixed(2)}, ${M.toFixed(2)})`,
+        text: `(B, M) = (${B.toFixed(2)}, ${Mnow.toFixed(2)})`,
         color: colors.teal,
         size: 11,
       });
 
       const nowSet = performance.now();
-      if (nowSet - lastSet > 250) {
-        lastSet = nowSet;
-        setM(M);
+      if (nowSet - c.lastSet > 250) {
+        c.lastSet = nowSet;
+        setM(Mnow);
       }
+    },
+    [],
+    (info) => {
+      const { w, h } = info;
 
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+      // Grid of domain cells. Each holds a direction angle.
+      const cols = 18,
+        rows = 6;
+      const top = 30;
+      const panelH = Math.floor(h * 0.55);
+      const bottomTop = top + panelH + 18;
+      const bottomH = h - bottomTop - 14;
+      const cellW = w / cols;
+      const cellH = panelH / rows;
+
+      // Initial domain pattern: random ±1 (left or right) blocks of ~3 wide
+      const dir: number[] = new Array(cols * rows);
+      function blockInit() {
+        for (let j = 0; j < rows; j++) {
+          let sign = Math.random() > 0.5 ? 1 : -1;
+          let run = Math.floor(2 + Math.random() * 4);
+          for (let i = 0; i < cols; i++) {
+            dir[j * cols + i] = sign;
+            run--;
+            if (run <= 0) {
+              sign = -sign;
+              run = Math.floor(2 + Math.random() * 4);
+            }
+          }
+        }
+      }
+      blockInit();
+
+      // Hysteresis tracking: remember M trajectory; loop traces it as B is slid back and forth
+      const Bhistory: number[] = [];
+      const Mhistory: number[] = [];
+
+      return {
+        context: {
+          dir,
+          Bhistory,
+          Mhistory,
+          lastFlipB: 0,
+          lastUpdate: 0,
+          lastSet: 0,
+          cols,
+          rows,
+          top,
+          panelH,
+          bottomTop,
+          bottomH,
+          cellW,
+          cellH,
+        },
+      };
+    },
+  );
 
   return (
     <Demo

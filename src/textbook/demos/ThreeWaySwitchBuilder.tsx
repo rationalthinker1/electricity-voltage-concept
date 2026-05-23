@@ -27,13 +27,15 @@
  *   - Wiring the neutral through a switch is highlighted as
  *     "neutral must bypass the switch".
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, drawGlowPath, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 type TerminalId =
   | 'power-hot'
@@ -242,20 +244,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
     return { hotPath: hot, neutralPath: neu, bulbLit: hot && neu };
   }, [wires, s1, s2]);
 
-  // State refs for the canvas draw loop.
-  const stateRef = useRef({
-    wires,
-    s1,
-    s2,
-    inProgressFrom,
-    hoverTerm,
-    pointer,
-    badWireIds,
-    bulbLit,
-  });
-  useEffect(() => {
-    stateRef.current = { wires, s1, s2, inProgressFrom, hoverTerm, pointer, badWireIds, bulbLit };
-  }, [wires, s1, s2, inProgressFrom, hoverTerm, pointer, badWireIds, bulbLit]);
+  const stateRef = useSimState({ wires, s1, s2, inProgressFrom, hoverTerm, pointer, badWireIds, bulbLit });
 
   // Stable callbacks the canvas needs to call.
   const handleTerminalClick = useCallback((t: TerminalId) => {
@@ -285,129 +274,20 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
     setInProgressFrom(null);
   }, []);
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, canvas, colors } = info;
-      let raf = 0;
-
-      function getXY(e: MouseEvent | TouchEvent): [number, number] {
-        const r = canvas.getBoundingClientRect();
-        const t = 'touches' in e ? (e.touches[0] ?? e.changedTouches[0]) : e;
-        if (!t) return [-1, -1];
-        return [t.clientX - r.left, t.clientY - r.top];
-      }
-
-      function pickTerminal(mx: number, my: number): TerminalId | null {
-        const L = layout(w, h);
-        let best: TerminalId | null = null;
-        let bestD = 14; // px hit radius
-        for (const t of ALL_TERMINALS) {
-          const p = L[t];
-          const d = Math.hypot(mx - p.x, my - p.y);
-          if (d < bestD) {
-            bestD = d;
-            best = t;
-          }
-        }
-        return best;
-      }
-
-      function pickSwitch(mx: number, my: number): 's1' | 's2' | null {
-        // Switch hit region: roughly between its three terminals, plus a margin.
-        const L = layout(w, h);
-        for (const sw of ['s1', 's2'] as const) {
-          const cx = L[`${sw}-common`].x;
-          const yMin = L[`${sw}-t1`].y - 14;
-          const yMax = L[`${sw}-common`].y + 14;
-          if (mx > cx - 30 && mx < cx + 30 && my > yMin && my < yMax) {
-            // Don't intercept clicks that land on the terminals themselves.
-            if (!pickTerminal(mx, my)) return sw;
-          }
-        }
-        return null;
-      }
-
-      function pickWire(mx: number, my: number): string | null {
-        const { wires: ws } = stateRef.current;
-        const L = layout(w, h);
-        let bestId: string | null = null;
-        let bestD = 6;
-        for (const wr of ws) {
-          const a = L[wr.from];
-          const b = L[wr.to];
-          const d = distToSeg(mx, my, a.x, a.y, b.x, b.y);
-          if (d < bestD) {
-            bestD = d;
-            bestId = wr.id;
-          }
-        }
-        return bestId;
-      }
-
-      function onPointerDown(e: MouseEvent | TouchEvent) {
-        if ('touches' in e) e.preventDefault();
-        const [mx, my] = getXY(e);
-        if (mx < 0) return;
-        const term = pickTerminal(mx, my);
-        if (term) {
-          handleTerminalClick(term);
-          return;
-        }
-        const wireId = pickWire(mx, my);
-        if (wireId) {
-          handleWireClick(wireId);
-          return;
-        }
-        const sw = pickSwitch(mx, my);
-        if (sw) {
-          handleSwitchClick(sw);
-          return;
-        }
-        // Click on empty canvas cancels in-progress wire.
-        setInProgressFrom(null);
-      }
-
-      function onPointerMove(e: MouseEvent | TouchEvent) {
-        const [mx, my] = getXY(e);
-        if (mx < 0) return;
-        const term = pickTerminal(mx, my);
-        setHoverTerm(term);
-        setPointer({ x: mx, y: my });
-        const overWire = pickWire(mx, my);
-        const overSwitch = pickSwitch(mx, my);
-        canvas.style.cursor = term || overSwitch || overWire ? 'pointer' : 'default';
-      }
-      function onPointerLeave() {
-        setHoverTerm(null);
-        setPointer(null);
-      }
-
-      canvas.addEventListener('mousedown', onPointerDown);
-      canvas.addEventListener('mousemove', onPointerMove);
-      canvas.addEventListener('mouseleave', onPointerLeave);
-      canvas.addEventListener('touchstart', onPointerDown, { passive: false });
-      canvas.addEventListener('touchmove', onPointerMove, { passive: false });
-
-      function distToSeg(
-        px: number,
-        py: number,
-        ax: number,
-        ay: number,
-        bx: number,
-        by: number,
-      ): number {
-        const dx = bx - ax,
-          dy = by - ay;
-        const len2 = dx * dx + dy * dy;
-        if (len2 === 0) return Math.hypot(px - ax, py - ay);
-        let t = ((px - ax) * dx + (py - ay) * dy) / len2;
-        t = Math.max(0, Math.min(1, t));
-        return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
-      }
-
-      function draw() {
-        const st = stateRef.current;
-        const L = layout(w, h);
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state) => {
+      const {
+        wires: stWires,
+        s1: stS1,
+        s2: stS2,
+        inProgressFrom: stInProgressFrom,
+        hoverTerm: stHoverTerm,
+        pointer: stPointer,
+        badWireIds: stBadWireIds,
+        bulbLit: stBulbLit,
+      } = state;
+      const L = layout(w, h);
 
         // Background.
         ctx.fillStyle = colors.bg;
@@ -432,7 +312,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
             kind: 'bulb',
             at: { x: L['bulb-hot'].x, y: (L['bulb-hot'].y + L['bulb-neutral'].y) / 2 },
             radius: 16,
-            brightness: st.bulbLit ? 1 : 0,
+            brightness: stBulbLit ? 1 : 0,
             label: 'lamp',
             labelOffset: { x: 0, y: 36 },
           },
@@ -463,7 +343,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
           const com = L[`${sw}-common`];
           const t1 = L[`${sw}-t1`];
           const t2 = L[`${sw}-t2`];
-          const pos = sw === 's1' ? st.s1 : st.s2;
+          const pos = sw === 's1' ? stS1 : stS2;
           const active = pos === 'up' ? t1 : t2;
 
           // Box outline around the switch.
@@ -499,10 +379,10 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
         }
 
         // Draw wires the reader has placed.
-        for (const wr of st.wires) {
+        for (const wr of stWires) {
           const a = L[wr.from];
           const b = L[wr.to];
-          const isBad = st.badWireIds.has(wr.id);
+          const isBad = stBadWireIds.has(wr.id);
           if (isBad) {
             drawGlowPath(ctx, [a, b], {
               color: '#ff3b6e',
@@ -510,7 +390,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
               lineWidth: 2.4,
               glowWidth: 7,
             });
-          } else if (st.bulbLit) {
+          } else if (stBulbLit) {
             drawGlowPath(ctx, [a, b], {
               color: '#ff6b2a',
               glowColor: withAlpha(colors.accent, 0.32),
@@ -531,15 +411,15 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
         }
 
         // In-progress rubber-band wire from the held terminal to the pointer.
-        if (st.inProgressFrom && st.pointer) {
-          const a = L[st.inProgressFrom];
+        if (stInProgressFrom && stPointer) {
+          const a = L[stInProgressFrom];
           ctx.save();
           ctx.strokeStyle = withAlpha(colors.accent, 0.55);
           ctx.lineWidth = 1.8;
           ctx.setLineDash([4, 4]);
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
-          ctx.lineTo(st.pointer.x, st.pointer.y);
+          ctx.lineTo(stPointer.x, stPointer.y);
           ctx.stroke();
           ctx.restore();
         }
@@ -547,8 +427,8 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
         // Draw terminal dots on top.
         for (const t of ALL_TERMINALS) {
           const p = L[t];
-          const isHover = st.hoverTerm === t;
-          const isHeld = st.inProgressFrom === t;
+          const isHover = stHoverTerm === t;
+          const isHeld = stInProgressFrom === t;
           const isPower = t === 'power-hot' || t === 'power-neutral';
           const isBulb = t === 'bulb-hot' || t === 'bulb-neutral';
           const isHot = t === 'power-hot' || t === 'bulb-hot';
@@ -586,26 +466,140 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
         // Footer hint.
         ctx.save();
         ctx.fillStyle = withAlpha(colors.textDim, 0.65);
-        const hint = st.inProgressFrom
-          ? `wiring from ${TERMINAL_LABEL[st.inProgressFrom]} — click another terminal to complete (or empty space to cancel)`
+        const hint = stInProgressFrom
+          ? `wiring from ${TERMINAL_LABEL[stInProgressFrom]} — click another terminal to complete (or empty space to cancel)`
           : 'click a terminal to start a wire · click a wire to delete · click a switch body to toggle';
         drawLabel(ctx, { text: hint, x: w / 2, y: h - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
         ctx.restore();
 
-        raf = requestAnimationFrame(draw);
-      }
-      raf = requestAnimationFrame(draw);
-
-      return () => {
-        cancelAnimationFrame(raf);
-        canvas.removeEventListener('mousedown', onPointerDown);
-        canvas.removeEventListener('mousemove', onPointerMove);
-        canvas.removeEventListener('mouseleave', onPointerLeave);
-        canvas.removeEventListener('touchstart', onPointerDown);
-        canvas.removeEventListener('touchmove', onPointerMove);
-      };
     },
     [handleSwitchClick, handleTerminalClick, handleWireClick],
+    (info) => {
+      const { canvas, w, h } = info;
+
+      function getXY(e: MouseEvent | TouchEvent): [number, number] {
+        const r = canvas.getBoundingClientRect();
+        const t = 'touches' in e ? (e.touches[0] ?? e.changedTouches[0]) : e;
+        if (!t) return [-1, -1];
+        return [t.clientX - r.left, t.clientY - r.top];
+      }
+
+      function pickTerminal(mx: number, my: number): TerminalId | null {
+        const L = layout(w, h);
+        let best: TerminalId | null = null;
+        let bestD = 14;
+        for (const t of ALL_TERMINALS) {
+          const p = L[t];
+          const d = Math.hypot(mx - p.x, my - p.y);
+          if (d < bestD) {
+            bestD = d;
+            best = t;
+          }
+        }
+        return best;
+      }
+
+      function pickSwitch(mx: number, my: number): 's1' | 's2' | null {
+        const L = layout(w, h);
+        for (const sw of ['s1', 's2'] as const) {
+          const cx = L[`${sw}-common`].x;
+          const yMin = L[`${sw}-t1`].y - 14;
+          const yMax = L[`${sw}-common`].y + 14;
+          if (mx > cx - 30 && mx < cx + 30 && my > yMin && my < yMax) {
+            if (!pickTerminal(mx, my)) return sw;
+          }
+        }
+        return null;
+      }
+
+      function pickWire(mx: number, my: number): string | null {
+        const { wires: ws } = stateRef.current;
+        const L = layout(w, h);
+        let bestId: string | null = null;
+        let bestD = 6;
+        for (const wr of ws) {
+          const a = L[wr.from];
+          const b = L[wr.to];
+          const d = distToSeg(mx, my, a.x, a.y, b.x, b.y);
+          if (d < bestD) {
+            bestD = d;
+            bestId = wr.id;
+          }
+        }
+        return bestId;
+      }
+
+      function distToSeg(
+        px: number,
+        py: number,
+        ax: number,
+        ay: number,
+        bx: number,
+        by: number,
+      ): number {
+        const dx = bx - ax,
+          dy = by - ay;
+        const len2 = dx * dx + dy * dy;
+        if (len2 === 0) return Math.hypot(px - ax, py - ay);
+        let t = ((px - ax) * dx + (py - ay) * dy) / len2;
+        t = Math.max(0, Math.min(1, t));
+        return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
+      }
+
+      function onPointerDown(e: MouseEvent | TouchEvent) {
+        if ('touches' in e) e.preventDefault();
+        const [mx, my] = getXY(e);
+        if (mx < 0) return;
+        const term = pickTerminal(mx, my);
+        if (term) {
+          handleTerminalClick(term);
+          return;
+        }
+        const wireId = pickWire(mx, my);
+        if (wireId) {
+          handleWireClick(wireId);
+          return;
+        }
+        const sw = pickSwitch(mx, my);
+        if (sw) {
+          handleSwitchClick(sw);
+          return;
+        }
+        setInProgressFrom(null);
+      }
+
+      function onPointerMove(e: MouseEvent | TouchEvent) {
+        const [mx, my] = getXY(e);
+        if (mx < 0) return;
+        const term = pickTerminal(mx, my);
+        setHoverTerm(term);
+        setPointer({ x: mx, y: my });
+        const overWire = pickWire(mx, my);
+        const overSwitch = pickSwitch(mx, my);
+        canvas.style.cursor = term || overSwitch || overWire ? 'pointer' : 'default';
+      }
+      function onPointerLeave() {
+        setHoverTerm(null);
+        setPointer(null);
+      }
+
+      canvas.addEventListener('mousedown', onPointerDown);
+      canvas.addEventListener('mousemove', onPointerMove);
+      canvas.addEventListener('mouseleave', onPointerLeave);
+      canvas.addEventListener('touchstart', onPointerDown, { passive: false });
+      canvas.addEventListener('touchmove', onPointerMove, { passive: false });
+
+      return {
+        context: undefined,
+        cleanup: () => {
+          canvas.removeEventListener('mousedown', onPointerDown);
+          canvas.removeEventListener('mousemove', onPointerMove);
+          canvas.removeEventListener('mouseleave', onPointerLeave);
+          canvas.removeEventListener('touchstart', onPointerDown);
+          canvas.removeEventListener('touchmove', onPointerMove);
+        },
+      };
+    },
   );
 
   return (

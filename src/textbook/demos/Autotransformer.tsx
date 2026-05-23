@@ -13,12 +13,14 @@
  *
  * Caveat: no galvanic isolation. The same conductor carries both circuits.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -31,10 +33,7 @@ export function AutotransformerDemo({ figure }: Props) {
   const [Vp, setVp] = useState(240); // primary voltage (RMS-ish, just a label)
   const [Iload, setIload] = useState(10); // secondary load current, A
 
-  const stateRef = useRef({ k });
-  useEffect(() => {
-    stateRef.current = { k };
-  }, [k]);
+  const stateRef = useSimState({ k });
 
   const computed = useMemo(() => {
     const Vs = Vp * k;
@@ -54,49 +53,10 @@ export function AutotransformerDemo({ figure }: Props) {
     return { Vs, Is, Ip, Ishared, copperRatio, copperSaving, P };
   }, [k, Vp, Iload]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
-    let raf = 0;
-    let dragging = false;
-
-    function setKFromY(yPx: number) {
-      // Map y position over the winding box to k.
-      // winding box goes from coilTop to coilBot in canvas CSS px
-      const coilTop = h * 0.12;
-      const coilBot = h * 0.88;
-      const u = (yPx - coilTop) / (coilBot - coilTop);
-      const newK = Math.max(0.05, Math.min(0.95, 1 - u));
-      setK(newK);
-    }
-
-    function onPointerDown(ev: PointerEvent) {
-      const rect = canvas.getBoundingClientRect();
-      const x = ev.clientX - rect.left;
-      // Only grab if the click is in the autotransformer column (left half).
-      if (x < w * 0.05 || x > w * 0.4) return;
-      dragging = true;
-      setKFromY(ev.clientY - rect.top);
-      canvas.setPointerCapture(ev.pointerId);
-    }
-    function onPointerMove(ev: PointerEvent) {
-      if (!dragging) return;
-      const rect = canvas.getBoundingClientRect();
-      setKFromY(ev.clientY - rect.top);
-    }
-    function onPointerUp(ev: PointerEvent) {
-      dragging = false;
-      if (canvas.hasPointerCapture(ev.pointerId)) {
-        canvas.releasePointerCapture(ev.pointerId);
-      }
-    }
-    canvas.style.cursor = 'ns-resize';
-    canvas.addEventListener('pointerdown', onPointerDown);
-    canvas.addEventListener('pointermove', onPointerMove);
-    canvas.addEventListener('pointerup', onPointerUp);
-    canvas.addEventListener('pointercancel', onPointerUp);
-
-    function draw() {
-      const { k } = stateRef.current;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state) => {
+      const { k } = state;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -256,18 +216,59 @@ export function AutotransformerDemo({ figure }: Props) {
 
       // Warning ribbon
       drawLabel(ctx, { text: 'no galvanic isolation', x: coilCX, y: 6, color: colors.accent, align: 'center' });
+    },
+    [],
+    (info) => {
+      const { canvas, h, w } = info;
+      const c = { dragging: false };
 
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      canvas.removeEventListener('pointerdown', onPointerDown);
-      canvas.removeEventListener('pointermove', onPointerMove);
-      canvas.removeEventListener('pointerup', onPointerUp);
-      canvas.removeEventListener('pointercancel', onPointerUp);
-    };
-  }, []);
+      function setKFromY(yPx: number) {
+        // Map y position over the winding box to k.
+        // winding box goes from coilTop to coilBot in canvas CSS px
+        const coilTop = h * 0.12;
+        const coilBot = h * 0.88;
+        const u = (yPx - coilTop) / (coilBot - coilTop);
+        const newK = Math.max(0.05, Math.min(0.95, 1 - u));
+        setK(newK);
+      }
+
+      function onPointerDown(ev: PointerEvent) {
+        const rect = canvas.getBoundingClientRect();
+        const x = ev.clientX - rect.left;
+        // Only grab if the click is in the autotransformer column (left half).
+        if (x < w * 0.05 || x > w * 0.4) return;
+        c.dragging = true;
+        setKFromY(ev.clientY - rect.top);
+        canvas.setPointerCapture(ev.pointerId);
+      }
+      function onPointerMove(ev: PointerEvent) {
+        if (!c.dragging) return;
+        const rect = canvas.getBoundingClientRect();
+        setKFromY(ev.clientY - rect.top);
+      }
+      function onPointerUp(ev: PointerEvent) {
+        c.dragging = false;
+        if (canvas.hasPointerCapture(ev.pointerId)) {
+          canvas.releasePointerCapture(ev.pointerId);
+        }
+      }
+      canvas.style.cursor = 'ns-resize';
+      canvas.addEventListener('pointerdown', onPointerDown);
+      canvas.addEventListener('pointermove', onPointerMove);
+      canvas.addEventListener('pointerup', onPointerUp);
+      canvas.addEventListener('pointercancel', onPointerUp);
+
+      return {
+        context: c,
+        cleanup: () => {
+          canvas.removeEventListener('pointerdown', onPointerDown);
+          canvas.removeEventListener('pointermove', onPointerMove);
+          canvas.removeEventListener('pointerup', onPointerUp);
+          canvas.removeEventListener('pointercancel', onPointerUp);
+        },
+      };
+    },
+  );
 
   return (
     <Demo

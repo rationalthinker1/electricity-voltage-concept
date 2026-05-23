@@ -24,15 +24,17 @@
  *       I_L = V_oc / (R_Th + R_L) = I_N · R_N / (R_N + R_L)
  *   The two equivalents give numerically identical V_L and I_L.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useCircuitCache } from '@/lib/useCircuitCache';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -54,10 +56,7 @@ export function NortonTheveninDemo({ figure }: Props) {
   const I_L_N = (I_N * R_Th) / (R_Th + RL);
   const V_L_N = I_L_N * RL;
 
-  const stateRef = useRef({ V_oc, R_Th, I_N, RL });
-  useEffect(() => {
-    stateRef.current = { V_oc, R_Th, I_N, RL };
-  }, [V_oc, R_Th, I_N, RL]);
+  const stateRef = useSimState({ V_oc, R_Th, I_N, RL });
 
   const getStaticSchematic = useCircuitCache(
     (sw, sh, _dpr) => ({
@@ -66,45 +65,37 @@ export function NortonTheveninDemo({ figure }: Props) {
     [V_oc, R_Th, I_N, RL],
   );
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, dpr } = info;
-      let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, dpr }) => {
+      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillRect(0, 0, w, h);
 
-      function draw() {
-        ctx.fillStyle = getCanvasColors().bg;
-        ctx.fillRect(0, 0, w, h);
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
-        const off = getStaticSchematic(w, h, dpr);
-        if (off) ctx.drawImage(off, 0, 0, w, h);
+      // Per-frame overlay: panel titles (used to bake into the cache),
+      // panel-divider strokes, and the ⇌ glyphs.
+      const colW = w / 3;
 
-        // Per-frame overlay: panel titles (used to bake into the cache),
-        // panel-divider strokes, and the ⇌ glyphs.
-        const colW = w / 3;
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = getCanvasColors().textDim;
+      drawLabel(ctx, { text: 'Original network', x: colW / 2, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: 'Thévenin equivalent + load', x: colW + colW / 2, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: 'Norton equivalent + load', x: 2 * colW + colW / 2, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      ctx.restore();
+      ctx.strokeStyle = getCanvasColors().border;
+      ctx.beginPath();
+      ctx.moveTo(colW, 8);
+      ctx.lineTo(colW, h - 8);
+      ctx.moveTo(2 * colW, 8);
+      ctx.lineTo(2 * colW, h - 8);
+      ctx.stroke();
 
-        ctx.save();
-        ctx.globalAlpha = 0.85;
-        ctx.fillStyle = getCanvasColors().textDim;
-        drawLabel(ctx, { text: 'Original network', x: colW / 2, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-        drawLabel(ctx, { text: 'Thévenin equivalent + load', x: colW + colW / 2, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-        drawLabel(ctx, { text: 'Norton equivalent + load', x: 2 * colW + colW / 2, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-        ctx.restore();
-        ctx.strokeStyle = getCanvasColors().border;
-        ctx.beginPath();
-        ctx.moveTo(colW, 8);
-        ctx.lineTo(colW, h - 8);
-        ctx.moveTo(2 * colW, 8);
-        ctx.lineTo(2 * colW, h - 8);
-        ctx.stroke();
-
-        ctx.fillStyle = getCanvasColors().accent;
-        drawLabel(ctx, { text: '⇌', x: colW, y: h * 0.45, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-        drawLabel(ctx, { text: '⇌', x: 2 * colW, y: h * 0.45, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-
-        raf = requestAnimationFrame(draw);
-      }
-      raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
+      ctx.fillStyle = getCanvasColors().accent;
+      drawLabel(ctx, { text: '⇌', x: colW, y: h * 0.45, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: '⇌', x: 2 * colW, y: h * 0.45, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
     },
     [getStaticSchematic],
   );

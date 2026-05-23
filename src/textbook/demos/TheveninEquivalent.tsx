@@ -13,9 +13,9 @@
  * Both circuits driven onto the same load R_L produce identical V_load
  * and I_load — the entire point of the equivalence.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
@@ -23,6 +23,8 @@ import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtResistance } from '@/lib/formatters';
 import { useCircuitCache } from '@/lib/useCircuitCache';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -43,10 +45,7 @@ export function TheveninEquivalentDemo({ figure }: Props) {
   const Iload = Vth / (Rth + RL);
   const Vload = Iload * RL;
 
-  const stateRef = useRef({ Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload });
-  useEffect(() => {
-    stateRef.current = { Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload };
-  }, [Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload]);
+  const stateRef = useSimState({ Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload });
 
   // Static schematic backdrop — re-bakes when any slider value (and therefore
   // any component label) changes, or when the canvas resizes.
@@ -80,43 +79,35 @@ export function TheveninEquivalentDemo({ figure }: Props) {
     [Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload],
   );
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, dpr } = info;
-      let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, dpr }, state) => {
+      const st = state;
 
-      function draw() {
-        const st = stateRef.current;
+      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillRect(0, 0, w, h);
 
-        ctx.fillStyle = getCanvasColors().bg;
-        ctx.fillRect(0, 0, w, h);
+      const splitX = w / 2;
 
-        const splitX = w / 2;
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
-        const off = getStaticSchematic(w, h, dpr);
-        if (off) ctx.drawImage(off, 0, 0, w, h);
+      // Panel titles + dividing line + load-side readouts. Used to be baked
+      // into the offscreen canvas after renderCircuitToCanvas; now drawn
+      // per-frame so the cache can stay a plain CircuitSpec. The cost is a
+      // handful of ctx calls, negligible next to the cache blit it replaces.
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.beginPath();
+      ctx.moveTo(splitX, 14);
+      ctx.lineTo(splitX, h - 14);
+      ctx.stroke();
 
-        // Panel titles + dividing line + load-side readouts. Used to be baked
-        // into the offscreen canvas after renderCircuitToCanvas; now drawn
-        // per-frame so the cache can stay a plain CircuitSpec. The cost is a
-        // handful of ctx calls, negligible next to the cache blit it replaces.
-        ctx.strokeStyle = 'rgba(255,255,255,0.10)';
-        ctx.beginPath();
-        ctx.moveTo(splitX, 14);
-        ctx.lineTo(splitX, h - 14);
-        ctx.stroke();
+      ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.85);
+      drawLabel(ctx, { text: 'Original network', x: splitX / 2, y: 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: 'Thévenin equivalent', x: splitX + splitX / 2, y: 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
-        ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.85);
-        drawLabel(ctx, { text: 'Original network', x: splitX / 2, y: 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-        drawLabel(ctx, { text: 'Thévenin equivalent', x: splitX + splitX / 2, y: 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-
-        drawLoadReadouts(ctx, 0, 22, splitX, h - 22, st);
-        drawLoadReadouts(ctx, splitX, 22, splitX, h - 22, st);
-
-        raf = requestAnimationFrame(draw);
-      }
-      raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
+      drawLoadReadouts(ctx, 0, 22, splitX, h - 22, st);
+      drawLoadReadouts(ctx, splitX, 22, splitX, h - 22, st);
     },
     [getStaticSchematic],
   );

@@ -8,9 +8,11 @@
  *
  * The right pane is a live plot of V_C vs time, with a vertical marker at t = τ.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
@@ -35,32 +37,19 @@ export function RCTransientDemo({ figure }: Props) {
   const C = Cuf * 1e-6;
   const tau = R * C;
 
-  const stateRef = useRef({
-    R,
-    C,
-    mode,
-    Vc: 0,
-    lastT: performance.now(),
-    trace: [] as Array<{ t: number; v: number }>,
-    simT: 0,
-  });
+  const stateRef = useSimState({ R, C, mode });
+  const simRef = useRef({ Vc: 0, trace: [] as Array<{ t: number; v: number }> });
+
+  // Reset the integrator when the mode changes.
+  const [resetTick, setResetTick] = useState(0);
   useEffect(() => {
-    stateRef.current.R = R;
-    stateRef.current.C = C;
-  }, [R, C]);
-  useEffect(() => {
-    // Reset clock + trace on mode change
-    stateRef.current.mode = mode;
-    stateRef.current.simT = 0;
-    stateRef.current.trace = [];
-    if (mode === 'open') {
-      // hold current Vc
-    }
+    simRef.current.trace = [];
+    setResetTick((t) => t + 1);
   }, [mode]);
 
   const [VcDisplay, setVcDisplay] = useState(0);
   useEffect(() => {
-    const id = window.setInterval(() => setVcDisplay(stateRef.current.Vc), 80);
+    const id = window.setInterval(() => setVcDisplay(simRef.current.Vc), 80);
     return () => window.clearInterval(id);
   }, []);
 
@@ -135,37 +124,26 @@ export function RCTransientDemo({ figure }: Props) {
     [mode, R],
   );
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, dpr } = info;
-      let raf = 0;
-      stateRef.current.lastT = performance.now();
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, dpr }, state, dt, simTime) => {
+      const { R, C, mode } = state;
 
-      function draw() {
-        const st = stateRef.current;
-        const now = performance.now();
-        let dt = (now - st.lastT) / 1000;
-        st.lastT = now;
-        if (dt > 0.1) dt = 0.1;
-
-        // Integrate Vc
-        const tauNow = st.R * st.C;
-        if (tauNow > 0) {
-          if (st.mode === 'charging') {
-            // dVc/dt = (V0 − Vc)/τ
-            st.Vc += (V0 - st.Vc) * (dt / tauNow);
-          } else if (st.mode === 'discharging') {
-            // dVc/dt = −Vc/τ
-            st.Vc -= st.Vc * (dt / tauNow);
-          }
+      // Integrate Vc
+      const tauNow = R * C;
+      if (tauNow > 0) {
+        if (mode === 'charging') {
+          simRef.current.Vc += (V0 - simRef.current.Vc) * (dt / tauNow);
+        } else if (mode === 'discharging') {
+          simRef.current.Vc -= simRef.current.Vc * (dt / tauNow);
         }
-        st.simT += dt;
-        st.trace.push({ t: st.simT, v: st.Vc });
+      }
+      simRef.current.trace.push({ t: simTime, v: simRef.current.Vc });
 
-        // Plot window: 6τ
-        const PLOT_DURATION = Math.max(6 * tauNow, 0.05);
-        const tCut = Math.max(0, st.simT - PLOT_DURATION);
-        while (st.trace.length && st.trace[0].t < tCut) st.trace.shift();
+      // Plot window: 6τ
+      const PLOT_DURATION = Math.max(6 * tauNow, 0.05);
+      const tCut = Math.max(0, simTime - PLOT_DURATION);
+      while (simRef.current.trace.length && simRef.current.trace[0].t < tCut) simRef.current.trace.shift();
 
         ctx.fillStyle = getCanvasColors().bg;
         ctx.fillRect(0, 0, w, h);
@@ -246,16 +224,16 @@ export function RCTransientDemo({ figure }: Props) {
         ctx.clip();
 
         // Dynamic overlay: capacitor plates whose colour brightens as Vc rises.
-        drawCapacitorV(ctx, capX, cy, st.Vc, V0);
+        drawCapacitorV(ctx, capX, cy, simRef.current.Vc, V0);
 
         // Dynamic overlay: animated current dots, only while mode != open and dV is meaningful.
-        const dV = st.mode === 'charging' ? V0 - st.Vc : st.mode === 'discharging' ? st.Vc : 0;
-        const I = Math.abs(dV) / Math.max(st.R, 1e-9);
-        const Iscale = Math.min(1, I / (V0 / Math.max(st.R, 1e-9)));
-        if (st.mode === 'charging' && Iscale > 0.005) {
+        const dV = mode === 'charging' ? V0 - simRef.current.Vc : mode === 'discharging' ? simRef.current.Vc : 0;
+        const I = Math.abs(dV) / Math.max(R, 1e-9);
+        const Iscale = Math.min(1, I / (V0 / Math.max(R, 1e-9)));
+        if (mode === 'charging' && Iscale > 0.005) {
           drawCurrentDotsPath(
             ctx,
-            st.simT * 60,
+            simTime * 60,
             [
               { x: batX, y: yTop },
               { x: capX, y: yTop },
@@ -265,7 +243,7 @@ export function RCTransientDemo({ figure }: Props) {
           );
           drawCurrentDotsPath(
             ctx,
-            st.simT * 60,
+            simTime * 60,
             [
               { x: capX, y: cy + 16 },
               { x: capX, y: yBot },
@@ -273,12 +251,10 @@ export function RCTransientDemo({ figure }: Props) {
             ],
             Iscale,
           );
-        } else if (st.mode === 'discharging' && Iscale > 0.005) {
-          // Discharge loops the other way — but with the switch in discharge position
-          // we model the cap as discharging through R back to its own other plate.
+        } else if (mode === 'discharging' && Iscale > 0.005) {
           drawCurrentDotsPath(
             ctx,
-            st.simT * 60,
+            simTime * 60,
             [
               { x: capX, y: cy - 16 },
               { x: capX, y: yTop },
@@ -295,7 +271,7 @@ export function RCTransientDemo({ figure }: Props) {
 
         // Dynamic overlay: live R / C / τ readout in the schematic pane.
         ctx.fillStyle = getCanvasColors().textDim;
-        drawLabel(ctx, { text: `R = ${fmtResistance(st.R)}   C = ${(st.C * 1e6).toFixed(0)} µF   τ = ${fmtTime(tauNow)}`, x: 10, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+        drawLabel(ctx, { text: `R = ${fmtResistance(R)}   C = ${(C * 1e6).toFixed(0)} µF   τ = ${fmtTime(tauNow)}`, x: 10, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
 
         ctx.restore();
 
@@ -322,10 +298,10 @@ export function RCTransientDemo({ figure }: Props) {
         ctx.setLineDash([]);
 
         // Dynamic overlay: V_C(t) trace with a soft halo (drawGlowPath avoids shadowBlur).
-        if (st.trace.length > 1) {
-          const tracePts: { x: number; y: number }[] = new Array(st.trace.length);
-          for (let i = 0; i < st.trace.length; i++) {
-            const p = st.trace[i];
+        if (simRef.current.trace.length > 1) {
+          const tracePts: { x: number; y: number }[] = new Array(simRef.current.trace.length);
+          for (let i = 0; i < simRef.current.trace.length; i++) {
+            const p = simRef.current.trace[i];
             tracePts[i] = { x: xT(p.t - tCut), y: yV(p.v) };
           }
           drawGlowPath(ctx, tracePts, {
@@ -341,16 +317,12 @@ export function RCTransientDemo({ figure }: Props) {
         ctx.fillStyle = getCanvasColors().teal;
         drawLabel(ctx, { text: `τ = ${fmtTime(tauNow)}`, x: Math.min(xTau + 4, plotX + plotW - 80), y: plotY + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
         ctx.fillStyle = getCanvasColors().textDim;
-        drawLabel(ctx, { text: `V_C = ${st.Vc.toFixed(2)} V`, x: plotX + plotW, y: 8, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+        drawLabel(ctx, { text: `V_C = ${simRef.current.Vc.toFixed(2)} V`, x: plotX + plotW, y: 8, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
         drawLabel(ctx, { text: `window: ${fmtTime(PLOT_DURATION)} (6τ)`, x: plotX + plotW / 2, y: h - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
 
         ctx.restore();
-        raf = requestAnimationFrame(draw);
-      }
-      raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
     },
-    [getStaticSchematic],
+    [resetTick],
   );
 
   return (

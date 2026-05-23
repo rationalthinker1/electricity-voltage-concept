@@ -17,12 +17,14 @@
  * Two side-by-side time plots show the AC input (small sine) and the
  * inverted, amplified output around the Q-point.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -60,20 +62,13 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
 
   const { Ic, Vce, gm, Av } = biasPoint(V_CC, R_C, R_E, R_1, R_2);
 
-  const stateRef = useRef({ V_CC, R_C, Av, Vce, Vin_mV });
-  useEffect(() => {
-    stateRef.current = { V_CC, R_C, Av, Vce, Vin_mV };
-  }, [V_CC, R_C, Av, Vce, Vin_mV]);
+  const stateRef = useSimState({ V_CC, R_C, Av, Vce, Vin_mV });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    let t0 = 0;
-
-    function draw(ts: number) {
-      if (!t0) t0 = ts;
-      const tSec = (ts - t0) / 1000;
-      const { V_CC, Av, Vce, Vin_mV } = stateRef.current;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state, _dt, simTime) => {
+      const { V_CC, Av, Vce, Vin_mV } = state;
+      const tSec = simTime;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -156,12 +151,9 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       // legend
       drawLabel(ctx, { text: `V_in   amp = ${Vin_mV.toFixed(1)} mV   (shown ×80 for visibility)`, x: padL + 6, y: padT + 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: `V_out  amp = ${(Math.abs(Av) * Vin_mV).toFixed(1)} mV   A_v = ${Av.toFixed(0)}`, x: padL + 6, y: padT + 18, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+  );
 
   return (
     <Demo

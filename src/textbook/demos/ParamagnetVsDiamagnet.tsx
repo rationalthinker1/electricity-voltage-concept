@@ -10,10 +10,12 @@
  *
  * Live readouts: net magnetization (in arbitrary units) for each box.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
 interface Props {
@@ -27,105 +29,77 @@ interface Moment {
   omega: number;
 }
 
+interface SimCtx {
+  para: Moment[];
+  dia: Moment[];
+  lastSet: number;
+}
+
 export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
   const [B, setB] = useState(2); // 0..10 in arbitrary units
-  const stateRef = useRef({ B });
-  useEffect(() => {
-    stateRef.current = { B };
-  }, [B]);
+  const stateRef = useSimState({ B });
   const [Mpara, setMpara] = useState(0);
   const [Mdia, setMdia] = useState(0);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state, _dt, _simTime, ctx0: SimCtx) => {
+      const { B } = state;
 
-    // Two boxes side by side
-    const pad = 30;
-    const boxW = (w - 3 * pad) / 2;
-    const boxH = h - 60;
-    const boxes = [
-      { x0: pad, y0: 40, w: boxW, h: boxH, kind: 'para' as const },
-      { x0: pad * 2 + boxW, y0: 40, w: boxW, h: boxH, kind: 'dia' as const },
-    ];
+      const pad = 30;
+      const boxW = (w - 3 * pad) / 2;
+      const boxH = h - 60;
+      const boxes = [
+        { x0: pad, y0: 40, w: boxW, h: boxH, kind: 'para' as const },
+        { x0: pad * 2 + boxW, y0: 40, w: boxW, h: boxH, kind: 'dia' as const },
+      ];
 
-    // Populate each box with a grid of moments
-    const cols = 6,
-      rows = 5;
-    function build(box: (typeof boxes)[number], kind: 'para' | 'dia'): Moment[] {
-      const arr: Moment[] = [];
-      const dx = box.w / (cols + 1);
-      const dy = box.h / (rows + 1);
-      for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-          arr.push({
-            x: box.x0 + dx * (i + 1),
-            y: box.y0 + dy * (j + 1),
-            theta: kind === 'para' ? Math.random() * Math.PI * 2 : Math.PI, // dia starts opposite
-            omega: 0,
-          });
+      function update(
+        moments: Moment[],
+        targetAngle: number,
+        B: number,
+        noise: number,
+        strength: number,
+      ) {
+        let cos_sum = 0;
+        for (const m of moments) {
+          const deviation = m.theta - targetAngle;
+          const torque = -B * Math.sin(deviation) * strength + (Math.random() - 0.5) * noise;
+          m.omega = (m.omega + torque) * 0.85;
+          m.theta += m.omega;
+          cos_sum += Math.cos(m.theta);
         }
+        return cos_sum / moments.length;
       }
-      return arr;
-    }
-    const para = build(boxes[0], 'para');
-    const dia = build(boxes[1], 'dia');
 
-    function update(
-      moments: Moment[],
-      targetAngle: number,
-      B: number,
-      noise: number,
-      strength: number,
-    ) {
-      let cos_sum = 0;
-      for (const m of moments) {
-        // torque toward targetAngle scales with sin of the deviation
-        const deviation = m.theta - targetAngle;
-        const torque = -B * Math.sin(deviation) * strength + (Math.random() - 0.5) * noise;
-        m.omega = (m.omega + torque) * 0.85;
-        m.theta += m.omega;
-        cos_sum += Math.cos(m.theta);
+      function arrow(cx: number, cy: number, theta: number, len: number, color: string) {
+        const tx = Math.cos(theta) * len;
+        const ty = Math.sin(theta) * len;
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(cx - tx / 2, cy - ty / 2);
+        ctx.lineTo(cx + tx / 2, cy + ty / 2);
+        ctx.stroke();
+        const headX = cx + tx / 2;
+        const headY = cy + ty / 2;
+        const ux = Math.cos(theta),
+          uy = Math.sin(theta);
+        ctx.beginPath();
+        ctx.moveTo(headX, headY);
+        ctx.lineTo(headX - ux * 5 - uy * 3, headY - uy * 5 + ux * 3);
+        ctx.lineTo(headX - ux * 5 + uy * 3, headY - uy * 5 - ux * 3);
+        ctx.closePath();
+        ctx.fill();
       }
-      return cos_sum / moments.length;
-    }
-
-    function arrow(cx: number, cy: number, theta: number, len: number, color: string) {
-      const tx = Math.cos(theta) * len;
-      const ty = Math.sin(theta) * len;
-      ctx.strokeStyle = color;
-      ctx.fillStyle = color;
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
-      ctx.moveTo(cx - tx / 2, cy - ty / 2);
-      ctx.lineTo(cx + tx / 2, cy + ty / 2);
-      ctx.stroke();
-      // head
-      const headX = cx + tx / 2;
-      const headY = cy + ty / 2;
-      const ux = Math.cos(theta),
-        uy = Math.sin(theta);
-      ctx.beginPath();
-      ctx.moveTo(headX, headY);
-      ctx.lineTo(headX - ux * 5 - uy * 3, headY - uy * 5 + ux * 3);
-      ctx.lineTo(headX - ux * 5 + uy * 3, headY - uy * 5 - ux * 3);
-      ctx.closePath();
-      ctx.fill();
-    }
-
-    let lastSet = 0;
-
-    function draw() {
-      const { B } = stateRef.current;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Update — paramagnet aligns to angle 0 (with B); diamagnet to π (against B)
-      // Paramagnet: weaker coupling, strong thermal noise
-      const mPara = update(para, 0, B, 0.32, 0.025);
-      // Diamagnet: induced — coupling proportional to B but small; very low noise (induced moments don't fluctuate thermally the same way)
-      const mDia = update(dia, Math.PI, B, 0.04, 0.06);
+      const mPara = update(ctx0.para, 0, B, 0.32, 0.025);
+      const mDia = update(ctx0.dia, Math.PI, B, 0.04, 0.06);
 
       // Draw boxes
       for (const box of boxes) {
@@ -146,10 +120,10 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
       }
 
       // Draw moments
-      for (const m of para) {
+      for (const m of ctx0.para) {
         arrow(m.x, m.y, m.theta, 16, withAlpha(colors.accent, 0.85));
       }
-      for (const m of dia) {
+      for (const m of ctx0.dia) {
         arrow(m.x, m.y, m.theta, 11, withAlpha(colors.teal, 0.85));
       }
 
@@ -182,17 +156,50 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
 
       // Throttle React state updates
       const now = performance.now();
-      if (now - lastSet > 250) {
-        lastSet = now;
+      if (now - ctx0.lastSet > 250) {
+        ctx0.lastSet = now;
         setMpara(mPara);
         setMdia(mDia);
       }
+    },
+    [],
+    (info) => {
+      const { w, h } = info;
+      const pad = 30;
+      const boxW = (w - 3 * pad) / 2;
+      const boxH = h - 60;
+      const boxes = [
+        { x0: pad, y0: 40, w: boxW, h: boxH, kind: 'para' as const },
+        { x0: pad * 2 + boxW, y0: 40, w: boxW, h: boxH, kind: 'dia' as const },
+      ];
 
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+      const cols = 6,
+        rows = 5;
+      function build(box: (typeof boxes)[number], kind: 'para' | 'dia'): Moment[] {
+        const arr: Moment[] = [];
+        const dx = box.w / (cols + 1);
+        const dy = box.h / (rows + 1);
+        for (let i = 0; i < cols; i++) {
+          for (let j = 0; j < rows; j++) {
+            arr.push({
+              x: box.x0 + dx * (i + 1),
+              y: box.y0 + dy * (j + 1),
+              theta: kind === 'para' ? Math.random() * Math.PI * 2 : Math.PI,
+              omega: 0,
+            });
+          }
+        }
+        return arr;
+      }
+      return {
+        context: {
+          para: build(boxes[0], 'para'),
+          dia: build(boxes[1], 'dia'),
+          lastSet: 0,
+        },
+      };
+    },
+  );
 
   return (
     <Demo

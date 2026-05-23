@@ -13,9 +13,11 @@
  *   depletion width  ∝ √(V_bi − V_applied)        (V_applied < V_bi)
  *                    = pinned-narrow when V_applied ≥ V_bi (just visual)
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawLabel } from "@/lib/canvasLayout";
 
@@ -31,36 +33,12 @@ export function PNJunctionFormationDemo({ figure }: Props) {
   // Depletion width relative to zero-bias (W_0 = 1).
   const w_rel = Math.max(0.18, Math.sqrt(Math.max(0, V_BI - Vbias) / V_BI));
 
-  const stateRef = useRef({ Vbias });
-  useEffect(() => {
-    stateRef.current = { Vbias };
-  }, [Vbias]);
+  const stateRef = useSimState({ Vbias });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    // Carrier dots are stateful so they can drift on bias.
-    type Carrier = { x: number; y: number; vx: number; kind: 'e' | 'h' };
-    const carriers: Carrier[] = [];
-    const N_EACH = 36;
-    for (let i = 0; i < N_EACH; i++) {
-      carriers.push({
-        x: Math.random() * 0.45,
-        y: 0.15 + Math.random() * 0.7,
-        vx: 0,
-        kind: 'e',
-      });
-      carriers.push({
-        x: 0.55 + Math.random() * 0.45,
-        y: 0.15 + Math.random() * 0.7,
-        vx: 0,
-        kind: 'h',
-      });
-    }
-
-    function draw() {
-      const { Vbias } = stateRef.current;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state, _dt, _simTime, carriers) => {
+      const { Vbias } = state;
       const w_rel = Math.max(0.18, Math.sqrt(Math.max(0, V_BI - Vbias) / V_BI));
 
       ctx.fillStyle = colors.bg;
@@ -210,11 +188,29 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       else if (Vbias < -0.01) mode = 'reverse bias';
       drawLabel(ctx, { text: `V_applied = ${Vbias.toFixed(2)} V   ·   ${mode}   ·   V_bi = ${V_BI.toFixed(2)} V`, x: padL, y: 6 });
 
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    () => {
+      type Carrier = { x: number; y: number; vx: number; kind: 'e' | 'h' };
+      const carriers: Carrier[] = [];
+      const N_EACH = 36;
+      for (let i = 0; i < N_EACH; i++) {
+        carriers.push({
+          x: Math.random() * 0.45,
+          y: 0.15 + Math.random() * 0.7,
+          vx: 0,
+          kind: 'e',
+        });
+        carriers.push({
+          x: 0.55 + Math.random() * 0.45,
+          y: 0.15 + Math.random() * 0.7,
+          vx: 0,
+          kind: 'h',
+        });
+      }
+      return { context: carriers };
+    },
+  );
 
   return (
     <Demo

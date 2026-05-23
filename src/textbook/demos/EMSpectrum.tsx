@@ -6,9 +6,10 @@
  * energy. Preset tick marks for microwave oven, Wi-Fi, yellow light, and
  * diagnostic X-ray. Visible band rendered as a continuous HSL gradient.
  */
-import { useCallback, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { useSimLoop } from '@/lib/useSimLoop';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
@@ -18,6 +19,15 @@ import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
+}
+
+interface SimCtx {
+  padL: number;
+  padR: number;
+  padT: number;
+  padB: number;
+  plotW: number;
+  plotH: number;
 }
 
 const F_MIN = 1e3;
@@ -78,13 +88,162 @@ export function EMSpectrumDemo({ figure }: Props) {
 
   const stateRef = useSimState({ freq });
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state, _dt, _simTime, ctx0: SimCtx) => {
+      const { freq: f } = state;
+      const { padL, padR, padT, padB: _padB, plotW, plotH } = ctx0;
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, colors, canvas } = info;
-      canvasRef.current = canvas;
+      const cx = freqToX(f, padL, plotW);
+      const lam = PHYS.c / f;
+      const ep = H_PLANCK * f;
 
+      // Background
+      ctx.fillStyle = colors.canvasBg;
+      ctx.fillRect(0, 0, w, h);
+
+      // Band backgrounds
+      const bandY0 = padT + plotH * 0.45;
+      const bandH = plotH * 0.35;
+      for (const band of BANDS) {
+        const x0 = freqToX(band.f0, padL, plotW);
+        const x1 = freqToX(band.f1, padL, plotW);
+        ctx.fillStyle = colors.surface;
+        ctx.fillRect(x0, bandY0, Math.max(1, x1 - x0), bandH);
+        ctx.strokeStyle = colors.border;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x0, bandY0, Math.max(1, x1 - x0), bandH);
+
+        // Band label
+        const cxBand = (x0 + x1) / 2;
+        drawLabel(ctx, {
+          x: cxBand,
+          y: bandY0 + bandH + 14,
+          text: band.name,
+          align: 'center',
+          size: 10,
+          color: colors.textDim,
+        });
+      }
+
+      // Visible gradient
+      const vis = BANDS.find((b) => b.name === 'visible')!;
+      const visX0 = freqToX(vis.f0, padL, plotW);
+      const visX1 = freqToX(vis.f1, padL, plotW);
+      const grad = ctx.createLinearGradient(visX0, 0, visX1, 0);
+      const steps = 12;
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const ff = vis.f0 + t * (vis.f1 - vis.f0);
+        const hue = visibleHue(ff);
+        grad.addColorStop(t, `hsl(${hue.toFixed(1)}, 90%, 55%)`);
+      }
+      ctx.fillStyle = grad;
+      ctx.fillRect(visX0, bandY0, Math.max(1, visX1 - visX0), bandH);
+
+      // Main axis line
+      const axisY = padT + plotH * 0.35;
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(padL, axisY);
+      ctx.lineTo(w - padR, axisY);
+      ctx.stroke();
+
+      // Axis ticks (every decade)
+      for (let logF = Math.ceil(LOG_MIN); logF <= Math.floor(LOG_MAX); logF++) {
+        const tx = freqToX(Math.pow(10, logF), padL, plotW);
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(tx, axisY);
+        ctx.lineTo(tx, axisY + 6);
+        ctx.stroke();
+        drawLabel(ctx, {
+          x: tx,
+          y: axisY + 20,
+          text: `10^${logF}`,
+          align: 'center',
+          size: 9,
+          color: colors.textMuted,
+        });
+      }
+
+      // Preset tick marks
+      for (const p of PRESETS) {
+        const px = freqToX(p.f, padL, plotW);
+        if (px < padL || px > w - padR) continue;
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(px, axisY - 4);
+        ctx.lineTo(px, axisY + 4);
+        ctx.stroke();
+        drawLabel(ctx, {
+          x: px,
+          y: axisY - 8,
+          text: p.label,
+          align: 'center',
+          size: 8,
+          color: colors.accent,
+        });
+      }
+
+      // Cursor
+      ctx.strokeStyle = colors.text;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(cx, padT);
+      ctx.lineTo(cx, bandY0 + bandH);
+      ctx.stroke();
+
+      // Cursor dot
+      ctx.fillStyle = colors.text;
+      ctx.beginPath();
+      ctx.arc(cx, axisY, 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Readout box near cursor
+      const boxW = 148;
+      const boxH = 58;
+      let boxX = cx + 10;
+      if (boxX + boxW > w - padR) boxX = cx - boxW - 10;
+      const boxY = padT + 4;
+
+      ctx.fillStyle = colors.cardBg;
+      ctx.globalAlpha = 0.92;
+      ctx.fillRect(boxX, boxY, boxW, boxH);
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(boxX, boxY, boxW, boxH);
+
+      drawLabel(ctx, {
+        x: boxX + 8,
+        y: boxY + 16,
+        text: formatFreq(f),
+        size: 10,
+        color: colors.text,
+      });
+      drawLabel(ctx, {
+        x: boxX + 8,
+        y: boxY + 32,
+        text: `λ = ${(lam < 1e-6 ? lam * 1e9 : lam < 1 ? lam * 1e3 : lam).toFixed(1)} ${lam < 1e-6 ? 'nm' : lam < 1 ? 'mm' : 'm'}`,
+        size: 9,
+        color: colors.textDim,
+      });
+      drawLabel(ctx, {
+        x: boxX + 8,
+        y: boxY + 46,
+        text: `E = ${(ep / EV_J).toFixed(2)} eV`,
+        size: 9,
+        color: colors.textDim,
+      });
+    },
+     
+    [],
+    (info) => {
+      const { canvas, w, h } = info;
       const padL = 48;
       const padR = 24;
       const padT = 24;
@@ -129,176 +288,16 @@ export function EMSpectrumDemo({ figure }: Props) {
       canvas.addEventListener('pointerup', onPointerUp);
       canvas.addEventListener('pointercancel', onPointerUp);
 
-      let raf = 0;
-      let lastT = performance.now();
-
-      function tick(now: number) {
-        let dt = (now - lastT) / 1000;
-        lastT = now;
-        if (dt > 0.1) dt = 0.1;
-
-        const f = stateRef.current.freq;
-        const cx = freqToX(f, padL, plotW);
-        const lam = PHYS.c / f;
-        const ep = H_PLANCK * f;
-
-        // Background
-        ctx.fillStyle = colors.canvasBg;
-        ctx.fillRect(0, 0, w, h);
-
-        // Band backgrounds
-        const bandY0 = padT + plotH * 0.45;
-        const bandH = plotH * 0.35;
-        for (const band of BANDS) {
-          const x0 = freqToX(band.f0, padL, plotW);
-          const x1 = freqToX(band.f1, padL, plotW);
-          ctx.fillStyle = colors.surface;
-          ctx.fillRect(x0, bandY0, Math.max(1, x1 - x0), bandH);
-          ctx.strokeStyle = colors.border;
-          ctx.lineWidth = 1;
-          ctx.strokeRect(x0, bandY0, Math.max(1, x1 - x0), bandH);
-
-          // Band label
-          const cxBand = (x0 + x1) / 2;
-          drawLabel(ctx, {
-            x: cxBand,
-            y: bandY0 + bandH + 14,
-            text: band.name,
-            align: 'center',
-            size: 10,
-            color: colors.textDim,
-          });
-        }
-
-        // Visible gradient
-        const vis = BANDS.find((b) => b.name === 'visible')!;
-        const visX0 = freqToX(vis.f0, padL, plotW);
-        const visX1 = freqToX(vis.f1, padL, plotW);
-        const grad = ctx.createLinearGradient(visX0, 0, visX1, 0);
-        const steps = 12;
-        for (let i = 0; i <= steps; i++) {
-          const t = i / steps;
-          const ff = vis.f0 + t * (vis.f1 - vis.f0);
-          const hue = visibleHue(ff);
-          grad.addColorStop(t, `hsl(${hue.toFixed(1)}, 90%, 55%)`);
-        }
-        ctx.fillStyle = grad;
-        ctx.fillRect(visX0, bandY0, Math.max(1, visX1 - visX0), bandH);
-
-        // Main axis line
-        const axisY = padT + plotH * 0.35;
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(padL, axisY);
-        ctx.lineTo(w - padR, axisY);
-        ctx.stroke();
-
-        // Axis ticks (every decade)
-        for (let logF = Math.ceil(LOG_MIN); logF <= Math.floor(LOG_MAX); logF++) {
-          const tx = freqToX(Math.pow(10, logF), padL, plotW);
-          ctx.strokeStyle = colors.borderStrong;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(tx, axisY);
-          ctx.lineTo(tx, axisY + 6);
-          ctx.stroke();
-          drawLabel(ctx, {
-            x: tx,
-            y: axisY + 20,
-            text: `10^${logF}`,
-            align: 'center',
-            size: 9,
-            color: colors.textMuted,
-          });
-        }
-
-        // Preset tick marks
-        for (const p of PRESETS) {
-          const px = freqToX(p.f, padL, plotW);
-          if (px < padL || px > w - padR) continue;
-          ctx.strokeStyle = colors.accent;
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.moveTo(px, axisY - 4);
-          ctx.lineTo(px, axisY + 4);
-          ctx.stroke();
-          drawLabel(ctx, {
-            x: px,
-            y: axisY - 8,
-            text: p.label,
-            align: 'center',
-            size: 8,
-            color: colors.accent,
-          });
-        }
-
-        // Cursor
-        ctx.strokeStyle = colors.text;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(cx, padT);
-        ctx.lineTo(cx, bandY0 + bandH);
-        ctx.stroke();
-
-        // Cursor dot
-        ctx.fillStyle = colors.text;
-        ctx.beginPath();
-        ctx.arc(cx, axisY, 4, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Readout box near cursor
-        const boxW = 148;
-        const boxH = 58;
-        let boxX = cx + 10;
-        if (boxX + boxW > w - padR) boxX = cx - boxW - 10;
-        const boxY = padT + 4;
-
-        ctx.fillStyle = colors.cardBg;
-        ctx.globalAlpha = 0.92;
-        ctx.fillRect(boxX, boxY, boxW, boxH);
-        ctx.globalAlpha = 1;
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(boxX, boxY, boxW, boxH);
-
-        drawLabel(ctx, {
-          x: boxX + 8,
-          y: boxY + 16,
-          text: formatFreq(f),
-          size: 10,
-          color: colors.text,
-        });
-        drawLabel(ctx, {
-          x: boxX + 8,
-          y: boxY + 32,
-          text: `λ = ${(lam < 1e-6 ? lam * 1e9 : lam < 1 ? lam * 1e3 : lam).toFixed(1)} ${lam < 1e-6 ? 'nm' : lam < 1 ? 'mm' : 'm'}`,
-          size: 9,
-          color: colors.textDim,
-        });
-        drawLabel(ctx, {
-          x: boxX + 8,
-          y: boxY + 46,
-          text: `E = ${(ep / EV_J).toFixed(2)} eV`,
-          size: 9,
-          color: colors.textDim,
-        });
-
-        raf = requestAnimationFrame(tick);
-      }
-
-      raf = requestAnimationFrame(tick);
-
-      return () => {
-        cancelAnimationFrame(raf);
-        canvas.removeEventListener('pointerdown', onPointerDown);
-        canvas.removeEventListener('pointermove', onPointerMove);
-        canvas.removeEventListener('pointerup', onPointerUp);
-        canvas.removeEventListener('pointercancel', onPointerUp);
+      return {
+        context: { padL, padR, padT, padB, plotW, plotH },
+        cleanup: () => {
+          canvas.removeEventListener('pointerdown', onPointerDown);
+          canvas.removeEventListener('pointermove', onPointerMove);
+          canvas.removeEventListener('pointerup', onPointerUp);
+          canvas.removeEventListener('pointercancel', onPointerUp);
+        },
       };
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
   );
 
   const logF = Math.log10(freq);

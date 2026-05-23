@@ -22,9 +22,9 @@
  *   from I1, I2:
  *       I_R1 = I1,   I_R3 = I2,   I_R2 = I1 − I2
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
@@ -32,6 +32,8 @@ import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtCurrent } from '@/lib/formatters';
 import { useCircuitCache } from '@/lib/useCircuitCache';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -64,18 +66,7 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
   const [R3, setR3] = useState(6);
 
   const sol = solveMesh(V1, V2, R1, R2, R3);
-  const stateRef = useRef({ V1, V2, R1, R2, R3, sol, t: 0 });
-  useEffect(() => {
-    stateRef.current = {
-      ...stateRef.current,
-      V1,
-      V2,
-      R1,
-      R2,
-      R3,
-      sol,
-    };
-  }, [V1, V2, R1, R2, R3, sol.I1, sol.I2, sol.I_R1, sol.I_R2, sol.I_R3]);
+  const stateRef = useSimState({ V1, V2, R1, R2, R3, sol });
 
   const getStaticSchematic = useCircuitCache(
     (sw, sh, _dpr) => ({
@@ -84,14 +75,11 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
     [V1, V2, R1, R2, R3],
   );
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, dpr } = info;
-    let raf = 0;
-
-    function draw() {
-      const st = stateRef.current;
-      st.t += 0.016;
-      const { sol, t } = st;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, dpr }, state, _dt, simTime) => {
+      const { sol } = state;
+      const t = simTime;
 
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
@@ -149,12 +137,9 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
         sol.I2,
         t,
       );
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [getStaticSchematic],
+  );
 
   return (
     <Demo

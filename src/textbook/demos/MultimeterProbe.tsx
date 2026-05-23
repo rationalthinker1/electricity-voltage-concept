@@ -38,9 +38,11 @@
  *   R(TP4,GND) = R4           = 330 Ω
  *   R(TP4,TPx) = R4 + R(GND,TPx)
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
@@ -181,28 +183,7 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
   const [blackProbe, setBlackProbe] = useState<TPId>('TP_GND');
   const [mode, setMode] = useState<Mode>('V_DC');
 
-  // Drag state (which probe is currently being dragged, if any) and last
-  // pointer position in CSS px relative to the canvas.
-  const dragRef = useRef<{ which: 'red' | 'black' | null; x: number; y: number }>({
-    which: null,
-    x: 0,
-    y: 0,
-  });
-
-  const stateRef = useRef({
-    red: redProbe,
-    black: blackProbe,
-    mode,
-    drag: dragRef.current,
-    t: 0,
-    w: 0,
-    h: 0,
-  });
-  useEffect(() => {
-    stateRef.current.red = redProbe;
-    stateRef.current.black = blackProbe;
-    stateRef.current.mode = mode;
-  }, [redProbe, blackProbe, mode]);
+  const stateRef = useSimState({ red: redProbe, black: blackProbe, mode });
 
   // Reading
   const reading = useMemo(() => {
@@ -346,10 +327,52 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
   }, []);
 
   /* ── Drawing ─────────────────────────────────────────────────────── */
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, canvas, dpr } = info;
-      let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, dpr }, state, _dt, simTime) => {
+      const { red, black } = state;
+
+      // Background
+      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillRect(0, 0, w, h);
+
+      // Resolve node positions (only the ones used by per-frame overlays).
+      const p_bat = { x: TPS[0].x * w, y: TPS[0].y * h };
+      const p1 = { x: TPS[1].x * w, y: TPS[1].y * h };
+      const p3 = { x: TPS[3].x * w, y: TPS[3].y * h };
+      const p5 = { x: TPS[5].x * w, y: TPS[5].y * h };
+      const p_gnd = { x: TPS[7].x * w, y: TPS[7].y * h };
+
+      const off = getStatic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
+
+      // Dynamic overlay: animated current dots crawling along the main R1–R2–R3 path.
+      const Imax = I_main;
+      drawCurrentDotsPath(
+        ctx,
+        simTime,
+        [p_bat, { x: p_bat.x, y: p1.y }, p1, p3, p5, { x: p_gnd.x, y: p5.y }, p_gnd],
+        I_main / Imax,
+      );
+
+      // Dynamic overlay: the two draggable probes drawn at their current TPs.
+      const tpRed = TPS.find((t) => t.id === red)!;
+      const pRed = { x: tpRed.x * w, y: tpRed.y * h };
+      const tpBlk = TPS.find((t) => t.id === black)!;
+      const pBlk = { x: tpBlk.x * w, y: tpBlk.y * h };
+      drawProbe(ctx, pRed, '#ff3b6e', '+');
+      drawProbe(ctx, pBlk, '#5baef8', '−');
+
+      // Dynamic overlay: ribbon at the top echoing which TP each probe touches.
+      ctx.fillStyle = getCanvasColors().pink;
+      drawLabel(ctx, { text: `Red(+): ${red}`, x: w - 12, y: 10, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      ctx.fillStyle = getCanvasColors().blue;
+      drawLabel(ctx, { text: `Black(−): ${black}`, x: w - 12, y: 24, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+    },
+    [getStatic],
+    (info) => {
+      const { canvas } = info;
+      const drag = { which: null as 'red' | 'black' | null, x: 0, y: 0 };
 
       function projectTP(tp: TP, w: number, h: number) {
         return { x: tp.x * w, y: tp.y * h };
@@ -370,12 +393,10 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
             best = tp.id;
           }
         }
-        // Snap within ~30 px; otherwise no snap.
         if (bestD < 38) return best;
         return null;
       }
 
-      // Pointer handlers — operate in canvas CSS px.
       function localXY(clientX: number, clientY: number) {
         const r = canvas.getBoundingClientRect();
         return { x: clientX - r.left, y: clientY - r.top };
@@ -401,22 +422,22 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
           h = canvas.clientHeight;
         const which = pickProbeUnderPointer(x, y, w, h);
         if (which) {
-          dragRef.current.which = which;
-          dragRef.current.x = x;
-          dragRef.current.y = y;
+          drag.which = which;
+          drag.x = x;
+          drag.y = y;
           e.preventDefault();
         }
       }
       function onMove(e: MouseEvent) {
-        if (!dragRef.current.which) return;
+        if (!drag.which) return;
         const { x, y } = localXY(e.clientX, e.clientY);
-        dragRef.current.x = x;
-        dragRef.current.y = y;
+        drag.x = x;
+        drag.y = y;
         const w = canvas.clientWidth,
           h = canvas.clientHeight;
         const id = pickNearestTP(x, y, w, h);
         if (id) {
-          if (dragRef.current.which === 'red') {
+          if (drag.which === 'red') {
             if (id !== stateRef.current.red) setRedProbe(id);
           } else {
             if (id !== stateRef.current.black) setBlackProbe(id);
@@ -424,7 +445,7 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
         }
       }
       function onUp() {
-        dragRef.current.which = null;
+        drag.which = null;
       }
 
       function onTouchStart(e: TouchEvent) {
@@ -435,24 +456,24 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
           h = canvas.clientHeight;
         const which = pickProbeUnderPointer(x, y, w, h);
         if (which) {
-          dragRef.current.which = which;
-          dragRef.current.x = x;
-          dragRef.current.y = y;
+          drag.which = which;
+          drag.x = x;
+          drag.y = y;
           e.preventDefault();
         }
       }
       function onTouchMove(e: TouchEvent) {
-        if (!dragRef.current.which) return;
+        if (!drag.which) return;
         const t = e.touches[0];
         if (!t) return;
         const { x, y } = localXY(t.clientX, t.clientY);
-        dragRef.current.x = x;
-        dragRef.current.y = y;
+        drag.x = x;
+        drag.y = y;
         const w = canvas.clientWidth,
           h = canvas.clientHeight;
         const id = pickNearestTP(x, y, w, h);
         if (id) {
-          if (dragRef.current.which === 'red') {
+          if (drag.which === 'red') {
             if (id !== stateRef.current.red) setRedProbe(id);
           } else {
             if (id !== stateRef.current.black) setBlackProbe(id);
@@ -461,7 +482,7 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
         e.preventDefault();
       }
       function onTouchEnd() {
-        dragRef.current.which = null;
+        drag.which = null;
       }
 
       canvas.addEventListener('mousedown', onDown);
@@ -471,64 +492,18 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
       canvas.addEventListener('touchmove', onTouchMove, { passive: false });
       window.addEventListener('touchend', onTouchEnd);
 
-      function draw() {
-        const st = stateRef.current;
-        st.t += 0.016;
-        const w = canvas.clientWidth;
-        const h = canvas.clientHeight;
-        st.w = w;
-        st.h = h;
-
-        // Background
-        ctx.fillStyle = getCanvasColors().bg;
-        ctx.fillRect(0, 0, w, h);
-
-        // Resolve node positions (only the ones used by per-frame overlays).
-        const p_bat = projectTP(TPS[0], w, h);
-        const p1 = projectTP(TPS[1], w, h);
-        const p3 = projectTP(TPS[3], w, h);
-        const p5 = projectTP(TPS[5], w, h);
-        const p_gnd = projectTP(TPS[7], w, h);
-
-        const off = getStatic(w, h, dpr);
-        if (off) ctx.drawImage(off, 0, 0, w, h);
-
-        // Dynamic overlay: animated current dots crawling along the main R1–R2–R3 path.
-        const Imax = I_main;
-        drawCurrentDotsPath(
-          ctx,
-          st.t,
-          [p_bat, { x: p_bat.x, y: p1.y }, p1, p3, p5, { x: p_gnd.x, y: p5.y }, p_gnd],
-          I_main / Imax,
-        );
-
-        // Dynamic overlay: the two draggable probes drawn at their current TPs.
-        const pRed = tpById(st.red, w, h);
-        const pBlk = tpById(st.black, w, h);
-        drawProbe(ctx, pRed, '#ff3b6e', '+');
-        drawProbe(ctx, pBlk, '#5baef8', '−');
-
-        // Dynamic overlay: ribbon at the top echoing which TP each probe touches.
-        ctx.fillStyle = getCanvasColors().pink;
-        drawLabel(ctx, { text: `Red(+): ${st.red}`, x: w - 12, y: 10, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-        ctx.fillStyle = getCanvasColors().blue;
-        drawLabel(ctx, { text: `Black(−): ${st.black}`, x: w - 12, y: 24, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-
-        raf = requestAnimationFrame(draw);
-      }
-      raf = requestAnimationFrame(draw);
-
-      return () => {
-        cancelAnimationFrame(raf);
-        canvas.removeEventListener('mousedown', onDown);
-        window.removeEventListener('mousemove', onMove);
-        window.removeEventListener('mouseup', onUp);
-        canvas.removeEventListener('touchstart', onTouchStart);
-        canvas.removeEventListener('touchmove', onTouchMove);
-        window.removeEventListener('touchend', onTouchEnd);
+      return {
+        context: undefined,
+        cleanup: () => {
+          canvas.removeEventListener('mousedown', onDown);
+          window.removeEventListener('mousemove', onMove);
+          window.removeEventListener('mouseup', onUp);
+          canvas.removeEventListener('touchstart', onTouchStart);
+          canvas.removeEventListener('touchmove', onTouchMove);
+          window.removeEventListener('touchend', onTouchEnd);
+        },
       };
     },
-    [getStatic],
   );
 
   return (

@@ -25,15 +25,17 @@
  *   The demo lets the reader sweep Rx and watch the galvanometer needle
  *   crossing zero at the balance point.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useCircuitCache } from '@/lib/useCircuitCache';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -52,10 +54,7 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
   const RxBalance = (R2 * R3) / R1;
   const balanceErr = Math.abs(Rx - RxBalance) / RxBalance;
 
-  const stateRef = useRef({ V, R1, R2, R3, Rx, V_A, V_B, dV });
-  useEffect(() => {
-    stateRef.current = { V, R1, R2, R3, Rx, V_A, V_B, dV };
-  }, [V, R1, R2, R3, Rx, V_A, V_B, dV]);
+  const stateRef = useSimState({ V, R1, R2, R3, Rx, V_A, V_B, dV });
 
   const getStaticSchematic = useCircuitCache(
     (sw, sh, _dpr) => {
@@ -184,48 +183,40 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
     [V, R1, R2, R3, Rx],
   );
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, dpr } = info;
-      let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, dpr }, state) => {
+      const { V, V_A, V_B, dV } = state;
 
-      function draw() {
-        const { V, V_A, V_B, dV } = stateRef.current;
+      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillRect(0, 0, w, h);
 
-        ctx.fillStyle = getCanvasColors().bg;
-        ctx.fillRect(0, 0, w, h);
+      const padX = 60;
+      const xL = padX;
+      const xR = w - padX;
+      const xA = (xL + xR) * 0.42;
+      const xB = (xL + xR) * 0.42;
+      const yTop = h * 0.28;
+      const yBot = h * 0.72;
+      const yMid = (yTop + yBot) / 2;
 
-        const padX = 60;
-        const xL = padX;
-        const xR = w - padX;
-        const xA = (xL + xR) * 0.42;
-        const xB = (xL + xR) * 0.42;
-        const yTop = h * 0.28;
-        const yBot = h * 0.72;
-        const yMid = (yTop + yBot) / 2;
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
-        const off = getStaticSchematic(w, h, dpr);
-        if (off) ctx.drawImage(off, 0, 0, w, h);
+      // Dynamic overlay: galvanometer needle deflects with the live imbalance dV.
+      drawGalvanometer(ctx, xA, yMid, dV, V);
 
-        // Dynamic overlay: galvanometer needle deflects with the live imbalance dV.
-        drawGalvanometer(ctx, xA, yMid, dV, V);
+      // Dynamic overlay: live node potentials and chapter header.
+      drawLabel(ctx, { text: `A   ${V_A.toFixed(3)} V`, x: xA + 8, y: yTop - 6, color: 'rgba(255,255,255,0.85)', weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'bottom' });
+      drawLabel(ctx, { text: `B   ${V_B.toFixed(3)} V`, x: xB + 8, y: yBot + 6, color: 'rgba(255,255,255,0.85)', weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
 
-        // Dynamic overlay: live node potentials and chapter header.
-        drawLabel(ctx, { text: `A   ${V_A.toFixed(3)} V`, x: xA + 8, y: yTop - 6, color: 'rgba(255,255,255,0.85)', weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'bottom' });
-        drawLabel(ctx, { text: `B   ${V_B.toFixed(3)} V`, x: xB + 8, y: yBot + 6, color: 'rgba(255,255,255,0.85)', weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
-
-        drawLabel(ctx, {
-          x: 12,
-          y: 10,
-          text: 'Wheatstone bridge — not reducible by series/parallel rules',
-          color: withAlpha(getCanvasColors().textDim, 0.75),
-          baseline: 'top',
-        });
-
-        raf = requestAnimationFrame(draw);
-      }
-      raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
+      drawLabel(ctx, {
+        x: 12,
+        y: 10,
+        text: 'Wheatstone bridge — not reducible by series/parallel rules',
+        color: withAlpha(getCanvasColors().textDim, 0.75),
+        baseline: 'top',
+      });
     },
     [getStaticSchematic],
   );

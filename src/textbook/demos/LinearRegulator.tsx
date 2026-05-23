@@ -12,15 +12,17 @@
  * Constraint: if V_in − V_out < V_dropout (≈ 2 V for a 7805), the
  * regulator falls out of regulation.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useCanvasCache } from '@/lib/useCanvasCache';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -40,10 +42,7 @@ export function LinearRegulatorDemo({ figure }: Props) {
   const Pdiss = Pin - Pout;
   const eta = Pout / Pin;
 
-  const stateRef = useRef({ Vin, Iload, regulating, Vout, Pin, Pout, Pdiss, eta });
-  useEffect(() => {
-    stateRef.current = { Vin, Iload, regulating, Vout, Pin, Pout, Pdiss, eta };
-  }, [Vin, Iload, regulating, Vout, Pin, Pout, Pdiss, eta]);
+  const stateRef = useSimState({ Vin, Iload, regulating, Vout, Pin, Pout, Pdiss, eta });
 
   // Static layer (input bar, regulator block, headers, flow arrows, footer)
   // rebakes only when `regulating` flips (swaps the regulator block colour)
@@ -146,81 +145,72 @@ export function LinearRegulatorDemo({ figure }: Props) {
     [regulating],
   );
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, dpr } = info;
-      let raf = 0;
-      let t = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, dpr }, state, _dt, simTime) => {
+      const { Vin, Vout, Pin, Pout, Pdiss, eta } = state;
+      const t = simTime;
 
-      function draw() {
-        const { Vin, Vout, Pin, Pout, Pdiss, eta } = stateRef.current;
-        t += 1 / 60;
+      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillRect(0, 0, w, h);
 
-        ctx.fillStyle = getCanvasColors().bg;
-        ctx.fillRect(0, 0, w, h);
+      // bar geometry
+      const padL = 30,
+        padR = 30,
+        padT = 60,
+        padB = 80;
+      const barH = h - padT - padB;
+      const barW = w - padL - padR;
+      const yTop = padT;
 
-        // bar geometry
-        const padL = 30,
-          padR = 30,
-          padT = 60,
-          padB = 80;
-        const barH = h - padT - padB;
-        const barW = w - padL - padR;
-        const yTop = padT;
+      // input column (left), regulator box (middle), output column (right)
+      const inW = barW * 0.18;
+      const regW = barW * 0.3;
+      const outW = barW * 0.18;
+      const gap = (barW - inW - regW - outW) / 2;
 
-        // input column (left), regulator box (middle), output column (right)
-        const inW = barW * 0.18;
-        const regW = barW * 0.3;
-        const outW = barW * 0.18;
-        const gap = (barW - inW - regW - outW) / 2;
+      const xIn = padL;
+      const xReg = padL + inW + gap;
+      const xOut = padL + inW + gap + regW + gap;
 
-        const xIn = padL;
-        const xReg = padL + inW + gap;
-        const xOut = padL + inW + gap + regW + gap;
+      // Cache key invalidates on resize / DPR change and whenever the regulating
+      // flag flips (which swaps the regulator block fill + stroke colour).
+      const off = getStatic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
-        // Cache key invalidates on resize / DPR change and whenever the regulating
-        // flag flips (which swaps the regulator block fill + stroke colour).
-        const off = getStatic(w, h, dpr);
-        if (off) ctx.drawImage(off, 0, 0, w, h);
+      // Dynamic overlay: live P_in / Vin numbers under the input column.
+      ctx.fillStyle = getCanvasColors().text;
+      drawLabel(ctx, { text: `${Pin.toFixed(2)} W`, x: xIn + inW / 2, y: yTop - 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      ctx.fillStyle = getCanvasColors().textDim;
+      drawLabel(ctx, { text: `${Vin.toFixed(1)} V × I_load`, x: xIn + inW / 2, y: yTop + barH + 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
-        // Dynamic overlay: live P_in / Vin numbers under the input column.
-        ctx.fillStyle = getCanvasColors().text;
-        drawLabel(ctx, { text: `${Pin.toFixed(2)} W`, x: xIn + inW / 2, y: yTop - 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-        ctx.fillStyle = getCanvasColors().textDim;
-        drawLabel(ctx, { text: `${Vin.toFixed(1)} V × I_load`, x: xIn + inW / 2, y: yTop + barH + 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      // Dynamic overlay: animated heat wiggle + P_diss readout in the regulator.
+      const heatFrac = Math.min(1, Pdiss / Math.max(Pin, 0.01));
+      const wig = Math.sin(t * 5) * 3;
+      ctx.fillStyle = `rgba(255, ${107 - heatFrac * 80}, ${42 - heatFrac * 30}, ${0.4 + heatFrac * 0.5})`;
+      drawLabel(ctx, { text: `P_diss = ${Pdiss.toFixed(2)} W`, x: xReg + regW / 2, y: yTop + barH / 2 + 12 + wig, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
 
-        // Dynamic overlay: animated heat wiggle + P_diss readout in the regulator.
-        const heatFrac = Math.min(1, Pdiss / Math.max(Pin, 0.01));
-        const wig = Math.sin(t * 5) * 3;
-        ctx.fillStyle = `rgba(255, ${107 - heatFrac * 80}, ${42 - heatFrac * 30}, ${0.4 + heatFrac * 0.5})`;
-        drawLabel(ctx, { text: `P_diss = ${Pdiss.toFixed(2)} W`, x: xReg + regW / 2, y: yTop + barH / 2 + 12 + wig, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      // Dynamic overlay: output bar height = Pout / Pin fraction.
+      const outBarH = Math.max(2, barH * (Pout / Math.max(Pin, 0.01)));
+      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillRect(xOut, yTop + (barH - outBarH), outW, outBarH);
 
-        // Dynamic overlay: output bar height = Pout / Pin fraction.
-        const outBarH = Math.max(2, barH * (Pout / Math.max(Pin, 0.01)));
-        ctx.fillStyle = getCanvasColors().teal;
-        ctx.fillRect(xOut, yTop + (barH - outBarH), outW, outBarH);
+      // Dynamic overlay: live P_out / Vout numbers under the output column.
+      ctx.fillStyle = getCanvasColors().text;
+      drawLabel(ctx, { text: `${Pout.toFixed(2)} W`, x: xOut + outW / 2, y: yTop - 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      ctx.fillStyle = getCanvasColors().textDim;
+      drawLabel(ctx, { text: `${Vout.toFixed(2)} V × I_load`, x: xOut + outW / 2, y: yTop + barH + 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
-        // Dynamic overlay: live P_out / Vout numbers under the output column.
-        ctx.fillStyle = getCanvasColors().text;
-        drawLabel(ctx, { text: `${Pout.toFixed(2)} W`, x: xOut + outW / 2, y: yTop - 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-        ctx.fillStyle = getCanvasColors().textDim;
-        drawLabel(ctx, { text: `${Vout.toFixed(2)} V × I_load`, x: xOut + outW / 2, y: yTop + barH + 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-
-        // Dynamic overlay: efficiency badge.
-        drawLabel(ctx, {
-          x: w / 2,
-          y: 12,
-          text: `η = P_out / P_in = ${(eta * 100).toFixed(1)} %`,
-          color: getCanvasColors().textDim,
-          size: 11,
-          align: 'center',
-          baseline: 'top',
-        });
-
-        raf = requestAnimationFrame(draw);
-      }
-      raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
+      // Dynamic overlay: efficiency badge.
+      drawLabel(ctx, {
+        x: w / 2,
+        y: 12,
+        text: `η = P_out / P_in = ${(eta * 100).toFixed(1)} %`,
+        color: getCanvasColors().textDim,
+        size: 11,
+        align: 'center',
+        baseline: 'top',
+      });
     },
     [getStatic],
   );

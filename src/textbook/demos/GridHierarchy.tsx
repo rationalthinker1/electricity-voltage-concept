@@ -6,11 +6,13 @@
  * each step. Hover/click a stage to "select" it and read a short note in
  * the panel below.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -71,34 +73,16 @@ const STAGES: Stage[] = [
 export function GridHierarchyDemo({ figure }: Props) {
   const [selected, setSelected] = useState('gen');
 
-  const stateRef = useRef({ selected });
-  useEffect(() => {
-    stateRef.current.selected = selected;
-  }, [selected]);
+  const stateRef = useSimState({ selected });
 
   // Hit regions for canvas
   const hitsRef = useRef<{ key: string; x: number; y: number; w: number; h: number }[]>([]);
   const canvasContainerRef = useRef<HTMLDivElement>(null);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
-    let raf = 0;
-
-    function onClick(e: MouseEvent) {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      for (const hit of hitsRef.current) {
-        if (x >= hit.x && x <= hit.x + hit.w && y >= hit.y && y <= hit.y + hit.h) {
-          setSelected(hit.key);
-          break;
-        }
-      }
-    }
-    canvas.addEventListener('click', onClick);
-
-    function draw() {
-      const { selected } = stateRef.current;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state) => {
+      const { selected } = state;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -162,22 +146,33 @@ export function GridHierarchyDemo({ figure }: Props) {
         hitsRef.current.push({ key: s.key, x: bx, y: by, w: blockW, h: blockH });
       }
 
-      // raf = requestAnimationFrame(draw);  // static is fine; only redraw when selection changes
       ctx.restore();
-    }
+    },
+    [],
+    (info) => {
+      const { canvas } = info;
 
-    // Redraw whenever selection state ref changes; use rAF loop to keep simple.
-    function loop() {
-      draw();
-      raf = requestAnimationFrame(loop);
-    }
-    raf = requestAnimationFrame(loop);
+      function onClick(e: MouseEvent) {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        for (const hit of hitsRef.current) {
+          if (x >= hit.x && x <= hit.x + hit.w && y >= hit.y && y <= hit.y + hit.h) {
+            setSelected(hit.key);
+            break;
+          }
+        }
+      }
+      canvas.addEventListener('click', onClick);
 
-    return () => {
-      cancelAnimationFrame(raf);
-      canvas.removeEventListener('click', onClick);
-    };
-  }, []);
+      return {
+        context: undefined,
+        cleanup: () => {
+          canvas.removeEventListener('click', onClick);
+        },
+      };
+    },
+  );
 
   const sel = STAGES.find((s) => s.key === selected) ?? STAGES[0];
 

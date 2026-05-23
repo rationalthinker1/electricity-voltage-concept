@@ -8,11 +8,13 @@
  * Langevin function gives in the kT-limit, and it is exactly what bulk
  * polarization P is, up to a constant factor (number density × dipole moment).
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -25,38 +27,24 @@ interface Dipole {
   omega: number; // angular velocity (for inertia/smoothing)
 }
 
+interface SimCtx {
+  dipoles: Dipole[];
+  lastSet: number;
+  dx: number;
+  dy: number;
+}
+
 export function DipoleInFieldDemo({ figure }: Props) {
   // E in arbitrary units (0 .. 10). 0 means thermal-disorder only.
   const [E, setE] = useState(0);
-  const stateRef = useRef({ E });
-  useEffect(() => {
-    stateRef.current = { E };
-  }, [E]);
+  const stateRef = useSimState({ E });
   const [align, setAlign] = useState(0);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    // Build the grid of molecules
-    const cols = Math.max(8, Math.floor(w / 60));
-    const rows = Math.max(4, Math.floor(h / 60));
-    const dx = w / (cols + 1);
-    const dy = h / (rows + 1);
-    const dipoles: Dipole[] = [];
-    for (let i = 0; i < cols; i++) {
-      for (let j = 0; j < rows; j++) {
-        dipoles.push({
-          x: dx * (i + 1),
-          y: dy * (j + 1),
-          theta: Math.random() * Math.PI * 2,
-          omega: 0,
-        });
-      }
-    }
-
-    function draw() {
-      const { E } = stateRef.current;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state, _dt, _simTime, c: SimCtx) => {
+      const { E } = state;
+      const { dipoles, dx, dy } = c;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -132,24 +120,38 @@ export function DipoleInFieldDemo({ figure }: Props) {
       drawLabel(ctx, { text: `E (applied) →`, x: w - 110, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
 
       // Throttle React state updates to ~5 Hz
-      setAlignThrottled(meanCos);
-
-      raf = requestAnimationFrame(draw);
-    }
-
-    // Throttle the live readout update
-    let lastSet = 0;
-    function setAlignThrottled(v: number) {
       const now = performance.now();
-      if (now - lastSet > 200) {
-        lastSet = now;
-        setAlign(v);
+      if (now - c.lastSet > 200) {
+        c.lastSet = now;
+        setAlign(meanCos);
       }
-    }
+    },
+    [],
+    (info) => {
+      const { w, h } = info;
 
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+      // Build the grid of molecules
+      const cols = Math.max(8, Math.floor(w / 60));
+      const rows = Math.max(4, Math.floor(h / 60));
+      const dx = w / (cols + 1);
+      const dy = h / (rows + 1);
+      const dipoles: Dipole[] = [];
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          dipoles.push({
+            x: dx * (i + 1),
+            y: dy * (j + 1),
+            theta: Math.random() * Math.PI * 2,
+            omega: 0,
+          });
+        }
+      }
+
+      return {
+        context: { dipoles, lastSet: 0, dx, dy },
+      };
+    },
+  );
 
   return (
     <Demo

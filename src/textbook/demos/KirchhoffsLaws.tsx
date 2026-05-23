@@ -23,9 +23,9 @@
  *
  * Toggles overlay either KCL counts at node A or KVL drops around either loop.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
@@ -33,6 +33,8 @@ import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtCurrent } from '@/lib/formatters';
 import { useCircuitCache } from '@/lib/useCircuitCache';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -46,10 +48,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
   const [showKCL, setShowKCL] = useState(false);
   const [showKVL, setShowKVL] = useState(false);
 
-  const stateRef = useRef({ V, R1, R2, R3, showKCL, showKVL, t: 0 });
-  useEffect(() => {
-    stateRef.current = { ...stateRef.current, V, R1, R2, R3, showKCL, showKVL };
-  }, [V, R1, R2, R3, showKCL, showKVL]);
+  const stateRef = useSimState({ V, R1, R2, R3, showKCL, showKVL });
 
   const Rpar = (R2 * R3) / (R2 + R3);
   const I1 = V / (R1 + Rpar);
@@ -150,177 +149,168 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
     [V, R1, R2, R3, colors.accent],
   );
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, dpr }, state, _dt, simTime) => {
       const colors = getCanvasColors();
-      const { ctx, w, h, dpr } = info;
-      let raf = 0;
+      const { V, R1, R2, R3, showKCL, showKVL } = state;
+      const t = simTime;
 
-      function draw() {
-        const st = stateRef.current;
-        st.t += 0.016;
-        const { V, R1, R2, R3, showKCL, showKVL, t } = st;
+      const Rpar = (R2 * R3) / (R2 + R3);
+      const I1 = V / (R1 + Rpar);
+      const VAB = I1 * Rpar;
+      const I2 = VAB / R2;
+      const I3 = VAB / R3;
 
-        const Rpar = (R2 * R3) / (R2 + R3);
-        const I1 = V / (R1 + Rpar);
-        const VAB = I1 * Rpar;
-        const I2 = VAB / R2;
-        const I3 = VAB / R3;
+      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillRect(0, 0, w, h);
 
-        ctx.fillStyle = getCanvasColors().bg;
-        ctx.fillRect(0, 0, w, h);
+      const padX = 60;
+      const yTop = h / 2 - 60;
+      const yBot = h / 2 + 60;
+      const batX = padX;
+      const outX = w - padX;
+      const nodeA_x = padX + (outX - padX) * 0.55;
+      const nodeB_x = nodeA_x;
 
-        const padX = 60;
-        const yTop = h / 2 - 60;
-        const yBot = h / 2 + 60;
-        const batX = padX;
-        const outX = w - padX;
-        const nodeA_x = padX + (outX - padX) * 0.55;
-        const nodeB_x = nodeA_x;
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
-        const off = getStaticSchematic(w, h, dpr);
-        if (off) ctx.drawImage(off, 0, 0, w, h);
+      // Dynamic overlay: node identifier letters above each junction.
+      ctx.save();
+      ctx.globalAlpha = 0.8;
+      drawLabel(ctx, { text: 'A', x: nodeA_x + 6, y: yTop - 4, color: colors.text, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'bottom' });
+      drawLabel(ctx, { text: 'B', x: nodeB_x + 6, y: yBot + 6, color: colors.text, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
 
-        // Dynamic overlay: node identifier letters above each junction.
+      // Dynamic overlay: animated current dots crawling along each branch.
+      const maxI = Math.max(I1, 1e-9);
+      // I1 across the top from battery to A
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: batX, y: yTop },
+          { x: nodeA_x, y: yTop },
+        ],
+        I1 / maxI,
+      );
+      // I3 from A to right then down and across bottom back to B
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeA_x, y: yTop },
+          { x: outX, y: yTop },
+          { x: outX, y: yBot },
+          { x: nodeB_x, y: yBot },
+        ],
+        I3 / maxI,
+      );
+      // I2 down the middle from A to B
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeA_x, y: yTop },
+          { x: nodeA_x, y: yBot },
+        ],
+        I2 / maxI,
+      );
+      // I1 back along the bottom from B to battery
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeB_x, y: yBot },
+          { x: batX, y: yBot },
+        ],
+        I1 / maxI,
+      );
+
+      // Dynamic overlay: live current readouts next to each branch.
+      ctx.restore();
+      ctx.fillStyle = getCanvasColors().blue;
+      drawLabel(ctx, { text: `I₁ = ${fmtCurrent(I1)}`, x: (batX + nodeA_x) / 2, y: yTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: `I₃ = ${fmtCurrent(I3)}`, x: (nodeA_x + outX) / 2, y: yTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: `I₂ = ${fmtCurrent(I2)}`, x: nodeA_x + 26, y: h / 2, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+
+      // Dynamic overlay: KCL / KVL annotation boxes (toggled by the controls).
+      if (showKCL) {
+        // Highlight node A with a ring + show I1 = I2 + I3 box
+        ctx.strokeStyle = getCanvasColors().accent;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.arc(nodeA_x, yTop, 14, 0, Math.PI * 2);
+        ctx.stroke();
+
+        const boxX = 12;
+        const boxY = h - 64;
         ctx.save();
-        ctx.globalAlpha = 0.8;
-        drawLabel(ctx, { text: 'A', x: nodeA_x + 6, y: yTop - 4, color: colors.text, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'bottom' });
-        drawLabel(ctx, { text: 'B', x: nodeB_x + 6, y: yBot + 6, color: colors.text, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
-
-        // Dynamic overlay: animated current dots crawling along each branch.
-        const maxI = Math.max(I1, 1e-9);
-        // I1 across the top from battery to A
-        drawCurrentDotsPath(
-          ctx,
-          t,
-          [
-            { x: batX, y: yTop },
-            { x: nodeA_x, y: yTop },
-          ],
-          I1 / maxI,
-        );
-        // I3 from A to right then down and across bottom back to B
-        drawCurrentDotsPath(
-          ctx,
-          t,
-          [
-            { x: nodeA_x, y: yTop },
-            { x: outX, y: yTop },
-            { x: outX, y: yBot },
-            { x: nodeB_x, y: yBot },
-          ],
-          I3 / maxI,
-        );
-        // I2 down the middle from A to B
-        drawCurrentDotsPath(
-          ctx,
-          t,
-          [
-            { x: nodeA_x, y: yTop },
-            { x: nodeA_x, y: yBot },
-          ],
-          I2 / maxI,
-        );
-        // I1 back along the bottom from B to battery
-        drawCurrentDotsPath(
-          ctx,
-          t,
-          [
-            { x: nodeB_x, y: yBot },
-            { x: batX, y: yBot },
-          ],
-          I1 / maxI,
-        );
-
-        // Dynamic overlay: live current readouts next to each branch.
+        ctx.globalAlpha = 0.1;
+        ctx.fillStyle = colors.accent;
+        ctx.fillRect(boxX, boxY, 230, 50);
         ctx.restore();
-        ctx.fillStyle = getCanvasColors().blue;
-        drawLabel(ctx, { text: `I₁ = ${fmtCurrent(I1)}`, x: (batX + nodeA_x) / 2, y: yTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-        drawLabel(ctx, { text: `I₃ = ${fmtCurrent(I3)}`, x: (nodeA_x + outX) / 2, y: yTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-        drawLabel(ctx, { text: `I₂ = ${fmtCurrent(I2)}`, x: nodeA_x + 26, y: h / 2, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
-
-        // Dynamic overlay: KCL / KVL annotation boxes (toggled by the controls).
-        if (showKCL) {
-          // Highlight node A with a ring + show I1 = I2 + I3 box
-          ctx.strokeStyle = getCanvasColors().accent;
-          ctx.lineWidth = 1.4;
-          ctx.beginPath();
-          ctx.arc(nodeA_x, yTop, 14, 0, Math.PI * 2);
-          ctx.stroke();
-
-          const boxX = 12;
-          const boxY = h - 64;
-          ctx.save();
-          ctx.globalAlpha = 0.1;
-          ctx.fillStyle = colors.accent;
-          ctx.fillRect(boxX, boxY, 230, 50);
-          ctx.restore();
-          ctx.save();
-          ctx.globalAlpha = 0.6;
-          ctx.strokeStyle = colors.accent;
-          ctx.strokeRect(boxX, boxY, 230, 50);
-          ctx.restore();
-          ctx.fillStyle = getCanvasColors().accent;
-          drawLabel(ctx, { text: 'KCL at node A:', x: boxX + 8, y: boxY + 6, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'top' });
-          drawLabel(ctx, {
-            x: boxX + 8,
-            y: boxY + 22,
-            text: `I₁ = I₂ + I₃`,
-            color: getCanvasColors().text,
-            size: 11,
-          });
-          drawLabel(ctx, {
-            x: boxX + 8,
-            y: boxY + 36,
-            text: `${fmtCurrent(I1)} = ${fmtCurrent(I2)} + ${fmtCurrent(I3)} ✓`,
-            color: getCanvasColors().textDim,
-          });
-        }
-
-        if (showKVL) {
-          // Show both loop equations
-          const boxX = w - 270;
-          const boxY = h - 96;
-          ctx.save();
-          ctx.globalAlpha = 0.1;
-          ctx.fillStyle = colors.teal;
-          ctx.fillRect(boxX, boxY, 258, 82);
-          ctx.restore();
-          ctx.save();
-          ctx.globalAlpha = 0.6;
-          ctx.strokeStyle = colors.teal;
-          ctx.strokeRect(boxX, boxY, 258, 82);
-
-          ctx.restore();
-          ctx.fillStyle = getCanvasColors().teal;
-          drawLabel(ctx, { text: 'KVL loops (sum of drops = 0):', x: boxX + 8, y: boxY + 6, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'top' });
-          ctx.fillStyle = getCanvasColors().text;
-          drawLabel(ctx, { text: `Left:  V − I₁R₁ − I₂R₂ = 0`, x: boxX + 8, y: boxY + 22, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-          drawLabel(ctx, { text: `Right: I₂R₂ − I₃R₃ = 0`, x: boxX + 8, y: boxY + 36, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-
-          const drop1 = I1 * R1;
-          const drop2 = I2 * R2;
-          const drop3 = I3 * R3;
-          const lhsL = V - drop1 - drop2;
-          const lhsR = drop2 - drop3;
-          ctx.fillStyle = getCanvasColors().textDim;
-          drawLabel(ctx, { text: `${V.toFixed(2)} − ${drop1.toFixed(2)} − ${drop2.toFixed(2)} = ${lhsL.toFixed(3)} ✓`, x: boxX + 8, y: boxY + 52, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-          drawLabel(ctx, { text: `${drop2.toFixed(2)} − ${drop3.toFixed(2)} = ${lhsR.toFixed(3)} ✓`, x: boxX + 8, y: boxY + 66, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-        }
-
-        // Dynamic overlay: top-corner caption text.
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.strokeStyle = colors.accent;
+        ctx.strokeRect(boxX, boxY, 230, 50);
+        ctx.restore();
+        ctx.fillStyle = getCanvasColors().accent;
+        drawLabel(ctx, { text: 'KCL at node A:', x: boxX + 8, y: boxY + 6, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'top' });
         drawLabel(ctx, {
-          x: 12,
-          y: 10,
-          text: 'Two-loop network: R₁ in series with (R₂ ∥ R₃)',
-          color: getCanvasColors().textDim,
-          baseline: 'top',
+          x: boxX + 8,
+          y: boxY + 22,
+          text: `I₁ = I₂ + I₃`,
+          color: getCanvasColors().text,
+          size: 11,
         });
-
-        raf = requestAnimationFrame(draw);
+        drawLabel(ctx, {
+          x: boxX + 8,
+          y: boxY + 36,
+          text: `${fmtCurrent(I1)} = ${fmtCurrent(I2)} + ${fmtCurrent(I3)} ✓`,
+          color: getCanvasColors().textDim,
+        });
       }
-      raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
+
+      if (showKVL) {
+        // Show both loop equations
+        const boxX = w - 270;
+        const boxY = h - 96;
+        ctx.save();
+        ctx.globalAlpha = 0.1;
+        ctx.fillStyle = colors.teal;
+        ctx.fillRect(boxX, boxY, 258, 82);
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.strokeStyle = colors.teal;
+        ctx.strokeRect(boxX, boxY, 258, 82);
+
+        ctx.restore();
+        ctx.fillStyle = getCanvasColors().teal;
+        drawLabel(ctx, { text: 'KVL loops (sum of drops = 0):', x: boxX + 8, y: boxY + 6, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'top' });
+        ctx.fillStyle = getCanvasColors().text;
+        drawLabel(ctx, { text: `Left:  V − I₁R₁ − I₂R₂ = 0`, x: boxX + 8, y: boxY + 22, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+        drawLabel(ctx, { text: `Right: I₂R₂ − I₃R₃ = 0`, x: boxX + 8, y: boxY + 36, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+
+        const drop1 = I1 * R1;
+        const drop2 = I2 * R2;
+        const drop3 = I3 * R3;
+        const lhsL = V - drop1 - drop2;
+        const lhsR = drop2 - drop3;
+        ctx.fillStyle = getCanvasColors().textDim;
+        drawLabel(ctx, { text: `${V.toFixed(2)} − ${drop1.toFixed(2)} − ${drop2.toFixed(2)} = ${lhsL.toFixed(3)} ✓`, x: boxX + 8, y: boxY + 52, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+        drawLabel(ctx, { text: `${drop2.toFixed(2)} − ${drop3.toFixed(2)} = ${lhsR.toFixed(3)} ✓`, x: boxX + 8, y: boxY + 66, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      }
+
+      // Dynamic overlay: top-corner caption text.
+      drawLabel(ctx, {
+        x: 12,
+        y: 10,
+        text: 'Two-loop network: R₁ in series with (R₂ ∥ R₃)',
+        color: getCanvasColors().textDim,
+        baseline: 'top',
+      });
     },
     [getStaticSchematic],
   );

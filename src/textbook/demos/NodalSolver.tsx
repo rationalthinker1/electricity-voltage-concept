@@ -17,9 +17,9 @@
  *   For comparison we also solve the mesh system and show that the branch
  *   currents agree to numerical precision.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
@@ -27,6 +27,8 @@ import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtCurrent } from '@/lib/formatters';
 import { useCircuitCache } from '@/lib/useCircuitCache';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -66,10 +68,7 @@ export function NodalSolverDemo({ figure }: Props) {
   const nodal = solveNodal(V1, V2, R1, R2, R3);
   const mesh = solveMesh(V1, V2, R1, R2, R3);
 
-  const stateRef = useRef({ V1, V2, R1, R2, R3, nodal });
-  useEffect(() => {
-    stateRef.current = { V1, V2, R1, R2, R3, nodal };
-  }, [V1, V2, R1, R2, R3, nodal.V_A, nodal.I_R1, nodal.I_R2, nodal.I_R3]);
+  const stateRef = useSimState({ V1, V2, R1, R2, R3, nodal });
 
   // Static schematic. Re-bakes on slider change or resize.
   const getStaticSchematic = useCircuitCache(
@@ -79,54 +78,46 @@ export function NodalSolverDemo({ figure }: Props) {
     [V1, V2, R1, R2, R3],
   );
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, dpr } = info;
-      let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, dpr }, state) => {
+      const { nodal } = state;
 
-      function draw() {
-        const { nodal } = stateRef.current;
+      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillRect(0, 0, w, h);
 
-        ctx.fillStyle = getCanvasColors().bg;
-        ctx.fillRect(0, 0, w, h);
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
-        const off = getStaticSchematic(w, h, dpr);
-        if (off) ctx.drawImage(off, 0, 0, w, h);
+      // Per-frame text overlay (node labels, current readouts, KCL caption).
+      // Used to be baked into the offscreen canvas; pulled out so the cache
+      // is a plain CircuitSpec. Costs a dozen ctx calls — negligible.
+      const padX = 56;
+      const yTop = h / 2 - 70;
+      const xLeft = padX;
+      const xRight = w - padX;
+      const xMid = (xLeft + xRight) / 2;
 
-        // Per-frame text overlay (node labels, current readouts, KCL caption).
-        // Used to be baked into the offscreen canvas; pulled out so the cache
-        // is a plain CircuitSpec. Costs a dozen ctx calls — negligible.
-        const padX = 56;
-        const yTop = h / 2 - 70;
-        const xLeft = padX;
-        const xRight = w - padX;
-        const xMid = (xLeft + xRight) / 2;
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = getCanvasColors().text;
+      drawLabel(ctx, { text: `A   V_A = ${nodal.V_A.toFixed(3)} V`, x: xMid + 10, y: yTop - 6, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', baseline: 'bottom' });
+      ctx.restore();
 
-        ctx.save();
-        ctx.globalAlpha = 0.85;
-        ctx.fillStyle = getCanvasColors().text;
-        drawLabel(ctx, { text: `A   V_A = ${nodal.V_A.toFixed(3)} V`, x: xMid + 10, y: yTop - 6, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', baseline: 'bottom' });
-        ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = getCanvasColors().textDim;
+      drawLabel(ctx, { text: 'Bottom rail = reference (V = 0)', x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'KCL at A: (V₁−V_A)/R₁ + (V₂−V_A)/R₃ = V_A/R₂', x: 12, y: 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      ctx.restore();
 
-        ctx.save();
-        ctx.globalAlpha = 0.75;
-        ctx.fillStyle = getCanvasColors().textDim;
-        drawLabel(ctx, { text: 'Bottom rail = reference (V = 0)', x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-        drawLabel(ctx, { text: 'KCL at A: (V₁−V_A)/R₁ + (V₂−V_A)/R₃ = V_A/R₂', x: 12, y: 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-        ctx.restore();
-
-        ctx.save();
-        ctx.globalAlpha = 0.95;
-        ctx.fillStyle = getCanvasColors().blue;
-        drawLabel(ctx, { text: `I_R₁ = ${fmtCurrent(nodal.I_R1)}`, x: (xLeft + xMid) / 2, y: yTop - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-        drawLabel(ctx, { text: `I_R₃ = ${fmtCurrent(nodal.I_R3)}`, x: (xMid + xRight) / 2, y: yTop - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-        drawLabel(ctx, { text: `I_R₂ = ${fmtCurrent(nodal.I_R2)}`, x: xMid + 14, y: h / 2, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
-        ctx.restore();
-
-        raf = requestAnimationFrame(draw);
-      }
-      raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
+      ctx.save();
+      ctx.globalAlpha = 0.95;
+      ctx.fillStyle = getCanvasColors().blue;
+      drawLabel(ctx, { text: `I_R₁ = ${fmtCurrent(nodal.I_R1)}`, x: (xLeft + xMid) / 2, y: yTop - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: `I_R₃ = ${fmtCurrent(nodal.I_R3)}`, x: (xMid + xRight) / 2, y: yTop - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: `I_R₂ = ${fmtCurrent(nodal.I_R2)}`, x: xMid + 14, y: h / 2, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      ctx.restore();
     },
     [getStaticSchematic],
   );
