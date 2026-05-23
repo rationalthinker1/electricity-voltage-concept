@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { ExperimentalHero } from './ExperimentalHero';
 import { Hero } from './Hero';
 import { PageNav } from './PageNav';
 import { SourcesList } from './SourcesList';
@@ -12,7 +13,8 @@ interface LabShellProps {
   /** The interactive lab section (canvas + controls + readouts).
    *  Goes inside .lab > .lab-inner with the standard header. */
   labContent: ReactNode;
-  /** Sub-title for the lab header */
+  /** Sub-title for the lab header. For experimental labs the convention is
+   *  "Procedure", "Worksheet", etc. */
   labSubtitle: string;
   /** Slug-style id shown in monospace next to the header */
   labId: string;
@@ -47,7 +49,7 @@ export function LabShell({
 
   return (
     <>
-      <Hero lab={lab} />
+      {lab.kind === 'experimental' ? <ExperimentalHero lab={lab} /> : <Hero lab={lab} />}
 
       <div className="border-border py-3xl relative w-full border-t border-b bg-[linear-gradient(180deg,var(--bg)_0%,var(--bg-elevated)_100%)] before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(ellipse_at_20%_20%,rgba(255,107,42,.04)_0%,transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(108,197,194,.03)_0%,transparent_50%)] before:content-['']">
         <div className="max-w-page-lg px-3xl max-md:px-lg relative mx-auto">
