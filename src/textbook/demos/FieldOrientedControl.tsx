@@ -14,11 +14,12 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure?: string;
@@ -104,7 +105,13 @@ export function FieldOrientedControlDemo({ figure }: Props) {
         }
         ctx.stroke();
       }
-      drawLabel(ctx, { text: 'stator: i_a, i_b, i_c   (3-phase)', x: x0L + 6, y: y0 + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'stator: i_a, i_b, i_c   (3-phase)',
+        x: x0L + 6,
+        y: y0 + 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       const x0R = padL + colW + gap;
       ctx.strokeStyle = colors.border;
       ctx.strokeRect(x0R, y0, colW, plotH);
@@ -135,9 +142,31 @@ export function FieldOrientedControlDemo({ figure }: Props) {
       ctx.moveTo(x0R, yIq);
       ctx.lineTo(x0R + colW, yIq);
       ctx.stroke();
-      drawLabel(ctx, { text: 'rotor-aligned: i_d, i_q   (d-q frame)', x: x0R + 6, y: y0 + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `i_q = ${iqRef.toFixed(1)} A  (torque)`, x: x0R + colW - 6, y: yIq - 12, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: `i_d = ${idRef.toFixed(1)} A  (flux)`, x: x0R + colW - 6, y: yId + 4, color: colors.pink, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'rotor-aligned: i_d, i_q   (d-q frame)',
+        x: x0R + 6,
+        y: y0 + 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `i_q = ${iqRef.toFixed(1)} A  (torque)`,
+        x: x0R + colW - 6,
+        y: yIq - 12,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `i_d = ${idRef.toFixed(1)} A  (flux)`,
+        x: x0R + colW - 6,
+        y: yId + 4,
+        color: colors.pink,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       ctx0.t0 = t0;
     },
     [],
@@ -151,11 +180,11 @@ export function FieldOrientedControlDemo({ figure }: Props) {
       question="How does an EV inverter turn three messy AC stator currents into clean torque and flux knobs?"
       caption={
         <>
-          Clarke (3-phase → α-β) and Park (α-β → d-q, rotated by the rotor angle θ_e) transforms
-          decouple the stator current vector into <em>i_d</em> (flux-producing, kept at zero for a
-          surface PMSM) and <em>i_q</em> (torque- producing). Two PI loops control them
-          independently — exactly as if the AC machine were a brushed DC motor. Every modern EV
-          traction inverter runs this control law at roughly 10 kHz.
+          Clarke (3-phase → α-β) and Park (α-β → d-q, rotated by the rotor angle{' '}
+          <InlineMath tex="\theta_e" />) transforms decouple the stator current vector into{' '}
+          <InlineMath tex="i_d" /> (flux-producing, kept at zero for a surface PMSM) and{' '}
+          <InlineMath tex="i_q" /> (torque-producing). Two PI loops control them independently —
+          exactly as if the AC machine were a brushed DC motor.
         </>
       }
       deeperLab={{ slug: 'lorentz', label: 'See Lorentz lab' }}
@@ -183,6 +212,20 @@ export function FieldOrientedControlDemo({ figure }: Props) {
         <MiniReadout label="|I_s|" value={<Num value={computed.iMag} digits={2} />} unit="A" />
         <MiniReadout label="τ / τ_rated" value={computed.tauPU.toFixed(2)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="current vector"
+        left={
+          <InlineMath
+            tex={`|I_s| = \\sqrt{i_d^2+i_q^2} = ${computed.iMag.toFixed(2)}\\,\\text{A}`}
+          />
+        }
+        rightLabel="torque command"
+        right={
+          <InlineMath
+            tex={`\\tau/\\tau_{\\text{rated}} \\approx i_q/10 = ${computed.tauPU.toFixed(2)}`}
+          />
+        }
+      />
     </Demo>
   );
 }

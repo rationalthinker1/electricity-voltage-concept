@@ -15,12 +15,13 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { withAlpha } from '@/lib/canvasTheme';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure?: string;
@@ -93,8 +94,26 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       ctx.arc(sSx, sSy, 9, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = colors.bg;
-      drawLabel(ctx, { text: 'N', x: sFx, y: sFy, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'S', x: sSx, y: sSy, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'N',
+        x: sFx,
+        y: sFy,
+        color: colors.bg,
+        weight: 'bold',
+        font: '10px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'S',
+        x: sSx,
+        y: sSy,
+        color: colors.bg,
+        weight: 'bold',
+        font: '10px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
       const bars = 12;
       const rBar = R * 0.55;
       for (let i = 0; i < bars; i++) {
@@ -127,10 +146,36 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.75;
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'rotating stator field (dashed)', x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'squirrel-cage rotor', x: 12, y: 26, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `load = ${(load * 100).toFixed(0)}%`, x: w - 12, y: 12, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: `slip = ${(slip * 100).toFixed(2)}%`, x: w - 12, y: 26, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'rotating stator field (dashed)',
+        x: 12,
+        y: 12,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'squirrel-cage rotor',
+        x: 12,
+        y: 26,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `load = ${(load * 100).toFixed(0)}%`,
+        x: w - 12,
+        y: 12,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `slip = ${(slip * 100).toFixed(2)}%`,
+        x: w - 12,
+        y: 26,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       ctx.restore();
       ctx0.statorAng = statorAng;
       ctx0.rotorAng = rotorAng;
@@ -147,14 +192,10 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       caption={
         <>
           A balanced three-phase stator current creates a rotating magnetic field at synchronous
-          speed{' '}
-          <em>
-            n<sub>s</sub> = 120 f / p
-          </em>
-          . The rotor — a squirrel cage of shorted bars on a steel core — lags behind by the slip{' '}
-          <em>s</em>. That lag changes the flux linking each bar, induces currents in the bars, and
-          those currents react with the stator field to produce torque. No connection to the rotor;
-          no commutator. Tesla, 1888.
+          speed <InlineMath tex="n_s = 120 f/p" />. The rotor — a squirrel cage of shorted bars on a
+          steel core — lags behind by the slip <InlineMath tex="s" />. That lag changes the flux
+          linking each bar, induces currents in the bars, and those currents react with the stator
+          field to produce torque. No connection to the rotor; no commutator. Tesla, 1888.
         </>
       }
     >
@@ -186,6 +227,16 @@ export function InductionMotorSlipDemo({ figure }: Props) {
         <MiniReadout label="n_rotor" value={<Num value={computed.n} digits={0} />} unit="rpm" />
         <MiniReadout label="slip" value={(computed.s * 100).toFixed(2) + '%'} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="synchronous speed"
+        left={<InlineMath tex={`n_s = 120f/p = ${computed.n_s.toFixed(0)}\\,\\text{rpm}`} />}
+        rightLabel="slip speed"
+        right={
+          <InlineMath
+            tex={`n = n_s(1-s) = ${computed.n.toFixed(0)}\\,\\text{rpm},\\quad s = ${(computed.s * 100).toFixed(2)}\\%`}
+          />
+        }
+      />
     </Demo>
   );
 }

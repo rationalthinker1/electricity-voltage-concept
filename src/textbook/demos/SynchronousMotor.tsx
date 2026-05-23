@@ -11,11 +11,12 @@
 import { useMemo, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure?: string;
@@ -100,20 +101,60 @@ export function SynchronousMotorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(sxx, syy, 12, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: 'N', x: nx, y: ny, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'S', x: sxx, y: syy, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'N',
+        x: nx,
+        y: ny,
+        color: colors.bg,
+        weight: 'bold',
+        size: 11,
+        font: '11px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'S',
+        x: sxx,
+        y: syy,
+        color: colors.bg,
+        weight: 'bold',
+        size: 11,
+        font: '11px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
       ctx.lineCap = 'butt';
       ctx.strokeStyle = withAlpha(colors.accent, 0.55);
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(cx, cy, 30, -statorAng, -rotorAng, statorAng < rotorAng);
       ctx.stroke();
-      drawLabel(ctx, { text: 'δ', x: cx + 36, y: cy + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'δ',
+        x: cx + 36,
+        y: cy + 4,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx.fillStyle = withAlpha(colors.textDim, 0.75);
-      drawLabel(ctx, { text: 'field (dashed) = rotor (locked)', x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'field (dashed) = rotor (locked)',
+        x: 12,
+        y: 12,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       const stallWarn = Math.abs(loadAngleDeg) > 80 ? '  ← near pull-out!' : '';
       ctx.fillStyle = Math.abs(loadAngleDeg) > 80 ? colors.accent : withAlpha(colors.textDim, 0.75);
-      drawLabel(ctx, { text: `δ = ${loadAngleDeg.toFixed(0)}°${stallWarn}`, x: w - 12, y: 12, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `δ = ${loadAngleDeg.toFixed(0)}°${stallWarn}`,
+        x: w - 12,
+        y: 12,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       ctx0.statorAng = statorAng;
     },
     [],
@@ -128,9 +169,10 @@ export function SynchronousMotorDemo({ figure }: Props) {
       caption={
         <>
           A wound-rotor or permanent-magnet rotor is dragged around at exactly synchronous speed,
-          with the rotor's N pole trailing the stator's field vector by a small{' '}
-          <em>load angle δ</em>. Torque is proportional to <em>sin δ</em> — increase the load, δ
-          increases to match, but if δ exceeds 90° the rotor "slips a pole" and the machine stalls.
+          with the rotor's N pole trailing the stator's field vector by a small load angle{' '}
+          <InlineMath tex="\delta" />. Torque is proportional to <InlineMath tex="\sin\delta" /> —
+          increase the load, <InlineMath tex="\delta" /> increases to match, but if{' '}
+          <InlineMath tex="\delta > 90^\circ" /> the rotor "slips a pole" and the machine stalls.
           Used wherever you need a precise, constant speed: clocks, turntables, large industrial
           drives.
         </>
@@ -159,6 +201,14 @@ export function SynchronousMotorDemo({ figure }: Props) {
         <MiniReadout label="speed" value={<Num value={computed.n} digits={0} />} unit="rpm" />
         <MiniReadout label="τ / τ_max = sin δ" value={computed.tau.toFixed(2)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="synchronous speed"
+        left={<InlineMath tex={`n_s = 120f/p = ${computed.n.toFixed(0)}\\,\\text{rpm}`} />}
+        rightLabel="load angle"
+        right={
+          <InlineMath tex={`\\tau/\\tau_{\\max} = \\sin\\delta = ${computed.tau.toFixed(2)}`} />
+        }
+      />
     </Demo>
   );
 }

@@ -13,7 +13,8 @@ import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -62,7 +63,15 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
         ctx.lineTo(plotX + plotW, y);
         ctx.stroke();
       }
-      drawLabel(ctx, { text: 'speed →', x: plotX + plotW / 2, y: plotY + plotH + 18, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'speed →',
+        x: plotX + plotW / 2,
+        y: plotY + plotH + 18,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.translate(20, plotY + plotH / 2);
       ctx.rotate(-Math.PI / 2);
@@ -76,7 +85,14 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
       ctx.lineTo(nsX, plotY + plotH);
       ctx.stroke();
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: 'n_s', x: nsX, y: plotY - 4, color: colors.teal, align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: 'n_s',
+        x: nsX,
+        y: plotY - 4,
+        color: colors.teal,
+        align: 'center',
+        baseline: 'bottom',
+      });
       const mapX = (nFrac: number) => plotX + nFrac * plotW;
       const mapY = (tFrac: number) => plotY + plotH - tFrac * plotH;
       let legendY = plotY + 8;
@@ -174,13 +190,10 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
         <>
           DC brushed motors: torque falls linearly with speed (stalls hardest at zero, free-runs at
           no load). Induction: peak near synchronous speed, sharp roll-off below it. Synchronous: a
-          vertical line at{' '}
-          <em>
-            n<sub>s</sub>
-          </em>
-          ; speed doesn't change with load, period. Stepper: a roughly flat region followed by a
-          sharp drop above the pull-out frequency. Pick the curve that intersects your load's
-          mechanical impedance at the operating point you want.
+          vertical line at <InlineMath tex="n_s" />; speed doesn't change with load, period.
+          Stepper: a roughly flat region followed by a sharp drop above the pull-out frequency. Pick
+          the curve that intersects your load's mechanical impedance at the operating point you
+          want.
         </>
       }
     >
@@ -191,6 +204,12 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
         <MiniToggle label="synchronous" checked={showSync} onChange={setShowSync} />
         <MiniToggle label="stepper" checked={showStep} onChange={setShowStep} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="DC model"
+        left={<InlineMath tex="\tau(n) = \tau_0(1-n/n_0)" />}
+        rightLabel="induction model"
+        right={<InlineMath tex="\tau(s) \approx \frac{2\tau_{\max}}{s/s_m+s_m/s}" />}
+      />
     </Demo>
   );
 }

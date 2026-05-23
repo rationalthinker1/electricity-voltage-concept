@@ -16,7 +16,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -260,6 +261,33 @@ export function ExcitationControlDemo({ figure }: Props) {
           </>
         )}
       </DemoControls>
+      <EquationStrip
+        leftLabel={loaded ? 'Reactive power at the terminal' : 'No-load EMF'}
+        left={
+          loaded ? (
+            <InlineMath
+              tex={`Q = \\dfrac{|V| \\cdot |E_f|}{X_s}\\cos\\delta - \\dfrac{|V|^2}{X_s}`}
+            />
+          ) : (
+            <InlineMath tex={`|E_f| = k_f \\cdot I_{\\text{field}}`} />
+          )
+        }
+        rightLabel="with current state"
+        right={
+          loaded ? (
+            <InlineMath
+              tex={
+                `Q = \\dfrac{(1.0)(${computed.Ef.toFixed(2)})}{${X_S.toFixed(1)}}\\cos(${computed.deltaDeg.toFixed(1)}^{\\circ})` +
+                ` - \\dfrac{1.0^2}{${X_S.toFixed(1)}} \\approx ${computed.Q.toFixed(2)}\\ \\text{pu}`
+              }
+            />
+          ) : (
+            <InlineMath
+              tex={`|E_f| = (${K_F.toFixed(1)})(${iField.toFixed(2)}) = ${computed.Ef.toFixed(2)}\\ \\text{pu}`}
+            />
+          )
+        }
+      />
     </Demo>
   );
 }

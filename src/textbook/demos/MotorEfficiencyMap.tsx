@@ -14,7 +14,8 @@
 import { useMemo, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -148,7 +149,15 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
       ctx.moveTo(opX, opY - 12);
       ctx.lineTo(opX, opY + 12);
       ctx.stroke();
-      drawLabel(ctx, { text: 'speed (per unit) →', x: padL + plotW / 2, y: padT + plotH + 18, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'speed (per unit) →',
+        x: padL + plotW / 2,
+        y: padT + plotH + 18,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.translate(16, padT + plotH / 2);
       ctx.rotate(-Math.PI / 2);
@@ -183,10 +192,38 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       ctx.font = '10px "JetBrains Mono", monospace';
-      drawLabel(ctx, { text: 'η = 0.95', x: cbX + cbW + 4, y: padT + 2, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: '0.80', x: cbX + cbW + 4, y: padT + cbH * 0.4, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: '0.60', x: cbX + cbW + 4, y: padT + cbH * 0.75, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: '0.40', x: cbX + cbW + 4, y: padT + cbH - 2, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'η = 0.95',
+        x: cbX + cbW + 4,
+        y: padT + 2,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0.80',
+        x: cbX + cbW + 4,
+        y: padT + cbH * 0.4,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0.60',
+        x: cbX + cbW + 4,
+        y: padT + cbH * 0.75,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0.40',
+        x: cbX + cbW + 4,
+        y: padT + cbH - 2,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       drawLabel(ctx, {
         x: padL + 6,
         y: padT + 4,
@@ -247,6 +284,20 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
         />
         <MiniReadout label="η at op-point" value={<Num value={computed.eta} digits={3} />} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="output"
+        left={
+          <InlineMath
+            tex={`P_{\\text{out}} = \\tau\\omega = ${(tauOp * omegaOp).toFixed(3)}\\,\\text{pu}`}
+          />
+        }
+        rightLabel="efficiency"
+        right={
+          <InlineMath
+            tex={`\\eta = P_{\\text{out}}/(P_{\\text{out}}+P_{\\text{loss}}) = ${computed.eta.toFixed(3)}`}
+          />
+        }
+      />
     </Demo>
   );
 }

@@ -14,11 +14,12 @@
 import { useMemo, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure?: string;
@@ -140,9 +141,29 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
 
       // Axis labels
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'I → V/R', x: padL - 6, y: yI(V_SUPPLY / R_WIND), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: padL - 6, y: yI(0), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: 'E_back → V', x: padL + plotW + 6, y: yE(V_SUPPLY), font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'I → V/R',
+        x: padL - 6,
+        y: yI(V_SUPPLY / R_WIND),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0',
+        x: padL - 6,
+        y: yI(0),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'E_back → V',
+        x: padL + plotW + 6,
+        y: yE(V_SUPPLY),
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
 
       // Legend
       const legX = padL + 8;
@@ -160,7 +181,13 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       // Time axis
       ctx.save();
       ctx.globalAlpha = 0.65;
-      drawLabel(ctx, { text: 'time →', x: padL + plotW / 2, y: padT + plotH + 6, align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'time →',
+        x: padL + plotW / 2,
+        y: padT + plotH + 6,
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.restore();
     },
     [restartTick],
@@ -174,11 +201,14 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       question="Why does a stalled motor pull several times its rated current — and what stops it from doing that once running?"
       caption={
         <>
-          Brushed DC motor with V = 12 V, R = 1 Ω, k_e = 0.05 V·s/rad. At <em>t</em> = 0 the rotor
-          is stationary and the full 12 V drops across the winding, so I = V/R = 12 A — the inrush.
-          As the rotor accelerates, back-EMF rises (E = k_e ω); the net voltage across R falls;
-          current collapses to its small running value, just enough to balance load torque. Increase
-          the load and steady-state current rises again.
+          Brushed DC motor with <InlineMath tex="V = 12\,\text{V}" />,{' '}
+          <InlineMath tex="R = 1\,\Omega" />, and <InlineMath tex="k_e = 0.05\,\text{V·s/rad}" />.
+          At <InlineMath tex="t = 0" /> the rotor is stationary and the full 12 V drops across the
+          winding, so <InlineMath tex="I = V/R = 12\,\text{A}" /> — the inrush. As the rotor
+          accelerates, back-EMF rises (<InlineMath tex="E = k_e\omega" />
+          ); the net voltage across <InlineMath tex="R" /> falls; current collapses to its small
+          running value, just enough to balance load torque. Increase the load and steady-state
+          current rises again.
         </>
       }
     >
@@ -222,6 +252,20 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
           restart
         </button>
       </DemoControls>
+      <EquationStrip
+        leftLabel="back-EMF"
+        left={
+          <InlineMath
+            tex={`E_{\\text{back}} = k_e\\omega = ${computed.backEMFss.toFixed(2)}\\,\\text{V}`}
+          />
+        }
+        rightLabel="running current"
+        right={
+          <InlineMath
+            tex={`I = (V - E_{\\text{back}})/R = ${computed.Iss.toFixed(2)}\\,\\text{A}`}
+          />
+        }
+      />
     </Demo>
   );
 }

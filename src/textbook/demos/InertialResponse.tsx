@@ -15,7 +15,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -183,6 +184,22 @@ export function InertialResponseDemo({ figure }: Props) {
         <MiniReadout label="RoCoF, H=5" value={<Num value={rocofHigh} digits={2} />} unit="Hz/s" />
         <MiniReadout label="RoCoF, H=1" value={<Num value={rocofLow} digits={2} />} unit="Hz/s" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Initial RoCoF (swing equation)"
+        left={
+          <InlineMath
+            tex={`\\dfrac{df}{dt}\\bigg|_{0} = -\\dfrac{\\Delta P}{2H}\\,f_{\\text{nom}}`}
+          />
+        }
+        rightLabel="with current ΔP"
+        right={
+          <InlineMath
+            tex={
+              `H=5\\!:\\ ${rocofHigh.toFixed(2)}\\ \\text{Hz/s} \\quad\\big|\\quad H=1\\!:\\ ${rocofLow.toFixed(2)}\\ \\text{Hz/s}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

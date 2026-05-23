@@ -11,7 +11,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -225,6 +226,19 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
         <MiniReadout label="f" value={<Num value={computed.f} digits={2} />} unit="Hz" />
         <MiniReadout label="Vᵣₘₛ" value={<Num value={computed.Vrms} digits={2} />} unit="V" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Faraday for a rotating coil"
+        left={<InlineMath tex={`\\varepsilon_{\\text{pk}} = N B A \\omega`} />}
+        rightLabel="with current values"
+        right={
+          <InlineMath
+            tex={
+              `\\varepsilon_{\\text{pk}} = (${N_TURNS})(${B_T})(${A_M2})(${omega.toFixed(0)})` +
+              ` \\approx ${computed.peak.toFixed(2)}\\ \\text{V}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

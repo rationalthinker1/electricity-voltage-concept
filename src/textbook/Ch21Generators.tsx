@@ -36,7 +36,7 @@ export default function Ch21Generators() {
         Lake Mead; the water falls roughly 180 metres of hydraulic head through penstocks the
         diameter of a city bus into the bottom of the canyon, where seventeen rotating machines —
         each about the size of a two-storey house — turn that gravitational potential energy into
-        on the order of two gigawatts of electrical output that lights kitchens hundreds of
+        up to about two gigawatts of installed electrical capacity that lights kitchens hundreds of
         kilometres away
         <Cite id="grainger-power-systems-2003" in={SOURCES} />. Every one of those seventeen
         machines is the same device you met in the motors chapter (the brushed DC motor, the
@@ -46,12 +46,11 @@ export default function Ch21Generators() {
       <p className="mb-prose-3">
         Michael Faraday discovered this in 1831 by sliding a bar magnet through a coil of wire and
         watching a galvanometer needle twitch
-        <Cite id="faraday-1832" in={SOURCES} />. That experiment was published the year Lincoln was
-        22. From it descends the entire global electric-power industry: every dam, every wind
-        turbine, every gas turbine, every nuclear plant, every car alternator, every emergency
-        genset, every wireless-phone charging pad. This chapter walks up that ladder, starting from
-        a single rotating coil and ending at the continental grid that keeps your refrigerator
-        running.
+        <Cite id="faraday-1832" in={SOURCES} />. From that experiment descends the entire global
+        electric-power industry: every dam, every wind turbine, every gas turbine, every nuclear
+        plant, every car alternator, every emergency genset, every wireless-phone charging pad. This
+        chapter walks up that ladder, starting from a single rotating coil and ending at the
+        continental grid that keeps your refrigerator running.
       </p>
 
       <h2 className="chapter-h2">Run a motor backwards</h2>
@@ -145,7 +144,7 @@ export default function Ch21Generators() {
       </p>
 
       <TryIt
-        tag="Try 17.1"
+        tag="Try 21.1"
         question={
           <>
             A coil with <strong className="text-text font-medium">N = 100</strong> turns and area{' '}
@@ -225,13 +224,13 @@ export default function Ch21Generators() {
         Capacities range over four orders of magnitude in the same basic topology. A pole-mounted
         diesel genset for a construction trailer might be 30 kW. A gas-turbine peaker, 50 MW. A coal
         or gas combined-cycle unit, 500 MW to 1 GW. A large nuclear unit, 1.0–1.6 GW. The
-        continental grid stitches together roughly 10 000 of these machines, each at its own
-        physical site, all turning at exactly the same electrical frequency
+        continental grid stitches together on the order of ten thousand of these machines, each at
+        its own physical site, all turning at exactly the same electrical frequency
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
 
       <TryIt
-        tag="Try 17.2"
+        tag="Try 21.2"
         question={
           <>
             A hydroelectric generator at Hoover Dam has{' '}
@@ -329,7 +328,7 @@ export default function Ch21Generators() {
       <PowerAngleDeltaDemo />
 
       <TryIt
-        tag="Try 17.3"
+        tag="Try 21.3"
         question={
           <>
             A <strong className="text-text font-medium">600 MW</strong> synchronous generator has{' '}
@@ -376,11 +375,11 @@ export default function Ch21Generators() {
           claw-pole
         </Term>{' '}
         design — typically 6 pole-pairs of interlocking sheet-steel fingers, energised by a single
-        DC field coil running between them. The stator carries three windings. Mechanical speed is
-        set by the engine via a belt: idle ≈ 750 RPM crank → ~1900 RPM alternator (2.5:1 pulley
-        ratio); highway cruise ≈ 2000 RPM crank → ~5000 RPM alternator. With 6 pole-pairs that's
-        roughly 190 Hz electrical at idle, 500 Hz at cruise
-        <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
+        DC field coil running between them. The stator carries three windings
+        <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />. Mechanical speed is set by the
+        engine via a belt with a roughly 2–3:1 step-up ratio: typical idle puts the alternator near
+        ~2000 RPM, highway cruise near ~5000 RPM. With 6 pole-pairs that lands the electrical
+        frequency in the low hundreds of Hz at idle, several hundred Hz at cruise.
       </p>
       <p className="mb-prose-3">
         Three-phase AC at hundreds of Hz isn't useful to a car, which runs all its electrical loads
@@ -395,7 +394,7 @@ export default function Ch21Generators() {
       <p className="mb-prose-3">
         The rectified output is the <em className="text-text italic">maximum</em> of the three
         phases' rectified envelopes at each instant — six humps per electrical cycle. Ripple is
-        naturally small (peak-to-valley ~14 % of peak, equivalently ~8 % of the DC average for a
+        naturally small (peak-to-valley ~13 % of peak; ripple factor ~4 % of the DC average for a
         3-phase full-wave bridge), and the lead-acid battery sitting across the bus filters
         whatever remains. The whole assembly — generator,
         rectifier bridge, regulator, brushes on the rotor's two slip rings — fits in a package the
@@ -404,7 +403,7 @@ export default function Ch21Generators() {
       </p>
 
       <TryIt
-        tag="Try 17.4"
+        tag="Try 21.4"
         question={
           <>
             A car alternator has <strong className="text-text font-medium">6 pole-pairs</strong>.
@@ -445,7 +444,8 @@ export default function Ch21Generators() {
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        Three things must match within tight tolerances at the instant of breaker close
+        Three things must match within tight tolerances at the instant of breaker close (typical
+        utility practice, with exact windows set per machine)
         <Cite id="grainger-power-systems-2003" in={SOURCES} />:
       </p>
       <ul>
@@ -465,7 +465,7 @@ export default function Ch21Generators() {
       <p className="mb-prose-3">
         Larger machines also try to match the phase rotation (A-B-C vs A-C-B). Get all four right
         and the breaker closes silently with essentially no transient. Get one of them seriously
-        wrong and the windings see a fault- level circulating current — at large machines this can
+        wrong and the windings see a fault-level circulating current — at large machines this can
         mechanically deform the stator iron or rupture the rotor coupling.
       </p>
 
@@ -512,10 +512,11 @@ export default function Ch21Generators() {
         simple- cycle gas turbines, hydroelectric units with reservoir capacity. These can ramp up
         and down on minute-to-hour timescales, and they're dispatched to follow the load curve as it
         swings from the night-time minimum to the morning and evening peaks. Above the peakers sits{' '}
-        <em className="text-text italic">spinning reserve</em>: typically 5–10 % of system capacity,
-        kept synchronised to the bus but loaded below its rating, available to ramp up in seconds
-        when an unscheduled outage drops a major generator
-        <Cite id="grainger-power-systems-2003" in={SOURCES} />.
+        <em className="text-text italic">spinning reserve</em>: an allocation sized against the
+        largest single contingency on the system (in practice on the order of a few percent of
+        peak load), kept synchronised to the bus but loaded below its rating, available to ramp up
+        in seconds when an unscheduled outage drops a major generator
+        <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
 
       <LoadFollowingDemo />
@@ -533,7 +534,7 @@ export default function Ch21Generators() {
       </p>
 
       <Pullout>
-        Every time you flip a switch, somewhere a turbine speeds up by a fraction of a microsecond.
+        Every time you flip a switch, ten thousand turbines drift by a fraction of a millihertz.
       </Pullout>
 
       <p className="mb-prose-3">
@@ -551,7 +552,7 @@ export default function Ch21Generators() {
       </p>
 
       <TryIt
-        tag="Try 17.5"
+        tag="Try 21.5"
         question={
           <>
             A grid loses a <strong className="text-text font-medium">1 GW</strong> generator
@@ -611,7 +612,7 @@ export default function Ch21Generators() {
       </p>
 
       <TryIt
-        tag="Try 17.6"
+        tag="Try 21.6"
         question={
           <>
             A grid with total rotational inertia{' '}
@@ -677,7 +678,7 @@ export default function Ch21Generators() {
         }
       >
         <CaseStudy
-          tag="Case 17.1"
+          tag="Case 21.1"
           title="Three Gorges Dam — 22.5 GW of synchronous generators"
           summary="32 main turbine-generators, 700 MW each, in two powerhouses on the Yangtze; the largest hydroelectric installation ever built."
           specs={[
@@ -726,7 +727,7 @@ export default function Ch21Generators() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 17.2"
+          tag="Case 21.2"
           title="Hoover Dam — 17 generators, ~2 GW, 60 Hz"
           summary="Mid-century American hydro: vertical-shaft Francis turbines driving 80–135 MW synchronous generators each."
           specs={[
@@ -759,9 +760,9 @@ export default function Ch21Generators() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             Hoover's role on the WECC grid is partly baseload (the run-of-river share) and partly
-            peaking and ancillary services — it can ramp from 0 to full output in roughly 10 minutes
-            and provides voltage support and spinning reserve to the Phoenix, Las Vegas, and Los
-            Angeles load centres. The whole installation illustrates a property of hydro that
+            peaking and ancillary services — its hydro units can ramp from cold to full output on
+            timescales of order minutes and provide voltage support and spinning reserve to the
+            Phoenix, Las Vegas, and Los Angeles load centres. The whole installation illustrates a property of hydro that
             thermal plants lack: nearly the entire kinetic energy of the water converts to
             electricity, with large synchronous machines hitting efficiencies in the high nineties
             and overall water-to-wire conversion typically around 0.85–0.90 for installations of
@@ -771,7 +772,7 @@ export default function Ch21Generators() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 17.3"
+          tag="Case 21.3"
           title="A 3 MW wind turbine"
           summary="A direct-drive permanent-magnet synchronous generator, output frequency varying with wind speed, connected to the grid through a back-to-back inverter."
           specs={[
@@ -806,7 +807,7 @@ export default function Ch21Generators() {
             At those speeds with that many poles, the electrical output frequency lands somewhere in
             the 10–30 Hz range, varying with wind speed. A full-power back-to-back inverter
             rectifies the variable-frequency AC to a DC link, then re-inverts it as a 50 or 60 Hz
-            grid- synchronous output
+            grid-synchronous output
             <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
@@ -824,7 +825,7 @@ export default function Ch21Generators() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 17.4"
+          tag="Case 21.4"
           title="2 MW diesel-generator at a data center"
           summary="A 16-cylinder diesel engine coupled to a 3-phase synchronous generator with an automatic transfer switch; ready in under 10 seconds when grid power drops."
           specs={[
@@ -1071,9 +1072,9 @@ export default function Ch21Generators() {
             research and deployment: grid-forming inverters (which actively set the local frequency
             rather than passively following it), synthetic-inertia algorithms in wind turbines and
             battery storage, faster protection relays, and large grid-scale battery installations
-            providing primary frequency response. Several smaller island grids (Hawaii, Tasmania)
-            already operate at &gt;50 % instantaneous inverter share regularly; the techniques
-            scale, but the regulatory and standards framework is still catching up
+            providing primary frequency response. Several smaller island grids already operate at
+            very high instantaneous inverter share regularly; the techniques scale, but the
+            regulatory and standards framework is still catching up
             <Cite id="kundur-1994-power-stability" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1098,7 +1099,7 @@ export default function Ch21Generators() {
             mechanical: the rotor's
             <em className="text-text italic"> retaining ring</em> at the end of the rotor body must
             withstand the centrifugal stress of holding the end-winding copper in place against
-            forces of order 10⁵ g at the surface. Stator-iron and copper losses set a thermal limit
+            forces of order 10⁴ g at the surface. Stator-iron and copper losses set a thermal limit
             too. Doubling the rating in one machine doubles the diameter at constant length and
             constant speed — moving the stress field into uncharted territory for forged-steel rotor
             material

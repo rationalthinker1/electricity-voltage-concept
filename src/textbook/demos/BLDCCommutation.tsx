@@ -14,7 +14,8 @@ import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -168,14 +169,45 @@ export function BLDCCommutationDemo({ figure }: Props) {
       ctx.font = 'bold 11px JetBrains Mono';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      drawLabel(ctx, { text: 'N', x: nx, y: ny, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'S', x: sxx, y: syy, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'N',
+        x: nx,
+        y: ny,
+        color: colors.bg,
+        weight: 'bold',
+        size: 11,
+        font: '11px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'S',
+        x: sxx,
+        y: syy,
+        color: colors.bg,
+        weight: 'bold',
+        size: 11,
+        font: '11px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
       ctx.lineCap = 'butt';
       ctx.save();
       ctx.globalAlpha = 0.75;
-      drawLabel(ctx, { text: `step ${idx + 1} / 6`, x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `step ${idx + 1} / 6`,
+        x: 12,
+        y: 12,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.restore();
-      drawLabel(ctx, { text: `A=${step.a > 0 ? '+' : step.a < 0 ? '−' : '·'}  B=${step.b > 0 ? '+' : step.b < 0 ? '−' : '·'}  C=${step.c > 0 ? '+' : step.c < 0 ? '−' : '·'}`, x: w - 12, y: 12, align: 'right' });
+      drawLabel(ctx, {
+        text: `A=${step.a > 0 ? '+' : step.a < 0 ? '−' : '·'}  B=${step.b > 0 ? '+' : step.b < 0 ? '−' : '·'}  C=${step.c > 0 ? '+' : step.c < 0 ? '−' : '·'}`,
+        x: w - 12,
+        y: 12,
+        align: 'right',
+      });
       ctx0.phase = phase;
       ctx0.rotorAng = rotorAng;
     },
@@ -194,7 +226,7 @@ export function BLDCCommutationDemo({ figure }: Props) {
           LOW (third floats), creating a stator field vector that snaps 60° around the bore. The
           permanent-magnet rotor chases that field with a fixed lead angle — six steps per
           electrical revolution. A 4-pole rotor turns once every two electrical revolutions, so
-          mechanical RPM = (electrical Hz / pole-pairs) × 60.
+          <InlineMath tex="\text{RPM} = (f_{\text{elec}}/p_{\text{pairs}})\,60" />.
         </>
       }
     >
@@ -212,6 +244,16 @@ export function BLDCCommutationDemo({ figure }: Props) {
         <MiniReadout label="electrical f" value={<Num value={fElec} digits={2} />} unit="Hz" />
         <MiniReadout label="RPM (4-pole rotor)" value={<Num value={rpm} digits={1} />} unit="rpm" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="electrical rate"
+        left={
+          <InlineMath
+            tex={`f_{\\text{elec}} = f_{\\text{step}}/6 = ${fElec.toFixed(2)}\\,\\text{Hz}`}
+          />
+        }
+        rightLabel="mechanical speed"
+        right={<InlineMath tex={`\\text{RPM} = 60 f_{\\text{elec}}/2 = ${rpm.toFixed(1)}`} />}
+      />
     </Demo>
   );
 }

@@ -27,16 +27,26 @@
  * Live readouts: ω_sync, mechanical RPM (60 f / p; p = 1), |B_total|, and
  * the instantaneous field angle in the x-z plane.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 import { useOrbitScene } from '@/lib/useOrbitScene';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -64,27 +74,31 @@ function coilColors() {
 // lands at a clean "1.0" of the visual arrow at full slider. Purely visual.
 const I_REF = 10;
 
+interface RotatingFieldState {
+  freq: number;
+  I0: number;
+  showContribs: boolean;
+}
+
+interface CoilInfo {
+  pos: Vec3;
+  inward: Vec3;
+  tangent: Vec3;
+  phase: number;
+  color: string;
+  label: string;
+}
+
+interface RotatingFieldContext {
+  theta: number;
+  coilInfo: CoilInfo[];
+}
+
 export function RotatingMagField3DDemo({ figure }: Props) {
   const [freq, setFreq] = useState(8); // electrical Hz (visual rate)
   const [I0, setI0] = useState(6); // current amplitude, A
   const [showContribs, setShowContribs] = useState(true);
-  const [, setTick] = useState(0);
-
-  const stateRef = useRef({
-    freq,
-    I0,
-    showContribs,
-    t: 0,
-    theta: 0,
-    bx: 0,
-    bz: 0,
-    bMag: 0,
-  });
-  useEffect(() => {
-    stateRef.current.freq = freq;
-    stateRef.current.I0 = I0;
-    stateRef.current.showContribs = showContribs;
-  }, [freq, I0, showContribs]);
+  const stateRef = useSimState({ freq, I0, showContribs });
 
   const { camRef, attach: attachOrbitScene } = useOrbitScene({
     yaw: 0.55,
@@ -100,93 +114,60 @@ export function RotatingMagField3DDemo({ figure }: Props) {
   });
   const readoutsTimer = useRef(0);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
-    const dispose = attachOrbitScene(canvas);
-    let raf = 0;
-    let lastReal = performance.now();
-
-    // Pre-compute per-coil radial unit vectors n̂_x (pointing inward from the
-    // coil face toward the bore axis). At angle α, the coil sits at (R cos α,
-    // 0, R sin α); the inward radial is (-cos α, 0, -sin α). But the field
-    // from a coil at the bore actually points along the coil's axis (radial).
-    // For positive current we define +B along the inward radial.
-    const coilInfo = COIL_ANGLES.map((alpha, i) => {
-      const cosA = Math.cos(alpha);
-      const sinA = Math.sin(alpha);
-      // Position of coil's outer face centre.
-      const pos: Vec3 = { x: STATOR_R * cosA, y: 0, z: STATOR_R * sinA };
-      // Inward radial unit (toward origin in x-z plane).
-      const inward: Vec3 = { x: -cosA, y: 0, z: -sinA };
-      // Tangent unit (for drawing the coil-bump width).
-      const tangent: Vec3 = { x: -sinA, y: 0, z: cosA };
-      return {
-        pos,
-        inward,
-        tangent,
-        phase: COIL_PHASES[i]!,
-        color: coilColors()[i]!,
-        label: COIL_LABELS[i]!,
-      };
-    });
-
-    function drawArrow3D(
-      from: Vec3,
-      to: Vec3,
-      color: string,
-      lineWidth: number,
-      cam: OrbitCamera,
-      cw: number,
-      ch: number,
-      headScale = 1,
-    ) {
-      const p0 = project(from, cam, cw, ch);
-      const p1 = project(to, cam, cw, ch);
-      if (p0.depth <= 0 || p1.depth <= 0) return;
-      ctx.strokeStyle = color;
-      ctx.fillStyle = color;
-      ctx.lineWidth = lineWidth;
-      ctx.beginPath();
-      ctx.moveTo(p0.x, p0.y);
-      ctx.lineTo(p1.x, p1.y);
-      ctx.stroke();
-      const dx = p1.x - p0.x,
-        dy = p1.y - p0.y;
-      const len = Math.hypot(dx, dy);
-      if (len < 1e-3) return;
-      const ux = dx / len,
-        uy = dy / len;
-      const headLen = Math.min(10 * headScale, len * 0.5);
-      const headW = headLen * 0.55;
-      const baseX = p1.x - ux * headLen;
-      const baseY = p1.y - uy * headLen;
-      ctx.beginPath();
-      ctx.moveTo(p1.x, p1.y);
-      ctx.lineTo(baseX - uy * headW, baseY + ux * headW);
-      ctx.lineTo(baseX + uy * headW, baseY - ux * headW);
-      ctx.closePath();
-      ctx.fill();
-    }
-
-    function draw() {
+  const setup = useSimLoop<RotatingFieldState, RotatingFieldContext>(
+    stateRef,
+    ({ ctx, w, h, colors }, st, dt, _simTime, scene) => {
       const cam = camRef.current;
-      const st = stateRef.current;
-      const now = performance.now();
-      let dt = (now - lastReal) / 1000;
-      lastReal = now;
-      if (dt > 0.1) dt = 0.1;
-      st.t += dt;
+      const coilInfo = scene.coilInfo;
+
+      function drawArrow3D(
+        from: Vec3,
+        to: Vec3,
+        color: string,
+        lineWidth: number,
+        cam: OrbitCamera,
+        cw: number,
+        ch: number,
+        headScale = 1,
+      ) {
+        const p0 = project(from, cam, cw, ch);
+        const p1 = project(to, cam, cw, ch);
+        if (p0.depth <= 0 || p1.depth <= 0) return;
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = lineWidth;
+        ctx.beginPath();
+        ctx.moveTo(p0.x, p0.y);
+        ctx.lineTo(p1.x, p1.y);
+        ctx.stroke();
+        const dx = p1.x - p0.x,
+          dy = p1.y - p0.y;
+        const len = Math.hypot(dx, dy);
+        if (len < 1e-3) return;
+        const ux = dx / len,
+          uy = dy / len;
+        const headLen = Math.min(10 * headScale, len * 0.5);
+        const headW = headLen * 0.55;
+        const baseX = p1.x - ux * headLen;
+        const baseY = p1.y - uy * headLen;
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(baseX - uy * headW, baseY + ux * headW);
+        ctx.lineTo(baseX + uy * headW, baseY - ux * headW);
+        ctx.closePath();
+        ctx.fill();
+      }
 
       // ω from electrical frequency. The visual rotation rate uses a slowdown
       // factor so the field is watchable even at 60 Hz.
       const omegaTrue = 2 * Math.PI * st.freq; // physical rad/s
       const visualOmega = omegaTrue * 0.05; // slow down 20× for visibility
-      st.theta = (st.theta + dt * visualOmega) % (2 * Math.PI);
+      scene.theta = (scene.theta + dt * visualOmega) % (2 * Math.PI);
 
       // Compute the three phase currents and their B-contributions at the
       // centre. Currents are normalised by I_REF so the resultant arrow
       // length stays bounded.
-      const currents = coilInfo.map((ci) => (st.I0 * Math.cos(st.theta + ci.phase)) / I_REF);
+      const currents = coilInfo.map((ci) => (st.I0 * Math.cos(scene.theta + ci.phase)) / I_REF);
       const contribs = coilInfo.map((ci, i) => ({
         vec: { x: ci.inward.x * currents[i]!, y: 0, z: ci.inward.z * currents[i]! } as Vec3,
         sign: currents[i]!,
@@ -201,9 +182,6 @@ export function RotatingMagField3DDemo({ figure }: Props) {
         bz += c.vec.z;
       }
       const bMag = Math.hypot(bx, bz);
-      st.bx = bx;
-      st.bz = bz;
-      st.bMag = bMag;
 
       const angleDeg = ((Math.atan2(bz, bx) * 180) / Math.PI + 360) % 360;
       const rpm = 60 * st.freq; // p = 1 ⇒ mech = elec
@@ -447,7 +425,14 @@ export function RotatingMagField3DDemo({ figure }: Props) {
         // "B" label at the tip.
         const tipLabel = project({ x: totalTo.x * 1.18, y: 0.18, z: totalTo.z * 1.18 }, cam, w, h);
         if (tipLabel.depth > 0) {
-          drawLabel(ctx, { text: 'B', x: tipLabel.x, y: tipLabel.y, color: colors.accent, font: 'italic bold 14px "STIX Two Text", serif', baseline: 'middle' });
+          drawLabel(ctx, {
+            text: 'B',
+            x: tipLabel.x,
+            y: tipLabel.y,
+            color: colors.accent,
+            font: 'italic bold 14px "STIX Two Text", serif',
+            baseline: 'middle',
+          });
         }
       }
 
@@ -455,9 +440,9 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       //         with the field at synchronous speed). ─────
       const rotorLen = 0.45;
       const rotorTo: Vec3 = {
-        x: rotorLen * Math.cos(st.theta),
+        x: rotorLen * Math.cos(scene.theta),
         y: 0,
-        z: rotorLen * Math.sin(st.theta),
+        z: rotorLen * Math.sin(scene.theta),
       };
       drawArrow3D({ x: 0, y: 0, z: 0 }, rotorTo, withAlpha(colors.text, 0.55), 2, cam, w, h, 0.7);
       // Tiny disc at the rotor's base.
@@ -470,31 +455,84 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       }
 
       // ───── HUD labels ─────
-      drawLabel(ctx, { text: `I_A = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[0]!)).toFixed(2)} A`, x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `I_A = ${(st.I0 * Math.cos(scene.theta + COIL_PHASES[0]!)).toFixed(2)} A`,
+        x: 12,
+        y: 12,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = coilColors()[0]!;
-      drawLabel(ctx, { text: `A`, x: 2, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `I_B = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[1]!)).toFixed(2)} A`, x: 12, y: 26, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `A`,
+        x: 2,
+        y: 12,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `I_B = ${(st.I0 * Math.cos(scene.theta + COIL_PHASES[1]!)).toFixed(2)} A`,
+        x: 12,
+        y: 26,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = coilColors()[1]!;
-      drawLabel(ctx, { text: `B`, x: 2, y: 26, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `I_C = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[2]!)).toFixed(2)} A`, x: 12, y: 40, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `B`,
+        x: 2,
+        y: 26,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `I_C = ${(st.I0 * Math.cos(scene.theta + COIL_PHASES[2]!)).toFixed(2)} A`,
+        x: 12,
+        y: 40,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = coilColors()[2]!;
-      drawLabel(ctx, { text: `C`, x: 2, y: 40, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `C`,
+        x: 2,
+        y: 40,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
 
       ctx.save();
       ctx.globalAlpha = 0.55;
-      drawLabel(ctx, { text: 'drag to orbit · animation slowed 20× for visibility', x: 12, y: h - 18 });
-
-      setTick((t) => (t + 1) % 1000);
-      raf = requestAnimationFrame(draw);
+      drawLabel(ctx, {
+        text: 'drag to orbit · animation slowed 20× for visibility',
+        x: 12,
+        y: h - 18,
+      });
       ctx.restore();
-    }
-
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      dispose();
-    };
-  }, []);
+    },
+    [],
+    (info) => {
+      const dispose = attachOrbitScene(info.canvas);
+      // Pre-compute per-coil radial unit vectors n̂_x, pointing inward from
+      // the coil face toward the bore axis.
+      const coilInfo = COIL_ANGLES.map((alpha, i) => {
+        const cosA = Math.cos(alpha);
+        const sinA = Math.sin(alpha);
+        const pos: Vec3 = { x: STATOR_R * cosA, y: 0, z: STATOR_R * sinA };
+        const inward: Vec3 = { x: -cosA, y: 0, z: -sinA };
+        const tangent: Vec3 = { x: -sinA, y: 0, z: cosA };
+        return {
+          pos,
+          inward,
+          tangent,
+          phase: COIL_PHASES[i]!,
+          color: coilColors()[i]!,
+          label: COIL_LABELS[i]!,
+        };
+      });
+      return { context: { theta: 0, coilInfo }, cleanup: dispose };
+    },
+  );
 
   return (
     <Demo
@@ -506,12 +544,12 @@ export function RotatingMagField3DDemo({ figure }: Props) {
           Three stator coil pairs A, B, C sit 120° apart around the bore. Feed them sinusoidal
           currents 120° apart in phase and each coil's contribution to the field at the centre — a
           vector pointing along that coil's radial axis, magnitude proportional to its instantaneous
-          current — sums to a single vector of <em>constant</em> magnitude (3/2)B<sub>0</sub>{' '}
-          rotating about the bore axis at the electrical angular speed ω. That is the rotating
-          magnetic field Tesla patented in 1888. A passive rotor at the centre feels a torque that
-          drags it along; with p = 1 pole-pair the rotor's synchronous speed in RPM is 60·f. Drag to
-          orbit; toggle "phase contributions" to see the three component vectors that build the
-          resultant.
+          current — sums to a single vector of constant magnitude <InlineMath tex="(3/2)B_0" />{' '}
+          rotating about the bore axis at the electrical angular speed <InlineMath tex="\omega" />.
+          That is the rotating magnetic field Tesla patented in 1888. A passive rotor at the centre
+          feels a torque that drags it along; with <InlineMath tex="p = 1" /> pole-pair the rotor's
+          synchronous speed in RPM is <InlineMath tex="60f" />. Drag to orbit; toggle "phase
+          contributions" to see the three component vectors that build the resultant.
         </>
       }
       deeperLab={{ slug: 'biot-savart', label: 'See full lab' }}
@@ -542,6 +580,16 @@ export function RotatingMagField3DDemo({ figure }: Props) {
         <MiniReadout label="|B| (norm.)" value={<Num value={readouts.bMag} />} />
         <MiniReadout label="∠B" value={readouts.angleDeg.toFixed(0)} unit="°" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="three-phase sum"
+        left={<InlineMath tex="\vec B(t)=\sum_x B_0\cos(\omega t+\varphi_x)\hat n_x" />}
+        rightLabel="synchronous speed"
+        right={
+          <InlineMath
+            tex={`\\omega_s = 2\\pi f = ${readouts.omega.toFixed(1)}\\,\\text{rad/s},\\quad n_s = 60f = ${readouts.rpm.toFixed(0)}\\,\\text{rpm}`}
+          />
+        }
+      />
     </Demo>
   );
 }

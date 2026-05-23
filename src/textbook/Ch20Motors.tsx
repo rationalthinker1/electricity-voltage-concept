@@ -34,55 +34,58 @@ export default function Ch20Motors() {
   return (
     <ChapterShell chapter={chapter}>
       <p className="chapter-intro">
-        Pry open a cheap cordless drill and you find a brick of copper and steel about the size of a
-        deck of cards. Apply 18 volts of lithium-ion DC across two contact strips and it converts
-        several hundred watts of electrical power
-        into mechanical torque well enough to drive a four-inch lag screw into oak. There are no
-        fluids inside, no combustion, no moving valves — just one rotating bit of iron wound with
-        copper wire, two stationary magnets, and a pair of carbon brushes the size of pencil
-        erasers. That brick is, in essence, the same machine that turns every Tesla wheel, every CNC
-        spindle, every washing-machine drum, every Roomba caster, and every electric toothbrush on
-        the planet.
+        Pry open a small cordless drill and you find a brick of copper and steel about the size of a
+        deck of cards. Apply battery DC across two contact strips and it converts electrical power
+        into mechanical torque well enough to drive a screw into wood. There are no fluids inside,
+        no combustion, no moving valves — just one rotating bit of iron wound with copper wire,
+        stationary magnets, and a pair of carbon brushes. That brick is, in essence, the same kind
+        of electromagnetic machine that turns EV wheels, CNC spindles, washing-machine drums, robot
+        casters, and electric toothbrush heads.
       </p>
       <p className="mb-prose-3">
         This chapter is about how it works. The bottom line is a single equation we already met in
         the magnetism chapter: a current in a magnetic field feels a force, and a current loop in a
-        field feels a torque. Wrap that into a rotating bundle and you get a motor. The challenge — and the
-        entire reason there are half a dozen distinct motor families rather than just one — is what
-        to do at the moment the loop has rotated 180° and the torque, left to itself, would reverse
-        and oscillate forever. Brushes, electronic switches, three-phase fields, and tooth counts
-        are five different answers to the same question.
+        field feels a torque. Wrap that into a rotating bundle and you get a motor. The challenge —
+        and the entire reason there are half a dozen distinct motor families rather than just one —
+        is what to do at the moment the loop has rotated 180° and the torque, left to itself, would
+        reverse and oscillate forever. Brushes, electronic switches, three-phase fields, and tooth
+        counts are five different answers to the same question.
       </p>
 
       <h2 className="chapter-h2">Force on a wire = torque on a coil</h2>
 
       <p className="mb-prose-3">
         The magnetism chapter wrote down the{' '}
-        <Term def="The total electromagnetic force on a point charge: F = q(E + v × B). For currents — many charges moving together — the magnetic piece becomes a force per length on the wire.">
+        <Term
+          def={
+            <>
+              The total electromagnetic force on a point charge:{' '}
+              <InlineMath tex="F = q(E + v \times B)" />. For currents — many charges moving
+              together — the magnetic piece becomes a force per length on the wire.
+            </>
+          }
+        >
           Lorentz force
         </Term>
         on a moving charge: <InlineMath id="lorentz-force" />. A current is moving charge — many of
         them, at the same drift velocity. Sum the per-charge force over a length{' '}
-        <InlineMath tex="L" /> of wire carrying current{' '}
-        <InlineMath tex="I" /> in a uniform field{' '}
+        <InlineMath tex="L" /> of wire carrying current <InlineMath tex="I" /> in a uniform field{' '}
         <InlineMath tex="B" /> and the wire itself feels
         <Cite id="feynman-II-13" in={SOURCES} />:
       </p>
       <Formula size="lg" id="force-on-wire" />
       <p className="mb-prose-3">
-        where <InlineMath tex="F" /> is the force on the wire segment
-        (in newtons), <InlineMath tex="I" /> is the current flowing
-        through it (in amperes), <InlineMath tex="L" /> is a vector
-        along the wire of length equal to the segment (in metres) pointing in the direction of
-        conventional current, and <InlineMath tex="B" /> is the
+        where <InlineMath tex="F" /> is the force on the wire segment (in newtons),{' '}
+        <InlineMath tex="I" /> is the current flowing through it (in amperes),{' '}
+        <InlineMath tex="L" /> is a vector along the wire of length equal to the segment (in metres)
+        pointing in the direction of conventional current, and <InlineMath tex="B" /> is the
         magnetic field at the wire's location (in tesla).
       </p>
       <p className="mb-prose-3">
-        Bend the wire into a closed rectangular loop of <InlineMath tex="N" />{' '}
-        turns and area <InlineMath tex="A" />, place it in{' '}
-        <InlineMath tex="B" />, and the two long sides experience
-        equal-and-opposite forces displaced from the loop's central axis. Those forces don't cancel
-        — they form a couple. The resulting{' '}
+        Bend the wire into a closed rectangular loop of <InlineMath tex="N" /> turns and area{' '}
+        <InlineMath tex="A" />, place it in <InlineMath tex="B" />, and the two long sides
+        experience equal-and-opposite forces displaced from the loop's central axis. Those forces
+        don't cancel — they form a couple. The resulting{' '}
         <Term def="The rotational analog of force. Torque about an axis is force times the perpendicular distance from the axis. SI unit: N·m.">
           torque
         </Term>{' '}
@@ -91,30 +94,26 @@ export default function Ch20Motors() {
       </p>
       <Formula tex="\tau = N I A B \sin\theta" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\tau" /> is the magnitude of the torque on
-        the loop (in N·m),
-        <InlineMath tex="N" /> is the number of turns in the coil
-        (dimensionless integer),
-        <InlineMath tex="I" /> is the current in the coil (in
-        amperes), <InlineMath tex="A" /> is the area enclosed by one
-        turn (in m²), <InlineMath tex="B" /> is the magnetic field
-        magnitude (in tesla), and <InlineMath tex="\theta" /> is the angle
-        between the loop's surface normal and the field (in radians). Maximum torque when the loop's
-        plane is parallel to <InlineMath tex="B" /> (θ = 90°); zero
-        when the plane is perpendicular (θ = 0). That single formula is every electric motor in one
-        line. Everything that follows is engineering: how to keep θ in the region where{' '}
-        <InlineMath tex="\sin(\theta)" /> is positive, so the torque drives the rotor
-        forward instead of bouncing back and forth across one position.
+        where <InlineMath tex="\tau" /> is the magnitude of the torque on the loop (in N·m),
+        <InlineMath tex="N" /> is the number of turns in the coil (dimensionless integer),
+        <InlineMath tex="I" /> is the current in the coil (in amperes), <InlineMath tex="A" /> is
+        the area enclosed by one turn (in m²), <InlineMath tex="B" /> is the magnetic field
+        magnitude (in tesla), and <InlineMath tex="\theta" /> is the angle between the loop's
+        surface normal and the field (in radians). Maximum torque when the loop's plane is parallel
+        to <InlineMath tex="B" /> (θ = 90°); zero when the plane is perpendicular (θ = 0). That
+        single formula is every electric motor in one line. Everything that follows is engineering:
+        how to keep θ in the region where <InlineMath tex="\sin(\theta)" /> is positive, so the
+        torque drives the rotor forward instead of bouncing back and forth across one position.
       </p>
 
       <TryIt
         tag="Try 20.1"
         question={
           <>
-            A rectangular coil has <InlineMath tex="N = 100" /> turns,
-            area <InlineMath tex="A = 30\,\text{cm}^{2}" />, sits in a field of{' '}
-            <InlineMath tex="B = 0.3\,\text{T}" />, and carries{' '}
-            <InlineMath tex="I = 2\,\text{A}" />. What is the maximum torque?
+            A rectangular coil has <InlineMath tex="N = 100" /> turns, area{' '}
+            <InlineMath tex="A = 30\,\text{cm}^{2}" />, sits in a field of{' '}
+            <InlineMath tex="B = 0.3\,\text{T}" />, and carries <InlineMath tex="I = 2\,\text{A}" />
+            . What is the maximum torque?
           </>
         }
         hint={
@@ -126,8 +125,8 @@ export default function Ch20Motors() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              Convert A = 30 cm² = 3×10⁻³ m². Maximum torque is at{' '}
-              <InlineMath tex="\sin\theta = 1" />:
+              Convert <InlineMath tex="A = 30\,\text{cm}^{2} = 3\times 10^{-3}\,\text{m}^{2}" />.
+              Maximum torque is at <InlineMath tex="\sin\theta = 1" />:
             </p>
             <Formula tex="\tau_{\max} = N I A B = (100)(2)(3\times 10^{-3})(0.3)" />
             <Formula tex="\tau_{\max} = 0.18\ \text{N·m}" />
@@ -139,6 +138,8 @@ export default function Ch20Motors() {
           </>
         }
       />
+
+      <BrushedDCMotorDemo />
 
       <h2 className="chapter-h2">The brushed DC motor</h2>
 
@@ -158,18 +159,24 @@ export default function Ch20Motors() {
         </Term>
         against the rings from outside the spinning rotor. Every half-rotation, the brushes break
         contact with one segment and make contact with the other, reversing the direction of current
-        in the coil. The trigonometry flips with it: <InlineMath tex="\sin(\theta)" />{' '}
-        reverses sign, the current reverses sign, the product stays positive. Net torque always
-        drives the rotor forward
+        in the coil. The trigonometry flips with it: <InlineMath tex="\sin(\theta)" /> reverses
+        sign, the current reverses sign, the product stays positive. Net torque always drives the
+        rotor forward
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
-
-      <BrushedDCMotorDemo />
 
       <p className="mb-prose-3">
         That's the brushed DC motor in one paragraph. It runs directly off a DC supply, the rotor
         naturally spins up until its{' '}
-        <Term def="The voltage a spinning motor produces as a generator (E = NBAω in a coil rotating in B). Subtracts from the supply voltage; at rated speed it equals the supply minus an IR drop.">
+        <Term
+          def={
+            <>
+              The voltage a spinning motor produces as a generator. In a simple coil rotating in a
+              field, <InlineMath tex="E = NBA\omega" />. Subtracts from the supply voltage; at rated
+              speed it equals the supply minus an IR drop.
+            </>
+          }
+        >
           back-EMF
         </Term>{' '}
         nearly equals the supply voltage, and the steady-state current is set by whatever residual
@@ -177,13 +184,11 @@ export default function Ch20Motors() {
         PWM switch. No special drive electronics required.
       </p>
       <p className="mb-prose-3">
-        The brushes are also where it goes wrong. They wear out — typically tens to hundreds of
-        hours of cumulative running time. They spark (commutation across a small inductive gap
-        produces an arc), which is both an EMI source and a wear accelerator. In high-altitude or
-        dusty environments the wear rate jumps. Vacuum and oxygen- free atmospheres are particularly
-        hostile because graphite needs a thin moisture film to lubricate the ring-on-brush
-        interface; without it, brush wear becomes catastrophic. Most modern applications that can
-        tolerate the extra cost have moved on.
+        The brushes are also where it goes wrong. They are sliding electrical contacts, so they wear
+        mechanically, arc during commutation, generate EMI, and demand maintenance. Dry, dusty, or
+        low-pressure environments make that contact problem worse. Most modern applications that can
+        tolerate the extra cost have moved on
+        <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
       <p className="mb-prose-3">
@@ -207,12 +212,11 @@ export default function Ch20Motors() {
         tag="Try 20.2"
         question={
           <>
-            A <InlineMath tex="12\,\text{V}" /> brushed DC motor has winding
-            resistance <InlineMath tex="R = 1\,\Omega" /> and back-EMF
-            constant{' '}
-            <InlineMath tex="k_e = 0.1\,\text{V·s/rad}" />
-            . What is the starting current at stall? What is the steady-state current at{' '}
-            <InlineMath tex="\omega = 100\ \text{rad/s}" /> with negligible load?
+            A <InlineMath tex="12\,\text{V}" /> brushed DC motor has winding resistance{' '}
+            <InlineMath tex="R = 1\,\Omega" /> and back-EMF constant{' '}
+            <InlineMath tex="k_e = 0.1\,\text{V·s/rad}" />. What is the starting current at stall?
+            What is the steady-state current at <InlineMath tex="\omega = 100\ \text{rad/s}" /> with
+            negligible load?
           </>
         }
         hint={
@@ -248,16 +252,12 @@ export default function Ch20Motors() {
       <h2 className="chapter-h2">Brushless DC and PMSM</h2>
 
       <p className="mb-prose-3">
-        Invert the topology. Put the permanent magnets on the rotor — typically two, four, or eight
-        pole-pairs of sintered{' '}
-        <Term def="A class of high-energy permanent magnets composed of neodymium, iron, and boron. The workhorse magnet of every modern BLDC/PMSM motor.">
-          neodymium-iron-boron
-        </Term>{' '}
-        — and put the windings on the outer stator. Now no current has to enter or leave the
-        spinning part, so there's no mechanical commutator and no brushes. The price is that the
-        commutation now has to be done <em className="text-text italic">electronically</em>: an
-        external controller has to know roughly where the rotor is and energize the right pair of
-        stator coils at the right time
+        Invert the topology. Put the permanent magnets on the rotor — often sintered
+        neodymium-iron-boron in high-performance machines — and put the windings on the outer
+        stator. Now no current has to enter or leave the spinning part, so there's no mechanical
+        commutator and no brushes. The price is that the commutation now has to be done{' '}
+        <em className="text-text italic">electronically</em>: an external controller has to know
+        roughly where the rotor is and energize the right pair of stator coils at the right time
         <Cite id="krishnan-2010-bldc" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -275,7 +275,7 @@ export default function Ch20Motors() {
         <Term def="Determining rotor position by measuring the back-EMF of the unenergised phase, rather than using a dedicated rotor-position sensor. Cheaper, but fails at very low speeds where back-EMF is too small.">
           sensorless commutation
         </Term>
-        .
+        <Cite id="krishnan-2010-bldc" in={SOURCES} />.
       </p>
 
       <BLDCCommutationDemo />
@@ -360,7 +360,16 @@ export default function Ch20Motors() {
         120° apart in time — produce a magnetic field that rotates around the bore at the
         <em className="text-text italic">
           {' '}
-          <Term def="The speed at which the rotating magnetic field produced by a polyphase stator turns. n_s = 120 f / p RPM, where f is line frequency and p the pole count. At 60 Hz a 2-pole machine has n_s = 3600 rpm.">
+          <Term
+            def={
+              <>
+                The speed at which the rotating magnetic field produced by a polyphase stator turns.
+                In the conventional motor-engineering RPM form, <InlineMath tex="n_s = 120 f / p" />
+                , where <InlineMath tex="f" /> is line frequency and <InlineMath tex="p" /> the pole
+                count.
+              </>
+            }
+          >
             synchronous speed
           </Term>
         </em>
@@ -368,17 +377,16 @@ export default function Ch20Motors() {
       </p>
       <Formula tex="n_s = 120\, f / p \quad (\text{RPM})" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="n_s" />{' '}
-        is the synchronous (stator-field) rotational speed in revolutions per minute,{' '}
-        <InlineMath tex="f" /> is the AC line frequency (in Hz), and
-        <InlineMath tex="p" /> is the total pole count of the machine
-        (a dimensionless even integer: 2, 4, 6, …). The factor of 120 packages the 60 s/min
-        conversion with the two-poles-per-pole-pair convention. At 60 Hz a 4-pole machine spins its
-        stator field at 1800 RPM; an 8-pole machine at 900 RPM. The rotor, sitting inside this
-        rotating field, sees a time-varying flux through every bar of its cage. By Faraday's law
-        each bar develops an EMF; because the cage is shorted, large currents flow in the bars;
-        those currents in the bars sit inside the stator field; the bars feel{' '}
+        where <InlineMath tex="n_s" /> is the synchronous (stator-field) rotational speed in
+        revolutions per minute, <InlineMath tex="f" /> is the AC line frequency (in Hz), and
+        <InlineMath tex="p" /> is the total pole count of the machine (a dimensionless even integer:
+        2, 4, 6, …). The factor of 120 packages the 60 s/min conversion with the
+        two-poles-per-pole-pair convention; in SI angular units,
+        <InlineMath tex="\omega_s = 4\pi f/p" /> rad/s. At 60 Hz a 4-pole machine spins its stator
+        field at 1800 RPM; an 8-pole machine at 900 RPM. The rotor, sitting inside this rotating
+        field, sees a time-varying flux through every bar of its cage. By Faraday's law each bar
+        develops an EMF; because the cage is shorted, large currents flow in the bars; those
+        currents in the bars sit inside the stator field; the bars feel{' '}
         <InlineMath id="force-on-wire" />; and the rotor begins to spin in the same direction as the
         field
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
@@ -396,9 +404,9 @@ export default function Ch20Motors() {
         with the three fixed spatial vectors to give a single vector
         <InlineMath tex="\vec{B}(t)" /> of constant magnitude <InlineMath tex="(3/2)\, B_0" />{' '}
         rotating about the bore axis at angular speed <InlineMath tex="\omega" />. Constant
-        magnitude — no pulsation. Pure rotation. That is the property Tesla discovered in 1888 and
-        the reason three is the smallest phase count that builds a usable induction or synchronous
-        machine
+        magnitude — no pulsation. Pure rotation. Tesla's 1888 polyphase motor showed that phased AC
+        currents can create a rotating field; modern industrial systems standardized on three phases
+        because they give smooth rotation while carrying balanced power efficiently on three wires
         <Cite id="tesla-1888" in={SOURCES} />.
       </p>
 
@@ -411,7 +419,15 @@ export default function Ch20Motors() {
         <em className="text-text italic">can never reach</em> synchronous speed under load — it
         always slips behind. The fractional difference is the{' '}
         <em className="text-text italic">
-          <Term def="The fractional difference between synchronous speed and actual rotor speed: s = (n_s − n)/n_s. At full rated load, a typical induction motor runs at s ≈ 2–5%. Slip is the signal that produces torque.">
+          <Term
+            def={
+              <>
+                The fractional difference between synchronous speed and actual rotor speed:{' '}
+                <InlineMath tex="s = (n_s - n)/n_s" />. At full rated load, a typical induction
+                motor runs at a few percent slip. Slip is the signal that produces torque.
+              </>
+            }
+          >
             slip
           </Term>
         </em>
@@ -419,12 +435,10 @@ export default function Ch20Motors() {
       </p>
       <Formula tex="s = (n_s - n) / n_s" />
       <p className="mb-prose-3">
-        where <InlineMath tex="s" /> is the dimensionless slip (a pure
-        ratio, often quoted as a percentage),{' '}
-        <InlineMath tex="n_s" />{' '}
-        is the synchronous speed of the rotating stator field (in RPM, from the formula above), and{' '}
-        <InlineMath tex="n" /> is the actual mechanical rotation speed
-        of the rotor (in RPM).
+        where <InlineMath tex="s" /> is the dimensionless slip (a pure ratio, often quoted as a
+        percentage), <InlineMath tex="n_s" /> is the synchronous speed of the rotating stator field
+        (in RPM, from the formula above), and <InlineMath tex="n" /> is the actual mechanical
+        rotation speed of the rotor (in RPM).
       </p>
       <p className="mb-prose-3">
         Typical full-load slip is 2–5 %. At no load, slip drops toward 0.1 % (just enough to
@@ -432,8 +446,8 @@ export default function Ch20Motors() {
         it; the bar currents rise; the torque rises. The machine self-regulates. There is no
         controller, no rotor-position sensor, no feedback loop — the slip itself{' '}
         <em className="text-text italic">is</em> the feedback. Plug it directly into the grid,
-        mechanically couple it to a load, and it starts. This is why three-quarters of all
-        industrial motor-load on the global grid is induction machinery
+        mechanically couple it to a load, and it starts. That rugged self-starting behavior is why
+        induction machines dominate fixed-speed industrial motor loads
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
@@ -468,39 +482,19 @@ export default function Ch20Motors() {
         }
       />
 
-      <TryIt
-        tag="Try 20.5"
-        question={
-          <>
-            A 4-pole 60 Hz induction motor runs at{' '}
-            <strong className="text-text font-medium">4 %</strong> slip at rated load. What is the
-            rotor RPM?
-          </>
-        }
-        hint={
-          <>
-            <InlineMath tex="n_s = 120\, f / p" />, then <InlineMath tex="n = n_s \cdot (1 - s)" />.
-          </>
-        }
-        answer={
-          <>
-            <Formula tex="n_s = 120 \cdot 60 / 4 = 1800\ \text{RPM}" />
-            <Formula tex="n = n_s \cdot (1 - s) = 1800 \cdot 0.96 = 1728\ \text{RPM}" />
-            <p className="mb-prose-1 last:mb-0">
-              That 72 RPM gap below synchronous is what produces the torque: the cage bars slip
-              through the rotating field at <InlineMath tex="s \cdot n_s" />, and the resulting
-              induced bar currents react with the field to pull the rotor along
-              <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
-            </p>
-          </>
-        }
-      />
-
       <h2 className="chapter-h2">Synchronous and stepper motors</h2>
 
       <p className="mb-prose-3">
         Two more variants round out the family. The{' '}
-        <Term def="An AC motor whose rotor turns exactly at the line-synchronous speed n_s = 120 f / p. Achieves zero slip by giving the rotor its own magnetic field (DC excitation or permanent magnets). Used where precision speed matters.">
+        <Term
+          def={
+            <>
+              An AC motor whose rotor turns exactly at line-synchronous speed, conventionally
+              written <InlineMath tex="n_s = 120 f/p" /> in RPM. Achieves zero slip by giving the
+              rotor its own magnetic field.
+            </>
+          }
+        >
           synchronous motor
         </Term>{' '}
         looks like an induction motor from the outside but the rotor has its own field — a DC-fed
@@ -530,45 +524,19 @@ export default function Ch20Motors() {
         <Term def="A motor that advances its rotor by a fixed angular increment per input pulse — typically 1.8° for a 200-step hybrid. Used for open-loop positioning in 3D printers, CNC tables, and dome telescopes.">
           stepper motor
         </Term>
-        . Geometrically it's a many-pole synchronous machine — a 200-step hybrid has 50 rotor teeth
-        and 4-phase commutation, giving 1.8° per step. The controller pulses each phase in sequence;
-        each pulse pulls the rotor's nearest tooth to align with the energized stator pole. Position
-        is the integral of the pulse count. No feedback needed.{' '}
+        . Geometrically it's a many-pole synchronous machine — a common 200-step hybrid has 50 rotor
+        teeth and four full-step states, giving 1.8° per step. The controller pulses each phase in
+        sequence; each pulse pulls the rotor's nearest tooth to align with the energized stator
+        pole. Position is the integral of the pulse count. No feedback needed.{' '}
         <Term def="A drive technique that subdivides each full step into many smaller positions by varying the relative current in two adjacent phases. A 200-step stepper at 1/256 microstepping has 51 200 effective positions per revolution.">
           Microstepping
         </Term>{' '}
         drives the two adjacent phases with sinusoidally varying currents, smoothing the motion and
-        subdividing each step by factors of 16 to 256.
+        subdividing each step by factors of 16 or more
+        <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
       <StepperMotorDemo />
-
-      <TryIt
-        tag="Try 20.6"
-        question={
-          <>
-            A NEMA-17 stepper has 200 steps per revolution. You drive it at{' '}
-            <strong className="text-text font-medium">1/16 microstepping</strong>, and your
-            controller sends <strong className="text-text font-medium">3200</strong> pulses. How far
-            does the shaft rotate?
-          </>
-        }
-        hint="3200 microsteps / 16 microsteps per step = 200 full steps. 200 full steps = one full revolution at this resolution."
-        answer={
-          <>
-            <p className="mb-prose-1 last:mb-0">
-              At 1/16 microstepping there are 200 × 16 = 3200 microsteps per revolution.
-            </p>
-            <Formula tex="\theta = 3200\ \text{microsteps} \times (360°/3200) = 360° = 1\ \text{revolution}" />
-            <p className="mb-prose-1 last:mb-0">
-              Or equivalently 0.1125° per microstep. A 3D printer driving its X-axis through a
-              20-tooth GT2 pulley (2 mm pitch) moves 40 mm per revolution, so each microstep is 40 /
-              3200 = 12.5 µm of head travel
-              <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
-            </p>
-          </>
-        }
-      />
 
       <h2 className="chapter-h2">Torque, speed, and matching to a load</h2>
 
@@ -616,16 +584,13 @@ export default function Ch20Motors() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <MotorEfficiencyMapDemo />
-
       <p className="mb-prose-3">
         For an EV, the practical consequence is that the gearbox ratio is chosen to put the motor's
         operating point inside its bright sweet spot for the typical cruise condition. A
-        single-speed reduction (about 9:1 in a Tesla Model 3) is enough because the PMSM's sweet
-        spot is broad and the inverter can field-weaken to extend constant-power operation toward
-        top speed. Industrial inverter-driven pumps and fans get the same benefit:
-        variable-frequency operation keeps the motor near rated torque at every speed the
-        application demands
+        single-speed reduction is often enough because a PMSM's sweet spot is broad and the inverter
+        can field-weaken to extend constant-power operation toward top speed. Industrial
+        inverter-driven pumps and fans get the same benefit: variable-frequency operation keeps the
+        motor near rated torque at every speed the application demands
         <Cite id="krishnan-2010-bldc" in={SOURCES} />.
       </p>
 
@@ -644,8 +609,9 @@ export default function Ch20Motors() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              The curve is <InlineMath tex="\tau(n) = \tau_{\text{stall}}\, (1 - n/n_0)" />. At n =
-              2000 rpm with <InlineMath tex="n_0 = 4000\ \text{rpm}" />:
+              The curve is <InlineMath tex="\tau(n) = \tau_{\text{stall}}\, (1 - n/n_0)" />. At{' '}
+              <InlineMath tex="n = 2000\,\text{rpm}" /> with{' '}
+              <InlineMath tex="n_0 = 4000\ \text{rpm}" />:
             </p>
             <Formula tex="\tau = 0.8 \cdot (1 - 2000/4000) = 0.8 \cdot 0.5 = 0.4\ \text{N·m}" />
             <p className="mb-prose-1 last:mb-0">
@@ -678,18 +644,20 @@ export default function Ch20Motors() {
         chapter.
       </p>
 
+      <MotorEfficiencyMapDemo />
+
       <CaseStudies
         intro={
           <>
-            Four motors in working systems, from a hundreds-of-kilowatt EV traction motor down to a
-            few-watt hard-drive spindle.
+            Four motors in working systems, from EV traction down to small precision spindle and
+            positioning motors.
           </>
         }
       >
         <CaseStudy
           tag="Case 20.1"
-          title="EV traction motor (Tesla Model S rear)"
-          summary="A 3-phase AC induction motor with copper rotor bars, driven by a field-oriented inverter; the kind of machine that defined the early EV-performance era."
+          title="EV induction traction motor"
+          summary="A 3-phase AC induction motor with conductive rotor bars, driven by a field-oriented inverter; the kind of machine that defined an early EV-performance era."
           specs={[
             {
               label: 'Topology',
@@ -704,20 +672,25 @@ export default function Ch20Motors() {
               label: 'Peak output',
               value: (
                 <>
-                  several hundred kW (rear motor){' '}
+                  high-power traction scale{' '}
                   <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
                 </>
               ),
             },
             {
               label: 'Maximum speed',
-              value: <>well into the tens of thousands of rpm at full battery voltage</>,
+              value: (
+                <>
+                  high-speed operation under inverter control{' '}
+                  <Cite id="krishnan-2010-bldc" in={SOURCES} />
+                </>
+              ),
             },
             {
               label: 'Cooling',
               value: (
                 <>
-                  liquid (ethylene-glycol jacket around the stator iron){' '}
+                  liquid-cooled stator and inverter in high-output designs{' '}
                   <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
                 </>
               ),
@@ -734,24 +707,23 @@ export default function Ch20Motors() {
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            The original Tesla Model S (2012 onward) used a 3-phase AC induction motor with a
-            copper-bar rotor cage, scaled up to provide the peak output that defined the early
-            EV-performance era. The choice of induction over PMSM was practical: induction avoids
-            any neodymium-iron-boron content (eliminating exposure to rare-earth supply chains),
-            provides better behaviour at very high speeds (no permanent-magnet field-weakening
-            requirement), and tolerates moderate rotor heating well. Tesla switched to PMSM machines
-            starting with the Model 3 in 2017 for lower-power, higher-efficiency cruise operation;
-            the higher-output trims still pair a PMSM front motor with an induction rear motor
-            <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
+            Early high-performance EVs made serious use of 3-phase AC induction traction motors:
+            rugged copper or aluminium rotor cages, no permanent magnets, and a controller that
+            supplies torque through a variable-frequency inverter. The choice is practical:
+            induction avoids neodymium-iron-boron magnets, behaves well at high speed, and tolerates
+            rotor heating; PMSM designs trade some of that ruggedness for stronger low-loss cruise
+            efficiency
+            <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
+            <Cite id="krishnan-2010-bldc" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
             The drive is a 3-phase inverter generating variable-frequency, variable-amplitude PWM,
-            controlled by a field-oriented control loop running at ~10 kHz. At any operating point,
-            the controller measures rotor position (or estimates it from back-EMF), transforms the
-            three-phase stator currents into the rotor-aligned
+            controlled by a field-oriented control loop. At any operating point, the controller
+            measures rotor position (or estimates it from back-EMF), transforms the three-phase
+            stator currents into the rotor-aligned
             <InlineMath tex="d\text{-}q" /> frame, and runs PI loops on the d-axis (flux) and q-axis
             (torque) components independently. That decoupling is what lets the same machine deliver
-            flat torque from zero rpm up through the field- weakening region near top speed
+            flat torque from zero rpm up through the field-weakening region near top speed
             <Cite id="krishnan-2010-bldc" in={SOURCES} />.
           </p>
         </CaseStudy>
@@ -759,7 +731,7 @@ export default function Ch20Motors() {
         <CaseStudy
           tag="Case 20.2"
           title="HDD spindle motor"
-          summary="A BLDC at 7200 rpm spins three platters in a sealed helium-filled enclosure. ~3 W of electrical input keeps the read/write heads flying."
+          summary="A compact BLDC keeps a platter stack at fixed speed while the read/write heads fly."
           specs={[
             {
               label: 'Topology',
@@ -774,52 +746,50 @@ export default function Ch20Motors() {
               label: 'Speed',
               value: (
                 <>
-                  typically 5400, 7200, or higher rpm (datasheet-fixed){' '}
-                  <Cite id="krishnan-2010-bldc" in={SOURCES} />
+                  fixed-speed spindle operation <Cite id="krishnan-2010-bldc" in={SOURCES} />
                 </>
               ),
             },
             {
               label: 'Speed regulation',
-              value: <>tight: a PLL locks rotor frequency to the drive's quartz reference</>,
+              value: (
+                <>
+                  closed-loop speed regulation from the drive electronics{' '}
+                  <Cite id="krishnan-2010-bldc" in={SOURCES} />
+                </>
+              ),
             },
             {
               label: 'Power',
               value: (
                 <>
-                  a few watts steady-state at 7200 rpm{' '}
-                  <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
+                  low steady-state power once spun up <Cite id="krishnan-2010-bldc" in={SOURCES} />
                 </>
               ),
             },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            Every spinning hard drive built since the late 1990s uses a 3-phase brushless DC motor
-            as the spindle. The three stator coils are formed into a thin disc that sits flat under
-            the platter stack; the rotor is a ring of permanent magnets glued to the inside of the
-            rotating hub. The controller IC drives the three phases with trapezoidal currents and
-            infers rotor position by sensing the back-EMF on the unenergised phase — true sensorless
-            commutation, because adding Hall sensors would consume space that the platter assembly
-            needs
+            A hard-drive spindle is a compact brushless motor optimized for quiet fixed-speed
+            rotation. The stator coils sit under the platter stack; the rotor carries permanent
+            magnets in the hub. The controller IC drives the phases and can infer rotor position
+            from the unenergised phase's back-EMF, avoiding separate rotor-position sensors in the
+            tight spindle package
             <Cite id="krishnan-2010-bldc" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            Speed regulation is via a phase-locked loop against the drive's quartz oscillator: a
-            7200 rpm spindle holds 120.000 ± 0.12 Hz of rotational frequency, indefinitely. That
-            precision is necessary because the read-channel signal processing depends on the
-            bit-cell timing being constant; jitter in spindle speed shows up directly as media-noise
-            margin. Sealed helium-filled drives (where the lower viscosity reduces windage losses
-            and platter flutter) extend the practical platter count from five to nine while keeping
-            the same ~3 W motor power
-            <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
+            Speed regulation matters because read-channel timing assumes a stable angular velocity.
+            Any spindle-speed jitter shows up as timing noise in the recovered data stream. Modern
+            spindle controllers therefore close the loop electronically rather than relying on motor
+            physics alone
+            <Cite id="krishnan-2010-bldc" in={SOURCES} />.
           </p>
         </CaseStudy>
 
         <CaseStudy
           tag="Case 20.3"
-          title="The brushed motor in an 18 V cordless drill"
-          summary="A two-pole brushed DC motor with a 7-segment commutator, fed PWM from the battery; speed scales with duty cycle."
+          title="The brushed motor in a cordless drill"
+          summary="A permanent-magnet brushed DC motor, fed PWM from the battery; speed scales with duty cycle."
           specs={[
             {
               label: 'Topology',
@@ -830,12 +800,19 @@ export default function Ch20Motors() {
                 </>
               ),
             },
-            { label: 'Supply', value: <>18 V or 20 V Li-ion battery (consumer tool standard)</> },
+            {
+              label: 'Supply',
+              value: (
+                <>
+                  battery DC pack <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
+                </>
+              ),
+            },
             {
               label: 'Peak power',
               value: (
                 <>
-                  several hundred watts at stall{' '}
+                  high stall current and high starting torque{' '}
                   <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
                 </>
               ),
@@ -844,8 +821,8 @@ export default function Ch20Motors() {
               label: 'Speed control',
               value: (
                 <>
-                  variable-duty PWM via trigger (FET in series with motor){' '}
-                  <Cite id="krishnan-2010-bldc" in={SOURCES} />
+                  variable-duty PWM via trigger switch{' '}
+                  <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
                 </>
               ),
             },
@@ -853,7 +830,7 @@ export default function Ch20Motors() {
               label: 'Brush life',
               value: (
                 <>
-                  on the order of hundreds of running hours{' '}
+                  maintenance item in brushed designs{' '}
                   <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
                 </>
               ),
@@ -861,30 +838,26 @@ export default function Ch20Motors() {
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            The classic brushed motor still dominates handheld power tools at the budget tier. The
-            cost calculus is stark: a brushed motor with PWM control comes in for a few dollars of
-            parts, while a brushless equivalent with its 3-phase inverter and Hall sensors costs
-            many times that. The brushed version trades that against shorter brush life, more EMI,
-            and a few percent lower efficiency. For a drill that sees a few hours of duty per week,
-            that's an acceptable trade. Premium tool lines (and any high-duty industrial tool) have
-            moved to brushless because the lifetime cost flips long before the brushes give out
+            The classic brushed motor remains attractive when bill-of-materials cost and simplicity
+            matter. The brushed version trades simple control against shorter brush life, more EMI,
+            and lower efficiency. Premium and high-duty tools move to brushless because the lifetime
+            cost and thermal performance eventually matter more than the cheaper motor
             <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            Speed control is dead simple. A power MOSFET in series with the motor is gated by a PWM
-            signal in the low-tens-of-kilohertz range, whose duty cycle is set by the trigger
-            position. At 50 % duty, the average voltage across the motor is ~9 V; the rotor's
-            mechanical inertia time-constant is hundreds of milliseconds, vastly longer than the
-            switching period, so the motor responds as if it were running on 9 V DC. The brushed-DC
-            torque-speed characteristic is linear in V, so duty cycle linearly maps to no-load speed
-            <Cite id="krishnan-2010-bldc" in={SOURCES} />.
+            Speed control is direct: a power switch in series with the motor applies pulse-width
+            modulation, and the trigger sets duty cycle. Because the rotor's mechanical inertia
+            averages over many switching periods, the motor approximately responds to the average
+            applied voltage. The brushed-DC torque-speed characteristic is roughly linear in
+            voltage, so duty cycle maps cleanly to no-load speed
+            <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
         </CaseStudy>
 
         <CaseStudy
           tag="Case 20.4"
-          title="NEMA-17 stepper in a 3D printer"
-          summary="A 200-step hybrid driven at 1/16 microstepping gives 3200 microsteps/rev. On a 40 mm/rev belt drive, that's 12.5 µm of head travel per microstep."
+          title="Hybrid stepper in a 3D printer"
+          summary="A 200-step hybrid stepper with fractional-step current control gives open-loop positioning for printer axes."
           specs={[
             {
               label: 'Topology',
@@ -895,10 +868,23 @@ export default function Ch20Motors() {
                 </>
               ),
             },
-            { label: 'Step angle', value: <>1.8° (200 steps/rev)</> },
+            {
+              label: 'Step angle',
+              value: (
+                <>
+                  <InlineMath tex="1.8^\circ" /> (<InlineMath tex="200" /> steps/rev){' '}
+                  <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
+                </>
+              ),
+            },
             {
               label: 'Microstepping',
-              value: <>typically 1/16 or 1/32 in driver IC (TMC2209, A4988, etc.)</>,
+              value: (
+                <>
+                  commonly fractional-step current control{' '}
+                  <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
+                </>
+              ),
             },
             {
               label: 'Holding torque',
@@ -927,7 +913,7 @@ export default function Ch20Motors() {
             phases. Energise phase A and the rotor settles to the nearest A-aligned tooth position;
             switch to phase B and it advances 1.8°; phase ¬A, another 1.8°; and so on through the
             4-step cycle. A full electrical cycle (4 steps) moves the rotor exactly one tooth pitch
-            (200/50 = 4 steps per tooth)
+            (<InlineMath tex="200/50 = 4" /> steps per tooth)
             <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
@@ -935,11 +921,11 @@ export default function Ch20Motors() {
             phases sinusoidal currents 90° apart in electrical phase, with their relative amplitude
             stepped through 16 finely-spaced ratios per full-step interval. The rotor then settles
             at intermediate angles whose precision is limited by detent torque (residual reluctance
-            variation) rather than by driver resolution. On a 3D printer's belt- driven X-axis
-            (20-tooth GT2 pulley, 2 mm pitch = 40 mm/rev), 1/16 microstepping gives 12.5 µm of
-            resolution — comfortably finer than the 0.4 mm nozzle and the 0.2 mm layer height, with
-            margin for printer-frame flex
-            <Cite id="krishnan-2010-bldc" in={SOURCES} />.
+            variation) rather than by driver resolution. On a belt-driven printer axis, gearing and
+            pulley pitch translate each motor step into a small linear increment; the practical
+            accuracy is then limited by belt stretch, frame stiffness, friction, and calibration as
+            much as by the microstep command
+            <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
         </CaseStudy>
       </CaseStudies>
@@ -992,15 +978,14 @@ export default function Ch20Motors() {
 
         <FAQItem q="Why do induction motors specifically need three phases, and why not two or four?">
           <p>
-            Three is the minimum number of phases that produces a steadily rotating field with
-            constant magnitude in both two-dimensional axes — a key property for smooth torque.
-            Tesla's original 1888 patent actually used two phases 90° apart, which works but
-            requires four wires (no current cancellation) and gives a slightly pulsating field.
-            Three-phase systems have the mathematically clean property that{' '}
+            They do not strictly need three phases: Tesla's original 1888 system used two phases 90°
+            apart to produce a rotating field. Three-phase became the industrial standard because it
+            gives a smooth rotating field while also carrying balanced power economically. It has
+            the clean property that{' '}
             <InlineMath tex="\cos(\omega t) + \cos(\omega t - 120°) + \cos(\omega t - 240°) = 0" />{' '}
             at every instant, so three wires carry all the power with no neutral return current.
-            Higher phase counts (6, 9, 12) appear in specialty high-power drives but offer
-            diminishing returns past three
+            Higher phase counts (6, 9, 12) appear in specialty high-power drives, but three is the
+            practical baseline for most grid-fed and inverter-fed industrial machines
             <Cite id="tesla-1888" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1050,14 +1035,12 @@ export default function Ch20Motors() {
 
         <FAQItem q="Why is the induction motor sometimes called 'the most important machine of the 20th century'?">
           <p>
-            Because three-quarters of industrial electric energy globally is consumed by induction
-            motors — pumps, fans, compressors, conveyors, elevators, machine tools. They're rugged
-            (no brushes, no sliding electrical contacts), self-starting and self-regulating from a
-            fixed-frequency grid, scale from 100 W to 10 MW in essentially the same topology, and
-            are cheap to build because the rotor is a single piece of cast aluminium. Without
-            Tesla's 1888 invention of the polyphase induction motor, the entire AC-power
-            distribution architecture that won the "war of the currents" against Edison's DC system
-            would have lacked its killer industrial application
+            Because induction motors are rugged, self-starting, and self-regulating from a
+            fixed-frequency grid. Pumps, fans, compressors, conveyors, elevators, and machine tools
+            all reward a motor with no brushes, no sliding electrical contacts, and a rotor that can
+            be cast as a cage inside laminated steel. Without Tesla's 1888 invention of the
+            polyphase induction motor, AC power would have lacked one of its most important
+            industrial loads
             <Cite id="tesla-1888" in={SOURCES} />
             <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
@@ -1084,10 +1067,9 @@ export default function Ch20Motors() {
             rotating frame aligned with the rotor's flux. In that frame, the torque-producing
             current and the flux-producing current decouple — you can control them with two
             independent PI loops, exactly as if the machine were a brushed DC motor. The result is
-            ripple-free smooth torque from zero speed up through field-weakening, plus efficient
-            operation across the full envelope. Every modern EV traction drive, every CNC
-            servomotor, and most industrial variable-frequency drives over a few hundred watts run
-            FOC
+            smooth torque from zero speed up through field-weakening, plus efficient operation
+            across the full envelope. It is the standard high-performance control approach for many
+            modern PMSM and induction drives
             <Cite id="krishnan-2010-bldc" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1141,13 +1123,13 @@ export default function Ch20Motors() {
         <FAQItem q="What is the difference between a BLDC and a PMSM?">
           <p>
             Construction-wise, none. Both have a permanent-magnet rotor inside a 3-phase stator. The
-            distinction is in the drive waveform and the back-EMF profile. A BLDC has trapezoidal
-            back-EMF and is driven with quasi-square-wave (6-step) currents — simple controller, but
-            each commutation produces a 14 % torque ripple. A PMSM has sinusoidal back-EMF and is
-            driven with smooth sinusoidal currents under field-oriented control — more complex
-            controller, but essentially zero torque ripple. The terminology is partly historical;
-            many machines straddle the boundary, and most modern drives can run either control mode
-            on any 3-phase PM motor
+            distinction is in the drive waveform and the back-EMF profile. A BLDC is usually
+            associated with trapezoidal back-EMF and quasi-square-wave 6-step current — simple
+            controller, with torque ripple set by the motor and commutation details. A PMSM is
+            associated with sinusoidal back-EMF and smooth sinusoidal currents under field-oriented
+            control — more complex controller, but much smoother torque. The terminology is partly
+            historical; many machines straddle the boundary, and most modern drives can run either
+            control mode on any 3-phase PM motor
             <Cite id="krishnan-2010-bldc" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1157,12 +1139,12 @@ export default function Ch20Motors() {
             Because the stator iron sees a rotating (and therefore time-varying) magnetic field,
             which induces eddy currents in the iron itself by Faraday's law. Those eddy currents
             flow in closed loops in the cross-section of the iron and dissipate as{' '}
-            <InlineMath tex="I^2 R" /> heat. Laminating the iron into thin sheets (typically
-            0.35–0.5 mm thick), insulated from each other, breaks the eddy-current paths into
-            smaller, higher-resistance loops, cutting the losses by roughly the square of the
-            lamination thickness. Without lamination, a 1 kW stator would self-heat to destruction
-            within seconds. The same trick is used in transformers, for the same reason
-            <Cite id="griffiths-2017" in={SOURCES} />.
+            <InlineMath tex="I^2 R" /> heat. Laminating the iron into thin insulated sheets breaks
+            the eddy-current paths into smaller, higher-resistance loops, cutting the losses
+            strongly as the sheet thickness falls. The same trick is used in transformers, for the
+            same reason
+            <Cite id="griffiths-2017" in={SOURCES} />
+            <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
         </FAQItem>
       </FAQ>

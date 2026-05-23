@@ -10,7 +10,15 @@ import { useEffect, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -152,6 +160,16 @@ export function StepperMotorDemo({ figure }: Props) {
         <MiniReadout label="angle" value={totalDeg.toFixed(1)} unit="°" />
         <MiniReadout label="revolutions" value={revs.toFixed(2)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="angle"
+        left={
+          <InlineMath
+            tex={`\\theta = N_{\\text{steps}}\\,360^\\circ/200 = ${totalDeg.toFixed(1)}^\\circ`}
+          />
+        }
+        rightLabel="turns"
+        right={<InlineMath tex={`\\text{rev} = N_{\\text{steps}}/200 = ${revs.toFixed(2)}`} />}
+      />
     </Demo>
   );
 }

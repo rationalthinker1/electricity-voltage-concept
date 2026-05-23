@@ -14,7 +14,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawAxes, drawHLine, drawLinePlot, drawVLine, makePlotMappers } from '@/lib/drawPlot';
@@ -192,6 +193,29 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
           unit="%"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Power-angle relation"
+        left={
+          <InlineMath
+            tex={`P(\\delta) = \\dfrac{|V|\\,|E_f|}{X_s}\\,\\sin\\delta`}
+          />
+        }
+        rightLabel={computed.pullOut ? 'Beyond pull-out' : 'with current state'}
+        right={
+          computed.pullOut ? (
+            <InlineMath
+              tex={`P_{\\max} = \\dfrac{(${V_GRID})(${E_F})}{${X_S}} \\approx ${P_MAX.toFixed(2)}\\ \\text{pu}\\ <\\ ${pMech.toFixed(2)}\\ \\text{pu}`}
+            />
+          ) : (
+            <InlineMath
+              tex={
+                `${pMech.toFixed(2)} = \\dfrac{(${V_GRID})(${E_F})}{${X_S}}\\sin(${computed.delta.toFixed(1)}^{\\circ})` +
+                ` \\approx ${pMech.toFixed(2)}\\ \\text{pu}`
+              }
+            />
+          )
+        }
+      />
     </Demo>
   );
 }

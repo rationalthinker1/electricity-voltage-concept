@@ -14,7 +14,8 @@ import { useMemo, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawAxes, drawLinePlot, drawVLine, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -217,6 +218,22 @@ export function LoadFollowingDemo({ figure }: Props) {
           unit="GW"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Dispatch stack"
+        left={
+          <InlineMath
+            tex={`P_{\\text{load}}(t) = P_{\\text{base}} + P_{\\text{peakers}}(t) + P_{\\text{reserve (idle)}}`}
+          />
+        }
+        rightLabel="with current hour"
+        right={
+          <InlineMath
+            tex={
+              `${computed.loadGW.toFixed(1)} = ${computed.baseGW.toFixed(1)} + ${computed.peakerGW.toFixed(1)} + ${computed.reserveGW.toFixed(1)}\\ \\text{GW}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

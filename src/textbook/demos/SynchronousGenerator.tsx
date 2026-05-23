@@ -12,7 +12,8 @@
 import { useState } from 'react';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -232,6 +233,20 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
         <MiniReadout label="V_rms = V_pk/√2" value={<Num value={Vrms} digits={3} />} />
         <MiniReadout label="phase offset" value="120°" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Three-phase stator voltages"
+        left={
+          <InlineMath
+            tex={`v_{a,b,c}(t) = V_{pk}\\cos\\!\\big(2\\pi f t - k\\cdot 120^{\\circ}\\big)`}
+          />
+        }
+        rightLabel="with current f"
+        right={
+          <InlineMath
+            tex={`f = ${f.toFixed(0)}\\ \\text{Hz},\\ \\ V_{rms} = V_{pk}/\\sqrt{2} \\approx ${Vrms.toFixed(3)}`}
+          />
+        }
+      />
     </Demo>
   );
 }

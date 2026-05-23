@@ -14,12 +14,13 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { withAlpha } from '@/lib/canvasTheme';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure?: string;
@@ -74,7 +75,17 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.lineWidth = 1.2;
       ctx.strokeRect(cx - R - magW, cy - magH / 2, magW, magH);
       ctx.restore();
-      drawLabel(ctx, { text: 'N', x: cx - R - magW / 2, y: cy, color: colors.pink, weight: 'bold', size: 14, font: '14px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'N',
+        x: cx - R - magW / 2,
+        y: cy,
+        color: colors.pink,
+        weight: 'bold',
+        size: 14,
+        font: '14px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
       ctx.save();
       ctx.globalAlpha = 0.22;
       ctx.fillStyle = colors.blue;
@@ -145,12 +156,30 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(topEnd.x, topEnd.y, 7, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: '×', x: topEnd.x, y: topEnd.y, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '×',
+        x: topEnd.x,
+        y: topEnd.y,
+        color: colors.bg,
+        weight: 'bold',
+        font: '10px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
       ctx.fillStyle = colors.blue;
       ctx.beginPath();
       ctx.arc(botEnd.x, botEnd.y, 7, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: '·', x: botEnd.x, y: botEnd.y, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '·',
+        x: botEnd.x,
+        y: botEnd.y,
+        color: colors.bg,
+        weight: 'bold',
+        font: '10px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
       const fLen = Math.max(8, Math.min(36, drive * 30 + 10));
       ctx.strokeStyle = colors.accent;
       ctx.fillStyle = colors.accent;
@@ -200,14 +229,32 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.8;
-      drawLabel(ctx, { text: '+', x: cx + 8, y: cy - commR - 22, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '+',
+        x: cx + 8,
+        y: cy - commR - 22,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx.restore();
       drawLabel(ctx, { text: '−', x: cx + 8, y: cy + commR + 22 });
       ctx.save();
       ctx.globalAlpha = 0.75;
-      drawLabel(ctx, { text: 'rotor coil + split-ring commutator', x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'rotor coil + split-ring commutator',
+        x: 12,
+        y: 12,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.restore();
-      drawLabel(ctx, { text: `I = ${I.toFixed(2)} A   ω(vis) = ${omega.toFixed(1)} rad/s`, x: w - 12, y: 12, align: 'right' });
+      drawLabel(ctx, {
+        text: `I = ${I.toFixed(2)} A   ω(vis) = ${omega.toFixed(1)} rad/s`,
+        x: w - 12,
+        y: 12,
+        align: 'right',
+      });
       ctx0.theta = theta;
       ctx0.omega = omega;
     },
@@ -224,8 +271,9 @@ export function BrushedDCMotorDemo({ figure }: Props) {
         <>
           Cross-section of a permanent-magnet brushed DC motor. As the rotor spins, the split-ring
           <strong> commutator</strong> reverses the current in the coil every half-turn, so the
-          torque on the rotor — <em>τ = NIA·B·sin(θ)</em> after commutation — always pushes the same
-          way. Two brushes ride on the ring and feed it from the fixed external supply.
+          torque on the rotor — <InlineMath tex="\tau = N I A B \sin\theta" /> after commutation —
+          always pushes the same way. Two brushes ride on the ring and feed it from the fixed
+          external supply.
         </>
       }
     >
@@ -252,6 +300,20 @@ export function BrushedDCMotorDemo({ figure }: Props) {
           unit="N·m"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="current"
+        left={
+          <InlineMath
+            tex={`I = V/R = ${V.toFixed(1)}/${COIL_R} = ${computed.I.toFixed(2)}\\,\\text{A}`}
+          />
+        }
+        rightLabel="rectified torque"
+        right={
+          <InlineMath
+            tex={`\\bar{\\tau} = \\frac{2}{\\pi}NIAB = ${computed.tauMean.toFixed(2)}\\,\\text{N·m}`}
+          />
+        }
+      />
     </Demo>
   );
 }

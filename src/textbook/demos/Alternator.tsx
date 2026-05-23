@@ -11,10 +11,11 @@
  *
  * Slider: engine RPM (drives generator frequency via belt ratio).
  */
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -40,17 +41,14 @@ export function AlternatorDemo({ figure }: Props) {
 
   const stateRef = useSimState({ engineRpm, computed });
 
-  // Custom scaled simulation time persists across frames.
-  const scaledTRef = useRef(0);
-
   const setup = useSimLoop(
     stateRef,
-    ({ ctx, w, h, colors }, state, dt) => {
+    ({ ctx, w, h, colors }, state, dt, _simTime, ctxState) => {
       const { f } = state.computed;
       const omega = 2 * Math.PI * f;
       const slow = f > 60 ? 60 / f : 1;
-      scaledTRef.current += dt * slow;
-      const simT = scaledTRef.current;
+      ctxState.scaledT += dt * slow;
+      const simT = ctxState.scaledT;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -142,6 +140,7 @@ export function AlternatorDemo({ figure }: Props) {
       drawLabel(ctx, { text: `f_elec = ${f.toFixed(0)} Hz`, x: padL + plotW - 4, y: topY + 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
     },
     [],
+    () => ({ context: { scaledT: 0 } }),
   );
 
   return (
@@ -173,6 +172,23 @@ export function AlternatorDemo({ figure }: Props) {
         <MiniReadout label="electrical f" value={<Num value={computed.f} digits={0} />} unit="Hz" />
         <MiniReadout label="V_out (regulated)" value={V_REG.toFixed(1)} unit="V" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Alternator electrical frequency"
+        left={
+          <InlineMath
+            tex={`f_{\\text{elec}} = \\dfrac{n_{\\text{alt}}}{60}\\cdot p_{\\text{pairs}}`}
+          />
+        }
+        rightLabel="with current state"
+        right={
+          <InlineMath
+            tex={
+              `f_{\\text{elec}} = \\dfrac{${computed.altRpm.toFixed(0)}}{60}\\cdot ${POLE_PAIRS}` +
+              ` \\approx ${computed.f.toFixed(0)}\\ \\text{Hz}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

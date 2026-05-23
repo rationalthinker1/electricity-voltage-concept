@@ -13,7 +13,8 @@
 import { useMemo, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawAxes, drawHLine, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -184,6 +185,24 @@ export function GridSyncDemo({ figure }: Props) {
         />
         <MiniReadout label="status" value={ready ? 'in sync' : 'out of sync'} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Sync conditions"
+        left={
+          <InlineMath
+            tex={`|\\Delta f| < 0.2\\ \\text{Hz},\\ \\ |\\Delta\\varphi| < 10^{\\circ},\\ \\ |\\Delta V|/V < 5\\%`}
+          />
+        }
+        rightLabel="current mismatch"
+        right={
+          <InlineMath
+            tex={
+              `\\Delta f = ${(fGen - F_GRID).toFixed(2)}\\ \\text{Hz},\\ \\ ` +
+              `\\Delta\\varphi = ${Math.min(Math.abs(phiDeg) % 360, 360 - (Math.abs(phiDeg) % 360)).toFixed(0)}^{\\circ},\\ \\ ` +
+              `\\Delta V = ${((vGen - V_GRID) * 100).toFixed(1)}\\%`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

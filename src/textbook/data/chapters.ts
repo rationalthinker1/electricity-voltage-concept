@@ -754,6 +754,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'tesla-1888',
       'fitzgerald-kingsley-umans-2014',
       'krishnan-2010-bldc',
+      'grainger-power-systems-2003',
       'codata-2018',
     ],
     punchline:
