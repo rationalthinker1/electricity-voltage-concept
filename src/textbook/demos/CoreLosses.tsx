@@ -187,7 +187,7 @@ export function CoreLossesDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.5'}
+      figure={figure ?? 'Fig. 23.5'}
       title="Core losses — why transformer cores are laminated"
       question="Solid iron or thin sheets? What changes?"
       caption={

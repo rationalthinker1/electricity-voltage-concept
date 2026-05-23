@@ -170,7 +170,7 @@ export function ThreePhaseDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 10.6'}
+      figure={figure ?? 'Fig. 12.6'}
       title="Three-phase — why the grid uses three wires"
       question="Three sinusoids, each 120° behind the previous. What's special about that sum?"
       caption={

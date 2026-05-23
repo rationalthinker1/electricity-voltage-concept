@@ -267,7 +267,7 @@ export default function Ch13NetworkAnalysis() {
         <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />.
       </p>
 
-      <MeshCurrentSolverDemo />
+      <MeshCurrentSolverDemo figure="Fig. 13.1" />
 
       <p className="mb-prose-3">
         Slide the source voltages and resistor values and the two mesh currents track instantly. The
@@ -376,7 +376,7 @@ export default function Ch13NetworkAnalysis() {
         <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />.
       </p>
 
-      <NodalSolverDemo />
+      <NodalSolverDemo figure="Fig. 13.2" />
 
       <p className="mb-prose-3">
         Solve the same network nodally and the branch currents drop out as differences of node
@@ -613,7 +613,7 @@ export default function Ch13NetworkAnalysis() {
         <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />.
       </p>
 
-      <NortonTheveninDemo />
+      <NortonTheveninDemo figure="Fig. 13.5" />
 
       <p className="mb-prose-3">
         The demo's three panels — original, Thévenin, Norton — drive an identical load and produce
@@ -717,7 +717,7 @@ export default function Ch13NetworkAnalysis() {
         branch sits on at least one loop that connects through every other branch.
       </p>
 
-      <WheatstoneBridgeDemo />
+      <WheatstoneBridgeDemo figure="Fig. 13.3" />
 
       <p className="mb-prose-3">
         Push R<sub>x</sub> through the balance point and the galvanometer needle crosses zero
@@ -808,7 +808,7 @@ export default function Ch13NetworkAnalysis() {
         demo below confirms the equivalence numerically.
       </p>
 
-      <YDeltaTransformDemo />
+      <YDeltaTransformDemo figure="Fig. 13.4" />
 
       <p className="mb-prose-3">
         Slide the Y resistors and the Δ resistors track in lockstep; the test impedance between any
@@ -993,7 +993,7 @@ export default function Ch13NetworkAnalysis() {
           </>
         )}
       >
-        <MaxPowerTransferDemo />
+        <MaxPowerTransferDemo figure="Fig. 13.6" />
       </PredictThenObserve>
 
       <p className="mb-prose-3">

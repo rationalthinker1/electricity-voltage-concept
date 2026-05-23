@@ -131,7 +131,7 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.12'}
+      figure={figure ?? 'Fig. 16.12'}
       title="Standing waves on a mismatched line"
       question="Mismatch the load and the line's voltage envelope is no longer flat."
       caption={

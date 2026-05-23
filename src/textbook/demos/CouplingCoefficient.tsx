@@ -15,7 +15,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -40,6 +41,7 @@ export function CouplingCoefficientDemo({ figure }: Props) {
   const computed = useMemo(
     () => ({
       eta: efficiency(k),
+      couplingProduct: k * k * Q1 * Q2,
     }),
     [k],
   );
@@ -92,7 +94,14 @@ export function CouplingCoefficientDemo({ figure }: Props) {
             : k < 0.85
               ? 'gapped iron core'
               : 'tightly coupled iron / ferrite';
-      drawLabel(ctx, { text: regime, x: w / 2, y: topY + topH - 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: regime,
+        x: w / 2,
+        y: topY + topH - 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
       const plotY = topY + topH + 14;
       const plotH = h - plotY - 14;
       const plotX = 56;
@@ -109,13 +118,39 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.65;
-      drawLabel(ctx, { text: 'η', x: plotX - 4, y: plotY + 4, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'η',
+        x: plotX - 4,
+        y: plotY + 4,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
       ctx.restore();
       drawLabel(ctx, { text: '1', x: plotX - 4, y: plotY + plotH * 0.05, align: 'right' });
       drawLabel(ctx, { text: '0', x: plotX - 4, y: plotY + plotH, align: 'right' });
-      drawLabel(ctx, { text: '0', x: plotX, y: plotY + plotH + 4, align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: '1', x: plotX + plotW, y: plotY + plotH + 4, align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: 'k', x: plotX + plotW / 2, y: plotY + plotH + 4, align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '0',
+        x: plotX,
+        y: plotY + plotH + 4,
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: '1',
+        x: plotX + plotW,
+        y: plotY + plotH + 4,
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'k',
+        x: plotX + plotW / 2,
+        y: plotY + plotH + 4,
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
@@ -180,6 +215,18 @@ export function CouplingCoefficientDemo({ figure }: Props) {
           value={k < 0.15 ? 'loose' : k < 0.5 ? 'moderate' : k < 0.85 ? 'tight' : 'iron-class'}
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="resonant link"
+        left={<InlineMath tex="\eta=\frac{k^2Q_1Q_2}{(1+\sqrt{1+k^2Q_1Q_2})^2}" />}
+        rightLabel="live value"
+        right={
+          <InlineMath
+            tex={`k^2Q_1Q_2=${computed.couplingProduct.toFixed(1)},\\ \\eta=${(
+              computed.eta * 100
+            ).toFixed(0)}\\%`}
+          />
+        }
+      />
     </Demo>
   );
 }

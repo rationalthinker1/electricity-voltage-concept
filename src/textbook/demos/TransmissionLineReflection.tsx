@@ -132,7 +132,7 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.11'}
+      figure={figure ?? 'Fig. 16.11'}
       title="Transmission-line reflection"
       question="A 50 Ω cable into a mismatched load. Where does the pulse go?"
       caption={

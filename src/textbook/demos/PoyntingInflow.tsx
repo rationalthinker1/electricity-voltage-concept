@@ -302,7 +302,7 @@ export function PoyntingInflowDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 6.4'}
+      figure={figure ?? 'Fig. 8.4'}
       title="∮ S · dA = V I, exactly"
       question="So how much energy actually flows through the wire's surface per second?"
       caption={

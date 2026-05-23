@@ -142,7 +142,7 @@ export function CellDischargeDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.4'}
+      figure={figure ?? 'Fig. 25.4'}
       title="Discharge: V drops as the cell empties"
       question="Why does a fresh battery 'feel' stronger than an old one?"
       caption={

@@ -314,7 +314,7 @@ export function SuperconductorLimitDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 6.5'}
+      figure={figure ?? 'Fig. 8.5'}
       title="The superconductor limit"
       question="What changes when σ → ∞?"
       caption={

@@ -146,7 +146,7 @@ export default function Ch1WhatIsElectricity() {
           correctIds: ['a'],
         }}
       >
-        <TwoChargesDemo />
+        <TwoChargesDemo figure="Fig. 1.1" />
       </PredictThenObserve>
 
       <p className="mb-prose-3">
@@ -313,7 +313,7 @@ export default function Ch1WhatIsElectricity() {
           correctIds: ['c'],
         }}
       >
-        <InverseSquareDemo />
+        <InverseSquareDemo figure="Fig. 1.3" />
       </PredictThenObserve>
 
       <TryIt
@@ -421,9 +421,9 @@ export default function Ch1WhatIsElectricity() {
         <Cite id="feynman-II-2" in={SOURCES} />.
       </p>
 
-      <FieldArrowsDemo />
+      <FieldArrowsDemo figure="Fig. 1.2" />
 
-      <PointCharge3DDemo />
+      <PointCharge3DDemo figure="Fig. 1.4" />
 
       <p className="mb-prose-3">
         The field framework looks like bookkeeping at first — relabel the same algebra. But it pays
@@ -483,7 +483,7 @@ export default function Ch1WhatIsElectricity() {
         where everything cancels.
       </p>
 
-      <EquipotentialsDemo />
+      <EquipotentialsDemo figure="Fig. 1.5" />
 
       <p className="mb-prose-3">
         The teal dotted contours in the demo above are{' '}
@@ -540,7 +540,7 @@ export default function Ch1WhatIsElectricity() {
         <InlineMath tex="V = E\,d" /> — a relationship the next chapter will lean on heavily.
       </p>
 
-      <ParallelPlateUniformFieldDemo />
+      <ParallelPlateUniformFieldDemo figure="Fig. 1.6" />
 
       <p className="mb-prose-3">
         Drag the separation slider. The field arrows between the plates stay exactly the same
@@ -550,7 +550,7 @@ export default function Ch1WhatIsElectricity() {
         up to define voltage operationally.
       </p>
 
-      <ParallelPlateUniformFieldDemo />
+      <ParallelPlateUniformFieldDemo figure="Fig. 1.7" />
 
       <p className="mb-prose-3">
         Drag the separation slider. The field arrows between the plates stay exactly the same
@@ -631,7 +631,7 @@ export default function Ch1WhatIsElectricity() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <ConductorRedistributionDemo />
+      <ConductorRedistributionDemo figure="Fig. 1.8" />
 
       <p className="mb-prose-3">
         This is why a metal cage shields its interior from electric fields (a Faraday cage), why

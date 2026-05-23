@@ -189,7 +189,7 @@ export function BridgeRectifierDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.2'}
+      figure={figure ?? 'Fig. 24.2'}
       title="Bridge rectifier with smoothing cap"
       question="Where does the ripple come from — and what knob makes it go down?"
       caption={

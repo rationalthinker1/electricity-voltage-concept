@@ -170,7 +170,7 @@ export function InRushCurrentDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.8'}
+      figure={figure ?? 'Fig. 23.8'}
       title="Inrush current: switching at the wrong instant"
       question="Close the breaker at θ = 0° (voltage zero-crossing). Then try 90° (voltage peak). What does the flux do?"
       caption={

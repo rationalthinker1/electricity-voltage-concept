@@ -165,7 +165,7 @@ export function ChemistryComparisonDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.3'}
+      figure={figure ?? 'Fig. 26.3'}
       title="The Li-ion chemistry tree"
       question="LFP, NMC, NCA — what's the actual trade-off?"
       caption={

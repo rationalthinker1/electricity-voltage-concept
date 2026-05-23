@@ -154,7 +154,7 @@ export default function Ch18Optics() {
         .
       </p>
 
-      <SnellsLawDemo />
+      <SnellsLawDemo figure="Fig. 18.1" />
 
       <p className="mb-prose-3">
         The 2D picture is the standard textbook diagram, but it hides a structural fact worth
@@ -169,7 +169,7 @@ export default function Ch18Optics() {
         refraction triangle pops back out.
       </p>
 
-      <SnellLaw3DDemo />
+      <SnellLaw3DDemo figure="Fig. 18.2" />
 
       <TryIt
         tag="Try 18.1"
@@ -248,7 +248,7 @@ export default function Ch18Optics() {
         designer does.
       </p>
 
-      <LensFocusingDemo />
+      <LensFocusingDemo figure="Fig. 18.8" />
 
       <TryIt
         tag="Try 18.1b"
@@ -313,7 +313,7 @@ export default function Ch18Optics() {
         earlier.
       </p>
 
-      <DispersionDemo />
+      <DispersionDemo figure="Fig. 18.3" />
 
       <p className="mb-prose-3">
         The microscopic reason n depends on frequency is straightforward classical mechanics: an
@@ -406,7 +406,7 @@ export default function Ch18Optics() {
         <Cite id="brewster-1815" in={SOURCES} />.
       </p>
 
-      <BrewsterAngleDemo />
+      <BrewsterAngleDemo figure="Fig. 18.4" />
 
       <p className="mb-prose-3">
         At Brewster's angle the reflected ray is completely <InlineMath tex="s" />-polarised: an unpolarised beam (sun, light bulb, sky) splits into a fully-polarised
@@ -436,7 +436,7 @@ export default function Ch18Optics() {
         <Cite id="hecht-2017" in={SOURCES} />.
       </p>
 
-      <PolarizationMalusLawDemo />
+      <PolarizationMalusLawDemo figure="Fig. 18.10" />
 
       <TryIt
         tag="Try 18.3"
@@ -494,7 +494,7 @@ export default function Ch18Optics() {
         were the strongest early evidence that light had a wave nature.
       </p>
 
-      <ThinFilmDemo />
+      <ThinFilmDemo figure="Fig. 18.5" />
 
       <p className="mb-prose-3">
         The other consequence of Snell's law worth pulling out:{' '}
@@ -519,7 +519,7 @@ export default function Ch18Optics() {
         <Cite id="hecht-2017" in={SOURCES} />.
       </p>
 
-      <FiberOpticDemo />
+      <FiberOpticDemo figure="Fig. 18.6" />
 
       <TryIt
         tag="Try 18.4"
@@ -594,7 +594,7 @@ export default function Ch18Optics() {
         <Cite id="born-wolf-1999" in={SOURCES} />.
       </p>
 
-      <DoubleSlitDemo />
+      <DoubleSlitDemo figure="Fig. 18.7" />
 
       <TryIt
         tag="Try 18.5"
@@ -637,7 +637,7 @@ export default function Ch18Optics() {
         <Cite id="born-wolf-1999" in={SOURCES} />.
       </p>
 
-      <DiffractionGratingDemo />
+      <DiffractionGratingDemo figure="Fig. 18.9" />
 
       <TryIt
         tag="Try 18.5b"
@@ -698,7 +698,7 @@ export default function Ch18Optics() {
         semiconductor lasers followed; within years, the technology had escaped the lab.
       </p>
 
-      <LaserCavityDemo />
+      <LaserCavityDemo figure="Fig. 18.11" />
 
       <p className="mb-prose-3">
         Three ingredients are needed for any laser: (1) a{' '}

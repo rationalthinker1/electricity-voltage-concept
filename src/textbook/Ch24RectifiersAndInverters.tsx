@@ -23,7 +23,7 @@ import { FlybackConverterDemo } from './demos/FlybackConverter';
 import { PWMInverterOutputDemo } from './demos/PWMInverterOutput';
 import { getChapter } from './data/chapters';
 
-export default function Ch19RectifiersAndInverters() {
+export default function Ch24RectifiersAndInverters() {
   const chapter = getChapter('rectifiers-and-inverters')!;
   const SOURCES = chapter.sources;
 
@@ -156,7 +156,7 @@ export default function Ch19RectifiersAndInverters() {
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <DiodeCharacteristicDemo />
+      <DiodeCharacteristicDemo figure="Fig. 24.1" />
 
       <p className="mb-prose-3">
         Sweep V on the plot. The Si curve barely conducts until ~0.6 V, then climbs almost
@@ -275,7 +275,7 @@ export default function Ch19RectifiersAndInverters() {
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <BridgeRectifierDemo />
+      <BridgeRectifierDemo figure="Fig. 24.2" />
 
       <p className="mb-prose-3">
         Crank up C and the orange trace flattens out. Drop R<sub>load</sub> (more current) and
@@ -284,7 +284,7 @@ export default function Ch19RectifiersAndInverters() {
       </p>
 
       <TryIt
-        tag="Try 19.1"
+        tag='Try 24.1'
         question={
           <>
             A bridge rectifier feeds a <strong className="text-text font-medium">1000 µF</strong>{' '}
@@ -315,7 +315,7 @@ export default function Ch19RectifiersAndInverters() {
       />
 
       <TryIt
-        tag="Try 19.7"
+        tag='Try 24.7'
         question={
           <>
             The same <strong className="text-text font-medium">1000 µF</strong> smoothing cap, but
@@ -415,10 +415,10 @@ export default function Ch19RectifiersAndInverters() {
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <LinearRegulatorDemo />
+      <LinearRegulatorDemo figure="Fig. 24.3" />
 
       <TryIt
-        tag="Try 19.2"
+        tag='Try 24.2'
         question={
           <>
             An LM7805 takes <strong className="text-text font-medium">12 V</strong> in and supplies{' '}
@@ -541,10 +541,10 @@ export default function Ch19RectifiersAndInverters() {
         magnitude better than a linear regulator at the same step-down ratio.
       </p>
 
-      <BuckConverterDemo />
+      <BuckConverterDemo figure="Fig. 24.4" />
 
       <TryIt
-        tag="Try 19.3"
+        tag='Try 24.3'
         question={
           <>
             A buck converter takes <strong className="text-text font-medium">12 V</strong> in and
@@ -597,7 +597,7 @@ export default function Ch19RectifiersAndInverters() {
       </p>
 
       <TryIt
-        tag="Try 19.4"
+        tag='Try 24.4'
         question={
           <>
             A boost converter runs at <strong className="text-text font-medium">75 %</strong> duty
@@ -625,10 +625,10 @@ export default function Ch19RectifiersAndInverters() {
         }
       />
 
-      <BoostConverterDemo />
+      <BoostConverterDemo figure="Fig. 24.7" />
 
       <TryIt
-        tag="Try 19.6"
+        tag='Try 24.6'
         question={
           <>
             A buck converter takes{' '}
@@ -689,7 +689,7 @@ export default function Ch19RectifiersAndInverters() {
         <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />.
       </p>
 
-      <FlybackConverterDemo />
+      <FlybackConverterDemo figure="Fig. 24.8" />
 
       <p className="mb-prose-3">
         High-power AC chopping is the territory of one more device family. In 1956 a Bell Labs team
@@ -820,9 +820,9 @@ export default function Ch19RectifiersAndInverters() {
         during faults.
       </p>
 
-      <HBridgeInverterDemo />
+      <HBridgeInverterDemo figure="Fig. 24.5" />
 
-      <PWMInverterOutputDemo />
+      <PWMInverterOutputDemo figure="Fig. 24.9" />
 
       <p className="mb-prose-3">
         The two sliders in the spectrum view tell the engineering story. Raise the carrier frequency
@@ -837,7 +837,7 @@ export default function Ch19RectifiersAndInverters() {
       </p>
 
       <TryIt
-        tag="Try 19.5"
+        tag='Try 24.5'
         question={
           <>
             An H-bridge inverter delivers a{' '}
@@ -892,7 +892,7 @@ export default function Ch19RectifiersAndInverters() {
         over-voltage events — the "smart inverter" functionality required by IEEE 1547-2018.
       </p>
 
-      <GridTieInverterDemo />
+      <GridTieInverterDemo figure="Fig. 24.6" />
 
       <p className="mb-prose-3">
         Two non-obvious requirements come bundled with grid-tie operation. The first is{' '}
@@ -985,7 +985,7 @@ export default function Ch19RectifiersAndInverters() {
 
       <CaseStudies intro="Four working systems where this chapter's physics is the entire architecture.">
         <CaseStudy
-          tag="Case 19.1"
+          tag='Case 24.1'
           title="The brick on your laptop cord"
           summary={
             <>
@@ -1051,7 +1051,7 @@ export default function Ch19RectifiersAndInverters() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 19.2"
+          tag='Case 24.2'
           title="The Tesla Model S traction inverter"
           summary={
             <>
@@ -1092,7 +1092,7 @@ export default function Ch19RectifiersAndInverters() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 19.3"
+          tag='Case 24.3'
           title="A 5 kW residential solar string inverter"
           summary={
             <>
@@ -1145,7 +1145,7 @@ export default function Ch19RectifiersAndInverters() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 19.4"
+          tag='Case 24.4'
           title="The Pacific DC Intertie"
           summary={
             <>

@@ -327,7 +327,7 @@ export function RCTransientDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 10.2'}
+      figure={figure ?? 'Fig. 12.2'}
       title="The RC transient"
       question="How fast does the capacitor charge? — answer: τ = RC."
       caption={

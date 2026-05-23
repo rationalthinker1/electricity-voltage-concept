@@ -29,7 +29,7 @@ import { HighFrequencyTransformerDemo } from './demos/HighFrequencyTransformer';
 import { TransformerFlux3DDemo } from './demos/TransformerFlux3D';
 import { getChapter } from './data/chapters';
 
-export default function Ch18Transformers() {
+export default function Ch23Transformers() {
   const chapter = getChapter('transformers')!;
   const SOURCES = chapter.sources;
 
@@ -161,7 +161,7 @@ export default function Ch18Transformers() {
         primitive.
       </p>
 
-      <TurnsRatioDemo />
+      <TurnsRatioDemo figure="Fig. 23.2" />
 
       <p className="mb-prose-3">
         Notice what the picture says about <em className="text-text italic">energy</em>. The flux in
@@ -279,7 +279,7 @@ export default function Ch18Transformers() {
         other through the turns ratio; the product — power — is conserved.
       </p>
 
-      <TwoCoilTransformerDemo />
+      <TwoCoilTransformerDemo figure="Fig. 23.1" />
 
       <p className="mb-prose-3">
         Real transformers approach this ideal closely. A large utility power transformer runs at
@@ -292,7 +292,7 @@ export default function Ch18Transformers() {
       </p>
 
       <TryIt
-        tag="Try 18.1"
+        tag='Try 23.1'
         question={
           <>
             A pole-mounted distribution transformer steps{' '}
@@ -318,7 +318,7 @@ export default function Ch18Transformers() {
       />
 
       <TryIt
-        tag="Try 18.2"
+        tag='Try 23.2'
         question={
           <>
             A <strong className="text-text font-medium">60 W</strong> halogen lamp runs on the{' '}
@@ -357,7 +357,7 @@ export default function Ch18Transformers() {
       />
 
       <TryIt
-        tag="Try 18.5"
+        tag='Try 23.5'
         question={
           <>
             A step-up transformer raises <strong className="text-text font-medium">12 V</strong> to{' '}
@@ -445,10 +445,10 @@ export default function Ch18Transformers() {
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
 
-      <StanleyDemo />
+      <StanleyDemo figure="Fig. 23.3" />
 
       <TryIt
-        tag="Try 18.3"
+        tag='Try 23.3'
         question={
           <>
             Deliver <strong className="text-text font-medium">1 MW</strong> over a{' '}
@@ -538,7 +538,7 @@ export default function Ch18Transformers() {
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <ImpedanceReflectionDemo />
+      <ImpedanceReflectionDemo figure="Fig. 23.4" />
 
       <p className="mb-prose-3">
         The same principle drives every RF matching network, every switching-supply transformer
@@ -551,7 +551,7 @@ export default function Ch18Transformers() {
       </p>
 
       <TryIt
-        tag="Try 18.4"
+        tag='Try 23.4'
         question={
           <>
             An <strong className="text-text font-medium">8 Ω</strong> speaker is connected to a
@@ -610,7 +610,7 @@ export default function Ch18Transformers() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <AutotransformerDemo />
+      <AutotransformerDemo figure="Fig. 23.7" />
 
       <p className="mb-prose-3">
         For small voltage steps the saving is dramatic: a 2:1 (k = 0.5) autotransformer uses about
@@ -706,7 +706,7 @@ export default function Ch18Transformers() {
         </li>
       </ul>
 
-      <CoreLossesDemo />
+      <CoreLossesDemo figure="Fig. 23.5" />
 
       <p className="mb-prose-3">
         With the four loss mechanisms named, here is a designer's view of how the knobs interact.
@@ -715,7 +715,7 @@ export default function Ch18Transformers() {
         how the dominant loss flips from copper to core (and back) as you sweep frequency.
       </p>
 
-      <TransformerDesignerDemo />
+      <TransformerDesignerDemo figure="Fig. 23.10" />
 
       <p className="mb-prose-3">
         Adjacent to saturation lives one more practical non-ideality:{' '}
@@ -731,7 +731,7 @@ export default function Ch18Transformers() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <InRushCurrentDemo />
+      <InRushCurrentDemo figure="Fig. 23.8" />
 
       <p className="mb-prose-3">
         That spike is why the breaker upstream of a large transformer has an{' '}
@@ -745,7 +745,7 @@ export default function Ch18Transformers() {
       </p>
 
       <TryIt
-        tag="Try 18.6"
+        tag='Try 23.6'
         question={
           <>
             A 4 kVA transformer at <strong className="text-text font-medium">60 Hz</strong> is wound
@@ -800,7 +800,7 @@ export default function Ch18Transformers() {
         short-circuit protection mechanism on the grid.
       </p>
 
-      <TransformerFlux3DDemo />
+      <TransformerFlux3DDemo figure="Fig. 23.6" />
 
       <p className="mb-prose-3">
         Finally there is the <em className="text-text italic">magnetizing current</em> — the small
@@ -844,7 +844,7 @@ export default function Ch18Transformers() {
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
 
-      <GridHierarchyDemo />
+      <GridHierarchyDemo figure="Fig. 23.9" />
 
       <p className="mb-prose-3">
         Across this whole hierarchy the total transmission and distribution losses run around 5–8 %
@@ -867,7 +867,7 @@ export default function Ch18Transformers() {
         <Cite id="mclyman-2004" in={SOURCES} />.
       </p>
 
-      <HighFrequencyTransformerDemo />
+      <HighFrequencyTransformerDemo figure="Fig. 23.11" />
 
       <p className="mb-prose-3">
         This is the single trick behind the gram-scale phone charger in your bag, the 400 Hz
@@ -909,7 +909,7 @@ export default function Ch18Transformers() {
         }
       >
         <CaseStudy
-          tag="Case 18.1"
+          tag='Case 23.1'
           title="The pole-pig outside your house"
           summary="Single-phase 25 kVA pole-mounted distribution transformer; the last step before your wall outlet."
           specs={[
@@ -964,7 +964,7 @@ export default function Ch18Transformers() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 18.2"
+          tag='Case 23.2'
           title="The flyback inside your USB-C charger"
           summary="A high-frequency ferrite-core SMPS transformer barely larger than a postage stamp, switching at ~100 kHz."
           specs={[
@@ -1015,7 +1015,7 @@ export default function Ch18Transformers() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 18.3"
+          tag='Case 23.3'
           title="Substation step-down: 138 kV → 12.47 kV"
           summary="A typical distribution substation transformer, ~25 MVA, oil-filled, with on-load tap changer."
           specs={[
@@ -1069,7 +1069,7 @@ export default function Ch18Transformers() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 18.4"
+          tag='Case 23.4'
           title="Audio output transformer in a tube amp"
           summary="The matching transformer between a vacuum-tube power stage and an 8 Ω speaker — and the reason tube amps sound the way they sound."
           specs={[

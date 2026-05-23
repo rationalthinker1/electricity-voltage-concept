@@ -205,7 +205,7 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 8.4'}
+      figure={figure ?? 'Fig. 10.4'}
       title="Ampère–Maxwell law"
       question="If no current flows between the plates, why is there a B-field there?"
       caption={

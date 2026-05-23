@@ -158,7 +158,7 @@ export function RLCResonanceDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 10.4'}
+      figure={figure ?? 'Fig. 12.4'}
       title="Driven RLC — resonance and Q"
       question="Same circuit. Sweep ω. Why does current peak so sharply?"
       caption={

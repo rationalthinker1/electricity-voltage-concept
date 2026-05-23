@@ -4,10 +4,10 @@
  * Six sections, four embedded demos:
  *   7.1 Faraday's discovery
  *   7.2 The law (EMF = −dΦ/dt) and its consequences
- *   7.3 Move a magnet, get a voltage   → <MagnetThroughCoilDemo/>
- *   7.4 The minus sign — Lenz's law    → <LenzsLawDemo/>
- *   7.5 Spinning a coil = AC           → <RotatingCoilDemo/>
- *   7.6 Transformers                   → <TransformerDemo/>
+ *   7.3 Move a magnet, get a voltage   → <MagnetThroughCoilDemo figure="Fig. 7.3" />
+ *   7.4 The minus sign — Lenz's law    → <LenzsLawDemo figure="Fig. 7.4" />
+ *   7.5 Spinning a coil = AC           → <RotatingCoilDemo figure="Fig. 7.5" />
+ *   7.6 Transformers                   → <TransformerDemo figure="Fig. 7.6" />
  *
  * Cite only from chapter.sources. Match Ch1 voice.
  */
@@ -168,7 +168,7 @@ export default function Ch7Induction() {
         current come out.
       </p>
 
-      <MagnetThroughCoilDemo />
+      <MagnetThroughCoilDemo figure="Fig. 7.1" />
 
       <TryIt
         tag="Try 7.1"
@@ -249,9 +249,9 @@ export default function Ch7Induction() {
         gets the energy.
       </p>
 
-      <LenzsLawDemo />
+      <LenzsLawDemo figure="Fig. 7.2" />
 
-      <EddyCurrentTubeDemo />
+      <EddyCurrentTubeDemo figure="Fig. 7.7" />
 
       <Pullout>
         Magnetism never <em className="text-text italic">moves</em>; only the flux does. Move the
@@ -301,7 +301,7 @@ export default function Ch7Induction() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <RotatingCoilDemo />
+      <RotatingCoilDemo figure="Fig. 7.8" />
 
       <p className="mb-prose-3">
         The oscilloscope above tells you <em className="text-text italic">what</em> comes out the
@@ -324,7 +324,7 @@ export default function Ch7Induction() {
         <Cite id="feynman-II-17" in={SOURCES} />.
       </p>
 
-      <RotatingCoilFlux3DDemo />
+      <RotatingCoilFlux3DDemo figure="Fig. 7.9" />
 
       <TryIt
         tag="Try 7.2"
@@ -406,7 +406,7 @@ export default function Ch7Induction() {
         core and copper losses.
       </p>
 
-      <TransformerDemo />
+      <TransformerDemo figure="Fig. 7.10" />
 
       <TryIt
         tag="Try 7.3"

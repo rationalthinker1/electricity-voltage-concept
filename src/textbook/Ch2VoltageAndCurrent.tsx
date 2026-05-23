@@ -88,7 +88,7 @@ export default function Ch2VoltageAndCurrent() {
         to.
       </p>
 
-      <VoltageAsHeightDemo />
+      <VoltageAsHeightDemo figure="Fig. 2.1" />
 
       <h3 className="chapter-h3">The formal definition: a line integral of the field</h3>
 
@@ -154,7 +154,7 @@ export default function Ch2VoltageAndCurrent() {
         — just integrated and divided through by the charge.
       </p>
 
-      <VabWorkEnergyDemo />
+      <VabWorkEnergyDemo figure="Fig. 2.2" />
 
       <p className="mb-prose-3">
         The same three identities — <InlineMath tex="V_{ab} = V_b - V_a" />,{' '}
@@ -167,7 +167,7 @@ export default function Ch2VoltageAndCurrent() {
         same energy a negative charge of equal magnitude releases falling the other way.
       </p>
 
-      <VoltageDrivesFlowDemo />
+      <VoltageDrivesFlowDemo figure="Fig. 2.5" />
 
       <p className="mb-prose-3">
         That operational picture has a knob the reader can already turn. Hook a battery of voltage{' '}
@@ -480,7 +480,7 @@ export default function Ch2VoltageAndCurrent() {
           correctIds: ['d'],
         }}
       >
-        <DriftVelocityDemo />
+        <DriftVelocityDemo figure="Fig. 2.3" />
       </PredictThenObserve>
 
       <p className="mb-prose-3">
@@ -500,7 +500,7 @@ export default function Ch2VoltageAndCurrent() {
         rearranging — is what the next demo lets you watch.
       </p>
 
-      <CursorEFieldOnWireDemo />
+      <CursorEFieldOnWireDemo figure="Fig. 2.4" />
 
       <TryIt
         tag="Try 2.3"
@@ -562,7 +562,7 @@ export default function Ch2VoltageAndCurrent() {
       </p>
       <Formula tex="v_{\text{signal}} / v_{\text{drift}} \approx 2\times 10^{8} / 3\times 10^{-5} \approx 10^{13}" />
 
-      <TwoSpeedsDemo />
+      <TwoSpeedsDemo figure="Fig. 2.6" />
 
       <TryIt
         tag="Try 2.4"
@@ -616,7 +616,7 @@ export default function Ch2VoltageAndCurrent() {
         visible light, smaller than a red blood cell.
       </p>
 
-      <ACElectronJitterDemo />
+      <ACElectronJitterDemo figure="Fig. 2.7" />
 
       <p className="mb-prose-3">
         The same electron you started with stays essentially in place. It does not journey anywhere.
@@ -662,7 +662,7 @@ export default function Ch2VoltageAndCurrent() {
           correctIds: ['a'],
         }}
       >
-        <SwitchAndBulbDemo />
+        <SwitchAndBulbDemo figure="Fig. 2.8" />
       </PredictThenObserve>
 
       <p className="mb-prose-3">

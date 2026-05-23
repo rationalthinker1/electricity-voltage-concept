@@ -278,7 +278,7 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 6.1'}
+      figure={figure ?? 'Fig. 8.1'}
       title="Where does the energy go?"
       question="From battery to bulb — does the energy travel through the wire, or through the space around it?"
       caption={

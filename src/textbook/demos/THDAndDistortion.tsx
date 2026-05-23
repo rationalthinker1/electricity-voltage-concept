@@ -18,6 +18,10 @@ import { useSimState } from '@/lib/useSimState';
 const N_HARMONICS = 11;
 const N_INT = 1024; // samples per cycle for numerical integration
 
+interface Props {
+  figure?: string;
+}
+
 function clippedSineCoeffs(Aclip: number): number[] {
   // Returns [b_1, b_2, ..., b_N]
   const coeffs: number[] = [];
@@ -35,7 +39,7 @@ function clippedSineCoeffs(Aclip: number): number[] {
   return coeffs;
 }
 
-export function THDAndDistortionDemo() {
+export function THDAndDistortionDemo({ figure }: Props) {
   const [Aclip, setAclip] = useState(0.7);
   const stateRef = useSimState({ Aclip });
   // Coefficients + THD recomputed on slider change
@@ -104,7 +108,13 @@ export function THDAndDistortionDemo() {
       ctx.lineTo(w - padX, yDn);
       ctx.stroke();
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: 'time domain', x: padX, y: padY + 8, size: 9, font: '9px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: 'time domain',
+        x: padX,
+        y: padY + 8,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+      });
       const bMid = padY + halfH + halfH * 0.95 + 4;
       const bH = halfH * 0.85;
       ctx.strokeStyle = colors.border;
@@ -146,7 +156,7 @@ export function THDAndDistortionDemo() {
 
   return (
     <Demo
-      figure="Fig. 15.4"
+      figure={figure ?? 'Fig. 15.4'}
       title="Clipping and THD"
       question="As the clip level drops, how does the harmonic content grow?"
       caption={

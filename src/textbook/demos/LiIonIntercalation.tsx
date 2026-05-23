@@ -117,7 +117,7 @@ export function LiIonIntercalationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.2'}
+      figure={figure ?? 'Fig. 26.2'}
       title="Lithium-ion: ions that shuttle through a host"
       question="Why is Li-ion rechargeable when so many older chemistries weren't?"
       caption={

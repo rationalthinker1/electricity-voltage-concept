@@ -22,7 +22,7 @@ export function CFromMaxwellDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 8.5'}
+      figure={figure ?? 'Fig. 10.5'}
       title="Light, predicted"
       question="What speed do the four equations say a wave in vacuum must travel at?"
       caption={

@@ -104,7 +104,7 @@ export function SupercapacitorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.4'}
+      figure={figure ?? 'Fig. 26.4'}
       title="Supercapacitor: a field, not a reaction"
       question="Why does a supercap's voltage fall linearly while a battery's stays flat?"
       caption={

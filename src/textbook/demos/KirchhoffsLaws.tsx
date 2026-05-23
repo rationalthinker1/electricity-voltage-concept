@@ -316,7 +316,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 10.1'}
+      figure={figure ?? 'Fig. 12.1'}
       title="Kirchhoff's two laws on a two-loop network"
       question="Toggle KCL / KVL — every equation balances, every time."
       caption={

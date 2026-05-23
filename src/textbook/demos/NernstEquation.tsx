@@ -106,7 +106,7 @@ export function NernstEquationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.3'}
+      figure={figure ?? 'Fig. 25.3'}
       title="The Nernst equation"
       question="How does ion concentration shift the cell voltage?"
       caption={

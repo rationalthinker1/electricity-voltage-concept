@@ -127,7 +127,7 @@ export function VoltaicPileDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.1'}
+      figure={figure ?? 'Fig. 25.1'}
       title="Volta's pile, 1800"
       question="How does a stack of Zn and Cu produce sustained current?"
       caption={

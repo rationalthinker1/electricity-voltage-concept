@@ -104,7 +104,7 @@ export function TurnsRatioDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.2'}
+      figure={figure ?? 'Fig. 23.2'}
       title="Turns ratio sets the voltage scale"
       question="One knob. The secondary scales. The frequency and phase don't."
       caption={

@@ -17,9 +17,13 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
-export function FiberLinkBudgetDemo() {
+interface Props {
+  figure?: string;
+}
+
+export function FiberLinkBudgetDemo({ figure }: Props) {
   const [launchDbm, setLaunchDbm] = useState(0); // dBm launched at TX
   const [alpha, setAlpha] = useState(0.22); // dB/km fiber loss
   const [extraLoss, setExtraLoss] = useState(2); // dB connectors + splices total
@@ -59,7 +63,13 @@ export function FiberLinkBudgetDemo() {
       ctx.lineTo(padL + plotW, yRx);
       ctx.stroke();
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: `Rx sens ${rxSens.toFixed(0)} dBm`, x: padL + 6, y: yRx - 4, color: colors.pink, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: `Rx sens ${rxSens.toFixed(0)} dBm`,
+        x: padL + 6,
+        y: yRx - 4,
+        color: colors.pink,
+        font: '10px "JetBrains Mono", monospace',
+      });
       const pAtZero = launchDbm - extraLoss;
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.8;
@@ -82,7 +92,13 @@ export function FiberLinkBudgetDemo() {
         ctx.lineTo(xR, padT + plotH);
         ctx.stroke();
         ctx.setLineDash([]);
-        drawLabel(ctx, { text: `reach ${reach.toFixed(0)} km`, x: xR, y: padT + 12, color: colors.teal, align: 'center' });
+        drawLabel(ctx, {
+          text: `reach ${reach.toFixed(0)} km`,
+          x: xR,
+          y: padT + 12,
+          color: colors.teal,
+          align: 'center',
+        });
       }
       ctx.fillStyle = colors.textMuted;
       ctx.textAlign = 'center';
@@ -105,7 +121,7 @@ export function FiberLinkBudgetDemo() {
 
   return (
     <Demo
-      figure="Fig. 42.3"
+      figure={figure ?? 'Fig. 42.3'}
       title="The fiber-optic link budget, end to end"
       question="How far can a 1 mW laser drive a fiber before the receiver loses lock?"
       caption={

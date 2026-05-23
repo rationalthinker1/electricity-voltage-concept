@@ -280,7 +280,7 @@ export default function Ch28HousePanel() {
         exactly once.
       </p>
 
-      <PanelBus3DDemo />
+      <PanelBus3DDemo figure="Fig. 28.1" />
 
       <h2 className="chapter-h2">The three breaker species: standard, GFCI, AFCI</h2>
 

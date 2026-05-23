@@ -178,7 +178,7 @@ export function GridHierarchyDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.6'}
+      figure={figure ?? 'Fig. 23.6'}
       title="The grid as a stack of transformers"
       question="From power plant to wall outlet: how many transformers, what voltages?"
       caption={

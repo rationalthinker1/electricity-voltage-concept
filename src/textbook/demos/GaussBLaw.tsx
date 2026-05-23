@@ -180,7 +180,7 @@ export function GaussBLawDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 8.2'}
+      figure={figure ?? 'Fig. 10.2'}
       title="Gauss's law for B"
       question="What goes in must come out — for every B-field line, always."
       caption={

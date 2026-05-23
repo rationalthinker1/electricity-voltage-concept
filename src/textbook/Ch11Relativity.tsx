@@ -86,7 +86,7 @@ export default function Ch11Relativity() {
         <strong className="text-text font-medium">The test charge feels nothing.</strong>
       </p>
 
-      <WireFromRestDemo />
+      <WireFromRestDemo figure="Fig. 11.1" />
 
       <p className="mb-prose-3">
         So far so good. Now imagine the test charge had a small velocity along the wire — same
@@ -155,7 +155,7 @@ export default function Ch11Relativity() {
         <InlineMath>F = q · λ' / (2π ε₀ d)</InlineMath>.
       </p>
 
-      <WireFromMovingFrameDemo />
+      <WireFromMovingFrameDemo figure="Fig. 11.2" />
 
       <h2 className="chapter-h2">
         The numbers work out <em>exactly</em>
@@ -319,7 +319,7 @@ export default function Ch11Relativity() {
         §9 of his 1905 paper <Cite id="einstein-1905" in={SOURCES} />.
       </p>
 
-      <EBTransformDemo />
+      <EBTransformDemo figure="Fig. 11.3" />
 
       <p className="mb-prose-3">
         The tensor is not just a notational trick. Two{' '}
@@ -351,7 +351,7 @@ export default function Ch11Relativity() {
         frame-dependent; these two combinations are not.
       </p>
 
-      <FieldTensorDemo />
+      <FieldTensorDemo figure="Fig. 11.4" />
 
       <h2 className="chapter-h2">
         What this <em>means</em>

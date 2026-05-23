@@ -19,6 +19,10 @@ import { useSimState } from '@/lib/useSimState';
 
 type Wave = 'sine' | 'square' | 'triangle' | 'sawtooth' | 'half-rect' | 'full-rect';
 
+interface Props {
+  figure?: string;
+}
+
 interface Bar {
   n: number;
   amp: number;
@@ -89,7 +93,7 @@ function timeDomain(wave: Wave, phase: number): number {
   }
 }
 
-export function FourierSpectrumDemo() {
+export function FourierSpectrumDemo({ figure }: Props) {
   const [wave, setWave] = useState<Wave>('square');
   const stateRef = useSimState({ wave });
 
@@ -202,7 +206,7 @@ export function FourierSpectrumDemo() {
 
   return (
     <Demo
-      figure="Fig. 15.2"
+      figure={figure ?? 'Fig. 15.2'}
       title="Spectrum of a periodic wave"
       question="What harmonics are inside each of these waveforms?"
       caption={

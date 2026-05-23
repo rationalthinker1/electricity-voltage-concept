@@ -155,7 +155,7 @@ export default function Ch12CircuitsAndAC() {
         <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
       </p>
 
-      <KirchhoffsLawsDemo />
+      <KirchhoffsLawsDemo figure="Fig. 12.1" />
 
       <p className="mb-prose-3">
         Crank the sliders and the equations stay balanced to numerical precision. The deeper
@@ -192,7 +192,7 @@ export default function Ch12CircuitsAndAC() {
         when you need a 3.3 V rail from a 5 V supply and don't yet care that it will be lossy.
       </p>
 
-      <VoltageDividerDemo />
+      <VoltageDividerDemo figure="Fig. 12.2" />
 
       <p className="mb-prose-3">
         Pure-divider behaviour holds only when nothing is connected to the output. The moment you
@@ -295,7 +295,7 @@ export default function Ch12CircuitsAndAC() {
         the two probe tips.
       </p>
 
-      <MultimeterProbeDemo />
+      <MultimeterProbeDemo figure="Fig. 12.7" />
 
       <p className="mb-prose-3">
         Try V_DC with red on TP1 and black on GND: you get the 8.66 V drop across the bottom
@@ -374,7 +374,7 @@ export default function Ch12CircuitsAndAC() {
           correctIds: ['c'],
         }}
       >
-        <RCTransientDemo />
+        <RCTransientDemo figure="Fig. 12.3" />
       </PredictThenObserve>
 
       <p className="mb-prose-3">
@@ -482,7 +482,7 @@ export default function Ch12CircuitsAndAC() {
           correctIds: ['b'],
         }}
       >
-        <LCOscillationDemo />
+        <LCOscillationDemo figure="Fig. 12.4" />
       </PredictThenObserve>
 
       <p className="mb-prose-3">
@@ -610,7 +610,7 @@ export default function Ch12CircuitsAndAC() {
           correctIds: ['a'],
         }}
       >
-        <RLCResonanceDemo />
+        <RLCResonanceDemo figure="Fig. 12.5" />
       </PredictThenObserve>
 
       <TryIt
@@ -761,7 +761,7 @@ export default function Ch12CircuitsAndAC() {
         <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
       </p>
 
-      <ImpedanceDemo />
+      <ImpedanceDemo figure="Fig. 12.6" />
 
       <p className="mb-prose-3">
         Slide <InlineMath tex="\omega" />. At low frequencies, <InlineMath tex="1/(\omega C)" />{' '}
@@ -939,7 +939,7 @@ export default function Ch12CircuitsAndAC() {
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
 
-      <PowerFactorDemo />
+      <PowerFactorDemo figure="Fig. 12.8" />
 
       <p className="mb-prose-3">
         The shaded area under p(t) — the energy actually delivered each cycle — is exactly the
@@ -1035,7 +1035,7 @@ export default function Ch12CircuitsAndAC() {
         produces a rotating magnetic field automatically — no starting circuitry required.
       </p>
 
-      <ThreePhaseDemo />
+      <ThreePhaseDemo figure="Fig. 12.9" />
 
       <p className="mb-prose-3">
         Almost every high-power industrial appliance in the world runs on three-phase. The
@@ -1096,9 +1096,9 @@ export default function Ch12CircuitsAndAC() {
         <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
       </p>
 
-      <SuperpositionDemo />
+      <SuperpositionDemo figure="Fig. 12.10" />
 
-      <TheveninEquivalentDemo />
+      <TheveninEquivalentDemo figure="Fig. 12.11" />
 
       <p className="mb-prose-3">
         Why is this useful? Because the moment a network is reduced to (V<sub>th</sub>, R

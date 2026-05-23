@@ -122,9 +122,9 @@ export default function Ch6Magnetism() {
         years of Ørsted's compass. The pace of 1820s electromagnetism was extraordinary.
       </p>
 
-      <WireBFieldDemo />
+      <WireBFieldDemo figure="Fig. 6.1" />
 
-      <BiotSavartWire3DDemo />
+      <BiotSavartWire3DDemo figure="Fig. 6.2" />
 
       <TryIt
         tag="Try 6.1"
@@ -218,7 +218,7 @@ export default function Ch6Magnetism() {
         <Cite id="ampere-1826" in={SOURCES} />.
       </p>
 
-      <TwoParallelWiresDemo />
+      <TwoParallelWiresDemo figure="Fig. 6.3" />
 
       <TryIt
         tag="Try 6.2"
@@ -331,7 +331,7 @@ export default function Ch6Magnetism() {
         atmosphere along the way <Cite id="feynman-II-13" in={SOURCES} />.
       </p>
 
-      <CyclotronDemo />
+      <CyclotronDemo figure="Fig. 6.4" />
 
       <TryIt
         tag="Try 6.3"
@@ -449,7 +449,7 @@ export default function Ch6Magnetism() {
         s: field lines always close on themselves.
       </p>
 
-      <SolenoidDemo />
+      <SolenoidDemo figure="Fig. 6.5" />
 
       <p className="mb-prose-3">
         This is the simplest practical electromagnet. Wrap a few hundred turns of wire around a

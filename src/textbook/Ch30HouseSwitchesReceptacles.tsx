@@ -597,7 +597,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         break the wrong leg.
       </p>
 
-      <ThreeWaySwitchBuilderDemo />
+      <ThreeWaySwitchBuilderDemo figure="Fig. 30.4" />
 
       <p className="mb-prose-3">
         For three or more switches controlling a single load — a stairwell with a switch at the top,

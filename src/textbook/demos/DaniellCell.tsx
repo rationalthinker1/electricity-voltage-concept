@@ -148,7 +148,7 @@ export function DaniellCellDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.2'}
+      figure={figure ?? 'Fig. 25.2'}
       title="The Daniell cell"
       question="What chemistry produces a steady 1.10 V?"
       caption={

@@ -132,7 +132,7 @@ export default function Ch17Materials() {
         rotates toward alignment with the field.
       </p>
 
-      <DipoleInFieldDemo />
+      <DipoleInFieldDemo figure="Fig. 17.1" />
 
       <p className="mb-prose-3">
         That field of tilted dipoles is the material's{' '}
@@ -234,7 +234,7 @@ export default function Ch17Materials() {
         <Cite id="clausius-1850" in={SOURCES} />.
       </p>
 
-      <DipoleAlignment3DDemo />
+      <DipoleAlignment3DDemo figure="Fig. 17.3" />
 
       <p className="mb-prose-3">
         Drag the block to rotate it. At{' '}
@@ -262,7 +262,7 @@ export default function Ch17Materials() {
         capacitor and watch what changes.
       </p>
 
-      <DielectricBetweenPlatesDemo />
+      <DielectricBetweenPlatesDemo figure="Fig. 17.2" />
 
       <p className="mb-prose-3">
         Two things happen at once. The bound charge that appears on the dielectric's faces partially
@@ -372,7 +372,7 @@ export default function Ch17Materials() {
         cloud at all — the molecule just rotates.
       </p>
 
-      <WhyWaterPolarizesDemo />
+      <WhyWaterPolarizesDemo figure="Fig. 17.4" />
 
       <p className="mb-prose-3">
         Debye worked out the full theory in 1929 <Cite id="debye-1929" in={SOURCES} />. At zero
@@ -432,7 +432,7 @@ export default function Ch17Materials() {
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <ImageChargeField3DDemo />
+      <ImageChargeField3DDemo figure="Fig. 17.7" />
 
       <p className="mb-prose-3">
         Drag the scene to orbit. Every field line leaving{' '}
@@ -540,7 +540,7 @@ export default function Ch17Materials() {
         This is the regime where you can feel the force with your fingers.
       </p>
 
-      <ParamagnetVsDiamagnetDemo />
+      <ParamagnetVsDiamagnetDemo figure="Fig. 17.5" />
 
       <TryIt
         tag="Try 17.3"
@@ -634,7 +634,7 @@ export default function Ch17Materials() {
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <FerromagnetDemo />
+      <FerromagnetDemo figure="Fig. 17.6" />
 
       <p className="mb-prose-3">
         Trace one full B sweep and the M-vs-B curve closes a loop — the{' '}
@@ -805,7 +805,7 @@ export default function Ch17Materials() {
         ). All four numbers are unitless ratios of the material's response to the applied field.
       </p>
 
-      <SusceptibilityDemo />
+      <SusceptibilityDemo figure="Fig. 17.8" />
 
       <p className="mb-prose-3">
         Three or four orders of magnitude separate "air, basically vacuum" from "water, surprisingly

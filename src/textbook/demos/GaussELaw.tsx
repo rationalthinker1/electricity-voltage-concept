@@ -115,7 +115,7 @@ export function GaussELawDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 8.1'}
+      figure={figure ?? 'Fig. 10.1'}
       title="Gauss's law for E"
       question="What does ∮E·dA = Q/ε₀ actually look like?"
       caption={

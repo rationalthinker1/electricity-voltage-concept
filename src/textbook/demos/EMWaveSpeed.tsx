@@ -162,7 +162,7 @@ export function EMWaveSpeedDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 8.6'}
+      figure={figure ?? 'Fig. 10.6'}
       title="Wave speed from ε₀ and μ₀"
       question="What happens to the wave when you change the vacuum constants?"
       caption={

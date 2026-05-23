@@ -197,7 +197,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.1'}
+      figure={figure ?? 'Fig. 23.1'}
       title="Two coils, one core, a loaded secondary"
       question="Move N_p, N_s, V_p, R_load. Watch where the power goes."
       caption={

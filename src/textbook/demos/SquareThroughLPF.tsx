@@ -18,7 +18,11 @@ import { useSimState } from '@/lib/useSimState';
 const N_HARMONICS = 25;
 const f0 = 1; // fundamental (arbitrary units)
 
-export function SquareThroughLPFDemo() {
+interface Props {
+  figure?: string;
+}
+
+export function SquareThroughLPFDemo({ figure }: Props) {
   const [fcRatio, setFcRatio] = useState(3); // f_c in units of f0
 
   const stateRef = useSimState({ fcRatio });
@@ -105,8 +109,22 @@ export function SquareThroughLPFDemo() {
           ctx.lineTo(xc, my + half);
           ctx.stroke();
           ctx.setLineDash([]);
-          drawLabel(ctx, { text: `f_c = ${fcRatio.toFixed(1)}·f₀`, x: xc + 4, y: my - half + 12, color: colors.accent, size: 9, font: '9px "JetBrains Mono", monospace' });
-          drawLabel(ctx, { text: '|H(f)|', x: w - padX - 2, y: my + half - 4, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right' });
+          drawLabel(ctx, {
+            text: `f_c = ${fcRatio.toFixed(1)}·f₀`,
+            x: xc + 4,
+            y: my - half + 12,
+            color: colors.accent,
+            size: 9,
+            font: '9px "JetBrains Mono", monospace',
+          });
+          drawLabel(ctx, {
+            text: '|H(f)|',
+            x: w - padX - 2,
+            y: my + half - 4,
+            size: 9,
+            font: '9px "JetBrains Mono", monospace',
+            align: 'right',
+          });
         },
         'filter |H(f)|',
       );
@@ -139,7 +157,7 @@ export function SquareThroughLPFDemo() {
 
   return (
     <Demo
-      figure="Fig. 15.3"
+      figure={figure ?? 'Fig. 15.3'}
       title="Square wave through a low-pass filter"
       question="What does the corner-frequency slider do to the output shape?"
       caption={

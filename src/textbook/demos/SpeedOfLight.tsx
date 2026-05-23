@@ -86,7 +86,7 @@ export function SpeedOfLightDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 7.1'}
+      figure={figure ?? 'Fig. 9.1'}
       title="Maxwell's prediction · v = 1/√(εᵣ μᵣ ε₀ μ₀)"
       question="What sets the speed of light?"
       caption={

@@ -9,6 +9,14 @@ memory: project
 
 You audit one Field·Theory chapter file **and the demo files it embeds** for code-pattern issues. You do NOT edit. You return two markdown sections; the caller stitches them in.
 
+## Tool choice
+
+This agent is audit-only. `Grep`/`Bash` are the right tools for the surface scans you run — they're leaner than spinning up a `ts-morph` Project. When the orchestrator follows a finding up with a fix-write agent (canvas-color-tokenizer, math-typesetter, pullout-converter, demo-rAF-migrator, equation-strip-adder, local-formatter-consolidator, chapter-tag-bumper), that agent will reach for `scripts/lib/jsx-codemod.ts` itself; you don't need to.
+
+## Not-bugs to ignore (don't false-positive on these)
+
+- **`<InlineMath id="…" />` and `<Formula id="…" />` are valid.** Both components accept an `id={FormulaId}` prop as an alternative to `tex=`; the id resolves against the registry in `src/lib/formulas.ts`. These are *not* missing-tex bugs — they're the canonical registry-lookup form. Verify the id exists in `src/lib/formulas.ts` if you want to be careful, but never flag the *form*. Example: `<InlineMath id="force-on-wire" />` and `<Formula id="faraday-law" />` are both correct.
+
 ## What you check
 
 ### Rule A — In-demo equation displays (CLAUDE.md §6b)

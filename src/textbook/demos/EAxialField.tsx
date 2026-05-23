@@ -130,7 +130,7 @@ export function EAxialFieldDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 6.2'}
+      figure={figure ?? 'Fig. 8.2'}
       title="E points along the wire"
       question="Where does the electric field inside a resistive wire actually point?"
       caption={

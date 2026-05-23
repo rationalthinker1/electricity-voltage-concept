@@ -80,7 +80,7 @@ export default function Ch8EnergyFlow() {
         electromagnetic disturbance through the material surrounding a copper wire.
       </p>
 
-      <BatteryBulbFieldsDemo />
+      <BatteryBulbFieldsDemo figure="Fig. 8.1" />
 
       <p className="mb-prose-3">
         Three physical fields are present in the picture above, and the demo lets you toggle each
@@ -99,7 +99,7 @@ export default function Ch8EnergyFlow() {
         copper, not along its interior.
       </p>
 
-      <WhereDoesEnergyFlowDemo />
+      <WhereDoesEnergyFlowDemo figure="Fig. 8.2" />
 
       <p className="mb-prose-3">
         The contrast in the demo above is a cartoon, but the cartoon is the entire chapter in
@@ -142,7 +142,7 @@ export default function Ch8EnergyFlow() {
         drifting charge against the friction of the lattice. Drop the field, the current stops.
       </p>
 
-      <EAxialFieldDemo />
+      <EAxialFieldDemo figure="Fig. 8.3" />
 
       <p className="mb-prose-3">
         Second, a magnetic field circling the wire. From Chapter&nbsp;6, Ampère's law tells you that
@@ -165,7 +165,7 @@ export default function Ch8EnergyFlow() {
         identified.
       </p>
 
-      <BCirculationDemo />
+      <BCirculationDemo figure="Fig. 8.4" />
 
       <p className="mb-prose-3">
         Two fields, perpendicular to each other, present everywhere along a current-carrying wire.
@@ -341,7 +341,7 @@ export default function Ch8EnergyFlow() {
           </>
         )}
       >
-        <PoyntingInflowDemo />
+        <PoyntingInflowDemo figure="Fig. 8.5" />
       </PredictThenObserve>
 
       <p className="mb-prose-3">
@@ -369,7 +369,7 @@ export default function Ch8EnergyFlow() {
         <Cite id="feynman-II-27" in={SOURCES} />.
       </p>
 
-      <PoyntingCoax3DDemo />
+      <PoyntingCoax3DDemo figure="Fig. 8.6" />
 
       <TryIt
         tag="Try 8.1"
@@ -514,7 +514,7 @@ export default function Ch8EnergyFlow() {
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <SuperconductorLimitDemo />
+      <SuperconductorLimitDemo figure="Fig. 8.7" />
 
       <p className="mb-prose-3">
         Resistance, then, is what couples the field to the lattice. It is the mechanism by which the

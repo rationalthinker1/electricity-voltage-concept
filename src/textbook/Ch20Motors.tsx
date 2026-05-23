@@ -139,7 +139,7 @@ export default function Ch20Motors() {
         }
       />
 
-      <BrushedDCMotorDemo />
+      <BrushedDCMotorDemo figure="Fig. 20.1" />
 
       <h2 className="chapter-h2">The brushed DC motor</h2>
 
@@ -206,7 +206,7 @@ export default function Ch20Motors() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <BackEMFInRunningMotorDemo />
+      <BackEMFInRunningMotorDemo figure="Fig. 20.7" />
 
       <TryIt
         tag="Try 20.2"
@@ -278,7 +278,7 @@ export default function Ch20Motors() {
         <Cite id="krishnan-2010-bldc" in={SOURCES} />.
       </p>
 
-      <BLDCCommutationDemo />
+      <BLDCCommutationDemo figure="Fig. 20.2" />
 
       <p className="mb-prose-3">
         The full-fat version is called the{' '}
@@ -309,7 +309,7 @@ export default function Ch20Motors() {
         <Cite id="krishnan-2010-bldc" in={SOURCES} />.
       </p>
 
-      <FieldOrientedControlDemo />
+      <FieldOrientedControlDemo figure="Fig. 20.8" />
 
       <TryIt
         tag="Try 20.3"
@@ -392,7 +392,7 @@ export default function Ch20Motors() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <RotatingMagField3DDemo />
+      <RotatingMagField3DDemo figure="Fig. 20.3" />
 
       <p className="mb-prose-3">
         It is worth pausing on the algebraic miracle that makes the three-phase trick work. Each
@@ -410,7 +410,7 @@ export default function Ch20Motors() {
         <Cite id="tesla-1888" in={SOURCES} />.
       </p>
 
-      <InductionMotorSlipDemo />
+      <InductionMotorSlipDemo figure="Fig. 20.4" />
 
       <p className="mb-prose-3">
         Here is the subtle point. If the rotor ever caught up exactly to synchronous speed, the
@@ -506,7 +506,7 @@ export default function Ch20Motors() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <SynchronousMotorDemo />
+      <SynchronousMotorDemo figure="Fig. 20.5" />
 
       <p className="mb-prose-3">
         Synchronous motors are where you need precise speed: the spindle in a hard drive, the
@@ -536,7 +536,7 @@ export default function Ch20Motors() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <StepperMotorDemo />
+      <StepperMotorDemo figure="Fig. 20.6" />
 
       <h2 className="chapter-h2">Torque, speed, and matching to a load</h2>
 
@@ -547,7 +547,7 @@ export default function Ch20Motors() {
         intersection with the load's mechanical impedance lies at the operating point they want.
       </p>
 
-      <TorqueSpeedCurveDemo />
+      <TorqueSpeedCurveDemo figure="Fig. 20.9" />
 
       <p className="mb-prose-3">
         The DC brushed motor has a roughly linear curve: maximum torque at stall (zero speed, full
@@ -644,7 +644,7 @@ export default function Ch20Motors() {
         chapter.
       </p>
 
-      <MotorEfficiencyMapDemo />
+      <MotorEfficiencyMapDemo figure="Fig. 20.10" />
 
       <CaseStudies
         intro={

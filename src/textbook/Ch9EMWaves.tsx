@@ -211,7 +211,7 @@ export default function Ch9EMWaves() {
         <Cite id="maxwell-1865" in={SOURCES} />
       </p>
 
-      <SpeedOfLightDemo />
+      <SpeedOfLightDemo figure="Fig. 9.1" />
 
       <p className="mb-prose-3">
         Drop a relative permittivity εᵣ and a relative permeability μᵣ into the same calculation —
@@ -316,7 +316,7 @@ export default function Ch9EMWaves() {
         the same place. The whole picture rolls forward together at speed c.
       </p>
 
-      <PlaneWaveDemo />
+      <PlaneWaveDemo figure="Fig. 9.2" />
 
       <p className="mb-prose-3">
         <Term
@@ -405,8 +405,8 @@ export default function Ch9EMWaves() {
         polarization.
       </p>
 
-      <PolarizationDemo />
-      <PolarizationMalusLawDemo />
+      <PolarizationDemo figure="Fig. 9.3" />
+      <PolarizationMalusLawDemo figure="Fig. 9.10" />
 
       <p className="mb-prose-3">
         Polarization is what 3D glasses, polarized sunglasses, and LCD displays manipulate. A
@@ -468,7 +468,7 @@ export default function Ch9EMWaves() {
         length.
       </p>
 
-      <OscillatingDipoleDemo />
+      <OscillatingDipoleDemo figure="Fig. 9.4" />
 
       <p className="mb-prose-3">
         This is what Hertz built and confirmed in 1887. A spark-gap oscillator drove a short antenna
@@ -512,7 +512,7 @@ export default function Ch9EMWaves() {
         was how its electromagnetic field behaves at the new wavelength.
       </p>
 
-      <WireToAntennaTransition3DDemo />
+      <WireToAntennaTransition3DDemo figure="Fig. 9.5" />
 
       <h2 className="chapter-h2">
         Energy and <em>momentum</em> in a wave
@@ -591,7 +591,7 @@ export default function Ch9EMWaves() {
         accelerate a solar sail to interplanetary speeds.
       </p>
 
-      <RadiationPressureDemo />
+      <RadiationPressureDemo figure="Fig. 9.6" />
 
       <TryIt
         tag="Try 9.4"
@@ -683,7 +683,7 @@ export default function Ch9EMWaves() {
         left is everything else.
       </p>
 
-      <EMSpectrumDemo />
+      <EMSpectrumDemo figure="Fig. 9.7" />
 
       <CaseStudies intro="Four real engineering systems, all running on solutions of the same wave equation. Different λ, different hardware, identical physics.">
         <CaseStudy

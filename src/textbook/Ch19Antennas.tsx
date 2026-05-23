@@ -169,7 +169,7 @@ export default function Ch19Antennas() {
         <Cite id="kraus-marhefka-2002" in={SOURCES} />.
       </p>
 
-      <DipoleRadiationPatternDemo />
+      <DipoleRadiationPatternDemo figure="Fig. 19.1" />
 
       <p className="mb-prose-3">
         That polar plot is a slice through the dipole. The full radiation pattern lives in 3D — and
@@ -189,7 +189,7 @@ export default function Ch19Antennas() {
         <Cite id="balanis-2016" in={SOURCES} />.
       </p>
 
-      <DipoleRadiation3DDemo />
+      <DipoleRadiation3DDemo figure="Fig. 19.2" />
 
       <TryIt
         tag="Try 19.1"
@@ -288,7 +288,7 @@ export default function Ch19Antennas() {
         <Cite id="balanis-2016" in={SOURCES} />.
       </p>
 
-      <HalfWaveDipoleResonanceDemo />
+      <HalfWaveDipoleResonanceDemo figure="Fig. 19.3" />
 
       <TryIt
         tag="Try 19.2"
@@ -375,7 +375,7 @@ export default function Ch19Antennas() {
         lengths, combine constructively in the forward direction and destructively backward.
       </p>
 
-      <YagiArrayFactorDemo />
+      <YagiArrayFactorDemo figure="Fig. 19.4" />
 
       <Pullout>Antenna engineering is the art of multiplying patterns.</Pullout>
 
@@ -421,7 +421,7 @@ export default function Ch19Antennas() {
         shifters in every element to point the beam wherever needed in microseconds.
       </p>
 
-      <PhasedArraySteeringDemo />
+      <PhasedArraySteeringDemo figure="Fig. 19.6" />
 
       <TryIt
         tag="Try 19.3b"
@@ -517,7 +517,7 @@ export default function Ch19Antennas() {
         loss by focusing the transmitted and received power into narrower angular cones.
       </p>
 
-      <FriisLinkBudgetDemo />
+      <FriisLinkBudgetDemo figure="Fig. 19.5" />
 
       <p className="mb-prose-3">
         Plug in some numbers for a typical home Wi-Fi link: P<sub>t</sub> = 100 mW = +20 dBm, G
@@ -548,7 +548,7 @@ export default function Ch19Antennas() {
         <Cite id="balanis-2016" in={SOURCES} />.
       </p>
 
-      <PolarizationLossPenaltyDemo />
+      <PolarizationLossPenaltyDemo figure="Fig. 19.7" />
 
       <TryIt
         tag="Try 19.4"
@@ -602,7 +602,7 @@ export default function Ch19Antennas() {
         over and the field looks locally like a plane EM wave with |E|/|H| = η₀.
       </p>
 
-      <NearFarFieldTransitionDemo />
+      <NearFarFieldTransitionDemo figure="Fig. 19.8" />
 
       <p className="mb-prose-3">
         For large aperture antennas (a parabolic dish, a phased array), there's an additional
@@ -680,7 +680,7 @@ export default function Ch19Antennas() {
         <Cite id="kraus-marhefka-2002" in={SOURCES} />.
       </p>
 
-      <PatchAntennaDemo />
+      <PatchAntennaDemo figure="Fig. 19.9" />
 
       <TryIt
         tag="Try 19.6"

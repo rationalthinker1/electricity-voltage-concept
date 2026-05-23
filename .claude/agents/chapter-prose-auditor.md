@@ -9,6 +9,10 @@ memory: project
 
 You audit one Field·Theory chapter file for mechanical prose issues. You do NOT edit. You return one markdown section.
 
+## Tool choice
+
+Audit-only — `Grep`/`Bash` is the right tool. The chapter-tag-bumper / canvas-color-tokenizer / math-typesetter agents pick up `scripts/lib/jsx-codemod.ts` for AST-aware fixes; you stay out of the codemod path.
+
 ## What you check
 
 Three mechanical passes only. Do not grade prose, do not flag stylistic choices.
@@ -42,6 +46,18 @@ Pick the following inconsistency probes and report any chapter where both forms 
 - `open-circuit` / `short-circuit` consistency
 
 Don't insist on one form — just report both line numbers and let the orchestrator decide which is preferred for the chapter.
+
+### 4. Broken-hyphen line-wrap artefacts
+
+Editor wrapping during refactors sometimes leaves literal `"X- Y"` (a hyphen followed by a space, mid-compound) in chapter prose — patterns like `"fault- level"`, `"grid- synchronous"`, `"open- circuit"`. They render visibly broken on the page (an em-space appears between the half-words).
+
+`grep -nE '\b[a-zA-Z]+- [a-zA-Z]+\b' <chapter-file>`
+
+Inspect each hit by hand:
+- True bug: a hyphenated compound (`fault-level`, `grid-synchronous`, `mid-merit`) with a stray space inserted after the hyphen. Report `file:line — "X- Y" → "X-Y"`.
+- False positive (don't report): em-dash usage where one side just happens to be a one-word hyphenated phrase ("the so- called…" with the dash standing for an em-dash); intentional suspended-hyphen lists ("low- and high-pass filters"); LaTeX inside `<InlineMath tex="…">` where the hyphen is part of a math expression.
+
+If the grep returns many hits, the file probably has a wider wrap-artefact problem — pick the first ~5 and note "pattern suggests a careful re-read needed" rather than enumerating all of them.
 
 ## Your inputs
 

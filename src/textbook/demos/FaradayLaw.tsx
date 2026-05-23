@@ -200,7 +200,7 @@ export function FaradayLawDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 8.3'}
+      figure={figure ?? 'Fig. 10.3'}
       title="Faraday's law"
       question="When B changes through a loop, what appears around the loop?"
       caption={

@@ -156,7 +156,7 @@ export function FuelCellDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.5'}
+      figure={figure ?? 'Fig. 26.5'}
       title="PEM fuel cell"
       question="A battery you keep refilling — how does it actually run?"
       caption={

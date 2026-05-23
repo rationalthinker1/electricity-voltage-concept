@@ -146,7 +146,7 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.10'}
+      figure={figure ?? 'Fig. 16.10'}
       title="Op-amp integrator — square in, triangle out"
       question="Replace R_f with a C. The amplifier integrates."
       caption={

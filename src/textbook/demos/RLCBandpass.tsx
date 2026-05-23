@@ -150,7 +150,7 @@ export function RLCBandpassDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.8'}
+      figure={figure ?? 'Fig. 16.8'}
       title="Series RLC band-pass"
       question="A bell-curve in frequency space. Make it sharper by lowering R."
       caption={

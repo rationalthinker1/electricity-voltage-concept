@@ -152,7 +152,7 @@ export default function Ch4HowAResistorWorks() {
         standard alloy for precision current shunts and resistance standards.
       </p>
 
-      <BuildAResistorDemo />
+      <BuildAResistorDemo figure="Fig. 4.1" />
 
       <p className="mb-prose-3">
         The trade-offs are real but mostly about tolerance, noise, temperature stability, and power.
@@ -176,7 +176,7 @@ export default function Ch4HowAResistorWorks() {
         of the carbon-comp era when tolerances that loose were normal.
       </p>
 
-      <ColorCodeDecoderDemo />
+      <ColorCodeDecoderDemo figure="Fig. 4.2" />
 
       <TryIt
         tag="Try 4.1"
@@ -269,7 +269,7 @@ export default function Ch4HowAResistorWorks() {
         to keep the body under the limit.
       </p>
 
-      <PowerDeratingDemo />
+      <PowerDeratingDemo figure="Fig. 4.3" />
 
       <TryIt
         tag="Try 4.3"
@@ -428,7 +428,7 @@ export default function Ch4HowAResistorWorks() {
         variable, not a derivation from first principles.
       </p>
 
-      <RvsTemperatureDemo />
+      <RvsTemperatureDemo figure="Fig. 4.4" />
 
       <p className="mb-prose-3">
         <Term def="Positive-temperature-coefficient device: a resistor whose R rises sharply with temperature, used as a self-resetting fuse. PTC polymer thermistors trip via a crystalline-to-amorphous transition in the polymer matrix.">
@@ -454,7 +454,7 @@ export default function Ch4HowAResistorWorks() {
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <VariableResistorsDemo />
+      <VariableResistorsDemo figure="Fig. 4.5" />
 
       <p className="mb-prose-3">
         A pot has three terminals: the two ends of the resistive track (A and B), and the wiper (W).
@@ -524,7 +524,7 @@ export default function Ch4HowAResistorWorks() {
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
 
-      <WiedemannFranzDemo />
+      <WiedemannFranzDemo figure="Fig. 4.6" />
 
       <TryIt
         tag="Try 4.5"

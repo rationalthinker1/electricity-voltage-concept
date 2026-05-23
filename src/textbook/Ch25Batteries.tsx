@@ -27,7 +27,7 @@ import { NernstEquationDemo } from './demos/NernstEquation';
 import { VoltaicPileDemo } from './demos/VoltaicPile';
 import { getChapter } from './data/chapters';
 
-export default function Ch18Batteries() {
+export default function Ch25Batteries() {
   const chapter = getChapter('batteries')!;
   const SOURCES = chapter.sources;
 
@@ -71,7 +71,7 @@ export default function Ch18Batteries() {
         current flows until either the zinc is consumed or the brine dries out.
       </p>
 
-      <VoltaicPileDemo />
+      <VoltaicPileDemo figure="Fig. 25.1" />
 
       <p className="mb-prose-3">
         What was new was not the spark — friction generators had been giving people shocks for a
@@ -89,7 +89,7 @@ export default function Ch18Batteries() {
       </p>
 
       <TryIt
-        tag="Try 18.1"
+        tag='Try 25.1'
         question={
           <>
             Volta's original pile had about 30 Zn–Cu pairs. What was its approximate open-circuit
@@ -191,7 +191,7 @@ export default function Ch18Batteries() {
         <Cite id="daniell-1836" in={SOURCES} />.
       </p>
 
-      <DaniellCellDemo />
+      <DaniellCellDemo figure="Fig. 25.2" />
 
       <p className="mb-prose-3">
         Notice what just happened. The Volta pile was a single integrated mess; the Daniell cell is
@@ -204,7 +204,7 @@ export default function Ch18Batteries() {
       </p>
 
       <TryIt
-        tag="Try 18.2"
+        tag='Try 25.2'
         question={
           <>
             A Daniell cell holds 1.10 V open-circuit and has internal resistance about 1 Ω. What's
@@ -258,7 +258,7 @@ export default function Ch18Batteries() {
         is positive the cell runs spontaneously in that direction.
       </p>
 
-      <HalfCellPotentialsDemo />
+      <HalfCellPotentialsDemo figure="Fig. 25.5" />
 
       <p className="mb-prose-3">
         At the extremes: lithium metal has the most negative E° of any element in the periodic table
@@ -274,7 +274,7 @@ export default function Ch18Batteries() {
       </p>
 
       <TryIt
-        tag="Try 18.3"
+        tag='Try 25.3'
         question={
           <>
             What is the open-circuit voltage of a silver-zinc cell, given E°(Ag⁺/Ag) = +0.80 V and
@@ -365,7 +365,7 @@ export default function Ch18Batteries() {
         <Cite id="bard-faulkner-2001" in={SOURCES} />.
       </p>
 
-      <NernstEquationDemo />
+      <NernstEquationDemo figure="Fig. 25.3" />
 
       <p className="mb-prose-3">
         Walther Nernst published this equation in 1889; it earned him the 1920 Nobel Prize in
@@ -379,7 +379,7 @@ export default function Ch18Batteries() {
       </p>
 
       <TryIt
-        tag="Try 18.4"
+        tag='Try 25.4'
         question={
           <>
             A Daniell cell has [Zn²⁺] = 0.01 M and [Cu²⁺] = 1 M, T = 298 K. What is its open-circuit
@@ -446,7 +446,7 @@ export default function Ch18Batteries() {
         small coin cell can be tens of ohms.
       </p>
 
-      <CellDischargeDemo />
+      <CellDischargeDemo figure="Fig. 25.4" />
 
       <p className="mb-prose-3">
         As the cell discharges, two things happen at once. The{' '}
@@ -475,7 +475,7 @@ export default function Ch18Batteries() {
       </p>
 
       <TryIt
-        tag="Try 18.5"
+        tag='Try 25.5'
         question={
           <>
             A AA alkaline cell has V_OC = 1.5 V and R_int = 200 mΩ. What terminal voltage does it
@@ -525,7 +525,7 @@ export default function Ch18Batteries() {
 
       <CaseStudies intro="Four places where the half-reaction picture, the Nernst equation, and internal resistance show up in real-world batteries.">
         <CaseStudy
-          tag="Case 18.1"
+          tag='Case 25.1'
           title="9 V transistor radio battery (six 1.5 V cells in series)"
           summary="The classic. Six stacked alkaline Zn / MnO₂ cells in one rectangular package; ~500 mAh capacity, R_int around 35 Ω."
           specs={[
@@ -573,7 +573,7 @@ export default function Ch18Batteries() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 18.2"
+          tag='Case 25.2'
           title="AA alkaline cell (Zn / MnO₂)"
           summary="The workhorse single cell. 1.5 V open, ~2500 mAh capacity, 23 g mass. Powers most remote controls and toys on Earth."
           specs={[
@@ -619,7 +619,7 @@ export default function Ch18Batteries() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 18.3"
+          tag='Case 25.3'
           title="Car starter battery (12 V lead-acid)"
           summary="Six 2 V cells in series; 50–100 Ah capacity; R_int of a few milliohms. Delivers ~400 A cranking current to a starter motor for a couple of seconds."
           specs={[
@@ -660,7 +660,7 @@ export default function Ch18Batteries() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 18.4"
+          tag='Case 25.4'
           title="Reference half-cell in an analytical chemistry lab"
           summary="A silver / silver-chloride electrode held at +0.197 V vs SHE is the bench-standard reference for measuring unknown half-cell potentials and ion concentrations via the Nernst equation."
           specs={[

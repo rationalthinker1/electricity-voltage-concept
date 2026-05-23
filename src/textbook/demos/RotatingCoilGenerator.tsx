@@ -5,7 +5,7 @@
  * Left half: coil in field (side view). Right half: oscilloscope of EMF.
  * Slider: ω.
  *
- * Closely mirrors the existing RotatingCoil demo (Ch.7 Induction), but
+ * Closely mirrors the existing RotatingCoil demo (Ch.21 Induction), but
  * sized and labelled for the generator-chapter narrative.
  */
 import { useMemo, useState } from 'react';

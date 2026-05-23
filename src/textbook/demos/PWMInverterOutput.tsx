@@ -206,7 +206,7 @@ export function PWMInverterOutputDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.9'}
+      figure={figure ?? 'Fig. 24.9'}
       title="PWM carrier vs filter difficulty"
       question="Push the carrier from 1 kHz to 50 kHz. Where do the harmonics go — and what does that do to the filter?"
       caption={

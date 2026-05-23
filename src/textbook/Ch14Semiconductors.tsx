@@ -133,7 +133,7 @@ export default function Ch14Semiconductors() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <BandStructureDemo />
+      <BandStructureDemo figure="Fig. 14.1" />
 
       <p className="mb-prose-3">
         For silicon, E<sub>g</sub> = 1.12 eV. For germanium, 0.67 eV. For gallium arsenide, 1.42 eV.
@@ -284,7 +284,7 @@ export default function Ch14Semiconductors() {
         <Cite id="shockley-1949" in={SOURCES} />.
       </p>
 
-      <PNJunctionFormationDemo />
+      <PNJunctionFormationDemo figure="Fig. 14.2" />
 
       <p className="mb-prose-3">
         At equilibrium, the voltage across the depletion region is the{' '}
@@ -453,7 +453,7 @@ export default function Ch14Semiconductors() {
         tune the V<sub>F</sub>, the speed, and the breakdown behaviour for different jobs.
       </p>
 
-      <DiodeCharacteristicDemo />
+      <DiodeCharacteristicDemo figure="Fig. 14.3" />
 
       <p className="mb-prose-3">
         A <em className="text-text italic">standard silicon p-n diode</em> like the 1N4148 has V
@@ -612,7 +612,7 @@ export default function Ch14Semiconductors() {
         <Cite id="shockley-1956-nobel" in={SOURCES} />.
       </p>
 
-      <BJTCharacteristicDemo />
+      <BJTCharacteristicDemo figure="Fig. 14.4" />
 
       <p className="mb-prose-3">
         The output characteristic — I<sub>C</sub> as a function of V<sub>CE</sub> at fixed I
@@ -722,7 +722,7 @@ export default function Ch14Semiconductors() {
         <Cite id="kahng-atalla-1960" in={SOURCES} />.
       </p>
 
-      <MOSFETOperationDemo />
+      <MOSFETOperationDemo figure="Fig. 14.5" />
 
       <p className="mb-prose-3">
         The 2D cross-section makes the I-V curves quantitative; the 3D rendering below makes the
@@ -732,7 +732,7 @@ export default function Ch14Semiconductors() {
         dots stream toward the drain.
       </p>
 
-      <MOSFET3DDemo />
+      <MOSFET3DDemo figure="Fig. 14.6" />
 
       <p className="mb-prose-3">
         In an n-channel enhancement MOSFET the substrate is p-type, with two heavily-doped n-type
@@ -1017,7 +1017,7 @@ export default function Ch14Semiconductors() {
         <sub>CE</sub>.
       </p>
 
-      <LoadLineAnalysisDemo />
+      <LoadLineAnalysisDemo figure="Fig. 14.7" />
 
       <p className="mb-prose-3">
         Two graphical observations follow. (1) The maximum swing is constrained at one end by V
@@ -1065,7 +1065,7 @@ export default function Ch14Semiconductors() {
         frequencies), the small-signal gain is the one we just wrote down.
       </p>
 
-      <CommonEmitterAmpDemo />
+      <CommonEmitterAmpDemo figure="Fig. 14.8" />
 
       <p className="mb-prose-3">
         Real numbers. Take I<sub>C</sub> = 1 mA (a reasonable Q-point for a small-signal stage), V

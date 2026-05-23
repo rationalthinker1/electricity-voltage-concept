@@ -217,7 +217,7 @@ export function LinearRegulatorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.3'}
+      figure={figure ?? 'Fig. 24.3'}
       title="Linear regulator: V_in − V_out, burned as heat"
       question="At 12 V in and 0.5 A out, how much of the power becomes useful 5 V — and where does the rest go?"
       caption={

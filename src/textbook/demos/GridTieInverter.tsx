@@ -147,7 +147,7 @@ export function GridTieInverterDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.6'}
+      figure={figure ?? 'Fig. 24.6'}
       title="Grid-tie inverter: P, Q, and the current phase"
       question="The grid voltage is fixed. The inverter chooses how much current to inject and at what phase. What does each knob do?"
       caption={

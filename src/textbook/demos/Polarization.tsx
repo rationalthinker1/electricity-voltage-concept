@@ -152,7 +152,7 @@ export function PolarizationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 7.3'}
+      figure={figure ?? 'Fig. 9.3'}
       title="Polarization"
       question="What direction does E point — and is it staying put?"
       caption={

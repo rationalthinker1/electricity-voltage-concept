@@ -28,7 +28,7 @@ import { LiIonIntercalationDemo } from './demos/LiIonIntercalation';
 import { SupercapacitorDemo } from './demos/Supercapacitor';
 import { getChapter } from './data/chapters';
 
-export default function Ch19ModernBatteries() {
+export default function Ch26ModernBatteries() {
   const chapter = getChapter('modern-batteries')!;
   const SOURCES = chapter.sources;
 
@@ -106,7 +106,7 @@ export default function Ch19ModernBatteries() {
         <Cite id="plante-1859" in={SOURCES} />.
       </p>
 
-      <LeadAcidCellDemo />
+      <LeadAcidCellDemo figure="Fig. 26.1" />
 
       <p className="mb-prose-3">
         Cell voltage is set by the standard reduction potentials of the two Pb couples: E°(Pb/PbSO₄)
@@ -121,7 +121,7 @@ export default function Ch19ModernBatteries() {
       </p>
 
       <TryIt
-        tag="Try 19.1"
+        tag='Try 26.1'
         question={
           <>
             A car starter battery rated 60 Ah at 12 V delivers what total stored energy in
@@ -186,7 +186,7 @@ export default function Ch19ModernBatteries() {
         Yoshino shared the 2019 Nobel Prize in Chemistry for the chain of inventions.
       </p>
 
-      <LiIonIntercalationDemo />
+      <LiIonIntercalationDemo figure="Fig. 26.2" />
 
       <p className="mb-prose-3">
         The trick is intercalation. Both electrodes are host lattices — graphite on the anode,
@@ -213,7 +213,7 @@ export default function Ch19ModernBatteries() {
       </Pullout>
 
       <TryIt
-        tag="Try 19.2"
+        tag='Try 26.2'
         question={
           <>
             A modern Li-ion 18650 cell stores about 12 Wh in a 47 g package. What is its gravimetric
@@ -273,7 +273,7 @@ export default function Ch19ModernBatteries() {
         </li>
       </ul>
 
-      <ChemistryComparisonDemo />
+      <ChemistryComparisonDemo figure="Fig. 26.3" />
 
       <p className="mb-prose-3">
         All four share the intercalation principle: Li⁺ ions move in and out of a host lattice, no
@@ -328,7 +328,7 @@ export default function Ch19ModernBatteries() {
         chemical, storage.
       </p>
 
-      <SupercapacitorDemo />
+      <SupercapacitorDemo figure="Fig. 26.4" />
 
       <Pullout>
         A battery stores chemistry. A supercapacitor just stores field. The reactions cap the rate;
@@ -348,7 +348,7 @@ export default function Ch19ModernBatteries() {
       </p>
 
       <TryIt
-        tag="Try 19.3"
+        tag='Try 26.3'
         question={
           <>
             A 3000 F supercapacitor cell rated 2.7 V holds how much energy? Compare to a 18650
@@ -405,7 +405,7 @@ export default function Ch19ModernBatteries() {
         <Cite id="larminie-dicks-2003-fuel-cells" in={SOURCES} />.
       </p>
 
-      <FuelCellDemo />
+      <FuelCellDemo figure="Fig. 26.5" />
 
       <p className="mb-prose-3">
         The current-voltage relationship — the{' '}
@@ -433,7 +433,7 @@ export default function Ch19ModernBatteries() {
       </p>
 
       <TryIt
-        tag="Try 19.4"
+        tag='Try 26.4'
         question={
           <>
             A fuel-cell stack has 100 cells in series, each running at 0.65 V at 200 A. What's the
@@ -487,7 +487,7 @@ export default function Ch19ModernBatteries() {
 
       <CaseStudies intro="Four working systems built on the chemistries above, with the numbers that determine whether they work.">
         <CaseStudy
-          tag="Case 19.1"
+          tag='Case 26.1'
           title="Tesla Model 3 long-range battery pack"
           summary="~75 kWh of energy in roughly 4400 cylindrical cells, depending on year and trim. Pack-level energy density around 165 Wh/kg."
           specs={[
@@ -535,7 +535,7 @@ export default function Ch19ModernBatteries() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 19.2"
+          tag='Case 26.2'
           title="iPhone battery"
           summary="A single ~3.85 V Li-polymer cell, ~13 Wh capacity, rated ~500 cycles to 80%. Volume- and shape-optimized to fill the case interior."
           specs={[
@@ -567,7 +567,7 @@ export default function Ch19ModernBatteries() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 19.3"
+          tag='Case 26.3'
           title="Hornsdale Power Reserve — Tesla Megapack grid storage"
           summary="100 MW / 150 MWh of Li-ion cells in a single grid-connected installation. Frequency response in under 100 ms."
           specs={[
@@ -606,7 +606,7 @@ export default function Ch19ModernBatteries() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 19.4"
+          tag='Case 26.4'
           title="Toyota Mirai PEM fuel-cell stack"
           summary="~370 series cells, 114 kW peak, fed by 5 kg of compressed H₂ at 700 bar; ~650 km range from a single fill."
           specs={[

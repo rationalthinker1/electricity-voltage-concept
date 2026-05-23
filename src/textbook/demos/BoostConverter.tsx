@@ -161,7 +161,7 @@ export function BoostConverterDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.7'}
+      figure={figure ?? 'Fig. 24.7'}
       title="Boost converter: V_out = V_in / (1 − D)"
       question="Push the duty cycle past 0.8. Where does V_out go — and why does the equation blow up at D = 1?"
       caption={

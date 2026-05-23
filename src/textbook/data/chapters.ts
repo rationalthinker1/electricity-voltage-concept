@@ -819,6 +819,8 @@ export const CHAPTERS: ChapterEntry[] = [
       'hayt-kemmerly-durbin-2018',
       'irwin-circuit-analysis-2015',
       'horowitz-hill-2015',
+      'wpc-qi-1.3',
+      'lucia-induction-2014',
       'codata-2018',
     ],
     punchline:

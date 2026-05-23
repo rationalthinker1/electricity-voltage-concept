@@ -118,7 +118,7 @@ export default function Ch42FiberOptics() {
         forever.
       </p>
 
-      <FiberOpticDemo />
+      <FiberOpticDemo figure="Fig. 42.5" />
 
       <p className="mb-prose-3">
         Drag the angle slider in the demo. Below the critical angle, the ray zig-zags down the fiber
@@ -313,7 +313,7 @@ export default function Ch42FiberOptics() {
         <Cite id="miya-1979" in={SOURCES} />.
       </p>
 
-      <FiberAttenuationDemo />
+      <FiberAttenuationDemo figure="Fig. 42.2" />
 
       <p className="mb-prose-3">
         The story before 1979 was very different. Bulk silica in 1960 had attenuation of about{' '}
@@ -396,7 +396,7 @@ export default function Ch42FiberOptics() {
         ; divide by <InlineMath tex="\alpha" /> and you have the reach.
       </p>
 
-      <FiberLinkBudgetDemo />
+      <FiberLinkBudgetDemo figure="Fig. 42.3" />
 
       <TryIt
         tag="Try 42.3"

@@ -14,11 +14,15 @@ import { drawAxes, drawHLine, drawLinePlot } from '@/lib/drawPlot';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Coeff {
   n: number;
   amp: number;
+}
+
+interface Props {
+  figure?: string;
 }
 
 /** Return the analytic Fourier series coefficients (amplitudes of sin(nωt))
@@ -59,7 +63,7 @@ function ideal(target: 'square' | 'triangle' | 'sawtooth', phase: number): numbe
   return 1 - t / Math.PI;
 }
 
-export function HarmonicSynthesisDemo() {
+export function HarmonicSynthesisDemo({ figure }: Props) {
   const [target, setTarget] = useState<'square' | 'triangle' | 'sawtooth'>('square');
   const [N, setN] = useState(7);
   const [showIdeal, setShowIdeal] = useState(true);
@@ -115,9 +119,30 @@ export function HarmonicSynthesisDemo() {
       // y-axis tick labels manually for ±1 and 0
       ctx.fillStyle = colors.textDim;
       const yAt = (v: number) => padY + plotH - ((v + 1.2) / 2.4) * plotH;
-      drawLabel(ctx, { text: '+1', x: padX - 6, y: yAt(1), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '−1', x: padX - 6, y: yAt(-1), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: padX - 6, y: yAt(0), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '+1',
+        x: padX - 6,
+        y: yAt(1),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '−1',
+        x: padX - 6,
+        y: yAt(-1),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0',
+        x: padX - 6,
+        y: yAt(0),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
 
       const cs = coeffs(target, N);
       const cycles = 2;
@@ -157,7 +182,7 @@ export function HarmonicSynthesisDemo() {
 
   return (
     <Demo
-      figure="Fig. 15.1"
+      figure={figure ?? 'Fig. 15.1'}
       title="Fourier synthesis — build a wave from sines"
       question="How many harmonics does it take to look like a square wave?"
       caption={

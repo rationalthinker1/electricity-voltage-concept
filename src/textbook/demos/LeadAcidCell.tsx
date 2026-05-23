@@ -102,7 +102,7 @@ export function LeadAcidCellDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.1'}
+      figure={figure ?? 'Fig. 26.1'}
       title="Lead-acid: rechargeable since 1859"
       question="What does discharging actually do to the plates?"
       caption={

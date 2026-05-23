@@ -303,7 +303,7 @@ export default function Ch15FourierHarmonics() {
         themselves.
       </p>
 
-      <HarmonicSynthesisDemo />
+      <HarmonicSynthesisDemo figure="Fig. 15.1" />
 
       <p className="mb-prose-3">
         Watch the demo. At N = 1 you have just the fundamental — a single smooth sine. At N = 3 the
@@ -341,7 +341,7 @@ export default function Ch15FourierHarmonics() {
         Fourier than squares.
       </p>
 
-      <FourierSpectrumDemo />
+      <FourierSpectrumDemo figure="Fig. 15.2" />
 
       <p className="mb-prose-3">
         The spectrum demo lets you compare six canonical waveforms side-by-side. A sine has one bar
@@ -448,7 +448,7 @@ export default function Ch15FourierHarmonics() {
         1 V, not 0.707 V. The extra 41% comes from the harmonic ladder above the fundamental.
       </p>
 
-      <RMSOfComplexWaveDemo />
+      <RMSOfComplexWaveDemo figure="Fig. 15.5" />
 
       <p className="mb-prose-3">
         Two more shape descriptors come up in power engineering. The{' '}
@@ -520,7 +520,7 @@ export default function Ch15FourierHarmonics() {
         slewed, droop-shaped wave whose corners take roughly RC seconds to settle.
       </p>
 
-      <SquareThroughLPFDemo />
+      <SquareThroughLPFDemo figure="Fig. 15.3" />
 
       <p className="mb-prose-3">
         A square wave is just a list of sine waves with the right amplitudes. The low-pass filter
@@ -590,7 +590,7 @@ export default function Ch15FourierHarmonics() {
         harder — a positive-feedback loop that bothers utilities everywhere.
       </p>
 
-      <THDAndDistortionDemo />
+      <THDAndDistortionDemo figure="Fig. 15.4" />
 
       <p className="mb-prose-3">
         The shorthand for the problem is{' '}
@@ -694,7 +694,7 @@ export default function Ch15FourierHarmonics() {
         its own algebra suggests.
       </p>
 
-      <FFTAlgorithmAnimationDemo />
+      <FFTAlgorithmAnimationDemo figure="Fig. 15.6" />
 
       <p className="mb-prose-3">
         The speed-up is enormous. For N = 1024, the FFT runs in ~10 000 operations against the naive

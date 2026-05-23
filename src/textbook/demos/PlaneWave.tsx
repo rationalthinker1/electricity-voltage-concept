@@ -125,7 +125,7 @@ export function PlaneWaveDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 7.2'}
+      figure={figure ?? 'Fig. 9.2'}
       title="A plane wave, in slow motion"
       question="What's perpendicular to what?"
       caption={

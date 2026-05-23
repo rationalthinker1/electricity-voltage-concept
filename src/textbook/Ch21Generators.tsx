@@ -128,7 +128,7 @@ export default function Ch21Generators() {
         external load.
       </p>
 
-      <RotatingCoilGeneratorDemo />
+      <RotatingCoilGeneratorDemo figure="Fig. 21.1" />
 
       <p className="mb-prose-3">
         Connect a resistive load across the coil's leads and current flows:{' '}
@@ -189,7 +189,7 @@ export default function Ch21Generators() {
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
 
-      <SynchronousGeneratorDemo />
+      <SynchronousGeneratorDemo figure="Fig. 21.2" />
 
       <p className="mb-prose-3">
         This is the{' '}
@@ -306,7 +306,7 @@ export default function Ch21Generators() {
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
 
-      <ExcitationControlDemo />
+      <ExcitationControlDemo figure="Fig. 21.6" />
 
       <p className="mb-prose-3">
         The power-angle relation <InlineMath tex="P \propto \sin\delta" /> has a sharp limit built
@@ -325,7 +325,7 @@ export default function Ch21Generators() {
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
 
-      <PowerAngleDeltaDemo />
+      <PowerAngleDeltaDemo figure="Fig. 21.8" />
 
       <TryIt
         tag="Try 21.3"
@@ -389,7 +389,7 @@ export default function Ch21Generators() {
         current to hold the DC output near 14.0 V regardless of engine speed and load.
       </p>
 
-      <AlternatorDemo />
+      <AlternatorDemo figure="Fig. 21.3" />
 
       <p className="mb-prose-3">
         The rectified output is the <em className="text-text italic">maximum</em> of the three
@@ -469,7 +469,7 @@ export default function Ch21Generators() {
         mechanically deform the stator iron or rupture the rotor coupling.
       </p>
 
-      <GridSyncDemo />
+      <GridSyncDemo figure="Fig. 21.4" />
 
       <p className="mb-prose-3">
         Manual synchronisation traditionally uses a{' '}
@@ -519,7 +519,7 @@ export default function Ch21Generators() {
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
 
-      <LoadFollowingDemo />
+      <LoadFollowingDemo figure="Fig. 21.5" />
 
       <p className="mb-prose-3">
         Renewables don't fit cleanly into this stack. Wind and solar are dispatched first whenever
@@ -597,7 +597,7 @@ export default function Ch21Generators() {
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
 
-      <InertialResponseDemo />
+      <InertialResponseDemo figure="Fig. 21.7" />
 
       <p className="mb-prose-3">
         This is the live debate of the 2020s. As coal retires and inverter-based wind, solar, and

@@ -143,7 +143,7 @@ export function RadiationPressureDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 7.5'}
+      figure={figure ?? 'Fig. 9.5'}
       title="Radiation pressure"
       question="If light has momentum, what does it push on?"
       caption={

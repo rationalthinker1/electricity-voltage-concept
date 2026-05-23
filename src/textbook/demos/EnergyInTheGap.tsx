@@ -94,7 +94,7 @@ export function EnergyInTheGapDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.4'}
+      figure={figure ?? 'Fig. 5.4'}
       title="Energy in the gap"
       question="If the plates net to zero charge, where's the energy hiding?"
       caption={

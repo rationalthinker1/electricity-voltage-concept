@@ -743,7 +743,16 @@ Rules of thumb:
   below `<DemoControls>` and stacks on narrow viewports.
 - Keep equations as `<InlineMath tex="…" />` so they typeset in STIX Two
   and pick up the existing math styling. Don't hand-roll spans of
-  `<sub>`/`<sup>`.
+  `<sub>`/`<sup>`. **`<InlineMath>` and `<Formula>` both accept an
+  `id={FormulaId}` prop** as an alternative to `tex=`; the id is resolved
+  against the registry in `src/lib/formulas.ts`. Use the registry id when
+  the equation has a canonical name (`<Formula id="faraday-law" />`,
+  `<InlineMath id="force-on-wire" />`); use `tex="…"` for one-off
+  inline math or when substituting live values.
+- **Import path:** `EquationStrip`, `Demo`, `DemoControls`, `MiniSlider`,
+  `MiniReadout`, `MiniToggle` all live in `@/components/Demo`; `InlineMath`
+  / `Formula` / `Var` / `FormulaHTML` live in `@/components/Formula`.
+  Don't look for `EquationStrip` in its own file.
 - Show both the symbolic form **and** the same equation with the current
   slider values substituted in, so the reader can see the formula
   "executing." A symbolic-only display loses most of the point.
@@ -951,6 +960,32 @@ The build runs strict TypeScript and Vite together. Anything that fails
   agent touches `src/lib/sources.ts` or
   `src/textbook/data/chapters.ts` at the same time, you'll get merge
   conflicts. Either serialize or hand each agent disjoint chapters.
+- **`useCircuitCache(build, deps)` deps array placement.** The deps live
+  at the *top level* of the hook call, not inside the build callback's
+  return statement. The canonical shape is
+  ```tsx
+  const getStatic = useCircuitCache(
+    (sw, sh, _dpr) => ({ elements: […] }),
+    [R1, R2],   // ← top-level, *after* the build callback
+  );
+  ```
+  An easy mistake is to write `…elements: […], };  [R1, R2],` —
+  closing the *return object* with `};` and dropping the deps array as
+  a statement inside the still-open arrow function. Result: parse
+  error. The arrow function body needs its own `},` to close before
+  the deps array.
+- **`Try N.x` / `Case N.x` / `Fig N.x` tags drift after a chapter
+  renumber.** Slugs are stable; the integer prefix isn't. Run
+  `chapter-tag-bumper` after any change to a chapter's `number` in
+  `src/textbook/data/chapters.ts` — or expect a `chapter-reviewer`
+  pass to flag every stale tag in the High pile.
+- **Broken-hyphen line-wrap artefacts in chapter prose.** Patterns like
+  `"fault- level"` or `"grid- synchronous"` (literal `- ` mid-word)
+  render visibly broken on the page. They arise from editor wrapping
+  during refactors; check for them as part of any prose pass.
+- **`<InlineMath id="…" />` and `<Formula id="…" />` are valid.** They
+  resolve against `src/lib/formulas.ts`. Don't flag them as missing-tex
+  errors in code review — they're the registry-lookup form.
 
 ---
 
@@ -1022,3 +1057,46 @@ Rules:
    have a source for it, stop and find one or remove the claim.
 
 That's the whole job.
+
+---
+
+## 15. Codemods and large-scale refactors
+
+`ts-morph` (^28) is a dev dependency. `scripts/` already carries
+several codemods that operate on the demo / chapter source tree:
+`refactor-demos.ts` (rAF → useSimLoop), `chapter-tag-bumper.mjs`,
+`centralize-formatters.mjs`, `codemod-withAlpha.mjs`, and the
+`codemod-draw*.mjs` family.
+
+**When to reach for a codemod instead of file-by-file edits:**
+
+- A transform applies the same JSX shape change across 20+ files
+  (e.g., rename a JSX attribute, wrap a JSX element, swap an import).
+- A transform touches the structure of a call expression, not just
+  string content (e.g., reorder arguments, fold a callback's return
+  value into a named helper).
+- A transform needs scope/type information to decide what to rewrite
+  (e.g., "only rewrite `colors.X` calls that came from `useSimLoop`'s
+  destructured `info`, not from a `getCanvasColors()` call").
+
+For those cases, prefer a `ts-morph` script over a regex pass — the
+AST tracks parentheses, JSX attribute quoting, multi-line strings,
+and import insertion correctly, while regex falls over on each.
+
+`scripts/lib/jsx-codemod.ts` exposes a small helper layer over
+`ts-morph` for the common JSX-rewrite cases (`renameJsxAttribute`,
+`wrapJsxElement`, `ensureImport`, `replaceJsxElement`,
+`forEachJsxElement`, `walkSourceFiles`). Reach for it before
+hand-rolling a fresh `Project()` setup; it shares the same `tsconfig`
+the build uses and provides a uniform dry-run / write flag.
+
+**When the regex-via-grep+Edit path is the right call:**
+
+- A pure string rename (`tag="Try 17.1"` → `tag="Try 21.1"`).
+- An edit that's truly per-file (one prose paragraph in one chapter).
+- A search audit that doesn't mutate (counting occurrences, listing
+  files that match).
+
+For agents that fan out edits across the textbook: lead with the AST
+helper. If the helper isn't a fit, drop down to grep + Edit but flag
+that you considered the AST path.

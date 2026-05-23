@@ -304,7 +304,7 @@ export function EMSpectrumDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 7.6'}
+      figure={figure ?? 'Fig. 9.6'}
       title="The electromagnetic spectrum"
       question="How do frequency, wavelength, and photon energy change across the EM spectrum?"
       caption={

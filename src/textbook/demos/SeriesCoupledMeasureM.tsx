@@ -13,7 +13,15 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -63,24 +71,55 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       ctx.lineTo(c2x - 22, cy);
       ctx.stroke();
       ctx.restore();
-      drawLabel(ctx, { text: `M = ${Mh.toFixed(2)} mH`, x: (c1x + c2x) / 2, y: cy + 24, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: `M = ${Mh.toFixed(2)} mH`,
+        x: (c1x + c2x) / 2,
+        y: cy + 24,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       ctx.fillStyle = aiding ? withAlpha(colors.accent, 0.95) : withAlpha(colors.blue, 0.95);
       ctx.font = 'bold 18px "STIX Two Text", "Fraunces", serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText(`L_eq = ${(aiding ? Laid : Lopp).toFixed(2)} mH`, w / 2, 14);
-      drawLabel(ctx, { text: aiding ? 'series aiding:  L₁ + L₂ + 2M' : 'series opposing:  L₁ + L₂ − 2M', x: w / 2, y: 38, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: aiding ? 'series aiding:  L₁ + L₂ + 2M' : 'series opposing:  L₁ + L₂ − 2M',
+        x: w / 2,
+        y: 38,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.globalAlpha = 0.65;
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
-      drawLabel(ctx, { text: `L_aid = ${Laid.toFixed(2)} mH`, x: 12, y: h - 22, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
-      drawLabel(ctx, { text: `L_opp = ${Lopp.toFixed(2)} mH`, x: 12, y: h - 8, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: `L_aid = ${Laid.toFixed(2)} mH`,
+        x: 12,
+        y: h - 22,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: `L_opp = ${Lopp.toFixed(2)} mH`,
+        x: 12,
+        y: h - 8,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'bottom',
+      });
       ctx.textAlign = 'right';
       ctx.restore();
-      drawLabel(ctx, { text: `M = (L_aid − L_opp) / 4 = ${((Laid - Lopp) / 4).toFixed(2)} mH`, x: w - 12, y: h - 8, color: colors.accent });
+      drawLabel(ctx, {
+        text: `M = (L_aid − L_opp) / 4 = ${((Laid - Lopp) / 4).toFixed(2)} mH`,
+        x: w - 12,
+        y: h - 8,
+        color: colors.accent,
+      });
     },
     [],
   );
@@ -144,6 +183,24 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
           unit="H"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel={aiding ? 'series aiding' : 'series opposing'}
+        left={
+          <InlineMath
+            tex={`L_{\\text{eq}}=L_1+L_2${aiding ? '+2M' : '-2M'}=${computed.Lnow.toFixed(
+              2,
+            )}\\,\\text{mH}`}
+          />
+        }
+        rightLabel="bench formula"
+        right={
+          <InlineMath
+            tex={`M=\\frac{L_{\\text{aid}}-L_{\\text{opp}}}{4}=${computed.Mfromreadings.toFixed(
+              2,
+            )}\\,\\text{mH}`}
+          />
+        }
+      />
     </Demo>
   );
 }

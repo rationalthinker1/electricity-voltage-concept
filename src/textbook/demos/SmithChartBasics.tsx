@@ -158,7 +158,7 @@ export function SmithChartBasicsDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 13.4'}
+      figure={figure ?? 'Fig. 16.4'}
       title="Smith chart — the impedance disk"
       question="Slide Z_L around. The marker tracks Γ on the unit disk; the dashed circle is VSWR."
       caption={

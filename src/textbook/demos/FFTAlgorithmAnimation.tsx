@@ -13,7 +13,11 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-export function FFTAlgorithmAnimationDemo() {
+interface Props {
+  figure?: string;
+}
+
+export function FFTAlgorithmAnimationDemo({ figure }: Props) {
   // Power-of-two N from 8 to 4096
   const [logN, setLogN] = useState(7); // N = 128 by default
   const N = 1 << logN;
@@ -175,7 +179,7 @@ export function FFTAlgorithmAnimationDemo() {
 
   return (
     <Demo
-      figure="Fig. 15.6"
+      figure={figure ?? 'Fig. 15.6'}
       title="FFT — N log N versus N²"
       question="What does Cooley-Tukey buy you in operations?"
       caption={

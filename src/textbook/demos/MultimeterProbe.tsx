@@ -508,7 +508,7 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 11.7'}
+      figure={figure ?? 'Fig. 12.7'}
       title="What the multimeter actually reads"
       question="Drag the red and black probes between TPs. Switch modes. The display tracks."
       caption={

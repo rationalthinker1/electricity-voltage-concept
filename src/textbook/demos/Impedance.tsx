@@ -106,7 +106,7 @@ export function ImpedanceDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 10.5'}
+      figure={figure ?? 'Fig. 12.5'}
       title="Impedance — Ohm's law in the complex plane"
       question="Slide ω. Where do the three vectors point — and why does their sum lean?"
       caption={

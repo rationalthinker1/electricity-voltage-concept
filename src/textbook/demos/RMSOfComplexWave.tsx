@@ -19,7 +19,11 @@ import { getCanvasColors } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-export function RMSOfComplexWaveDemo() {
+interface Props {
+  figure?: string;
+}
+
+export function RMSOfComplexWaveDemo({ figure }: Props) {
   const [a1] = useState(1); // fundamental fixed at unit peak
   const [a2, setA2] = useState(0); // 2nd harmonic peak amplitude
   const [a3, setA3] = useState(0.3); // 3rd harmonic peak amplitude
@@ -144,7 +148,7 @@ export function RMSOfComplexWaveDemo() {
 
   return (
     <Demo
-      figure="Fig. 15.5"
+      figure={figure ?? 'Fig. 15.5'}
       title="RMS of a wave with harmonics"
       question="When does V_rms = V_peak/√2 stop being true?"
       caption={

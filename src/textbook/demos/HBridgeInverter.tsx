@@ -136,7 +136,7 @@ export function HBridgeInverterDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.5'}
+      figure={figure ?? 'Fig. 24.5'}
       title="H-bridge inverter: DC bus to 60 Hz sine"
       question="The top trace is square pulses jumping between ±400 V. The bottom is a 60 Hz sine. What turns one into the other?"
       caption={

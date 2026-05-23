@@ -9,9 +9,9 @@
  * No interaction needed — this is a pure visualization. Toggle between linear
  * and log scaling.
  *
- * Numbers: |χ_e| from standard tables (Jackson Ch.4; Griffiths Ch.4 Table 4.2):
+ * Numbers: |χ_e| from standard tables (Jackson Ch.17; Griffiths Ch.4 Table 4.2):
  *   vacuum 0, air 5.4×10⁻⁴, glass ~4–10 (take 5), water 79, ferroelectric (BaTiO₃) >1000.
- * |χ_m| from Griffiths Ch.6 Table 6.1 / CRC Handbook:
+ * |χ_m| from Griffiths Ch.17 Table 6.1 / CRC Handbook:
  *   vacuum 0, copper −9.7×10⁻⁶, aluminum +2.2×10⁻⁵, iron ~5000 (soft-iron μ_r ~5000+).
  */
 import { useState } from 'react';

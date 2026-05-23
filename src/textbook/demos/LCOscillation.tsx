@@ -202,7 +202,7 @@ export function LCOscillationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 10.3'}
+      figure={figure ?? 'Fig. 12.3'}
       title="LC oscillation — the electrical pendulum"
       question="No resistor, no source. Why does anything happen?"
       caption={

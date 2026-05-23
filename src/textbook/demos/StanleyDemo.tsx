@@ -148,7 +148,7 @@ export function StanleyDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.3'}
+      figure={figure ?? 'Fig. 23.3'}
       title="The Stanley argument — why high voltage wins long distance"
       question="Hold delivered power at 1 MW. Vary the line voltage. Watch the loss."
       caption={

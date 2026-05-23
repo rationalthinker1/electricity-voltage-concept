@@ -207,7 +207,7 @@ export function FlybackConverterDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.8'}
+      figure={figure ?? 'Fig. 24.8'}
       title="Flyback: one magnet, two phases"
       question="Watch the energy bar. The primary fills the core; the secondary empties it. The transformer never carries both sides at once."
       caption={

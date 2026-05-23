@@ -13,7 +13,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -107,9 +108,10 @@ export function DotConventionDemo({ figure }: Props) {
       caption={
         <>
           The dot tells you which way each coil is wound. <em>Rule of thumb:</em> if both currents
-          enter at the dotted terminals, the mutual flux adds to the self-flux (mutual term is +M
-          dI/dt). If one enters at the dot and the other at the non-dot, the mutual flux opposes —
-          minus sign.
+          enter at the dotted terminals, the mutual flux adds to the self-flux (mutual term is{' '}
+          <InlineMath tex="+M\,dI/dt" />
+          ). If one enters at the dot and the other at the non-dot, the mutual flux opposes — minus
+          sign.
         </>
       }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
@@ -128,6 +130,12 @@ export function DotConventionDemo({ figure }: Props) {
         />
         <MiniReadout label="mutual sign" value={sign > 0 ? '+ M dI₁/dt' : '− M dI₁/dt'} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="coil 2 voltage"
+        left={<InlineMath tex="v_2=L_2\frac{dI_2}{dt}\pm M\frac{dI_1}{dt}" />}
+        rightLabel="current sign"
+        right={<InlineMath tex={`\\text{mutual term}=${sign > 0 ? '+' : '-'}M\\frac{dI_1}{dt}`} />}
+      />
     </Demo>
   );
 }
@@ -238,5 +246,12 @@ function drawCurrentArrow(
   ctx.lineTo(x1 - al * Math.cos(ang + 0.4), y1 - al * Math.sin(ang + 0.4));
   ctx.closePath();
   ctx.fill();
-  drawLabel(ctx, { text: label, x: x0 - 4, y: y0, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: label,
+    x: x0 - 4,
+    y: y0,
+    font: '10px "JetBrains Mono", monospace',
+    align: 'right',
+    baseline: 'middle',
+  });
 }

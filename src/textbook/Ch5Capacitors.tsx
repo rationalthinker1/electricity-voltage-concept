@@ -105,7 +105,7 @@ export default function Ch5Capacitors() {
         crossing is a million times larger than the cost of the first one.
       </p>
 
-      <BuildACapacitorDemo />
+      <BuildACapacitorDemo figure="Fig. 5.1" />
 
       <p className="mb-prose-3">
         That linear growth in the cost-per-charge is the whole story of the capacitor in one
@@ -219,11 +219,11 @@ export default function Ch5Capacitors() {
         previous form). The other symbols are unchanged.
       </p>
 
-      <PlateGeometryDemo />
+      <PlateGeometryDemo figure="Fig. 5.2" />
 
-      <DielectricSlideDemo />
+      <DielectricSlideDemo figure="Fig. 5.3" />
 
-      <ParallelPlate3DDemo />
+      <ParallelPlate3DDemo figure="Fig. 5.4" />
 
       <p className="mb-prose-3">
         The 3D view above makes the underlying picture geometrical. The surface-charge density{' '}
@@ -311,7 +311,7 @@ export default function Ch5Capacitors() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <WhyHarderEachChargeDemo />
+      <WhyHarderEachChargeDemo figure="Fig. 5.5" />
 
       <TryIt
         tag="Try 5.2"
@@ -399,7 +399,7 @@ export default function Ch5Capacitors() {
         (in V/m).
       </p>
 
-      <EnergyInTheGapDemo />
+      <EnergyInTheGapDemo figure="Fig. 5.6" />
 
       <p className="mb-prose-3">
         Multiply this density by the gap volume{' '}
@@ -477,7 +477,7 @@ export default function Ch5Capacitors() {
         the timescale of the exponential approach.
       </p>
 
-      <ChargingCurveDemo />
+      <ChargingCurveDemo figure="Fig. 5.7" />
 
       <TryIt
         tag="Try 5.4"
@@ -542,7 +542,7 @@ export default function Ch5Capacitors() {
         time anyone had successfully stored static electricity for later release.
       </p>
 
-      <LeydenJarReplayDemo />
+      <LeydenJarReplayDemo figure="Fig. 5.8" />
 
       <p className="mb-prose-3">
         Volta named the property in 1782

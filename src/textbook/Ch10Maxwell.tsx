@@ -157,7 +157,7 @@ export default function Ch10Maxwell() {
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <MaxwellEquations3DDemo />
+      <MaxwellEquations3DDemo figure="Fig. 10.1" />
 
       <h2 className="chapter-h2">
         Gauss's law for <InlineMath tex="E" />
@@ -184,7 +184,7 @@ export default function Ch10Maxwell() {
         <Cite id="gauss-1813" in={SOURCES} />.
       </p>
 
-      <GaussELawDemo />
+      <GaussELawDemo figure="Fig. 10.2" />
 
       <p className="mb-prose-3">
         The physical content is straightforward:{' '}
@@ -260,7 +260,7 @@ export default function Ch10Maxwell() {
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <GaussBLawDemo />
+      <GaussBLawDemo figure="Fig. 10.3" />
 
       <p className="mb-prose-3">
         This is an experimental fact — not a derivation. Cut a bar magnet in half and you do not get
@@ -330,7 +330,7 @@ export default function Ch10Maxwell() {
         <Cite id="feynman-II-18" in={SOURCES} />.
       </p>
 
-      <FaradayLawDemo />
+      <FaradayLawDemo figure="Fig. 10.4" />
 
       <p className="mb-prose-3">
         The minus sign is the one piece of bookkeeping that is not optional. It encodes Lenz's law:
@@ -442,7 +442,7 @@ export default function Ch10Maxwell() {
         plate is exactly the rate at which the flux is growing in the gap.
       </p>
 
-      <AmpereMaxwellLawDemo />
+      <AmpereMaxwellLawDemo figure="Fig. 10.5" />
 
       <TryIt
         tag="Try 10.4"
@@ -550,9 +550,9 @@ export default function Ch10Maxwell() {
         <Cite id="maxwell-1865" in={SOURCES} />.
       </p>
 
-      <CFromMaxwellDemo />
+      <CFromMaxwellDemo figure="Fig. 10.6" />
 
-      <EMWaveSpeedDemo />
+      <EMWaveSpeedDemo figure="Fig. 10.7" />
 
       <p className="mb-prose-3">
         With modern CODATA values

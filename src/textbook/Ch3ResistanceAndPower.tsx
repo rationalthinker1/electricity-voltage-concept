@@ -131,7 +131,7 @@ export default function Ch3ResistanceAndPower() {
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
 
-      <MicroscopicOhm3DDemo />
+      <MicroscopicOhm3DDemo figure="Fig. 3.1" />
 
       <p className="mb-prose-3">
         The picture above is what <InlineMath tex="\vec{J} = \sigma\vec{E}" /> looks like inside the
@@ -174,7 +174,7 @@ export default function Ch3ResistanceAndPower() {
         and the third is fixed.
       </p>
 
-      <OhmsLawTwoViewsDemo />
+      <OhmsLawTwoViewsDemo figure="Fig. 3.2" />
 
       <p className="mb-prose-3">
         The two panels above pull the same equation in opposite directions. On the left, the
@@ -193,7 +193,7 @@ export default function Ch3ResistanceAndPower() {
         reading walks down that linear ramp.
       </p>
 
-      <WireVoltageDropDemo />
+      <WireVoltageDropDemo figure="Fig. 3.3" />
 
       <h2 className="chapter-h2">Length adds, area divides</h2>
 
@@ -233,7 +233,7 @@ export default function Ch3ResistanceAndPower() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <LengthVsResistanceDemo />
+      <LengthVsResistanceDemo figure="Fig. 3.4" />
 
       <p className="mb-prose-3">
         The length picture is the simpler of the two. Stretch the copper wire above and the
@@ -241,7 +241,7 @@ export default function Ch3ResistanceAndPower() {
         10 m. Linearly, no surprises.
       </p>
 
-      <AreaVsResistanceDemo />
+      <AreaVsResistanceDemo figure="Fig. 3.5" />
 
       <p className="mb-prose-3">
         The area picture is more dramatic because cross-section spans more decades in real
@@ -320,7 +320,7 @@ export default function Ch3ResistanceAndPower() {
         <Cite id="kanthal" in={SOURCES} />.
       </p>
 
-      <MaterialPickerDemo />
+      <MaterialPickerDemo figure="Fig. 3.6" />
 
       <p className="mb-prose-3">
         At a fixed scenario — 12 V across a meter of 2.5 mm² wire — copper carries close to two
@@ -363,7 +363,7 @@ export default function Ch3ResistanceAndPower() {
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
 
-      <DriftInCopper3DDemo />
+      <DriftInCopper3DDemo figure="Fig. 3.7" />
 
       <p className="mb-prose-3">
         The 3D view above puts numbers on the picture. The cyan electrons inside the copper bounce
@@ -445,7 +445,7 @@ export default function Ch3ResistanceAndPower() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <JouleHeatingDemo />
+      <JouleHeatingDemo figure="Fig. 3.8" />
 
       <p className="mb-prose-3">
         The wire above warms from gray to dull red around{' '}
@@ -581,7 +581,7 @@ export default function Ch3ResistanceAndPower() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <SeriesVsParallelDemo />
+      <SeriesVsParallelDemo figure="Fig. 3.9" />
 
       <p className="mb-prose-3">
         Real circuits rarely live at one extreme. A mixed network already wants both rules at once —
@@ -590,7 +590,7 @@ export default function Ch3ResistanceAndPower() {
         voltage drops and branch currents re-balance themselves.
       </p>
 
-      <SeriesParallelMixDemo />
+      <SeriesParallelMixDemo figure="Fig. 3.10" />
 
       <p className="mb-prose-3">
         These rules are not arbitrary topology axioms — they are the same geometric{' '}

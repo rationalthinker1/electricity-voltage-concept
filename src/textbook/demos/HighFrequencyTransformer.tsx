@@ -103,7 +103,7 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.9'}
+      figure={figure ?? 'Fig. 23.9'}
       title="Core size shrinks with frequency"
       question="Slide the frequency. For 100 W, how big is the transformer at 60 Hz vs 100 kHz?"
       caption={

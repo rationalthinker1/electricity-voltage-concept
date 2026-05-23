@@ -13,7 +13,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -108,6 +109,18 @@ export function MutualInductanceTwoCoilsDemo({ figure }: Props) {
         <MiniReadout label="coupling k" value={computed.k.toFixed(3)} />
         <MiniReadout label="M" value={<Num value={computed.M} digits={2} />} unit="H" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="definition"
+        left={<InlineMath tex="M=k\sqrt{L_1L_2}" />}
+        rightLabel="live value"
+        right={
+          <InlineMath
+            tex={`M=${computed.k.toFixed(3)}\\sqrt{1.0\\,\\text{mH}\\cdot1.0\\,\\text{mH}}=${(
+              computed.M * 1e6
+            ).toFixed(0)}\\,\\mu\\text{H}`}
+          />
+        }
+      />
     </Demo>
   );
 }
