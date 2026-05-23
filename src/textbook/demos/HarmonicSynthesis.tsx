@@ -9,7 +9,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawAxes, drawHLine, drawLinePlot } from '@/lib/drawPlot';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -228,6 +229,20 @@ export function HarmonicSynthesisDemo({ figure }: Props) {
         />
         <MiniReadout label="Gibbs overshoot" value={gibbsPct.toFixed(1)} unit="%" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Square-wave Fourier series"
+        left={<InlineMath tex={`V(t) = \\frac{4V_0}{\\pi}\\!\\left[\\sin\\omega_0 t + \\frac{\\sin 3\\omega_0 t}{3} + \\frac{\\sin 5\\omega_0 t}{5} + \\cdots\\right]`} />}
+        rightLabel={`Amplitude of harmonic ${N % 2 === 1 ? N : N - 1} (N = ${N})`}
+        right={
+          <InlineMath
+            tex={target === 'square'
+              ? `b_{${N % 2 === 1 ? N : N - 1}} = \\frac{4}{${N % 2 === 1 ? N : N - 1}\\pi} \\approx ${(4 / ((N % 2 === 1 ? N : N - 1) * Math.PI)).toFixed(3)}`
+              : target === 'triangle'
+              ? `b_n = \\frac{8}{n^2\\pi^2}\\text{ (triangle, falls as }1/n^2)`
+              : `b_n = \\frac{2}{n\\pi}\\text{ (sawtooth, all harmonics)}`}
+          />
+        }
+      />
     </Demo>
   );
 }

@@ -26,7 +26,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
@@ -380,6 +381,20 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         <MiniReadout label="I₂" value={<Num value={I2} />} unit="A" />
         <MiniReadout label="I₃" value={<Num value={I3} />} unit="A" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="KCL at node A"
+        left={
+          <InlineMath
+            tex={`I_1 = I_2 + I_3:\\; ${I2.toFixed(3)} + ${I3.toFixed(3)} = ${I1.toFixed(3)}\\,\\text{A}`}
+          />
+        }
+        rightLabel="KVL (left loop)"
+        right={
+          <InlineMath
+            tex={`V = I_1(R_1 + R_\\parallel) = ${I1.toFixed(3)}\\times${(R1 + Rpar).toFixed(1)} = ${V}\\,\\text{V}`}
+          />
+        }
+      />
     </Demo>
   );
 }

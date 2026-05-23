@@ -13,7 +13,8 @@ import { useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath, type CircuitElement } from '@/lib/canvasPrimitives';
@@ -373,6 +374,18 @@ export function RCTransientDemo({ figure }: Props) {
         <MiniReadout label="τ = RC" value={fmtTime(tau)} />
         <MiniReadout label="V_C(now)" value={<Num value={VcDisplay} />} unit="V" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="RC transient"
+        left={
+          <InlineMath tex={"V_C(t) = V_0\\!\\left(1 - e^{-t/\\tau}\\right),\\quad \\tau = RC"} />
+        }
+        rightLabel="Time constant"
+        right={
+          <InlineMath
+            tex={`\\tau = ${R}\\,\\Omega \\times ${Cuf}\\,\\mu\\text{F} = ${(tau * 1000).toFixed(1)}\\,\\text{ms}`}
+          />
+        }
+      />
     </Demo>
   );
 }

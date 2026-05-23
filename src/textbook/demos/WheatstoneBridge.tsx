@@ -28,7 +28,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
@@ -291,6 +292,18 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
           unit="%"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Balance condition"
+        left={
+          <InlineMath
+            tex={`R_x = \\dfrac{R_2 R_3}{R_1} = \\dfrac{${R2}\\times${R3}}{${R1}} = ${RxBalance.toFixed(1)}\\,\\Omega`}
+          />
+        }
+        rightLabel="Differential output"
+        right={
+          <InlineMath tex={`V_A - V_B = ${dV.toFixed(3)}\\,\\text{V}`} />
+        }
+      />
     </Demo>
   );
 }

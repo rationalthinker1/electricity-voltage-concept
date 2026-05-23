@@ -18,7 +18,8 @@
 import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -289,6 +290,18 @@ export function MOSFETOperationDemo({ figure }: Props) {
           value={Vov <= 0 ? 'cut-off' : inSat ? 'saturation' : 'triode'}
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Saturation (V_DS ≥ V_OV)"
+        left={<InlineMath tex={`I_D = \\tfrac{k_n}{2}(V_{GS} - V_T)^2`} />}
+        rightLabel="Live values"
+        right={
+          <InlineMath
+            tex={Vov <= 0
+              ? `V_{OV} = ${Vov.toFixed(2)}\\,\\text{V} \\Rightarrow I_D = 0`
+              : `\\tfrac{${(k_n * 1000).toFixed(0)}\\,\\text{mA/V}^2}{2}\\cdot(${Vov.toFixed(2)})^2 = ${(I_D * 1000).toFixed(3)}\\,\\text{mA}`}
+          />
+        }
+      />
     </Demo>
   );
 }

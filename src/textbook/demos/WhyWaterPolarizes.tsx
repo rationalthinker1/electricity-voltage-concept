@@ -12,7 +12,8 @@ import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -159,6 +160,12 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
         />
         <MiniReadout label="ε_r (est.)" value={er_estimate.toFixed(0)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Debye orientational polarisation"
+        left={<InlineMath tex={`\\varepsilon_r(T) \\approx 1 + \\frac{Np^2}{3\\varepsilon_0 kT} \\propto \\frac{1}{T}`} />}
+        rightLabel={`At T = ${T.toFixed(0)} K`}
+        right={<InlineMath tex={`\\varepsilon_r \\approx \\frac{80 \\times 300}{${T.toFixed(0)}} = ${er_estimate.toFixed(0)}`} />}
+      />
     </Demo>
   );
 }

@@ -14,7 +14,8 @@ import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -197,6 +198,16 @@ export function ThreePhaseDemo({ figure }: Props) {
         <MiniReadout label="V_rms = V_pk/√2" value={Vrms.toFixed(3)} unit="V" />
         <MiniReadout label="Phase offset" value="120°" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Three-phase sum"
+        left={<InlineMath tex={"V_a(t) + V_b(t) + V_c(t) = 0\\;\\text{at every instant}"} />}
+        rightLabel="RMS value"
+        right={
+          <InlineMath
+            tex={`V_\\text{rms} = V_\\text{pk}/\\sqrt{2} = ${Vpk.toFixed(2)}/\\sqrt{2} \\approx ${Vrms.toFixed(3)}\\,\\text{V}`}
+          />
+        }
+      />
     </Demo>
   );
 }

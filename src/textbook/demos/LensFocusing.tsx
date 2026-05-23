@@ -15,7 +15,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -277,6 +278,16 @@ export function LensFocusingDemo({ figure }: Props) {
         <MiniReadout label="dᵢ" value={Number.isFinite(dImg) ? dImg.toFixed(2) : '∞'} unit="cm" />
         <MiniReadout label="m" value={Number.isFinite(mag) ? mag.toFixed(2) : '—'} unit="×" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Thin lens equation"
+        left={<InlineMath tex={`\\frac{1}{f} = \\frac{1}{d_o} + \\frac{1}{d_i},\\quad m = -\\frac{d_i}{d_o}`} />}
+        rightLabel={`f = ${f.toFixed(1)} cm, d₀ = ${dObj.toFixed(1)} cm`}
+        right={
+          Number.isFinite(dImg)
+            ? <InlineMath tex={`d_i = ${dImg.toFixed(2)}\\,\\text{cm},\\quad m = ${mag.toFixed(2)}\\times`} />
+            : <InlineMath tex={`d_i \\to \\infty\\text{ (object at focal point)}`} />
+        }
+      />
     </Demo>
   );
 }

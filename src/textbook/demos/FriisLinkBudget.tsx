@@ -10,7 +10,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -173,6 +174,12 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
         <MiniReadout label="P_r" value={Pr_dBm.toFixed(1)} unit="dBm" />
         <MiniReadout label="FSPL" value={fsplDb.toFixed(1)} unit="dB" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Friis transmission equation"
+        left={<InlineMath tex="P_r = P_t G_t G_r \left(\tfrac{\lambda}{4\pi d}\right)^{\!2}" />}
+        rightLabel="Live link budget"
+        right={<InlineMath tex={`P_r = ${Pr_dBm.toFixed(1)}\\,\\text{dBm};\\quad\\text{path loss} = ${(-fsplDb).toFixed(1)}\\,\\text{dB}`} />}
+      />
     </Demo>
   );
 }

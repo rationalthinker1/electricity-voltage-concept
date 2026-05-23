@@ -20,7 +20,8 @@
 import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -210,6 +211,12 @@ export function BuckConverterDemo({ figure }: Props) {
         <MiniReadout label="ΔI_L pp" value={<Num value={dIL_pp} />} unit="A" />
         <MiniReadout label="P_in (η=92%)" value={<Num value={Pin} />} unit="W" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Buck conversion"
+        left={<InlineMath tex="V_{\text{out}} = D \cdot V_{\text{in}}" />}
+        rightLabel="At these settings"
+        right={<InlineMath tex={`${(duty * 100).toFixed(0)}\\% \\times ${Vin.toFixed(1)}\\,\\text{V} = ${Vout.toFixed(2)}\\,\\text{V};\\quad \\Delta I_L = ${dIL_pp.toFixed(3)}\\,\\text{A}`} />}
+      />
     </Demo>
   );
 }

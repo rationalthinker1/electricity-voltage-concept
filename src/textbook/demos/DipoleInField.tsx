@@ -11,7 +11,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from "@/lib/canvasLayout";
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -183,6 +184,12 @@ export function DipoleInFieldDemo({ figure }: Props) {
         />
         <MiniReadout label="⟨cos θ⟩" value={align.toFixed(2)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Dipole torque and alignment"
+        left={<InlineMath tex={`\\boldsymbol{\\tau} = \\mathbf{p} \\times \\mathbf{E},\\quad P = N p\\,\\langle\\cos\\theta\\rangle`} />}
+        rightLabel={`E = ${E.toFixed(2)}`}
+        right={<InlineMath tex={`\\langle\\cos\\theta\\rangle = ${align.toFixed(2)};\\quad P \\propto N p \\cdot ${align.toFixed(2)}`} />}
+      />
     </Demo>
   );
 }

@@ -22,7 +22,8 @@ import { useMemo, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -268,6 +269,12 @@ export function FlybackConverterDemo({ figure }: Props) {
         />
         <MiniReadout label="P_out" value={<Num value={computed.Pout} digits={2} />} unit="W" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Flyback output voltage (CCM)"
+        left={<InlineMath tex="V_{\text{out}} = \frac{D}{1-D} \cdot \frac{V_{\text{in}}}{n}" />}
+        rightLabel="At current settings"
+        right={<InlineMath tex={`\\frac{${(duty * 100).toFixed(0)}\\%}{${((1 - duty) * 100).toFixed(0)}\\%} \\cdot \\frac{${Math.round(Vin)}}{${Math.round(turnsN)}} = ${computed.Vout.toFixed(1)}\\,\\text{V}`} />}
+      />
     </Demo>
   );
 }

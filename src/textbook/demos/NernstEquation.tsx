@@ -8,7 +8,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -151,6 +152,12 @@ export function NernstEquationDemo({ figure }: Props) {
         <MiniReadout label="Q" value={<Num value={Q} />} />
         <MiniReadout label="V_cell" value={<Num value={V} />} unit="V" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Nernst equation (Cu/Zn)"
+        left={<InlineMath tex="V = V^\circ - \frac{RT}{nF}\ln Q" />}
+        rightLabel={`At T = ${T.toFixed(0)} K, Q = ${Q.toFixed(3)}`}
+        right={<InlineMath tex={`${V_STD.toFixed(2)} - ${((R_GAS * T) / (N_ELECTRONS * F_FARADAY)).toFixed(4)}\\ln(${Q.toFixed(2)}) = ${V.toFixed(3)}\\,\\text{V}`} />}
+      />
     </Demo>
   );
 }

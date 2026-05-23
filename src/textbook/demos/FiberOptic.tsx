@@ -9,7 +9,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -189,6 +190,12 @@ export function FiberOpticDemo({ figure }: Props) {
           unit="°"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="TIR critical angle"
+        left={<InlineMath tex={`\\sin\\theta_c = \\frac{n_{\\text{clad}}}{n_{\\text{core}}},\\quad \\theta_{\\text{accept}} = 90° - \\theta_c`} />}
+        rightLabel={`n_core = ${nCore.toFixed(3)}, n_clad = ${nClad.toFixed(3)}`}
+        right={<InlineMath tex={`\\sin\\theta_c = \\frac{${nClad.toFixed(3)}}{${nCore.toFixed(3)}} = ${sinCrit.toFixed(3)},\\quad \\theta_{\\text{accept}} \\leq ${critFromAxis.toFixed(2)}°`} />}
+      />
     </Demo>
   );
 }

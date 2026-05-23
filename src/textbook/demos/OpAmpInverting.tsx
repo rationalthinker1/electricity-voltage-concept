@@ -11,7 +11,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -178,6 +179,12 @@ export function OpAmpInvertingDemo({ figure }: Props) {
         <MiniReadout label="V_out peak" value={Vout_peak.toFixed(2)} unit="V" />
         <MiniReadout label="State" value={railed ? 'railed' : 'linear'} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Inverting amplifier"
+        left={<InlineMath tex={`V_{\\text{out}} = -\\frac{R_f}{R_{\\text{in}}} \\cdot V_{\\text{in}}`} />}
+        rightLabel={`R_in = ${RinK} kΩ, R_f = ${RfK} kΩ`}
+        right={<InlineMath tex={`A_v = -\\frac{${RfK}}{${RinK}} = ${gain.toFixed(1)},\\quad V_{\\text{out,pk}} = ${Vout_peak.toFixed(2)}\\,\\text{V}${railed ? '\\text{ (clipped)}' : ''}`} />}
+      />
     </Demo>
   );
 }

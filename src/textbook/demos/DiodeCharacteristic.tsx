@@ -16,7 +16,8 @@
 import { useState } from 'react';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -241,6 +242,12 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
         <MiniReadout label="I (Schottky)" value={<Num value={Ish} />} unit="A" />
         <MiniReadout label="I (Zener)" value={<Num value={Iz} />} unit="A" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Shockley diode equation"
+        left={<InlineMath tex={`I = I_s\\!\\left(e^{qV/kT} - 1\\right),\\quad V_T = \\tfrac{kT}{q}`} />}
+        rightLabel={`At V = ${V.toFixed(2)} V, T = ${T.toFixed(0)} K`}
+        right={<InlineMath tex={`V_T = ${(((KB * T) / Q) * 1000).toFixed(2)}\\,\\text{mV};\\quad I_{\\text{Si}} \\approx ${Isi.toExponential(2)}\\,\\text{A}`} />}
+      />
     </Demo>
   );
 }

@@ -11,7 +11,8 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { drawLabel } from '@/lib/canvasLayout';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -153,6 +154,12 @@ export function VoltaicPileDemo({ figure }: Props) {
         <MiniReadout label="per-pair V" value={V_PER_PAIR.toFixed(2)} unit="V" />
         <MiniReadout label="V_total" value={V.toFixed(2)} unit="V" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Series cells add voltages"
+        left={<InlineMath tex="V_{\text{total}} = N \cdot V_{\text{cell}}" />}
+        rightLabel={`At N = ${pairs}`}
+        right={<InlineMath tex={`${pairs} \\times 1.10\\,\\text{V} = ${V.toFixed(2)}\\,\\text{V}`} />}
+      />
     </Demo>
   );
 }

@@ -18,7 +18,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -161,6 +162,12 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
         <MiniReadout label="VSWR" value={VSWR === Infinity ? '∞' : <Num value={VSWR} />} />
         <MiniReadout label="Power reflected" value={(Gamma * Gamma * 100).toFixed(1)} unit="%" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Reflection coefficient"
+        left={<InlineMath tex={`\\Gamma = \\frac{Z_L - Z_0}{Z_L + Z_0},\\quad \\text{VSWR} = \\frac{1+|\\Gamma|}{1-|\\Gamma|}`} />}
+        rightLabel={`Z_L = ${ZL} Ω, Z₀ = ${Z0} Ω`}
+        right={<InlineMath tex={`\\Gamma = \\frac{${ZL}-${Z0}}{${ZL}+${Z0}} = ${Gamma.toFixed(3)},\\quad \\text{VSWR} = ${VSWR === Infinity ? '\\infty' : VSWR.toFixed(2)}`} />}
+      />
     </Demo>
   );
 }

@@ -8,7 +8,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -165,6 +166,12 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
         />
         <MiniReadout label="Z_s (load)" value={Z_LOAD.toFixed(0)} unit="Ω" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Impedance reflection"
+        left={<InlineMath tex="Z_p = (N_p/N_s)^2\,Z_s" />}
+        rightLabel={`N_p/N_s = ${ratio}:1,  Z_s = ${Z_LOAD} Ω`}
+        right={<InlineMath tex={`Z_p = ${ratio}^2 \\times ${Z_LOAD}\\,\\Omega = ${computed.Zp.toFixed(1)}\\,\\Omega`} />}
+      />
     </Demo>
   );
 }

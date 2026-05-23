@@ -9,7 +9,8 @@ import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -207,6 +208,12 @@ export function FFTAlgorithmAnimationDemo({ figure }: Props) {
         <MiniReadout label="FFT N log₂ N" value={fft.toLocaleString()} />
         <MiniReadout label="speed-up" value={speedup.toFixed(1) + '×'} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Operation counts"
+        left={<InlineMath tex={`\\text{naive DFT: } N^2 \\quad\\text{FFT: } N\\log_2 N`} />}
+        rightLabel={`N = ${N}`}
+        right={<InlineMath tex={`${N}^2 = ${naive.toLocaleString()} \\quad\\text{vs}\\quad ${N}\\!\\cdot\\!${logN} = ${fft.toLocaleString()} \\quad(\\times${speedup.toFixed(0)})`} />}
+      />
     </Demo>
   );
 }

@@ -11,7 +11,8 @@ import { useMemo, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -184,6 +185,12 @@ export function THDAndDistortionDemo({ figure }: Props) {
         <MiniReadout label="fundamental b₁" value={coeffs[0].toFixed(3)} />
         <MiniReadout label="3rd harmonic" value={coeffs[2].toFixed(3)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Total harmonic distortion"
+        left={<InlineMath tex={`\\text{THD} = \\frac{\\sqrt{b_2^2 + b_3^2 + \\cdots}}{b_1}`} />}
+        rightLabel={`Clip level = ${Aclip.toFixed(2)}`}
+        right={<InlineMath tex={`\\text{THD} = \\frac{\\sqrt{\\sum_{n\\geq2}b_n^2}}{${coeffs[0].toFixed(3)}} = ${thdPct.toFixed(1)}\\%`} />}
+      />
     </Demo>
   );
 }

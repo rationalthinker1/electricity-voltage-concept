@@ -24,7 +24,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -625,6 +626,18 @@ export function MOSFET3DDemo({ figure }: Props) {
         <MiniReadout label="I_D" value={<Num value={I_D} />} unit="A" />
         <MiniReadout label="regime" value={regime} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Saturation region"
+        left={<InlineMath tex={`I_D = \\tfrac{k_n}{2}(V_{GS} - V_T)^2`} />}
+        rightLabel="Live values"
+        right={
+          <InlineMath
+            tex={Vov <= 0
+              ? `V_{GS} < V_T \\Rightarrow I_D = 0`
+              : `\\tfrac{2\\,\\text{mA/V}^2}{2}\\cdot(${Vov.toFixed(2)})^2 = ${(I_D * 1000).toFixed(3)}\\,\\text{mA}`}
+          />
+        }
+      />
     </Demo>
   );
 }

@@ -13,7 +13,8 @@ import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -284,6 +285,12 @@ export function FerromagnetDemo({ figure }: Props) {
         />
         <MiniReadout label="M" value={M.toFixed(2)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Hysteresis loop"
+        left={<InlineMath tex={`B = \\mu_0(H + M);\\quad M\\text{ lags }H\\text{ (hysteresis)}`} />}
+        rightLabel={`Applied B = ${B.toFixed(2)}`}
+        right={<InlineMath tex={`M = ${M.toFixed(2)}\\text{ (normalised)}`} />}
+      />
     </Demo>
   );
 }

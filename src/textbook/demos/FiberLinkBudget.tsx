@@ -14,7 +14,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
@@ -176,6 +177,12 @@ export function FiberLinkBudgetDemo({ figure }: Props) {
         <MiniReadout label="link budget" value={budget.toFixed(1)} unit="dB" />
         <MiniReadout label="reach" value={reachKm.toFixed(0)} unit="km" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Link budget"
+        left={<InlineMath tex="P_{\text{rx}} = P_{\text{tx}} - L_{\text{conn}} - \alpha \cdot L" />}
+        rightLabel="Reach at receiver threshold"
+        right={<InlineMath tex={`L = \\frac{${launchDbm.toFixed(1)} - ${extraLoss.toFixed(1)} - (${rxSens.toFixed(0)})}{${alpha.toFixed(2)}} = ${reachKm.toFixed(0)}\\,\\text{km}`} />}
+      />
     </Demo>
   );
 }

@@ -7,7 +7,8 @@
  */
 import { useState } from 'react';
 
-import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 
 interface Props {
@@ -82,6 +83,12 @@ export function HalfCellPotentialsDemo({ figure }: Props) {
         <MiniReadout label="E°_cell" value={<Num value={Ecell} />} unit="V" />
         <MiniReadout label="spontaneous?" value={spontaneous ? 'yes' : 'no'} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Cell potential"
+        left={<InlineMath tex="E°_{\text{cell}} = E°_{\text{cathode}} - E°_{\text{anode}}" />}
+        rightLabel="For selected half-cells"
+        right={<InlineMath tex={`${cathode.E >= 0 ? '+' : ''}${cathode.E.toFixed(2)} - (${anode.E >= 0 ? '+' : ''}${anode.E.toFixed(2)}) = ${Ecell >= 0 ? '+' : ''}${Ecell.toFixed(2)}\\,\\text{V}`} />}
+      />
     </Demo>
   );
 }

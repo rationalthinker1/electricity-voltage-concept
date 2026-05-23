@@ -10,7 +10,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { PHYS } from '@/lib/physics';
 import { fmtFrequency } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -154,6 +155,12 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
         <MiniReadout label="f₀" value={fmtFrequency(f0)} />
         <MiniReadout label="R_rad" value={R_rad.toFixed(0)} unit="Ω" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Resonance condition"
+        left={<InlineMath tex="f_0 = c\,/\,(2L)" />}
+        rightLabel={`L = ${L.toFixed(2)} m`}
+        right={<InlineMath tex={`f_0 = \\text{${fmtFrequency(f0)}},\\quad R_{\\text{rad}} \\approx 73\\,\\Omega`} />}
+      />
     </Demo>
   );
 }

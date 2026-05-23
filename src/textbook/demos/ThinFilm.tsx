@@ -11,7 +11,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -170,6 +171,12 @@ export function ThinFilmDemo({ figure }: Props) {
           unit={Number.isFinite(peakLambda) ? 'nm' : ''}
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Thin-film constructive interference"
+        left={<InlineMath tex={`2nt = m\\lambda \\quad(m=1,2,\\ldots)`} />}
+        rightLabel={`t = ${thickNm} nm, n = ${n2.toFixed(2)}`}
+        right={<InlineMath tex={`\\lambda_{\\text{peak}} = 2 \\times ${n2.toFixed(2)} \\times ${thickNm}\\,\\text{nm} = ${(2 * n2 * thickNm).toFixed(0)}\\,\\text{nm (m = 1)}`} />}
+      />
     </Demo>
   );
 }

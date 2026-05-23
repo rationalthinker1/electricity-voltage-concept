@@ -14,7 +14,8 @@ import { useMemo, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { fmtFrequency } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -139,6 +140,12 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
         <MiniReadout label="core mass" value={<Num value={computed.Mg} digits={2} />} unit="g" />
         <MiniReadout label="vs 60 Hz" value={<Num value={computed.scale} digits={2} />} unit="×" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Faraday constraint"
+        left={<InlineMath tex="V = 4.44\,f\,N\,B\,A \;\Rightarrow\; A \propto 1/f" />}
+        rightLabel={`f = ${fmtFrequency(f)} vs 60 Hz`}
+        right={<InlineMath tex={`\\text{volume scale} = ${computed.scale.toFixed(2)}\\times;\\quad m \\approx ${computed.Mg.toFixed(0)}\\,\\text{g}`} />}
+      />
     </Demo>
   );
 }

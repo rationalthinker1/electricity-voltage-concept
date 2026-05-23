@@ -17,7 +17,8 @@
 import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawAxes, drawHLine, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -185,6 +186,12 @@ export function GridTieInverterDemo({ figure }: Props) {
         <MiniReadout label="S (apparent)" value={<Num value={S} />} unit="VA" />
         <MiniReadout label="power factor" value={pf.toFixed(3)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Real and reactive power"
+        left={<InlineMath tex="P = V_{\text{rms}} I_{\text{rms}} \cos\theta,\quad Q = V_{\text{rms}} I_{\text{rms}} \sin\theta" />}
+        rightLabel={`At θ = ${thetaDeg.toFixed(0)}°`}
+        right={<InlineMath tex={`P = ${P.toFixed(0)}\\,\\text{W},\\quad Q = ${Q.toFixed(0)}\\,\\text{VAR}`} />}
+      />
     </Demo>
   );
 }

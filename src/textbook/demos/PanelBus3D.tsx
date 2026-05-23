@@ -40,7 +40,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
@@ -359,6 +360,12 @@ export function PanelBus3DDemo({ figure }: Props) {
         <MiniReadout label="I_main" value={<Num value={computed.I_main} />} unit="A" />
         <MiniReadout label="I per branch" value={computed.I_per.toFixed(1)} unit="A" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Split-phase service"
+        left={<InlineMath tex="V_{L\text{-}L} = 2 \times V_{L\text{-}N} = 2 \times 120 = 240\,\text{V}" />}
+        rightLabel="Per-branch load estimate"
+        right={<InlineMath tex={`I_{\\text{per}} = \\min\\!\\left(20,\\,\\frac{200}{${nBreakers}}\\right) = ${computed.I_per.toFixed(1)}\\,\\text{A}`} />}
+      />
     </Demo>
   );
 }

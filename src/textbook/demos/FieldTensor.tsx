@@ -26,7 +26,8 @@
  */
 import { Fragment, useEffect, useMemo, useState } from 'react';
 
-import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
@@ -233,6 +234,20 @@ export function FieldTensorDemo({ figure }: Props) {
           onChange={setBetaPct}
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Lorentz boost (x̂ direction)"
+        left={
+          <InlineMath
+            tex={"E_y' = \\gamma(E_y - v B_z),\\quad B_z' = \\gamma\\!\\left(B_z - \\dfrac{v\\,E_y}{c^{2}}\\right)"}
+          />
+        }
+        rightLabel={`At β = ${beta.toFixed(2)}`}
+        right={
+          <InlineMath
+            tex={`\\gamma = \\dfrac{1}{\\sqrt{1-\\beta^{2}}} = ${gamma.toFixed(3)}`}
+          />
+        }
+      />
     </Demo>
   );
 }

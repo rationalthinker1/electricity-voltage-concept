@@ -13,7 +13,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -207,6 +208,12 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
         <MiniReadout label="τ = RC" value={fmtTime(tau)} />
         <MiniReadout label="1/(ωRC)" value={sineGainMag.toFixed(3)} unit="(sine gain)" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Op-amp integrator"
+        left={<InlineMath tex={`V_{\\text{out}}(t) = -\\frac{1}{RC}\\int V_{\\text{in}}\\,dt`} />}
+        rightLabel={`Sine gain at f = ${fHz} Hz`}
+        right={<InlineMath tex={`\\frac{1}{\\omega RC} = \\frac{1}{2\\pi \\cdot ${fHz}\\,\\text{Hz} \\cdot ${fmtTime(tau)}} = ${sineGainMag.toFixed(3)}`} />}
+      />
     </Demo>
   );
 }

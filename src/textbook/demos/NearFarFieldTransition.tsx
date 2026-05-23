@@ -10,7 +10,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -142,6 +143,12 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
         <MiniReadout label="λ" value={lamPx.toFixed(0)} unit="px" />
         <MiniReadout label="λ/2π" value={(lamPx / (2 * Math.PI)).toFixed(1)} unit="px" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Near/far-field boundary"
+        left={<InlineMath tex="r_{\text{NF}} \approx \lambda\,/\,(2\pi)" />}
+        rightLabel="In this view"
+        right={<InlineMath tex={`\\lambda = ${lamPx.toFixed(0)}\\,\\text{px};\\quad r_{\\text{NF}} \\approx ${(lamPx / (2 * Math.PI)).toFixed(1)}\\,\\text{px}`} />}
+      />
     </Demo>
   );
 }

@@ -16,7 +16,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -169,6 +170,12 @@ export function PatchAntennaDemo({ figure }: Props) {
         />
         <MiniReadout label="f₀" value={f0GHz.toFixed(2)} unit="GHz" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Patch antenna resonance"
+        left={<InlineMath tex="f_0 = c\,/\,(2\,L\,\sqrt{\varepsilon_r})" />}
+        rightLabel="At this operating point"
+        right={<InlineMath tex={`f_0 = c\\,/\\,(2 \\times ${Lmm.toFixed(1)}\\,\\text{mm} \\times \\sqrt{${eps.toFixed(2)}}) = ${f0GHz.toFixed(2)}\\,\\text{GHz}`} />}
+      />
     </Demo>
   );
 }

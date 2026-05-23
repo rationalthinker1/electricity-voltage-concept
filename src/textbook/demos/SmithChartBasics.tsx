@@ -15,7 +15,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -213,6 +214,12 @@ export function SmithChartBasicsDemo({ figure }: Props) {
           unit="Ω"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Reflection coefficient"
+        left={<InlineMath tex={`\\Gamma = \\frac{Z_L/Z_0 - 1}{Z_L/Z_0 + 1},\\quad \\text{VSWR} = \\frac{1+|\\Gamma|}{1-|\\Gamma|}`} />}
+        rightLabel={`Z_L = ${R} + j${X} Ω`}
+        right={<InlineMath tex={`|\\Gamma| = ${Gmag.toFixed(3)},\\quad \\angle\\Gamma = ${GangleDeg.toFixed(1)}°,\\quad \\text{VSWR} = ${isFinite(VSWR) ? VSWR.toFixed(2) : '\\infty'}`} />}
+      />
     </Demo>
   );
 }

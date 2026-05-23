@@ -11,7 +11,8 @@ import { useState } from 'react';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -144,6 +145,12 @@ export function LiIonIntercalationDemo({ figure }: Props) {
         <MiniReadout label="Li⁺ in graphite" value={nAnode.toString()} />
         <MiniReadout label="Li⁺ in cathode" value={nCathode.toString()} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Open-circuit voltage (NMC approx.)"
+        left={<InlineMath tex="V_{\text{cell}} \approx 3.0 + 0.9 \cdot \text{SOC}" />}
+        rightLabel={`At SOC = ${(soc * 100).toFixed(0)} %`}
+        right={<InlineMath tex={`3.0 + 0.9 \\times ${soc.toFixed(2)} = ${V.toFixed(2)}\\,\\text{V}`} />}
+      />
     </Demo>
   );
 }

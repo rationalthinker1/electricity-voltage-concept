@@ -25,7 +25,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
@@ -579,6 +580,12 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         <MiniReadout label="Φ" value={<Num value={computed.phi} />} unit="Wb" />
         <MiniReadout label="k (coupling)" value={computed.k.toFixed(2)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Transformer law"
+        left={<InlineMath tex="V_s = V_p \cdot N_s/N_p,\quad \Phi = \mu_0\mu_r N I A\,/\,\ell" />}
+        rightLabel="At this operating point"
+        right={<InlineMath tex={`V_s = ${computed.Vs.toFixed(1)}\\,\\text{V};\\quad\\Phi = ${(computed.phi * 1000).toFixed(2)}\\,\\text{mWb}`} />}
+      />
     </Demo>
   );
 }

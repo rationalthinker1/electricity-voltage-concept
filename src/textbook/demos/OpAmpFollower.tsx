@@ -16,7 +16,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -114,6 +115,12 @@ export function OpAmpFollowerDemo({ figure }: Props) {
         />
         <MiniReadout label="V_load (live)" value={<Num value={Vshown} digits={3} />} unit="V" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Without buffer"
+        left={<InlineMath tex={`V_{\\text{load}} = V_s \\cdot \\frac{R_L}{R_s + R_L}`} />}
+        rightLabel="With unity-gain follower"
+        right={<InlineMath tex={`V_{\\text{direct}} = ${Vs.toFixed(2)} \\cdot \\frac{R_L}{R_s+R_L} = ${VdirectLoad.toFixed(3)}\\,\\text{V};\\quad V_{\\text{buffered}} = ${Vs.toFixed(2)}\\,\\text{V}`} />}
+      />
     </Demo>
   );
 }

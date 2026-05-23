@@ -11,7 +11,8 @@
 import { useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -162,6 +163,20 @@ export function ImpedanceDemo({ figure }: Props) {
         <MiniReadout label="|Z|" value={<Num value={Zmag} />} unit="Ω" />
         <MiniReadout label="φ" value={((phi * 180) / Math.PI).toFixed(1)} unit="°" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Series RLC impedance"
+        left={
+          <InlineMath
+            tex={`Z = R + j(\\omega L - 1/\\omega C) = ${R} + j(${XL.toFixed(1)} - ${XC.toFixed(1)})\\,\\Omega`}
+          />
+        }
+        rightLabel="Magnitude and phase"
+        right={
+          <InlineMath
+            tex={`|Z| = ${Zmag.toFixed(2)}\\,\\Omega,\\quad \\varphi = ${((phi * 180) / Math.PI).toFixed(1)}^{\\circ}`}
+          />
+        }
+      />
     </Demo>
   );
 }

@@ -14,7 +14,8 @@ import { useMemo, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { fmtCurrent, fmtVoltage } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -187,6 +188,12 @@ export function StanleyDemo({ figure }: Props) {
         <MiniReadout label="P_loss" value={<Num value={computed.Ploss} digits={2} />} unit="W" />
         <MiniReadout label="efficiency" value={(computed.eff * 100).toFixed(2)} unit="%" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="HV transmission: loss law"
+        left={<InlineMath tex="P_{\text{loss}} = I^2 R = (P/V)^2\,R" />}
+        rightLabel="At this operating point"
+        right={<InlineMath tex={`P_{\\text{loss}} = ${(computed.Ploss / 1e3).toFixed(1)}\\,\\text{kW};\\quad\\eta = ${(computed.eff * 100).toFixed(1)}\\%`} />}
+      />
     </Demo>
   );
 }

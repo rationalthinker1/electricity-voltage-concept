@@ -12,7 +12,8 @@
 import { useEffect, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -142,6 +143,12 @@ export function LeadAcidCellDemo({ figure }: Props) {
         <MiniReadout label="specific gravity" value={<Num value={SG} />} />
         <MiniReadout label="V_cell" value={<Num value={V_cell} />} unit="V" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Cell voltage vs state of charge"
+        left={<InlineMath tex="V_{\text{cell}} = V_{\text{empty}} + (V_{\text{full}} - V_{\text{empty}}) \cdot \text{SOC}" />}
+        rightLabel="At current SOC"
+        right={<InlineMath tex={`${V_EMPTY} + (${V_FULL} - ${V_EMPTY}) \\times ${(soc * 100).toFixed(0)}\\% = ${V_cell.toFixed(2)}\\,\\text{V}`} />}
+      />
     </Demo>
   );
 }

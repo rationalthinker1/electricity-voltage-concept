@@ -13,7 +13,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
@@ -137,6 +138,18 @@ export function VoltageDividerDemo({ figure }: Props) {
         <MiniReadout label="P in R₁" value={<Num value={P1} />} unit="W" />
         <MiniReadout label="P in lower leg" value={<Num value={P2eff} />} unit="W" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Unloaded divider"
+        left={
+          <InlineMath
+            tex={`V_\\text{out} = V_\\text{in}\\dfrac{R_2}{R_1+R_2} = ${Vin}\\cdot\\dfrac{${R2k}}{${R1k + R2k}} = ${VoutUnloaded.toFixed(2)}\\,\\text{V}`}
+          />
+        }
+        rightLabel="With 10 kΩ load"
+        right={
+          <InlineMath tex={`V_\\text{out (loaded)} = ${Vout.toFixed(2)}\\,\\text{V}`} />
+        }
+      />
     </Demo>
   );
 }

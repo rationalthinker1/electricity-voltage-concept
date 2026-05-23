@@ -11,7 +11,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -139,6 +140,12 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
         />
         <MiniReadout label="sin²θ" value={intensity.toFixed(3)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Dipole radiation pattern"
+        left={<InlineMath tex="|E|^2 \propto \sin^2\theta" />}
+        rightLabel={`At θ = ${probeDeg}°`}
+        right={<InlineMath tex={`\\sin^2(${probeDeg}^\\circ) = ${intensity.toFixed(3)}`} />}
+      />
     </Demo>
   );
 }

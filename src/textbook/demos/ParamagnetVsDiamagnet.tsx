@@ -16,7 +16,8 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 
 interface Props {
   figure: string;
@@ -233,6 +234,12 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
         <MiniReadout label="M (para)" value={Mpara.toFixed(2)} />
         <MiniReadout label="M (dia)" value={Mdia.toFixed(2)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Magnetic susceptibility"
+        left={<InlineMath tex={`M = \\chi_m H;\\quad \\chi_m > 0\\text{ (para)},\\quad \\chi_m < 0\\text{ (dia)}`} />}
+        rightLabel={`B = ${B.toFixed(1)}`}
+        right={<InlineMath tex={`M_{\\text{para}} = +${Mpara.toFixed(2)},\\quad M_{\\text{dia}} = ${Mdia.toFixed(2)}`} />}
+      />
     </Demo>
   );
 }

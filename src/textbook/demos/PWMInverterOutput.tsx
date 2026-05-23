@@ -18,7 +18,8 @@ import { useMemo, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { fmtFrequency } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -249,6 +250,12 @@ export function PWMInverterOutputDemo({ figure }: Props) {
         <MiniReadout label="V_out rms" value={<Num value={computed.Vrms} digits={1} />} unit="V" />
         <MiniReadout label="first sidelobe" value={fmtFrequency(computed.fSidelobe)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Output and sidelobe location"
+        left={<InlineMath tex="V_{\text{pk}} = m \cdot V_{\text{DC}},\quad f_{\text{SL}} \approx f_{sw} - 2f_{\text{out}}" />}
+        rightLabel="At current settings"
+        right={<InlineMath tex={`${m.toFixed(2)} \\times ${V_DC}\\,\\text{V} = ${computed.Vpeak.toFixed(0)}\\,\\text{V}_{\\text{pk}};\\quad f_{\\text{SL}} = ${(computed.fSidelobe / 1e3).toFixed(1)}\\,\\text{kHz}`} />}
+      />
     </Demo>
   );
 }

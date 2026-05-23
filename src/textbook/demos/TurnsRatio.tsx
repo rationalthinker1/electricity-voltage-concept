@@ -9,7 +9,8 @@
 import { useMemo, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawAxes, drawHLine, drawLinePlot } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -132,6 +133,12 @@ export function TurnsRatioDemo({ figure }: Props) {
         <MiniReadout label="V_s,peak" value={<Num value={computed.Vs} digits={2} />} unit="V" />
         <MiniReadout label="V_s,rms" value={<Num value={computed.VsRms} digits={2} />} unit="V" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Turns-ratio law"
+        left={<InlineMath tex="V_s = (N_s/N_p)\,V_p" />}
+        rightLabel={`n = ${ratio.toFixed(2)}`}
+        right={<InlineMath tex={`V_s = ${ratio.toFixed(2)} \\times 170\\,\\text{V} = ${computed.Vs.toFixed(1)}\\,\\text{V}_{\\text{pk}}\\;(${computed.VsRms.toFixed(1)}\\,\\text{V}_{\\text{rms}})`} />}
+      />
     </Demo>
   );
 }

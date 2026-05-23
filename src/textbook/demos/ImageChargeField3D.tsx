@@ -21,7 +21,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
@@ -400,6 +401,12 @@ export function ImageChargeField3DDemo({ figure }: Props) {
           unit="(= −q)"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Image charge and surface density"
+        left={<InlineMath tex={`\\sigma(r) = -\\frac{qd}{2\\pi(r^2+d^2)^{3/2}},\\quad \\int\\sigma\\,dA = -q`} />}
+        rightLabel={`q = ${q.toFixed(1)}, d = ${d.toFixed(2)}`}
+        right={<InlineMath tex={`\\int\\sigma\\,dA = -q = ${totalInduced.toFixed(2)}`} />}
+      />
     </Demo>
   );
 }

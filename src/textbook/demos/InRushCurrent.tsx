@@ -19,7 +19,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -209,6 +210,12 @@ export function InRushCurrentDemo({ figure }: Props) {
         />
         <MiniReadout label="saturated?" value={Math.abs(Bpeak) > B_SAT ? 'yes' : 'no'} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Flux integration"
+        left={<InlineMath tex="\Phi(t) \propto \int V_p\,\mathrm{d}t = -\cos(\omega t + \theta) + \cos\theta" />}
+        rightLabel={`Switch-on at θ = ${thetaDeg}°`}
+        right={<InlineMath tex={`\\Phi_{\\text{peak}}/\\Phi_{\\text{ss}} = ${Math.abs(Bpeak).toFixed(2)}\\times;\\quad I_{\\text{inrush}}/I_{\\text{mag}} = ${Iratio.toFixed(1)}\\times`} />}
+      />
     </Demo>
   );
 }

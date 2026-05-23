@@ -14,7 +14,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -204,6 +205,16 @@ export function RLCResonanceDemo({ figure }: Props) {
         <MiniReadout label="Q = ω₀L/R" value={Q.toFixed(2)} />
         <MiniReadout label="Ipeak = V₀/R" value={<Num value={Ipeak} />} unit="A" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Resonant frequency"
+        left={
+          <InlineMath tex={`f_0 = \\dfrac{1}{2\\pi\\sqrt{LC}} = ${f0.toFixed(2)}\\,\\text{Hz}`} />
+        }
+        rightLabel="Quality factor"
+        right={
+          <InlineMath tex={`Q = \\dfrac{\\omega_0 L}{R} = \\dfrac{1}{R}\\sqrt{\\dfrac{L}{C}} = ${Q.toFixed(2)}`} />
+        }
+      />
     </Demo>
   );
 }

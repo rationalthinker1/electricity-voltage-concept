@@ -15,7 +15,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -224,6 +225,12 @@ export function CoreLossesDemo({ figure }: Props) {
         <MiniReadout label="eddy (rel.)" value={<Num value={eddyLoss} digits={2} />} />
         <MiniReadout label="total (rel.)" value={<Num value={totalLoss} digits={2} />} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Steinmetz hysteresis law"
+        left={<InlineMath tex="P_{\text{hyst}} \propto B^{1.6}" />}
+        rightLabel={`Drive = ${drive.toFixed(2)}, ${laminated ? 'laminated' : 'solid'}`}
+        right={<InlineMath tex={`P_{\\text{hyst}} = ${hystLoss.toFixed(2)},\\quad P_{\\text{eddy}} = ${eddyLoss.toFixed(2)}\\;(\\text{rel.})`} />}
+      />
     </Demo>
   );
 }

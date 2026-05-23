@@ -12,7 +12,8 @@ import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawAxes, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -190,6 +191,12 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
         <MiniReadout label="V_CE(Q)" value={Vq.toFixed(2)} unit="V" />
         <MiniReadout label="I_C(Q)" value={<Num value={Iq} />} unit="A" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Load line (KVL)"
+        left={<InlineMath tex={`V_{CE} = V_{CC} - I_C R_C`} />}
+        rightLabel={`Q-point (I_B = ${(I_B * 1e6).toFixed(0)} µA)`}
+        right={<InlineMath tex={`V_{CE}(Q) = ${Vq.toFixed(2)}\\,\\text{V},\\quad I_C(Q) = ${(Iq * 1000).toFixed(2)}\\,\\text{mA}`} />}
+      />
     </Demo>
   );
 }

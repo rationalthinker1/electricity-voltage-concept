@@ -16,7 +16,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -196,6 +197,12 @@ export function RLCBandpassDemo({ figure }: Props) {
         <MiniReadout label="Q" value={Q.toFixed(2)} />
         <MiniReadout label="BW (f₀/Q)" value={<Num value={bandwidth} />} unit="Hz" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Resonant frequency and Q"
+        left={<InlineMath tex={`f_0 = \\frac{1}{2\\pi\\sqrt{LC}},\\quad Q = \\frac{1}{R}\\sqrt{\\frac{L}{C}}`} />}
+        rightLabel="Live values"
+        right={<InlineMath tex={`f_0 = ${f0.toFixed(0)}\\,\\text{Hz},\\quad Q = ${Q.toFixed(2)},\\quad \\text{BW} = f_0/Q = ${bandwidth.toFixed(0)}\\,\\text{Hz}`} />}
+      />
     </Demo>
   );
 }

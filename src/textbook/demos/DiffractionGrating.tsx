@@ -15,7 +15,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -167,6 +168,12 @@ export function DiffractionGratingDemo({ figure }: Props) {
         />
         <MiniReadout label="θ₁" value={theta1Deg.toFixed(2)} unit="°" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Grating equation (m = 1)"
+        left={<InlineMath tex={`d\\sin\\theta_m = m\\lambda`} />}
+        rightLabel={`λ = ${lamNm} nm, d = 1/${linesPerMm} mm`}
+        right={<InlineMath tex={`\\sin\\theta_1 = \\frac{\\lambda}{d} = \\frac{${lamNm}\\,\\text{nm}}{${(dGr * 1e6).toFixed(2)}\\,\\mu\\text{m}} \\Rightarrow \\theta_1 = ${theta1Deg.toFixed(2)}°`} />}
+      />
     </Demo>
   );
 }

@@ -13,7 +13,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -156,6 +157,16 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
           unit={Number.isFinite(lossDb) ? 'dB' : ''}
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Polarization mismatch (Malus's law)"
+        left={<InlineMath tex="P_r / P_{r,\max} = \cos^2\alpha" />}
+        rightLabel={`α = ${alphaDeg}°`}
+        right={
+          <InlineMath
+            tex={`\\cos^2(${alphaDeg}^\\circ) = ${frac.toFixed(3)}\\quad(${Number.isFinite(lossDb) ? lossDb.toFixed(1) + '\\,\\text{dB loss}' : '\\infty\\,\\text{dB}'})`}
+          />
+        }
+      />
     </Demo>
   );
 }

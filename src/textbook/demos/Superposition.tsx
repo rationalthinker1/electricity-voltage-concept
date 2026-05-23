@@ -27,7 +27,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -182,6 +183,20 @@ export function SuperpositionDemo({ figure }: Props) {
           unit="V"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Superposition"
+        left={
+          <InlineMath
+            tex={`V_A = V_A|_{V_1} + V_A|_{V_2} = ${onlyV1.V_A.toFixed(3)} + ${onlyV2.V_A.toFixed(3)} = ${(onlyV1.V_A + onlyV2.V_A).toFixed(3)}\\,\\text{V}`}
+          />
+        }
+        rightLabel="Direct solve"
+        right={
+          <InlineMath
+            tex={`V_A(\\text{both}) = ${both.V_A.toFixed(3)}\\,\\text{V}`}
+          />
+        }
+      />
     </Demo>
   );
 }

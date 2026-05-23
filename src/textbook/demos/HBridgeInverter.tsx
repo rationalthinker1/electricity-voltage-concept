@@ -16,7 +16,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -165,6 +166,12 @@ export function HBridgeInverterDemo({ figure }: Props) {
         <MiniReadout label="V_out rms" value={<Num value={Vout_rms} />} unit="V" />
         <MiniReadout label="output freq" value="60" unit="Hz" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Sine-PWM output amplitude"
+        left={<InlineMath tex="V_{\text{pk}} = m \cdot V_{\text{DC}},\quad V_{\text{rms}} = \frac{V_{\text{pk}}}{\sqrt{2}}" />}
+        rightLabel={`At m = ${m.toFixed(2)}`}
+        right={<InlineMath tex={`${m.toFixed(2)} \\times ${V_DC}\\,\\text{V} = ${Vout_peak.toFixed(0)}\\,\\text{V}_{\\text{pk}};\\quad ${Vout_rms.toFixed(1)}\\,\\text{V}_{\\text{rms}}`} />}
+      />
     </Demo>
   );
 }

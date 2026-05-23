@@ -12,7 +12,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -190,6 +191,12 @@ export function DispersionDemo({ figure }: Props) {
         <MiniReadout label="n(red)" value={nRed.toFixed(4)} />
         <MiniReadout label="n(violet)" value={nViolet.toFixed(4)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Cauchy's dispersion formula"
+        left={<InlineMath tex={`n(\\lambda) \\approx A + \\frac{B}{\\lambda^2}`} />}
+        rightLabel={`A = ${A.toFixed(3)}, B = ${B.toFixed(4)} µm²`}
+        right={<InlineMath tex={`n_{\\text{red}} = ${nRed.toFixed(4)},\\quad n_{\\text{violet}} = ${nViolet.toFixed(4)},\\quad \\Delta n = ${Math.abs(nViolet - nRed).toFixed(4)}`} />}
+      />
     </Demo>
   );
 }

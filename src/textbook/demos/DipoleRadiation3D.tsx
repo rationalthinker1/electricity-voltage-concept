@@ -19,7 +19,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { project, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
@@ -380,6 +381,12 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
         <MiniToggle label="rays" checked={showRays} onChange={setShowRays} />
         <MiniToggle label="E along antenna" checked={showE} onChange={setShowE} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Pattern surface"
+        left={<InlineMath tex="r(\theta) = \sin^n\theta" />}
+        rightLabel={`n = ${n.toFixed(1)}`}
+        right={<InlineMath tex={`\\text{HPBW} = ${beamwidth.toFixed(1)}^\\circ`} />}
+      />
     </Demo>
   );
 }

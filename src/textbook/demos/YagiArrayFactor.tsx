@@ -10,7 +10,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -152,6 +153,12 @@ export function YagiArrayFactorDemo({ figure }: Props) {
         />
         <MiniReadout label="gain ≈" value={Gdbi.toFixed(1)} unit="dBi" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Yagi gain (empirical)"
+        left={<InlineMath tex="G \approx 7.0 + 1.4\,N_{\text{dir}}\;\text{dBi}" />}
+        rightLabel={`N_dir = ${nDir}`}
+        right={<InlineMath tex={`G(${nDir}) \\approx ${Gdbi.toFixed(1)}\\,\\text{dBi}`} />}
+      />
     </Demo>
   );
 }

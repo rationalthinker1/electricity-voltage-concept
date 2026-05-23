@@ -24,7 +24,8 @@
 import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -233,6 +234,20 @@ export function MaxPowerTransferDemo({ figure }: Props) {
         <MiniReadout label="P_L,max" value={<Num value={P_max} digits={3} />} unit="W" />
         <MiniReadout label="Efficiency" value={<Num value={eta * 100} digits={1} />} unit="%" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Max power transfer"
+        left={
+          <InlineMath
+            tex={`P_{L,\\max} = \\dfrac{V_\\text{Th}^{2}}{4R_S} = \\dfrac{${V}^2}{4\\times${RS}} = ${P_max.toFixed(3)}\\,\\text{W}`}
+          />
+        }
+        rightLabel="Current load"
+        right={
+          <InlineMath
+            tex={`P_L = ${P_L.toFixed(3)}\\,\\text{W},\\quad \\eta = ${(eta * 100).toFixed(1)}\\,\\%`}
+          />
+        }
+      />
     </Demo>
   );
 }

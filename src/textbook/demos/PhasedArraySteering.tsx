@@ -11,7 +11,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -198,6 +199,20 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
           unit={Number.isFinite(steerDeg) ? '°' : ''}
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Beam-steering formula"
+        left={<InlineMath tex="\sin\theta_{\text{steer}} = \Delta\varphi\,\lambda\,/\,(2\pi d)" />}
+        rightLabel="Live steering angle"
+        right={
+          <InlineMath
+            tex={
+              Number.isFinite(steerDeg)
+                ? `\\theta_{\\text{steer}} = ${steerDeg.toFixed(1)}^\\circ`
+                : `|\\sin\\theta| = ${Math.abs(sinSteer).toFixed(2)} > 1\\;\\text{(grating lobe)}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

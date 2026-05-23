@@ -48,7 +48,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
@@ -525,6 +526,26 @@ export function FilterDesignerDemo({ figure }: Props) {
         <MiniReadout label="audio / hum  (score)" value={scoreDb.toFixed(1)} unit="dB" />
         <MiniReadout label="verdict" value={scoreLabel} />
       </DemoControls>
+      <EquationStrip
+        leftLabel={isResonant ? 'Centre frequency' : 'Cutoff frequency'}
+        left={
+          <InlineMath
+            tex={
+              topology === 'lc-lp'
+                ? `f_0 = \\frac{1}{2\\pi\\sqrt{LC}} = ${fc >= 1000 ? `${(fc / 1000).toFixed(2)}\\,\\text{kHz}` : `${fc.toFixed(1)}\\,\\text{Hz}`}`
+                : topology === 'notch' || topology === 'mfb-bp'
+                  ? `f_0 = ${f0.toFixed(0)}\\,\\text{Hz}`
+                  : `f_c = \\frac{1}{2\\pi RC} = ${fc >= 1000 ? `${(fc / 1000).toFixed(2)}\\,\\text{kHz}` : `${fc.toFixed(1)}\\,\\text{Hz}`}`
+            }
+          />
+        }
+        rightLabel="Audio / hum score"
+        right={
+          <InlineMath
+            tex={`20\\log_{10}\\!\\left(\\frac{|H_{1\\,\\text{kHz}}|}{|H_{60\\,\\text{Hz}}|}\\right) = ${scoreDb.toFixed(1)}\\,\\text{dB}`}
+          />
+        }
+      />
     </Demo>
   );
 }

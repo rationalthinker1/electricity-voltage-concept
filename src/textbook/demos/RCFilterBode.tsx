@@ -11,7 +11,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { Num } from '@/components/Num';
@@ -231,6 +232,16 @@ export function RCFilterBodeDemo({ figure }: Props) {
         <MiniReadout label="f_c = 1/(2πRC)" value={<Num value={fc} />} unit="Hz" />
         <MiniReadout label="ω_c" value={<Num value={2 * Math.PI * fc} />} unit="rad/s" />
       </DemoControls>
+      <EquationStrip
+        leftLabel={mode === 'low' ? 'Low-pass transfer function' : 'High-pass transfer function'}
+        left={
+          mode === 'low'
+            ? <InlineMath tex={`|H(j\\omega)| = \\frac{1}{\\sqrt{1+(\\omega/\\omega_c)^2}},\\quad \\omega_c = \\frac{1}{RC}`} />
+            : <InlineMath tex={`|H(j\\omega)| = \\frac{\\omega/\\omega_c}{\\sqrt{1+(\\omega/\\omega_c)^2}},\\quad \\omega_c = \\frac{1}{RC}`} />
+        }
+        rightLabel="Cutoff frequency"
+        right={<InlineMath tex={`f_c = \\frac{1}{2\\pi RC} = \\frac{1}{2\\pi \\cdot ${Rk < 1 ? (Rk * 1000).toFixed(0) + '\\,\\Omega' : Rk.toFixed(2) + '\\,\\text{k}\\Omega'} \\cdot ${Cnf.toFixed(0)}\\,\\text{nF}} \\approx ${fc.toFixed(0)}\\,\\text{Hz}`} />}
+      />
     </Demo>
   );
 }

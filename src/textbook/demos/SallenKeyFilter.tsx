@@ -18,7 +18,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { Num } from '@/components/Num';
@@ -259,6 +260,12 @@ export function SallenKeyFilterDemo({ figure }: Props) {
         <MiniReadout label="f₀ = 1/(2πRC)" value={<Num value={f0} />} unit="Hz" />
         <MiniReadout label="Q = 1/(3−K)" value={Q.toFixed(2)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Sallen-Key 2nd-order LPF"
+        left={<InlineMath tex={`f_0 = \\frac{1}{2\\pi RC},\\quad Q = \\frac{1}{3-K}`} />}
+        rightLabel={`K = ${K.toFixed(2)}`}
+        right={<InlineMath tex={`f_0 = ${f0.toFixed(0)}\\,\\text{Hz},\\quad Q = \\frac{1}{3-${K.toFixed(2)}} = ${Q.toFixed(2)}`} />}
+      />
     </Demo>
   );
 }

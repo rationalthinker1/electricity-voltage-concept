@@ -8,7 +8,8 @@
 import { useEffect, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -182,6 +183,12 @@ export function DaniellCellDemo({ figure }: Props) {
           Reset rods
         </button>
       </DemoControls>
+      <EquationStrip
+        leftLabel="Loaded cell voltage"
+        left={<InlineMath tex="V_{\text{term}} = \frac{V_{\text{OC}} \cdot R_L}{R_{\text{int}} + R_L}" />}
+        rightLabel="At current load"
+        right={<InlineMath tex={`\\frac{${V_OC} \\times ${R_L.toFixed(1)}}{${R_INT.toFixed(1)} + ${R_L.toFixed(1)}} = ${V_term.toFixed(3)}\\,\\text{V}`} />}
+      />
     </Demo>
   );
 }

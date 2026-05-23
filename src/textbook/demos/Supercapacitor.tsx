@@ -11,7 +11,8 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -161,6 +162,12 @@ export function SupercapacitorDemo({ figure }: Props) {
         <MiniReadout label="V" value={<Num value={V} />} unit="V" />
         <MiniReadout label="U = ½CV²" value={<Num value={U} />} unit="J" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Supercapacitor charge/discharge"
+        left={<InlineMath tex="\frac{dV}{dt} = \pm\frac{I}{C},\quad U = \tfrac{1}{2}CV^2" />}
+        rightLabel="At current state"
+        right={<InlineMath tex={`\\frac{dV}{dt} = \\frac{${I.toFixed(0)}}{${C.toFixed(0)}} = ${(I / C).toFixed(4)}\\,\\text{V/s};\\quad U = ${U.toFixed(0)}\\,\\text{J}`} />}
+      />
     </Demo>
   );
 }

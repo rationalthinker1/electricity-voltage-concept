@@ -13,7 +13,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { Num } from '@/components/Num';
@@ -169,6 +170,12 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
         <MiniReadout label="V_max" value={Vmax.toFixed(2)} unit="·A" />
         <MiniReadout label="V_min" value={Vmin.toFixed(2)} unit="·A" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Standing-wave envelope"
+        left={<InlineMath tex={`V_{\\max} = A(1+|\\Gamma|),\\quad V_{\\min} = A(1-|\\Gamma|),\\quad \\text{VSWR} = V_{\\max}/V_{\\min}`} />}
+        rightLabel={`Z_L = ${ZL} Ω`}
+        right={<InlineMath tex={`\\Gamma = ${Gamma.toFixed(3)},\\quad V_{\\max}/V_{\\min} = ${VSWR === Infinity ? '\\infty' : VSWR.toFixed(2)}`} />}
+      />
     </Demo>
   );
 }

@@ -15,7 +15,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
@@ -253,6 +254,12 @@ export function LinearRegulatorDemo({ figure }: Props) {
         <MiniReadout label="P_diss" value={<Num value={Pdiss} />} unit="W" />
         <MiniReadout label="η" value={(eta * 100).toFixed(1)} unit="%" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Linear regulator efficiency"
+        left={<InlineMath tex="\eta = \frac{V_{\text{out}}}{V_{\text{in}}},\quad P_{\text{diss}} = (V_{\text{in}} - V_{\text{out}}) \cdot I_{\text{load}}" />}
+        rightLabel="At this operating point"
+        right={<InlineMath tex={`\\eta = \\frac{${Vout.toFixed(1)}}{${Vin.toFixed(1)}} = ${(eta * 100).toFixed(1)}\\%;\\quad P_{\\text{diss}} = ${Pdiss.toFixed(2)}\\,\\text{W}`} />}
+      />
     </Demo>
   );
 }

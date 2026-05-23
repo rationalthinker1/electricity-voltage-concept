@@ -29,7 +29,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -471,6 +472,12 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
         <MiniReadout label="χ_e ≈ P/E" value={<Num value={computed.chi_e} />} />
         <MiniReadout label="ε_r = 1 + χ_e" value={<Num value={computed.eps_r} />} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Polarisation and susceptibility"
+        left={<InlineMath tex={`\\chi_e \\approx \\frac{P}{\\varepsilon_0 E},\\quad \\varepsilon_r = 1 + \\chi_e`} />}
+        rightLabel="Live values"
+        right={<InlineMath tex={`\\chi_e \\approx ${computed.chi_e.toFixed(2)},\\quad \\varepsilon_r = 1 + ${computed.chi_e.toFixed(2)} = ${computed.eps_r.toFixed(2)}`} />}
+      />
     </Demo>
   );
 }

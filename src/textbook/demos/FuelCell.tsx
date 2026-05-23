@@ -11,7 +11,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawAxes, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
@@ -182,6 +183,12 @@ export function FuelCellDemo({ figure }: Props) {
         <MiniReadout label="V_cell" value={<Num value={V} />} unit="V" />
         <MiniReadout label="P density" value={<Num value={P} />} unit="W/cm²" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Power density"
+        left={<InlineMath tex="P = V \cdot i,\quad V = V_{\text{OCV}} - \eta_{\text{act}} - \eta_{\text{ohm}} - \eta_{\text{mass}}" />}
+        rightLabel={`At i = ${i.toFixed(2)} A/cm²`}
+        right={<InlineMath tex={`V = ${V.toFixed(3)}\\,\\text{V};\\quad P = ${P.toFixed(3)}\\,\\text{W/cm}^2`} />}
+      />
     </Demo>
   );
 }

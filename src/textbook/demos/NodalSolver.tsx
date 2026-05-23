@@ -20,7 +20,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -195,6 +196,20 @@ export function NodalSolverDemo({ figure }: Props) {
           unit="A"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Nodal equation at A"
+        left={
+          <InlineMath
+            tex={"V_A\\!\\left(\\tfrac{1}{R_1}+\\tfrac{1}{R_2}+\\tfrac{1}{R_3}\\right) = \\tfrac{V_1}{R_1} + \\tfrac{V_2}{R_3}"}
+          />
+        }
+        rightLabel="Solution"
+        right={
+          <InlineMath
+            tex={`V_A = ${nodal.V_A.toFixed(3)}\\,\\text{V},\\quad I_{R_2} = ${nodal.I_R2.toFixed(3)}\\,\\text{A}`}
+          />
+        }
+      />
     </Demo>
   );
 }

@@ -27,7 +27,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -160,6 +161,20 @@ export function NortonTheveninDemo({ figure }: Props) {
         <MiniReadout label="V_L  (Thévenin)" value={<Num value={V_L_T} digits={3} />} unit="V" />
         <MiniReadout label="V_L  (Norton)" value={<Num value={V_L_N} digits={3} />} unit="V" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Thévenin ↔ Norton"
+        left={
+          <InlineMath
+            tex={`V_\\text{Th} = ${V_oc.toFixed(3)}\\,\\text{V},\\quad R_\\text{Th} = ${R_Th.toFixed(3)}\\,\\Omega`}
+          />
+        }
+        rightLabel="Norton equivalent"
+        right={
+          <InlineMath
+            tex={`I_N = V_\\text{Th}/R_\\text{Th} = ${I_N.toFixed(3)}\\,\\text{A};\\quad V_L = ${V_L_T.toFixed(3)}\\,\\text{V}`}
+          />
+        }
+      />
     </Demo>
   );
 }

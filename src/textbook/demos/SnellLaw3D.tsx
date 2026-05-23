@@ -26,7 +26,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
@@ -345,6 +346,16 @@ export function SnellLaw3DDemo({ figure }: Props) {
           unit={thetaCDisplay == null ? '(no TIR this way)' : '°'}
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Snell's law (3D)"
+        left={<InlineMath tex={`n_1 \\sin\\theta_1 = n_2 \\sin\\theta_2`} />}
+        rightLabel={`θ₁ = ${theta1Deg}°, n₁ = ${tirMode ? n2.toFixed(2) : '1.00'}, n₂ = ${tirMode ? '1.00' : n2.toFixed(2)}`}
+        right={
+          computed.totalReflection
+            ? <InlineMath tex={`\\text{TIR — }\\theta_1 > \\theta_c = ${thetaCDisplay != null ? thetaCDisplay.toFixed(1) : '—'}°`} />
+            : <InlineMath tex={`\\theta_2 = ${theta2Display != null ? theta2Display.toFixed(2) : '—'}°,\\quad R = ${(computed.R * 100).toFixed(1)}\\%`} />
+        }
+      />
     </Demo>
   );
 }

@@ -18,7 +18,8 @@ import { useState } from 'react';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
@@ -244,6 +245,12 @@ export function PNJunctionFormationDemo({ figure }: Props) {
         <MiniReadout label="V_bi" value={V_BI.toFixed(2)} unit="V" />
         <MiniReadout label="W/W₀" value={w_rel.toFixed(2)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Depletion width"
+        left={<InlineMath tex={`\\frac{W}{W_0} = \\sqrt{\\frac{V_{bi} - V_{\\text{applied}}}{V_{bi}}}`} />}
+        rightLabel="Live values"
+        right={<InlineMath tex={`\\sqrt{\\frac{${V_BI.toFixed(2)} - (${Vbias.toFixed(2)})}{${V_BI.toFixed(2)}}} = ${w_rel.toFixed(2)}`} />}
+      />
     </Demo>
   );
 }

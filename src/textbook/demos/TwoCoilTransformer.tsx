@@ -12,7 +12,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -259,6 +260,12 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
           unit="W"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Ideal transformer"
+        left={<InlineMath tex="V_s/V_p = N_s/N_p,\quad I_p/I_s = N_s/N_p" />}
+        rightLabel="At this operating point"
+        right={<InlineMath tex={`V_s = ${computed.Vs.toFixed(1)}\\,\\text{V};\\quad I_p = ${computed.Ip.toFixed(3)}\\,\\text{A}`} />}
+      />
     </Demo>
   );
 }

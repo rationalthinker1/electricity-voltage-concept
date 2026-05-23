@@ -28,7 +28,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
@@ -339,6 +340,12 @@ export function TransformerDesignerDemo({ figure }: Props) {
           value={<span style={{ color: envelopeColor, fontWeight: 600 }}>{envelopeLabel}</span>}
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Transformer core equation"
+        left={<InlineMath tex="B_{\max} = V_p\,/\,(4.44\,f\,N_p\,A)" />}
+        rightLabel="At this design point"
+        right={<InlineMath tex={`B_{\\max} = ${B_max.toFixed(3)}\\,\\text{T}\\;(B_{\\text{sat}} = ${mat.B_sat.toFixed(2)}\\,\\text{T})`} />}
+      />
     </Demo>
   );
 }

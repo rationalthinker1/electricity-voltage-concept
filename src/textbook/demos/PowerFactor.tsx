@@ -15,7 +15,8 @@
 import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -220,6 +221,20 @@ export function PowerFactorDemo({ figure }: Props) {
         <MiniReadout label="Q (reactive)" value={<Num value={Qreac} />} unit="VAR" />
         <MiniReadout label="S (apparent)" value={<Num value={Sapp} />} unit="VA" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Real power"
+        left={
+          <InlineMath
+            tex={`\\langle P \\rangle = V_\\text{rms}\\,I_\\text{rms}\\cos\\varphi = ${Vrms.toFixed(1)}\\times${Irms.toFixed(3)}\\times${pf.toFixed(3)} = ${Preal.toFixed(1)}\\,\\text{W}`}
+          />
+        }
+        rightLabel="Power factor"
+        right={
+          <InlineMath
+            tex={`\\text{pf} = \\cos(${((phi * 180) / Math.PI).toFixed(1)}^{\\circ}) = ${pf.toFixed(3)}`}
+          />
+        }
+      />
     </Demo>
   );
 }

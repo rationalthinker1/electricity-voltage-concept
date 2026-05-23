@@ -16,7 +16,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -182,6 +183,20 @@ export function TheveninEquivalentDemo({ figure }: Props) {
         <MiniReadout label="V_load" value={<Num value={Vload} />} unit="V" />
         <MiniReadout label="I_load" value={<Num value={Iload * 1000} />} unit="mA" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Thévenin equivalent"
+        left={
+          <InlineMath
+            tex={`V_\\text{th} = ${Vth.toFixed(2)}\\,\\text{V},\\quad R_\\text{th} = ${Rth.toFixed(1)}\\,\\Omega`}
+          />
+        }
+        rightLabel="Load voltage"
+        right={
+          <InlineMath
+            tex={`V_\\text{load} = V_\\text{th}\\dfrac{R_L}{R_\\text{th}+R_L} = ${Vload.toFixed(2)}\\,\\text{V}`}
+          />
+        }
+      />
     </Demo>
   );
 }

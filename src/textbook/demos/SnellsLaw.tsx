@@ -10,7 +10,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -153,6 +154,16 @@ export function SnellsLawDemo({ figure }: Props) {
           unit={Number.isFinite(critDeg) ? '°' : ''}
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Snell's law"
+        left={<InlineMath tex={`n_1 \\sin\\theta_1 = n_2 \\sin\\theta_2`} />}
+        rightLabel={`θ₁ = ${thetaDeg}°, n₁ = ${n1.toFixed(2)}, n₂ = ${n2.toFixed(2)}`}
+        right={
+          tir
+            ? <InlineMath tex={`\\sin\\theta_1 > n_2/n_1 \\Rightarrow \\text{TIR}`} />
+            : <InlineMath tex={`${n1.toFixed(2)}\\sin(${thetaDeg}°) = ${n2.toFixed(2)}\\sin\\theta_2 \\Rightarrow \\theta_2 = ${((theta2 * 180) / Math.PI).toFixed(2)}°`} />
+        }
+      />
     </Demo>
   );
 }

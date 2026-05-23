@@ -15,7 +15,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -238,6 +239,16 @@ export function LCOscillationDemo({ figure }: Props) {
         <MiniReadout label="f₀ = 1/(2π√(LC))" value={<Num value={f0} />} unit="Hz" />
         <MiniReadout label="T₀ = 1/f₀" value={fmtTime(T0)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="LC resonance"
+        left={<InlineMath tex={"f_0 = \\dfrac{1}{2\\pi\\sqrt{LC}}"} />}
+        rightLabel="At this L, C"
+        right={
+          <InlineMath
+            tex={`f_0 = ${f0.toFixed(2)}\\,\\text{Hz},\\quad T_0 = ${(T0 * 1000).toFixed(2)}\\,\\text{ms}`}
+          />
+        }
+      />
     </Demo>
   );
 }

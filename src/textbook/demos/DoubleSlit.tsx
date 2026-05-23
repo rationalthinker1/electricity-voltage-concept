@@ -9,7 +9,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -174,6 +175,12 @@ export function DoubleSlitDemo({ figure }: Props) {
         />
         <MiniReadout label="fringe Δy" value={fringeMm.toFixed(2)} unit="mm" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Double-slit fringe spacing"
+        left={<InlineMath tex={`\\Delta y = \\frac{\\lambda L}{d}`} />}
+        rightLabel={`λ = ${lamNm} nm, d = ${dMicron} µm, L = ${LMm} mm`}
+        right={<InlineMath tex={`\\Delta y = \\frac{${lamNm}\\,\\text{nm} \\times ${LMm}\\,\\text{mm}}{${dMicron}\\,\\mu\\text{m}} = ${fringeMm.toFixed(2)}\\,\\text{mm}`} />}
+      />
     </Demo>
   );
 }

@@ -25,7 +25,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
@@ -205,6 +206,20 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
         <MiniReadout label="Mesh I₂" value={<Num value={sol.I2} digits={3} />} unit="A" />
         <MiniReadout label="I through R₂" value={<Num value={sol.I_R2} digits={3} />} unit="A" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Mesh equations"
+        left={
+          <InlineMath
+            tex={`(R_1+R_2)I_1 - R_2 I_2 = V_1 \\;\\Rightarrow\\; I_1 = ${sol.I1.toFixed(3)}\\,\\text{A}`}
+          />
+        }
+        rightLabel="Shared branch"
+        right={
+          <InlineMath
+            tex={`I_{R_2} = I_1 - I_2 = ${sol.I1.toFixed(3)} - ${sol.I2.toFixed(3)} = ${sol.I_R2.toFixed(3)}\\,\\text{A}`}
+          />
+        }
+      />
     </Demo>
   );
 }

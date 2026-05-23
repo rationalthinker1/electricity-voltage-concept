@@ -19,7 +19,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -213,6 +214,22 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
         />
         <MiniReadout label="I/I₀" value={fracOut.toFixed(3)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Malus's law"
+        left={
+          <InlineMath tex={"\\tfrac{I}{I_0} = \\tfrac{1}{2}\\cos^{2}(\\Delta\\theta)"} />
+        }
+        rightLabel="At this setting"
+        right={
+          <InlineMath
+            tex={
+              qwp
+                ? "\\tfrac{I}{I_0} = \\tfrac{1}{4} = 0.250\\;(\\text{QWP active})"
+                : `\\tfrac{I}{I_0} = \\tfrac{1}{2}\\cos^{2}(${(t2Deg - t1Deg).toFixed(0)}^{\\circ}) = ${fracOut.toFixed(3)}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }
