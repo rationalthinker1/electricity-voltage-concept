@@ -20,7 +20,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function RMSOfComplexWaveDemo({ figure }: Props) {
@@ -148,7 +148,7 @@ export function RMSOfComplexWaveDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.5'}
+      figure={figure}
       title="RMS of a wave with harmonics"
       question="When does V_rms = V_peak/√2 stop being true?"
       caption={

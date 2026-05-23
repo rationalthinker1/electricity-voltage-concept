@@ -30,7 +30,7 @@ import { add, length, normalize, project, scale, sub, v3, type Vec3 } from '@/li
 import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 function combinedE(p: Vec3, q: number, d: number): Vec3 {
@@ -350,7 +350,7 @@ export function ImageChargeField3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.7'}
+      figure={figure}
       title="The image charge below a grounded plane"
       question="A +q sits above a grounded conductor. What does the field above the plane look like?"
       caption={

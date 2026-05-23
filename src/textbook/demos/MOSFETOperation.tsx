@@ -25,7 +25,7 @@ import { useSimState } from '@/lib/useSimState';
 import { withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const V_T = 1.0; // V — threshold voltage
@@ -250,7 +250,7 @@ export function MOSFETOperationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.4'}
+      figure={figure}
       title="The MOSFET — a gate controls the channel"
       question="What is the gate doing — and what's the difference between triode and saturation?"
       caption={

@@ -17,7 +17,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function PhasedArraySteeringDemo({ figure }: Props) {
@@ -147,7 +147,7 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.6'}
+      figure={figure}
       title="Phased array — steer the beam with phase, not gimbals"
       question="What phase shift between elements points the main beam to a given angle?"
       caption={

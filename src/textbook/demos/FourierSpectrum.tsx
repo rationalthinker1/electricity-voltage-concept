@@ -20,7 +20,7 @@ import { useSimState } from '@/lib/useSimState';
 type Wave = 'sine' | 'square' | 'triangle' | 'sawtooth' | 'half-rect' | 'full-rect';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface Bar {
@@ -206,7 +206,7 @@ export function FourierSpectrumDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.2'}
+      figure={figure}
       title="Spectrum of a periodic wave"
       question="What harmonics are inside each of these waveforms?"
       caption={

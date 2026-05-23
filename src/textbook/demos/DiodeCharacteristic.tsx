@@ -23,7 +23,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 type DiodeKind = 'si' | 'schottky' | 'zener';
@@ -205,7 +205,7 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.1'}
+      figure={figure}
       title="Diode I–V curves — silicon, Schottky, Zener"
       question="Three diodes, one slider. Where does each start conducting — and why does the Zener have a second knee at the back?"
       caption={

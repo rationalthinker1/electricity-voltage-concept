@@ -19,7 +19,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function EnergyInTheGapDemo({ figure }: Props) {
@@ -94,7 +94,7 @@ export function EnergyInTheGapDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 5.4'}
+      figure={figure}
       title="Energy in the gap"
       question="If the plates net to zero charge, where's the energy hiding?"
       caption={

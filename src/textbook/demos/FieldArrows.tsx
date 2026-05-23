@@ -30,7 +30,7 @@ import { PHYS } from '@/lib/physics';
 
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 /** Format a real number as a TeX scalar — plain decimal for mid-range,
@@ -329,7 +329,7 @@ export function FieldArrowsDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 1.2'}
+      figure={figure}
       title="The field of one charge"
       question="A charge fills space with arrows. What does an arrow even mean?"
       caption={

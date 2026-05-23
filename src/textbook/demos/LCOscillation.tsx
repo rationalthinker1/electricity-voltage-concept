@@ -24,7 +24,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function LCOscillationDemo({ figure }: Props) {
@@ -202,7 +202,7 @@ export function LCOscillationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.3'}
+      figure={figure}
       title="LC oscillation — the electrical pendulum"
       question="No resistor, no source. Why does anything happen?"
       caption={

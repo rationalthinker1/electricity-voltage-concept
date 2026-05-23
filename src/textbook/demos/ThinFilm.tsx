@@ -18,7 +18,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function ThinFilmDemo({ figure }: Props) {
@@ -131,7 +131,7 @@ export function ThinFilmDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.4'}
+      figure={figure}
       title="Soap-bubble colours — thin-film interference"
       question="Why do soap bubbles look iridescent?"
       caption={

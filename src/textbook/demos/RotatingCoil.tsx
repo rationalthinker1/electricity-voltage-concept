@@ -20,7 +20,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const N_TURNS = 100;
@@ -236,7 +236,7 @@ export function RotatingCoilDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 7.5'}
+      figure={figure}
       title="Spinning a coil = generating AC"
       question="Constant rotation, constant field — why is the output a sine wave?"
       caption={

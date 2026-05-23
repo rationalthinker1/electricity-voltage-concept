@@ -18,7 +18,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface SimCtx {
@@ -255,7 +255,7 @@ export function FerromagnetDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.6'}
+      figure={figure}
       title="Ferromagnetic domains and hysteresis"
       question="Why does iron stay magnetized after the field is gone?"
       caption={

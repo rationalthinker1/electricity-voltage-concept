@@ -19,7 +19,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface Moment {
@@ -203,7 +203,7 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.5'}
+      figure={figure}
       title="Paramagnet vs diamagnet"
       question="Two boxes, same external field — why do they magnetize in opposite directions?"
       caption={

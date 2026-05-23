@@ -24,7 +24,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const V_GRID = 1.0;
@@ -157,7 +157,7 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 21.8'}
+      figure={figure}
       title="Power-angle curve and the pull-out limit"
       question="If the turbine pushes harder than the grid can absorb, what happens to the rotor?"
       caption={

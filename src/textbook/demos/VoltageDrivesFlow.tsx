@@ -27,7 +27,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface Dot {
@@ -335,7 +335,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 2.5'}
+      figure={figure}
       title="Crank the voltage"
       question="Crank the voltage from 1 V to 24 V. The electrons go faster — but still less than a millimetre per second. So how does the load get so much brighter?"
       caption={

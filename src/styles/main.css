@@ -478,6 +478,24 @@ p {
     sup { @apply text-[.65em] leading-none align-[.5em]; }
   }
 
+  .equation-strip-math {
+    .formula-inline,
+    .katex,
+    .katex-html,
+    .katex .base {
+      white-space: normal;
+    }
+
+    .katex {
+      line-height: 1.45;
+    }
+
+    .katex .base {
+      margin-top: 0.12rem;
+      margin-bottom: 0.12rem;
+    }
+  }
+
   /* Lab hero formula. Fraunces italic at fluid clamp() size. Descendant
      sub/sup styling matches .formula-content/.formula-inline; size and
      align values tuned for the larger clamp() type. */

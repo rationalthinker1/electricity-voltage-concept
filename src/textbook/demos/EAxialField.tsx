@@ -23,7 +23,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function EAxialFieldDemo({ figure }: Props) {
@@ -130,7 +130,7 @@ export function EAxialFieldDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 8.2'}
+      figure={figure}
       title="E points along the wire"
       question="Where does the electric field inside a resistive wire actually point?"
       caption={

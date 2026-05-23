@@ -19,7 +19,7 @@ const N_HARMONICS = 11;
 const N_INT = 1024; // samples per cycle for numerical integration
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 function clippedSineCoeffs(Aclip: number): number[] {
@@ -156,7 +156,7 @@ export function THDAndDistortionDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.4'}
+      figure={figure}
       title="Clipping and THD"
       question="As the clip level drops, how does the harmonic content grow?"
       caption={

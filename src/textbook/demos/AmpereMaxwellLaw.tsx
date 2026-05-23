@@ -35,7 +35,7 @@ function fmtSci(n: number) {
 }
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function AmpereMaxwellLawDemo({ figure }: Props) {
@@ -205,7 +205,7 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 10.4'}
+      figure={figure}
       title="Ampère–Maxwell law"
       question="If no current flows between the plates, why is there a B-field there?"
       caption={

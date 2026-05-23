@@ -24,7 +24,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const STEPS_PER_REV = 200;
@@ -126,7 +126,7 @@ export function StepperMotorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 20.5'}
+      figure={figure}
       title="Stepper motor — one pulse, one step"
       question="What if you just want to command position, not torque?"
       caption={

@@ -21,7 +21,7 @@ import { useSimState } from '@/lib/useSimState';
 import { fmtResistance } from '@/lib/formatters';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const R_TOTAL = 10000; // 10 kΩ pot
@@ -209,7 +209,7 @@ export function VariableResistorsDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.5'}
+      figure={figure}
       title="Variable cousins"
       question="What if R isn't fixed at all?"
       caption={

@@ -28,7 +28,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const F_SW = 100e3; // 100 kHz
@@ -161,7 +161,7 @@ export function BoostConverterDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 24.7'}
+      figure={figure}
       title="Boost converter: V_out = V_in / (1 − D)"
       question="Push the duty cycle past 0.8. Where does V_out go — and why does the equation blow up at D = 1?"
       caption={

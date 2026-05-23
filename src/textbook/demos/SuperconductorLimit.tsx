@@ -28,7 +28,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface InflowParticle {
@@ -314,7 +314,7 @@ export function SuperconductorLimitDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 8.5'}
+      figure={figure}
       title="The superconductor limit"
       question="What changes when σ → ∞?"
       caption={

@@ -18,7 +18,7 @@ import { PHYS } from '@/lib/physics';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface SimCtx {
@@ -304,7 +304,7 @@ export function EMSpectrumDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 9.6'}
+      figure={figure}
       title="The electromagnetic spectrum"
       question="How do frequency, wavelength, and photon energy change across the EM spectrum?"
       caption={

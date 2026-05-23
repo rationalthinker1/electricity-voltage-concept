@@ -21,7 +21,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface Metal {
@@ -138,7 +138,7 @@ export function WiedemannFranzDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.6'}
+      figure={figure}
       title="Wiedemann–Franz"
       question="Why are good electrical conductors also good thermal conductors?"
       caption={

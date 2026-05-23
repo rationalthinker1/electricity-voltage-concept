@@ -38,7 +38,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Pre-built rim points (parametric circles in y-z, at fixed x). Pure
@@ -296,7 +296,7 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 8.6'}
+      figure={figure}
       title="The coax cable — energy lives in the dielectric"
       question="In a coaxial cable, which way does the Poynting vector point — into the copper, or along the cable?"
       caption={

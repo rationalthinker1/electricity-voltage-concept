@@ -25,7 +25,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 type MatKind = 'si' | 'ge' | 'gaas' | 'diamond';
@@ -159,7 +159,7 @@ export function BandStructureDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.1'}
+      figure={figure}
       title="Energy bands and the bandgap"
       question="Why is silicon a useful semiconductor and diamond not? Pick a material and a temperature; watch the conduction band fill."
       caption={

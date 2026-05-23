@@ -23,7 +23,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Fixed parameters of the model motor.
@@ -264,7 +264,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 20.1'}
+      figure={figure}
       title="The brushed DC motor"
       question="A coil in a steady field would oscillate. What does the commutator fix?"
       caption={

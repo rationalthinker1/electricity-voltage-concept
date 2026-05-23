@@ -18,7 +18,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Visible-light reference wavelengths in nm
@@ -155,7 +155,7 @@ export function DispersionDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.2'}
+      figure={figure}
       title="A prism splits white light"
       question="Why does each colour bend by a different amount?"
       caption={

@@ -29,7 +29,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface Packet {
@@ -143,7 +143,7 @@ export function RadiationPressureDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 9.5'}
+      figure={figure}
       title="Radiation pressure"
       question="If light has momentum, what does it push on?"
       caption={

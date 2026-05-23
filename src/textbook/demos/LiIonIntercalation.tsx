@@ -16,7 +16,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const N_LI = 28; // total Li ions in the system
@@ -117,7 +117,7 @@ export function LiIonIntercalationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 26.2'}
+      figure={figure}
       title="Lithium-ion: ions that shuttle through a host"
       question="Why is Li-ion rechargeable when so many older chemistries weren't?"
       caption={

@@ -31,7 +31,7 @@ const V_FIXED = 12;
 const I_REF = V_FIXED / 40;
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function SeriesVsParallelDemo({ figure }: Props) {
@@ -182,7 +182,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 3.5'}
+      figure={figure}
       title="Series and parallel"
       question="Which configuration carries more current?"
       caption="In series, the same current must climb both resistive hills, and the resistance is R₁ + R₂. In parallel, current splits across two paths and the combined resistance is always smaller than either one."

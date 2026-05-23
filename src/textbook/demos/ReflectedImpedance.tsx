@@ -25,7 +25,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function ReflectedImpedanceDemo({ figure }: Props) {
@@ -197,7 +197,7 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 22.5'}
+      figure={figure}
       title="Reflected impedance"
       question="What does the source see when the secondary is loaded?"
       caption={

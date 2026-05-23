@@ -22,7 +22,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Stylised load curve, normalised: GW relative to a 30 GW system peak.
@@ -174,7 +174,7 @@ export function LoadFollowingDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 21.5'}
+      figure={figure}
       title="Load following — the grid as a real-time market"
       question="Demand swings ±40 % across a day. Supply has to match it second-by-second. How?"
       caption={

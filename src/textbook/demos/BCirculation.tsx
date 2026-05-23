@@ -34,7 +34,7 @@ function fmtLatex(n: number, digits = 2): string {
 }
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function BCirculationDemo({ figure }: Props) {
@@ -165,7 +165,7 @@ export function BCirculationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 8.4'}
+      figure={figure}
       title="B wraps the wire"
       question="And the magnetic field — which way does that point?"
       caption={

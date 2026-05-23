@@ -17,7 +17,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function YagiArrayFactorDemo({ figure }: Props) {
@@ -127,7 +127,7 @@ export function YagiArrayFactorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.3'}
+      figure={figure}
       title="A Yagi — driven element + parasitics"
       question="What does adding directors do to the radiation pattern?"
       caption={

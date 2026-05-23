@@ -42,7 +42,7 @@ const N_ELECTRONS = 14; // dots per loop
 const ELECTRON_BASE_SPEED = 120; // px/s at I = I_MAX
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface LoopGeom {
@@ -133,7 +133,7 @@ export function OhmsLawTwoViewsDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 3.0b'}
+      figure={figure}
       title="Ohm's law, two ways"
       question="Same equation V = IR — but pulled in two directions. Push voltage up, current rises in lockstep. Push resistance up, current falls. Watch both at once."
       caption={

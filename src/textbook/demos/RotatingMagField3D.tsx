@@ -49,7 +49,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Geometry. Stator ring lies in the x-z plane; its axis is +y (vertical).
@@ -536,7 +536,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 20.x'}
+      figure={figure}
       title="The rotating field inside a 3-phase stator"
       question="Three coils, three sinusoids 120° apart in time — how does that add up to a magnet on a turntable?"
       caption={

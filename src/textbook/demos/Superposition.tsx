@@ -35,7 +35,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface Currents {
@@ -108,7 +108,7 @@ export function SuperpositionDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.7b'}
+      figure={figure}
       title="Superposition — the engine behind Thévenin"
       question="Turn V1 and V2 on independently. The live currents add up exactly."
       caption={

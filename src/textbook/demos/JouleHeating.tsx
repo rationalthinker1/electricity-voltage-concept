@@ -20,7 +20,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const EMISSIVITY = 0.4;
@@ -185,7 +185,7 @@ export function JouleHeatingDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 3.4'}
+      figure={figure}
       title="Power becomes heat"
       question="Crank up I or R — when does the wire start to glow?"
       caption="The dissipated power is P = I²R. For a fixed radiating surface (~1 cm² here) the wire's equilibrium temperature solves P = εσ_SB A T⁴ with ε ≈ 0.4. Below ~600 K the wire is just warm; past that it goes red, orange, and white-hot."

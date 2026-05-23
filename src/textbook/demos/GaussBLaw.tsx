@@ -19,7 +19,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function GaussBLawDemo({ figure }: Props) {
@@ -180,7 +180,7 @@ export function GaussBLawDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 10.2'}
+      figure={figure}
       title="Gauss's law for B"
       question="What goes in must come out — for every B-field line, always."
       caption={

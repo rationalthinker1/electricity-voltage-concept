@@ -31,7 +31,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function EBTransformDemo({ figure }: Props) {
@@ -145,7 +145,7 @@ export function EBTransformDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 11.3'}
+      figure={figure}
       title="A pure E field becomes E + B when you move"
       question="Start with E only. Boost. What does the new frame measure?"
       caption={

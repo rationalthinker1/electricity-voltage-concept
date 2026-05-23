@@ -24,7 +24,7 @@ import { fmtResistance, fmtTime } from '@/lib/formatters';
 type Mode = 'open' | 'charging' | 'discharging';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function RCTransientDemo({ figure }: Props) {
@@ -327,7 +327,7 @@ export function RCTransientDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.2'}
+      figure={figure}
       title="The RC transient"
       question="How fast does the capacitor charge? — answer: τ = RC."
       caption={

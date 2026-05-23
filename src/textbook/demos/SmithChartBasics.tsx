@@ -21,7 +21,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function SmithChartBasicsDemo({ figure }: Props) {
@@ -158,7 +158,7 @@ export function SmithChartBasicsDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.4'}
+      figure={figure}
       title="Smith chart — the impedance disk"
       question="Slide Z_L around. The marker tracks Γ on the unit disk; the dashed circle is VSWR."
       caption={

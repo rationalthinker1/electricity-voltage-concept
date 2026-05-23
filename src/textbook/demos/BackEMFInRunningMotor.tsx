@@ -22,7 +22,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Model parameters (small-motor scale).
@@ -196,7 +196,7 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 20.7'}
+      figure={figure}
       title="Back-EMF and the inrush current"
       question="Why does a stalled motor pull several times its rated current — and what stops it from doing that once running?"
       caption={

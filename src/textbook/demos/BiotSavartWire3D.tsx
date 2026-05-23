@@ -45,7 +45,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // World geometry. Wire runs from y = -Y_HALF to +Y_HALF along the y-axis.
@@ -435,7 +435,7 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 6.2'}
+      figure={figure}
       title="The B-field around a wire, in three dimensions"
       question="Why do magnetic field lines circle a wire instead of pointing at it?"
       caption={

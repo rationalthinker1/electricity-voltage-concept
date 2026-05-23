@@ -11,7 +11,7 @@ import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Standard reduction potentials in volts vs SHE.
@@ -42,7 +42,7 @@ export function HalfCellPotentialsDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 25.5'}
+      figure={figure}
       title="Predict a battery's voltage from its half-cells"
       question="Why does Zn / Cu give 1.10 V but Li / F₂ gives 5.91 V?"
       caption={

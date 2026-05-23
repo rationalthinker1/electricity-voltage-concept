@@ -21,7 +21,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const F_GRID = 60; // Hz
@@ -141,7 +141,7 @@ export function GridSyncDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 21.4'}
+      figure={figure}
       title="Synchronising a generator to the grid"
       question="Three knobs to set before you can throw the breaker. What are they, and what's the penalty for getting them wrong?"
       caption={

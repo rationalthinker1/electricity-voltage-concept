@@ -21,7 +21,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const IB_TRACES = [5e-6, 10e-6, 20e-6, 40e-6, 80e-6]; // amps
@@ -146,7 +146,7 @@ export function BJTCharacteristicDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.3'}
+      figure={figure}
       title="BJT output characteristics — I_C vs V_CE"
       question="A small base current I_B controls a much larger collector current I_C. How much larger? And how flat is the response?"
       caption={

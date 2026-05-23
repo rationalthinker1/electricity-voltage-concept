@@ -20,7 +20,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function TwoCoilTransformerDemo({ figure }: Props) {
@@ -197,7 +197,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 23.1'}
+      figure={figure}
       title="Two coils, one core, a loaded secondary"
       question="Move N_p, N_s, V_p, R_load. Watch where the power goes."
       caption={

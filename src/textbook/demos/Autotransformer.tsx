@@ -23,7 +23,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function AutotransformerDemo({ figure }: Props) {
@@ -272,7 +272,7 @@ export function AutotransformerDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 23.7'}
+      figure={figure}
       title="Autotransformer: one tapped winding"
       question="Drag the tap. How much copper does an autotransformer save vs an isolated two-winding transformer of the same ratio?"
       caption={

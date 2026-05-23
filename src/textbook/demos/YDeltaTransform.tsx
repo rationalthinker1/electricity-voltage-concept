@@ -32,7 +32,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 function yToDelta(Ra: number, Rb: number, Rc: number) {
@@ -86,7 +86,7 @@ export function YDeltaTransformDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 13.4'}
+      figure={figure}
       title="Y ⇌ Δ transformation — three resistors, two shapes, one network"
       question="The Y on the left and the Δ on the right are externally indistinguishable."
       caption={

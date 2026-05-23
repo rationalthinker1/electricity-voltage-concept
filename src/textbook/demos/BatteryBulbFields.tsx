@@ -40,7 +40,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 /** One drifting carrier along the loop polyline. s in [0,1]. */
@@ -562,7 +562,7 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 8.0'}
+      figure={figure}
       title="Battery, switch, bulb — three fields at once"
       question="Battery → wire → bulb. Where is the energy actually moving — along the wire, alongside it, or through the empty space around it?"
       caption={

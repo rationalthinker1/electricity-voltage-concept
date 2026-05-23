@@ -18,7 +18,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface Dipole {
@@ -156,7 +156,7 @@ export function DipoleInFieldDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.1'}
+      figure={figure}
       title="Molecular dipoles aligning to an applied field"
       question="What does it physically mean for a material to 'polarize'?"
       caption={

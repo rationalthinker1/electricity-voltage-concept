@@ -15,7 +15,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const R_GAS = 8.314462618; // J / (mol·K)
@@ -106,7 +106,7 @@ export function NernstEquationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 25.3'}
+      figure={figure}
       title="The Nernst equation"
       question="How does ion concentration shift the cell voltage?"
       caption={

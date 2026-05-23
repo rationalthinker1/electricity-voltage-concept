@@ -28,7 +28,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const F_GRID = 60; // Hz
@@ -178,7 +178,7 @@ export function ACElectronJitterDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 2.5'}
+      figure={figure}
       title="A single electron in a 60 Hz wall outlet"
       question="If the current reverses 120 times a second, how far does any one electron actually go?"
       caption={

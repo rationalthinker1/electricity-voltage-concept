@@ -56,7 +56,7 @@ interface Wire {
 }
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const ALL_TERMINALS: TerminalId[] = [
@@ -604,7 +604,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 30.4'}
+      figure={figure}
       title="Wire it yourself: the three-way XOR"
       question="Wire the bulb so it lights from either switch. There is one correct topology."
       caption={

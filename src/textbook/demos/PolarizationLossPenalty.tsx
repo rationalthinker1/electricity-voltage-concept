@@ -20,7 +20,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function PolarizationLossPenaltyDemo({ figure }: Props) {
@@ -123,7 +123,7 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.7'}
+      figure={figure}
       title="Polarization mismatch — Malus's law for antennas"
       question="What does it cost to misalign two linear antennas?"
       caption={

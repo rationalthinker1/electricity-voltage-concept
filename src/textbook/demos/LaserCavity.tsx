@@ -19,7 +19,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface LaserCtx {
@@ -176,7 +176,7 @@ export function LaserCavityDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.7'}
+      figure={figure}
       title="Inside a laser cavity"
       question="What makes laser light coherent?"
       caption={

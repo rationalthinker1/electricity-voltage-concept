@@ -17,7 +17,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function WhyWaterPolarizesDemo({ figure }: Props) {
@@ -131,7 +131,7 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.4'}
+      figure={figure}
       title="Why water's ε_r is so large"
       question="A single water molecule already wants to align. Where does ε_r ≈ 80 come from?"
       caption={

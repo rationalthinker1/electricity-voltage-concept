@@ -44,7 +44,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { fmtFrequency } from '@/lib/formatters';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const L_METERS = 1.0; // fixed physical wire length, metres
@@ -397,7 +397,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 9.x'}
+      figure={figure}
       title="From wire to antenna — a continuous spectrum"
       question="The same metre of wire. Where does the radiation pattern come from?"
       caption={

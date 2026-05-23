@@ -16,7 +16,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const V_OC = 1.1; // V open-circuit
@@ -148,7 +148,7 @@ export function DaniellCellDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 25.2'}
+      figure={figure}
       title="The Daniell cell"
       question="What chemistry produces a steady 1.10 V?"
       caption={

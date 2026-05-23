@@ -22,7 +22,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function TwoParallelWiresDemo({ figure }: Props) {
@@ -186,7 +186,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 6.3'}
+      figure={figure}
       title="Two wires that talk"
       question="Same direction or opposite — do the wires pull or push?"
       caption={

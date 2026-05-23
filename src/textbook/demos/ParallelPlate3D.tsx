@@ -39,7 +39,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Visual world-units scaling.
@@ -435,7 +435,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 5.3'}
+      figure={figure}
       title="A parallel-plate capacitor, in 3D"
       question="What does the field in the gap actually look like — and why is ∮D·dA on a pillbox piercing the plate exactly Q_enclosed?"
       caption={

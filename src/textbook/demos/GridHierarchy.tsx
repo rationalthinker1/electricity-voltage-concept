@@ -15,7 +15,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface Stage {
@@ -178,7 +178,7 @@ export function GridHierarchyDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 23.6'}
+      figure={figure}
       title="The grid as a stack of transformers"
       question="From power plant to wall outlet: how many transformers, what voltages?"
       caption={

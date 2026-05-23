@@ -20,7 +20,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const N_TURNS = 80;
@@ -197,7 +197,7 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 21.1'}
+      figure={figure}
       title="Rotating coil = simple alternator"
       question="A coil that goes round and round. What's the voltage between its leads?"
       caption={

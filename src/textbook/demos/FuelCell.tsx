@@ -19,7 +19,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const V_OCV = 1.0; // open-circuit volts (theoretical max ~1.23 V; practical ~1.0 V)
@@ -156,7 +156,7 @@ export function FuelCellDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 26.5'}
+      figure={figure}
       title="PEM fuel cell"
       question="A battery you keep refilling — how does it actually run?"
       caption={

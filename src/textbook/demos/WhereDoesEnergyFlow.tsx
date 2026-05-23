@@ -26,7 +26,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface Carrier {
@@ -278,7 +278,7 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 8.1'}
+      figure={figure}
       title="Where does the energy go?"
       question="From battery to bulb — does the energy travel through the wire, or through the space around it?"
       caption={

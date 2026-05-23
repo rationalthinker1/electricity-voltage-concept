@@ -26,7 +26,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const F_SW = 100e3; // 100 kHz switching frequency
@@ -163,7 +163,7 @@ export function BuckConverterDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 24.4'}
+      figure={figure}
       title="Buck converter: V_out = D · V_in"
       question="Slide the duty cycle. Where does the output voltage land — and what does the inductor current look like?"
       caption={

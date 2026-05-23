@@ -11,7 +11,7 @@ import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 import { fmtResistance, fmtTolerance } from '@/lib/formatters';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface Colour {
@@ -82,7 +82,7 @@ export function ColorCodeDecoderDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.2'}
+      figure={figure}
       title="The colour code"
       question="What's that hot-dog actually worth?"
       caption={

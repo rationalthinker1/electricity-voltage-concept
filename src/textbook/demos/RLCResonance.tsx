@@ -24,7 +24,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const V0 = 1; // 1 V drive amplitude
@@ -158,7 +158,7 @@ export function RLCResonanceDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.4'}
+      figure={figure}
       title="Driven RLC — resonance and Q"
       question="Same circuit. Sweep ω. Why does current peak so sharply?"
       caption={

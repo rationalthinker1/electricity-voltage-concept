@@ -50,7 +50,7 @@ import { createOrbitScene } from '@/lib/useOrbitScene';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Wire geometry, world units. Cylinder runs along x; radius is in y-z.
@@ -416,7 +416,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 3.6'}
+      figure={figure}
       title="Drift in copper, in 3D"
       question="Inside the wire: how fast is each electron actually moving?"
       caption={

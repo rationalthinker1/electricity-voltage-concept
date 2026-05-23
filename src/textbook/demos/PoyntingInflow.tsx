@@ -27,7 +27,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface InflowParticle {
@@ -302,7 +302,7 @@ export function PoyntingInflowDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 8.4'}
+      figure={figure}
       title="∮ S · dA = V I, exactly"
       question="So how much energy actually flows through the wire's surface per second?"
       caption={

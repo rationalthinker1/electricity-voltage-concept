@@ -18,7 +18,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
@@ -128,7 +128,7 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.2'}
+      figure={figure}
       title="Half-wave dipole — input impedance"
       question="Why does |Z| dip to ~73 Ω at one frequency?"
       caption={

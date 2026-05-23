@@ -19,7 +19,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const POLES = 2; // 2-pole (one pole-pair): 60 Hz → 3600 RPM
@@ -163,7 +163,7 @@ export function SynchronousMotorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 20.4'}
+      figure={figure}
       title="Synchronous motor — locked to the line"
       question="If the rotor doesn't slip, how does it produce torque?"
       caption={

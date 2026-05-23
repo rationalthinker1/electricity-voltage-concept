@@ -38,7 +38,7 @@ import { useSimState } from '@/lib/useSimState';
 import { fmtFrequency } from '@/lib/formatters';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 type CoreKey = 'laminated-iron' | 'silicon-steel' | 'ferrite';
@@ -247,7 +247,7 @@ export function TransformerDesignerDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 23.10'}
+      figure={figure}
       title="Transformer designer"
       question="Can you pick N_p, f, and a core material that delivers 50 W to the load at >95% efficiency without saturating?"
       caption={caption}

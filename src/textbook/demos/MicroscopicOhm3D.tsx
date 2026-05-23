@@ -37,7 +37,7 @@ import { createOrbitScene } from '@/lib/useOrbitScene';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Materials ordered worst → best conductor along the slider.
@@ -149,7 +149,7 @@ export function MicroscopicOhm3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 3.0a'}
+      figure={figure}
       title="J = σE — current density follows the field"
       question="Inside a conductor: how does an applied field push the charges?"
       caption={

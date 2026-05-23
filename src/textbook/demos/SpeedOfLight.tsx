@@ -28,7 +28,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function SpeedOfLightDemo({ figure }: Props) {
@@ -86,7 +86,7 @@ export function SpeedOfLightDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 9.1'}
+      figure={figure}
       title="Maxwell's prediction · v = 1/√(εᵣ μᵣ ε₀ μ₀)"
       question="What sets the speed of light?"
       caption={

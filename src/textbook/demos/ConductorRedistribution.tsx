@@ -15,7 +15,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface Charge {
@@ -131,7 +131,7 @@ export function ConductorRedistributionDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 1.5'}
+      figure={figure}
       title="Conductor vs. insulator"
       question="What's the actual difference between a metal and a plastic?"
       caption={

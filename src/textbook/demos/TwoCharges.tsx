@@ -26,7 +26,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function TwoChargesDemo({ figure }: Props) {
@@ -138,7 +138,7 @@ export function TwoChargesDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 1.1'}
+      figure={figure}
       title="Two point charges"
       question="Same sign or opposite — what changes?"
       caption="Toggle the signs to flip attraction and repulsion. The arrow length grows like log|F| because the force changes by orders of magnitude as you slide the separation."

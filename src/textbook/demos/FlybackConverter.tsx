@@ -28,7 +28,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const F_SW = 100e3; // 100 kHz typical flyback frequency
@@ -207,7 +207,7 @@ export function FlybackConverterDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 24.8'}
+      figure={figure}
       title="Flyback: one magnet, two phases"
       question="Watch the energy bar. The primary fills the core; the secondary empties it. The transformer never carries both sides at once."
       caption={

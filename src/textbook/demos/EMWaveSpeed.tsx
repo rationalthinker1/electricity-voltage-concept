@@ -19,7 +19,7 @@ import { useSimState } from '@/lib/useSimState';
 import { withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const C_EXACT = PHYS.c;
@@ -162,7 +162,7 @@ export function EMWaveSpeedDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 10.6'}
+      figure={figure}
       title="Wave speed from ε₀ and μ₀"
       question="What happens to the wave when you change the vacuum constants?"
       caption={

@@ -1,5 +1,5 @@
 /**
- * Chapter 18 — How a battery works
+ * Chapter 25 — How a battery works
  *
  * Chemistry that keeps a voltage on the wires. Volta's pile, the half-reaction
  * picture, the Daniell cell, standard electrode potentials and SHE, the Nernst

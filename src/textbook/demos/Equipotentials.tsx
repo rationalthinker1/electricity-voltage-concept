@@ -14,7 +14,7 @@ import { PHYS } from '@/lib/physics';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const CHARGE_RADIUS = 14;
@@ -226,7 +226,7 @@ export function EquipotentialsDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 1.4'}
+      figure={figure}
       title="Two charges, two patterns"
       question="Same sign or opposite — what does the field look like?"
       caption={

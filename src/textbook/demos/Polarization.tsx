@@ -27,7 +27,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function PolarizationDemo({ figure }: Props) {
@@ -152,7 +152,7 @@ export function PolarizationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 9.3'}
+      figure={figure}
       title="Polarization"
       question="What direction does E point — and is it staying put?"
       caption={

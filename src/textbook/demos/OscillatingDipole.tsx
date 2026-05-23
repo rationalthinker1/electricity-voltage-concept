@@ -27,7 +27,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 function hexToRgb(hex: string) {
@@ -138,7 +138,7 @@ export function OscillatingDipoleDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 9.4'}
+      figure={figure}
       title="An oscillating dipole radiates"
       question="Where do the ripples go — and where do they not go?"
       caption={

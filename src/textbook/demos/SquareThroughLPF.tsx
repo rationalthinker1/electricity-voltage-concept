@@ -19,7 +19,7 @@ const N_HARMONICS = 25;
 const f0 = 1; // fundamental (arbitrary units)
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function SquareThroughLPFDemo({ figure }: Props) {
@@ -157,7 +157,7 @@ export function SquareThroughLPFDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.3'}
+      figure={figure}
       title="Square wave through a low-pass filter"
       question="What does the corner-frequency slider do to the output shape?"
       caption={

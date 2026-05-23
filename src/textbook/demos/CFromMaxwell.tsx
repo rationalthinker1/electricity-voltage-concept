@@ -12,7 +12,7 @@ import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function CFromMaxwellDemo({ figure }: Props) {
@@ -22,7 +22,7 @@ export function CFromMaxwellDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 10.5'}
+      figure={figure}
       title="Light, predicted"
       question="What speed do the four equations say a wave in vacuum must travel at?"
       caption={

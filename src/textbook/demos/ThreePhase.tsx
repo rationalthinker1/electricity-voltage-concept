@@ -19,7 +19,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const Vpk = 1;
@@ -170,7 +170,7 @@ export function ThreePhaseDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.6'}
+      figure={figure}
       title="Three-phase — why the grid uses three wires"
       question="Three sinusoids, each 120° behind the previous. What's special about that sum?"
       caption={

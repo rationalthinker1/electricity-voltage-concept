@@ -20,7 +20,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function TransformerDemo({ figure }: Props) {
@@ -202,7 +202,7 @@ export function TransformerDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 7.6'}
+      figure={figure}
       title="Transformer — turns ratio sets the voltage ratio"
       question="Why does the secondary voltage track N₂/N₁?"
       caption={

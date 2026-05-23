@@ -20,7 +20,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function DielectricBetweenPlatesDemo({ figure }: Props) {
@@ -183,7 +183,7 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.2'}
+      figure={figure}
       title="Dielectric slab in a parallel-plate capacitor"
       question="What does inserting a dielectric do to the field and the capacitance?"
       caption={

@@ -23,7 +23,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const F_LINE = 60; // Hz
@@ -189,7 +189,7 @@ export function BridgeRectifierDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 24.2'}
+      figure={figure}
       title="Bridge rectifier with smoothing cap"
       question="Where does the ripple come from — and what knob makes it go down?"
       caption={

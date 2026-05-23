@@ -22,7 +22,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 /** Dipole-axis flux model. x in canvas pixels; returns dimensionless flux. */
@@ -276,7 +276,7 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 7.3'}
+      figure={figure}
       title="Move a magnet, get a voltage"
       question="What is the lamp doing — and why does it flip color when you reverse direction?"
       caption={

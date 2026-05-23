@@ -17,7 +17,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function DipoleRadiationPatternDemo({ figure }: Props) {
@@ -114,7 +114,7 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.1'}
+      figure={figure}
       title="The dipole pattern — sin²θ"
       question="In which direction does a dipole radiate strongest?"
       caption={

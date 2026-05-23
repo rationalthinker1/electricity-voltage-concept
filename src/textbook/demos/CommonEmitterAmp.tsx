@@ -27,7 +27,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const V_BE = 0.7;
@@ -157,7 +157,7 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.6'}
+      figure={figure}
       title="The common-emitter amplifier"
       question="One transistor and four resistors. What's the small-signal voltage gain?"
       caption={

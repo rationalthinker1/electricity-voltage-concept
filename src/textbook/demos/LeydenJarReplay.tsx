@@ -16,7 +16,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function LeydenJarReplayDemo({ figure }: Props) {
@@ -203,7 +203,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 5.7'}
+      figure={figure}
       title="The Leyden jar"
       question="What did electricity look like before there were batteries?"
       caption={

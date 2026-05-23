@@ -24,7 +24,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function SolenoidDemo({ figure }: Props) {
@@ -148,7 +148,7 @@ export function SolenoidDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 6.5'}
+      figure={figure}
       title="Solenoid: a controllable magnet"
       question="What if you wrap the wire around itself?"
       caption={

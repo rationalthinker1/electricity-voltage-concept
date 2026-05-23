@@ -19,7 +19,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function LengthVsResistanceDemo({ figure }: Props) {
@@ -102,7 +102,7 @@ export function LengthVsResistanceDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 3.1'}
+      figure={figure}
       title="Length adds resistance"
       question="Stretch the wire — what does R do?"
       caption="Hold the cross-section fixed. Resistance scales linearly with length: R = ρL/A. Twice the wire, twice the resistance."

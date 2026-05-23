@@ -31,7 +31,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Empirical visual constant: maps the dimensionful product |q (in µC) × V_ab|
@@ -248,7 +248,7 @@ export function VabWorkEnergyDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 2.2'}
+      figure={figure}
       title="Voltage, work, and energy in one picture"
       question="Release a charge q in the gap. How fast does it cross, and how much energy does it carry when it arrives?"
       caption={

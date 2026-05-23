@@ -29,7 +29,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function SeriesCoupledMeasureMDemo({ figure }: Props) {
@@ -126,7 +126,7 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 22.4'}
+      figure={figure}
       title="Measuring M from two series readings"
       question="Two LCR-meter readings, one subtraction — that's it."
       caption={

@@ -28,7 +28,7 @@ import { fmtFreqShort } from '@/lib/formatters';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function SallenKeyFilterDemo({ figure }: Props) {
@@ -213,7 +213,7 @@ export function SallenKeyFilterDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.0'}
+      figure={figure}
       title="Sallen-Key active low-pass — Q from gain alone"
       question="Push the gain K up from 1 toward 3. Watch the peak at f₀ sharpen — then ring."
       caption={

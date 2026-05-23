@@ -18,7 +18,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const CHOICES: MaterialKey[] = ['copper', 'aluminum', 'iron', 'tungsten', 'nichrome'];
@@ -130,7 +130,7 @@ export function MaterialPickerDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 3.3'}
+      figure={figure}
       title="Material is destiny"
       question="Same wire geometry, same voltage. What current flows through each material?"
       caption="At V = 12 V across 1 m of 2.5 mm² wire, copper carries ~1.8 kA (it's basically a short circuit), while nichrome — designed for heating elements — carries about 27 mA. Five orders of magnitude, set entirely by σ."

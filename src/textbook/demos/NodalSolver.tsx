@@ -31,7 +31,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 function solveNodal(V1: number, V2: number, R1: number, R2: number, R3: number) {
@@ -127,7 +127,7 @@ export function NodalSolverDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 13.2'}
+      figure={figure}
       title="Nodal analysis — one unknown voltage, one equation"
       question="Pick a ground; the unknowns become node voltages."
       caption={

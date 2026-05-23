@@ -1,5 +1,5 @@
 /**
- * Chapter 19 — Rectifiers and inverters
+ * Chapter 24 — Rectifiers and inverters
  *
  * AC↔DC conversion. Six sections, six embedded demos, FAQ at the end.
  * Builds directly on Ch.12 (AC, impedance, RC) and Ch.5 (capacitors).

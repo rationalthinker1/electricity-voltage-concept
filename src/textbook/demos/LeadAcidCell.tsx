@@ -20,7 +20,7 @@ import { drawLabel } from "@/lib/canvasLayout";
 import { withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const SG_FULL = 1.27; // specific gravity of acid when fully charged
@@ -102,7 +102,7 @@ export function LeadAcidCellDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 26.1'}
+      figure={figure}
       title="Lead-acid: rechargeable since 1859"
       question="What does discharging actually do to the plates?"
       caption={

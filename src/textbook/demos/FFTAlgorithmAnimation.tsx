@@ -14,7 +14,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function FFTAlgorithmAnimationDemo({ figure }: Props) {
@@ -179,7 +179,7 @@ export function FFTAlgorithmAnimationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.6'}
+      figure={figure}
       title="FFT — N log N versus N²"
       question="What does Cooley-Tukey buy you in operations?"
       caption={

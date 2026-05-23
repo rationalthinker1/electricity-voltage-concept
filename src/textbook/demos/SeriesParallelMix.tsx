@@ -31,7 +31,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const V_FIXED = 12; // V — source voltage
@@ -261,7 +261,7 @@ export function SeriesParallelMixDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 3.5b'}
+      figure={figure}
       title="Mixed networks — pick a topology"
       question="Where does the 12 V go, and how does the current split?"
       caption={

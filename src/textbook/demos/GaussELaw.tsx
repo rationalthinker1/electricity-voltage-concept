@@ -21,7 +21,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function GaussELawDemo({ figure }: Props) {
@@ -115,7 +115,7 @@ export function GaussELawDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 10.1'}
+      figure={figure}
       title="Gauss's law for E"
       question="What does ∮E·dA = Q/ε₀ actually look like?"
       caption={

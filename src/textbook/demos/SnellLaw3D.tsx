@@ -35,7 +35,7 @@ import { project, v3, type OrbitCamera, type Point2D, type Vec3 } from '@/lib/pr
 import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // World scale of the half-plane patch (extent of the interface drawn).
@@ -277,7 +277,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.1b'}
+      figure={figure}
       title="Snell's law in 3D — the plane of incidence"
       question="When a ray hits glass at an angle, which way does it bend — and why does the whole geometry lie in one plane?"
       caption={

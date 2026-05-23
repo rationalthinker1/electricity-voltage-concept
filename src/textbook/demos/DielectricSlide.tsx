@@ -28,7 +28,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function DielectricSlideDemo({ figure }: Props) {
@@ -235,7 +235,7 @@ export function DielectricSlideDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 5.x'}
+      figure={figure}
       title="Slide a dielectric into the gap"
       question="What happens to V when you push a slab of high-εᵣ material between the plates?"
       caption={

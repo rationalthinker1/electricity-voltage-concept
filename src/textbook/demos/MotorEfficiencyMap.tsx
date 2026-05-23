@@ -21,7 +21,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 type MotorType = 'pmsm' | 'induction' | 'bldc' | 'brushed';
@@ -238,7 +238,7 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 20.9'}
+      figure={figure}
       title="The efficiency sweet spot"
       question="A motor isn't equally efficient everywhere on its torque–speed plane. Where's the good place to operate?"
       caption={

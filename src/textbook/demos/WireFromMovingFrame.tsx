@@ -38,7 +38,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function WireFromMovingFrameDemo({ figure }: Props) {
@@ -240,7 +240,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 11.2'}
+      figure={figure}
       title="Same wire, viewed from the moving frame"
       question="Boost into the test charge's rest frame. Where does the force come from now?"
       caption={

@@ -29,7 +29,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface DipoleCtx {
@@ -351,7 +351,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.1b'}
+      figure={figure}
       title="The dipole pattern, in 3D — a fat donut"
       question="The 2D sin²θ plot is a slice. What does the full pattern look like?"
       caption={

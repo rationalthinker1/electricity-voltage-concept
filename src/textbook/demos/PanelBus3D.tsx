@@ -49,7 +49,7 @@ import { depthSortIndices, project, v3, type OrbitCamera, type Vec3 } from '@/li
 import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // World-space geometry. Y is up; the panel sits centred at the origin.
@@ -311,7 +311,7 @@ export function PanelBus3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 28.1'}
+      figure={figure}
       title="Inside the panel, in 3D"
       question="A 240 V breaker is two slots wide. Why two slots — what would happen if it spanned two stabs on the same bus?"
       caption={

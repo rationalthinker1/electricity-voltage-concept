@@ -27,7 +27,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // One "click" deposits this much charge. Picked so V/U live in friendly ranges.
@@ -255,7 +255,7 @@ export function BuildACapacitorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 5.1'}
+      figure={figure}
       title="Build a capacitor, one charge at a time"
       question="Why does each new charge cost more work than the last?"
       caption={

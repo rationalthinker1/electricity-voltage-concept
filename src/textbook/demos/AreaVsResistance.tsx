@@ -19,7 +19,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function AreaVsResistanceDemo({ figure }: Props) {
@@ -129,7 +129,7 @@ export function AreaVsResistanceDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 3.2'}
+      figure={figure}
       title="Area divides resistance"
       question="Fatten the wire — what happens to R?"
       caption="Hold length and material fixed. Resistance is inversely proportional to cross-section: doubling the area halves the resistance, because there are twice as many parallel paths for current."

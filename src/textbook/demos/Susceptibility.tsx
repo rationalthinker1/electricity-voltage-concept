@@ -23,7 +23,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface Bar {
@@ -159,7 +159,7 @@ export function SusceptibilityDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.7'}
+      figure={figure}
       title="One number per material, per response"
       question="How big is the response — and how spread out is the range?"
       caption={

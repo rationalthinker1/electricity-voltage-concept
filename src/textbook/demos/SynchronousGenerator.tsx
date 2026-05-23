@@ -21,7 +21,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const Vpk = 1;
@@ -206,7 +206,7 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 21.2'}
+      figure={figure}
       title="Three-phase synchronous generator"
       question="One rotor, three coils, 120° apart. What appears on each pair of leads?"
       caption={

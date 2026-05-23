@@ -32,7 +32,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Loop geometry in local (un-rotated) coordinates. The loop lies in the
@@ -348,7 +348,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 7.5b'}
+      figure={figure}
       title="The cos(θ) geometry in 3D"
       question="Why does a constant rotation in a constant field produce a sinusoid?"
       caption={

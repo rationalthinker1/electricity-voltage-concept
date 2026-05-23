@@ -37,7 +37,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function NortonTheveninDemo({ figure }: Props) {
@@ -102,7 +102,7 @@ export function NortonTheveninDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 13.5'}
+      figure={figure}
       title="Thévenin ⇌ Norton — three networks, identical terminal behaviour"
       question="Connect the same load R_L to any of three networks; V_L and I_L agree."
       caption={

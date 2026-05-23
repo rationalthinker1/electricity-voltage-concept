@@ -18,7 +18,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Standard film-resistor derating: 100% to 70 °C, linear to 0 at 155 °C.
@@ -146,7 +146,7 @@ export function PowerDeratingDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.3'}
+      figure={figure}
       title="Power derating"
       question="Why can't a 1/4 W resistor actually dissipate 1/4 W?"
       caption={

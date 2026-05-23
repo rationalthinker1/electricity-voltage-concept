@@ -19,7 +19,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function TorqueSpeedCurveDemo({ figure }: Props) {
@@ -183,7 +183,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 20.6'}
+      figure={figure}
       title="Torque–speed: four different shapes"
       question="The right motor is the one whose curve crosses your load's curve where you want it to."
       caption={

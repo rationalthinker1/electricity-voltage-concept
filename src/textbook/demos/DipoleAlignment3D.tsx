@@ -38,7 +38,7 @@ import { createOrbitScene } from '@/lib/useOrbitScene';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // World-space block half-extents. The block sits centred on the origin,
@@ -419,7 +419,7 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.3'}
+      figure={figure}
       title="A dielectric aligns under an applied field"
       question="How do microscopic dipoles, randomly tumbling at zero field, give a macroscopic ε_r when the field is turned on?"
       caption={

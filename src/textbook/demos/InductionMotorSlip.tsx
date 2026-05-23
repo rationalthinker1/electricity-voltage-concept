@@ -24,7 +24,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const POLES = 4; // 4-pole machine — synchronous speed at 60 Hz = 1800 RPM
@@ -186,7 +186,7 @@ export function InductionMotorSlipDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 20.3'}
+      figure={figure}
       title="The induction motor — slip is the signal"
       question="The rotor never catches up with the stator's field. Why is that a feature, not a bug?"
       caption={

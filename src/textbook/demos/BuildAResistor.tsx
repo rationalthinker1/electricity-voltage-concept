@@ -25,7 +25,7 @@ import { fmtResistance, fmtResistivity } from '@/lib/formatters';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 type FamilyKey =
@@ -253,7 +253,7 @@ export function BuildAResistorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.1'}
+      figure={figure}
       title="Build a resistor"
       question="What's actually inside the brown hot-dog with two stripes on it?"
       caption={

@@ -23,7 +23,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function PlaneWaveDemo({ figure }: Props) {
@@ -125,7 +125,7 @@ export function PlaneWaveDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 9.2'}
+      figure={figure}
       title="A plane wave, in slow motion"
       question="What's perpendicular to what?"
       caption={

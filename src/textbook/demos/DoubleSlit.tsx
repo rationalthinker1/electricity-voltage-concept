@@ -15,7 +15,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function DoubleSlitDemo({ figure }: Props) {
@@ -130,7 +130,7 @@ export function DoubleSlitDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.6'}
+      figure={figure}
       title="Young's double slit — two beams interfere"
       question="What sets the spacing between bright fringes?"
       caption={

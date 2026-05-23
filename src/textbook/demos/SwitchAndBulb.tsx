@@ -20,7 +20,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface PathSeg {
@@ -201,7 +201,7 @@ export function SwitchAndBulbDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 2.4'}
+      figure={figure}
       title="What actually lights the bulb"
       question="You flip the switch. Why does the bulb come on instantly?"
       caption={

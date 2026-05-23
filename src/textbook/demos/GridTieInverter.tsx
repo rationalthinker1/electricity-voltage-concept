@@ -24,7 +24,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const F_GRID = 60;
@@ -147,7 +147,7 @@ export function GridTieInverterDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 24.6'}
+      figure={figure}
       title="Grid-tie inverter: P, Q, and the current phase"
       question="The grid voltage is fixed. The inverter chooses how much current to inject and at what phase. What does each knob do?"
       caption={

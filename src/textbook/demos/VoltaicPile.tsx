@@ -16,7 +16,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const V_PER_PAIR = 1.1; // V open-circuit per Zn-Cu pair (Daniell-type cell)
@@ -127,7 +127,7 @@ export function VoltaicPileDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 25.1'}
+      figure={figure}
       title="Volta's pile, 1800"
       question="How does a stack of Zn and Cu produce sustained current?"
       caption={

@@ -20,7 +20,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function FaradayLawDemo({ figure }: Props) {
@@ -200,7 +200,7 @@ export function FaradayLawDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 10.3'}
+      figure={figure}
       title="Faraday's law"
       question="When B changes through a loop, what appears around the loop?"
       caption={

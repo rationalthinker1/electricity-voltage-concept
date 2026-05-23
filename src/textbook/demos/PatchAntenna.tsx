@@ -22,7 +22,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const C0 = 2.998e8; // m/s
@@ -133,7 +133,7 @@ export function PatchAntennaDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.8'}
+      figure={figure}
       title="Patch antenna — half-wave inside the substrate"
       question="What sets the resonance frequency of a microstrip patch?"
       caption={

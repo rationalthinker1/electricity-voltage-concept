@@ -23,7 +23,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const Q1 = 50;
@@ -185,7 +185,7 @@ export function CouplingCoefficientDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 22.2'}
+      figure={figure}
       title="Coupling coefficient k and what it buys you"
       question="Why does a wireless charger need careful alignment?"
       caption={

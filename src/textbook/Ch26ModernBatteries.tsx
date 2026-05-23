@@ -1,5 +1,5 @@
 /**
- * Chapter 19 — Modern batteries
+ * Chapter 26 — Modern batteries
  *
  * From Planté lead-acid (1859) to lithium-ion (Whittingham 1976 → Goodenough
  * 1980 → Yoshino 1985 → Sony 1991) and the family that branched off it.

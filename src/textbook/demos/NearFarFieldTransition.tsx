@@ -16,7 +16,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function NearFarFieldTransitionDemo({ figure }: Props) {
@@ -116,7 +116,7 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.5'}
+      figure={figure}
       title="Near field vs far field"
       question="Where does the field stop sloshing back and start propagating?"
       caption={

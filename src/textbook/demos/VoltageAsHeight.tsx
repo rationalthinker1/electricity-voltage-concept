@@ -18,7 +18,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function VoltageAsHeightDemo({ figure }: Props) {
@@ -156,7 +156,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 2.1'}
+      figure={figure}
       title="Voltage is a difference in height"
       question="What does it mean for one point to be 'at 12 volts'?"
       caption={

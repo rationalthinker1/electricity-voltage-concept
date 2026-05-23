@@ -21,7 +21,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Reference comparison: 100 W transformer at 60 Hz vs at the chosen frequency.
@@ -103,7 +103,7 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 23.9'}
+      figure={figure}
       title="Core size shrinks with frequency"
       question="Slide the frequency. For 100 W, how big is the transformer at 60 Hz vs 100 kHz?"
       caption={

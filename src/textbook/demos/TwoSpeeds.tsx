@@ -23,7 +23,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function TwoSpeedsDemo({ figure }: Props) {
@@ -128,7 +128,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 2.3'}
+      figure={figure}
       title="Two speeds, one wire"
       question="The signal arrives at light-speed. The electrons crawl. How can both be true?"
       caption={

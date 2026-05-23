@@ -24,7 +24,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function VoltageDividerDemo({ figure }: Props) {
@@ -81,7 +81,7 @@ export function VoltageDividerDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.0'}
+      figure={figure}
       title="The voltage divider — and what 'loading' does to it"
       question="With no load, V_out = V_in · R₂/(R₁+R₂). Attach a 10 kΩ load — what happens?"
       caption={

@@ -27,7 +27,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function PolarizationMalusLawDemo({ figure }: Props) {
@@ -172,7 +172,7 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.10'}
+      figure={figure}
       title="Malus's law — two polarizers and an angle"
       question="What fraction of the original intensity gets through both polarizers?"
       caption={

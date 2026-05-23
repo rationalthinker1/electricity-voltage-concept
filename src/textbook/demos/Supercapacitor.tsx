@@ -19,7 +19,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function SupercapacitorDemo({ figure }: Props) {
@@ -104,7 +104,7 @@ export function SupercapacitorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 26.4'}
+      figure={figure}
       title="Supercapacitor: a field, not a reaction"
       question="Why does a supercap's voltage fall linearly while a battery's stays flat?"
       caption={

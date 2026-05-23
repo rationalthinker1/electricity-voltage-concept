@@ -22,7 +22,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface WireBFieldContext {
@@ -253,7 +253,7 @@ export function WireBFieldDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 6.1'}
+      figure={figure}
       title="The field around a current"
       question="What does the magnetic field of a wire actually look like?"
       caption={

@@ -59,7 +59,7 @@ function fmtSci(n: number) {
 }
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 type Mode = 'gauss-e' | 'gauss-b' | 'faraday' | 'ampere';
@@ -848,7 +848,7 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 10.0'}
+      figure={figure}
       title="The Maxwell box — all four laws on one rotating object"
       question="Can you see each Maxwell equation as a geometric statement about flux through faces or circulation around loops — in the same cubical region of space?"
       caption={

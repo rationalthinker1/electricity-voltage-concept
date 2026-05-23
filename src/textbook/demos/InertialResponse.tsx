@@ -23,7 +23,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const F_NOM = 60; // Hz nominal
@@ -155,7 +155,7 @@ export function InertialResponseDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 21.7'}
+      figure={figure}
       title="Inertial response: what 'frequency dip' looks like"
       question="A generator trips. The grid's rotating mass is the only thing keeping frequency stable in the first second."
       caption={

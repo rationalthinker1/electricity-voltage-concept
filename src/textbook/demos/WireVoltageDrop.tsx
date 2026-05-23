@@ -32,7 +32,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function WireVoltageDropDemo({ figure }: Props) {
@@ -269,7 +269,7 @@ export function WireVoltageDropDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 3.0c'}
+      figure={figure}
       title="Voltage drops linearly along a uniform wire"
       question="A wire is one resistor — but where does the voltage drop happen?"
       caption={

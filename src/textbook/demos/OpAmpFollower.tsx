@@ -25,7 +25,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function OpAmpFollowerDemo({ figure }: Props) {
@@ -57,7 +57,7 @@ export function OpAmpFollowerDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 13.1b'}
+      figure={figure}
       title="Voltage follower — the op-amp's true job"
       question="A 1 MΩ source driving a 50 Ω load: where does the signal go?"
       caption={

@@ -23,7 +23,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Visual scaling: 1 m of physical orbit radius → PX_PER_M screen pixels.
@@ -170,7 +170,7 @@ export function CyclotronDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 6.4'}
+      figure={figure}
       title="Magnetic force only steers"
       question="A charge in a B field never speeds up. So what does it do?"
       caption={

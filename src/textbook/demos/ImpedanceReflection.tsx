@@ -17,7 +17,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const Z_LOAD = 8; // Ω (speaker)
@@ -133,7 +133,7 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 23.4'}
+      figure={figure}
       title="Impedance reflection — what the primary sees"
       question="An 8 Ω speaker. How do you make it look like 5 kΩ?"
       caption={

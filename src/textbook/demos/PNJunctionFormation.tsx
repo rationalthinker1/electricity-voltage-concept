@@ -22,7 +22,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const V_BI = 0.7; // built-in potential, V
@@ -214,7 +214,7 @@ export function PNJunctionFormationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.2'}
+      figure={figure}
       title="A p-n junction under bias"
       question="What happens to the depletion region when you forward-bias or reverse-bias the junction?"
       caption={

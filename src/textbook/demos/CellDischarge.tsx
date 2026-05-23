@@ -18,7 +18,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const Q_CAPACITY = 1.0; // arbitrary unit; charge to "empty"
@@ -142,7 +142,7 @@ export function CellDischargeDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 25.4'}
+      figure={figure}
       title="Discharge: V drops as the cell empties"
       question="Why does a fresh battery 'feel' stronger than an old one?"
       caption={

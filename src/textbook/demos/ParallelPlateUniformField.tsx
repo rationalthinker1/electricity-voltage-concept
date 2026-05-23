@@ -29,7 +29,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function ParallelPlateUniformFieldDemo({ figure }: Props) {
@@ -186,7 +186,7 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 1.6'}
+      figure={figure}
       title="The uniform field between parallel plates"
       question="Slide the plates closer or farther apart. Does the field between them change?"
       caption={

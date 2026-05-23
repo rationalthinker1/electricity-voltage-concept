@@ -19,7 +19,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const V_CE_SAT = 0.2;
@@ -146,7 +146,7 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.5'}
+      figure={figure}
       title="Load-line analysis"
       question="A linear resistor and a non-linear transistor share the same current. Where do they meet?"
       caption={

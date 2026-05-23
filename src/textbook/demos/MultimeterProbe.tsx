@@ -160,7 +160,7 @@ function eqI(a: TPId, b: TPId): number {
 
 /* ── Formatting helpers ─────────────────────────────────────────────── */
 /* ── Component ──────────────────────────────────────────────────────── */
-export function MultimeterProbeDemo({ figure }: { figure?: string }) {
+export function MultimeterProbeDemo({ figure }: { figure: string }) {
   // Test-point positions (CSS px). Computed once relative to canvas size.
   // We use a virtual layout and project at draw time.
   // Logical coordinates 0..1 in x and y.
@@ -508,7 +508,7 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.7'}
+      figure={figure}
       title="What the multimeter actually reads"
       question="Drag the red and black probes between TPs. Switch modes. The display tracks."
       caption={

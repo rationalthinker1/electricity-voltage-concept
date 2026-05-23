@@ -18,7 +18,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function ImpedanceDemo({ figure }: Props) {
@@ -106,7 +106,7 @@ export function ImpedanceDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.5'}
+      figure={figure}
       title="Impedance — Ohm's law in the complex plane"
       question="Slide ω. Where do the three vectors point — and why does their sum lean?"
       caption={

@@ -21,7 +21,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function PowerFactorDemo({ figure }: Props) {
@@ -170,7 +170,7 @@ export function PowerFactorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.5b'}
+      figure={figure}
       title="Power factor — the average of v·i for an R+L load"
       question="Crank L up. The shaded area under p(t) — the energy actually delivered — shrinks."
       caption={

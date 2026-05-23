@@ -25,7 +25,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const F_OUT = 60; // fundamental output, Hz
@@ -206,7 +206,7 @@ export function PWMInverterOutputDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 24.9'}
+      figure={figure}
       title="PWM carrier vs filter difficulty"
       question="Push the carrier from 1 kHz to 50 kHz. Where do the harmonics go — and what does that do to the filter?"
       caption={

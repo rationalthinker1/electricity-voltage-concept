@@ -17,7 +17,7 @@ import { useSimState } from '@/lib/useSimState';
 import { fmtRatio } from '@/lib/formatters';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 type CurveColorKey = 'accent' | 'tungsten' | 'teal' | 'blue' | 'pink';
@@ -194,7 +194,7 @@ export function RvsTemperatureDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.4'}
+      figure={figure}
       title="R is not constant"
       question="How does each material's resistance change with temperature?"
       caption={

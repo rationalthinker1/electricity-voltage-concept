@@ -34,7 +34,7 @@ import { project, v3, type Point2D, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // ─── core geometry (world units) ────────────────────────────────────────────
@@ -536,7 +536,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 23.X'}
+      figure={figure}
       title="Shell-form transformer in 3D — the flux path and what escapes it"
       question="Where does the flux actually go, and how much of it never makes it from one coil to the other?"
       caption={

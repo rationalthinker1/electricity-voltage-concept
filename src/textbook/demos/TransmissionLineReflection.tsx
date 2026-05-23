@@ -27,7 +27,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const Z0 = 50; // Ω
@@ -132,7 +132,7 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.11'}
+      figure={figure}
       title="Transmission-line reflection"
       question="A 50 Ω cable into a mismatched load. Where does the pulse go?"
       caption={

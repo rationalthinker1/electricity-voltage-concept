@@ -38,7 +38,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function WheatstoneBridgeDemo({ figure }: Props) {
@@ -223,7 +223,7 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 13.3'}
+      figure={figure}
       title="The Wheatstone bridge — balance by inspection"
       question="Drag R_x. The galvanometer crosses zero when R_x R₁ = R₂ R₃."
       caption={

@@ -19,7 +19,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const V_SUP = 10; // ±10 V rails
@@ -133,7 +133,7 @@ export function OpAmpInvertingDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.9'}
+      figure={figure}
       title="Inverting op-amp"
       question="V_out = −(R_f/R_in)·V_in. Push V_in past the limit and the rails clip."
       caption={

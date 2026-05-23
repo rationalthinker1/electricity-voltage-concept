@@ -1,5 +1,5 @@
 /**
- * Chapter 18 — Transformers
+ * Chapter 23 — Transformers
  *
  * Two coils, one core, a different voltage on the other side. The direct
  * application of Faraday's law that built the 20th-century electric power

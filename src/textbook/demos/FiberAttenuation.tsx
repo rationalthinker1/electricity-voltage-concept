@@ -22,7 +22,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 /** Approximate silica fiber attenuation in dB/km vs wavelength λ (nm).
@@ -144,7 +144,7 @@ export function FiberAttenuationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 42.2'}
+      figure={figure}
       title="Silica fiber attenuation across the telecom bands"
       question="Why is 1550 nm the dominant long-haul wavelength?"
       caption={

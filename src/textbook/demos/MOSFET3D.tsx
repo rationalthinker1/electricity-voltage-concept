@@ -33,7 +33,7 @@ import { createOrbitScene } from '@/lib/useOrbitScene';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const V_T = 0.7; // V — threshold voltage (problem brief default)
@@ -579,7 +579,7 @@ export function MOSFET3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 14.5b'}
+      figure={figure}
       title="Inside the MOSFET — the inversion layer in 3D"
       question="Where, physically, does the channel of the MOSFET sit — and what makes it appear?"
       caption={

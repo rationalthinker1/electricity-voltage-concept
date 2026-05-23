@@ -24,7 +24,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const X_S = 1.0; // pu synchronous reactance
@@ -205,7 +205,7 @@ export function ExcitationControlDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 21.6'}
+      figure={figure}
       title="Excitation control: how a generator chooses VARs"
       question="Field current sets terminal voltage at no load — and reactive power at a stiff bus. Why the V?"
       caption={

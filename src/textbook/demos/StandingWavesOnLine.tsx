@@ -22,7 +22,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const Z0 = 50;
@@ -131,7 +131,7 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.12'}
+      figure={figure}
       title="Standing waves on a mismatched line"
       question="Mismatch the load and the line's voltage envelope is no longer flat."
       caption={

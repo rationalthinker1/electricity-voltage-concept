@@ -21,7 +21,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // 6-step BLDC commutation table. Each entry: which of phases A/B/C is
@@ -217,7 +217,7 @@ export function BLDCCommutationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 20.2'}
+      figure={figure}
       title="Brushless DC — electronic commutation"
       question="No brushes, no commutator. What replaces them?"
       caption={

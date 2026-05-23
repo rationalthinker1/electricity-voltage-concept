@@ -21,7 +21,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const N_ELECTRONS = 120;
@@ -175,7 +175,7 @@ export function DriftVelocityDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 2.2'}
+      figure={figure}
       title="The astonishing slowness of drift"
       question="If 1 amp is 6×10¹⁸ electrons per second, how fast is each one going?"
       caption={

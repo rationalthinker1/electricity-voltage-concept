@@ -29,7 +29,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function WireFromRestDemo({ figure }: Props) {
@@ -183,7 +183,7 @@ export function WireFromRestDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 11.1'}
+      figure={figure}
       title="The wire from the lab frame"
       question="A wire carries current. A test charge sits next to it, motionless. Does it feel a force?"
       caption={

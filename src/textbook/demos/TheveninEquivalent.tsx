@@ -27,7 +27,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function TheveninEquivalentDemo({ figure }: Props) {
@@ -117,7 +117,7 @@ export function TheveninEquivalentDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.6'}
+      figure={figure}
       title="Thévenin equivalent of a two-source network"
       question="The two circuits load the same R_L. Do they ever disagree?"
       caption={

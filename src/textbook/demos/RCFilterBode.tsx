@@ -21,7 +21,7 @@ import { fmtFreqShort } from '@/lib/formatters';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 type Mode = 'low' | 'high';
@@ -189,7 +189,7 @@ export function RCFilterBodeDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.7'}
+      figure={figure}
       title="RC filter — magnitude and phase Bode plots"
       question="Cross the cutoff and the slope hits −20 dB/decade. Why exactly that?"
       caption={

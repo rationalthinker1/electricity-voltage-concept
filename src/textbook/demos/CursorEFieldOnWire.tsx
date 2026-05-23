@@ -19,7 +19,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface Electron {
@@ -370,7 +370,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 2.5'}
+      figure={figure}
       title="Your cursor is a charge"
       question="Hover the canvas — your cursor is a small point charge. What happens to the electrons in the wire? Does the wire's surface change?"
       caption={

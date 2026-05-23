@@ -24,7 +24,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // One unit of charge on the plate = 1 nC, just to keep numbers friendly.
@@ -165,7 +165,7 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 5.4'}
+      figure={figure}
       title="Why each charge is harder than the last"
       question="What does the (N+1)ᵗʰ charge actually push against?"
       caption={

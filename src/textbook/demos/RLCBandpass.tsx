@@ -26,7 +26,7 @@ import { fmtFreqShort } from '@/lib/formatters';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function RLCBandpassDemo({ figure }: Props) {
@@ -150,7 +150,7 @@ export function RLCBandpassDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.8'}
+      figure={figure}
       title="Series RLC band-pass"
       question="A bell-curve in frequency space. Make it sharper by lowering R."
       caption={

@@ -17,7 +17,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function SnellsLawDemo({ figure }: Props) {
@@ -100,7 +100,7 @@ export function SnellsLawDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.1'}
+      figure={figure}
       title="Snell's law — a ray bends at an interface"
       question="When does total internal reflection take over?"
       caption={

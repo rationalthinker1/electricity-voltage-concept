@@ -15,7 +15,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 type MetricKey = 'energy_kg' | 'energy_L' | 'cycles' | 'cost' | 'self_discharge' | 'V_cell';
@@ -165,7 +165,7 @@ export function ChemistryComparisonDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 26.3'}
+      figure={figure}
       title="The Li-ion chemistry tree"
       question="LFP, NMC, NCA — what's the actual trade-off?"
       caption={

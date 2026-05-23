@@ -24,7 +24,7 @@ import { drawLabel } from "@/lib/canvasLayout";
 type WaveKind = 'square' | 'sine' | 'triangle';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const V_SUP = 8; // ±8 V output rail
@@ -146,7 +146,7 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.10'}
+      figure={figure}
       title="Op-amp integrator — square in, triangle out"
       question="Replace R_f with a C. The amplifier integrates."
       caption={

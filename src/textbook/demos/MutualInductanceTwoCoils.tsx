@@ -22,7 +22,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const L1 = 1e-3; // 1 mH for both coils
@@ -74,7 +74,7 @@ export function MutualInductanceTwoCoilsDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 22.1'}
+      figure={figure}
       title="Mutual inductance between two coils"
       question="How much of coil 1's flux actually reaches coil 2?"
       caption={

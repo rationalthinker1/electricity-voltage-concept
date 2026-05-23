@@ -17,7 +17,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const VP_PEAK = 170; // 170 V peak ≈ 120 V_rms
@@ -104,7 +104,7 @@ export function TurnsRatioDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 23.2'}
+      figure={figure}
       title="Turns ratio sets the voltage scale"
       question="One knob. The secondary scales. The frequency and phase don't."
       caption={

@@ -31,7 +31,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 interface EddyCtx {
@@ -322,7 +322,7 @@ export function EddyCurrentTubeDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 7.x'}
+      figure={figure}
       title="The magnet that won't fall — eddy currents in a copper tube"
       question="Why does a neodymium magnet take seconds to fall through a copper pipe it could free-fall through in a third of a second?"
       caption={

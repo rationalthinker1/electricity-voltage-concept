@@ -3,8 +3,8 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from '@tanstack/react-router';
 
 interface DemoProps {
-  /** Optional figure number, e.g. "Fig. 1.3" */
-  figure?: string;
+  /** Figure number, e.g. "Fig. 1.3" */
+  figure: string;
   /** Title shown in the demo card header */
   title: string;
   /** One-line caption — what the reader should look for */
@@ -54,7 +54,7 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
       className="bg-bg-card border-border-strong rounded-3 mt-6 overflow-hidden border [contain-intrinsic-size:620px] [content-visibility:auto]"
     >
       <div className="gap-lg py-lg px-xl border-border bg-bg-elevated flex flex-wrap items-baseline border-b">
-        <span className="eyebrow-accent text-1 tracking-4">{figure ?? 'Fig.'}</span>
+        <span className="eyebrow-accent text-1 tracking-4">{figure}</span>
         <span className="font-1 text-5 text-text flex-1 font-medium">{title}</span>
         {deeperLab && (
           <Link
@@ -150,7 +150,7 @@ export function MiniToggle({ label, checked, onChange }: MiniToggleProps) {
   return (
     <button
       type="button"
-      className={`mini-toggle${checked ? ' on' : ''}`}
+      className={`mini-toggle${checked ? 'on' : ''}`}
       onClick={() => onChange(!checked)}
       aria-pressed={checked}
     >
@@ -194,29 +194,33 @@ interface EquationStripProps {
  * Auto-stacks when the two equations would otherwise be squeezed: the grid
  * uses `auto-fit` with a minimum column width, so columns collapse to one
  * line whenever the strip can't comfortably fit both side by side.
- * Each cell has `min-w-0` and lets its inner equation scroll horizontally
- * if a single equation is wider than its cell, so the strip never blows
- * out the parent card. A container query on the strip itself paints a
+ * Each cell has `min-w-0` and lets long inline KaTeX wrap onto a second
+ * visual line before clipping, so the strip does not sprout a horizontal
+ * scrollbar for normal substitution equations. A container query paints a
  * vertical divider between the two equations only while they're sitting
  * side by side; once they stack, the divider disappears so it doesn't
  * read as a stray horizontal-row decoration.
  */
 export function EquationStrip({ leftLabel, left, rightLabel, right }: EquationStripProps) {
   return (
-    <div className="@container min-h-4xl py-md px-xl bg-bg-elevated border-border gap-md sm:gap-xl grid grid-cols-[repeat(auto-fit,minmax(min(100%,22rem),1fr))] border-t">
-      <div className="min-w-0 text-center">
+    <div className="py-lg px-xl bg-bg-elevated border-border gap-lg sm:gap-xl @container grid min-h-[6.75rem] grid-cols-[repeat(auto-fit,minmax(min(100%,22rem),1fr))] border-t">
+      <div className="flex min-w-0 flex-col justify-center text-center">
         {leftLabel && (
           <div className="font-3 text-1 text-text-muted tracking-3 mb-1 uppercase">{leftLabel}</div>
         )}
-        <div className="text-3 min-h-3xl overflow-x-auto">{left}</div>
+        <div className="equation-strip-math text-3 min-h-[3.75rem] overflow-hidden leading-5">
+          {left}
+        </div>
       </div>
-      <div className="min-w-0 text-center @[44rem]:border-border-strong @[44rem]:pl-xl @[44rem]:border-l">
+      <div className="@[44rem]:border-border-strong @[44rem]:pl-xl flex min-w-0 flex-col justify-center text-center @[44rem]:border-l">
         {rightLabel && (
           <div className="font-3 text-1 text-text-muted tracking-3 mb-1 uppercase">
             {rightLabel}
           </div>
         )}
-        <div className="text-3 min-h-3xl overflow-x-auto">{right}</div>
+        <div className="equation-strip-math text-3 min-h-[3.75rem] overflow-hidden leading-5">
+          {right}
+        </div>
       </div>
     </div>
   );

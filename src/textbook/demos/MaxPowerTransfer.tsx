@@ -30,7 +30,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function MaxPowerTransferDemo({ figure }: Props) {
@@ -166,7 +166,7 @@ export function MaxPowerTransferDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 13.6'}
+      figure={figure}
       title="Maximum power transfer — match, don't over-match"
       question="P_L peaks at R_L = R_S. Efficiency at that peak is exactly 50%."
       caption={

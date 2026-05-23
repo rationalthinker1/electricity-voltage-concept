@@ -19,7 +19,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function FriisLinkBudgetDemo({ figure }: Props) {
@@ -111,7 +111,7 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 19.4'}
+      figure={figure}
       title="Friis transmission — a link budget"
       question="How much signal arrives at the far end?"
       caption={

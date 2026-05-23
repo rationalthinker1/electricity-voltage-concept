@@ -37,7 +37,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function KirchhoffsLawsDemo({ figure }: Props) {
@@ -316,7 +316,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 12.1'}
+      figure={figure}
       title="Kirchhoff's two laws on a two-loop network"
       question="Toggle KCL / KVL — every equation balances, every time."
       caption={

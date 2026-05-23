@@ -16,7 +16,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function FiberOpticDemo({ figure }: Props) {
@@ -141,7 +141,7 @@ export function FiberOpticDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.5'}
+      figure={figure}
       title="A fiber-optic strand traps light"
       question="What's the maximum angle the input ray can make to the axis?"
       caption={

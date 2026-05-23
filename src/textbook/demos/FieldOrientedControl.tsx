@@ -22,7 +22,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const F_ELEC = 50; // Hz — electrical frequency of the rotor
@@ -175,7 +175,7 @@ export function FieldOrientedControlDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 20.8'}
+      figure={figure}
       title="Field-oriented control: 3-phase becomes 2-axis"
       question="How does an EV inverter turn three messy AC stator currents into clean torque and flux knobs?"
       caption={

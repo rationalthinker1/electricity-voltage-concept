@@ -22,7 +22,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const TAU3 = (2 * Math.PI) / 3;
@@ -145,7 +145,7 @@ export function AlternatorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 21.3'}
+      figure={figure}
       title="The car alternator — AC, then a six-diode bridge"
       question="A car needs DC at 14 V. What's between the engine pulley and the battery?"
       caption={

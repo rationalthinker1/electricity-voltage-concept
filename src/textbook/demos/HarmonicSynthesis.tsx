@@ -22,7 +22,7 @@ interface Coeff {
 }
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 /** Return the analytic Fourier series coefficients (amplitudes of sin(nωt))
@@ -182,7 +182,7 @@ export function HarmonicSynthesisDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 15.1'}
+      figure={figure}
       title="Fourier synthesis — build a wave from sines"
       question="How many harmonics does it take to look like a square wave?"
       caption={

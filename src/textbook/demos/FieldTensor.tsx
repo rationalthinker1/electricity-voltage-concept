@@ -30,7 +30,7 @@ import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 type StartMode = 'Ex' | 'Ey' | 'mixed';
@@ -151,7 +151,7 @@ export function FieldTensorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 11.4'}
+      figure={figure}
       title="One tensor, six components"
       question="What's the relationship between E and B? They're entries in the same matrix."
       caption={

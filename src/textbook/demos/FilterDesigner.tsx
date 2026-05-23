@@ -58,7 +58,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 type Topology = 'rc-lp' | 'lc-lp' | 'rc-hp' | 'notch' | 'mfb-bp';
@@ -437,7 +437,7 @@ export function FilterDesignerDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.3'}
+      figure={figure}
       title="Filter designer — kill the 60 Hz hum"
       question="A 1 kHz tone is buried under 60 Hz mains hum. Pick a topology and component values that pass the tone and reject the hum."
       caption={

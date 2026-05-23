@@ -40,7 +40,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 /* ───── Geometry constants ──────────────────────────────────────────── */
@@ -194,7 +194,7 @@ export function PointCharge3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 1.3'}
+      figure={figure}
       title="A point charge's field in three dimensions"
       question="Why does doubling r quarter the field — not halve it?"
       caption={

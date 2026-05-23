@@ -21,7 +21,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 const P_LOAD_W = 1e6; // 1 MW delivered to the town
@@ -148,7 +148,7 @@ export function StanleyDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 23.3'}
+      figure={figure}
       title="The Stanley argument — why high voltage wins long distance"
       question="Hold delivered power at 1 MW. Vary the line voltage. Watch the loss."
       caption={

@@ -36,7 +36,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 function solveMesh(V1: number, V2: number, R1: number, R2: number, R3: number) {
@@ -143,7 +143,7 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 13.1'}
+      figure={figure}
       title="Mesh-current analysis — two loops, one matrix"
       question="Pick mesh currents; the linear system writes itself."
       caption={

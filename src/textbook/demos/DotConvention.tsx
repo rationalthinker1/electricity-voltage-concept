@@ -21,7 +21,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function DotConventionDemo({ figure }: Props) {
@@ -102,7 +102,7 @@ export function DotConventionDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 22.3'}
+      figure={figure}
       title="The dot convention"
       question="Two coils carry currents — when does the mutual term add, and when does it subtract?"
       caption={

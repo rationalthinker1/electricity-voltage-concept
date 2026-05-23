@@ -20,7 +20,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function FiberLinkBudgetDemo({ figure }: Props) {
@@ -121,7 +121,7 @@ export function FiberLinkBudgetDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 42.3'}
+      figure={figure}
       title="The fiber-optic link budget, end to end"
       question="How far can a 1 mW laser drive a fiber before the receiver loses lock?"
       caption={

@@ -22,7 +22,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function CoreLossesDemo({ figure }: Props) {
@@ -187,7 +187,7 @@ export function CoreLossesDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 23.5'}
+      figure={figure}
       title="Core losses — why transformer cores are laminated"
       question="Solid iron or thin sheets? What changes?"
       caption={

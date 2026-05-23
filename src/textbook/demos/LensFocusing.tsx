@@ -22,7 +22,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function LensFocusingDemo({ figure }: Props) {
@@ -238,7 +238,7 @@ export function LensFocusingDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.8'}
+      figure={figure}
       title="Thin-lens focusing — 1/f = 1/d₀ + 1/dᵢ"
       question="Where does the image form, and how big is it?"
       caption={

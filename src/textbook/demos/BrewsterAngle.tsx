@@ -17,7 +17,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 export function BrewsterAngleDemo({ figure }: Props) {
@@ -132,7 +132,7 @@ export function BrewsterAngleDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 18.3'}
+      figure={figure}
       title="Brewster's angle — where R_p falls to zero"
       question="What's special about the angle where reflected light is fully polarised?"
       caption={

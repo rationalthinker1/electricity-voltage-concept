@@ -26,7 +26,7 @@ import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
-  figure?: string;
+  figure: string;
 }
 
 // Normalized: peak flux at steady state = 1.0; B_sat = 1.05 (just above peak).
@@ -170,7 +170,7 @@ export function InRushCurrentDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 23.8'}
+      figure={figure}
       title="Inrush current: switching at the wrong instant"
       question="Close the breaker at θ = 0° (voltage zero-crossing). Then try 90° (voltage peak). What does the flux do?"
       caption={
