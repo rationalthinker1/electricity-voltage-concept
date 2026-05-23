@@ -343,6 +343,39 @@ export const SOURCES: Record<string, Source> = {
     url: 'https://physics.nist.gov/cuu/Constants/',
     note: 'Canonical source for SI fundamental constants used in src/lib/physics.ts.',
   },
+  'phet-coulombs-law': {
+    id: 'phet-coulombs-law',
+    title: "PhET Interactive Simulation — Coulomb's Law",
+    author: 'University of Colorado Boulder (PhET Interactive Simulations)',
+    year: 2024,
+    url: 'https://phet.colorado.edu/en/simulations/coulombs-law',
+    note: 'Open, peer-reviewed teaching simulation. Live force readout F = kQ₁Q₂/r² for two point charges; used in the experimental Coulomb verification lab.',
+  },
+  'phet-charges-and-fields': {
+    id: 'phet-charges-and-fields',
+    title: 'PhET Interactive Simulation — Charges and Fields',
+    author: 'University of Colorado Boulder (PhET Interactive Simulations)',
+    year: 2024,
+    url: 'https://phet.colorado.edu/en/simulations/charges-and-fields',
+    note: 'Open simulation for placing point charges and reading off E-vectors, equipotentials, and field lines. Used in the field-mapping lab.',
+  },
+  'osp-tracker': {
+    id: 'osp-tracker',
+    title: 'Tracker — Video Analysis and Modeling Tool',
+    author: 'Douglas Brown / Open Source Physics',
+    year: 2024,
+    url: 'https://physlets.org/tracker/',
+    note: 'Free video-analysis software widely used in undergraduate physics labs to measure position from frame-by-frame coordinates.',
+  },
+  'itu-r-p2040': {
+    id: 'itu-r-p2040',
+    title: 'Effects of building materials and structures on radiowave propagation above about 100 MHz',
+    author: 'International Telecommunication Union, Radiocommunication Sector',
+    year: 2023,
+    venue: 'Recommendation ITU-R P.2040-3',
+    url: 'https://www.itu.int/rec/R-REC-P.2040/en',
+    note: 'Reference attenuation values for common building materials and metallic enclosures; used to anchor the foil-shielding lab results.',
+  },
 
   /* ─── New for Ch7–Ch11 ─── */
   'hertz-1888': {
