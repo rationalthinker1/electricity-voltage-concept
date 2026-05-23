@@ -15,7 +15,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -305,6 +306,12 @@ export function BuildAResistorDemo({ figure }: Props) {
           value={`±${(fam.tol * 100).toFixed(fam.tol < 0.01 ? 2 : 0)}%`}
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Resistance formula"
+        left={<InlineMath tex={`R = \\frac{\\rho L}{A}`} />}
+        rightLabel="With current settings"
+        right={<InlineMath tex={`\\frac{${fmtResistivity(fam.rho)} \\times ${Lmm.toFixed(0)}\\,\\text{mm}}{${Amm2.toFixed(3)}\\,\\text{mm}^2} = ${fmtResistance(R)}`} />}
+      />
     </Demo>
   );
 }

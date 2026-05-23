@@ -11,7 +11,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel, drawLabeledValue } from '@/lib/canvasLayout';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
@@ -247,6 +248,20 @@ export function VariableResistorsDemo({ figure }: Props) {
         />
         <MiniReadout label="R_LDR" value={<Num value={R_LDR} />} unit="Ω" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Potentiometer"
+        left={
+          <InlineMath
+            tex={`R_{AW} + R_{WB} = R_{\\text{total}}: ${(R_AW / 1000).toFixed(1)} + ${(R_WB / 1000).toFixed(1)} = ${(R_TOTAL / 1000).toFixed(0)}\\,\\text{k}\\Omega`}
+          />
+        }
+        rightLabel="LDR (power law)"
+        right={
+          <InlineMath
+            tex={`R = A \\cdot E^{-\\gamma} \\approx ${fmtResistance(R_LDR)}`}
+          />
+        }
+      />
     </Demo>
   );
 }

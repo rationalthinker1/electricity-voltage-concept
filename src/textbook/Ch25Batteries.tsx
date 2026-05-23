@@ -640,7 +640,7 @@ export default function Ch25Batteries() {
           <p className="mb-prose-2 last:mb-0">
             The starter battery in a gasoline car is six lead-acid cells in series. Each cell has Pb
             anode, PbO₂ cathode, and dilute sulphuric acid as electrolyte. The half-reaction story
-            is intricate (we'll do it in Chapter 19) but the cell voltage of{' '}
+            is intricate, but the cell voltage of{' '}
             <strong className="text-text font-medium">~2.10 V</strong> is set by the standard
             potentials of the Pb/PbSO₄ and PbO₂/PbSO₄ couples.
           </p>
@@ -803,7 +803,7 @@ export default function Ch25Batteries() {
             Yes — and many modern batteries do exactly that. The Li-ion graphite anode, for example,
             is not lithium metal; it is a carbon host into which Li⁺ ions slide between the graphite
             layers. The active species (lithium) participates in the reaction without ever being a
-            freestanding metal at the anode. Fuel cells (Ch. 19) use porous platinum-on-carbon
+            freestanding metal at the anode. Fuel cells (Ch. 26) use porous platinum-on-carbon
             electrodes where the platinum is just a catalyst — the actual half-reaction is H₂ → 2H⁺
             + 2e⁻ on the surface, with the platinum providing the kinetics. So &quot;metal
             anode&quot; is a useful first picture but not a fundamental requirement

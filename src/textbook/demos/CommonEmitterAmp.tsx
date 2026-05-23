@@ -20,7 +20,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from "@/lib/canvasLayout";
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -231,6 +232,12 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
         <MiniReadout label="g_m" value={<Num value={gm} />} unit="S" />
         <MiniReadout label="A_v" value={Av.toFixed(1)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Small-signal gain"
+        left={<InlineMath tex={`A_v = -g_m R_C = -\\frac{I_C}{V_T} R_C`} />}
+        rightLabel="At this Q-point"
+        right={<InlineMath tex={`A_v = -\\frac{${(Ic * 1000).toFixed(2)}\\,\\text{mA}}{25.85\\,\\text{mV}} \\times ${(R_C / 1000).toFixed(1)}\\,\\text{k}\\Omega = ${Av.toFixed(0)}`} />}
+      />
     </Demo>
   );
 }

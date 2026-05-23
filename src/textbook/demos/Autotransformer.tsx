@@ -16,7 +16,8 @@
 import { useMemo, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from "@/lib/canvasLayout";
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -334,6 +335,12 @@ export function AutotransformerDemo({ figure }: Props) {
           unit="%"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Voltage ratio"
+        left={<InlineMath tex={`V_s = k \\cdot V_p = ${k.toFixed(2)} \\times ${Vp.toFixed(0)} = ${computed.Vs.toFixed(1)}\\,\\text{V}`} />}
+        rightLabel="Copper saving vs two-winding"
+        right={<InlineMath tex={`\\text{saving} = k = ${(computed.copperSaving * 100).toFixed(1)}\\%`} />}
+      />
     </Demo>
   );
 }

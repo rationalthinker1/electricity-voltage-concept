@@ -657,7 +657,7 @@ export default function Ch24RectifiersAndInverters() {
             <p className="mb-prose-1 last:mb-0">
               <strong className="text-text font-medium">7.2 V at 1.5 A in / 5 A out</strong>. The
               current step-up is exactly the inverse of the voltage step-down — same 36 W on both
-              sides, identical in structure to the transformer power balance from Ch.19. The buck is
+              sides, identical in structure to the transformer power balance from Ch.23. The buck is
               a "DC transformer" with continuously-adjustable ratio
               <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
             </p>

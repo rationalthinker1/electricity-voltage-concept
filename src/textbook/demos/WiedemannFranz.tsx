@@ -13,7 +13,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -171,6 +172,20 @@ export function WiedemannFranzDemo({ figure }: Props) {
         <MiniReadout label="L = κ/(σT)" value={<Num value={L} />} unit="W·Ω·K⁻²" />
         <MiniReadout label="L / L₀" value={(L / L0).toFixed(3)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Wiedemann–Franz"
+        left={
+          <InlineMath
+            tex={`L = \\kappa / (\\sigma T) \\approx L_0 = 2.44 \\times 10^{-8}\\,\\text{W}\\cdot\\Omega\\cdot\\text{K}^{-2}`}
+          />
+        }
+        rightLabel={`${m.name} at 295 K`}
+        right={
+          <InlineMath
+            tex={`\\frac{${m.kappa.toFixed(0)}}{${(m.sigma / 1e7).toFixed(2)} \\times 10^7 \\times 295} = ${(L * 1e8).toFixed(2)} \\times 10^{-8}`}
+          />
+        }
+      />
     </Demo>
   );
 }

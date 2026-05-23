@@ -16,7 +16,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -210,6 +211,12 @@ export function BandStructureDemo({ figure }: Props) {
         <MiniReadout label="occ." value={<Num value={occ} />} />
         <MiniReadout label="label" value={label} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Boltzmann occupancy"
+        left={<InlineMath tex={`\\frac{n}{N_C} \\approx \\exp\\!\\left(\\frac{-E_g}{2kT}\\right)`} />}
+        rightLabel={`${label} at ${T.toFixed(0)} K`}
+        right={<InlineMath tex={`\\exp\\!\\left(\\frac{-${Eg.toFixed(2)}}{2 \\times ${kT_meV.toFixed(1)}\\,\\text{meV}}\\right) \\approx ${occ.toExponential(2)}`} />}
+      />
     </Demo>
   );
 }

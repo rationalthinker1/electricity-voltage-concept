@@ -21,7 +21,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -218,6 +219,12 @@ export function BoostConverterDemo({ figure }: Props) {
         />
         <MiniReadout label="η (typ.)" value={<Num value={ETA * 100} digits={0} />} unit="%" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Boost conversion"
+        left={<InlineMath tex={`V_{\\text{out}} = \\dfrac{V_{\\text{in}}}{1 - D}`} />}
+        rightLabel="At current settings"
+        right={<InlineMath tex={`\\dfrac{${Vin.toFixed(1)}}{1 - ${(duty * 100).toFixed(0)}\\%} = ${computed.Vout.toFixed(2)}\\,\\text{V}`} />}
+      />
     </Demo>
   );
 }

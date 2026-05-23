@@ -10,7 +10,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow } from '@/lib/canvasPrimitives';
@@ -226,6 +227,12 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
         <MiniReadout label="E inside" value={<Num value={E_inside} digits={2} />} unit="V/m" />
         <MiniReadout label="C" value={<Num value={C_eff} digits={2} />} unit="F" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Field inside dielectric"
+        left={<InlineMath tex={`E = \\frac{V}{\\varepsilon_r d}`} />}
+        rightLabel="Capacitance with dielectric"
+        right={<InlineMath tex={`C = \\varepsilon_0 \\varepsilon_r \\frac{A}{d} = ${(C_eff * 1e12).toFixed(2)}\\,\\text{pF}`} />}
+      />
     </Demo>
   );
 }

@@ -10,7 +10,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -186,6 +187,16 @@ export function VoltageAsHeightDemo({ figure }: Props) {
         />
         <MiniReadout label="Energy gained per coulomb" value={energyJ.toFixed(2)} unit="J" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Voltage as energy per charge"
+        left={<InlineMath tex="W = q\,\Delta V" />}
+        rightLabel="Live values"
+        right={
+          <InlineMath
+            tex={`W = (1\\,\\text{C})(${voltage.toFixed(1)}\\,\\text{V}) = ${energyJ.toFixed(2)}\\,\\text{J}`}
+          />
+        }
+      />
     </Demo>
   );
 }

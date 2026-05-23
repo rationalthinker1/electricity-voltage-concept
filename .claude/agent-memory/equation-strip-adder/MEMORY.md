@@ -1,0 +1,2 @@
+- [Chapters 1–3 equation-strip audit](project_ch1_ch3_audit.md) — audit of Ch1/Ch2/Ch3 demos; 20 already had strips, 1 edited, 4 exempt
+- [Chapters 4–8 equation-strip audit](project_ch4_ch8_audit.md) — audit of Ch4–Ch8 demos; 25 already had strips, 5 edited (all Ch4), 2 exempt

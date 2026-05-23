@@ -16,7 +16,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -236,6 +237,12 @@ export function BridgeRectifierDemo({ figure }: Props) {
         <MiniReadout label="V_ripple" value={<Num value={sim.vRipple} />} unit="V pp" />
         <MiniReadout label="f_ripple" value="120" unit="Hz" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Rectified peak"
+        left={<InlineMath tex={`V_{\\text{DC}} \\approx V_p - 2V_F = ${Vp.toFixed(0)} - ${(2 * V_F).toFixed(1)} = ${(Vp - 2 * V_F).toFixed(1)}\\,\\text{V}`} />}
+        rightLabel="Ripple (cap smoothed)"
+        right={<InlineMath tex={`V_{\\text{ripple}} \\approx \\frac{V_{\\text{DC}}}{2fRC} = ${sim.vRipple.toFixed(2)}\\,\\text{V}`} />}
+      />
     </Demo>
   );
 }

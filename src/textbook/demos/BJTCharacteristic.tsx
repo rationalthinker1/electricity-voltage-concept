@@ -14,7 +14,8 @@
 import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawAxes, drawLinePlot, drawVLine, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -190,6 +191,12 @@ export function BJTCharacteristicDemo({ figure }: Props) {
         <MiniReadout label="I_C" value={<Num value={I_C_op} />} unit="A" />
         <MiniReadout label="β·I_B" value={<Num value={beta * I_B_pick} />} unit="A" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Active-region model"
+        left={<InlineMath tex={`I_C \\approx \\beta I_B`} />}
+        rightLabel="At this operating point"
+        right={<InlineMath tex={`I_C = ${beta.toFixed(0)} \\times ${(I_B_pick * 1e6).toFixed(0)}\\,\\mu\\text{A} = ${(I_C_op * 1000).toFixed(2)}\\,\\text{mA}`} />}
+      />
     </Demo>
   );
 }

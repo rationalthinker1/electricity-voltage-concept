@@ -9,7 +9,8 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawAxes, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { getCanvasColors } from '@/lib/canvasTheme';
@@ -197,6 +198,12 @@ export function CellDischargeDemo({ figure }: Props) {
         <MiniReadout label="V_term" value={<Num value={V_term} digits={2} />} unit="V" />
         <MiniReadout label="I" value={<Num value={I} digits={3} />} unit="A" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Terminal voltage under load"
+        left={<InlineMath tex={`V_{\\text{term}} = \\frac{V_{\\text{OC}} \\cdot R_L}{R_{\\text{int}} + R_L}`} />}
+        rightLabel="At this operating point"
+        right={<InlineMath tex={`\\frac{${V_OC.toFixed(2)} \\times ${R_L.toFixed(1)}}{${R_int.toFixed(2)} + ${R_L.toFixed(1)}} = ${V_term.toFixed(2)}\\,\\text{V}`} />}
+      />
     </Demo>
   );
 }

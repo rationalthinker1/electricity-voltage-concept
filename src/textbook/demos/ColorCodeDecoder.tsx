@@ -7,7 +7,8 @@
  */
 import { useState } from 'react';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { fmtResistance, fmtTolerance } from '@/lib/formatters';
 
 interface Props {
@@ -121,6 +122,25 @@ export function ColorCodeDecoderDemo({ figure }: Props) {
           value={`${fmtResistance(nominal * (1 - tol))} – ${fmtResistance(nominal * (1 + tol))}`}
         />
       </DemoControls>
+
+      <EquationStrip
+        leftLabel="Decoding rule"
+        left={
+          <InlineMath
+            tex={
+              mode === 4
+                ? `R = (d_1 \\cdot 10 + d_2) \\times 10^m \\,\\Omega`
+                : `R = (d_1 \\cdot 100 + d_2 \\cdot 10 + d_3) \\times 10^m \\,\\Omega`
+            }
+          />
+        }
+        rightLabel="At current bands"
+        right={
+          <InlineMath
+            tex={`${fmtResistance(nominal)} \\;\\pm\\; ${(tol * 100).toFixed(tol < 0.01 ? 2 : 0)}\\%`}
+          />
+        }
+      />
 
       <div className="cc-band-pickers" style={{ display: 'grid', gap: 10, padding: '10px 14px' }}>
         <BandRow label="Band 1 (digit)" value={b1} options={DIGIT_COLOURS} onChange={setB1} />

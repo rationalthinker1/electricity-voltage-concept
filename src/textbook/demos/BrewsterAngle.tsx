@@ -11,7 +11,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -158,6 +159,12 @@ export function BrewsterAngleDemo({ figure }: Props) {
         />
         <MiniReadout label="θ_B" value={brewsterDeg.toFixed(2)} unit="°" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Brewster's angle"
+        left={<InlineMath tex={`\\theta_B = \\arctan\\!\\left(\\frac{n_2}{n_1}\\right)`} />}
+        rightLabel="At this operating point"
+        right={<InlineMath tex={`\\arctan\\!\\left(\\frac{${n2.toFixed(2)}}{${n1.toFixed(1)}}\\right) = ${brewsterDeg.toFixed(2)}°`} />}
+      />
     </Demo>
   );
 }
