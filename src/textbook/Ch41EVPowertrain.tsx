@@ -999,8 +999,8 @@ export default function Ch41EVPowertrain() {
       </p>
       <Formula tex="1\ \text{kWh} = 3.6 \times 10^{6}\ \text{J} = 3.6\ \text{MJ}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">kWh</strong> is one kilowatt-hour (a
-        kilowatt held for an hour), <strong className="text-text font-medium">J</strong> is one
+        where <InlineMath tex="\text{kWh}" /> is one kilowatt-hour (a
+        kilowatt held for an hour), <InlineMath tex="\text{J}" /> is one
         joule (one watt-second), and the factor{' '}
         <InlineMath tex="3.6 \times 10^{6}" /> comes from 1000 W × 3600 s.
         The unit is large enough that household bills land in two- and three-digit ranges instead of

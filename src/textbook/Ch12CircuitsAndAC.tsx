@@ -359,7 +359,7 @@ export default function Ch12CircuitsAndAC() {
         question={
           <>
             A capacitor charges through a resistor toward a fixed supply voltage. After exactly one
-            time-constant <em className="text-text italic">τ = RC</em>, it has reached roughly what
+            time-constant <InlineMath tex="\tau = RC" />, it has reached roughly what
             fraction of its final voltage?
           </>
         }
@@ -682,7 +682,7 @@ export default function Ch12CircuitsAndAC() {
             <>
               <strong className="text-text font-medium">impedance</strong> — the complex
               generalisation of resistance for sinusoidal signals:{' '}
-              <em className="text-text italic">Z = R + jX</em>. Real part dissipates (resistance);
+              <InlineMath tex="Z = R + jX" />. Real part dissipates (resistance);
               imaginary part stores and returns energy (reactance). SI unit: ohm.
             </>
           }
@@ -994,7 +994,7 @@ export default function Ch12CircuitsAndAC() {
         question={
           <>
             A factory draws <strong className="text-text font-medium">1000 VA</strong> at a power
-            factor of <em className="text-text italic">cos(φ)</em> = 0.7. What is the real power
+            factor of <InlineMath tex="\cos(\varphi)" /> = 0.7. What is the real power
             delivered, and how much reactive power is sloshing in and out?
           </>
         }
@@ -1022,7 +1022,7 @@ export default function Ch12CircuitsAndAC() {
               <strong className="text-text font-medium">three-phase</strong> — a power-distribution
               scheme with three sinusoidal voltages of equal amplitude, 120° apart in phase. A
               balanced load needs no neutral return; three conductors carry{' '}
-              <em className="text-text italic">√3 ≈ 1.73×</em> the power of a single-phase pair of
+              <InlineMath tex="\sqrt{3} \approx 1.73\times" /> the power of a single-phase pair of
               equal weight, and a three-phase motor sees an automatically-rotating magnetic field.
             </>
           }

@@ -180,10 +180,10 @@ export function TransformerDesignerDemo({ figure }: Props) {
   }[envelope];
 
   const envelopeColor = {
-    optimal: '#6cc5c2',
-    approaching: '#ffcc55',
-    saturated: '#ff3b6e',
-    'too-few-turns': '#ffcc55',
+    optimal: getCanvasColors().teal,
+    approaching: getCanvasColors().yellow,
+    saturated: getCanvasColors().pink,
+    'too-few-turns': getCanvasColors().yellow,
   }[envelope];
 
   // State the canvas needs.
@@ -314,7 +314,7 @@ export function TransformerDesignerDemo({ figure }: Props) {
           value={
             <span
               style={{
-                color: saturating ? '#ff3b6e' : envelope === 'approaching' ? '#ffcc55' : '#ecebe5',
+                color: saturating ? getCanvasColors().pink : envelope === 'approaching' ? getCanvasColors().yellow : getCanvasColors().text,
               }}
             >
               {B_max < 0.01 ? B_max.toExponential(2) : B_max.toFixed(2)}
@@ -328,7 +328,7 @@ export function TransformerDesignerDemo({ figure }: Props) {
         <MiniReadout
           label="η = P_out / P_in"
           value={
-            <span style={{ color: eta > 0.95 ? '#6cc5c2' : eta > 0.85 ? '#ffcc55' : '#ff3b6e' }}>
+            <span style={{ color: eta > 0.95 ? getCanvasColors().teal : eta > 0.85 ? getCanvasColors().yellow : getCanvasColors().pink }}>
               {(eta * 100).toFixed(1)}
             </span>
           }
@@ -370,8 +370,8 @@ function drawECore(
   const limb = coreW * 0.16;
 
   // Iron tint base.
-  ctx.fillStyle = 'rgba(60,60,68,0.55)';
-  ctx.strokeStyle = saturating ? colors.pink : 'rgba(220,220,220,0.35)';
+  ctx.fillStyle = withAlpha(colors.overlay, 0.55);
+  ctx.strokeStyle = saturating ? colors.pink : withAlpha(colors.text, 0.35);
   ctx.lineWidth = saturating ? 3 : 1.4;
 
   // Outer rectangle.
@@ -468,8 +468,8 @@ function drawToroid(
 
   // Annular ring (iron).
   ctx.save();
-  ctx.fillStyle = 'rgba(60,60,68,0.55)';
-  ctx.strokeStyle = saturating ? colors.pink : 'rgba(220,220,220,0.35)';
+  ctx.fillStyle = withAlpha(colors.overlay, 0.55);
+  ctx.strokeStyle = saturating ? colors.pink : withAlpha(colors.text, 0.35);
   ctx.lineWidth = saturating ? 3 : 1.4;
   ctx.beginPath();
   ctx.arc(cx, cy, Router, 0, Math.PI * 2);

@@ -57,7 +57,7 @@ export default function Ch1WhatIsElectricity() {
       </p>
       <p className="mb-prose-3">
         This chapter is about the bottom layer: what charge actually is, why it produces a force
-        that drops off as the inverse square of distance, and why physicists in the 19th century
+        that drops off as the inverse-square of distance, and why physicists in the 19th century
         stopped thinking about that force as a ghostly attraction and started thinking about it as a{' '}
         <em className="text-text italic">field</em> — a property of empty space itself. Voltage and
         current and resistance all live one floor up. We'll get there. First the floor.
@@ -167,8 +167,8 @@ export default function Ch1WhatIsElectricity() {
           def={
             <>
               <strong className="text-text font-medium">Coulomb's law</strong> — the force between
-              two point charges falls off as the inverse square of their separation:{' '}
-              <em className="text-text italic">F = k Q₁Q₂/r²</em>. Like signs repel, unlike attract.
+              two point charges falls off as the inverse-square of their separation:{' '}
+              <InlineMath tex="F = kQ_1Q_2/r^{2}" />. Like signs repel, unlike attract.
             </>
           }
         >

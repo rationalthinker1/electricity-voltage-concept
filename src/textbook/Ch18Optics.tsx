@@ -409,8 +409,7 @@ export default function Ch18Optics() {
       <BrewsterAngleDemo />
 
       <p className="mb-prose-3">
-        At Brewster's angle the reflected ray is completely <em className="text-text italic">s</em>
-        -polarised: an unpolarised beam (sun, light bulb, sky) splits into a fully-polarised
+        At Brewster's angle the reflected ray is completely <InlineMath tex="s" />-polarised: an unpolarised beam (sun, light bulb, sky) splits into a fully-polarised
         reflection and a partially polarised transmission. This is why{' '}
         <em className="text-text italic">polaroid sunglasses</em> work — their absorption axis is
         set vertical, so they kill the horizontal-electric-field reflection from wet roads, lake

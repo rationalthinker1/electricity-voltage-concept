@@ -694,7 +694,7 @@ export default function Ch4HowAResistorWorks() {
             bead of sintered nickel-manganese-cobalt oxide; at 25 °C it has a nominal resistance
             around 10 kΩ, with a temperature coefficient steep enough that R drops to ~680 Ω by 100
             °C. Plug it into the Steinhart–Hart equation
-            <em className="text-text italic"> 1/T = A + B·ln(R) + C·(ln R)³ </em>and you recover T
+            <InlineMath tex="1/T = A + B\ln R + C(\ln R)^3" /> and you recover T
             to within a kelvin or so
             <Cite id="steinhart-hart-1968" in={SOURCES} />.
           </p>

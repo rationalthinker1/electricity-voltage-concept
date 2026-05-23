@@ -1,0 +1,1 @@
+- [Math typesetter chapter patterns](feedback_chapter_patterns.md) — where math wraps actually appear vs where they do not

@@ -191,7 +191,7 @@ export default function Ch8EnergyFlow() {
             <>
               <strong className="text-text font-medium">Poynting vector</strong> — the local
               electromagnetic energy-flux density,{' '}
-              <em className="text-text italic">S = (1/μ₀) E × B</em>. SI units W/m². Points in the
+              <InlineMath tex="S = (1/\mu_0)\,E \times B" />. SI units W/m². Points in the
               direction electromagnetic energy is flowing.
             </>
           }
@@ -397,9 +397,9 @@ export default function Ch8EnergyFlow() {
             </p>
             <Formula tex="|S|_{\\text{surf}} = \\dfrac{V I}{2\\pi a L}" />
             <p className="mb-prose-1 last:mb-0">
-              Plugging in: <em className="text-text italic">2π a L</em> = 2π × (10⁻³ m) × (1 m) ≈
+              Plugging in: <InlineMath tex="2\pi a L" /> = 2π × (10⁻³ m) × (1 m) ≈
               6.283×10⁻³ m². Then
-              <em className="text-text italic"> V I</em> = 12 × 5 = 60 W, so
+              <InlineMath tex="VI" /> = 12 × 5 = 60 W, so
             </p>
             <Formula tex="|S|_{\\text{surf}} = 60 / 6.283\\times 10^{-3} \\approx 9.55\\times 10^{3}\\ \\text{W/m}^2" />
             <p className="mb-prose-1 last:mb-0">
@@ -437,7 +437,7 @@ export default function Ch8EnergyFlow() {
             </p>
             <Formula tex="\\oint \\vec{S}\\cdot d\\vec{A} = |S|_{\\text{surf}} \\cdot 2\\pi a L = [V I / (2\\pi a L)] \\cdot (2\\pi a L) = V I" />
             <p className="mb-prose-1 last:mb-0">
-              Numerically, <em className="text-text italic">9.55×10³ × 6.283×10⁻³</em> ={' '}
+              Numerically, <InlineMath tex="9.55\times10^3 \times 6.283\times10^{-3}" /> ={' '}
               <strong className="text-text font-medium">60 W</strong> — identical to{' '}
               <InlineMath tex="VI" /> = 12 × 5 = 60 W. The 2π a L on top cancels
               the 2π a L on bottom; the geometry drops out completely. This is not coincidence — it
@@ -1083,7 +1083,7 @@ export default function Ch8EnergyFlow() {
                 <>
                   <strong className="text-text font-medium">energy density</strong> — energy stored
                   per unit volume in the electromagnetic field,{' '}
-                  <em className="text-text italic">u = ½ε₀E² + B²/(2μ₀)</em>. SI units J/m³.
+                  <InlineMath tex="u = \tfrac{1}{2}\varepsilon_0 E^2 + B^2/(2\mu_0)" />. SI units J/m³.
                   Integrate over a region to get total field energy.
                 </>
               }

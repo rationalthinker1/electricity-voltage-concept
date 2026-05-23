@@ -92,16 +92,16 @@ export default function Ch19Antennas() {
       </p>
       <p className="mb-prose-3">
         Three features of that formula are worth pausing on. The{' '}
-        <em className="text-text italic">a²</em> says everything: a charge moving at constant
+        <InlineMath tex="a^2" /> says everything: a charge moving at constant
         velocity does not radiate (uniform translation is just a Lorentz boost of a Coulomb field),
         but the moment it accelerates, the field has to "kink" to propagate the news outward and
-        that kink carries away a flux proportional to <em className="text-text italic">|a|²</em>.
-        The <em className="text-text italic">q²</em> is the same square-of-source you see in every
+        that kink carries away a flux proportional to <InlineMath tex="|a|^2" />.
+        The <InlineMath tex="q^2" /> is the same square-of-source you see in every
         two-step radiation argument — the field scales as q, the intensity as |field|². The factor
-        of <em className="text-text italic">1/c³</em> is the smoking gun for non-relativistic
+        of <InlineMath tex="1/c^3" /> is the smoking gun for non-relativistic
         radiation: two powers of c come from the retarded transverse-field amplitude (which scales
         as a/c²), and another power emerges when Poynting flux{' '}
-        <em className="text-text italic">εcE²</em> is integrated over the radiation sphere; the net
+        <InlineMath tex="\varepsilon c E^2" /> is integrated over the radiation sphere; the net
         result is that radiation is an intrinsically feeble effect at speeds well below c
         <Cite id="jackson-1999" in={SOURCES} />
         <Cite id="griffiths-2017" in={SOURCES} />. That is why an electron in a steady

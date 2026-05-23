@@ -998,7 +998,7 @@ function TracePanel({ traces }: { traces: Traces }) {
         series={traces}
         channel="soc"
         label="SOC (%)"
-        color="#ffcc55"
+        color={getCanvasColors().yellow}
         scale={100}
         fixedMin={0}
         fixedMax={100}
@@ -1066,7 +1066,7 @@ function TraceCanvas({
         ctx.textAlign = 'left';
         ctx.fillText(label, 6, 14);
         ctx.textAlign = 'right';
-        ctx.fillStyle = '#3a3935';
+        ctx.fillStyle = getCanvasColors().textMuted;
         ctx.fillText('— no data —', w - 6, 14);
         raf = requestAnimationFrame(draw);
         return;

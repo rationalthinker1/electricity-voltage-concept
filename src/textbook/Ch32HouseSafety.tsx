@@ -1216,7 +1216,7 @@ export default function Ch32HouseSafety() {
           <p>
             No — they protect against different things. A GFCI protects people against ground-fault
             shock by tripping at 5 mA imbalance; a regular thermal-magnetic breaker protects wiring
-            against overload and short-circuit by tripping at 1.5× to many times rated current. A
+            against overload and short circuit by tripping at 1.5× to many times rated current. A
             GFCI breaker contains both functions in one device (GFCI sensing plus a conventional
             thermal-magnetic trip) so it can replace a regular breaker — but a GFCI receptacle by
             itself protects only against ground faults and still relies on the upstream breaker for

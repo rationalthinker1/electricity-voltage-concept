@@ -529,7 +529,7 @@ export function drawBulb(
   const brightness = Math.max(0, Math.min(1, options.brightness ?? 0));
   const colors = getCanvasColors();
   const baseColor = options.color ?? colors.textDim;
-  const glowColor = options.glowColor ?? '#ffcc55';
+  const glowColor = options.glowColor ?? colors.yellow;
 
   ctx.save();
   if (brightness > 0) {

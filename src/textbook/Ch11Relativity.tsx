@@ -150,7 +150,7 @@ export default function Ch11Relativity() {
           The wire is no longer electrically neutral.
         </strong>{' '}
         It carries a net charge per unit length
-        <em className="text-text italic"> λ'</em>, and the (now-stationary) test charge sees a
+        <InlineMath tex="\lambda'" />, and the (now-stationary) test charge sees a
         perfectly ordinary electric force from a charged line:{' '}
         <InlineMath>F = q · λ' / (2π ε₀ d)</InlineMath>.
       </p>
@@ -416,7 +416,7 @@ export default function Ch11Relativity() {
             <Formula>L = L₀/γ = 1 m / 1.1547 ≈ 0.866 m</Formula>
             <p className="mb-prose-1 last:mb-0">
               The contracted length is <strong className="text-text font-medium">≈ 0.866 m</strong>{' '}
-              — about <em className="text-text italic">√(1 − 0.25)</em>. Transverse dimensions are
+              — about <InlineMath tex="\sqrt{1 - 0.25}" />. Transverse dimensions are
               unchanged
               <Cite id="einstein-1905" in={SOURCES} />
               <Cite id="purcell-morin-2013" in={SOURCES} />.

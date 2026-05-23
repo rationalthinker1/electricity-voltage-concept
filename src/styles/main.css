@@ -22,6 +22,8 @@
   --teal-soft: rgba(108,197,194,.18);
   --pink: #ff3b6e;
   --blue: #5baef8;
+  --yellow: #ffcc55;
+  --overlay: #3c3c44;
   --border: rgba(255,255,255,.07);
   --border-strong: rgba(255,255,255,.14);
   --nav-bg-start: rgba(10,10,11,.92);
@@ -173,6 +175,8 @@
   --teal-soft: rgba(37,125,122,.14);
   --pink: #c92754;
   --blue: #236fb5;
+  --yellow: #c9a017;
+  --overlay: #d8d5cd;
   --border: rgba(23,21,17,.10);
   --border-strong: rgba(23,21,17,.18);
   --nav-bg-start: rgba(247,245,239,.94);
@@ -203,6 +207,8 @@
   --color-teal-soft: var(--teal-soft);
   --color-pink: var(--pink);
   --color-blue: var(--blue);
+  --color-yellow: var(--yellow);
+  --color-overlay: var(--overlay);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
   --color-canvas-bg: var(--canvas-bg);

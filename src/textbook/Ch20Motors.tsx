@@ -670,7 +670,7 @@ export default function Ch20Motors() {
         rotor into many fine teeth and pulse the phases, and you have a stepper, where position is
         the integral of pulse count. Same underlying physics —{' '}
         <InlineMath tex="\tau = NIAB \sin\theta" /> — six different ways to keep that{' '}
-        <em className="text-text italic">sin</em> from going the wrong way.
+        <InlineMath tex="\sin" /> from going the wrong way.
       </p>
       <p className="mb-prose-3">
         Next chapter: spin one of these machines mechanically instead of electrically, and you get a

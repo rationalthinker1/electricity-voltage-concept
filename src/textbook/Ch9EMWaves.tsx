@@ -335,7 +335,7 @@ export default function Ch9EMWaves() {
             <>
               <strong className="text-text font-medium">frequency</strong> (f) — the number of full
               oscillations per second, in hertz (1 Hz = 1 cycle/s). Related to wavelength by{' '}
-              <em className="text-text italic">λ f = v</em>.
+              <InlineMath tex="\lambda f = v" />.
             </>
           }
         >
@@ -726,7 +726,7 @@ export default function Ch9EMWaves() {
             moments of H₂O molecules back and forth against viscous friction with their neighbours.
             The complex permittivity
             <InlineMath> εᵣ = ε' − i ε''</InlineMath> has a broad{' '}
-            <em className="text-text italic">ε''</em> peak in the GHz band, and the power absorbed
+            <InlineMath tex="\varepsilon''" /> peak in the GHz band, and the power absorbed
             per unit volume is <InlineMath>P = ω ε₀ ε'' |E|²</InlineMath>
             <Cite id="griffiths-2017" in={SOURCES} />. That formula is energy conservation: the
             Poynting flux into the food equals the rate at which the dipoles do work against

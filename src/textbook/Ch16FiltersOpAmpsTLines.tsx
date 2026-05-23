@@ -566,8 +566,8 @@ export default function Ch16FiltersOpAmpsTLines() {
                 complex ratio of reflected to incident voltage at a transmission-line termination:{' '}
                 <InlineMath tex="\Gamma = (Z_L - Z_0)/(Z_L + Z_0)" />
                 . <InlineMath tex="\Gamma = 0" /> for matched,{' '}
-                <em className="text-text italic">+1</em> for an open,{' '}
-                <em className="text-text italic">−1</em> for a short.
+                <InlineMath tex="+1" /> for an open,{' '}
+                <InlineMath tex="-1" /> for a short.
               </>
             }
           >

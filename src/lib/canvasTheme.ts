@@ -29,6 +29,8 @@ export interface ThemeColors {
   tealSoft: string;
   pink: string;
   blue: string;
+  yellow: string;
+  overlay: string;
   border: string;
   borderStrong: string;
   canvasBg: string;
@@ -57,6 +59,8 @@ export function getCanvasColors(): ThemeColors {
     tealSoft: get('--color-teal-soft', 'rgba(108,197,194,.18)'),
     pink: get('--color-pink', '#ff3b6e'),
     blue: get('--color-blue', '#5baef8'),
+    yellow: get('--color-yellow', '#ffcc55'),
+    overlay: get('--color-overlay', '#3c3c44'),
     border: get('--color-border', 'rgba(255,255,255,.07)'),
     borderStrong: get('--color-border-strong', 'rgba(255,255,255,.14)'),
     canvasBg: get('--color-canvas-bg', '#0d0d10'),

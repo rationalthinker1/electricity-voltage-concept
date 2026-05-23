@@ -157,7 +157,7 @@ export default function Ch15FourierHarmonics() {
         These integrals look intimidating until you recognise them as{' '}
         <em className="text-text italic">dot products</em>. In ordinary 3D, the x-component of a
         vector <InlineMath tex="v" /> is{' '}
-        <em className="text-text italic">v · x̂</em> — the dot product with the unit vector along x.
+        <InlineMath tex="v \cdot \hat{x}" /> — the dot product with the unit vector along x.
         The integral
         <InlineMath tex="\int f(t) \cos(n\omega_0 t)\, dt" /> is the same construction, just applied
         in an infinite-dimensional space whose &ldquo;axes&rdquo; are the basis functions{' '}
@@ -1002,7 +1002,7 @@ export default function Ch15FourierHarmonics() {
             Yes — the Fourier <em className="text-text italic">transform</em> handles non-periodic
             signals. The trade-off is that the spectrum becomes continuous instead of discrete:
             instead of one amplitude per integer harmonic, you get an amplitude density
-            <em className="text-text italic"> X(ω)</em> defined for all real ω, and synthesis is by
+            <InlineMath tex="X(\omega)" /> defined for all real ω, and synthesis is by
             integral instead of sum. For most practical engineering signals (a single audio waveform
             of finite length, a one-shot pulse) this is exactly the right tool. For periodic signals
             (a sustained tone, an AC line voltage) the series is more natural

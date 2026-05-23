@@ -70,16 +70,12 @@ export default function Ch17Materials() {
           def={
             <>
               <strong className="text-text font-medium">permittivity</strong> — the proportionality
-              between electric displacement and field, <em className="text-text italic">D = εE</em>.
-              Vacuum value <em className="text-text italic">ε₀</em> ≈ 8.854×10⁻¹² F/m; absolute
+              between electric displacement and field, <InlineMath tex="D = \varepsilon E" />.
+              Vacuum value <InlineMath tex="\varepsilon_0" /> ≈ 8.854×10⁻¹² F/m; absolute
               permittivity{' '}
-              <em className="text-text italic">
-                ε = ε₀ε<sub>r</sub>
-              </em>
+              <InlineMath tex="\varepsilon = \varepsilon_0 \varepsilon_r" />
               , with{' '}
-              <em className="text-text italic">
-                ε<sub>r</sub>
-              </em>{' '}
+              <InlineMath tex="\varepsilon_r" />{' '}
               the dimensionless relative permittivity (dielectric constant).
             </>
           }
@@ -92,16 +88,12 @@ export default function Ch17Materials() {
             <>
               <strong className="text-text font-medium">permeability</strong> — the proportionality
               between magnetic field and auxiliary field,{' '}
-              <em className="text-text italic">B = μH</em>. Vacuum value{' '}
-              <em className="text-text italic">μ₀ = 4π×10⁻⁷ H/m</em> (CODATA, post-2019
+              <InlineMath tex="B = \mu H" />. Vacuum value{' '}
+              <InlineMath tex="\mu_0 = 4\pi\times 10^{-7}\,\text{H/m}" /> (CODATA, post-2019
               redefinition); absolute permeability{' '}
-              <em className="text-text italic">
-                μ = μ₀μ<sub>r</sub>
-              </em>
+              <InlineMath tex="\mu = \mu_0 \mu_r" />
               , with{' '}
-              <em className="text-text italic">
-                μ<sub>r</sub>
-              </em>{' '}
+              <InlineMath tex="\mu_r" />{' '}
               the dimensionless relative permeability.
             </>
           }
@@ -247,11 +239,11 @@ export default function Ch17Materials() {
       <p className="mb-prose-3">
         Drag the block to rotate it. At{' '}
         <InlineMath tex="E_{\text{ext}} = 0" />{' '}
-        the dipoles tumble isotropically — the mean of <em className="text-text italic">cos θ</em>{' '}
+        the dipoles tumble isotropically — the mean of <InlineMath tex="\cos\theta" />{' '}
         over the population is zero, and so is the bulk{' '}
         <InlineMath tex="P" />. Crank up the field and the
         deterministic torque begins to outrun the thermal kick; the equilibrium alignment is the
-        Langevin function <em className="text-text italic">L(pE/kT) = coth(pE/kT) − kT/pE</em>,
+        Langevin function <InlineMath tex="L(pE/kT) = \coth(pE/kT) - kT/pE" />,
         linear at small drive and saturating to 1 at large drive
         <Cite id="langevin-1905" in={SOURCES} />
         <Cite id="griffiths-2017" in={SOURCES} />. Raise the temperature and the same field buys you
@@ -395,12 +387,12 @@ export default function Ch17Materials() {
             def={
               <>
                 <strong className="text-text font-medium">Langevin function</strong> — the function{' '}
-                <em className="text-text italic">L(x) = coth(x) − 1/x</em>, which gives the mean
-                alignment <em className="text-text italic">⟨cos θ⟩</em> of independent classical
+                <InlineMath tex="L(x) = \coth(x) - 1/x" />, which gives the mean
+                alignment <InlineMath tex="\langle\cos\theta\rangle" /> of independent classical
                 dipoles in a field at thermal equilibrium with{' '}
-                <em className="text-text italic">x = pE/kT</em> (or{' '}
-                <em className="text-text italic">μB/kT</em>). Linear in{' '}
-                <em className="text-text italic">x</em> at low field, saturating to 1 at high field.
+                <InlineMath tex="x = pE/kT" /> (or{' '}
+                <InlineMath tex="\mu B/kT" />). Linear in{' '}
+                <InlineMath tex="x" /> at low field, saturating to 1 at high field.
               </>
             }
           >
@@ -469,11 +461,9 @@ export default function Ch17Materials() {
               <>
                 <strong className="text-text font-medium">diamagnetism</strong> — the universal,
                 feeble negative magnetic response of any material due to Lenz's-law currents induced
-                in atomic electron orbits when <em className="text-text italic">B</em> is applied.{' '}
-                <em className="text-text italic">
-                  χ<sub>m</sub>
-                </em>{' '}
-                on the order of <em className="text-text italic">−10⁻⁵</em>; present in every
+                in atomic electron orbits when <InlineMath tex="B" /> is applied.{' '}
+                <InlineMath tex="\chi_m" />{' '}
+                on the order of <InlineMath tex="-10^{-5}" />; present in every
                 substance but masked by stronger para- or ferromagnetism if those exist.
               </>
             }
@@ -498,13 +488,11 @@ export default function Ch17Materials() {
               <>
                 <strong className="text-text font-medium">paramagnetism</strong> — weak positive
                 magnetic response from independent permanent atomic moments aligning with an applied{' '}
-                <em className="text-text italic">B</em> against thermal noise.{' '}
-                <em className="text-text italic">
-                  χ<sub>m</sub>
-                </em>{' '}
-                typically <em className="text-text italic">+10⁻⁵</em> to{' '}
-                <em className="text-text italic">+10⁻³</em>; follows Curie's law{' '}
-                <em className="text-text italic">χ ∝ 1/T</em> at room temperature.
+                <InlineMath tex="B" /> against thermal noise.{' '}
+                <InlineMath tex="\chi_m" />{' '}
+                typically <InlineMath tex="+10^{-5}" /> to{' '}
+                <InlineMath tex="+10^{-3}" />; follows Curie's law{' '}
+                <InlineMath tex="\chi \propto 1/T" /> at room temperature.
               </>
             }
           >
@@ -529,15 +517,11 @@ export default function Ch17Materials() {
               <>
                 <strong className="text-text font-medium">ferromagnetism</strong> — the strong
                 cooperative ordering of atomic spins below a Curie temperature{' '}
-                <em className="text-text italic">
-                  T<sub>C</sub>
-                </em>
+                <InlineMath tex="T_C" />
                 , driven by quantum-mechanical exchange coupling. Spontaneous magnetization, domain
                 structure, and{' '}
-                <em className="text-text italic">
-                  χ<sub>m</sub>
-                </em>{' '}
-                up to <em className="text-text italic">10⁶</em>. Iron, cobalt, nickel, gadolinium
+                <InlineMath tex="\chi_m" />{' '}
+                up to <InlineMath tex="10^6" />. Iron, cobalt, nickel, gadolinium
                 and their alloys.
               </>
             }
@@ -659,12 +643,12 @@ export default function Ch17Materials() {
             def={
               <>
                 <strong className="text-text font-medium">hysteresis loop</strong> — the closed{' '}
-                <em className="text-text italic">M</em>–<em className="text-text italic">H</em> (or{' '}
-                <em className="text-text italic">M</em>–<em className="text-text italic">B</em>)
+                <InlineMath tex="M" />–<InlineMath tex="H" /> (or{' '}
+                <InlineMath tex="M" />–<InlineMath tex="B" />)
                 curve traced by a ferromagnet as the applied field is cycled. The enclosed area
                 equals the energy dissipated per cycle per unit volume; remanence is the{' '}
-                <em className="text-text italic">M</em>-intercept and coercivity the{' '}
-                <em className="text-text italic">H</em>-intercept.
+                <InlineMath tex="M" />-intercept and coercivity the{' '}
+                <InlineMath tex="H" />-intercept.
               </>
             }
           >

@@ -735,7 +735,7 @@ export default function Ch3ResistanceAndPower() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             The bulb's central design irony is that it works by being terrible. Stefan–Boltzmann
-            radiation goes as <em className="text-text italic">T⁴</em>, but the fraction of that
+            radiation goes as <InlineMath tex="T^4" />, but the fraction of that
             radiation falling in the visible band is small at any temperature a metal can survive.
             Only about
             <strong className="text-text font-medium"> 10–15 lumens per watt</strong> emerges as
