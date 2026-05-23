@@ -87,7 +87,7 @@ export function LinearRegulatorDemo({ figure }: Props) {
       octx.textBaseline = 'middle';
       octx.fillText('LM7805', xReg + regW / 2, yTop + barH / 2 - 26);
       octx.font = '10px "DM Sans", sans-serif';
-      octx.fillStyle = regulating ? '#6cc5c2' : '#ff3b6e';
+      octx.fillStyle = regulating ? colors.teal : colors.pink;
       octx.fillText(
         regulating ? 'regulating' : 'in dropout',
         xReg + regW / 2,
@@ -111,7 +111,7 @@ export function LinearRegulatorDemo({ figure }: Props) {
           kind: 'arrow',
           from: { x: xIn + inW + 6, y: yTop + barH / 2 },
           to: { x: xReg - 4, y: yTop + barH / 2 },
-          color: '#ecebe5',
+          color: colors.text,
           lineWidth: 1.4,
           headLength: 6,
           headWidth: 4,
@@ -120,7 +120,7 @@ export function LinearRegulatorDemo({ figure }: Props) {
           kind: 'arrow',
           from: { x: xReg + regW + 4, y: yTop + barH / 2 },
           to: { x: xOut - 6, y: yTop + barH / 2 },
-          color: '#ecebe5',
+          color: colors.text,
           lineWidth: 1.4,
           headLength: 6,
           headWidth: 4,

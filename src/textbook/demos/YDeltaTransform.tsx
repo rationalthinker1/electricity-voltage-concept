@@ -27,7 +27,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -240,7 +240,7 @@ function drawTerminal(ctx: CanvasRenderingContext2D, p: { x: number; y: number }
     x: p.x,
     y: p.y - 8,
     text: label,
-    color: 'rgba(255,255,255,0.9)',
+    color: withAlpha(getCanvasColors().text, 0.9),
     size: 12,
     align: 'center',
     baseline: 'bottom',

@@ -341,22 +341,22 @@ export default function PotentialLab() {
         ctx,
         { x: st.q1.x * w, y: st.q1.y * h },
         {
-          color: '#ff3b6e',
+          color: getCanvasColors().pink,
           label: 'Q₁',
           radius: 12 + Math.min(8, Math.abs(st.q1NC) * 0.8),
           sign: st.q1NC >= 0 ? '+' : '−',
-          textColor: '#0a0a0b',
+          textColor: getCanvasColors().canvasBg,
         },
       );
       drawCharge(
         ctx,
         { x: st.q2.x * w, y: st.q2.y * h },
         {
-          color: '#5baef8',
+          color: getCanvasColors().blue,
           label: 'Q₂',
           radius: 12 + Math.min(8, Math.abs(st.q2NC) * 0.8),
           sign: st.q2NC >= 0 ? '+' : '−',
-          textColor: '#0a0a0b',
+          textColor: getCanvasColors().canvasBg,
         },
       );
 

@@ -11,7 +11,8 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { fmtResistance } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -108,7 +109,7 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
       ctx.moveTo(trX + trW, cy + 6);
       ctx.lineTo(ldX, cy + 6);
       ctx.stroke();
-      drawLabel(ctx, { text: `looking in: Z_p = ${formatZ(Zp)}`, x: (srcX + srcW + trX) / 2, y: cy - 16, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: `looking in: Z_p = ${fmtResistance(Zp)}`, x: (srcX + srcW + trX) / 2, y: cy - 16, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       drawLabel(ctx, { text: `secondary: Z_s = 8 Ω`, x: (trX + trW + ldX) / 2, y: cy - 16, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       const target = 5000;
       const ratioDiff = Math.abs(Math.log10(Math.max(Zp, 1) / target));
@@ -122,7 +123,7 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
             : Zp < target
               ? 'still too low for a tube plate'
               : 'now too high for a tube plate',
-        color: `rgba(108,197,194,${0.3 + 0.7 * match})`,
+        color: withAlpha(colors.teal, 0.3 + 0.7 * match),
         size: 9,
         baseline: 'top',
       });
@@ -186,7 +187,3 @@ function drawCoilCol(
   }
 }
 
-function formatZ(z: number): string {
-  if (z >= 1000) return (z / 1000).toFixed(2) + ' kΩ';
-  return z.toFixed(0) + ' Ω';
-}

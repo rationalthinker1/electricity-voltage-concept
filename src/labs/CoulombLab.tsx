@@ -20,6 +20,7 @@ import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
 import { drawArrow, drawCharge } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS, sciJsx, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
@@ -171,13 +172,13 @@ export default function CoulombLab() {
           ctx,
           { x: x1 + dir1x * 18, y: y1 + dir1y * 18 },
           { x: x1 + dir1x * arrowLen, y: y1 + dir1y * arrowLen },
-          { color: 'rgba(255,107,42,0.95)', lineWidth: 2 },
+          { color: withAlpha(colors.accent, 0.95), lineWidth: 2 },
         );
         drawArrow(
           ctx,
           { x: x2 + dir2x * 18, y: y2 + dir2y * 18 },
           { x: x2 + dir2x * arrowLen, y: y2 + dir2y * arrowLen },
-          { color: 'rgba(255,107,42,0.95)', lineWidth: 2 },
+          { color: withAlpha(colors.accent, 0.95), lineWidth: 2 },
         );
       }
 
@@ -196,22 +197,22 @@ export default function CoulombLab() {
         ctx,
         { x: x1, y: y1 },
         {
-          color: '#ff3b6e',
+          color: colors.pink,
           label: 'Q₁',
           radius: 12 + Math.min(10, Math.abs(q1nC) * 0.9),
           sign: q1nC >= 0 ? '+' : '−',
-          textColor: '#0a0a0b',
+          textColor: colors.canvasBg,
         },
       );
       drawCharge(
         ctx,
         { x: x2, y: y2 },
         {
-          color: '#5baef8',
+          color: colors.blue,
           label: 'Q₂',
           radius: 12 + Math.min(10, Math.abs(q2nC) * 0.9),
           sign: q2nC >= 0 ? '+' : '−',
-          textColor: '#0a0a0b',
+          textColor: colors.canvasBg,
         },
       );
 

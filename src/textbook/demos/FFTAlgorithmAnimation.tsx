@@ -148,7 +148,7 @@ export function FFTAlgorithmAnimationDemo() {
       }
       for (let s = 0; s <= stages; s++) {
         for (let i = 0; i < Nbf; i++) {
-          ctx.fillStyle = s === 0 || s === stages ? '#ff6b2a' : withAlpha(colors.text, 0.9);
+          ctx.fillStyle = s === 0 || s === stages ? colors.accent : withAlpha(colors.text, 0.9);
           ctx.beginPath();
           ctx.arc(nodes[s][i].x, nodes[s][i].y, 3.5, 0, 2 * Math.PI);
           ctx.fill();

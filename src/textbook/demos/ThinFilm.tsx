@@ -88,7 +88,7 @@ export function ThinFilmDemo({ figure }: Props) {
       ctx.fillStyle = withAlpha(colors.blue, 0.1);
       ctx.fillRect(stripLeft, sectionY, stripW, 40);
       const filmPxH = Math.max(6, Math.min(40, thickNm / 12));
-      ctx.fillStyle = 'rgba(255,255,255,0.18)';
+      ctx.fillStyle = withAlpha(colors.border, 0.18);
       ctx.fillRect(stripLeft, sectionY + 40, stripW, filmPxH);
       ctx.fillStyle = withAlpha(colors.teal, 0.18);
       ctx.fillRect(stripLeft, sectionY + 40 + filmPxH, stripW, sectionH - 40 - filmPxH);
@@ -104,7 +104,7 @@ export function ThinFilmDemo({ figure }: Props) {
       drawLabel(ctx, { text: `film · n=${n2.toFixed(2)}, t=${thickNm.toFixed(0)} nm`, x: stripLeft + 6, y: sectionY + 40 + filmPxH / 2 + 3, font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: `water · n=${n3.toFixed(2)}`, x: stripLeft + 6, y: sectionY + 40 + filmPxH + 18, font: '10px "JetBrains Mono", monospace' });
       const rx0 = stripLeft + 70;
-      ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+      ctx.strokeStyle = withAlpha(colors.border, 0.85);
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(rx0 - 18, sectionY + 8);

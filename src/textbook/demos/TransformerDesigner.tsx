@@ -136,8 +136,8 @@ export function TransformerDesignerDemo({ figure }: Props) {
   const sat_frac = Math.min(2.0, B_max / mat.B_sat); // ≥1 means over-sat
   // Visual flux-fill colour: amber→red as we approach and exceed B_sat.
   const fluxFill = saturating
-    ? `rgba(255, 59, 110, ${Math.min(0.85, 0.55 + (sat_frac - 1) * 0.4)})`
-    : `rgba(255, 107, 42, ${0.18 + Math.min(0.5, B_max / mat.B_sat) * 0.45})`;
+    ? withAlpha(getCanvasColors().pink, Math.min(0.85, 0.55 + (sat_frac - 1) * 0.4))
+    : withAlpha(getCanvasColors().accent, 0.18 + Math.min(0.5, B_max / mat.B_sat) * 0.45);
 
   // Primary inductance L_p = μ_0 · μ_r · N_p² · A / l_core.
   // I_mag (RMS) = V_p / (2π f L_p) — the no-load magnetising current.
@@ -198,9 +198,9 @@ export function TransformerDesignerDemo({ figure }: Props) {
       const cx = W / 2;
       const cy = H / 2;
       if (shape === 'e-core') {
-        drawECore(ctx, cx, cy, W, H, fluxFill, saturating, mat.color, Np, Ns);
+        drawECore(ctx, colors, cx, cy, W, H, fluxFill, saturating, mat.color, Np, Ns);
       } else {
-        drawToroid(ctx, cx, cy, W, H, fluxFill, saturating, mat.color, Np, Ns);
+        drawToroid(ctx, colors, cx, cy, W, H, fluxFill, saturating, mat.color, Np, Ns);
       }
       ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: mat.name.toUpperCase(), x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
@@ -347,6 +347,7 @@ export function TransformerDesignerDemo({ figure }: Props) {
 
 function drawECore(
   ctx: CanvasRenderingContext2D,
+  colors: import('@/lib/canvasTheme').ThemeColors,
   cx: number,
   cy: number,
   W: number,
@@ -370,7 +371,7 @@ function drawECore(
 
   // Iron tint base.
   ctx.fillStyle = 'rgba(60,60,68,0.55)';
-  ctx.strokeStyle = saturating ? '#ff3b6e' : 'rgba(220,220,220,0.35)';
+  ctx.strokeStyle = saturating ? colors.pink : 'rgba(220,220,220,0.35)';
   ctx.lineWidth = saturating ? 3 : 1.4;
 
   // Outer rectangle.
@@ -420,8 +421,8 @@ function drawECore(
   const rightLimbX = x0 + coreW - limb / 2;
 
   // Draw the two windings.
-  drawWindingTopDown(ctx, centerLimbX, cy, limb * 0.45, coreH * 0.65, Np, '#ff6b2a', 'PRIMARY');
-  drawWindingTopDown(ctx, rightLimbX, cy, limb * 0.45, coreH * 0.65, Ns, '#6cc5c2', 'SECONDARY');
+  drawWindingTopDown(ctx, centerLimbX, cy, limb * 0.45, coreH * 0.65, Np, colors.accent, 'PRIMARY');
+  drawWindingTopDown(ctx, rightLimbX, cy, limb * 0.45, coreH * 0.65, Ns, colors.teal, 'SECONDARY');
 
   // Tint ironTint slightly on the outer rim — pure visual cue for material.
   void ironTint;
@@ -439,7 +440,7 @@ function drawECore(
   ctx.moveTo(rightLimbX + limb * 0.45 + 6, loadY2);
   ctx.lineTo(loadX, loadY2);
   ctx.stroke();
-  drawResistorZigzag(ctx, loadX, loadY1, loadX, loadY2, '#6cc5c2');
+  drawResistorZigzag(ctx, loadX, loadY1, loadX, loadY2, colors.teal);
   drawLabel(ctx, {
     x: loadX + 14,
     y: cy,
@@ -451,6 +452,7 @@ function drawECore(
 
 function drawToroid(
   ctx: CanvasRenderingContext2D,
+  colors: import('@/lib/canvasTheme').ThemeColors,
   cx: number,
   cy: number,
   W: number,
@@ -467,7 +469,7 @@ function drawToroid(
   // Annular ring (iron).
   ctx.save();
   ctx.fillStyle = 'rgba(60,60,68,0.55)';
-  ctx.strokeStyle = saturating ? '#ff3b6e' : 'rgba(220,220,220,0.35)';
+  ctx.strokeStyle = saturating ? colors.pink : 'rgba(220,220,220,0.35)';
   ctx.lineWidth = saturating ? 3 : 1.4;
   ctx.beginPath();
   ctx.arc(cx, cy, Router, 0, Math.PI * 2);
@@ -501,7 +503,7 @@ function drawToroid(
     Math.PI * 0.6,
     Math.PI * 1.4,
     Np,
-    '#ff6b2a',
+    colors.accent,
     'PRIMARY',
     'left',
   );
@@ -514,7 +516,7 @@ function drawToroid(
     Math.PI * 1.6,
     Math.PI * 2.4,
     Ns,
-    '#6cc5c2',
+    colors.teal,
     'SECONDARY',
     'right',
   );
@@ -531,7 +533,7 @@ function drawToroid(
   ctx.moveTo(cx + Router * 1.05, loadY2);
   ctx.lineTo(loadX, loadY2);
   ctx.stroke();
-  drawResistorZigzag(ctx, loadX, loadY1, loadX, loadY2, '#6cc5c2');
+  drawResistorZigzag(ctx, loadX, loadY1, loadX, loadY2, colors.teal);
   drawLabel(ctx, {
     x: loadX + 14,
     y: cy,

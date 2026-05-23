@@ -179,22 +179,22 @@ export function EquipotentialsDemo({ figure }: Props) {
           ctx,
           { x: cx1, y: cy1 },
           {
-            color: '#ff3b6e',
+            color: colors.pink,
             label: 'Q₁',
             radius: CHARGE_RADIUS,
             sign: '+',
-            textColor: '#0a0a0b',
+            textColor: colors.canvasBg,
           },
         );
         drawCharge(
           ctx,
           { x: cx2, y: cy2 },
           {
-            color: isDipole ? '#5baef8' : '#ff3b6e',
+            color: isDipole ? colors.blue : colors.pink,
             label: 'Q₂',
             radius: CHARGE_RADIUS,
             sign: isDipole ? '−' : '+',
-            textColor: '#0a0a0b',
+            textColor: colors.canvasBg,
           },
         );
       }

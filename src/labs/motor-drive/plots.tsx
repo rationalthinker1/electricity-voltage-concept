@@ -76,9 +76,9 @@ export function PhaseScope({ trace }: PhaseScopeProps) {
     aMax *= 1.2;
 
     const phases: Array<{ key: keyof ScopeTrace; color: string }> = [
-      { key: 'ia', color: '#ff6b2a' },
-      { key: 'ib', color: '#5baef8' },
-      { key: 'ic', color: '#6cc5c2' },
+      { key: 'ia', color: getCanvasColors().accent },
+      { key: 'ib', color: getCanvasColors().blue },
+      { key: 'ic', color: getCanvasColors().teal },
     ];
     for (const ph of phases) {
       ctx.strokeStyle = ph.color;

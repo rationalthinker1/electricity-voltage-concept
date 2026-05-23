@@ -113,7 +113,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
           py = cyB - (s - 2 * cw - ch);
         }
         const a = 0.25 + intensity * 0.7;
-        ctx.fillStyle = `rgba(108,197,194,${a})`;
+        ctx.fillStyle = withAlpha(colors.teal, a);
         ctx.beginPath();
         ctx.arc(px, py, 2.6, 0, Math.PI * 2);
         ctx.fill();
@@ -177,7 +177,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       drawLabel(ctx, { text: `R = ${Rload.toFixed(0)} Ω`, x: loadX, y: loadY + 40, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: 'iron core · shared Φ(t)', x: (coreLeft + coreRight) / 2, y: coreTop - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       const isInt = Math.min(1, Math.abs(Is) / 8);
-      const isCol = `rgba(255,107,42,${0.3 + 0.7 * isInt})`;
+      const isCol = withAlpha(colors.accent, 0.3 + 0.7 * isInt);
       ctx.strokeStyle = isCol;
       ctx.lineWidth = 1.4;
       ctx.fillStyle = isCol;

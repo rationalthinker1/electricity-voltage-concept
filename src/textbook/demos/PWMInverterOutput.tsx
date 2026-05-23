@@ -20,6 +20,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { fmtFrequency } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -182,7 +183,7 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       drawLabel(ctx, {
         x: xC + 3,
         y: bot + 4,
-        text: `LC corner f_sw/10 = ${formatHz(fCorner)}`,
+        text: `LC corner f_sw/10 = ${fmtFrequency(fCorner)}`,
         color: colors.text,
         size: 9,
         baseline: 'top',
@@ -228,7 +229,7 @@ export function PWMInverterOutputDemo({ figure }: Props) {
           min={Math.log10(1000)}
           max={Math.log10(50000)}
           step={0.01}
-          format={(v) => formatHz(Math.pow(10, v))}
+          format={(v) => fmtFrequency(Math.pow(10, v))}
           onChange={(v) => setFSw(Math.pow(10, v))}
         />
         <MiniSlider
@@ -246,14 +247,9 @@ export function PWMInverterOutputDemo({ figure }: Props) {
           unit="V"
         />
         <MiniReadout label="V_out rms" value={<Num value={computed.Vrms} digits={1} />} unit="V" />
-        <MiniReadout label="first sidelobe" value={formatHz(computed.fSidelobe)} />
+        <MiniReadout label="first sidelobe" value={fmtFrequency(computed.fSidelobe)} />
       </DemoControls>
     </Demo>
   );
 }
 
-function formatHz(f: number): string {
-  if (f >= 1e6) return (f / 1e6).toFixed(2) + ' MHz';
-  if (f >= 1e3) return (f / 1e3).toFixed(f >= 1e4 ? 0 : 1) + ' kHz';
-  return f.toFixed(0) + ' Hz';
-}

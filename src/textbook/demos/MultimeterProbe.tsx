@@ -299,7 +299,7 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
     ];
     drawCircuit(octx, {
       elements,
-      defaultWireColor: 'rgba(255,255,255,0.55)',
+      defaultWireColor: withAlpha(getCanvasColors().text, 0.55),
       defaultWireWidth: 1.5,
     });
 
@@ -329,7 +329,7 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
   /* ── Drawing ─────────────────────────────────────────────────────── */
   const setup = useSimLoop(
     stateRef,
-    ({ ctx, w, h, dpr }, state, _dt, simTime) => {
+    ({ ctx, w, h, dpr, colors }, state, _dt, simTime) => {
       const { red, black } = state;
 
       // Background
@@ -360,8 +360,8 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
       const pRed = { x: tpRed.x * w, y: tpRed.y * h };
       const tpBlk = TPS.find((t) => t.id === black)!;
       const pBlk = { x: tpBlk.x * w, y: tpBlk.y * h };
-      drawProbe(ctx, pRed, '#ff3b6e', '+');
-      drawProbe(ctx, pBlk, '#5baef8', '−');
+      drawProbe(ctx, pRed, colors.pink, '+');
+      drawProbe(ctx, pBlk, colors.blue, '−');
 
       // Dynamic overlay: ribbon at the top echoing which TP each probe touches.
       ctx.fillStyle = getCanvasColors().pink;
@@ -637,7 +637,7 @@ function drawCurrentDotsPath(ctx: CanvasRenderingContext2D, t: number, pts: Pt[]
   const speed = 60;
   const offset = (t * speed) % spacing;
   const intensity = Math.max(0.15, Math.min(1, Iscale));
-  ctx.fillStyle = `rgba(91,174,248,${0.35 + 0.5 * intensity})`;
+  ctx.fillStyle = withAlpha(getCanvasColors().blue, 0.35 + 0.5 * intensity);
   for (let s = -spacing; s < total; s += spacing) {
     const d = s + offset;
     if (d < 0 || d > total) continue;

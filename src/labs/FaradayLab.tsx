@@ -21,6 +21,7 @@ import { TryIt } from '@/components/TryIt';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { pretty, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
+import { withAlpha } from '@/lib/canvasTheme';
 
 const SLUG = 'faraday';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -275,9 +276,9 @@ export default function FaradayLab() {
           });
         }
         drawGlowPath(ctx, tracePts, {
-          color: 'rgba(255,59,110,0.95)',
+          color: withAlpha(colors.pink, 0.95),
           lineWidth: 1.8,
-          glowColor: 'rgba(255,59,110,0.4)',
+          glowColor: withAlpha(colors.pink, 0.4),
           glowWidth: 7,
         });
       }

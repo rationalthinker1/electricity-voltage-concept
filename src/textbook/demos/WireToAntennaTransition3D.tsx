@@ -41,6 +41,7 @@ import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
+import { fmtFrequency } from '@/lib/formatters';
 
 interface Props {
   figure?: string;
@@ -118,12 +119,6 @@ function classifyRegime(LoverLambda: number): string {
   return 'Multi-lobe (L > λ)';
 }
 
-function formatHz(f: number): string {
-  if (f >= 1e9) return (f / 1e9).toFixed(2) + ' GHz';
-  if (f >= 1e6) return (f / 1e6).toFixed(1) + ' MHz';
-  if (f >= 1e3) return (f / 1e3).toFixed(2) + ' kHz';
-  return f.toFixed(1) + ' Hz';
-}
 
 interface SimCtx {
   scene: OrbitScene;
@@ -327,7 +322,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
 
       // Top-left readout overlay.
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: `f = ${formatHz(fHz)}`, x: 14, y: 14, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `f = ${fmtFrequency(fHz)}`, x: 14, y: 14, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = colors.teal;
       drawLabel(ctx, { text: `λ = ${lam >= 1 ? lam.toFixed(2) + ' m' : (lam * 100).toFixed(1) + ' cm'}`, x: 14, y: 30, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = withAlpha(colors.text, 0.78);

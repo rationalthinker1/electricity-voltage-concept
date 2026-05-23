@@ -65,7 +65,7 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       ctx.moveTo(lineX0, cy + 18);
       ctx.lineTo(lineX1, cy + 18);
       ctx.stroke();
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(lineX0 - 16, cy - 18);

@@ -84,7 +84,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
   }, [theta1Deg, n2, showReflected, showPlane, tirMode, computed]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas } = info;
+    const { ctx, w, h, canvas, colors } = info;
     const scene = createOrbitScene(canvas, {
       yaw: 0.55,
       pitch: 0.28,
@@ -98,7 +98,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
       const s = stateRef.current;
       const { theta1, theta2, totalReflection } = s.computed;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Geometry. We always anchor the ray geometry to a fixed convention:
@@ -132,7 +132,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
       // the interface plane (or above, if tirMode). It's deliberately
       // simple: an offset translucent quad parallel to the interface, plus
       // a few vertical posts to give depth.
-      drawMediumVolume(ctx, cam, w, h, flip, s.n2);
+      drawMediumVolume(ctx, colors, cam, w, h, flip, s.n2);
 
       // ─── 2. Plane of incidence (faint sheet, x-y plane) ───
       if (s.showPlane) {
@@ -143,13 +143,13 @@ export function SnellLaw3DDemo({ figure }: Props) {
           v3(-PLANE_HALF * 0.9, PLANE_HALF * 0.9, 0),
         ];
         const c2 = sheetCorners.map((p) => project(p, cam, w, h));
-        ctx.fillStyle = withAlpha(getCanvasColors().accent, 0.06);
+        ctx.fillStyle = withAlpha(colors.accent, 0.06);
         ctx.beginPath();
         ctx.moveTo(c2[0]!.x, c2[0]!.y);
         for (let i = 1; i < 4; i++) ctx.lineTo(c2[i]!.x, c2[i]!.y);
         ctx.closePath();
         ctx.fill();
-        ctx.strokeStyle = getCanvasColors().accentSoft;
+        ctx.strokeStyle = colors.accentSoft;
         ctx.setLineDash([5, 4]);
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -161,7 +161,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
       }
 
       // ─── 3. Interface plane (the surface, the x-z plane at y = 0) ───
-      drawInterfacePlane(ctx, cam, w, h);
+      drawInterfacePlane(ctx, colors, cam, w, h);
 
       // ─── 4. Normal line ───
       const nTopP = project(normalTop, cam, w, h);
@@ -177,14 +177,14 @@ export function SnellLaw3DDemo({ figure }: Props) {
       ctx.stroke();
       ctx.restore();
       // Label "n̂" near the top of the normal.
-      ctx.fillStyle = getCanvasColors().text;
+      ctx.fillStyle = colors.text;
       drawLabel(ctx, { text: 'n̂', x: nTopP.x + 6, y: nTopP.y - 2, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'middle' });
 
       // ─── 5. Angle arcs at the origin ───
       // Tiny 2D arcs drawn in screen space, on the side of each ray.
-      drawAngleArc(ctx, cam, w, h, 0.45, flip, theta1, 'theta1');
+      drawAngleArc(ctx, colors, cam, w, h, 0.45, flip, theta1, 'theta1');
       if (!totalReflection && theta2 != null) {
-        drawAngleArc(ctx, cam, w, h, 0.45, -flip, theta2, 'theta2');
+        drawAngleArc(ctx, colors, cam, w, h, 0.45, -flip, theta2, 'theta2');
       }
 
       // ─── 6. The rays themselves ───
@@ -192,8 +192,8 @@ export function SnellLaw3DDemo({ figure }: Props) {
       const inP1 = project(incidentStart, cam, w, h);
       const inP2 = project(O, cam, w, h);
       drawArrow3D(ctx, inP1, inP2, {
-        color: withAlpha(getCanvasColors().accent, 0.95),
-        glow: withAlpha(getCanvasColors().accent, 0.3),
+        color: withAlpha(colors.accent, 0.95),
+        glow: withAlpha(colors.accent, 0.3),
         width: 2.2,
         glowWidth: 8,
       });
@@ -203,8 +203,8 @@ export function SnellLaw3DDemo({ figure }: Props) {
         const refP1 = project(O, cam, w, h);
         const refP2 = project(reflectedEnd, cam, w, h);
         drawArrow3D(ctx, refP1, refP2, {
-          color: withAlpha(getCanvasColors().pink, 0.92),
-          glow: withAlpha(getCanvasColors().pink, 0.22),
+          color: withAlpha(colors.pink, 0.92),
+          glow: withAlpha(colors.pink, 0.22),
           width: 1.8,
           glowWidth: 6,
           dashed: totalReflection ? false : false,
@@ -216,8 +216,8 @@ export function SnellLaw3DDemo({ figure }: Props) {
         const trP1 = project(O, cam, w, h);
         const trP2 = project(refractedEnd, cam, w, h);
         drawArrow3D(ctx, trP1, trP2, {
-          color: withAlpha(getCanvasColors().teal, 0.95),
-          glow: withAlpha(getCanvasColors().teal, 0.25),
+          color: withAlpha(colors.teal, 0.95),
+          glow: withAlpha(colors.teal, 0.25),
           width: 2.0,
           glowWidth: 7,
         });
@@ -230,7 +230,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
           x: t2.x,
           y: t2.y,
           text: 'TIR — no transmitted ray',
-          color: getCanvasColors().accent,
+          color: colors.accent,
           size: 11,
           baseline: 'middle',
           weight: 'bold',
@@ -238,23 +238,23 @@ export function SnellLaw3DDemo({ figure }: Props) {
       }
 
       // ─── 7. Labels and legend ───
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: 'drag to orbit · look along z to see the 2D triangle', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       drawLabel(ctx, { text: 'incident', x: w - 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       if (s.showReflected) {
-        ctx.fillStyle = getCanvasColors().pink;
+        ctx.fillStyle = colors.pink;
         drawLabel(ctx, { text: 'reflected', x: w - 12, y: 28 });
       }
       if (refractedEnd) {
-        ctx.fillStyle = getCanvasColors().teal;
+        ctx.fillStyle = colors.teal;
         drawLabel(ctx, { text: 'refracted', x: w - 12, y: 44 });
       }
-      ctx.fillStyle = getCanvasColors().text;
+      ctx.fillStyle = colors.text;
       drawLabel(ctx, { text: 'normal', x: w - 12, y: refractedEnd ? 60 : s.showReflected ? 44 : 28 });
 
       // Medium labels in the corners of the interface.
-      ctx.fillStyle = getCanvasColors().text;
+      ctx.fillStyle = colors.text;
       const labelAbove = s.tirMode ? `n₁ = 1.00 (air)` : `n₁ = 1.00 (air)`;
       const labelBelow = `n₂ = ${s.n2.toFixed(2)}`;
       const aboveAnchor = project(v3(-PLANE_HALF * 0.85, 0.9, 0), cam, w, h);
@@ -393,7 +393,7 @@ function drawArrow3D(ctx: CanvasRenderingContext2D, p1: Point2D, p2: Point2D, op
  * Draw the interface (the surface) — a translucent square in the x-z plane
  * with a wireframe grid. Slightly tinted teal to read as "glass-ish".
  */
-function drawInterfacePlane(ctx: CanvasRenderingContext2D, cam: OrbitCamera, w: number, h: number) {
+function drawInterfacePlane(ctx: CanvasRenderingContext2D, colors: import('@/lib/canvasTheme').ThemeColors, cam: OrbitCamera, w: number, h: number) {
   const corners: Vec3[] = [
     v3(-PLANE_HALF, 0, -PLANE_HALF),
     v3(PLANE_HALF, 0, -PLANE_HALF),
@@ -401,14 +401,14 @@ function drawInterfacePlane(ctx: CanvasRenderingContext2D, cam: OrbitCamera, w: 
     v3(-PLANE_HALF, 0, PLANE_HALF),
   ];
   const c2 = corners.map((c) => project(c, cam, w, h));
-  ctx.fillStyle = withAlpha(getCanvasColors().teal, 0.07);
+  ctx.fillStyle = withAlpha(colors.teal, 0.07);
   ctx.beginPath();
   ctx.moveTo(c2[0]!.x, c2[0]!.y);
   for (let i = 1; i < 4; i++) ctx.lineTo(c2[i]!.x, c2[i]!.y);
   ctx.closePath();
   ctx.fill();
   // Border.
-  ctx.strokeStyle = getCanvasColors().teal;
+  ctx.strokeStyle = colors.teal;
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(c2[0]!.x, c2[0]!.y);
@@ -416,7 +416,7 @@ function drawInterfacePlane(ctx: CanvasRenderingContext2D, cam: OrbitCamera, w: 
   ctx.closePath();
   ctx.stroke();
   // Grid (every 0.6 units).
-  ctx.strokeStyle = getCanvasColors().tealSoft;
+  ctx.strokeStyle = colors.tealSoft;
   const step = 0.6;
   for (let g = -PLANE_HALF + step; g < PLANE_HALF - 1e-6; g += step) {
     const a = project(v3(g, 0, -PLANE_HALF), cam, w, h);
@@ -442,6 +442,7 @@ function drawInterfacePlane(ctx: CanvasRenderingContext2D, cam: OrbitCamera, w: 
  */
 function drawMediumVolume(
   ctx: CanvasRenderingContext2D,
+  colors: import('@/lib/canvasTheme').ThemeColors,
   cam: OrbitCamera,
   w: number,
   h: number,
@@ -459,13 +460,13 @@ function drawMediumVolume(
   const c2 = corners.map((c) => project(c, cam, w, h));
   // Tint scales gently with n2 — denser glass reads slightly more saturated.
   const alpha = 0.05 + Math.min(0.1, (n2 - 1.0) * 0.05);
-  ctx.fillStyle = `rgba(91,174,248,${alpha.toFixed(3)})`;
+  ctx.fillStyle = withAlpha(colors.blue, alpha);
   ctx.beginPath();
   ctx.moveTo(c2[0]!.x, c2[0]!.y);
   for (let i = 1; i < 4; i++) ctx.lineTo(c2[i]!.x, c2[i]!.y);
   ctx.closePath();
   ctx.fill();
-  ctx.strokeStyle = `rgba(91,174,248,${(0.18 + alpha * 1.5).toFixed(3)})`;
+  ctx.strokeStyle = withAlpha(colors.blue, 0.18 + alpha * 1.5);
   ctx.lineWidth = 1;
   ctx.setLineDash([3, 4]);
   ctx.beginPath();
@@ -498,6 +499,7 @@ function drawMediumVolume(
  */
 function drawAngleArc(
   ctx: CanvasRenderingContext2D,
+  colors: import('@/lib/canvasTheme').ThemeColors,
   cam: OrbitCamera,
   w: number,
   h: number,
@@ -538,8 +540,8 @@ function drawAngleArc(
 
   const colour =
     kind === 'theta1'
-      ? withAlpha(getCanvasColors().accent, 0.85)
-      : withAlpha(getCanvasColors().teal, 0.85);
+      ? withAlpha(colors.accent, 0.85)
+      : withAlpha(colors.teal, 0.85);
   ctx.strokeStyle = colour;
   ctx.lineWidth = 1.4;
   ctx.beginPath();

@@ -16,6 +16,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { fmtFrequency } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -71,7 +72,7 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       drawIsoCube(ctx, rightCX, cy, newSide, accentColor, accentFill);
       ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: '60 Hz mains (Si steel)', x: leftCX, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `${formatHz(f)}`, x: rightCX, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: `${fmtFrequency(f)}`, x: rightCX, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: `V ≈ ${V_REF_CM3} cm³`, x: leftCX, y: cy + refSide / 2 + 24, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: `mass ≈ ${M_REF_G} g`, x: leftCX, y: cy + refSide / 2 + 38, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: `V ≈ ${formatVol(V_REF_CM3 * scale)}`, x: rightCX, y: cy + refSide / 2 + 24, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
@@ -126,7 +127,7 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
           min={Math.log10(50)}
           max={Math.log10(1e6)}
           step={0.01}
-          format={(v) => formatHz(Math.pow(10, v))}
+          format={(v) => fmtFrequency(Math.pow(10, v))}
           onChange={(v) => setF(Math.pow(10, v))}
         />
         <MiniReadout label="frequency" value={<Num value={f} digits={1} />} unit="Hz" />
@@ -189,11 +190,6 @@ function drawIsoCube(
   ctx.stroke();
 }
 
-function formatHz(f: number): string {
-  if (f >= 1e6) return (f / 1e6).toFixed(2) + ' MHz';
-  if (f >= 1e3) return (f / 1e3).toFixed(f >= 1e4 ? 0 : 1) + ' kHz';
-  return f.toFixed(0) + ' Hz';
-}
 
 function formatVol(v: number): string {
   if (v < 0.1) return (v * 1000).toFixed(1) + ' mm³';

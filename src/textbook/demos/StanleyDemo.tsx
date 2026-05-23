@@ -16,6 +16,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { fmtCurrent, fmtVoltage } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -86,12 +87,12 @@ export function StanleyDemo({ figure }: Props) {
         ctx.fill();
       }
       if (hot > 0.3) {
-        ctx.fillStyle = `rgba(255,107,42,${0.06 * hot})`;
+        ctx.fillStyle = withAlpha(colors.accent, 0.06 * hot);
         ctx.fillRect(lineX0, cy - 20, lineX1 - lineX0, 40);
       }
       for (let i = 0; i < positions.length; i++) {
         const p = positions[i];
-        ctx.fillStyle = '#16161a';
+        ctx.fillStyle = colors.surface;
         ctx.strokeStyle = colors.accent;
         ctx.lineWidth = 1.4;
         ctx.fillRect(p.x, cy - blockH / 2, blockW, blockH);
@@ -126,14 +127,14 @@ export function StanleyDemo({ figure }: Props) {
       }
       ctx.fillStyle = colors.teal;
       const lcx = (lineX0 + lineX1) / 2;
-      drawLabel(ctx, { text: `V_line = ${formatVoltage(Vline)}`, x: lcx, y: cy - 18, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: `I = ${formatCurrent(I)}`, x: lcx, y: cy - 32, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: `V_line = ${fmtVoltage(Vline)}`, x: lcx, y: cy - 18, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: `I = ${fmtCurrent(I)}`, x: lcx, y: cy - 32, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       drawLabel(ctx, { text: `${distanceKm} km · R = ${R.toFixed(1)} Ω`, x: lcx, y: cy + 24, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       const barX = padX,
         barY = h - 30,
         barW = w - 2 * padX,
         barH = 14;
-      ctx.fillStyle = 'rgba(255,255,255,0.05)';
+      ctx.fillStyle = withAlpha(colors.border, 0.05);
       ctx.fillRect(barX, barY, barW, barH);
       ctx.fillStyle = colors.teal;
       ctx.fillRect(barX, barY, barW * eff, barH);
@@ -179,7 +180,7 @@ export function StanleyDemo({ figure }: Props) {
           min={500}
           max={500000}
           step={500}
-          format={(v) => formatVoltage(v)}
+          format={(v) => fmtVoltage(v)}
           onChange={setVline}
         />
         <MiniReadout label="I_line" value={<Num value={computed.I} digits={2} />} unit="A" />
@@ -190,11 +191,3 @@ export function StanleyDemo({ figure }: Props) {
   );
 }
 
-function formatVoltage(v: number): string {
-  if (v >= 1000) return (v / 1000).toFixed(v >= 10000 ? 0 : 1) + ' kV';
-  return Math.round(v) + ' V';
-}
-function formatCurrent(I: number): string {
-  if (I >= 1000) return (I / 1000).toFixed(2) + ' kA';
-  return I.toFixed(I >= 10 ? 0 : 1) + ' A';
-}

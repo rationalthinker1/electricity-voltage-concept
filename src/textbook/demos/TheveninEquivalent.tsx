@@ -50,9 +50,11 @@ export function TheveninEquivalentDemo({ figure }: Props) {
   // Static schematic backdrop — re-bakes when any slider value (and therefore
   // any component label) changes, or when the canvas resizes.
   const getStaticSchematic = useCircuitCache(
-    (sw, sh, _dpr) => ({
-      elements: [
-        ...buildOriginalElements(0, 22, sw / 2, sh - 22, {
+    (sw, sh, _dpr) => {
+      const colors = getCanvasColors();
+      return {
+        elements: [
+          ...buildOriginalElements(0, 22, sw / 2, sh - 22, colors, {
           Vs,
           R1,
           R2,
@@ -63,7 +65,7 @@ export function TheveninEquivalentDemo({ figure }: Props) {
           Vload,
           Iload,
         }),
-        ...buildTheveninElements(sw / 2, 22, sw / 2, sh - 22, {
+        ...buildTheveninElements(sw / 2, 22, sw / 2, sh - 22, colors, {
           Vs,
           R1,
           R2,
@@ -75,16 +77,17 @@ export function TheveninEquivalentDemo({ figure }: Props) {
           Iload,
         }),
       ] as CircuitElement[],
-    }),
-    [Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload],
-  );
+    };
+  },
+  [Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload],
+);
 
   const setup = useSimLoop(
     stateRef,
-    ({ ctx, w, h, dpr }, state) => {
+    ({ ctx, w, h, dpr, colors }, state) => {
       const st = state;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const splitX = w / 2;
@@ -96,18 +99,18 @@ export function TheveninEquivalentDemo({ figure }: Props) {
       // into the offscreen canvas after renderCircuitToCanvas; now drawn
       // per-frame so the cache can stay a plain CircuitSpec. The cost is a
       // handful of ctx calls, negligible next to the cache blit it replaces.
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = withAlpha(colors.border, 0.10);
       ctx.beginPath();
       ctx.moveTo(splitX, 14);
       ctx.lineTo(splitX, h - 14);
       ctx.stroke();
 
-      ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.85);
+      ctx.fillStyle = withAlpha(colors.textDim, 0.85);
       drawLabel(ctx, { text: 'Original network', x: splitX / 2, y: 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: 'Thévenin equivalent', x: splitX + splitX / 2, y: 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
-      drawLoadReadouts(ctx, 0, 22, splitX, h - 22, st);
-      drawLoadReadouts(ctx, splitX, 22, splitX, h - 22, st);
+      drawLoadReadouts(ctx, colors, 0, 22, splitX, h - 22, st);
+      drawLoadReadouts(ctx, colors, splitX, 22, splitX, h - 22, st);
     },
     [getStaticSchematic],
   );
@@ -200,6 +203,7 @@ function buildOriginalElements(
   y0: number,
   w: number,
   h: number,
+  colors: import('@/lib/canvasTheme').ThemeColors,
   st: ST,
 ): CircuitElement[] {
   const cy = y0 + h / 2;
@@ -225,7 +229,7 @@ function buildOriginalElements(
       kind: 'resistor',
       from: { x: xR1 - 20, y: yTop },
       to: { x: xR1 + 20, y: yTop },
-      color: '#ff6b2a',
+      color: colors.accent,
       label: `R₁ ${fmtResistance(st.R1)}`,
       labelOffset: { x: 0, y: -10 },
     },
@@ -248,7 +252,7 @@ function buildOriginalElements(
       kind: 'resistor',
       from: { x: xMid, y: cy - 18 },
       to: { x: xMid, y: cy + 18 },
-      color: '#ff6b2a',
+      color: colors.accent,
       label: `R₂ ${fmtResistance(st.R2)}`,
       labelOffset: { x: 12, y: 0 },
     },
@@ -290,7 +294,7 @@ function buildOriginalElements(
       kind: 'resistor',
       from: { x: xLoad, y: cy - 18 },
       to: { x: xLoad, y: cy + 18 },
-      color: '#6cc5c2',
+      color: colors.teal,
       label: `R_L ${fmtResistance(st.RL)}`,
       labelOffset: { x: 12, y: 0 },
     },
@@ -316,6 +320,7 @@ function buildTheveninElements(
   y0: number,
   w: number,
   h: number,
+  colors: import('@/lib/canvasTheme').ThemeColors,
   st: ST,
 ): CircuitElement[] {
   const cy = y0 + h / 2;
@@ -338,7 +343,7 @@ function buildTheveninElements(
       kind: 'resistor',
       from: { x: xR - 20, y: yTop },
       to: { x: xR + 20, y: yTop },
-      color: '#ff6b2a',
+      color: colors.accent,
       label: `R_th ${fmtResistance(st.Rth)}`,
       labelOffset: { x: 0, y: -10 },
     },
@@ -366,7 +371,7 @@ function buildTheveninElements(
       kind: 'resistor',
       from: { x: xLoad, y: cy - 18 },
       to: { x: xLoad, y: cy + 18 },
-      color: '#6cc5c2',
+      color: colors.teal,
       label: `R_L ${fmtResistance(st.RL)}`,
       labelOffset: { x: 12, y: 0 },
     },
@@ -389,6 +394,7 @@ function buildTheveninElements(
 
 function drawLoadReadouts(
   ctx: CanvasRenderingContext2D,
+  colors: import('@/lib/canvasTheme').ThemeColors,
   x0: number,
   y0: number,
   w: number,
@@ -397,8 +403,8 @@ function drawLoadReadouts(
 ) {
   const cy = y0 + h / 2;
   const xLoad = x0 + w - 40;
-  ctx.fillStyle = getCanvasColors().teal;
+  ctx.fillStyle = colors.teal;
   drawLabel(ctx, { text: `V_L = ${st.Vload.toFixed(2)} V`, x: xLoad + 12, y: cy - 8, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'middle' });
-  ctx.fillStyle = getCanvasColors().blue;
+  ctx.fillStyle = colors.blue;
   drawLabel(ctx, { text: `I_L = ${(st.Iload * 1000).toFixed(1)} mA`, x: xLoad + 12, y: cy + 8, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'middle' });
 }

@@ -116,7 +116,7 @@ export function GridHierarchyDemo({ figure }: Props) {
         const bx = cx - blockW / 2;
         const by = cy - blockH / 2;
         const isSel = s.key === selected;
-        ctx.fillStyle = isSel ? '#1c1c22' : '#16161a';
+        ctx.fillStyle = isSel ? colors.surfaceHover : colors.surface;
         ctx.strokeStyle = isSel ? withAlpha(colors.accent, 0.95) : withAlpha(colors.textDim, 0.5);
         ctx.lineWidth = isSel ? 2 : 1.2;
         ctx.fillRect(bx, by, blockW, blockH);

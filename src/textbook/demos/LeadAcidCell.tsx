@@ -17,6 +17,7 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
+import { withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -59,7 +60,7 @@ export function LeadAcidCellDemo({ figure }: Props) {
       ctx.lineWidth = 1.5;
       ctx.strokeRect(jarX, jarY, jarW, jarH);
       const acidAlpha = 0.1 + 0.18 * s.soc;
-      ctx.fillStyle = `rgba(255,107,42,${acidAlpha})`;
+      ctx.fillStyle = withAlpha(colors.accent, acidAlpha);
       ctx.fillRect(jarX + 2, jarY + 12, jarW - 4, jarH - 14);
       const plateW = 36;
       const gap = 30;
@@ -73,7 +74,7 @@ export function LeadAcidCellDemo({ figure }: Props) {
       ctx.fillRect(posX, plateY, plateW, plateH);
       const dischargeFrac = 1 - s.soc;
       if (dischargeFrac > 0.02) {
-        ctx.fillStyle = `rgba(236,235,229,${0.3 + 0.5 * dischargeFrac})`;
+        ctx.fillStyle = withAlpha(colors.text, 0.3 + 0.5 * dischargeFrac);
         const nodCount = Math.floor(dischargeFrac * 60);
         for (let i = 0; i < nodCount; i++) {
           // Use deterministic-ish pattern from i for stability

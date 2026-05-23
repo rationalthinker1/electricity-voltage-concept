@@ -27,7 +27,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
 import { project, v3, type OrbitCamera, type Point2D, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -261,7 +261,7 @@ export function MOSFET3DDemo({ figure }: Props) {
   }, [V_GS, V_DS, showField]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H, canvas } = info;
+    const { ctx, w: W, h: H, canvas, colors } = info;
     let raf = 0;
 
     const scene = createOrbitScene(canvas, {
@@ -295,7 +295,7 @@ export function MOSFET3DDemo({ figure }: Props) {
       const overdrive = Math.max(0, s.V_GS - V_T);
       const channelOn = overdrive > 0;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
       // Painter's-algorithm-friendly draw order: substrate first
@@ -309,9 +309,9 @@ export function MOSFET3DDemo({ figure }: Props) {
         ctx,
         SUB,
         {
-          fill: withAlpha(getCanvasColors().blue, 0.12),
-          edge: withAlpha(getCanvasColors().blue, 0.55),
-          backEdge: withAlpha(getCanvasColors().blue, 0.25),
+          fill: withAlpha(colors.blue, 0.12),
+          edge: withAlpha(colors.blue, 0.55),
+          backEdge: withAlpha(colors.blue, 0.25),
           edgeWidth: 1.1,
         },
         cam,
@@ -333,7 +333,7 @@ export function MOSFET3DDemo({ figure }: Props) {
           v3(CHAN_X0, CHAN_Y, CHAN_Z1),
         ].map((p) => project(p, cam, W, H));
         const a = Math.min(0.55, 0.1 + 0.25 * overdrive);
-        ctx.fillStyle = `rgba(255,107,42,${a.toFixed(3)})`;
+        ctx.fillStyle = withAlpha(colors.accent, a);
         ctx.beginPath();
         ctx.moveTo(cs[0]!.x, cs[0]!.y);
         for (let i = 1; i < 4; i++) ctx.lineTo(cs[i]!.x, cs[i]!.y);
@@ -341,10 +341,10 @@ export function MOSFET3DDemo({ figure }: Props) {
         ctx.fill();
         // Glowing rim — "channel turning on" moment.
         drawGlowPath(ctx, [...cs, cs[0]!], {
-          color: `rgba(255,107,42,${(0.55 + 0.35 * Math.min(1, overdrive / 2)).toFixed(3)})`,
+          color: withAlpha(colors.accent, 0.55 + 0.35 * Math.min(1, overdrive / 2)),
           lineWidth: 1.6,
           glowWidth: 9,
-          glowColor: `rgba(255,107,42,${(0.18 + 0.18 * Math.min(1, overdrive / 2)).toFixed(3)})`,
+          glowColor: withAlpha(colors.accent, 0.18 + 0.18 * Math.min(1, overdrive / 2)),
         });
       }
 
@@ -397,9 +397,9 @@ export function MOSFET3DDemo({ figure }: Props) {
         ctx,
         GATE,
         {
-          fill: withAlpha(getCanvasColors().textDim, 0.22),
-          edge: withAlpha(getCanvasColors().accent, 0.8),
-          backEdge: withAlpha(getCanvasColors().accent, 0.3),
+          fill: withAlpha(colors.textDim, 0.22),
+          edge: withAlpha(colors.accent, 0.8),
+          backEdge: withAlpha(colors.accent, 0.3),
           edgeWidth: 1.3,
         },
         cam,
@@ -449,7 +449,7 @@ export function MOSFET3DDemo({ figure }: Props) {
           // Size attenuates slightly with depth.
           const t = Math.max(0, Math.min(1, (cam.distance + 2 - p.depth) / 4));
           const r = 1.6 + 1.6 * t;
-          ctx.fillStyle = `rgba(91,174,248,${(dotAlpha * (0.55 + 0.45 * t)).toFixed(3)})`;
+          ctx.fillStyle = withAlpha(colors.blue, dotAlpha * (0.55 + 0.45 * t));
           ctx.beginPath();
           ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
           ctx.fill();
@@ -474,7 +474,7 @@ export function MOSFET3DDemo({ figure }: Props) {
             if (top.depth <= 0 || bot.depth <= 0) continue;
             // Intensity tracks V_GS (clamped 0..1.5 for visual scaling).
             const k = Math.min(1, s.V_GS / 3);
-            ctx.strokeStyle = `rgba(255,59,110,${(0.45 + 0.35 * k).toFixed(3)})`;
+            ctx.strokeStyle = withAlpha(colors.pink, 0.45 + 0.35 * k);
             ctx.lineWidth = 1.2;
             ctx.beginPath();
             ctx.moveTo(top.x, top.y);
@@ -487,7 +487,7 @@ export function MOSFET3DDemo({ figure }: Props) {
             if (len > 4) {
               const ux = dx / len,
                 uy = dy / len;
-              ctx.fillStyle = `rgba(255,59,110,${(0.55 + 0.35 * k).toFixed(3)})`;
+              ctx.fillStyle = withAlpha(colors.pink, 0.55 + 0.35 * k);
               ctx.beginPath();
               ctx.moveTo(bot.x, bot.y);
               ctx.lineTo(bot.x - ux * 6 - uy * 3, bot.y - uy * 6 + ux * 3);
@@ -510,7 +510,7 @@ export function MOSFET3DDemo({ figure }: Props) {
             const head = project(v3(CHAN_X0 + 0.05, CHAN_Y + 0.02, z), cam, W, H);
             if (tail.depth <= 0 || head.depth <= 0) continue;
             const k = Math.min(1, s.V_DS / 3);
-            ctx.strokeStyle = `rgba(108,197,194,${(0.45 + 0.4 * k).toFixed(3)})`;
+            ctx.strokeStyle = withAlpha(colors.teal, 0.45 + 0.4 * k);
             ctx.lineWidth = 1.3;
             ctx.beginPath();
             ctx.moveTo(tail.x, tail.y);
@@ -522,7 +522,7 @@ export function MOSFET3DDemo({ figure }: Props) {
             if (len > 4) {
               const ux = dx / len,
                 uy = dy / len;
-              ctx.fillStyle = `rgba(108,197,194,${(0.55 + 0.4 * k).toFixed(3)})`;
+              ctx.fillStyle = withAlpha(colors.teal, 0.55 + 0.4 * k);
               ctx.beginPath();
               ctx.moveTo(head.x, head.y);
               ctx.lineTo(head.x - ux * 6 - uy * 3, head.y - uy * 6 + ux * 3);
@@ -542,20 +542,20 @@ export function MOSFET3DDemo({ figure }: Props) {
       };
       labelAt(v3((SRC.x0 + SRC.x1) / 2, SRC.y1 + 0.05, 0), 'S (n+)', 'rgba(140,220,150,0.95)');
       labelAt(v3((DRN.x0 + DRN.x1) / 2, DRN.y1 + 0.05, 0), 'D (n+)', 'rgba(140,220,150,0.95)');
-      labelAt(v3(0, GATE.y1 + 0.1, 0), 'G (gate)', withAlpha(getCanvasColors().accent, 0.95));
+      labelAt(v3(0, GATE.y1 + 0.1, 0), 'G (gate)', withAlpha(colors.accent, 0.95));
       labelAt(
         v3(0, GATE.y0 - 0.2, OXIDE.z1 + 0.18),
         'oxide',
-        withAlpha(getCanvasColors().text, 0.7),
+        withAlpha(colors.text, 0.7),
       );
       labelAt(
         v3(0, SUB.y0 + 0.18, SUB.z1 - 0.05),
         'p-substrate (body)',
-        withAlpha(getCanvasColors().blue, 0.9),
+        withAlpha(colors.blue, 0.9),
       );
 
       // Top-left help.
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
 
       // Bottom-right status banner — regime + channel-on/off.
@@ -563,8 +563,8 @@ export function MOSFET3DDemo({ figure }: Props) {
         ? `channel ON · V_OV = ${overdrive.toFixed(2)} V`
         : `channel OFF · below V_T = ${V_T.toFixed(2)} V`;
       ctx.fillStyle = channelOn
-        ? withAlpha(getCanvasColors().accent, 0.95)
-        : withAlpha(getCanvasColors().textDim, 0.7);
+        ? withAlpha(colors.accent, 0.95)
+        : withAlpha(colors.textDim, 0.7);
       drawLabel(ctx, { text: status, x: W - 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
 
       raf = requestAnimationFrame(draw);

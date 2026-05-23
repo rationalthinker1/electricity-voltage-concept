@@ -20,7 +20,7 @@ import { TryIt } from '@/components/TryIt';
 import { Formula } from '@/components/Formula';
 import { PHYS, eng, engJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
 
 const SLUG = 'inductance';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -50,7 +50,7 @@ export default function InductanceLab() {
   }, [N, ell_cm, A_cm2, dIdt, I_inst, computed]);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H } = info;
+    const { ctx, w: W, h: H, colors } = info;
     let raf = 0;
     let phase = 0;
 
@@ -58,7 +58,7 @@ export default function InductanceLab() {
       const s = stateRef.current;
       const out = s.computed;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
       const margin = 110;
@@ -76,9 +76,9 @@ export default function InductanceLab() {
       // Halo proportional to B
       const halo = Math.max(0.06, Math.min(0.65, Math.log10(out.B * 1e3 + 1) * 0.13));
       const haloGrd = ctx.createLinearGradient(0, cy - r_vis * 2.5, 0, cy + r_vis * 2.5);
-      haloGrd.addColorStop(0, `rgba(108,197,194,0)`);
-      haloGrd.addColorStop(0.5, `rgba(108,197,194,${halo})`);
-      haloGrd.addColorStop(1, `rgba(108,197,194,0)`);
+      haloGrd.addColorStop(0, withAlpha(colors.teal, 0));
+      haloGrd.addColorStop(0.5, withAlpha(colors.teal, halo));
+      haloGrd.addColorStop(1, withAlpha(colors.teal, 0));
       ctx.fillStyle = haloGrd;
       ctx.fillRect(xL - 30, cy - r_vis * 2.5, xR - xL + 60, r_vis * 5);
 
@@ -88,7 +88,7 @@ export default function InductanceLab() {
         const cx = xL + t * (xR - xL);
         ctx.save();
         ctx.globalAlpha = 0.35;
-        ctx.strokeStyle = getCanvasColors().accent;
+        ctx.strokeStyle = colors.accent;
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.ellipse(cx, cy, er, r_vis, 0, Math.PI, 2 * Math.PI);
@@ -103,8 +103,8 @@ export default function InductanceLab() {
       for (let i = 0; i < nB; i++) {
         const t = (i + 0.5) / nB;
         const cx = xL + t * (xR - xL) - arrLen / 2;
-        ctx.strokeStyle = getCanvasColors().teal;
-        ctx.fillStyle = getCanvasColors().teal;
+        ctx.strokeStyle = colors.teal;
+        ctx.fillStyle = colors.teal;
         ctx.lineWidth = 2.5;
         ctx.beginPath();
         ctx.moveTo(cx, cy);
@@ -122,7 +122,7 @@ export default function InductanceLab() {
       for (let i = 0; i <= visibleTurns; i++) {
         const t = i / visibleTurns;
         const cx = xL + t * (xR - xL);
-        ctx.strokeStyle = getCanvasColors().accent;
+        ctx.strokeStyle = colors.accent;
         ctx.lineWidth = 2.2;
         ctx.beginPath();
         ctx.ellipse(cx, cy, er, r_vis, 0, 0, Math.PI);
@@ -131,14 +131,14 @@ export default function InductanceLab() {
         const ang = Math.PI * dotPhase;
         const dx = cx + Math.cos(ang) * er;
         const dy = cy + Math.sin(ang) * r_vis;
-        ctx.fillStyle = getCanvasColors().accent;
+        ctx.fillStyle = colors.accent;
         ctx.beginPath();
         ctx.arc(dx, dy, 2.4, 0, Math.PI * 2);
         ctx.fill();
       }
 
       // Lead lines exiting each end
-      ctx.strokeStyle = getCanvasColors().accent;
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(xL, cy + r_vis);
@@ -148,7 +148,7 @@ export default function InductanceLab() {
       ctx.stroke();
 
       // Return-loop hints
-      ctx.strokeStyle = getCanvasColors().tealSoft;
+      ctx.strokeStyle = colors.tealSoft;
       ctx.lineWidth = 1;
       for (const sgn of [-1, 1] as const) {
         ctx.beginPath();
@@ -157,20 +157,20 @@ export default function InductanceLab() {
       }
 
       // Current direction label
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
       ctx.fillText(s.dIdt >= 0 ? 'I ↗ rising' : 'I ↘ falling', xR + 10, cy - r_vis - 8);
 
       // Corner readouts
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = colors.teal;
       ctx.fillText(`B = ${eng(out.B, 3, 'T')} inside`, 24, 28);
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = colors.pink;
       ctx.fillText(`V_back = ${eng(out.V, 3, 'V')}`, 24, 48);
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       ctx.fillText(`L = ${eng(out.L, 3, 'H')}`, 24, 68);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'right';
       ctx.fillText(
         `N = ${s.N}   ℓ = ${s.ell_cm.toFixed(1)} cm   A = ${s.A_cm2.toFixed(1)} cm²`,
@@ -182,7 +182,7 @@ export default function InductanceLab() {
       ctx.textAlign = 'center';
       ctx.save();
       ctx.globalAlpha = 0.6;
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(`(${s.N} turns; ${visibleTurns} shown)`, (xL + xR) / 2, cy + r_vis + 38);
       ctx.restore();

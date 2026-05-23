@@ -20,7 +20,7 @@ import { TryIt } from '@/components/TryIt';
 import { drawArrow, drawCharge } from '@/lib/canvasPrimitives';
 import { PHYS, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 const SLUG = 'e-field';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -58,7 +58,7 @@ export default function EFieldLab() {
   }, [qNC, qTestNC, er, src, probe, sizePx]);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas } = info;
+    const { ctx, w, h, canvas, colors } = info;
     setSizePx({ W: w, H: h });
     let raf = 0;
     let dragging: 'src' | 'probe' | null = null;
@@ -137,7 +137,7 @@ export default function EFieldLab() {
 
     function draw() {
       const { qNC, er, src, probe } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const sx = src.x * w,
@@ -157,8 +157,8 @@ export default function EFieldLab() {
           if (Math.abs(t) < 0.02) continue;
           ctx.fillStyle =
             t > 0
-              ? `rgba(255,59,110,${Math.abs(t) * 0.1})`
-              : `rgba(91,174,248,${Math.abs(t) * 0.1})`;
+              ? withAlpha(colors.pink, Math.abs(t) * 0.1)
+              : withAlpha(colors.blue, Math.abs(t) * 0.1);
           ctx.fillRect(px, py, cellSize, cellSize);
         }
       }
@@ -167,7 +167,7 @@ export default function EFieldLab() {
       const rings = [25, 50, 100, 200];
       for (const mm of rings) {
         ctx.setLineDash([3, 5]);
-        ctx.strokeStyle = getCanvasColors().tealSoft;
+        ctx.strokeStyle = colors.tealSoft;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(sx, sy, mm, 0, Math.PI * 2);
@@ -175,7 +175,7 @@ export default function EFieldLab() {
         ctx.setLineDash([]);
         ctx.save();
         ctx.globalAlpha = 0.45;
-        ctx.fillStyle = getCanvasColors().teal;
+        ctx.fillStyle = colors.teal;
         ctx.font = '9px JetBrains Mono';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
@@ -199,7 +199,7 @@ export default function EFieldLab() {
         if (path.length > 2) {
           ctx.save();
           ctx.globalAlpha = 0.16;
-          ctx.strokeStyle = getCanvasColors().accent;
+          ctx.strokeStyle = colors.accent;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(path[0][0], path[0][1]);
@@ -211,10 +211,10 @@ export default function EFieldLab() {
           if (t) {
             ctx.beginPath();
             ctx.arc(t[0], t[1], 1.6, 0, Math.PI * 2);
-            ctx.fillStyle = getCanvasColors().accent;
+            ctx.fillStyle = colors.accent;
             ctx.save();
             ctx.globalAlpha = 0.6;
-            ctx.shadowColor = getCanvasColors().accent;
+            ctx.shadowColor = colors.accent;
             ctx.shadowBlur = 5;
             ctx.fill();
             ctx.restore();
@@ -242,7 +242,7 @@ export default function EFieldLab() {
           { x: px, y: py },
           { x: px + ux * len, y: py + uy * len },
           {
-            color: '#ff6b2a',
+            color: colors.accent,
             lineWidth: 2.2,
             headLength: 9,
           },
@@ -254,12 +254,12 @@ export default function EFieldLab() {
         ctx,
         { x: sx, y: sy },
         {
-          color: '#ff3b6e',
+          color: colors.pink,
           label: 'Q',
           magnitudeLabel: `= ${Math.abs(qNC).toFixed(1)} nC`,
           radius: 12 + Math.min(12, Math.abs(qNC) * 0.4),
           sign: qNC >= 0 ? '+' : '−',
-          textColor: '#0a0a0b',
+          textColor: colors.canvasBg,
         },
       );
       // Probe

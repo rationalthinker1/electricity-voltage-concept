@@ -14,6 +14,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -138,7 +139,7 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
             { x: ax, y: y0 },
             { x: ax, y: y0 + len },
             {
-              color: `rgba(255,107,42,${alpha.toFixed(3)})`,
+              color: withAlpha(colors.accent, alpha),
               headLength: 6,
               headWidth: 3,
               lineWidth: 1.4,

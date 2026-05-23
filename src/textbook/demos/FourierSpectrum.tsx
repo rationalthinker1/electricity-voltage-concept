@@ -176,7 +176,7 @@ export function FourierSpectrumDemo() {
 
       // Per-bar colors: DC = teal, rest = accent
       const barColors = Array.from({ length: nMax + 1 }, (_, n) =>
-        n === 0 ? withAlpha(colors.teal, 0.85) : '#ff6b2a',
+        n === 0 ? withAlpha(colors.teal, 0.85) : colors.accent,
       );
 
       drawBarChart(ctx, bRect, barData, 0, maxAmp * 1.1, {

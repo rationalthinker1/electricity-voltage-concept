@@ -21,7 +21,7 @@ import { TryIt } from '@/components/TryIt';
 import { Formula } from '@/components/Formula';
 import { PHYS, eng, engJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
 
 const SLUG = 'capacitance';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -50,7 +50,7 @@ export default function CapacitanceLab() {
   }, [A_cm2, d_mm, V, er, computed]);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H } = info;
+    const { ctx, w: W, h: H, colors } = info;
     let raf = 0;
     let phase = 0;
 
@@ -101,7 +101,7 @@ export default function CapacitanceLab() {
     function drawCapacitorBattery(x: number, y: number, topY: number, botY: number) {
       ctx.save();
       ctx.globalAlpha = 0.7;
-      ctx.strokeStyle = getCanvasColors().text;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       ctx.moveTo(x - 14, y - 12);
@@ -123,18 +123,18 @@ export default function CapacitanceLab() {
       ctx.lineTo(x + 38, botY - 3);
       ctx.stroke();
 
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = colors.pink;
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('+', x + 22, y - 18);
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = colors.blue;
       ctx.fillText('−', x + 18, y + 16);
     }
 
     function draw() {
       const s = stateRef.current;
       const out = s.computed;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
       phase += 0.018;
 
@@ -156,9 +156,9 @@ export default function CapacitanceLab() {
       // Energy-density haze
       const hazeAlpha = Math.max(0.06, Math.min(0.55, Math.log10(out.uE + 1) * 0.1 + 0.1));
       const hazeGrd = ctx.createLinearGradient(0, topY + plateThick, 0, botY - plateThick);
-      hazeGrd.addColorStop(0, `rgba(255,107,42,${hazeAlpha * 0.45})`);
-      hazeGrd.addColorStop(0.5, `rgba(255,107,42,${hazeAlpha})`);
-      hazeGrd.addColorStop(1, `rgba(255,107,42,${hazeAlpha * 0.45})`);
+      hazeGrd.addColorStop(0, withAlpha(colors.accent, hazeAlpha * 0.45));
+      hazeGrd.addColorStop(0.5, withAlpha(colors.accent, hazeAlpha));
+      hazeGrd.addColorStop(1, withAlpha(colors.accent, hazeAlpha * 0.45));
       ctx.fillStyle = hazeGrd;
       ctx.fillRect(xL, topY + plateThick, plateW, botY - topY - plateThick * 2);
 
@@ -175,7 +175,7 @@ export default function CapacitanceLab() {
           const y0 = y1 - arrLen;
           ctx.save();
           ctx.globalAlpha = 0.85;
-          ctx.strokeStyle = getCanvasColors().pink;
+          ctx.strokeStyle = colors.pink;
           ctx.lineWidth = 1.4;
           ctx.beginPath();
           ctx.moveTo(fx, Math.max(baseY, y0));
@@ -184,7 +184,7 @@ export default function CapacitanceLab() {
           ctx.restore();
           ctx.save();
           ctx.globalAlpha = 0.95;
-          ctx.fillStyle = getCanvasColors().pink;
+          ctx.fillStyle = colors.pink;
           ctx.beginPath();
           ctx.moveTo(fx, y1);
           ctx.lineTo(fx - 3.5, y1 - 6);
@@ -195,19 +195,19 @@ export default function CapacitanceLab() {
         }
       }
 
-      plateGrad(xL, topY, plateW, plateThick, '#ff3b6e');
-      plateGrad(xL, botY - plateThick, plateW, plateThick, '#5baef8');
+      plateGrad(xL, topY, plateW, plateThick, colors.pink);
+      plateGrad(xL, botY - plateThick, plateW, plateThick, colors.blue);
 
       // Charge dot count scales with σ (capped)
       const target = Math.min(60, Math.max(6, Math.round(Math.log10(out.sigma * 1e8 + 1) * 12)));
-      drawCharges(xL, topY - 7, plateW, target, '+', '#ff3b6e');
-      drawCharges(xL, botY + plateThick + 7, plateW, target, '−', '#5baef8');
+      drawCharges(xL, topY - 7, plateW, target, '+', colors.pink);
+      drawCharges(xL, botY + plateThick + 7, plateW, target, '−', colors.blue);
 
       drawCapacitorBattery(xL - 70, cy, topY, botY);
 
       ctx.save();
       ctx.globalAlpha = 0.45;
-      ctx.strokeStyle = getCanvasColors().text;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(xL - 38, topY + plateThick / 2);
@@ -218,15 +218,15 @@ export default function CapacitanceLab() {
       ctx.restore();
 
       // Labels
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
       ctx.fillText(`C = ${eng(out.C, 3, 'F')}`, 24, 28);
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = colors.pink;
       ctx.fillText(`V = ${s.V.toFixed(1)} V`, 24, 48);
       ctx.fillText(`E = ${eng(out.E, 3, 'V/m')}`, 24, 66);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'right';
       ctx.fillText(
         `A = ${s.A_cm2.toFixed(0)} cm²   d = ${s.d_mm.toFixed(2)} mm   εr = ${s.er.toFixed(1)}`,

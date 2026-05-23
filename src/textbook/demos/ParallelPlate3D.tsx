@@ -31,6 +31,7 @@ import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
+import { fmtSI } from '@/lib/formatters';
 import { project, v3, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -364,8 +365,8 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         ctx.textBaseline = 'bottom';
         const labelLines = [
           '∮ D · dA = σ A',
-          `σ A = ${formatCoulombs(s.computed.sigmaA)}`,
-          `Q_enc = ${formatCoulombs(s.computed.Q)}`,
+          `σ A = ${fmtSI(s.computed.sigmaA, 'C')}`,
+          `Q_enc = ${fmtSI(s.computed.Q, 'C')}`,
         ];
         const pad = 6;
         const lineH = 14;
@@ -512,15 +513,3 @@ export function ParallelPlate3DDemo({ figure }: Props) {
   );
 }
 
-/**
- * Format a (small) charge in coulombs with the most natural SI prefix
- * (nC or pC). Used only inside the Gauss-pillbox label, where Q ranges
- * from ~10⁻¹³ to ~10⁻⁸ C across the slider domain.
- */
-function formatCoulombs(C: number): string {
-  const a = Math.abs(C);
-  if (a === 0) return '0 C';
-  if (a >= 1e-9) return `${(C * 1e9).toFixed(2)} nC`;
-  if (a >= 1e-12) return `${(C * 1e12).toFixed(2)} pC`;
-  return `${C.toExponential(2)} C`;
-}

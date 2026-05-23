@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawLabel } from "@/lib/canvasLayout";
+import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -51,7 +52,7 @@ export function DipoleInFieldDemo({ figure }: Props) {
 
       // Background E-field arrows (very faint horizontal stream)
       if (E > 0.01) {
-        ctx.strokeStyle = `rgba(255,107,42,${(0.12 + 0.06 * Math.min(1, E / 6)).toFixed(3)})`;
+        ctx.strokeStyle = withAlpha(colors.accent, 0.12 + 0.06 * Math.min(1, E / 6));
         ctx.lineWidth = 1;
         for (let y = 18; y < h; y += 44) {
           for (let x0 = 10; x0 < w; x0 += 70) {

@@ -317,18 +317,14 @@ export function RotatingMagField3DDemo({ figure }: Props) {
             if (!screen.every((p) => p.depth > 0)) return;
             // Fill: tinted by phase color, alpha tracks |I|.
             const tint = ci.color;
-            // Convert tint hex to rgb for the rgba fill.
-            const r = parseInt(tint.slice(1, 3), 16);
-            const g = parseInt(tint.slice(3, 5), 16);
-            const b = parseInt(tint.slice(5, 7), 16);
             const fillAlpha = 0.15 + 0.55 * intensity;
-            ctx.fillStyle = `rgba(${r},${g},${b},${fillAlpha.toFixed(3)})`;
+            ctx.fillStyle = withAlpha(tint, fillAlpha);
             ctx.beginPath();
             ctx.moveTo(screen[0]!.x, screen[0]!.y);
             for (let k = 1; k < 4; k++) ctx.lineTo(screen[k]!.x, screen[k]!.y);
             ctx.closePath();
             ctx.fill();
-            ctx.strokeStyle = `rgba(${r},${g},${b},0.9)`;
+            ctx.strokeStyle = withAlpha(tint, 0.9);
             ctx.lineWidth = 1.6;
             ctx.stroke();
 
@@ -398,11 +394,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
             y: 0,
             z: c.vec.z * FIELD_ARROW_SCALE * 0.9,
           };
-          // Convert hex color to translucent rgba.
-          const r = parseInt(c.color.slice(1, 3), 16);
-          const g = parseInt(c.color.slice(3, 5), 16);
-          const b = parseInt(c.color.slice(5, 7), 16);
-          drawArrow3D({ x: 0, y: 0, z: 0 }, to, `rgba(${r},${g},${b},0.65)`, 1.5, cam, w, h, 0.85);
+          drawArrow3D({ x: 0, y: 0, z: 0 }, to, withAlpha(c.color, 0.65), 1.5, cam, w, h, 0.85);
         }
       }
 

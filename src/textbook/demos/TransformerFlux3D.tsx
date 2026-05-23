@@ -342,7 +342,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
           const alpha = (0.45 + 0.5 * intensity) * twinkle;
           const from = v3(fp.x - (tx * arrowLen) / 2, fp.y - (ty * arrowLen) / 2, fp.z);
           const to = v3(fp.x + (tx * arrowLen) / 2, fp.y + (ty * arrowLen) / 2, fp.z);
-          drawArrow3D(from, to, `rgba(255,107,42,${alpha.toFixed(3)})`, 2.0, true);
+          drawArrow3D(from, to, withAlpha(getCanvasColors().accent, alpha), 2.0, true);
         }
 
         // Φ label near the top bar.
@@ -404,7 +404,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
           if (slice.length < 2) continue;
           for (const segPath of projectPolyline(slice)) {
             drawGlowPath(ctx, segPath, {
-              color: `rgba(255,107,42,${(0.85).toFixed(3)})`,
+              color: withAlpha(getCanvasColors().accent, 0.85),
               lineWidth: 2.4,
               glowColor: withAlpha(getCanvasColors().accent, 0.45),
               glowWidth: 8,
@@ -473,7 +473,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
             const alpha = 0.38 + 0.25 * intensity;
             for (const segPath of projectPolyline(arc)) {
               drawGlowPath(ctx, segPath, {
-                color: `rgba(108,197,194,${alpha.toFixed(3)})`,
+                color: withAlpha(getCanvasColors().teal, alpha),
                 lineWidth: 1.4,
                 glowColor: withAlpha(getCanvasColors().teal, 0.22),
                 glowWidth: 4,
@@ -490,7 +490,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
                 if (len > 2) {
                   const ux = dx / len,
                     uy = dy / len;
-                  ctx.fillStyle = `rgba(108,197,194,${alpha.toFixed(3)})`;
+                  ctx.fillStyle = withAlpha(getCanvasColors().teal, alpha);
                   ctx.beginPath();
                   ctx.moveTo(ph.x, ph.y);
                   ctx.lineTo(ph.x - ux * 6 - uy * 3, ph.y - uy * 6 + ux * 3);

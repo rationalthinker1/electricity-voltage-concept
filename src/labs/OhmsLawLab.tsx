@@ -23,6 +23,7 @@ import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
 import { MATERIALS, PHYS, type MaterialKey, prettyJsx } from '@/lib/physics';
+import { withAlpha } from '@/lib/canvasTheme';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
 const SLUG = 'ohms-law';
@@ -106,9 +107,9 @@ export default function OhmsLawLab() {
 
       // Wire body
       const grd = ctx.createLinearGradient(0, top, 0, bot);
-      grd.addColorStop(0, 'rgba(255,107,42,0.08)');
-      grd.addColorStop(0.5, 'rgba(255,107,42,0.16)');
-      grd.addColorStop(1, 'rgba(255,107,42,0.08)');
+      grd.addColorStop(0, withAlpha(colors.accent, 0.08));
+      grd.addColorStop(0.5, withAlpha(colors.accent, 0.16));
+      grd.addColorStop(1, withAlpha(colors.accent, 0.08));
       ctx.fillStyle = grd;
       roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 14);
       ctx.fill();

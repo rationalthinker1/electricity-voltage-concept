@@ -105,12 +105,12 @@ export function SusceptibilityDemo({ figure }: Props) {
           ctx.fillRect(cx - barW / 2, yTop, barW, yH);
 
           // Bar label
-          ctx.fillStyle = 'rgba(255,255,255,0.75)';
+          ctx.fillStyle = withAlpha(colors.border, 0.75);
           ctx.font = '10px "JetBrains Mono", monospace';
           ctx.textAlign = 'center';
           ctx.fillText(b.label, cx, baseY + 14);
           // Value label above bar
-          ctx.fillStyle = 'rgba(255,255,255,0.55)';
+          ctx.fillStyle = withAlpha(colors.border, 0.55);
           ctx.font = '9px "JetBrains Mono", monospace';
           const valStr = formatChi(b.chi);
           ctx.fillText(valStr, cx, sign > 0 ? yTop - 4 : baseY + 32);

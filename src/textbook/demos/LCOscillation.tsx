@@ -18,7 +18,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtFrequency, fmtTime, fmtCurrent } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -45,8 +45,7 @@ export function LCOscillationDemo({ figure }: Props) {
 
   const setup = useSimLoop(
     stateRef,
-    ({ ctx, w, h }, state, _dt, simTime) => {
-      const colors = getCanvasColors();
+    ({ ctx, w, h, colors }, state, _dt, simTime) => {
       const { L, C, Q0 } = state;
       const visualFreq = 1.0; // Hz
       const visualOmega = 2 * Math.PI * visualFreq;
@@ -58,7 +57,7 @@ export function LCOscillationDemo({ figure }: Props) {
       // Better: derive U_L from energy conservation (since visual phase doesn't respect ω₀)
       const Ul = Math.max(0, Utotal - Uc);
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const splitX = Math.min(w * 0.55, 380);
@@ -78,7 +77,7 @@ export function LCOscillationDemo({ figure }: Props) {
       const yT = cy - boxH / 2;
       const yB = cy + boxH / 2;
 
-      ctx.strokeStyle = getCanvasColors().textDim;
+      ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 1.5;
       ctx.lineCap = 'round';
       // Left + bottom + right wires (top has cap in middle, gap for inductor on right)
@@ -99,7 +98,7 @@ export function LCOscillationDemo({ figure }: Props) {
       const plateAlpha = 0.4 + 0.55 * Math.min(1, Math.abs(Q) / Q0);
       // Top plate sign indicated by sign of Q
       const QSign = Q >= 0 ? '+' : '−';
-      ctx.strokeStyle = `rgba(255,107,42,${plateAlpha})`;
+      ctx.strokeStyle = withAlpha(colors.accent, plateAlpha);
       ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.moveTo(cx - plateW / 2, yT - plateGap / 2);
@@ -107,7 +106,7 @@ export function LCOscillationDemo({ figure }: Props) {
       ctx.moveTo(cx - plateW / 2, yT + plateGap / 2);
       ctx.lineTo(cx + plateW / 2, yT + plateGap / 2);
       ctx.stroke();
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       drawLabel(ctx, { text: `C  ${QSign}${Math.abs((Q / Q0) * V0).toFixed(2)}V`, x: cx + plateW / 2 + 6, y: yT, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
 
       // Inductor (right middle)
@@ -132,7 +131,7 @@ export function LCOscillationDemo({ figure }: Props) {
       drawCurrentDotsPath(ctx, simTime * 60 * dir, pathPts, Iscale);
 
       // Labels
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: `L = ${Lmh.toFixed(1)} mH    C = ${Cuf.toFixed(0)} µF`, x: 10, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: `f₀ = ${fmtFrequency(f0)}`, x: splitX - 10, y: 8, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       drawLabel(ctx, { text: `I → ${fmtCurrent(I)}`, x: 10, y: h - 6, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
@@ -140,7 +139,7 @@ export function LCOscillationDemo({ figure }: Props) {
       ctx.restore();
 
       // Divider
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = colors.border;
       ctx.beginPath();
       ctx.moveTo(splitX, 0);
       ctx.lineTo(splitX, h);
@@ -166,7 +165,7 @@ export function LCOscillationDemo({ figure }: Props) {
       ctx.fillRect(x1, barY, barW, barH);
       ctx.fillRect(x2, barY, barW, barH);
       ctx.restore();
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(x1, barY, barW, barH);
       ctx.strokeRect(x2, barY, barW, barH);
 
@@ -175,16 +174,16 @@ export function LCOscillationDemo({ figure }: Props) {
       const hC = fracC * barH;
       const hL = fracL * barH;
       // Capacitor bar (amber)
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       ctx.fillRect(x1, barY + barH - hC, barW, hC);
       // Inductor bar (teal)
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = colors.teal;
       ctx.fillRect(x2, barY + barH - hL, barW, hL);
 
-      ctx.fillStyle = getCanvasColors().text;
+      ctx.fillStyle = colors.text;
       drawLabel(ctx, { text: 'U_C', x: x1 + barW / 2, y: barY + barH + 6, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: 'U_L', x: x2 + barW / 2, y: barY + barH + 6, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: `${(fracC * 100).toFixed(0)}%`, x: x1 + barW / 2, y: barY + barH + 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: `${(fracL * 100).toFixed(0)}%`, x: x2 + barW / 2, y: barY + barH + 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
@@ -192,7 +191,7 @@ export function LCOscillationDemo({ figure }: Props) {
         x: innerX,
         y: 8,
         text: 'Energy shuttles between C and L',
-        color: getCanvasColors().textDim,
+        color: colors.textDim,
         baseline: 'top',
       });
 
@@ -288,7 +287,7 @@ function drawCurrentDotsPath(
   const offset = ((t * speed) / 60) % spacing;
   const intensity = Math.max(0.0, Math.min(1, Iscale));
   if (intensity < 0.02) return;
-  ctx.fillStyle = `rgba(91,174,248,${0.3 + 0.6 * intensity})`;
+  ctx.fillStyle = withAlpha(getCanvasColors().blue, 0.3 + 0.6 * intensity);
   for (let s = -spacing; s < total; s += spacing) {
     const d = s + offset;
     if (d < 0 || d > total) continue;

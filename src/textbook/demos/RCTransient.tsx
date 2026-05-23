@@ -395,7 +395,7 @@ function drawCapacitorV(
   // Plates
   const charge = Math.max(0, Math.min(1, Vc / V0));
   const alpha = 0.45 + 0.5 * charge;
-  ctx.strokeStyle = `rgba(255,107,42,${alpha})`;
+  ctx.strokeStyle = withAlpha(getCanvasColors().accent, alpha);
   ctx.lineWidth = 2.5;
   ctx.beginPath();
   ctx.moveTo(x - 12, yTop);
@@ -432,7 +432,7 @@ function drawCurrentDotsPath(
   const spacing = 22;
   const offset = (t * 1.0) % spacing;
   const intensity = Math.max(0.1, Math.min(1, Iscale));
-  ctx.fillStyle = `rgba(91,174,248,${0.3 + 0.6 * intensity})`;
+  ctx.fillStyle = withAlpha(getCanvasColors().blue, 0.3 + 0.6 * intensity);
   for (let s = -spacing; s < total; s += spacing) {
     const d = s + offset;
     if (d < 0 || d > total) continue;

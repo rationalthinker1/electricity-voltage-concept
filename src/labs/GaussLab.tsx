@@ -21,6 +21,7 @@ import { TryIt } from '@/components/TryIt';
 import { drawCharge } from '@/lib/canvasPrimitives';
 import { PHYS, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
+import { withAlpha } from '@/lib/canvasTheme';
 
 const SLUG = 'gauss';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -223,7 +224,7 @@ export default function GaussLab() {
           const stillInSphere = dCenter < R_mm;
           ctx.beginPath();
           ctx.arc(tx, ty, 1.8, 0, Math.PI * 2);
-          ctx.fillStyle = stillInSphere ? 'rgba(91,174,248,0.85)' : 'rgba(255,107,42,0.95)';
+          ctx.fillStyle = stillInSphere ? withAlpha(colors.blue, 0.85) : withAlpha(colors.accent, 0.95);
           ctx.save();
           ctx.globalAlpha = 0.55;
           ctx.shadowColor = colors.accent;
@@ -235,14 +236,14 @@ export default function GaussLab() {
       }
 
       // Gaussian sphere
-      ctx.strokeStyle = inside ? 'rgba(108,197,194,0.85)' : 'rgba(108,197,194,0.55)';
+      ctx.strokeStyle = inside ? withAlpha(colors.teal, 0.85) : withAlpha(colors.teal, 0.55);
       ctx.lineWidth = inside ? 2.2 : 1.6;
       ctx.setLineDash([6, 5]);
       ctx.beginPath();
       ctx.arc(cx, cy, R_mm, 0, Math.PI * 2);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = inside ? 'rgba(108,197,194,0.04)' : 'rgba(108,197,194,0.02)';
+      ctx.fillStyle = inside ? withAlpha(colors.teal, 0.04) : withAlpha(colors.teal, 0.02);
       ctx.beginPath();
       ctx.arc(cx, cy, R_mm, 0, Math.PI * 2);
       ctx.fill();
@@ -274,12 +275,12 @@ export default function GaussLab() {
         ctx,
         { x: qp.x, y: qp.y },
         {
-          color: '#ff3b6e',
+          color: colors.pink,
           label: 'Q',
           magnitudeLabel: `= ${Math.abs(qNC).toFixed(1)} nC`,
           radius: 11 + Math.min(10, Math.abs(qNC) * 0.4),
           sign: qNC >= 0 ? '+' : '−',
-          textColor: '#0a0a0b',
+          textColor: colors.canvasBg,
         },
       );
 
@@ -309,7 +310,7 @@ export default function GaussLab() {
       ctx.restore();
       ctx.strokeStyle = colors.border;
       ctx.strokeRect(w - 146, 16, 130, 28);
-      ctx.fillStyle = inside ? 'rgba(255,107,42,0.95)' : 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = inside ? withAlpha(colors.accent, 0.95) : withAlpha(colors.textDim, 0.85);
       ctx.font = '11px JetBrains Mono';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';

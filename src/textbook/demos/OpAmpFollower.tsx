@@ -20,6 +20,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { fmtResistance } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -176,7 +177,7 @@ function drawSchematic(
   ctx.strokeStyle = getCanvasColors().pink;
   ctx.strokeRect(xRsLeft, yWire - 7, 60, 14);
   ctx.fillStyle = getCanvasColors().pink;
-  drawLabel(ctx, { text: `R_s = ${formatR(Rs)}`, x: xRsLeft + 30, y: yWire - 10, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+  drawLabel(ctx, { text: `R_s = ${fmtResistance(Rs)}`, x: xRsLeft + 30, y: yWire - 10, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
 
   ctx.save();
   ctx.globalAlpha = 0.55;
@@ -252,7 +253,7 @@ function drawSchematic(
   ctx.strokeRect(xRL - 7, yWire + 4, 14, 60);
   ctx.restore();
   ctx.fillStyle = getCanvasColors().blue;
-  drawLabel(ctx, { text: `R_L = ${formatR(RL)}`, x: xRL + 10, y: yWire + 34, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+  drawLabel(ctx, { text: `R_L = ${fmtResistance(RL)}`, x: xRL + 10, y: yWire + 34, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
 
   // Probe dot at load node + V_load label
   ctx.fillStyle = getCanvasColors().accent;
@@ -365,8 +366,3 @@ function drawBars(
   ctx.restore();
 }
 
-function formatR(R: number): string {
-  if (R >= 1e6) return (R / 1e6).toFixed(2) + ' MΩ';
-  if (R >= 1e3) return (R / 1e3).toFixed(2) + ' kΩ';
-  return R.toFixed(0) + ' Ω';
-}

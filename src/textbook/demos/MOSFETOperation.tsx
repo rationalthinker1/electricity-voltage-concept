@@ -22,6 +22,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -121,7 +122,7 @@ export function MOSFETOperationDemo({ figure }: Props) {
         // for V_DS < Vov, channel is uniform; for V_DS > Vov, channel
         // is pinched off at the drain end.
         const pinched = V_DS > Vov;
-        ctx.fillStyle = `rgba(255,107,42,${channelAlpha})`;
+        ctx.fillStyle = withAlpha(colors.accent, channelAlpha);
         ctx.beginPath();
         ctx.moveTo(oxL, ndT - 1);
         ctx.lineTo(oxR, ndT - 1);

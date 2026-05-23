@@ -167,7 +167,7 @@ export function ImageChargeField3DDemo({ figure }: Props) {
             const rel = Math.abs(sigma) / sigmaMax; // 0..1
             const p2 = project(v3(x, 0, z), cam, w, h);
             const rad = 1 + 5 * rel;
-            ctx.fillStyle = `rgba(91,174,248,${0.25 + 0.55 * rel})`;
+            ctx.fillStyle = withAlpha(colors.blue, 0.25 + 0.55 * rel);
             ctx.beginPath();
             ctx.arc(p2.x, p2.y, rad, 0, Math.PI * 2);
             ctx.fill();

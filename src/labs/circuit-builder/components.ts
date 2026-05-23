@@ -58,6 +58,7 @@ function drawBody(
   innerHalf: number,
   bodyHalfLen: number,
   fill: boolean | string = true,
+  colors?: ThemeColors,
 ) {
   const ax = p1.x - p0.x;
   const ay = p1.y - p0.y;
@@ -79,7 +80,7 @@ function drawBody(
   ctx.lineTo(cx - hx + wx, cy - hy + wy);
   ctx.closePath();
   if (fill) {
-    ctx.fillStyle = fill === true ? '#16161a' : (fill as string);
+    ctx.fillStyle = fill === true ? colors!.surface : (fill as string);
     ctx.fill();
   }
   ctx.stroke();
@@ -126,7 +127,7 @@ function drawResistor(st: DrawCtx) {
   // Leads
   drawLeads(ctx, p0, p1, bodyHalf);
   // Hidden background body for hit-area visibility
-  drawBody(ctx, p0, p1, BODY_HALF, bodyHalf, st.colors.surface);
+  drawBody(ctx, p0, p1, BODY_HALF, bodyHalf, st.colors.surface, st.colors);
   // Zig-zag
   ctx.beginPath();
   const zigCount = 6;

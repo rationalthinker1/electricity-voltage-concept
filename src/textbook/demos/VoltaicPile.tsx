@@ -78,7 +78,7 @@ export function VoltaicPileDemo({ figure }: Props) {
       ctx.stroke();
       const fx = wireRightX + 60;
       const fy = H / 2;
-      ctx.strokeStyle = '#ecebe5';
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(fx, fy - 30, 8, 0, Math.PI * 2);

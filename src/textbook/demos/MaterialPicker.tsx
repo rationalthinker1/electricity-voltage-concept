@@ -12,6 +12,7 @@ import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
+import { fmtCurrent } from '@/lib/formatters';
 import { MATERIALS, type MaterialKey } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -111,7 +112,7 @@ export function MaterialPickerDemo({ figure }: Props) {
                     : '10px "JetBrains Mono", monospace', align: 'right' });
 
         ctx.fillStyle = isSel ? colors.accent : withAlpha(colors.textDim, 0.85);
-        const txt = formatCurrent(ik);
+        const txt = fmtCurrent(ik);
         drawLabel(ctx, { text: txt, x: Math.min(w - padR - 60, x1 + 6), y: yMid + 3, font: '10px "JetBrains Mono", monospace' });
       });
 
@@ -168,10 +169,3 @@ export function MaterialPickerDemo({ figure }: Props) {
   );
 }
 
-function formatCurrent(I: number): string {
-  if (I >= 1000) return (I / 1000).toFixed(2) + ' kA';
-  if (I >= 1) return I.toFixed(1) + ' A';
-  if (I >= 1e-3) return (I * 1e3).toFixed(1) + ' mA';
-  if (I >= 1e-6) return (I * 1e6).toFixed(1) + ' µA';
-  return I.toExponential(1) + ' A';
-}

@@ -23,7 +23,7 @@ import { TryIt } from '@/components/TryIt';
 import { drawResistor } from '@/lib/canvasPrimitives';
 import { MATERIALS, pretty, type MaterialKey, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 const SLUG = 'resistance';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -143,9 +143,9 @@ export default function ResistanceLab() {
         { x: w / 2 - 60, y: tickY - 45 },
         { x: w / 2 + 60, y: tickY - 45 },
         {
-          color: 'rgba(108,197,194,0.7)',
+          color: withAlpha(getCanvasColors().teal, 0.7),
           label: 'R',
-          labelColor: 'rgba(108,197,194,0.85)',
+          labelColor: withAlpha(getCanvasColors().teal, 0.85),
           amplitude: 11,
           labelOffset: { x: 0, y: 24 },
         },
@@ -153,9 +153,9 @@ export default function ResistanceLab() {
 
       // Wire body
       const grd = ctx.createLinearGradient(0, top, 0, bot);
-      grd.addColorStop(0, 'rgba(255,107,42,0.08)');
-      grd.addColorStop(0.5, 'rgba(255,107,42,0.16)');
-      grd.addColorStop(1, 'rgba(255,107,42,0.08)');
+      grd.addColorStop(0, withAlpha(getCanvasColors().accent, 0.08));
+      grd.addColorStop(0.5, withAlpha(getCanvasColors().accent, 0.16));
+      grd.addColorStop(1, withAlpha(getCanvasColors().accent, 0.08));
       ctx.fillStyle = grd;
       const radius = Math.min(14, thickness * 0.45);
       roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, radius);

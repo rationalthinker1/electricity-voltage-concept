@@ -26,6 +26,7 @@ import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow, drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
+import { fmtEnergy } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -130,7 +131,7 @@ export function VabWorkEnergyDemo({ figure }: Props) {
               { x: xMid - (Ndir * arrowLen) / 2, y: yA },
               { x: xMid + (Ndir * arrowLen) / 2, y: yA },
               {
-                color: `rgba(255,107,42,${eAlpha.toFixed(3)})`,
+                color: withAlpha(colors.accent, eAlpha),
                 lineWidth: 1.4,
                 headLength: 8,
                 headWidth: 5,
@@ -138,7 +139,7 @@ export function VabWorkEnergyDemo({ figure }: Props) {
             );
           }
         }
-        ctx.fillStyle = `rgba(255,107,42,${(eAlpha + 0.2).toFixed(3)})`;
+        ctx.fillStyle = withAlpha(colors.accent, eAlpha + 0.2);
         drawLabel(ctx, { text: `E points high V → low V    (|V_ab| = ${Eabs.toFixed(1)} V drives it)`, x: (channelLeft + channelRight) / 2, y: channelTop - 4, font: 'italic 11px "STIX Two Text", serif', align: 'center', baseline: 'bottom' });
       } else {
         drawLabel(ctx, { text: 'V_a = V_b — no field, no motion', x: (channelLeft + channelRight) / 2, y: channelMidY, font: 'italic 11px "STIX Two Text", serif', align: 'center', baseline: 'middle' });
@@ -172,9 +173,9 @@ export function VabWorkEnergyDemo({ figure }: Props) {
         const trailLen = Math.min(60, phys.v * 80);
         const tx = xC - dir * trailLen;
         const grad = ctx.createLinearGradient(tx, yC, xC, yC);
-        const trailRGB = positive ? '255,59,110' : '91,174,248';
-        grad.addColorStop(0, `rgba(${trailRGB},0)`);
-        grad.addColorStop(1, `rgba(${trailRGB},0.55)`);
+        const trailColor = positive ? colors.pink : colors.blue;
+        grad.addColorStop(0, withAlpha(trailColor, 0));
+        grad.addColorStop(1, withAlpha(trailColor, 0.55));
         ctx.strokeStyle = grad;
         ctx.lineWidth = radius * 1.4;
         ctx.lineCap = 'round';
@@ -214,11 +215,11 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       ctx.strokeRect(barLeft, barTop, barW, barH);
 
       const pePx = barW * peFrac;
-      ctx.fillStyle = `rgba(108,197,194,${(0.55 + 0.25 * peFrac).toFixed(3)})`;
+      ctx.fillStyle = withAlpha(colors.teal, 0.55 + 0.25 * peFrac);
       ctx.fillRect(barLeft, barTop, pePx, barH);
 
       const kePx = barW * keFrac;
-      ctx.fillStyle = `rgba(255,107,42,${(0.55 + 0.25 * keFrac).toFixed(3)})`;
+      ctx.fillStyle = withAlpha(colors.accent, 0.55 + 0.25 * keFrac);
       ctx.fillRect(barLeft + pePx, barTop, kePx, barH);
       const labelY = barTop + barH / 2;
       drawLabel(ctx, { text: `total energy |qV_ab| = ${dPE_uJ.toFixed(2)} µJ`, x: barLeft, y: barTop - 4, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
@@ -244,13 +245,6 @@ export function VabWorkEnergyDemo({ figure }: Props) {
     () => ({ context: { s: 0, v: 0 } }),
   );
 
-  // Pretty-print the work / energy readouts.
-  const fmtJ = (j: number) => {
-    const aj = Math.abs(j);
-    if (aj < 1e-3) return `${(j * 1e6).toFixed(2)} µJ`;
-    if (aj < 1) return `${(j * 1e3).toFixed(2)} mJ`;
-    return `${j.toFixed(3)} J`;
-  };
 
   return (
     <Demo
@@ -317,8 +311,8 @@ export function VabWorkEnergyDemo({ figure }: Props) {
           value={(Vab >= 0 ? '+' : '') + Vab.toFixed(2)}
           unit="V"
         />
-        <MiniReadout label="W = q V_ab" value={fmtJ(W)} />
-        <MiniReadout label="|ΔU| traded" value={fmtJ(dPE)} />
+        <MiniReadout label="W = q V_ab" value={fmtEnergy(W)} />
+        <MiniReadout label="|ΔU| traded" value={fmtEnergy(dPE)} />
       </DemoControls>
       <EquationStrip
         leftLabel="Voltage between the two points"

@@ -16,7 +16,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -177,7 +177,7 @@ function drawFieldLines(
       k * linkFrac > 0.1 &&
       Math.abs(yOff) < halfH * 0.7;
     if (threads) {
-      ctx.strokeStyle = `rgba(255,107,42,${0.35 + 0.55 * k})`;
+      ctx.strokeStyle = withAlpha(getCanvasColors().accent, 0.35 + 0.55 * k);
       ctx.setLineDash([]);
     } else {
       ctx.save();

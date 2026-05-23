@@ -151,8 +151,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
 
   const setup = useSimLoop(
     stateRef,
-    ({ ctx, w, h, dpr }, state, _dt, simTime) => {
-      const colors = getCanvasColors();
+    ({ ctx, w, h, dpr, colors }, state, _dt, simTime) => {
       const { V, R1, R2, R3, showKCL, showKVL } = state;
       const t = simTime;
 
@@ -162,7 +161,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       const I2 = VAB / R2;
       const I3 = VAB / R3;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padX = 60;
@@ -229,7 +228,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
 
       // Dynamic overlay: live current readouts next to each branch.
       ctx.restore();
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = colors.blue;
       drawLabel(ctx, { text: `I₁ = ${fmtCurrent(I1)}`, x: (batX + nodeA_x) / 2, y: yTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       drawLabel(ctx, { text: `I₃ = ${fmtCurrent(I3)}`, x: (nodeA_x + outX) / 2, y: yTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       drawLabel(ctx, { text: `I₂ = ${fmtCurrent(I2)}`, x: nodeA_x + 26, y: h / 2, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
@@ -237,7 +236,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       // Dynamic overlay: KCL / KVL annotation boxes (toggled by the controls).
       if (showKCL) {
         // Highlight node A with a ring + show I1 = I2 + I3 box
-        ctx.strokeStyle = getCanvasColors().accent;
+        ctx.strokeStyle = colors.accent;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.arc(nodeA_x, yTop, 14, 0, Math.PI * 2);
@@ -255,20 +254,20 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         ctx.strokeStyle = colors.accent;
         ctx.strokeRect(boxX, boxY, 230, 50);
         ctx.restore();
-        ctx.fillStyle = getCanvasColors().accent;
+        ctx.fillStyle = colors.accent;
         drawLabel(ctx, { text: 'KCL at node A:', x: boxX + 8, y: boxY + 6, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'top' });
         drawLabel(ctx, {
           x: boxX + 8,
           y: boxY + 22,
           text: `I₁ = I₂ + I₃`,
-          color: getCanvasColors().text,
+          color: colors.text,
           size: 11,
         });
         drawLabel(ctx, {
           x: boxX + 8,
           y: boxY + 36,
           text: `${fmtCurrent(I1)} = ${fmtCurrent(I2)} + ${fmtCurrent(I3)} ✓`,
-          color: getCanvasColors().textDim,
+          color: colors.textDim,
         });
       }
 
@@ -287,9 +286,9 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         ctx.strokeRect(boxX, boxY, 258, 82);
 
         ctx.restore();
-        ctx.fillStyle = getCanvasColors().teal;
+        ctx.fillStyle = colors.teal;
         drawLabel(ctx, { text: 'KVL loops (sum of drops = 0):', x: boxX + 8, y: boxY + 6, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'top' });
-        ctx.fillStyle = getCanvasColors().text;
+        ctx.fillStyle = colors.text;
         drawLabel(ctx, { text: `Left:  V − I₁R₁ − I₂R₂ = 0`, x: boxX + 8, y: boxY + 22, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
         drawLabel(ctx, { text: `Right: I₂R₂ − I₃R₃ = 0`, x: boxX + 8, y: boxY + 36, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
 
@@ -298,7 +297,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         const drop3 = I3 * R3;
         const lhsL = V - drop1 - drop2;
         const lhsR = drop2 - drop3;
-        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.fillStyle = colors.textDim;
         drawLabel(ctx, { text: `${V.toFixed(2)} − ${drop1.toFixed(2)} − ${drop2.toFixed(2)} = ${lhsL.toFixed(3)} ✓`, x: boxX + 8, y: boxY + 52, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
         drawLabel(ctx, { text: `${drop2.toFixed(2)} − ${drop3.toFixed(2)} = ${lhsR.toFixed(3)} ✓`, x: boxX + 8, y: boxY + 66, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       }
@@ -308,7 +307,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         x: 12,
         y: 10,
         text: 'Two-loop network: R₁ in series with (R₂ ∥ R₃)',
-        color: getCanvasColors().textDim,
+        color: colors.textDim,
         baseline: 'top',
       });
     },
@@ -405,7 +404,7 @@ function drawCurrentDotsPath(
   const speed = 80;
   const offset = (t * speed) % spacing;
   const intensity = Math.max(0.15, Math.min(1, Iscale));
-  ctx.fillStyle = `rgba(91,174,248,${0.4 + 0.5 * intensity})`;
+  ctx.fillStyle = withAlpha(getCanvasColors().blue, 0.4 + 0.5 * intensity);
   for (let s = -spacing; s < total; s += spacing) {
     const d = s + offset;
     if (d < 0 || d > total) continue;

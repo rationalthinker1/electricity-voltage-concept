@@ -32,6 +32,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { depthSortIndices, project, v3, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -216,7 +217,7 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
         const p1 = project(a.from, cam, w, h);
         const p2 = project(a.to, cam, w, h);
         if (p1.depth <= 0 || p2.depth <= 0) continue;
-        const col = `rgba(108,197,194,${fieldAlpha.toFixed(3)})`;
+        const col = withAlpha(colors.teal, fieldAlpha);
         ctx.strokeStyle = col;
         ctx.lineWidth = 1.2;
         ctx.beginPath();
@@ -321,13 +322,13 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
         // Aligned dipoles glow amber; misaligned ones use a muted neutral.
         const baseColor =
           align01 > 0.55
-            ? `rgba(255,107,42,${(0.55 + 0.4 * align01).toFixed(3)})`
+            ? withAlpha(colors.accent, 0.55 + 0.4 * align01)
             : `rgba(200,195,170,${(0.35 + 0.25 * (1 - align01)).toFixed(3)})`;
         if (align01 > 0.55) {
           drawGlowPath(ctx, [p1, p2], {
             color: baseColor,
             lineWidth: 1.8,
-            glowColor: `rgba(255,107,42,${(0.18 * align01).toFixed(3)})`,
+            glowColor: withAlpha(colors.accent, 0.18 * align01),
             glowWidth: 5.5,
           });
         } else {

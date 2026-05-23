@@ -79,7 +79,7 @@ export function THDAndDistortionDemo() {
       }
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       for (let i = 0; i <= samples; i++) {
@@ -120,7 +120,7 @@ export function THDAndDistortionDemo() {
         const amp = Math.abs(coeffs[n - 1]);
         const x = xOf(n) - barW / 2;
         const hPx = (amp / maxAmp) * bH * 0.9;
-        ctx.fillStyle = n === 1 ? withAlpha(colors.teal, 0.85) : '#ff6b2a';
+        ctx.fillStyle = n === 1 ? withAlpha(colors.teal, 0.85) : colors.accent;
         ctx.fillRect(x, bMid - hPx, barW, hPx);
         if (amp / maxAmp > 0.06) {
           drawLabel(ctx, {

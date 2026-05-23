@@ -23,7 +23,7 @@ import { Formula } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS, pretty, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 const SLUG = 'poynting';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -160,9 +160,9 @@ export default function PoyntingLab() {
 
       // --- Wire cylinder body ---
       const sideGrd = ctx.createLinearGradient(0, g.wireCY - r, 0, g.wireCY + r);
-      sideGrd.addColorStop(0, 'rgba(255,107,42,0.14)');
-      sideGrd.addColorStop(0.5, 'rgba(255,107,42,0.32)');
-      sideGrd.addColorStop(1, 'rgba(255,107,42,0.14)');
+      sideGrd.addColorStop(0, withAlpha(getCanvasColors().accent, 0.14));
+      sideGrd.addColorStop(0.5, withAlpha(getCanvasColors().accent, 0.32));
+      sideGrd.addColorStop(1, withAlpha(getCanvasColors().accent, 0.14));
       ctx.fillStyle = sideGrd;
       ctx.beginPath();
       ctx.moveTo(g.wireXL, g.wireCY - r);
@@ -204,9 +204,9 @@ export default function PoyntingLab() {
           { x: g.wireXR, y: g.wireCY - r },
         ],
         {
-          color: 'rgba(255,107,42,0.4)',
+          color: withAlpha(getCanvasColors().accent, 0.4),
           lineWidth: 0.5,
-          glowColor: 'rgba(255,107,42,0.35)',
+          glowColor: withAlpha(getCanvasColors().accent, 0.35),
           glowWidth: 12,
         },
       );
@@ -217,9 +217,9 @@ export default function PoyntingLab() {
           { x: g.wireXR, y: g.wireCY + r },
         ],
         {
-          color: 'rgba(255,107,42,0.4)',
+          color: withAlpha(getCanvasColors().accent, 0.4),
           lineWidth: 0.5,
-          glowColor: 'rgba(255,107,42,0.35)',
+          glowColor: withAlpha(getCanvasColors().accent, 0.35),
           glowWidth: 12,
         },
       );

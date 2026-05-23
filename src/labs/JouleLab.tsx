@@ -21,6 +21,7 @@ import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
 import { MATERIALS, PHYS, pretty, formatTime, type MaterialKey, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
+import { withAlpha } from '@/lib/canvasTheme';
 
 const SLUG = 'joule';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -144,9 +145,9 @@ export default function JouleLab() {
         );
         grd.addColorStop(1, `rgba(${cr},${cg},${cb},${0.2 + glow * 0.5})`);
       } else {
-        grd.addColorStop(0, 'rgba(255,107,42,0.08)');
-        grd.addColorStop(0.5, 'rgba(255,107,42,0.16)');
-        grd.addColorStop(1, 'rgba(255,107,42,0.08)');
+        grd.addColorStop(0, withAlpha(colors.accent, 0.08));
+        grd.addColorStop(0.5, withAlpha(colors.accent, 0.16));
+        grd.addColorStop(1, withAlpha(colors.accent, 0.08));
       }
       ctx.fillStyle = grd;
       const radius = Math.min(12, thickness * 0.45);
@@ -242,7 +243,7 @@ export default function JouleLab() {
       else bulbTxt = `≈ ${pretty(bulbs100).replace(/<[^>]+>/g, '')} × 100 W bulbs`;
       ctx.fillText(bulbTxt, 16, 36);
 
-      ctx.fillStyle = visiblePower ? `rgb(${col.r},${col.g},${col.b})` : 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = visiblePower ? `rgb(${col.r},${col.g},${col.b})` : withAlpha(colors.textDim, 0.85);
       ctx.font = '14px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText(`T ≈ ${pretty(computed.T_eq).replace(/<[^>]+>/g, '')} K`, w - 16, 12);

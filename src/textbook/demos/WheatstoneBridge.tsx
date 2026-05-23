@@ -185,10 +185,10 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
 
   const setup = useSimLoop(
     stateRef,
-    ({ ctx, w, h, dpr }, state) => {
+    ({ ctx, w, h, dpr, colors }, state) => {
       const { V, V_A, V_B, dV } = state;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padX = 60;
@@ -207,14 +207,14 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
       drawGalvanometer(ctx, xA, yMid, dV, V);
 
       // Dynamic overlay: live node potentials and chapter header.
-      drawLabel(ctx, { text: `A   ${V_A.toFixed(3)} V`, x: xA + 8, y: yTop - 6, color: 'rgba(255,255,255,0.85)', weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'bottom' });
-      drawLabel(ctx, { text: `B   ${V_B.toFixed(3)} V`, x: xB + 8, y: yBot + 6, color: 'rgba(255,255,255,0.85)', weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `A   ${V_A.toFixed(3)} V`, x: xA + 8, y: yTop - 6, color: withAlpha(colors.text, 0.85), weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'bottom' });
+      drawLabel(ctx, { text: `B   ${V_B.toFixed(3)} V`, x: xB + 8, y: yBot + 6, color: withAlpha(colors.text, 0.85), weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
 
       drawLabel(ctx, {
         x: 12,
         y: 10,
         text: 'Wheatstone bridge — not reducible by series/parallel rules',
-        color: withAlpha(getCanvasColors().textDim, 0.75),
+        color: withAlpha(colors.textDim, 0.75),
         baseline: 'top',
       });
     },
@@ -315,7 +315,7 @@ function drawGalvanometer(
   const norm = Math.max(-1, Math.min(1, dV / fullScale));
   const ang = -Math.PI / 2 + norm * (Math.PI / 3);
   const isBalanced = Math.abs(dV) < V * 0.005;
-  ctx.strokeStyle = isBalanced ? '#ff6b2a' : withAlpha(getCanvasColors().text, 0.95);
+  ctx.strokeStyle = isBalanced ? getCanvasColors().accent : withAlpha(getCanvasColors().text, 0.95);
   ctx.lineWidth = 1.8;
   ctx.beginPath();
   ctx.moveTo(x, y + 4);

@@ -20,6 +20,7 @@ import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
 import { PHYS, pretty, prettyJsx } from '@/lib/physics';
+import { withAlpha } from '@/lib/canvasTheme';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
 const SLUG = 'lorentz';
@@ -142,7 +143,7 @@ export default function LorentzLab() {
 
         // Trail
         if (sim.trail.length > 2) {
-          ctx.strokeStyle = qSign < 0 ? 'rgba(91,174,248,0.45)' : 'rgba(255,59,110,0.45)';
+          ctx.strokeStyle = qSign < 0 ? withAlpha(colors.blue, 0.45) : withAlpha(colors.pink, 0.45);
           ctx.lineWidth = 1.4;
           ctx.beginPath();
           ctx.moveTo(sim.trail[0].x, sim.trail[0].y);
@@ -210,7 +211,7 @@ export default function LorentzLab() {
         }
 
         // Particle
-        const partColor = qSign < 0 ? '#5baef8' : qSign > 0 ? '#ff3b6e' : '#a09e95';
+        const partColor = qSign < 0 ? colors.blue : qSign > 0 ? colors.pink : colors.textDim;
         ctx.fillStyle = partColor;
         ctx.shadowColor = partColor;
         ctx.shadowBlur = 14;

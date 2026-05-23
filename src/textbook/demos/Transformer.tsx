@@ -14,7 +14,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/co
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -76,6 +76,7 @@ export function TransformerDemo({ figure }: Props) {
       const primHalfH = (coreBot - coreTop - 2 * coreThick) * 0.4;
       drawCoil(
         ctx,
+        colors,
         primX,
         primCenterY,
         coreThick,
@@ -86,6 +87,7 @@ export function TransformerDemo({ figure }: Props) {
       const secX = coreRight;
       drawCoil(
         ctx,
+        colors,
         secX,
         primCenterY,
         coreThick,
@@ -126,7 +128,7 @@ export function TransformerDemo({ figure }: Props) {
           py = cyB - (s - 2 * cw - ch);
         }
         const a = 0.25 + intensity * 0.7;
-        ctx.fillStyle = `rgba(108,197,194,${a})`;
+        ctx.fillStyle = withAlpha(colors.teal, a);
         ctx.beginPath();
         ctx.arc(px, py, 2.6, 0, Math.PI * 2);
         ctx.fill();
@@ -165,12 +167,12 @@ export function TransformerDemo({ figure }: Props) {
         x: loadX,
         y: loadY,
         radius: 32,
-        color: `rgba(255,107,42,${0.7 * lampIntensity})`,
+        color: withAlpha(colors.accent, 0.7 * lampIntensity),
         alpha: 1,
         extent: 1,
       });
-      ctx.strokeStyle = `rgba(255,107,42,${0.45 + 0.5 * lampIntensity})`;
-      ctx.fillStyle = `rgba(255,107,42,${0.15 + 0.55 * lampIntensity})`;
+      ctx.strokeStyle = withAlpha(colors.accent, 0.45 + 0.5 * lampIntensity);
+      ctx.fillStyle = withAlpha(colors.accent, 0.15 + 0.55 * lampIntensity);
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.arc(loadX, loadY, 12, 0, Math.PI * 2);
@@ -275,6 +277,7 @@ export function TransformerDemo({ figure }: Props) {
  *  `side` indicates which side of the arm the coil "winds in front of" for visual depth. */
 function drawCoil(
   ctx: CanvasRenderingContext2D,
+  colors: import('@/lib/canvasTheme').ThemeColors,
   cx: number,
   cy: number,
   armHalf: number,
@@ -287,23 +290,23 @@ function drawCoil(
   const dy = (yBot - yTop) / turns;
   const r = dy * 0.42;
   const offset = side === 'left' ? -armHalf - 6 : armHalf + 6;
-  ctx.strokeStyle = getCanvasColors().accent;
+  ctx.strokeStyle = colors.accent;
   ctx.lineWidth = 1.6;
   for (let i = 0; i < turns; i++) {
     const y = yTop + (i + 0.5) * dy;
     // back half (behind the core arm)
-    ctx.strokeStyle = withAlpha(getCanvasColors().accent, 0.4);
+    ctx.strokeStyle = withAlpha(colors.accent, 0.4);
     ctx.beginPath();
     ctx.ellipse(cx, y, armHalf + 3, r, 0, Math.PI, 2 * Math.PI);
     ctx.stroke();
     // front half (in front)
-    ctx.strokeStyle = getCanvasColors().accent;
+    ctx.strokeStyle = colors.accent;
     ctx.beginPath();
     ctx.ellipse(cx, y, armHalf + 3, r, 0, 0, Math.PI);
     ctx.stroke();
   }
   // outer connection line on chosen side
-  ctx.strokeStyle = withAlpha(getCanvasColors().accent, 0.55);
+  ctx.strokeStyle = withAlpha(colors.accent, 0.55);
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(cx + offset, yTop);

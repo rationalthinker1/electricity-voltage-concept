@@ -368,7 +368,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
 
           // Blade — the internal SPDT contact from common to active traveller.
           ctx.save();
-          ctx.strokeStyle = '#ff6b2a';
+          ctx.strokeStyle = colors.accent;
           ctx.lineWidth = 2;
           ctx.lineCap = 'round';
           ctx.beginPath();
@@ -385,14 +385,14 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
           const isBad = stBadWireIds.has(wr.id);
           if (isBad) {
             drawGlowPath(ctx, [a, b], {
-              color: '#ff3b6e',
+              color: colors.pink,
               glowColor: withAlpha(colors.pink, 0.35),
               lineWidth: 2.4,
               glowWidth: 7,
             });
           } else if (stBulbLit) {
             drawGlowPath(ctx, [a, b], {
-              color: '#ff6b2a',
+              color: colors.accent,
               glowColor: withAlpha(colors.accent, 0.32),
               lineWidth: 2.2,
               glowWidth: 6,
@@ -435,12 +435,12 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
           const isNeu = t === 'power-neutral' || t === 'bulb-neutral';
           ctx.save();
           let fill = withAlpha(colors.text, 0.8);
-          if (isHot && (isPower || isBulb)) fill = '#ff3b6e';
-          else if (isNeu && (isPower || isBulb)) fill = '#5baef8';
-          else if (isSwitchTerminal(t)) fill = '#ecebe5';
+          if (isHot && (isPower || isBulb)) fill = colors.pink;
+          else if (isNeu && (isPower || isBulb)) fill = colors.blue;
+          else if (isSwitchTerminal(t)) fill = colors.text;
           ctx.fillStyle = fill;
           if (isHeld) {
-            ctx.strokeStyle = '#ff6b2a';
+            ctx.strokeStyle = colors.accent;
             ctx.lineWidth = 2;
           } else if (isHover) {
             ctx.strokeStyle = withAlpha(colors.accent, 0.65);
