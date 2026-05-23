@@ -9,6 +9,44 @@ memory: project
 
 You bump stale chapter integers in tags, labels, and identifiers after a renumber. You edit the chapter file and every demo file it references. You return a markdown report of every edit and every demo you visited.
 
+## Tool choice — AST vs regex
+
+This agent is one of the cases where the answer is "it depends." Two transform shapes coexist:
+
+1. **Pure string content inside JSX attribute values** — `tag="Try 17.1"` → `tag="Try 21.1"`, `figure="Fig. 17.2"` → `figure="Fig. 21.2"`. The surrounding JSX shape doesn't change. Regex via `grep` + `Edit` is fine here, which is what the existing `scripts/chapter-tag-bumper.mjs` already does.
+2. **Identifiers and block-comment headers** — renaming an exported function like `RotatingCoilGenerator17Demo` → `RotatingCoilGenerator21Demo` (rare; most demo names are slug-based, not number-based), or block-comment file headers (`Demo D17.3 — …` → `Demo D21.3 — …`). Identifier renames benefit from AST scope-aware references; comment headers are safe with regex.
+
+When (2) is in scope, use a `tsx` script via `scripts/lib/jsx-codemod.ts` so identifier renames go through `findReferencesAsNodes()` and don't clobber substring matches. When only (1) is in scope, the existing `scripts/chapter-tag-bumper.mjs` regex pass is fine.
+
+```ts
+import {
+  createProject,
+  walkSourceFiles,
+  forEachJsxElement,
+  findJsxAttribute,
+  getStringAttributeValue,
+  setStringAttributeValue,
+} from './lib/jsx-codemod';
+
+const project = createProject(['src/textbook/Ch*.tsx', 'src/textbook/demos/*.tsx']);
+walkSourceFiles(project, (sf) => {
+  for (const tag of ['TryIt', 'CaseStudy']) {
+    forEachJsxElement(sf, tag, (el) => {
+      const attr = findJsxAttribute(el, 'tag');
+      if (!attr) return;
+      const v = getStringAttributeValue(attr);
+      if (v?.startsWith(`Try ${oldN}.`)) {
+        setStringAttributeValue(attr, v.replace(new RegExp(`^Try ${oldN}\\.`), `Try ${newN}.`));
+      }
+      // …same shape for Case
+    });
+  }
+});
+project.saveSync();
+```
+
+The AST version reads cleanly and is the right shape when the rename should also propagate to identifiers.
+
 ## Why
 
 Chapters are reordered periodically as new content slots in. The slug

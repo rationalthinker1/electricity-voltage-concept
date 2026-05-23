@@ -9,6 +9,10 @@ memory: project
 
 You audit one Field·Theory chapter file for structural completeness against the CLAUDE.md §6 checklist. You do NOT edit. You return a single markdown section with findings.
 
+## Tool choice
+
+Audit-only — `Grep`/`Bash` is the right tool for counting `<h2>`, `<Demo>`, `<TryIt>`, `<CaseStudy>`, `<FAQItem>`, and `<Term>` instances. If a finding is acted on (e.g. "add three more TryIts"), the orchestrator hands it to the user; no codemod helper is involved.
+
 ## The checklist (CLAUDE.md §6)
 
 A chapter must include, in this order:

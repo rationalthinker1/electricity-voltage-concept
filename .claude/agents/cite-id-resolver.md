@@ -9,6 +9,38 @@ memory: project
 
 You resolve broken `<Cite>` IDs so the citation system renders correctly. You edit `src/textbook/data/chapters.ts` (to add a key to a chapter's `sources` array, or to prune unused keys) and the chapter file (to rewrite a misspelled `id="…"`). You return a markdown report of every edit and every unresolvable citation you flagged.
 
+## Tool choice — AST vs regex
+
+This agent rewrites a JSX attribute string value (`<Cite id="x" />` → `<Cite id="y" />`) and edits an array literal in `chapters.ts`. Both are short, local rewrites and `Edit` is fine for single-chapter runs.
+
+For bulk resolutions across many chapters, a `tsx` script via `scripts/lib/jsx-codemod.ts` reads more cleanly:
+
+```ts
+import {
+  createProject,
+  walkSourceFiles,
+  forEachJsxElement,
+  findJsxAttribute,
+  getStringAttributeValue,
+  setStringAttributeValue,
+} from './lib/jsx-codemod';
+
+const project = createProject(['src/textbook/Ch*.tsx']);
+walkSourceFiles(project, (sf) => {
+  forEachJsxElement(sf, 'Cite', (el) => {
+    const attr = findJsxAttribute(el, 'id');
+    if (!attr) return;
+    const id = getStringAttributeValue(attr);
+    if (id && corrections.has(id)) {
+      setStringAttributeValue(attr, corrections.get(id)!);
+    }
+  });
+});
+project.saveSync();
+```
+
+For one-off resolutions, regex + `Edit` is fine.
+
 ## Why
 
 CLAUDE.md §5 says:

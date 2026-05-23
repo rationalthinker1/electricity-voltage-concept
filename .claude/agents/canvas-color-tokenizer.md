@@ -9,6 +9,36 @@ memory: project
 
 You replace hardcoded canvas colours with theme tokens. You edit demo and lab files. You return a markdown report of every conversion, every gradient/ramp exception you flagged, and every import you added.
 
+## Tool choice — AST vs regex
+
+This agent rewrites `ctx.fillStyle = '#…'` / `ctx.strokeStyle = rgba(…)` assignments inside draw closures and adds the `withAlpha` named import to the existing `@/lib/canvasTheme` import line where needed. Both pieces sit at the AST sweet spot — regex can find the assignments but mangles the import-line merge.
+
+Prefer a `tsx` script using `scripts/lib/jsx-codemod.ts`:
+
+```ts
+import {
+  createProject,
+  walkSourceFiles,
+  ensureImport,
+  commitOrDryRun,
+} from './lib/jsx-codemod';
+import { SyntaxKind } from 'ts-morph';
+
+const project = createProject(['src/textbook/demos/*.tsx', 'src/labs/*.tsx']);
+walkSourceFiles(project, (sf) => {
+  let needsWithAlpha = false;
+  for (const assign of sf.getDescendantsOfKind(SyntaxKind.BinaryExpression)) {
+    // detect `ctx.fillStyle = '#…'` / rgba(…) patterns and rewrite
+  }
+  if (needsWithAlpha) ensureImport(sf, '@/lib/canvasTheme', ['withAlpha']);
+});
+commitOrDryRun(project, { dryRun: !process.argv.includes('--write') });
+```
+
+`ensureImport` is idempotent and merges into the existing canvasTheme line if one exists.
+
+Stay with `grep` + `Edit` only for one-shot fixes on a single demo file where ts-morph would be overkill.
+
 ## Why
 
 CLAUDE.md §9 ("Theme-aware drawing") says:

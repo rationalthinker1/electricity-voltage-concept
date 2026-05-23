@@ -9,6 +9,39 @@ memory: project
 
 You delete local SI formatters from demo files and replace their call sites with imports from `@/lib/formatters`. You edit demo files. You return a markdown report of every consolidation and every borderline formatter you flagged.
 
+## Tool choice — AST vs regex
+
+This agent (a) deletes a top-level `function fmtX(v) { … }` declaration, (b) rewrites every call site `fmtX(value)` → `fmtCentralName(value)`, and (c) ensures the central name is imported from `@/lib/formatters`. The renaming step is where regex gets dangerous — a function name `fmtA` collides with substrings like `fmtAlpha`, `confirmAction`, etc., and a string-based pass will quietly corrupt them.
+
+Prefer a `tsx` script using `scripts/lib/jsx-codemod.ts`:
+
+```ts
+import {
+  createProject,
+  walkSourceFiles,
+  ensureImport,
+  commitOrDryRun,
+} from './lib/jsx-codemod';
+import { SyntaxKind } from 'ts-morph';
+
+const project = createProject(['src/textbook/demos/*.tsx']);
+walkSourceFiles(project, (sf) => {
+  for (const fn of sf.getFunctions()) {
+    const name = fn.getName();
+    if (!name?.startsWith('fmt')) continue;
+    // confirm body matches the canonical formatter shape, then:
+    //   - sf.getDescendantsOfKind(SyntaxKind.Identifier) → rename references
+    //   - fn.remove()
+    //   - ensureImport(sf, '@/lib/formatters', ['fmtCentralName'])
+  }
+});
+commitOrDryRun(project, { dryRun: !process.argv.includes('--write') });
+```
+
+ts-morph's `renameReferences` (via `.findReferencesAsNodes()`) rewrites identifier references with full scope awareness — only the actual call sites change, not substring matches. That's the property regex can't give you.
+
+Stay with `grep` + `Edit` only for a single-file consolidation where the local formatter is small and clearly named.
+
 ## Why
 
 CLAUDE.md §9 says:

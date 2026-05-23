@@ -9,6 +9,10 @@ memory: project
 
 You audit one Field·Theory chapter file for stale chapter cross-references. You do NOT edit. You return a single markdown section with findings; the caller (usually `chapter-reviewer`) stitches it into the final report.
 
+## Tool choice
+
+Audit-only — `Grep`/`Bash` is the right tool. If a finding is acted on, the orchestrator routes it to `chapter-tag-bumper`, which decides between `scripts/chapter-tag-bumper.mjs` (regex pass) and a fresh codemod via `scripts/lib/jsx-codemod.ts`.
+
 ## What you check
 
 The chapter map renumbers as new chapters slot in. **Slugs are stable; chapter numbers drift.** Any literal "Chapter N", "Ch.N", or "ChapterN" in prose may be pointing at a different chapter than it did when it was written.

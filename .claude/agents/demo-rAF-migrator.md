@@ -9,6 +9,14 @@ memory: project
 
 You migrate a single demo file (or a batch) from the hand-rolled rAF boilerplate to the `useSimState` + `useSimLoop` pair. You edit demo files; you do not edit the chapter file that embeds them. You return a markdown report of every edit and every demo you intentionally skipped.
 
+## Tool choice — AST vs regex
+
+This agent rewrites JSX-adjacent code structure (replacing `useRef`/`useEffect`/`useCallback` boilerplate with `useSimState`/`useSimLoop`, swapping import lines, sometimes inserting an `init` callback). That's exactly the surface where regex falls over. Prefer a `tsx` script using `scripts/lib/jsx-codemod.ts` (or extending the existing `scripts/refactor-demos.ts`, which already does the bulk migration with `ts-morph`).
+
+Canonical entry shape — start from `scripts/refactor-demos.ts` for the React-hook rewrite (it already covers most of the mechanical cases). For the cases that script skips (orbit cameras, scaled-time accumulators, event listeners outside `draw`, mutable buffers), spin up a focused codemod via `createProject` + `walkSourceFiles` + the JSX helpers — `ensureImport` (for `useSimLoop` / `useSimState`), `findJsxAttribute`, `setStringAttributeValue`, etc.
+
+Drop down to `Edit` only for one-off migrations of a single demo that doesn't match any of the documented patterns and where a codemod would be overkill.
+
 ## Why
 
 CLAUDE.md §13 lists this as the single most common pitfall in new demo code. `src/lib/useSimState.ts` and `src/lib/useSimLoop.ts` exist to replace the four-import dance — `useRef + useEffect + useCallback + requestAnimationFrame` — with two-line setup that handles dt capping, sim-time accumulation, init context, and cleanup. The existing `scripts/refactor-demos.ts` codemod handles the trivial shape (no orbit camera, no event listeners, no static cache); this agent's job is everything that script intentionally skipped.
@@ -238,6 +246,46 @@ const setup = useSimLoop(
   () => ({ context: { histI: [] as number[] } }),
 );
 ```
+
+### Scaled-time accumulator (the `scaledTRef` pattern)
+
+This is a near-cousin of the previous case, but distinct enough to be worth its own example because `simTime` *almost* covers it but doesn't quite.
+
+Some demos slow down their visible time as a slider value rises (e.g. an alternator demo that visually slows when `f_elec > 60 Hz` so a few cycles are still readable). The accumulated "scaled" time can't be derived from the bare `simTime` argument because the scaling factor depends on current state, so a `scaledTRef = useRef(0)` is the easy reach — and per CLAUDE.md §7 it's wrong: scaled accumulators must live in `init`'s `context`, not in a sibling `useRef` outside `useSimLoop`.
+
+Before:
+```tsx
+const stateRef = useSimState({ engineRpm, computed });
+const scaledTRef = useRef(0);
+
+const setup = useSimLoop(stateRef, ({ ctx, w, h, colors }, state, dt) => {
+  const { f } = state.computed;
+  const slow = f > 60 ? 60 / f : 1;
+  scaledTRef.current += dt * slow;
+  const simT = scaledTRef.current;
+  // draw using simT …
+}, []);
+```
+
+After:
+```tsx
+const stateRef = useSimState({ engineRpm, computed });
+
+const setup = useSimLoop(
+  stateRef,
+  ({ ctx, w, h, colors }, state, dt, _simTime, ctxState) => {
+    const { f } = state.computed;
+    const slow = f > 60 ? 60 / f : 1;
+    ctxState.scaledT += dt * slow;
+    const simT = ctxState.scaledT;
+    // draw using simT …
+  },
+  [],
+  () => ({ context: { scaledT: 0 } }),
+);
+```
+
+The migration deletes the `useRef` declaration (and the `useRef` import if no other ref remains), renames `scaledTRef.current` → `ctxState.scaledT`, and adds an `init` callback returning `{ context: { scaledT: 0 } }`. The shape is mechanical: any per-mount mutable accumulator that *can't* be derived from `simTime` because its rate depends on state belongs in `context`.
 
 ### With event listener + orbit camera
 

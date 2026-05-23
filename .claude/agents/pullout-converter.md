@@ -9,6 +9,43 @@ memory: project
 
 You convert legacy `<p className="pullout">…</p>` paragraphs to the canonical `<Pullout>…</Pullout>` component. You edit chapter, lab, and demo files. You return a report of every edit.
 
+## Tool choice — AST vs regex
+
+This agent (a) rewrites a `<p className="pullout">…</p>` JSX element to `<Pullout>…</Pullout>` and (b) ensures `Pullout` is imported from `@/components/Prose`. Both are AST-natural: regex over the `className="pullout"` form trips on multi-line element bodies, attribute-order variants, and the import-line merge.
+
+Prefer a `tsx` script using `scripts/lib/jsx-codemod.ts`:
+
+```ts
+import {
+  createProject,
+  walkSourceFiles,
+  forEachJsxElement,
+  findJsxAttribute,
+  getStringAttributeValue,
+  renameJsxElement,
+  ensureImport,
+  commitOrDryRun,
+} from './lib/jsx-codemod';
+
+const project = createProject(['src/textbook/**/*.tsx', 'src/labs/**/*.tsx']);
+walkSourceFiles(project, (sf) => {
+  let converted = false;
+  forEachJsxElement(sf, 'p', (el) => {
+    const attr = findJsxAttribute(el, 'className');
+    if (attr && getStringAttributeValue(attr) === 'pullout') {
+      // remove the className attribute, then rename element to Pullout
+      attr.remove();
+      renameJsxElement(el, 'Pullout');
+      converted = true;
+    }
+  });
+  if (converted) ensureImport(sf, '@/components/Prose', ['Pullout']);
+});
+commitOrDryRun(project, { dryRun: !process.argv.includes('--write') });
+```
+
+`ensureImport` is idempotent — it merges into an existing `@/components/Prose` import line where one exists. Stay with `grep` + `Edit` only for one-shot fixes on a single file.
+
 ## Why
 
 `src/components/Prose.tsx` defines:

@@ -9,6 +9,38 @@ memory: project
 
 You add `<EquationStrip>` blocks to demos that are missing them. You edit demo files; you do not edit the chapter file itself unless asked. You return a markdown report of every edit.
 
+## Tool choice — AST vs regex
+
+You insert a JSX element (the `<EquationStrip>` block) into a specific spot in the JSX tree (immediately after `<DemoControls>`, or after `<AutoResizeCanvas>` if there's no controls block), and you ensure two named imports exist. That's structural JSX work, not string substitution — prefer a `tsx` script using `scripts/lib/jsx-codemod.ts`:
+
+```ts
+import {
+  createProject,
+  walkSourceFiles,
+  forEachJsxElement,
+  ensureImport,
+  insertJsxAfter,
+} from './lib/jsx-codemod';
+
+const project = createProject(['src/textbook/demos/SomeDemo.tsx']);
+walkSourceFiles(project, (sf) => {
+  ensureImport(sf, '@/components/Demo', ['EquationStrip']);
+  ensureImport(sf, '@/components/Formula', ['InlineMath']);
+  forEachJsxElement(sf, 'DemoControls', (el) => {
+    insertJsxAfter(el, `<EquationStrip … />`);
+  });
+});
+project.saveSync();
+```
+
+`insertJsxAfter` already handles whitespace around the inserted node. `ensureImport` merges into an existing import line for the same module (idempotent).
+
+Drop down to `Edit` only for one-off, single-demo edits where the cost of spinning up ts-morph isn't worth it — typically because the demo's JSX shape is so unusual that no codemod traversal would catch it.
+
+## Import note (one-time clarification)
+
+`EquationStrip`, `Demo`, `DemoControls`, `MiniSlider`, `MiniReadout`, and `MiniToggle` all live in `@/components/Demo` — there is **no** separate `EquationStrip` file. `InlineMath` and `Formula` live in `@/components/Formula`. Don't look for or create a fresh import path.
+
 ## What you change
 
 Per CLAUDE.md §6b, every demo that exercises one or more formulas must render that formula directly inside the demo card via `<EquationStrip>` (or, for a single short equation, `<InlineMath>` below `<DemoControls>`), with the slider values substituted in so the equation updates live. The canonical reference is `src/textbook/demos/PointCharge3D.tsx`.

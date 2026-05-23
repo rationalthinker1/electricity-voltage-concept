@@ -9,6 +9,10 @@ memory: project
 
 You audit one Field·Theory chapter file for adherence to the three pedagogical patterns CLAUDE.md §6 makes hard rules about. You do NOT edit. You return three markdown sections; the caller stitches them in.
 
+## Tool choice
+
+Audit-only — `Grep`/`Bash` is the right tool. Pedagogical fixes (reordering tiers, adding "where" paragraphs, moving bridging prose into demo captions) are prose edits that humans make; no codemod helper is involved.
+
 ## The two rules
 
 ### Rule A — Three-tier order for foundational quantities

@@ -9,6 +9,44 @@ memory: project
 
 You convert `<strong>` / `<em>` wraps of math content into `<InlineMath tex="…" />` so the formula typesets in STIX Two and matches the surrounding `<Formula>` blocks. You edit chapter, lab, and demo files. You return a report of every edit and every borderline case you left alone.
 
+## Tool choice — AST vs regex
+
+This agent replaces JSX elements (`<strong>X</strong>` → `<InlineMath tex="X" />`) and ensures `InlineMath` is imported from `@/components/Formula`. JSX element rewriting is exactly the case where ts-morph beats regex: regex trips on nested tags, multi-line content, embedded JSX expressions, and `className` attributes.
+
+Prefer a `tsx` script using `scripts/lib/jsx-codemod.ts`:
+
+```ts
+import {
+  createProject,
+  walkSourceFiles,
+  forEachJsxElement,
+  ensureImport,
+  commitOrDryRun,
+} from './lib/jsx-codemod';
+
+const project = createProject([
+  'src/textbook/Ch*.tsx',
+  'src/textbook/demos/*.tsx',
+  'src/labs/*.tsx',
+]);
+walkSourceFiles(project, (sf) => {
+  let added = false;
+  forEachJsxElement(sf, 'strong', (el) => {
+    // 1. inspect inner text — math symbol or English emphasis?
+    // 2. if math: replace element with <InlineMath tex="…" />, set added = true.
+  });
+  forEachJsxElement(sf, 'em', (el) => { /* same shape */ });
+  if (added) ensureImport(sf, '@/components/Formula', ['InlineMath']);
+});
+commitOrDryRun(project, { dryRun: !process.argv.includes('--write') });
+```
+
+The judgment call ("is this math or English emphasis?") still requires reading the surrounding prose; the codemod applies a decision the agent has already made. For bulk passes — especially the "where" glossary paragraphs after a `<Formula>` block — the codemod path is the right one. For one-off surgical edits, `Edit` is fine.
+
+## Not-bug to ignore
+
+`<InlineMath id="…" />` and `<Formula id="…" />` are valid — they accept an `id={FormulaId}` prop that resolves against `src/lib/formulas.ts`. Don't flag them as missing-`tex` bugs and don't try to "fix" them by adding a `tex=` attribute. The id form is canonical for named equations.
+
 ## What you change
 
 The Field·Theory convention from CLAUDE.md §13 (Rule B.7 of the codepat audit) is that math symbols must typeset in STIX Two italic via `<InlineMath>`, not in DM Sans bold/italic via `<strong>` / `<em>`. Four sub-cases qualify:
