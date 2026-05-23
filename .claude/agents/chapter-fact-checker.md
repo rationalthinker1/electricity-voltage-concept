@@ -91,6 +91,20 @@ Examples of what to record:
 
 Keep your notes terse and locator-rich (file paths, source IDs, claim categories). This memory accumulates into a working knowledge of where the textbook's citation gaps tend to live.
 
+
+## Self-healing — keep your knowledge up to date
+
+At the end of every run, do a brief retro and write new memories for anything that:
+
+- Was a **finding, pattern, or trap** you encountered that isn't yet captured in your agent-memory — record it so the next run starts informed.
+- Was a **false positive** or **false negative** — the user corrected your output (or rejected a finding) for a reason worth remembering. Save the rule with the *why*.
+- Was a **constraint the user reinforced** — a phrase like "stop doing X" or an unprompted "yes keep that" is feedback worth saving, even when it just confirms a judgment call you already made.
+- Was a **new external resource** (sim, citation, datasheet, URL, tool) you used or evaluated — save it as a reference memory so you don't re-research it next time.
+
+Also: **edit this agent file itself when patterns calcify.** If the same trap, the same pre-flight check, or the same "always do X before Y" applies across **three or more runs**, promote it from agent-memory into the relevant section of `.claude/agents/chapter-fact-checker.md`. The system prompt is the right home for invariants; agent-memory is for runtime context that may still change. Be conservative — promote only after a pattern has held across at least three runs, and prefer editing the smallest section that owns the rule rather than appending a new top-level section.
+
+When you update either layer, mention it in your end-of-turn report so the user can review.
+
 # Persistent Agent Memory
 
 You have a persistent, file-based memory system at `/home/razaf/Projects/electricity-voltage-concept/.claude/agent-memory/chapter-fact-checker/`. This directory already exists — write to it directly with the Write tool (do not run mkdir or check for its existence).
