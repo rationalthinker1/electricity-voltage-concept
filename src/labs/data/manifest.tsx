@@ -14,8 +14,29 @@ import { FORMULAS } from '@/lib/formulas';
 
 export type ChapterId = 'ch1' | 'ch2' | 'ch3' | 'ch4';
 
+/**
+ * Two flavours of lab exist:
+ *  - 'equation' — the original interactive sliders-and-readouts pattern. Hero
+ *    leads with the equation being explored.
+ *  - 'experimental' — university-style hands-on / software-tool labs with a
+ *    procedure, data tables, and an analysis writeup. Hero leads with
+ *    equipment + software + runtime instead of a formula.
+ * Default is 'equation' for back-compat with existing entries.
+ */
+export type LabKind = 'equation' | 'experimental';
+
+/** A tool the student must install or open to run an experimental lab. */
+export interface LabSoftware {
+  name: string;
+  url: string;
+  /** "free" badges in the hero. */
+  free?: boolean;
+  /** Optional clarifier ("browser", "Android only", "≥ macOS 12"). */
+  note?: string;
+}
+
 export interface LabManifestEntry {
-  /** "1.1", "1.2", ..., "4.4" */
+  /** "1.1", "1.2", ..., "4.4", or "E1.1" for experimental labs. */
   number: string;
   /** URL slug, e.g. "coulomb" → /labs/coulomb */
   slug: string;
@@ -23,8 +44,9 @@ export interface LabManifestEntry {
   chapter: ChapterId;
   /** Short title (used in TOC + nav titles) */
   title: string;
-  /** Equation displayed in TOC and hero */
-  formula: ReactNode;
+  /** Equation displayed in TOC and hero. Required for equation labs;
+   *  optional for experimental labs (which lead with equipment instead). */
+  formula?: ReactNode;
   /** One-line blurb for the TOC */
   blurb: string;
   /** Hero label, e.g. "Chapter 1 · Lab 1.1 — Coulomb's Law" */
@@ -33,6 +55,18 @@ export interface LabManifestEntry {
   heroHeadline: ReactNode;
   /** Deck (2–3 sentence positioning) */
   deck: string;
+
+  // ─── Experimental-lab-only fields ────────────────────────────────────
+  /** Flavour of lab. Defaults to 'equation' if omitted. */
+  kind?: LabKind;
+  /** Physical equipment the student needs to gather. */
+  equipment?: string[];
+  /** Software / web tools the student must open or install. */
+  software?: LabSoftware[];
+  /** Approximate runtime, e.g. "60–90 min". */
+  runtime?: string;
+  /** Difficulty label shown in the hero. */
+  difficulty?: 'intro' | 'core' | 'advanced';
 }
 
 export const CHAPTER_META: Record<ChapterId, { title: string; eyebrow: string; blurb: string }> = {
@@ -127,6 +161,71 @@ export const MANIFEST: LabManifestEntry[] = [
       </>
     ),
     deck: 'Drag two charges. Drag two probes labelled A and B. The voltage between them is the line integral of E from one to the other — and it equals the energy per coulomb that the field gives or takes from a charge moving along that path.',
+  },
+  {
+    number: 'E1.1',
+    slug: 'coulomb-phet',
+    chapter: 'ch1',
+    kind: 'experimental',
+    title: "Verifying Coulomb's Inverse Square",
+    blurb:
+      "Drive PhET's Coulomb's-Law sim through two controlled experiments. Log-log-fit the exponent. Back-solve for k. Compare to CODATA.",
+    heroLabel: "Chapter 1 · Lab E1.1 — Verifying Coulomb's Law",
+    heroHeadline: (
+      <>
+        Measure the <em className="text-accent font-normal italic">exponent</em> yourself.
+      </>
+    ),
+    deck: "A guided two-stage experiment using the University of Colorado's free PhET simulation. Vary distance at fixed charge, then charge at fixed distance, record F, and back out both the exponent of r and Coulomb's constant from your own data.",
+    runtime: '60–90 min',
+    difficulty: 'intro',
+    equipment: ['Laptop or tablet', 'Spreadsheet (Sheets / Excel / Numbers)', 'Pencil and graph paper (optional)'],
+    software: [
+      {
+        name: "PhET — Coulomb's Law",
+        url: 'https://phet.colorado.edu/en/simulations/coulombs-law',
+        free: true,
+        note: 'Runs in any modern browser; no install required.',
+      },
+    ],
+  },
+  {
+    number: 'E1.2',
+    slug: 'faraday-cage',
+    chapter: 'ch1',
+    kind: 'experimental',
+    title: 'The Aluminum-Foil Faraday Cage',
+    blurb:
+      'Wrap your phone in foil, measure how cellular and WiFi signal strength change, and quantify shielding in dB across four conditions.',
+    heroLabel: 'Chapter 1 · Lab E1.2 — The Foil Faraday Cage',
+    heroHeadline: (
+      <>
+        Build a <em className="text-accent font-normal italic">shield</em> from a kitchen drawer.
+      </>
+    ),
+    deck: 'Conductors enforce E = 0 in their interior. A grounded (or floating) conducting shell rejects external fields. Quantify this with your phone, a roll of aluminum foil, and the field-strength meter that ships with every modern handset.',
+    runtime: '45–60 min',
+    difficulty: 'intro',
+    equipment: [
+      'A smartphone (iOS or Android)',
+      'A roll of aluminum kitchen foil (≥ 30 cm wide)',
+      'Painter\'s or masking tape',
+      'A friend with a second phone for the call-test variant (optional)',
+    ],
+    software: [
+      {
+        name: 'Network Cell Info Lite (Android)',
+        url: 'https://play.google.com/store/apps/details?id=com.wilysis.cellinfolite',
+        free: true,
+        note: 'Reports cellular RSRP and WiFi RSSI in dBm.',
+      },
+      {
+        name: 'Field Test Mode (iOS)',
+        url: 'https://support.apple.com/guide/iphone/check-your-cellular-signal-strength-iph3dd5f9be0/ios',
+        free: true,
+        note: 'Dial *3001#12345#* on iPhone to surface raw signal levels.',
+      },
+    ],
   },
 
   // ─── Chapter 2 — Magnetic Field ───
@@ -491,6 +590,21 @@ export const BASE_LAB_SOURCES: Record<string, SourceKey[]> = {
   'e-field': ['griffiths-2017', 'feynman-II-2', 'codata-2018', 'hyperphysics-emag'],
   gauss: ['gauss-1813', 'griffiths-2017', 'jackson-1999', 'feynman-II-2'],
   potential: ['feynman-II-2', 'griffiths-2017', 'libretexts-univ-physics'],
+  'coulomb-phet': [
+    'coulomb-1785',
+    'williams-faller-hill-1971',
+    'griffiths-2017',
+    'codata-2018',
+    'phet-coulombs-law',
+    'libretexts-univ-physics',
+  ],
+  'faraday-cage': [
+    'faraday-1832',
+    'griffiths-2017',
+    'feynman-II-2',
+    'itu-r-p2040',
+    'libretexts-univ-physics',
+  ],
   'biot-savart': ['biot-savart-1820', 'feynman-II-13', 'griffiths-2017', 'jackson-1999'],
   ampere: ['ampere-1826', 'maxwell-1865', 'feynman-II-13', 'griffiths-2017'],
   lorentz: ['feynman-II-13', 'griffiths-2017', 'hall-1879', 'codata-2018'],
