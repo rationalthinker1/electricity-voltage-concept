@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawAxes, drawLinePlot, drawVLine, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -83,7 +83,14 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       ctx.save();
       ctx.translate(14, padT + rect.h / 2);
       ctx.rotate(-Math.PI / 2);
-      drawLabel(ctx, { text: 'I_C (mA)', x: 0, y: 0, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'I_C (mA)',
+        x: 0,
+        y: 0,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
       ctx.restore();
       // V_CE_SAT marker (dashed vertical)
       drawVLine(ctx, rect, V_CE_SAT, Vmin, Vmax, {
@@ -158,8 +165,8 @@ export function BJTCharacteristicDemo({ figure }: Props) {
           effect, parameterised by V_A — the curves would be perfectly flat if V_A → ∞.
         </>
       }
-    
-      deeperLab={{ slug: 'transistor-iv', label: 'See full lab' }}>
+      deeperLab={{ slug: 'transistor-iv', label: 'See full lab' }}
+    >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
@@ -194,9 +201,13 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Active-region model"
-        left={<InlineMath tex={`I_C \\approx \\beta I_B`} />}
+        left={<M tex={`I_C \\approx \\beta I_B`} />}
         rightLabel="At this operating point"
-        right={<InlineMath tex={`I_C = ${beta.toFixed(0)} \\times ${(I_B_pick * 1e6).toFixed(0)}\\,\\mu\\text{A} = ${(I_C_op * 1000).toFixed(2)}\\,\\text{mA}`} />}
+        right={
+          <M
+            tex={`I_C = ${beta.toFixed(0)} \\times ${(I_B_pick * 1e6).toFixed(0)}\\,\\mu\\text{A} = ${(I_C_op * 1000).toFixed(2)}\\,\\text{mA}`}
+          />
+        }
       />
     </Demo>
   );

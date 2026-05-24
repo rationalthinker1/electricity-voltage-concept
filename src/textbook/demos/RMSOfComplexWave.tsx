@@ -13,7 +13,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawAxes, drawHLine, drawLinePlot } from '@/lib/drawPlot';
 import { getCanvasColors } from '@/lib/canvasTheme';
@@ -201,9 +201,13 @@ export function RMSOfComplexWaveDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Parseval's theorem"
-        left={<InlineMath tex={`V_{\\text{rms}} = \\sqrt{\\tfrac{a_1^2 + a_2^2 + a_3^2 + a_5^2}{2}}`} />}
+        left={<M tex={`V_{\\text{rms}} = \\sqrt{\\tfrac{a_1^2 + a_2^2 + a_3^2 + a_5^2}{2}}`} />}
         rightLabel="Live values"
-        right={<InlineMath tex={`\\sqrt{\\tfrac{${a1.toFixed(2)}^2 + ${a2.toFixed(2)}^2 + ${a3.toFixed(2)}^2 + ${a5.toFixed(2)}^2}{2}} = ${rmsParseval.toFixed(3)}`} />}
+        right={
+          <M
+            tex={`\\sqrt{\\tfrac{${a1.toFixed(2)}^2 + ${a2.toFixed(2)}^2 + ${a3.toFixed(2)}^2 + ${a5.toFixed(2)}^2}{2}} = ${rmsParseval.toFixed(3)}`}
+          />
+        }
       />
     </Demo>
   );

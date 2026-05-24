@@ -29,8 +29,15 @@
 import { useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -38,7 +45,7 @@ import { depthSortIndices, project, v3, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -137,7 +144,7 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
   const setup = useSimLoop<(typeof stateRef)['current'], OrbitScene>(
     stateRef,
     ({ ctx, w, h, colors }, state, dt, _simTime, scene) => {
-    const cam = scene.cam;
+      const cam = scene.cam;
       const { Eext, T, showBound } = state;
       const dipoles = dipolesRef.current;
 
@@ -387,13 +394,54 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'E_ext  teal · along +x', x: 12, y: 28, color: colors.teal, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'dielectric block', x: 12, y: 44, color: 'rgba(240,200,80,0.85)', size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'drag to rotate',
+        x: 12,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'E_ext  teal · along +x',
+        x: 12,
+        y: 28,
+        color: colors.teal,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'dielectric block',
+        x: 12,
+        y: 44,
+        color: 'rgba(240,200,80,0.85)',
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
 
       ctx.textAlign = 'right';
-      drawLabel(ctx, { text: 'p  aligned dipole', x: w - 12, y: 12, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: 'p  scrambled (thermal)', x: w - 12, y: 28, color: 'rgba(200,195,170,0.75)', size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'p  aligned dipole',
+        x: w - 12,
+        y: 12,
+        color: colors.accent,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'p  scrambled (thermal)',
+        x: w - 12,
+        y: 28,
+        color: 'rgba(200,195,170,0.75)',
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
     },
     [],
     ({ canvas }) => {
@@ -464,9 +512,17 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Polarisation and susceptibility"
-        left={<InlineMath tex={`\\chi_e \\approx \\frac{P}{\\varepsilon_0 E},\\quad \\varepsilon_r = 1 + \\chi_e`} />}
+        left={
+          <M
+            tex={`\\chi_e \\approx \\frac{P}{\\varepsilon_0 E},\\quad \\varepsilon_r = 1 + \\chi_e`}
+          />
+        }
         rightLabel="Live values"
-        right={<InlineMath tex={`\\chi_e \\approx ${computed.chi_e.toFixed(2)},\\quad \\varepsilon_r = 1 + ${computed.chi_e.toFixed(2)} = ${computed.eps_r.toFixed(2)}`} />}
+        right={
+          <M
+            tex={`\\chi_e \\approx ${computed.chi_e.toFixed(2)},\\quad \\varepsilon_r = 1 + ${computed.chi_e.toFixed(2)} = ${computed.eps_r.toFixed(2)}`}
+          />
+        }
       />
     </Demo>
   );

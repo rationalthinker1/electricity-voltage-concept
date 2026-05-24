@@ -17,14 +17,14 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { fmtFreqShort } from '@/lib/formatters';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -138,13 +138,52 @@ export function RLCBandpassDemo({ figure }: Props) {
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-      drawLabel(ctx, { text: '0 dB', x: plotX - 4, y: yDb(0), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '-20', x: plotX - 4, y: yDb(-20), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '-40', x: plotX - 4, y: yDb(-40), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '0 dB',
+        x: plotX - 4,
+        y: yDb(0),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '-20',
+        x: plotX - 4,
+        y: yDb(-20),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '-40',
+        x: plotX - 4,
+        y: yDb(-40),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textBaseline = 'top';
-      drawLabel(ctx, { text: `|H(f)|  band-pass`, x: plotX + 4, y: plotY + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `f₀ = ${fmtFreqShort(f0)}   Q = ${Q.toFixed(1)}`, x: plotX + plotW - 4, y: plotY + 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `|H(f)|  band-pass`,
+        x: plotX + 4,
+        y: plotY + 4,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `f₀ = ${fmtFreqShort(f0)}   Q = ${Q.toFixed(1)}`,
+        x: plotX + plotW - 4,
+        y: plotY + 4,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -199,9 +238,15 @@ export function RLCBandpassDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Resonant frequency and Q"
-        left={<InlineMath tex={`f_0 = \\frac{1}{2\\pi\\sqrt{LC}},\\quad Q = \\frac{1}{R}\\sqrt{\\frac{L}{C}}`} />}
+        left={
+          <M tex={`f_0 = \\frac{1}{2\\pi\\sqrt{LC}},\\quad Q = \\frac{1}{R}\\sqrt{\\frac{L}{C}}`} />
+        }
         rightLabel="Live values"
-        right={<InlineMath tex={`f_0 = ${f0.toFixed(0)}\\,\\text{Hz},\\quad Q = ${Q.toFixed(2)},\\quad \\text{BW} = f_0/Q = ${bandwidth.toFixed(0)}\\,\\text{Hz}`} />}
+        right={
+          <M
+            tex={`f_0 = ${f0.toFixed(0)}\\,\\text{Hz},\\quad Q = ${Q.toFixed(2)},\\quad \\text{BW} = f_0/Q = ${bandwidth.toFixed(0)}\\,\\text{Hz}`}
+          />
+        }
       />
     </Demo>
   );

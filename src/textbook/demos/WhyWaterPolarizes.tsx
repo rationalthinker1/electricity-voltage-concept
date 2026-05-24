@@ -12,8 +12,15 @@ import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -80,7 +87,17 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(cx, cy, 22, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: 'O', x: cx, y: cy, color: colors.bg, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'O',
+        x: cx,
+        y: cy,
+        color: colors.bg,
+        weight: 'bold',
+        size: 14,
+        font: 'bold 14px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
       for (const [hx, hy] of [
         [h1x, h1y],
         [h2x, h2y],
@@ -116,10 +133,28 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
       ctx.lineTo(pTipX - ux * 9 + uy * 4, pTipY - uy * 9 - ux * 4);
       ctx.closePath();
       ctx.fill();
-      drawLabel(ctx, { text: 'p', x: pTipX + 8, y: pTipY, color: colors.accent, font: 'italic 12px "Fraunces", serif', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'p',
+        x: pTipX + 8,
+        y: pTipY,
+        color: colors.accent,
+        font: 'italic 12px "Fraunces", serif',
+        baseline: 'middle',
+      });
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `T = ${T.toFixed(0)} K`, x: 14, y: h - 16, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `θ = ${((theta * 180) / Math.PI).toFixed(0)}°`, x: w - 14, y: h - 16, font: '10px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, {
+        text: `T = ${T.toFixed(0)} K`,
+        x: 14,
+        y: h - 16,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `θ = ${((theta * 180) / Math.PI).toFixed(0)}°`,
+        x: w - 14,
+        y: h - 16,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+      });
       if (E_on) {
         drawLabel(ctx, { text: 'E (external) →', x: 14, y: 18, color: colors.accent });
       }
@@ -163,9 +198,17 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Debye orientational polarisation"
-        left={<InlineMath tex={`\\varepsilon_r(T) \\approx 1 + \\frac{Np^2}{3\\varepsilon_0 kT} \\propto \\frac{1}{T}`} />}
+        left={
+          <M
+            tex={`\\varepsilon_r(T) \\approx 1 + \\frac{Np^2}{3\\varepsilon_0 kT} \\propto \\frac{1}{T}`}
+          />
+        }
         rightLabel={`At T = ${T.toFixed(0)} K`}
-        right={<InlineMath tex={`\\varepsilon_r \\approx \\frac{80 \\times 300}{${T.toFixed(0)}} = ${er_estimate.toFixed(0)}`} />}
+        right={
+          <M
+            tex={`\\varepsilon_r \\approx \\frac{80 \\times 300}{${T.toFixed(0)}} = ${er_estimate.toFixed(0)}`}
+          />
+        }
       />
     </Demo>
   );

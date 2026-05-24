@@ -14,13 +14,13 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
 import { pretty } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -112,16 +112,63 @@ export function EAxialFieldDemo({ figure }: Props) {
       ctx.fillRect(wireXL - 22, wireCY - r - 4, 4, 2 * r + 8);
       ctx.fillStyle = colors.blue;
       ctx.fillRect(wireXR + 18, wireCY - r - 4, 4, 2 * r + 8);
-      drawLabel(ctx, { text: '+', x: wireXL - 36, y: wireCY, color: colors.pink, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: '−', x: wireXR + 36, y: wireCY, color: colors.blue, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'E  (axial)', x: (wireXL + wireXR) / 2, y: wireCY - r - 14, color: colors.pink, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: '+',
+        x: wireXL - 36,
+        y: wireCY,
+        color: colors.pink,
+        weight: 'bold',
+        size: 14,
+        font: 'bold 14px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '−',
+        x: wireXR + 36,
+        y: wireCY,
+        color: colors.blue,
+        weight: 'bold',
+        size: 14,
+        font: 'bold 14px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'E  (axial)',
+        x: (wireXL + wireXR) / 2,
+        y: wireCY - r - 14,
+        color: colors.pink,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
       ctx.save();
       ctx.globalAlpha = 0.85;
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `V = ${V.toFixed(1)} V`, x: 18, y: h - 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `L = ${L.toFixed(2)} m`, x: w - 18, y: h - 24, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `V = ${V.toFixed(1)} V`,
+        x: 18,
+        y: h - 24,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `L = ${L.toFixed(2)} m`,
+        x: w - 18,
+        y: h - 24,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       ctx.restore();
-      drawLabel(ctx, { text: `E = V / L = ${pretty(E_)} V/m`, x: w / 2, y: h - 24, color: colors.accent });
+      drawLabel(ctx, {
+        text: `E = V / L = ${pretty(E_)} V/m`,
+        x: w / 2,
+        y: h - 24,
+        color: colors.accent,
+      });
       ctx0.phase = phase;
     },
     [],
@@ -168,18 +215,14 @@ export function EAxialFieldDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Axial electric field"
         left={
-          <InlineMath
-            tex={
-              `E = \\dfrac{V}{L} = \\dfrac{${V.toFixed(1)}}{${L.toFixed(2)}} = ${E.toFixed(2)} \\text{ V/m}`
-            }
+          <M
+            tex={`E = \\dfrac{V}{L} = \\dfrac{${V.toFixed(1)}}{${L.toFixed(2)}} = ${E.toFixed(2)} \\text{ V/m}`}
           />
         }
         rightLabel="Voltage drop"
         right={
-          <InlineMath
-            tex={
-              `V = E \\cdot L = ${E.toFixed(2)} \\times ${L.toFixed(2)} = ${V.toFixed(1)} \\text{ V}`
-            }
+          <M
+            tex={`V = E \\cdot L = ${E.toFixed(2)} \\times ${L.toFixed(2)} = ${V.toFixed(1)} \\text{ V}`}
           />
         }
       />

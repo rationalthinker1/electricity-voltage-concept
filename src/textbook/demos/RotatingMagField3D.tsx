@@ -38,7 +38,7 @@ import {
   MiniSlider,
   MiniToggle,
 } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
@@ -544,12 +544,12 @@ export function RotatingMagField3DDemo({ figure }: Props) {
           Three stator coil pairs A, B, C sit 120° apart around the bore. Feed them sinusoidal
           currents 120° apart in phase and each coil's contribution to the field at the centre — a
           vector pointing along that coil's radial axis, magnitude proportional to its instantaneous
-          current — sums to a single vector of constant magnitude <InlineMath tex="(3/2)B_0" />{' '}
-          rotating about the bore axis at the electrical angular speed <InlineMath tex="\omega" />.
-          That is the rotating magnetic field Tesla patented in 1888. A passive rotor at the centre
-          feels a torque that drags it along; with <InlineMath tex="p = 1" /> pole-pair the rotor's
-          synchronous speed in RPM is <InlineMath tex="60f" />. Drag to orbit; toggle "phase
-          contributions" to see the three component vectors that build the resultant.
+          current — sums to a single vector of constant magnitude <M tex="(3/2)B_0" />
+          rotating about the bore axis at the electrical angular speed <M tex="\omega" />. That is
+          the rotating magnetic field Tesla patented in 1888. A passive rotor at the centre feels a
+          torque that drags it along; with <M tex="p = 1" /> pole-pair the rotor's synchronous speed
+          in RPM is <M tex="60f" />. Drag to orbit; toggle "phase contributions" to see the three
+          component vectors that build the resultant.
         </>
       }
       deeperLab={{ slug: 'biot-savart', label: 'See full lab' }}
@@ -582,10 +582,10 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="three-phase sum"
-        left={<InlineMath tex="\vec B(t)=\sum_x B_0\cos(\omega t+\varphi_x)\hat n_x" />}
+        left={<M tex="\vec B(t)=\sum_x B_0\cos(\omega t+\varphi_x)\hat n_x" />}
         rightLabel="synchronous speed"
         right={
-          <InlineMath
+          <M
             tex={`\\omega_s = 2\\pi f = ${readouts.omega.toFixed(1)}\\,\\text{rad/s},\\quad n_s = 60f = ${readouts.rpm.toFixed(0)}\\,\\text{rpm}`}
           />
         }

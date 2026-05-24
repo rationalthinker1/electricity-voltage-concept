@@ -14,14 +14,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import {
-  Demo,
-  DemoControls,
-  EquationStrip,
-  MiniReadout,
-  MiniSlider,
-} from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
@@ -59,8 +53,19 @@ export function PolarizationDemo({ figure }: Props) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'y', x: cx + R + 6, y: cy + 4, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'z', x: cx, y: cy - R - 6, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: 'y',
+        x: cx + R + 6,
+        y: cy + 4,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: 'z',
+        x: cx,
+        y: cy - R - 6,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       function eVec(time: number) {
         const yEy = Math.cos(phi) * Math.cos(om * time);
         const zEz = Math.sin(phi) * Math.cos(om * time - delta);
@@ -144,8 +149,21 @@ export function PolarizationDemo({ figure }: Props) {
         stateLabel = 'circular';
       }
       ctx.restore();
-      drawLabel(ctx, { text: `polarization: ${stateLabel}`, x: 14, y: 22, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'view: looking down the propagation axis →', x: 14, y: 38, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: `polarization: ${stateLabel}`,
+        x: 14,
+        y: 22,
+        color: colors.accent,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: 'view: looking down the propagation axis →',
+        x: 14,
+        y: 38,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
     },
     [],
   );
@@ -192,7 +210,7 @@ export function PolarizationDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="E-field (y)"
         left={
-          <InlineMath
+          <M
             tex={
               `E_{y} \\;=\\; \\cos\\varphi\\,\\cos(\\omega t) \\;=\\; ` +
               `\\cos(${((phi * 180) / Math.PI).toFixed(0)}^{\\circ})\\,\\cos(\\omega t)`
@@ -201,7 +219,7 @@ export function PolarizationDemo({ figure }: Props) {
         }
         rightLabel="E-field (z)"
         right={
-          <InlineMath
+          <M
             tex={
               `E_{z} \\;=\\; \\sin\\varphi\\,\\cos(\\omega t - \\delta) \\;=\\; ` +
               `\\sin(${((phi * 180) / Math.PI).toFixed(0)}^{\\circ})\\,` +

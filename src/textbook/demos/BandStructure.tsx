@@ -17,7 +17,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -142,11 +142,33 @@ export function BandStructureDemo({ figure }: Props) {
       ctx.fill();
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textBaseline = 'middle';
-      drawLabel(ctx, { text: `E_g = ${Eg.toFixed(2)} eV`, x: arrowX + 10, y: (yOf(vbTop) + yOf(cbBot)) / 2, color: colors.text, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `E_g = ${Eg.toFixed(2)} eV`,
+        x: arrowX + 10,
+        y: (yOf(vbTop) + yOf(cbBot)) / 2,
+        color: colors.text,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left';
-      drawLabel(ctx, { text: 'valence band (full)', x: padL + plotW - 150, y: yOf(-0.4), size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: 'conduction band', x: padL + plotW - 150, y: yOf(cbBot + 0.4), size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'valence band (full)',
+        x: padL + plotW - 150,
+        y: yOf(-0.4),
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'conduction band',
+        x: padL + plotW - 150,
+        y: yOf(cbBot + 0.4),
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       drawLabel(ctx, {
         x: padL,
         y: 6,
@@ -172,8 +194,8 @@ export function BandStructureDemo({ figure }: Props) {
           direct-gap material for LEDs and lasers.
         </>
       }
-    
-      deeperLab={{ slug: 'pn-junction', label: 'See full lab' }}>
+      deeperLab={{ slug: 'pn-junction', label: 'See full lab' }}
+    >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <label className="mini-slider">
@@ -214,9 +236,13 @@ export function BandStructureDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Boltzmann occupancy"
-        left={<InlineMath tex={`\\frac{n}{N_C} \\approx \\exp\\!\\left(\\frac{-E_g}{2kT}\\right)`} />}
+        left={<M tex={`\\frac{n}{N_C} \\approx \\exp\\!\\left(\\frac{-E_g}{2kT}\\right)`} />}
         rightLabel={`${label} at ${T.toFixed(0)} K`}
-        right={<InlineMath tex={`\\exp\\!\\left(\\frac{-${Eg.toFixed(2)}}{2 \\times ${kT_meV.toFixed(1)}\\,\\text{meV}}\\right) \\approx ${sciTeX(occ)}`} />}
+        right={
+          <M
+            tex={`\\exp\\!\\left(\\frac{-${Eg.toFixed(2)}}{2 \\times ${kT_meV.toFixed(1)}\\,\\text{meV}}\\right) \\approx ${sciTeX(occ)}`}
+          />
+        }
       />
     </Demo>
   );

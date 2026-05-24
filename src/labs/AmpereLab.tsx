@@ -10,7 +10,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
 import { Pullout } from '@/components/Prose';
@@ -424,9 +424,9 @@ export default function AmpereLab() {
         loops around currents. A line integral around any closed path captures that "circulation"
         exactly. The mathematical statement equivalent to Ampère in differential form is Stokes'
         theorem:{' '}
-        <InlineMath tex="\oint \vec{B}\cdot d\vec{\ell} = \iint (\nabla\times\vec{B})\cdot d\vec{A} = \mu_0 \iint \vec{J}\cdot d\vec{A} = \mu_0 I_{\text{enc}}" />
+        <M tex="\oint \vec{B}\cdot d\vec{\ell} = \iint (\nabla\times\vec{B})\cdot d\vec{A} = \mu_0 \iint \vec{J}\cdot d\vec{A} = \mu_0 I_{\text{enc}}" />
         , giving
-        <InlineMath tex="\nabla\times\vec{B} = \mu_0\vec{J}" /> locally
+        <M tex="\nabla\times\vec{B} = \mu_0\vec{J}" /> locally
         <Cite id="feynman-II-13" in={SOURCES} />.
       </p>
 
@@ -694,7 +694,7 @@ export default function AmpereLab() {
             <Formula tex="|\vec{B}| = \dfrac{\mu_0 I_{\text{enc}}}{2\pi r} = \dfrac{(4\pi\times 10^{-7})(1.25)}{2\pi\times 0.001} = 2.5\times 10^{-4}\ \text{T}" />
             <p className="mb-prose-3">
               Equivalently,{' '}
-              <InlineMath tex="|\vec{B}| = \dfrac{\mu_0 I r}{2\pi R^2} = \dfrac{(4\pi\times 10^{-7})(5)(0.001)}{2\pi\times 4\times 10^{-6}} \approx 2.5\times 10^{-4}\ \text{T}" />
+              <M tex="|\vec{B}| = \dfrac{\mu_0 I r}{2\pi R^2} = \dfrac{(4\pi\times 10^{-7})(5)(0.001)}{2\pi\times 4\times 10^{-6}} \approx 2.5\times 10^{-4}\ \text{T}" />
               .
             </p>
             <p className="mb-prose-3">

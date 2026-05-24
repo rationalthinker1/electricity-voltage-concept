@@ -40,8 +40,15 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
@@ -143,10 +150,7 @@ export function PanelBus3DDemo({ figure }: Props) {
 
   const stateRef = useSimState({ nBreakers, show2Pole, showNeutral, showBond });
 
-  const setup = useSimLoop<
-    (typeof stateRef)['current'],
-    { scene: OrbitScene; tFlow: number }
-  >(
+  const setup = useSimLoop<(typeof stateRef)['current'], { scene: OrbitScene; tFlow: number }>(
     stateRef,
     ({ ctx, w: W, h: H }, s, dt, _simTime, ctx0) => {
       const cam = ctx0.scene.cam;
@@ -265,7 +269,14 @@ export function PanelBus3DDemo({ figure }: Props) {
 
       // Annotations
       ctx.fillStyle = getCanvasColors().textDim;
-      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'drag to rotate',
+        x: 12,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.globalAlpha = 0.55;
       ctx.fillStyle = getCanvasColors().textDim;
@@ -362,9 +373,13 @@ export function PanelBus3DDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Split-phase service"
-        left={<InlineMath tex="V_{L\text{-}L} = 2 \times V_{L\text{-}N} = 2 \times 120 = 240\,\text{V}" />}
+        left={<M tex="V_{L\text{-}L} = 2 \times V_{L\text{-}N} = 2 \times 120 = 240\,\text{V}" />}
         rightLabel="Per-branch load estimate"
-        right={<InlineMath tex={`I_{\\text{per}} = \\min\\!\\left(20,\\,\\frac{200}{${nBreakers}}\\right) = ${computed.I_per.toFixed(1)}\\,\\text{A}`} />}
+        right={
+          <M
+            tex={`I_{\\text{per}} = \\min\\!\\left(20,\\,\\frac{200}{${nBreakers}}\\right) = ${computed.I_per.toFixed(1)}\\,\\text{A}`}
+          />
+        }
       />
     </Demo>
   );

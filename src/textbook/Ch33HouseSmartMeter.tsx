@@ -13,7 +13,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -54,9 +54,8 @@ export default function Ch33HouseSmartMeter() {
       <p className="mb-prose-3">
         Every modern revenue meter sits between two pairs of wires — line voltage in, load voltage
         out, with the current passing straight through — and samples both the instantaneous voltage{' '}
-        <InlineMath tex="V(t)" /> across its terminals and the
-        instantaneous current <InlineMath tex="I(t)" /> through them
-        at a rate of one to four thousand times per second per phase
+        <M tex="V(t)" /> across its terminals and the instantaneous current <M tex="I(t)" /> through
+        them at a rate of one to four thousand times per second per phase
         <Cite id="ansi-c12-20-2015" in={SOURCES} />. From those two sampled streams the firmware
         computes four running integrals in parallel and accumulates each into its own register. The
         first and most important is{' '}
@@ -65,10 +64,10 @@ export default function Ch33HouseSmartMeter() {
             <>
               <strong className="text-text font-medium">real energy</strong> (kWh) — the time
               integral of the <em className="text-text italic">instantaneous</em> product{' '}
-              <InlineMath tex="V(t)\,I(t)" />. Equal to the cumulative work done by the source on
-              the load, counted in joules and then converted to the engineering unit of
-              kilowatt-hours (<InlineMath tex="1\,\text{kWh} = 3.6 \times 10^{6}\,\text{J}" />). The
-              only one of the four meter quantities that residential customers pay for.
+              <M tex="V(t)\,I(t)" />. Equal to the cumulative work done by the source on the load,
+              counted in joules and then converted to the engineering unit of kilowatt-hours (
+              <M tex="1\,\text{kWh} = 3.6 \times 10^{6}\,\text{J}" />
+              ). The only one of the four meter quantities that residential customers pay for.
             </>
           }
         >
@@ -79,14 +78,12 @@ export default function Ch33HouseSmartMeter() {
       <Formula tex="\\text{kWh} = \\int V(t)\\, I(t)\\, dt" />
       <p className="mb-prose-3">
         where the integral on the right runs over the billing period and yields joules (which the
-        meter then divides by <InlineMath tex="3.6 \times 10^{6}" /> to display kilowatt-hours).{' '}
-        <InlineMath tex="V(t)" /> is the instantaneous service voltage
-        in volts, <InlineMath tex="I(t)" /> is the instantaneous
-        current flowing through the meter in amperes (signed — positive when energy is flowing into
-        the house, negative when it is being exported), and{' '}
-        <InlineMath tex="t" /> is time in seconds. The product{' '}
-        <InlineMath tex="V(t)\,I(t)" /> is the instantaneous real power in watts; its integral is
-        the cumulative energy delivered
+        meter then divides by <M tex="3.6 \times 10^{6}" /> to display kilowatt-hours).{' '}
+        <M tex="V(t)" /> is the instantaneous service voltage in volts, <M tex="I(t)" /> is the
+        instantaneous current flowing through the meter in amperes (signed — positive when energy is
+        flowing into the house, negative when it is being exported), and <M tex="t" /> is time in
+        seconds. The product <M tex="V(t)\,I(t)" /> is the instantaneous real power in watts; its
+        integral is the cumulative energy delivered
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -108,10 +105,8 @@ export default function Ch33HouseSmartMeter() {
       </p>
       <Formula tex="\\text{kVAh} = \\int V_{\\text{rms}}\\, I_{\\text{rms}}\\, dt" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="V_{\text{rms}}" />{' '}
-        and{' '}
-        <InlineMath tex="I_{\text{rms}}" />{' '}
+        where <M tex="V_{\text{rms}}" />
+        and <M tex="I_{\text{rms}}" />
         are the running RMS values of the voltage and current waveforms (in volts and amperes),
         computed over a short averaging window. The product is the "envelope" of the VI product —
         the apparent power the supply has to deliver, regardless of whether that power is dissipated
@@ -123,10 +118,10 @@ export default function Ch33HouseSmartMeter() {
           def={
             <>
               <strong className="text-text font-medium">reactive energy</strong> (kVARh) — the
-              cumulative integral of <InlineMath tex="V(t)\,I(t - \pi/2)" />: the part of the VI
-              product that is 90° out of phase. Represents the energy that sloshes into and out of
-              inductors and capacitors each cycle without being dissipated. Industrial customers pay
-              penalties on it; residential ones usually do not.
+              cumulative integral of <M tex="V(t)\,I(t - \pi/2)" />: the part of the VI product that
+              is 90° out of phase. Represents the energy that sloshes into and out of inductors and
+              capacitors each cycle without being dissipated. Industrial customers pay penalties on
+              it; residential ones usually do not.
             </>
           }
         >
@@ -137,20 +132,20 @@ export default function Ch33HouseSmartMeter() {
       </p>
       <Formula tex="\\text{kVARh} = \\int V(t)\\, I(t - \\pi/2\\omega)\\, dt" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\omega = 2\pi f" /> is the angular frequency of
-        the line (377 rad/s in North America), and the quarter-cycle delay isolates the part of the
-        current that is 90° out of phase with the voltage — the part that flows into and out of
-        inductors and capacitors each cycle without depositing any net energy. The three integrals
-        together obey a Pythagorean relation that recovers the power triangle from{' '}
+        where <M tex="\omega = 2\pi f" /> is the angular frequency of the line (377 rad/s in North
+        America), and the quarter-cycle delay isolates the part of the current that is 90° out of
+        phase with the voltage — the part that flows into and out of inductors and capacitors each
+        cycle without depositing any net energy. The three integrals together obey a Pythagorean
+        relation that recovers the power triangle from{' '}
         <Term
           def={
             <>
               <strong className="text-text font-medium">chapter 12's power triangle</strong> — the
-              right-triangle identity <InlineMath tex="P^{2} + Q^{2} = S^{2}" />, where{' '}
-              <InlineMath tex="P" /> is real power, <InlineMath tex="Q" /> is reactive power, and{' '}
-              <InlineMath tex="S" /> is apparent power. Each meter integrates each leg over time
-              into its own register, then the triangle holds for the cumulative energies as well:{' '}
-              <InlineMath tex="\text{kWh}^{2} + \text{kVARh}^{2} = \text{kVAh}^{2}" />.
+              right-triangle identity <M tex="P^{2} + Q^{2} = S^{2}" />, where <M tex="P" /> is real
+              power, <M tex="Q" /> is reactive power, and <M tex="S" /> is apparent power. Each
+              meter integrates each leg over time into its own register, then the triangle holds for
+              the cumulative energies as well:{' '}
+              <M tex="\text{kWh}^{2} + \text{kVARh}^{2} = \text{kVAh}^{2}" />.
             </>
           }
         >
@@ -160,13 +155,11 @@ export default function Ch33HouseSmartMeter() {
       </p>
       <Formula tex="\\text{kVA}^2 = \\text{kW}^2 + \\text{kVAR}^2" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\text{kVA}" /> is apparent power (in
-        kilovolt-amperes), <InlineMath tex="\text{kW}" /> is real power (in
-        kilowatts — the work-doing component), and{' '}
-        <InlineMath tex="\text{kVAR}" /> is reactive power (in
-        kilovolt-amperes reactive — the sloshing component). The same Pythagorean relation holds
-        between the three energies as well:{' '}
-        <InlineMath tex="\text{kVAh}^{2} = \text{kWh}^{2} + \text{kVARh}^{2}" />
+        where <M tex="\text{kVA}" /> is apparent power (in kilovolt-amperes), <M tex="\text{kW}" />{' '}
+        is real power (in kilowatts — the work-doing component), and <M tex="\text{kVAR}" /> is
+        reactive power (in kilovolt-amperes reactive — the sloshing component). The same Pythagorean
+        relation holds between the three energies as well:{' '}
+        <M tex="\text{kVAh}^{2} = \text{kWh}^{2} + \text{kVARh}^{2}" />
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -240,8 +233,8 @@ export default function Ch33HouseSmartMeter() {
           induction-disk meter
         </Term>
         . The mechanism is a small marvel of nineteenth-century electromechanical thinking — a meter
-        that integrates <InlineMath tex="V \cdot I \cdot \cos\varphi" /> over time using nothing but
-        eddy currents, geometry, and a permanent magnet for braking
+        that integrates <M tex="V \cdot I \cdot \cos\varphi" /> over time using nothing but eddy
+        currents, geometry, and a permanent magnet for braking
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -252,10 +245,10 @@ export default function Ch33HouseSmartMeter() {
         same aluminium disk but in slightly different positions, and their interaction induces eddy
         currents in the disk. The torque on the disk from the eddy-current / magnetic-field
         interaction is exactly proportional to the time-averaged product{' '}
-        <InlineMath tex="V \cdot I \cdot \cos(\varphi)" /> — that is, to the real power
-        crossing the meter — with the cos(φ) appearing automatically because the two coils are
-        designed to have a 90° phase difference in their flux contributions so that purely reactive
-        current contributes zero net torque.
+        <M tex="V \cdot I \cdot \cos(\varphi)" /> — that is, to the real power crossing the meter —
+        with the cos(φ) appearing automatically because the two coils are designed to have a 90°
+        phase difference in their flux contributions so that purely reactive current contributes
+        zero net torque.
       </p>
       <p className="mb-prose-3">
         Without anything else, that torque would simply accelerate the disk forever. The trick that
@@ -619,11 +612,10 @@ export default function Ch33HouseSmartMeter() {
       </p>
       <Formula tex="\\text{Bill} = R \\times (\\text{kWh}_{\\text{in}} - \\text{kWh}_{\\text{out}})" />
       <p className="mb-prose-3">
-        where <InlineMath tex="R" /> is the per-kWh retail rate (in
-        $/kWh),{' '}
-        <InlineMath tex="\text{kWh}_{\text{in}}" />{' '}
+        where <M tex="R" /> is the per-kWh retail rate (in $/kWh),{' '}
+        <M tex="\text{kWh}_{\text{in}}" />
         is total energy imported from the grid during the billing period (in kWh), and{' '}
-        <InlineMath tex="\text{kWh}_{\text{out}}" />{' '}
+        <M tex="\text{kWh}_{\text{out}}" />
         is total energy exported (in kWh). If the customer exports more than they import in a given
         month, the bill goes to zero (or to the fixed charge alone), and the surplus rolls forward
         as a credit to the next month.
@@ -664,18 +656,14 @@ export default function Ch33HouseSmartMeter() {
       </p>
       <Formula tex="\\text{Bill} = R_{\\text{peak}} \\times \\text{kWh}_{\\text{peak,in}} + R_{\\text{off}} \\times \\text{kWh}_{\\text{off,in}} - R_{\\text{export}} \\times \\text{kWh}_{\\text{out}}" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="R_{\text{peak}}" />{' '}
-        and{' '}
-        <InlineMath tex="R_{\text{off}}" />{' '}
+        where <M tex="R_{\text{peak}}" />
+        and <M tex="R_{\text{off}}" />
         are the peak and off-peak per-kWh retail rates (in $/kWh),{' '}
-        <InlineMath tex="\text{kWh}_{\text{peak,in}}" />{' '}
-        and{' '}
-        <InlineMath tex="\text{kWh}_{\text{off,in}}" />{' '}
-        are the imported energies during each window (in kWh),{' '}
-        <InlineMath tex="R_{\text{export}}" />{' '}
+        <M tex="\text{kWh}_{\text{peak,in}}" />
+        and <M tex="\text{kWh}_{\text{off,in}}" />
+        are the imported energies during each window (in kWh), <M tex="R_{\text{export}}" />
         is the export buy-back rate (in $/kWh, often lower than the off-peak rate), and{' '}
-        <InlineMath tex="\text{kWh}_{\text{out}}" />{' '}
+        <M tex="\text{kWh}_{\text{out}}" />
         is the total exported energy (in kWh). California's NEM 3.0 (in effect since 2023) is
         essentially this structure with R<sub>export</sub> set by an avoided-cost calculation that
         pays only about <strong className="text-text font-medium">$0.05/kWh</strong> for daytime

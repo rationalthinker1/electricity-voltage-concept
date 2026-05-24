@@ -9,8 +9,15 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS, sciTeX } from '@/lib/physics';
@@ -168,10 +175,10 @@ export function EMWaveSpeedDemo({ figure }: Props) {
       deeperLab={{ slug: 'maxwell-synthesis', label: 'See full lab' }}
       caption={
         <>
-          The propagation speed is <InlineMath>c = 1/√(μ₀ε₀)</InlineMath>. Drag the sliders to scale
-          ε₀ and μ₀ by up to a decade each. In <strong>fix ω</strong> mode the temporal frequency is
-          held constant and the wavelength stretches or compresses. In <strong>fix k</strong> mode the
-          spatial wavelength is held constant and the wave slows down or speeds up.
+          The propagation speed is <M>c = 1/√(μ₀ε₀)</M>. Drag the sliders to scale ε₀ and μ₀ by up
+          to a decade each. In <strong>fix ω</strong> mode the temporal frequency is held constant
+          and the wavelength stretches or compresses. In <strong>fix k</strong> mode the spatial
+          wavelength is held constant and the wave slows down or speeds up.
         </>
       }
     >
@@ -195,19 +202,21 @@ export function EMWaveSpeedDemo({ figure }: Props) {
           format={(v) => v.toExponential(2) + ' T·m/A'}
           onChange={setMu}
         />
-        <MiniToggle label={fixOmega ? 'fix ω' : 'fix k'} checked={fixOmega} onChange={setFixOmega} />
+        <MiniToggle
+          label={fixOmega ? 'fix ω' : 'fix k'}
+          checked={fixOmega}
+          onChange={setFixOmega}
+        />
         <MiniReadout label="c predicted" value={<Num value={cPredicted} digits={3} />} unit="m/s" />
         <MiniReadout label="c exact" value={<Num value={C_EXACT} digits={3} />} unit="m/s" />
         <MiniReadout label="ratio" value={ratio.toFixed(3)} unit="×" />
       </DemoControls>
       <EquationStrip
         leftLabel="symbolic"
-        left={<InlineMath tex="c = \\dfrac{1}{\\sqrt{\\mu_0 \\varepsilon_0}}" />}
+        left={<M tex="c = \\dfrac{1}{\\sqrt{\\mu_0 \\varepsilon_0}}" />}
         rightLabel="with values"
         right={
-          <InlineMath
-            tex={`c = \\dfrac{1}{\\sqrt{(${muStr})(${epsStr})}} = ${cPredStr} \\text{ m/s}`}
-          />
+          <M tex={`c = \\dfrac{1}{\\sqrt{(${muStr})(${epsStr})}} = ${cPredStr} \\text{ m/s}`} />
         }
       />
     </Demo>

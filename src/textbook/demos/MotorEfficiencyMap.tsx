@@ -15,7 +15,7 @@ import { useMemo, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -258,7 +258,7 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
           <button
             key={m}
             type="button"
-            className={`mini-toggle${motorType === m ? ' on' : ''}`}
+            className={`mini-toggle${motorType === m ? 'on' : ''}`}
             onClick={() => setMotorType(m)}
             aria-pressed={motorType === m}
           >
@@ -288,13 +288,13 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="output"
         left={
-          <InlineMath
+          <M
             tex={`P_{\\text{out}} = \\tau\\omega = ${(tauOp * omegaOp).toFixed(3)}\\,\\text{pu}`}
           />
         }
         rightLabel="efficiency"
         right={
-          <InlineMath
+          <M
             tex={`\\eta = P_{\\text{out}}/(P_{\\text{out}}+P_{\\text{loss}}) = ${computed.eta.toFixed(3)}`}
           />
         }

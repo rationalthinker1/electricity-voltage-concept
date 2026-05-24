@@ -23,13 +23,13 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -104,8 +104,22 @@ export function WireVoltageDropDemo({ figure }: Props) {
 
       // V-axis ticks at 0 V and V₀ on the left edge.
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-      drawLabel(ctx, { text: `${V0} V`, x: wireLeft - 8, y: yOfV(V0), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0 V', x: wireLeft - 8, y: hillBaseY, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `${V0} V`,
+        x: wireLeft - 8,
+        y: yOfV(V0),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0 V',
+        x: wireLeft - 8,
+        y: hillBaseY,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
 
       // ── Wire body (bottom row) ─────────────────────────────────────────
       // Gradient along the wire matches the hill: pink (+) on the left,
@@ -123,8 +137,28 @@ export function WireVoltageDropDemo({ figure }: Props) {
       ctx.stroke();
 
       // Terminal markers (+ on left, − on right).
-      drawLabel(ctx, { text: '+', x: wireLeft - 18, y: wireCY, color: colors.pink, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: '−', x: wireRight + 18, y: wireCY, color: colors.blue, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '+',
+        x: wireLeft - 18,
+        y: wireCY,
+        color: colors.pink,
+        weight: 'bold',
+        size: 12,
+        font: 'bold 12px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '−',
+        x: wireRight + 18,
+        y: wireCY,
+        color: colors.blue,
+        weight: 'bold',
+        size: 12,
+        font: 'bold 12px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
 
       // Current-direction arrow above the wire (conventional current +→−).
       const arrowY = wireTop - 18;
@@ -143,7 +177,13 @@ export function WireVoltageDropDemo({ figure }: Props) {
       ctx.lineTo(ax1 - 7, arrowY + 4);
       ctx.closePath();
       ctx.fill();
-      drawLabel(ctx, { text: `I = ${I.toFixed(2)} A`, x: (ax0 + ax1) / 2, y: arrowY - 6, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: `I = ${I.toFixed(2)} A`,
+        x: (ax0 + ax1) / 2,
+        y: arrowY - 6,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
 
       // ── Probe ─────────────────────────────────────────────────────────
       const px = wireLeft + probeT * wireLen;
@@ -163,14 +203,41 @@ export function WireVoltageDropDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(px, wireCY, 9, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: 'P', x: px, y: wireCY + 1, color: colors.bg, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'P',
+        x: px,
+        y: wireCY + 1,
+        color: colors.bg,
+        weight: 'bold',
+        font: 'bold 10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
       // V-at-probe readout, attached to the hill crossing point.
-      drawLabel(ctx, { text: `V(P) ≈ ${Vp.toFixed(2)} V`, x: px, y: hillY - 10, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: `V(P) ≈ ${Vp.toFixed(2)} V`,
+        x: px,
+        y: hillY - 10,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
 
       // ── Bottom caption / position label ───────────────────────────────
       ctx.fillStyle = withAlpha(colors.textDim, 0.8);
-      drawLabel(ctx, { text: 'drag the probe along the wire', x: wireLeft, y: wireBot + 22, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `position: ${(probeT * 100).toFixed(0)}% of wire length`, x: wireRight, y: wireBot + 22, font: '10px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, {
+        text: 'drag the probe along the wire',
+        x: wireLeft,
+        y: wireBot + 22,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `position: ${(probeT * 100).toFixed(0)}% of wire length`,
+        x: wireRight,
+        y: wireBot + 22,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+      });
     },
     [],
     (info) => {
@@ -311,10 +378,10 @@ export function WireVoltageDropDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Potential along the wire"
-        left={<InlineMath tex="V(x) \;=\; V_{0} - I R\, (x/L)" />}
+        left={<M tex="V(x) \;=\; V_{0} - I R\, (x/L)" />}
         rightLabel="Substitution at the probe"
         right={
-          <InlineMath
+          <M
             tex={
               `V(P) \\;=\\; ${V0} - ${I.toFixed(2)} \\times ${R.toFixed(1)} \\times ` +
               `${probeT.toFixed(2)} \\;\\approx\\; ${Vprobe.toFixed(2)}\\ \\text{V}`

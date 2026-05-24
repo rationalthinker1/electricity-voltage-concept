@@ -367,6 +367,51 @@ function checkUnusedSources(chapter, cites) {
   }
 }
 
+// H6 — JSX whitespace bug: prose ends a line, next line opens with an
+// inline tag that needs word-spacing (<M>, <Term>, <strong>, <em>, …),
+// and there's no `{' '}` marker bridging them. JSX strips the newline
+// and the leading indent, so the rendered output runs the prose word
+// straight into the tag's first glyph (e.g. "between them,V" instead of
+// "between them, V"). Self-closed <Cite>, <sub>, <sup> are excluded
+// because they're meant to hug the previous word (superscript style).
+const JSX_SPACING_TAGS = ['M', 'Term', 'strong', 'em', 'a', 'Link', 'code', 'InlineMath'];
+function checkJsxWhitespaceAtTagBoundary(chapter) {
+  if (!chapter.file) return;
+  const { lines } = loadChapterFile(chapter.file);
+  const tagAlt = JSX_SPACING_TAGS.join('|');
+  const nextLineTagRe = new RegExp(`^[ \\t]+<(${tagAlt})\\b`);
+  const fullOpenRe = new RegExp(`<(${tagAlt})\\b([^>]*)>`);
+  const prevLineEndRe = /([^\s>{(\[\-—–][\w,.;:!?\)\]"'/])\s*$/;
+
+  for (let i = 0; i < lines.length - 1; i++) {
+    const line = lines[i];
+    const next = lines[i + 1];
+
+    if (!nextLineTagRe.test(next)) continue;
+    if (!prevLineEndRe.test(line)) continue;
+    if (/\{' '\}\s*$/.test(line)) continue;
+    if (/[\(\[\{]\s*$/.test(line)) continue;
+    if (/>\s*$/.test(line)) continue;
+    if (/[—–-]\s*$/.test(line)) continue;
+
+    // Distinguish `<Foo> word` (non-self-closing, leading whitespace in
+    // content — already glues correctly) from `<Foo />` (self-closing —
+    // a real whitespace bug if the previous line lacks `{' '}`).
+    const open = next.match(fullOpenRe);
+    if (open) {
+      const attrs = open[2].trimEnd();
+      const isSelfClosing = attrs.endsWith('/');
+      if (!isSelfClosing) {
+        const afterOpen = next.slice(open.index + open[0].length);
+        if (/^\s/.test(afterOpen)) continue;
+      }
+    }
+
+    add(chapter, chapter.file, i + 1, 'HIGH', 'H6',
+      `Line ends with text, next line opens with <${open ? open[1] : '?'}> — add {' '} before the newline (JSX would strip the space)`);
+  }
+}
+
 // M5 — Stale Chapter N / Ch.N xrefs (multi-line aware)
 function checkStaleChapterXrefs(chapter, chapters) {
   if (!chapter.file) return;
@@ -405,6 +450,7 @@ function lintOne(chapter, sourcesRegistry, chapters) {
   checkTermCount(chapter);
   checkUnusedSources(chapter, cites);
   checkStaleChapterXrefs(chapter, chapters);
+  checkJsxWhitespaceAtTagBoundary(chapter);
 }
 
 function main() {

@@ -16,12 +16,19 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -118,9 +125,22 @@ export function ExcitationControlDemo({ figure }: Props) {
         ctx.fill();
         // Y axis label
         ctx.fillStyle = colors.textDim;
-        drawLabel(ctx, { text: '|V_t| (pu)', x: padL - 6, y: padT + plotH / 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+        drawLabel(ctx, {
+          text: '|V_t| (pu)',
+          x: padL - 6,
+          y: padT + plotH / 2,
+          font: '10px "JetBrains Mono", monospace',
+          align: 'right',
+          baseline: 'middle',
+        });
         // Title
-        drawLabel(ctx, { text: 'no-load: |V_t| = |E_f| = k_f · I_field', x: padL + 6, y: padT + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+        drawLabel(ctx, {
+          text: 'no-load: |V_t| = |E_f| = k_f · I_field',
+          x: padL + 6,
+          y: padT + 4,
+          font: '10px "JetBrains Mono", monospace',
+          baseline: 'top',
+        });
       } else {
         // Loaded: V curve — |I_a| vs i_F, for fixed P.
         const yMax = 2.0;
@@ -159,7 +179,14 @@ export function ExcitationControlDemo({ figure }: Props) {
         ctx.setLineDash([]);
         ctx.save();
         ctx.globalAlpha = 0.8;
-        drawLabel(ctx, { text: '|I_a| = P at unity PF', x: padL + 6, y: yAt(pRef) - 2, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
+        drawLabel(ctx, {
+          text: '|I_a| = P at unity PF',
+          x: padL + 6,
+          y: yAt(pRef) - 2,
+          color: colors.teal,
+          font: '10px "JetBrains Mono", monospace',
+          baseline: 'bottom',
+        });
 
         // Marker
         const Ef = K_F * iField;
@@ -177,18 +204,43 @@ export function ExcitationControlDemo({ figure }: Props) {
         // Y axis label
         ctx.restore();
         ctx.fillStyle = colors.textDim;
-        drawLabel(ctx, { text: '|I_a| (pu)', x: padL - 6, y: padT + plotH / 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+        drawLabel(ctx, {
+          text: '|I_a| (pu)',
+          x: padL - 6,
+          y: padT + plotH / 2,
+          font: '10px "JetBrains Mono", monospace',
+          align: 'right',
+          baseline: 'middle',
+        });
         // Title
-        drawLabel(ctx, { text: `loaded V-curve: |I_a| vs I_field at P = ${pRef.toFixed(2)} pu`, x: padL + 6, y: padT + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+        drawLabel(ctx, {
+          text: `loaded V-curve: |I_a| vs I_field at P = ${pRef.toFixed(2)} pu`,
+          x: padL + 6,
+          y: padT + 4,
+          font: '10px "JetBrains Mono", monospace',
+          baseline: 'top',
+        });
 
         // Region labels
         ctx.save();
         ctx.globalAlpha = 0.75;
-        drawLabel(ctx, { text: 'under-excited (Q < 0)', x: padL + 8, y: padT + plotH - 6, color: colors.blue, baseline: 'bottom' });
+        drawLabel(ctx, {
+          text: 'under-excited (Q < 0)',
+          x: padL + 8,
+          y: padT + plotH - 6,
+          color: colors.blue,
+          baseline: 'bottom',
+        });
         ctx.restore();
         ctx.save();
         ctx.globalAlpha = 0.75;
-        drawLabel(ctx, { text: 'over-excited (Q > 0)', x: padL + plotW - 8, y: padT + plotH - 6, color: colors.pink, align: 'right' });
+        drawLabel(ctx, {
+          text: 'over-excited (Q > 0)',
+          x: padL + plotW - 8,
+          y: padT + plotH - 6,
+          color: colors.pink,
+          align: 'right',
+        });
         ctx.restore();
       }
       ctx.fillStyle = colors.textDim;
@@ -266,24 +318,22 @@ export function ExcitationControlDemo({ figure }: Props) {
         leftLabel={loaded ? 'Reactive power at the terminal' : 'No-load EMF'}
         left={
           loaded ? (
-            <InlineMath
-              tex={`Q = \\dfrac{|V| \\cdot |E_f|}{X_s}\\cos\\delta - \\dfrac{|V|^2}{X_s}`}
-            />
+            <M tex={`Q = \\dfrac{|V| \\cdot |E_f|}{X_s}\\cos\\delta - \\dfrac{|V|^2}{X_s}`} />
           ) : (
-            <InlineMath tex={`|E_f| = k_f \\cdot I_{\\text{field}}`} />
+            <M tex={`|E_f| = k_f \\cdot I_{\\text{field}}`} />
           )
         }
         rightLabel="with current state"
         right={
           loaded ? (
-            <InlineMath
+            <M
               tex={
                 `Q = \\dfrac{(1.0)(${computed.Ef.toFixed(2)})}{${X_S.toFixed(1)}}\\cos(${computed.deltaDeg.toFixed(1)}^{\\circ})` +
                 ` - \\dfrac{1.0^2}{${X_S.toFixed(1)}} \\approx ${computed.Q.toFixed(2)}\\ \\text{pu}`
               }
             />
           ) : (
-            <InlineMath
+            <M
               tex={`|E_f| = (${K_F.toFixed(1)})(${iField.toFixed(2)}) = ${computed.Ef.toFixed(2)}\\ \\text{pu}`}
             />
           )

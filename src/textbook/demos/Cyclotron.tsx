@@ -12,8 +12,15 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
@@ -85,7 +92,13 @@ export function CyclotronDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.55;
-      drawLabel(ctx, { text: `B = ${fmtSIPrecision(B, 'T', 3)}  (into page)`, x: 14, y: 18, color: colors.teal, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: `B = ${fmtSIPrecision(B, 'T', 3)}  (into page)`,
+        x: 14,
+        y: 18,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+      });
       ctx.restore();
       const cx0 = w / 2;
       const cy0 = h / 2 + sign * 0;
@@ -129,7 +142,17 @@ export function CyclotronDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(px, py, 7, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: positive ? '+' : '−', x: px, y: py, color: colors.bg, weight: 'bold', size: 9, font: '9px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: positive ? '+' : '−',
+        x: px,
+        y: py,
+        color: colors.bg,
+        weight: 'bold',
+        size: 9,
+        font: '9px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.5;
       const aLen = 22;
@@ -147,10 +170,23 @@ export function CyclotronDemo({ figure }: Props) {
       ctx.lineTo(hx - tx * 5 - nx * 3, hy - ty * 5 - ny * 3);
       ctx.closePath();
       ctx.fill();
-      drawLabel(ctx, { text: 'v', x: hx + tx * 8, y: hy + ty * 8, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: 'v',
+        x: hx + tx * 8,
+        y: hy + ty * 8,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       ctx.save();
       ctx.globalAlpha = 0.85;
-      drawLabel(ctx, { text: `r (real) = ${fmtSIPrecision(r_phys, 'm', 2)}`, x: w - 14, y: 18, color: colors.text, align: 'right' });
+      drawLabel(ctx, {
+        text: `r (real) = ${fmtSIPrecision(r_phys, 'm', 2)}`,
+        x: w - 14,
+        y: 18,
+        color: colors.text,
+        align: 'right',
+      });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.6;
@@ -217,20 +253,10 @@ export function CyclotronDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Larmor radius"
-        left={
-          <InlineMath
-            tex={
-              `r \\;=\\; \\dfrac{mv}{qB} \\;\\approx\\; ${sciTeX(r_real)}\\ \\text{m}`
-            }
-          />
-        }
+        left={<M tex={`r \\;=\\; \\dfrac{mv}{qB} \\;\\approx\\; ${sciTeX(r_real)}\\ \\text{m}`} />}
         rightLabel="Cyclotron period (mass-only)"
         right={
-          <InlineMath
-            tex={
-              `T \\;=\\; \\dfrac{2\\pi m}{qB} \\;\\approx\\; ${sciTeX(T_real)}\\ \\text{s}`
-            }
-          />
+          <M tex={`T \\;=\\; \\dfrac{2\\pi m}{qB} \\;\\approx\\; ${sciTeX(T_real)}\\ \\text{s}`} />
         }
       />
     </Demo>

@@ -27,14 +27,14 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { MATERIALS, type MaterialKey, PHYS, sciTeX } from '@/lib/physics';
 import { project, v3, type OrbitCamera, type Point2D, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -155,16 +155,15 @@ export function MicroscopicOhm3DDemo({ figure }: Props) {
       caption={
         <>
           Inside the cylinder, the orange arrow on the wire axis is the applied electric field{' '}
-          <InlineMath tex="\vec{E}" />; the pink arrow is the current density{' '}
-          <InlineMath tex="\vec{J} = \sigma\vec{E}" />, parallel to <InlineMath tex="\vec{E}" /> and
-          longer or shorter depending on the material's conductivity. The cyan dots are free
-          electrons; they drift opposite to <InlineMath tex="\vec{E}" /> at a speed proportional to{' '}
-          <InlineMath tex="\sigma E" />. Around the wire, the teal rings are the magnetic field{' '}
-          <InlineMath tex="\vec{B}" />: perpendicular to the wire, curling by the right-hand rule,
-          with magnitude tracking the current. Slide <InlineMath tex="E" /> up — the electrons speed
-          up, <InlineMath tex="\vec{J}" /> grows in lockstep, and the B-field rings brighten. Switch
-          material to nichrome and the same field gives ~65× less current — same equation, different
-          σ. Drag to orbit.
+          <M tex="\vec{E}" />; the pink arrow is the current density{' '}
+          <M tex="\vec{J} = \sigma\vec{E}" />, parallel to <M tex="\vec{E}" /> and longer or shorter
+          depending on the material's conductivity. The cyan dots are free electrons; they drift
+          opposite to <M tex="\vec{E}" /> at a speed proportional to <M tex="\sigma E" />. Around
+          the wire, the teal rings are the magnetic field <M tex="\vec{B}" />: perpendicular to the
+          wire, curling by the right-hand rule, with magnitude tracking the current. Slide{' '}
+          <M tex="E" /> up — the electrons speed up, <M tex="\vec{J}" /> grows in lockstep, and the
+          B-field rings brighten. Switch material to nichrome and the same field gives ~65× less
+          current — same equation, different σ. Drag to orbit.
         </>
       }
       deeperLab={{ slug: 'resistance', label: 'See full lab' }}
@@ -200,10 +199,10 @@ export function MicroscopicOhm3DDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Microscopic Ohm's law"
-        left={<InlineMath tex="\vec{J} \;=\; \sigma\, \vec{E}" />}
+        left={<M tex="\vec{J} \;=\; \sigma\, \vec{E}" />}
         rightLabel={`Live substitution (${mat.name})`}
         right={
-          <InlineMath
+          <M
             tex={
               `J \\;=\\; ${sciTeX(computed.sigma)} \\times ` +
               `${sciTeX(computed.E)} \\;\\approx\\; ` +
@@ -373,7 +372,14 @@ function drawBFieldRings(
   // wire body.
   const labelAt = project(v3(0, R_RING * 1.15, 0), cam, W, H);
   ctx.fillStyle = withAlpha(colors.teal, 0.45 + 0.5 * Inorm);
-  drawLabel(ctx, { text: 'B', x: labelAt.x, y: labelAt.y - 4, font: "italic 13px 'STIX Two Text', serif", align: 'center', baseline: 'bottom' });
+  drawLabel(ctx, {
+    text: 'B',
+    x: labelAt.x,
+    y: labelAt.y - 4,
+    font: "italic 13px 'STIX Two Text', serif",
+    align: 'center',
+    baseline: 'bottom',
+  });
 }
 
 function drawFieldVectors(
@@ -397,7 +403,13 @@ function drawFieldVectors(
   // Label "E" near the head.
   const eLabelAnchor = project(v3(halfE + 0.18, 0.18, 0), cam, W, H);
   ctx.fillStyle = withAlpha(colors.accent, 0.85);
-  drawLabel(ctx, { text: 'E', x: eLabelAnchor.x, y: eLabelAnchor.y, font: "italic 13px 'STIX Two Text', serif", baseline: 'middle' });
+  drawLabel(ctx, {
+    text: 'E',
+    x: eLabelAnchor.x,
+    y: eLabelAnchor.y,
+    font: "italic 13px 'STIX Two Text', serif",
+    baseline: 'middle',
+  });
 
   // J vector — same axis but offset above the wire so the two arrows are
   // distinguishable. Length scales with Jnorm.
@@ -410,7 +422,13 @@ function drawFieldVectors(
   drawVectorArrow(ctx, pJ0, pJ1, withAlpha(colors.pink, 0.6 + 0.4 * Jnorm), 2 + 1.5 * Jnorm);
   const jLabelAnchor = project(v3(halfJ + 0.18, yJ + 0.18, 0), cam, W, H);
   ctx.fillStyle = withAlpha(colors.pink, 0.9);
-  drawLabel(ctx, { text: 'J = σE', x: jLabelAnchor.x, y: jLabelAnchor.y, font: "italic 13px 'STIX Two Text', serif", baseline: 'middle' });
+  drawLabel(ctx, {
+    text: 'J = σE',
+    x: jLabelAnchor.x,
+    y: jLabelAnchor.y,
+    font: "italic 13px 'STIX Two Text', serif",
+    baseline: 'middle',
+  });
 }
 
 function drawElectrons(
@@ -447,16 +465,62 @@ function drawLegend(
   H: number,
   matName: string,
 ) {
-  drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+  drawLabel(ctx, {
+    text: 'drag to rotate',
+    x: 12,
+    y: 12,
+    size: 11,
+    font: '11px "JetBrains Mono", monospace',
+    baseline: 'top',
+  });
   ctx.fillStyle = withAlpha(colors.accent, 0.95);
-  drawLabel(ctx, { text: 'E   applied field', x: W - 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+  drawLabel(ctx, {
+    text: 'E   applied field',
+    x: W - 12,
+    y: 12,
+    size: 11,
+    font: '11px "JetBrains Mono", monospace',
+    align: 'right',
+    baseline: 'top',
+  });
   ctx.fillStyle = withAlpha(colors.pink, 0.95);
-  drawLabel(ctx, { text: 'J = σE   current density', x: W - 12, y: 28, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+  drawLabel(ctx, {
+    text: 'J = σE   current density',
+    x: W - 12,
+    y: 28,
+    size: 11,
+    font: '11px "JetBrains Mono", monospace',
+    align: 'right',
+    baseline: 'top',
+  });
   ctx.fillStyle = withAlpha(colors.teal, 0.95);
-  drawLabel(ctx, { text: 'B   magnetic field', x: W - 12, y: 44, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+  drawLabel(ctx, {
+    text: 'B   magnetic field',
+    x: W - 12,
+    y: 44,
+    size: 11,
+    font: '11px "JetBrains Mono", monospace',
+    align: 'right',
+    baseline: 'top',
+  });
   ctx.fillStyle = withAlpha(colors.blue, 0.95);
-  drawLabel(ctx, { text: 'electrons (drift)', x: W - 12, y: 60, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-  drawLabel(ctx, { text: `${matName} · 1 mm² cross-section · arrows scaled, vectors real`, x: 12, y: H - 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'bottom' });
+  drawLabel(ctx, {
+    text: 'electrons (drift)',
+    x: W - 12,
+    y: 60,
+    size: 11,
+    font: '11px "JetBrains Mono", monospace',
+    align: 'right',
+    baseline: 'top',
+  });
+  drawLabel(ctx, {
+    text: `${matName} · 1 mm² cross-section · arrows scaled, vectors real`,
+    x: 12,
+    y: H - 12,
+    size: 11,
+    font: '11px "JetBrains Mono", monospace',
+    baseline: 'bottom',
+  });
 }
 
 /* ─── Vector / arrowhead primitives ────────────────────────────────────── */

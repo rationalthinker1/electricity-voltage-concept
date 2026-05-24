@@ -10,13 +10,13 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { PHYS, sciTeX } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -80,12 +80,51 @@ export function EnergyInTheGapDemo({ figure }: Props) {
       }
       drawPlate(ctx, xL, topY, plateW, plateThick, colors.pink);
       drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, colors.blue);
-      drawLabel(ctx, { text: 'u_E = ½ ε₀ E²', x: 14, y: 12, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'u_E = ½ ε₀ E²',
+        x: 14,
+        y: 12,
+        color: colors.accent,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `E = ${(s.E / 1000).toFixed(1)} kV/m`, x: 14, y: 28, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `u_E = ${s.u_E.toExponential(2)} J/m³`, x: 14, y: 42, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: '← the energy lives here', x: W - 14, y: cy - 6, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: 'not in the plates', x: W - 14, y: cy + 8, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `E = ${(s.E / 1000).toFixed(1)} kV/m`,
+        x: 14,
+        y: 28,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `u_E = ${s.u_E.toExponential(2)} J/m³`,
+        x: 14,
+        y: 42,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: '← the energy lives here',
+        x: W - 14,
+        y: cy - 6,
+        color: colors.accent,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'not in the plates',
+        x: W - 14,
+        y: cy + 8,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       ctx0.phase = phase;
     },
     [],
@@ -127,7 +166,7 @@ export function EnergyInTheGapDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Energy density in the field"
         left={
-          <InlineMath
+          <M
             tex={
               `u_{E} \\;=\\; \\tfrac{1}{2}\\varepsilon_{0} E^{2} \\;=\\; ` +
               `\\tfrac{1}{2}(8.854\\!\\times\\!10^{-12})(${sciTeX(E)})^{2} ` +
@@ -136,13 +175,7 @@ export function EnergyInTheGapDemo({ figure }: Props) {
           />
         }
         rightLabel="Total = u_E × volume"
-        right={
-          <InlineMath
-            tex={
-              `U \\;=\\; u_{E} \\cdot A d \\;\\approx\\; ${sciTeX(U)}\\ \\text{J}`
-            }
-          />
-        }
+        right={<M tex={`U \\;=\\; u_{E} \\cdot A d \\;\\approx\\; ${sciTeX(U)}\\ \\text{J}`} />}
       />
     </Demo>
   );

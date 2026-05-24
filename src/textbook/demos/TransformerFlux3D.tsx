@@ -25,8 +25,15 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
@@ -130,12 +137,7 @@ function helixAroundLeg(
 // Project a polyline of 3D points to screen, returning only the segments
 // where both ends are in front of the camera. Returns an array of
 // contiguous 2D polylines (one per visible segment-run).
-function projectPolyline(
-  pts: Vec3[],
-  cam: OrbitScene['cam'],
-  W: number,
-  H: number,
-): Point2D[][] {
+function projectPolyline(pts: Vec3[], cam: OrbitScene['cam'], W: number, H: number): Point2D[][] {
   const segs: Point2D[][] = [];
   let cur: Point2D[] = [];
   for (const p of pts) {
@@ -351,14 +353,31 @@ export function TransformerFlux3DDemo({ figure }: Props) {
           const alpha = (0.45 + 0.5 * intensity) * twinkle;
           const from = v3(fp.x - (tx * arrowLen) / 2, fp.y - (ty * arrowLen) / 2, fp.z);
           const to = v3(fp.x + (tx * arrowLen) / 2, fp.y + (ty * arrowLen) / 2, fp.z);
-          drawArrow3D(ctx, cam, W, H, from, to, withAlpha(getCanvasColors().accent, alpha), 2.0, true);
+          drawArrow3D(
+            ctx,
+            cam,
+            W,
+            H,
+            from,
+            to,
+            withAlpha(getCanvasColors().accent, alpha),
+            2.0,
+            true,
+          );
         }
 
         // Φ label near the top bar.
         const lp = project(v3(0, LEG_TOP_Y + 0.25, 0), cam, W, H);
         if (lp.depth > 0) {
           ctx.fillStyle = getCanvasColors().accent;
-          drawLabel(ctx, { text: 'Φ (core)', x: lp.x, y: lp.y, font: 'italic 12px "STIX Two Text", serif', align: 'center', baseline: 'middle' });
+          drawLabel(ctx, {
+            text: 'Φ (core)',
+            x: lp.x,
+            y: lp.y,
+            font: 'italic 12px "STIX Two Text", serif',
+            align: 'center',
+            baseline: 'middle',
+          });
         }
       }
 
@@ -515,19 +534,56 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         const lp = project(v3(LEG_LEFT_X - 0.95, 0, 0), cam, W, H);
         if (lp.depth > 0) {
           ctx.fillStyle = withAlpha(getCanvasColors().teal, 0.82);
-          drawLabel(ctx, { text: 'Φ_leak', x: lp.x, y: lp.y, font: 'italic 11px "STIX Two Text", serif', align: 'center', baseline: 'middle' });
+          drawLabel(ctx, {
+            text: 'Φ_leak',
+            x: lp.x,
+            y: lp.y,
+            font: 'italic 11px "STIX Two Text", serif',
+            align: 'center',
+            baseline: 'middle',
+          });
         }
       }
 
       // ── labels (corner annotations) ──
       ctx.fillStyle = getCanvasColors().textDim;
-      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'drag to rotate',
+        x: 12,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.6);
-      drawLabel(ctx, { text: 'laminated iron core', x: 12, y: 28, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'laminated iron core',
+        x: 12,
+        y: 28,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = getCanvasColors().pink;
-      drawLabel(ctx, { text: `primary  N_p = ${st.Np}`, x: W - 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `primary  N_p = ${st.Np}`,
+        x: W - 12,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       ctx.fillStyle = getCanvasColors().blue;
-      drawLabel(ctx, { text: `secondary  N_s = ${st.Ns}`, x: W - 12, y: 28, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `secondary  N_s = ${st.Ns}`,
+        x: W - 12,
+        y: 28,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       if (st.showFlux) {
         ctx.fillStyle = getCanvasColors().accent;
         drawLabel(ctx, { text: 'Φ through iron', x: W - 12, y: 44 });
@@ -592,9 +648,13 @@ export function TransformerFlux3DDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Transformer law"
-        left={<InlineMath tex="V_s = V_p \cdot N_s/N_p,\quad \Phi = \mu_0\mu_r N I A\,/\,\ell" />}
+        left={<M tex="V_s = V_p \cdot N_s/N_p,\quad \Phi = \mu_0\mu_r N I A\,/\,\ell" />}
         rightLabel="At this operating point"
-        right={<InlineMath tex={`V_s = ${computed.Vs.toFixed(1)}\\,\\text{V};\\quad\\Phi = ${(computed.phi * 1000).toFixed(2)}\\,\\text{mWb}`} />}
+        right={
+          <M
+            tex={`V_s = ${computed.Vs.toFixed(1)}\\,\\text{V};\\quad\\Phi = ${(computed.phi * 1000).toFixed(2)}\\,\\text{mWb}`}
+          />
+        }
       />
     </Demo>
   );

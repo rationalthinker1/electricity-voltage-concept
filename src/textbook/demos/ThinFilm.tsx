@@ -12,11 +12,11 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -81,9 +81,26 @@ export function ThinFilmDemo({ figure }: Props) {
       ctx.lineWidth = 1;
       ctx.strokeRect(stripLeft, stripTop, stripW, stripH);
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'R(λ)', x: stripLeft - 6, y: stripTop + 18, font: '10px "JetBrains Mono", monospace', align: 'right' });
-      drawLabel(ctx, { text: '380 nm', x: stripLeft, y: stripTop + stripH + 12, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: '740 nm', x: stripRight, y: stripTop + stripH + 12, font: '10px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, {
+        text: 'R(λ)',
+        x: stripLeft - 6,
+        y: stripTop + 18,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+      });
+      drawLabel(ctx, {
+        text: '380 nm',
+        x: stripLeft,
+        y: stripTop + stripH + 12,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: '740 nm',
+        x: stripRight,
+        y: stripTop + stripH + 12,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+      });
       const sectionY = 110;
       const sectionH = 130;
       ctx.fillStyle = withAlpha(colors.blue, 0.1);
@@ -101,9 +118,24 @@ export function ThinFilmDemo({ figure }: Props) {
       ctx.lineTo(stripRight, sectionY + 40 + filmPxH);
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `air · n=${n1.toFixed(2)}`, x: stripLeft + 6, y: sectionY + 18, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `film · n=${n2.toFixed(2)}, t=${thickNm.toFixed(0)} nm`, x: stripLeft + 6, y: sectionY + 40 + filmPxH / 2 + 3, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `water · n=${n3.toFixed(2)}`, x: stripLeft + 6, y: sectionY + 40 + filmPxH + 18, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: `air · n=${n1.toFixed(2)}`,
+        x: stripLeft + 6,
+        y: sectionY + 18,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `film · n=${n2.toFixed(2)}, t=${thickNm.toFixed(0)} nm`,
+        x: stripLeft + 6,
+        y: sectionY + 40 + filmPxH / 2 + 3,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `water · n=${n3.toFixed(2)}`,
+        x: stripLeft + 6,
+        y: sectionY + 40 + filmPxH + 18,
+        font: '10px "JetBrains Mono", monospace',
+      });
       const rx0 = stripLeft + 70;
       ctx.strokeStyle = withAlpha(colors.border, 0.85);
       ctx.lineWidth = 1.4;
@@ -174,9 +206,13 @@ export function ThinFilmDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Thin-film constructive interference"
-        left={<InlineMath tex={`2nt = m\\lambda \\quad(m=1,2,\\ldots)`} />}
+        left={<M tex={`2nt = m\\lambda \\quad(m=1,2,\\ldots)`} />}
         rightLabel={`t = ${thickNm} nm, n = ${n2.toFixed(2)}`}
-        right={<InlineMath tex={`\\lambda_{\\text{peak}} = 2 \\times ${n2.toFixed(2)} \\times ${thickNm}\\,\\text{nm} = ${(2 * n2 * thickNm).toFixed(0)}\\,\\text{nm (m = 1)}`} />}
+        right={
+          <M
+            tex={`\\lambda_{\\text{peak}} = 2 \\times ${n2.toFixed(2)} \\times ${thickNm}\\,\\text{nm} = ${(2 * n2 * thickNm).toFixed(0)}\\,\\text{nm (m = 1)}`}
+          />
+        }
       />
     </Demo>
   );

@@ -19,13 +19,20 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { project, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -313,14 +320,40 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
 
       // Axis labels at the dipole tips.
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'axis · θ=0', x: pTop.x, y: pTop.y - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: 'axis · θ=π', x: pBot.x, y: pBot.y + 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'axis · θ=0',
+        x: pTop.x,
+        y: pTop.y - 6,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: 'axis · θ=π',
+        x: pBot.x,
+        y: pBot.y + 6,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
 
       // Top-left overlay.
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: `r(θ) = sin^${s.n.toFixed(1)} θ`, x: 14, y: 14, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `r(θ) = sin^${s.n.toFixed(1)} θ`,
+        x: 14,
+        y: 14,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'drag to orbit', x: 14, y: 30, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'drag to orbit',
+        x: 14,
+        y: 30,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
     },
     [],
     ({ canvas }) => {
@@ -384,9 +417,9 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Pattern surface"
-        left={<InlineMath tex="r(\theta) = \sin^n\theta" />}
+        left={<M tex="r(\theta) = \sin^n\theta" />}
         rightLabel={`n = ${n.toFixed(1)}`}
-        right={<InlineMath tex={`\\text{HPBW} = ${beamwidth.toFixed(1)}^\\circ`} />}
+        right={<M tex={`\\text{HPBW} = ${beamwidth.toFixed(1)}^\\circ`} />}
       />
     </Demo>
   );

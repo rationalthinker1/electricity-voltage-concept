@@ -15,12 +15,19 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -66,8 +73,21 @@ export function CoreLossesDemo({ figure }: Props) {
       ctx.lineTo(cxL, pad + plotH);
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'B', x: cxL + 4, y: pad + 2, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'H', x: pad + plotW - 4, y: cyL - 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: 'B',
+        x: cxL + 4,
+        y: pad + 2,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'H',
+        x: pad + plotW - 4,
+        y: cyL - 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'bottom',
+      });
       const omega = 2.0;
       const Hmax = drive;
       const Bmax = 1.0;
@@ -106,8 +126,22 @@ export function CoreLossesDemo({ figure }: Props) {
       ctx.arc(dx, dy, 4, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'B-H hysteresis loop', x: pad + 4, y: pad + 4, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'area = energy/cycle/m³', x: pad + 4, y: pad + 18, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'B-H hysteresis loop',
+        x: pad + 4,
+        y: pad + 4,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'area = energy/cycle/m³',
+        x: pad + 4,
+        y: pad + 18,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.restore();
       ctx.strokeStyle = colors.border;
       ctx.beginPath();
@@ -177,8 +211,20 @@ export function CoreLossesDemo({ figure }: Props) {
         ctx.restore();
         ctx.fillStyle = colors.pink;
       }
-      drawLabel(ctx, { text: laminated ? 'LAMINATED (50 thin layers)' : 'SOLID CORE', x: rx + 4, y: ry - 16, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'eddy-current loops in cross-section', x: rx + 4, y: h - 18, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: laminated ? 'LAMINATED (50 thin layers)' : 'SOLID CORE',
+        x: rx + 4,
+        y: ry - 16,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'eddy-current loops in cross-section',
+        x: rx + 4,
+        y: h - 18,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.restore();
       ctx0.simT = simT;
     },
@@ -195,12 +241,11 @@ export function CoreLossesDemo({ figure }: Props) {
         <>
           Two loss mechanisms run inside every transformer core. <strong>Hysteresis</strong> (left):
           the B-H curve encloses a finite area each AC cycle; that area is energy dissipated as heat
-          per unit volume per cycle.
-          <strong>Eddy currents</strong> (right): the changing flux drives circulating currents in
-          the iron itself, which dump I²R into the core. Slicing the core into thin laminations cuts
-          the eddy-current loop area and knocks eddy losses down by orders of magnitude — that's why
-          every power transformer core is built from thousands of 0.3-mm sheets of grain-oriented
-          silicon steel.
+          per unit volume per cycle. <strong>Eddy currents</strong> (right): the changing flux
+          drives circulating currents in the iron itself, which dump I²R into the core. Slicing the
+          core into thin laminations cuts the eddy-current loop area and knocks eddy losses down by
+          orders of magnitude — that's why every power transformer core is built from thousands of
+          0.3-mm sheets of grain-oriented silicon steel.
         </>
       }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
@@ -227,9 +272,13 @@ export function CoreLossesDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Steinmetz hysteresis law"
-        left={<InlineMath tex="P_{\text{hyst}} \propto B^{1.6}" />}
+        left={<M tex="P_{\text{hyst}} \propto B^{1.6}" />}
         rightLabel={`Drive = ${drive.toFixed(2)}, ${laminated ? 'laminated' : 'solid'}`}
-        right={<InlineMath tex={`P_{\\text{hyst}} = ${hystLoss.toFixed(2)},\\quad P_{\\text{eddy}} = ${eddyLoss.toFixed(2)}\\;(\\text{rel.})`} />}
+        right={
+          <M
+            tex={`P_{\\text{hyst}} = ${hystLoss.toFixed(2)},\\quad P_{\\text{eddy}} = ${eddyLoss.toFixed(2)}\\;(\\text{rel.})`}
+          />
+        }
       />
     </Demo>
   );

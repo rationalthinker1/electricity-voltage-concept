@@ -24,8 +24,15 @@
 import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -126,8 +133,21 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      drawLabel(ctx, { text: 'P_L  (W)  — amber', x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'η  — teal dashed', x: 12, y: 26, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'P_L  (W)  — amber',
+        x: 12,
+        y: 12,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'η  — teal dashed',
+        x: 12,
+        y: 26,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
@@ -149,9 +169,33 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-      drawLabel(ctx, { text: `P_max = ${P_max.toFixed(2)} W`, x: padL - 4, y: yOf(P_max), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: padL - 4, y: padT + plotH, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '1', x: padL - 4, y: padT, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `P_max = ${P_max.toFixed(2)} W`,
+        x: padL - 4,
+        y: yOf(P_max),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0',
+        x: padL - 4,
+        y: padT + plotH,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '1',
+        x: padL - 4,
+        y: padT,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
       drawLabel(ctx, {
         x: xPeak,
         y: padT - 6,
@@ -238,13 +282,13 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Max power transfer"
         left={
-          <InlineMath
+          <M
             tex={`P_{L,\\max} = \\dfrac{V_\\text{Th}^{2}}{4R_S} = \\dfrac{${V}^2}{4\\times${RS}} = ${P_max.toFixed(3)}\\,\\text{W}`}
           />
         }
         rightLabel="Current load"
         right={
-          <InlineMath
+          <M
             tex={`P_L = ${P_L.toFixed(3)}\\,\\text{W},\\quad \\eta = ${(eta * 100).toFixed(1)}\\,\\%`}
           />
         }

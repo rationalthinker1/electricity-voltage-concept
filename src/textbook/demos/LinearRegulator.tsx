@@ -16,7 +16,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
@@ -181,15 +181,40 @@ export function LinearRegulatorDemo({ figure }: Props) {
 
       // Dynamic overlay: live P_in / Vin numbers under the input column.
       ctx.fillStyle = getCanvasColors().text;
-      drawLabel(ctx, { text: `${Pin.toFixed(2)} W`, x: xIn + inW / 2, y: yTop - 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: `${Pin.toFixed(2)} W`,
+        x: xIn + inW / 2,
+        y: yTop - 6,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
       ctx.fillStyle = getCanvasColors().textDim;
-      drawLabel(ctx, { text: `${Vin.toFixed(1)} V × I_load`, x: xIn + inW / 2, y: yTop + barH + 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `${Vin.toFixed(1)} V × I_load`,
+        x: xIn + inW / 2,
+        y: yTop + barH + 6,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
 
       // Dynamic overlay: animated heat wiggle + P_diss readout in the regulator.
       const heatFrac = Math.min(1, Pdiss / Math.max(Pin, 0.01));
       const wig = Math.sin(t * 5) * 3;
       ctx.fillStyle = `rgba(255, ${107 - heatFrac * 80}, ${42 - heatFrac * 30}, ${0.4 + heatFrac * 0.5})`;
-      drawLabel(ctx, { text: `P_diss = ${Pdiss.toFixed(2)} W`, x: xReg + regW / 2, y: yTop + barH / 2 + 12 + wig, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `P_diss = ${Pdiss.toFixed(2)} W`,
+        x: xReg + regW / 2,
+        y: yTop + barH / 2 + 12 + wig,
+        weight: 'bold',
+        size: 12,
+        font: 'bold 12px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
 
       // Dynamic overlay: output bar height = Pout / Pin fraction.
       const outBarH = Math.max(2, barH * (Pout / Math.max(Pin, 0.01)));
@@ -198,9 +223,25 @@ export function LinearRegulatorDemo({ figure }: Props) {
 
       // Dynamic overlay: live P_out / Vout numbers under the output column.
       ctx.fillStyle = getCanvasColors().text;
-      drawLabel(ctx, { text: `${Pout.toFixed(2)} W`, x: xOut + outW / 2, y: yTop - 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: `${Pout.toFixed(2)} W`,
+        x: xOut + outW / 2,
+        y: yTop - 6,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
       ctx.fillStyle = getCanvasColors().textDim;
-      drawLabel(ctx, { text: `${Vout.toFixed(2)} V × I_load`, x: xOut + outW / 2, y: yTop + barH + 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `${Vout.toFixed(2)} V × I_load`,
+        x: xOut + outW / 2,
+        y: yTop + barH + 6,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
 
       // Dynamic overlay: efficiency badge.
       drawLabel(ctx, {
@@ -257,9 +298,15 @@ export function LinearRegulatorDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Linear regulator efficiency"
-        left={<InlineMath tex="\eta = \frac{V_{\text{out}}}{V_{\text{in}}},\quad P_{\text{diss}} = (V_{\text{in}} - V_{\text{out}}) \cdot I_{\text{load}}" />}
+        left={
+          <M tex="\eta = \frac{V_{\text{out}}}{V_{\text{in}}},\quad P_{\text{diss}} = (V_{\text{in}} - V_{\text{out}}) \cdot I_{\text{load}}" />
+        }
         rightLabel="At this operating point"
-        right={<InlineMath tex={`\\eta = \\frac{${Vout.toFixed(1)}}{${Vin.toFixed(1)}} = ${(eta * 100).toFixed(1)}\\%;\\quad P_{\\text{diss}} = ${Pdiss.toFixed(2)}\\,\\text{W}`} />}
+        right={
+          <M
+            tex={`\\eta = \\frac{${Vout.toFixed(1)}}{${Vin.toFixed(1)}} = ${(eta * 100).toFixed(1)}\\%;\\quad P_{\\text{diss}} = ${Pdiss.toFixed(2)}\\,\\text{W}`}
+          />
+        }
       />
     </Demo>
   );

@@ -10,10 +10,10 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -121,10 +121,34 @@ export function DoubleSlitDemo({ figure }: Props) {
       ctx.lineTo(screenX, cy);
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'slits', x: slitX, y: padTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'screen', x: screenX, y: padTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'I(y)', x: (plotL + plotR) / 2, y: H - 8, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: `fringe Δy = ${(fringe * 1000).toFixed(2)} mm`, x: screenX + 4, y: H - padBot + 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: 'slits',
+        x: slitX,
+        y: padTop - 8,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: 'screen',
+        x: screenX,
+        y: padTop - 8,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: 'I(y)',
+        x: (plotL + plotR) / 2,
+        y: H - 8,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: `fringe Δy = ${(fringe * 1000).toFixed(2)} mm`,
+        x: screenX + 4,
+        y: H - padBot + 18,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
     },
     [],
   );
@@ -178,9 +202,13 @@ export function DoubleSlitDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Double-slit fringe spacing"
-        left={<InlineMath tex={`\\Delta y = \\frac{\\lambda L}{d}`} />}
+        left={<M tex={`\\Delta y = \\frac{\\lambda L}{d}`} />}
         rightLabel={`λ = ${lamNm} nm, d = ${dMicron} µm, L = ${LMm} mm`}
-        right={<InlineMath tex={`\\Delta y = \\frac{${lamNm}\\,\\text{nm} \\times ${LMm}\\,\\text{mm}}{${dMicron}\\,\\mu\\text{m}} = ${fringeMm.toFixed(2)}\\,\\text{mm}`} />}
+        right={
+          <M
+            tex={`\\Delta y = \\frac{${lamNm}\\,\\text{nm} \\times ${LMm}\\,\\text{mm}}{${dMicron}\\,\\mu\\text{m}} = ${fringeMm.toFixed(2)}\\,\\text{mm}`}
+          />
+        }
       />
     </Demo>
   );

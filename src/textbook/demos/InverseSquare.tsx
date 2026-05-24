@@ -8,13 +8,13 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 
 import { PHYS, pretty, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -142,7 +142,14 @@ export function InverseSquareDemo({ figure }: Props) {
       // Slope label
       ctx.save();
       ctx.globalAlpha = 0.85;
-      drawLabel(ctx, { text: 'slope = −2  →  F ∝ 1/r²', x: padL + 12, y: padT + 6, color: colors.teal, font: 'italic 12px Fraunces, serif', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'slope = −2  →  F ∝ 1/r²',
+        x: padL + 12,
+        y: padT + 6,
+        color: colors.teal,
+        font: 'italic 12px Fraunces, serif',
+        baseline: 'top',
+      });
       ctx.restore();
     },
     [],
@@ -177,10 +184,10 @@ export function InverseSquareDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Coulomb's law (q₁ = q₂ = 1 µC)"
-        left={<InlineMath tex="F \;=\; \dfrac{k\, q^{2}}{r^{2}}" />}
+        left={<M tex="F \;=\; \dfrac{k\, q^{2}}{r^{2}}" />}
         rightLabel="Live substitution at the marker"
         right={
-          <InlineMath
+          <M
             tex={
               `F \\;=\\; \\dfrac{(8.99\\times 10^{9})(10^{-6})^{2}}` +
               `{(${r.toFixed(3)})^{2}} \\;\\approx\\; ` +

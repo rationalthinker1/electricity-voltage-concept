@@ -11,11 +11,11 @@ import { useMemo, useState } from 'react';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
 import { fmtVoltage } from '@/lib/formatters';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -136,10 +136,24 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.55;
-      drawLabel(ctx, { text: 'n̂', x: coilCx + projNx + 4, y: coilCy + projNy, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'n̂',
+        x: coilCx + projNx + 4,
+        y: coilCy + projNy,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
 
       ctx.restore();
-      drawLabel(ctx, { text: `B → ${B.toFixed(2)} T`, x: 12, y: 12, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `B → ${B.toFixed(2)} T`,
+        x: 12,
+        y: 12,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
 
       ctx.restore();
 
@@ -220,9 +234,20 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.75;
-      drawLabel(ctx, { text: 'EMF(t)', x: scopeX, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'EMF(t)',
+        x: scopeX,
+        y: 12,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.restore();
-      drawLabel(ctx, { text: `peak = ${fmtVoltage(peak)}`, x: scopeX + scopeW, y: 12, color: colors.accent });
+      drawLabel(ctx, {
+        text: `peak = ${fmtVoltage(peak)}`,
+        x: scopeX + scopeW,
+        y: 12,
+        color: colors.accent,
+      });
 
       ctx.restore();
     },
@@ -276,7 +301,7 @@ export function RotatingCoilDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Peak amplitude"
         left={
-          <InlineMath
+          <M
             tex={
               `\\varepsilon_{\\text{pk}} \\;=\\; NBA\\omega \\;=\\; ` +
               `(${N_TURNS})(${B.toFixed(2)})(${A_M2})(${omega}) ` +
@@ -286,10 +311,8 @@ export function RotatingCoilDemo({ figure }: Props) {
         }
         rightLabel="AC frequency"
         right={
-          <InlineMath
-            tex={
-              `f \\;=\\; \\dfrac{\\omega}{2\\pi} \\;\\approx\\; ${computed.f.toFixed(2)}\\ \\text{Hz}`
-            }
+          <M
+            tex={`f \\;=\\; \\dfrac{\\omega}{2\\pi} \\;\\approx\\; ${computed.f.toFixed(2)}\\ \\text{Hz}`}
           />
         }
       />

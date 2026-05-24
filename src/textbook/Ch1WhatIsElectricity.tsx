@@ -15,7 +15,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -46,8 +46,8 @@ export default function Ch1WhatIsElectricity() {
             <>
               <strong className="text-text font-medium">charge</strong> — a conserved scalar
               property of matter that produces and responds to electromagnetic fields. Comes in two
-              signs; the elementary unit is{' '}
-              <InlineMath tex="e = 1.602\,176\,634\times 10^{-19}\ \text{C}" /> (exact).
+              signs; the elementary unit is <M tex="e = 1.602\,176\,634\times 10^{-19}\ \text{C}" />{' '}
+              (exact).
             </>
           }
         >
@@ -80,9 +80,8 @@ export default function Ch1WhatIsElectricity() {
           def={
             <>
               <strong className="text-text font-medium">proton</strong> — the positively charged
-              constituent of atomic nuclei, with charge <InlineMath tex="+e" />.
-              Bound inside the nucleus and effectively immobile in everyday chemistry and
-              electronics.
+              constituent of atomic nuclei, with charge <M tex="+e" />. Bound inside the nucleus and
+              effectively immobile in everyday chemistry and electronics.
             </>
           }
         >
@@ -93,17 +92,17 @@ export default function Ch1WhatIsElectricity() {
           def={
             <>
               <strong className="text-text font-medium">electron</strong> — the elementary
-              negatively charged particle of ordinary matter, with charge <InlineMath tex="-e" />. The mobile carrier in metals, semiconductors,
-              and almost every triboelectric process.
+              negatively charged particle of ordinary matter, with charge <M tex="-e" />. The mobile
+              carrier in metals, semiconductors, and almost every triboelectric process.
             </>
           }
         >
           electrons
         </Term>
-        . Each proton carries a single elementary positive charge <InlineMath tex="+e" />; each
-        electron carries the same magnitude with the opposite sign, <InlineMath tex="-e" />;
-        neutrons carry none. A neutral atom has exactly as many electrons as protons, and the two
-        cancel to zero <Cite id="griffiths-2017" in={SOURCES} />.
+        . Each proton carries a single elementary positive charge <M tex="+e" />; each electron
+        carries the same magnitude with the opposite sign, <M tex="-e" />; neutrons carry none. A
+        neutral atom has exactly as many electrons as protons, and the two cancel to zero{' '}
+        <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         An object is <strong className="text-text font-medium">negatively charged</strong> when it
@@ -168,7 +167,7 @@ export default function Ch1WhatIsElectricity() {
             <>
               <strong className="text-text font-medium">Coulomb's law</strong> — the force between
               two point charges falls off as the inverse-square of their separation:{' '}
-              <InlineMath tex="F = kQ_1Q_2/r^{2}" />. Like signs repel, unlike attract.
+              <M tex="F = kQ_1Q_2/r^{2}" />. Like signs repel, unlike attract.
             </>
           }
         >
@@ -178,14 +177,14 @@ export default function Ch1WhatIsElectricity() {
       </p>
       <Formula size="lg" id="coulomb-force" />
       <p className="mb-prose-3">
-        where <InlineMath tex="F" /> is the magnitude of the force each charge exerts on the other
-        (in newtons), <InlineMath tex="Q_{1}" /> and <InlineMath tex="Q_{2}" /> are the two charges
-        (in coulombs, signed), <InlineMath tex="r" /> is the distance between them (in metres), and{' '}
-        <InlineMath tex="k = 8.99\times 10^{9}\ \text{N·m}^{2}/\text{C}^{2}" /> is Coulomb's
-        constant in SI units
-        <Cite id="codata-2018" in={SOURCES} />. Sign convention: if <InlineMath tex="Q_{1}" /> and{' '}
-        <InlineMath tex="Q_{2}" /> have the same sign, <InlineMath tex="F" /> is positive (push
-        apart); opposite signs, <InlineMath tex="F" /> is negative (pull together).
+        where <M tex="F" /> is the magnitude of the force each charge exerts on the other (in
+        newtons), <M tex="Q_{1}" /> and <M tex="Q_{2}" /> are the two charges (in coulombs, signed),{' '}
+        <M tex="r" /> is the distance between them (in metres), and{' '}
+        <M tex="k = 8.99\times 10^{9}\ \text{N·m}^{2}/\text{C}^{2}" /> is Coulomb's constant in SI
+        units
+        <Cite id="codata-2018" in={SOURCES} />. Sign convention: if <M tex="Q_{1}" /> and{' '}
+        <M tex="Q_{2}" /> have the same sign, <M tex="F" /> is positive (push apart); opposite
+        signs, <M tex="F" /> is negative (pull together).
       </p>
       <p className="mb-prose-3">
         The constant is <em className="text-text italic">enormous</em>. Two one-coulomb charges
@@ -193,9 +192,9 @@ export default function Ch1WhatIsElectricity() {
         <strong className="text-text font-medium">9 billion newtons</strong> — roughly the weight of
         a hundred Eiffel Towers. Part of why that number is so large is that the coulomb itself is
         an enormous unit of charge: one coulomb is the charge of approximately{' '}
-        <InlineMath tex="6.24\times 10^{18}" /> elementary charges (protons or electrons), since
-        each elementary charge is <InlineMath tex="e = 1.602\,176\,634\times 10^{-19}\ \text{C}" />,
-        an exact value by the 2019 SI redefinition <Cite id="codata-2018" in={SOURCES} />.
+        <M tex="6.24\times 10^{18}" /> elementary charges (protons or electrons), since each
+        elementary charge is <M tex="e = 1.602\,176\,634\times 10^{-19}\ \text{C}" />, an exact
+        value by the 2019 SI redefinition <Cite id="codata-2018" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         The reason daily life is full of static and not constant electrocution is that ordinary
@@ -218,16 +217,15 @@ export default function Ch1WhatIsElectricity() {
         }
         hint={
           <>
-            Use <InlineMath id="coulomb-force" /> with{' '}
-            <InlineMath tex="k = 8.99\times 10^{9}\ \text{N·m}^2/\text{C}^2" /> and convert nC and
-            cm to SI.
+            Use <M id="coulomb-force" /> with{' '}
+            <M tex="k = 8.99\times 10^{9}\ \text{N·m}^2/\text{C}^2" /> and convert nC and cm to SI.
           </>
         }
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               Plug directly into Coulomb's law with{' '}
-              <InlineMath tex="k = 8.99\times 10^{9}\ \text{N·m}^2/\text{C}^2" />{' '}
+              <M tex="k = 8.99\times 10^{9}\ \text{N·m}^2/\text{C}^2" />
               <Cite id="codata-2018" in={SOURCES} />:
             </p>
             <Formula tex="F = \dfrac{(8.99\times 10^{9})(5\times 10^{-9})(3\times 10^{-9})}{(0.10)^2} = 1.35\times 10^{-5}\ \text{N}" />
@@ -251,24 +249,22 @@ export default function Ch1WhatIsElectricity() {
       </p>
       <p className="mb-prose-3">
         Imagine the charge as a point spraying its "influence" outward equally in every direction.
-        After traveling a distance <InlineMath tex="r" />, that influence is spread over the surface
-        of a sphere of radius <InlineMath tex="r" />. The area of that sphere is{' '}
-        <InlineMath tex="4\pi r^{2}" />. The intensity per unit area must therefore drop as{' '}
-        <InlineMath tex="1/r^{2}" />. The exponent comes from the dimensionality of space, not from
-        anything special about charge.
+        After traveling a distance <M tex="r" />, that influence is spread over the surface of a
+        sphere of radius <M tex="r" />. The area of that sphere is <M tex="4\pi r^{2}" />. The
+        intensity per unit area must therefore drop as <M tex="1/r^{2}" />. The exponent comes from
+        the dimensionality of space, not from anything special about charge.
       </p>
       <Formula
         size="lg"
         tex="F \;\propto\; \dfrac{1}{r^{2}} \;=\; \dfrac{1}{4\pi r^{2}}\cdot 4\pi"
       />
       <p className="mb-prose-3">
-        where <InlineMath tex="F" /> is the magnitude of the force (in newtons),{' '}
-        <InlineMath tex="r" /> is the separation between the two charges (in metres), and the factor{' '}
-        <InlineMath tex="4\pi r^{2}" /> is the surface area of a sphere of radius{' '}
-        <InlineMath tex="r" /> (in m²) — making the proportionality literally "force per unit
-        spherical area." Multiply by the product of the two charges <InlineMath tex="Q_1 Q_2" /> (in
-        C²) and by Coulomb's constant <InlineMath tex="k" /> (in N·m²/C²) and you recover the full
-        Coulomb's law from the previous section.
+        where <M tex="F" /> is the magnitude of the force (in newtons), <M tex="r" /> is the
+        separation between the two charges (in metres), and the factor <M tex="4\pi r^{2}" /> is the
+        surface area of a sphere of radius <M tex="r" /> (in m²) — making the proportionality
+        literally "force per unit spherical area." Multiply by the product of the two charges{' '}
+        <M tex="Q_1 Q_2" /> (in C²) and by Coulomb's constant <M tex="k" /> (in N·m²/C²) and you
+        recover the full Coulomb's law from the previous section.
       </p>
       <Pullout>
         The inverse-square law is not a fact about charge. It is a fact about space being
@@ -277,8 +273,8 @@ export default function Ch1WhatIsElectricity() {
       <p className="mb-prose-3">
         The Coulomb-and-geometry story leaves one experimental question open: is the exponent really
         exactly two? Modern null-cavity measurements have pushed the bound to roughly{' '}
-        <InlineMath tex="\pm 3\times 10^{-16}" /> — any deviation from exactly 2 is smaller than
-        three parts in 10¹⁶ <Cite id="williams-faller-hill-1971" in={SOURCES} />. There are very few{' '}
+        <M tex="\pm 3\times 10^{-16}" /> — any deviation from exactly 2 is smaller than three parts
+        in 10¹⁶ <Cite id="williams-faller-hill-1971" in={SOURCES} />. There are very few{' '}
         <Term
           def={
             <>
@@ -326,25 +322,24 @@ export default function Ch1WhatIsElectricity() {
         }
         hint={
           <>
-            Use <InlineMath tex="F_e = kQ^2/r^2" /> and <InlineMath tex="F_g = Gm^2/r^2" />. The{' '}
-            <InlineMath tex="r^2" /> cancels.
+            Use <M tex="F_e = kQ^2/r^2" /> and <M tex="F_g = Gm^2/r^2" />. The <M tex="r^2" />{' '}
+            cancels.
           </>
         }
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              Both forces scale as <InlineMath tex="1/r^2" />, so the ratio is independent of
-              distance — pure constants. With{' '}
-              <InlineMath tex="e = 1.602\times 10^{-19}\ \text{C}" />,{' '}
-              <InlineMath tex="m_p = 1.673\times 10^{-27}\ \text{kg}" />,
-              <InlineMath tex="k = 8.99\times 10^{9}\ \text{N·m}^2/\text{C}^2" />, and{' '}
-              <InlineMath tex="G = 6.674\times 10^{-11}\ \text{N·m}^2/\text{kg}^2" />{' '}
+              Both forces scale as <M tex="1/r^2" />, so the ratio is independent of distance — pure
+              constants. With <M tex="e = 1.602\times 10^{-19}\ \text{C}" />,{' '}
+              <M tex="m_p = 1.673\times 10^{-27}\ \text{kg}" />,
+              <M tex="k = 8.99\times 10^{9}\ \text{N·m}^2/\text{C}^2" />, and{' '}
+              <M tex="G = 6.674\times 10^{-11}\ \text{N·m}^2/\text{kg}^2" />
               <Cite id="codata-2018" in={SOURCES} />:
             </p>
             <Formula tex="\dfrac{F_e}{F_g} = \dfrac{k\, e^2}{G\, m_p^{2}} \approx 1.24\times 10^{36}" />
             <p className="mb-prose-1 last:mb-0">
-              The electric force between two protons is about <InlineMath tex="10^{36}" /> times
-              stronger than the gravitational force. Gravity is utterly negligible at atomic scales.
+              The electric force between two protons is about <M tex="10^{36}" /> times stronger
+              than the gravitational force. Gravity is utterly negligible at atomic scales.
             </p>
           </>
         }
@@ -368,56 +363,51 @@ export default function Ch1WhatIsElectricity() {
           def={
             <>
               <strong className="text-text font-medium">electric field</strong> — a vector quantity{' '}
-              <InlineMath tex="\vec{E}" /> defined at every point in space; the force on a small
-              test charge <InlineMath tex="q" /> at that point is{' '}
-              <InlineMath tex="\vec{F} = q\vec{E}" />. Units: N/C, equivalently V/m.
+              <M tex="\vec{E}" /> defined at every point in space; the force on a small test charge{' '}
+              <M tex="q" /> at that point is <M tex="\vec{F} = q\vec{E}" />. Units: N/C,
+              equivalently V/m.
             </>
           }
         >
           field
         </Term>
         : a physical thing, defined at every point, that tells whatever charge happens to be there
-        what force to feel. The symbol is <InlineMath tex="\vec{E}" />, and its definition is
-        direct:
+        what force to feel. The symbol is <M tex="\vec{E}" />, and its definition is direct:
       </p>
       <Formula size="lg" id="electric-field-def" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\vec{E}" /> is the electric-field vector at the point of interest
-        (units:{' '}
+        where <M tex="\vec{E}" /> is the electric-field vector at the point of interest (units:{' '}
         <Term
           def={
             <>
-              <InlineMath tex="\text{N/C} = \text{V/m}" />. The volt is defined as energy per
-              charge, so 1 V ≡ 1 J/C; and from <InlineMath tex="W = F \cdot d" />, 1 J = 1 N·m.
-              Therefore 1 V/m = (1 J/C)/m = (1 N·m/C)/m = <InlineMath tex="1\ \text{N/C}" />. Same
-              unit, two names — one reads <InlineMath tex="\vec{E}" /> as force per charge, the
-              other as voltage drop per meter.
+              <M tex="\text{N/C} = \text{V/m}" />. The volt is defined as energy per charge, so 1 V
+              ≡ 1 J/C; and from <M tex="W = F \cdot d" />, 1 J = 1 N·m. Therefore 1 V/m = (1 J/C)/m
+              = (1 N·m/C)/m = <M tex="1\ \text{N/C}" />. Same unit, two names — one reads{' '}
+              <M tex="\vec{E}" /> as force per charge, the other as voltage drop per meter.
             </>
           }
         >
           N/C, equivalently V/m
         </Term>
-        ), <InlineMath tex="\vec{F}" /> is the force the field exerts on a small{' '}
+        ), <M tex="\vec{F}" /> is the force the field exerts on a small{' '}
         <em className="text-text italic">test charge</em> placed at that point, and{' '}
-        <InlineMath tex="q_{\text{test}}" /> is the value of that test charge (in coulombs). Force
-        per unit positive charge. The N/C-versus-V/m identity falls out in one line
+        <M tex="q_{\text{test}}" /> is the value of that test charge (in coulombs). Force per unit
+        positive charge. The N/C-versus-V/m identity falls out in one line
         <Cite id="hyperphysics-emag" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         With the field framework in hand, Coulomb's law takes a slightly different shape. A point
-        charge <InlineMath tex="Q" /> produces a field whose magnitude at distance{' '}
-        <InlineMath tex="r" /> from it is
+        charge <M tex="Q" /> produces a field whose magnitude at distance <M tex="r" /> from it is
       </p>
       <Formula size="lg" id="electric-field-point" />
       <p className="mb-prose-3">
-        where <InlineMath tex="|\vec{E}|" /> is the magnitude of the field (N/C),{' '}
-        <InlineMath tex="k" /> is Coulomb's constant, <InlineMath tex="Q" /> is the source charge
-        (signed, in coulombs), and <InlineMath tex="r" /> is the distance from the source charge to
-        the point where the field is being evaluated (in metres). The direction is radially outward
-        from <InlineMath tex="Q" /> (if <InlineMath tex="Q" /> is positive) or inward (if{' '}
-        <InlineMath tex="Q" /> is negative). Bring any other charge <InlineMath tex="q" /> into that
-        field and the force on it is <InlineMath id="force-on-charge" /> — the new charge doesn't
-        talk to the old one, it talks only to the field at its own location
+        where <M tex="|\vec{E}|" /> is the magnitude of the field (N/C), <M tex="k" /> is Coulomb's
+        constant, <M tex="Q" /> is the source charge (signed, in coulombs), and <M tex="r" /> is the
+        distance from the source charge to the point where the field is being evaluated (in metres).
+        The direction is radially outward from <M tex="Q" /> (if <M tex="Q" /> is positive) or
+        inward (if <M tex="Q" /> is negative). Bring any other charge <M tex="q" /> into that field
+        and the force on it is <M id="force-on-charge" /> — the new charge doesn't talk to the old
+        one, it talks only to the field at its own location
         <Cite id="feynman-II-2" in={SOURCES} />.
       </p>
 
@@ -441,14 +431,14 @@ export default function Ch1WhatIsElectricity() {
         question={
           <>
             A <strong className="text-text font-medium">+10 nC</strong> point charge sits at the
-            origin. What is the magnitude of <InlineMath tex="\vec{E}" /> at a point 5 cm away, and
-            what force would an electron feel there?
+            origin. What is the magnitude of <M tex="\vec{E}" /> at a point 5 cm away, and what
+            force would an electron feel there?
           </>
         }
         hint={
           <>
-            <InlineMath id="electric-field-point" />; then <InlineMath id="force-on-charge" /> with{' '}
-            <InlineMath tex="q = e = 1.602\times 10^{-19}\ \text{C}" />.
+            <M id="electric-field-point" />; then <M id="force-on-charge" /> with{' '}
+            <M tex="q = e = 1.602\times 10^{-19}\ \text{C}" />.
           </>
         }
         answer={
@@ -458,8 +448,7 @@ export default function Ch1WhatIsElectricity() {
             </p>
             <Formula tex="|\vec{E}| = \dfrac{kQ}{r^2} = \dfrac{(8.99\times 10^{9})(10\times 10^{-9})}{(0.05)^2} = 3.60\times 10^{4}\ \text{N/C}" />
             <p className="mb-prose-1 last:mb-0">
-              An electron carries charge <InlineMath tex="-e" />, so the force has
-              magnitude
+              An electron carries charge <M tex="-e" />, so the force has magnitude
             </p>
             <Formula tex="F = eE = (1.602\times 10^{-19})(3.60\times 10^{4}) \approx 5.76\times 10^{-15}\ \text{N}" />
             <p className="mb-prose-1 last:mb-0">
@@ -476,8 +465,8 @@ export default function Ch1WhatIsElectricity() {
       <p className="mb-prose-3">
         Once you have a field, you can ask what the field{' '}
         <em className="text-text italic">looks like</em>. For one isolated charge it's just radial
-        arrows, getting weaker by <InlineMath tex="1/r^{2}" />. For two charges, the patterns are
-        more interesting. Two opposite charges nearby produce a{' '}
+        arrows, getting weaker by <M tex="1/r^{2}" />. For two charges, the patterns are more
+        interesting. Two opposite charges nearby produce a{' '}
         <strong className="text-text font-medium">dipole</strong> field — field lines bowing from
         the positive to the negative. Two like charges produce a field with a "saddle" between them
         where everything cancels.
@@ -491,18 +480,18 @@ export default function Ch1WhatIsElectricity() {
           def={
             <>
               <strong className="text-text font-medium">equipotential</strong> — a surface (or curve
-              in 2D) on which the electrostatic potential <InlineMath tex="V" />{' '}
+              in 2D) on which the electrostatic potential <M tex="V" />
               has a single value. The electric field is everywhere perpendicular to equipotentials
-              and points toward lower <InlineMath tex="V" />.
+              and points toward lower <M tex="V" />.
             </>
           }
         >
           equipotential lines
         </Term>{' '}
-        — sets of points all at the same electrostatic potential <InlineMath tex="V" />. They're the
-        contour lines of an invisible mountain whose height is the potential. The electric field
-        always points "downhill," perpendicular to the equipotentials. We'll spend Chapter&nbsp;2 on
-        what <InlineMath tex="V" /> means and why it's the variable everyone actually measures.
+        — sets of points all at the same electrostatic potential <M tex="V" />. They're the contour
+        lines of an invisible mountain whose height is the potential. The electric field always
+        points "downhill," perpendicular to the equipotentials. We'll spend Chapter&nbsp;2 on what{' '}
+        <M tex="V" /> means and why it's the variable everyone actually measures.
       </p>
 
       <p className="mb-prose-3">
@@ -516,18 +505,17 @@ export default function Ch1WhatIsElectricity() {
       </p>
       <Formula size="lg" id="parallel-plate-field" />
       <p className="mb-prose-3">
-        where <InlineMath tex="|\vec{E}|" /> is the magnitude of the field between the plates (N/C),{' '}
-        <InlineMath tex="\sigma" /> is the magnitude of the surface-charge density on each plate (in
-        C/m²), and <InlineMath tex="\varepsilon_{0} \approx 8.854\times 10^{-12}\ \text{F/m}" /> is
-        the permittivity of free space <Cite id="codata-2018" in={SOURCES} />. We derive this
-        cleanly with{' '}
+        where <M tex="|\vec{E}|" /> is the magnitude of the field between the plates (N/C),{' '}
+        <M tex="\sigma" /> is the magnitude of the surface-charge density on each plate (in C/m²),
+        and <M tex="\varepsilon_{0} \approx 8.854\times 10^{-12}\ \text{F/m}" /> is the permittivity
+        of free space <Cite id="codata-2018" in={SOURCES} />. We derive this cleanly with{' '}
         <Term
           def={
             <>
               <strong className="text-text font-medium">Gauss's law</strong> — the electric flux
               through any closed surface equals the enclosed charge divided by ε₀:{' '}
-              <InlineMath id="gauss-law" />. Applied to a pillbox straddling one plate, it gives
-              σ/ε₀ on the inside face and ~0 on the outside.
+              <M id="gauss-law" />. Applied to a pillbox straddling one plate, it gives σ/ε₀ on the
+              inside face and ~0 on the outside.
             </>
           }
         >
@@ -537,7 +525,7 @@ export default function Ch1WhatIsElectricity() {
         things. First, a uniform field is the simplest non-trivial geometry in electrostatics; once
         you can solve a problem there, you can solve a lot of working circuits. Second, because the
         field doesn't vary across the gap, the voltage between the plates is just{' '}
-        <InlineMath tex="V = E\,d" /> — a relationship the next chapter will lean on heavily.
+        <M tex="V = E\,d" /> — a relationship the next chapter will lean on heavily.
       </p>
 
       <ParallelPlateUniformFieldDemo figure="Fig. 1.6" />
@@ -546,8 +534,8 @@ export default function Ch1WhatIsElectricity() {
         Drag the separation slider. The field arrows between the plates stay exactly the same
         length. The uniform field of an idealised parallel-plate pair depends only on the surface
         charge density σ — not on the gap. The voltage between the plates does change, because{' '}
-        <InlineMath tex="V = E\,d" /> grows linearly with d, and that is the lever Chapter 2 picks
-        up to define voltage operationally.
+        <M tex="V = E\,d" /> grows linearly with d, and that is the lever Chapter 2 picks up to
+        define voltage operationally.
       </p>
 
       <ParallelPlateUniformFieldDemo figure="Fig. 1.7" />
@@ -556,8 +544,8 @@ export default function Ch1WhatIsElectricity() {
         Drag the separation slider. The field arrows between the plates stay exactly the same
         length. The uniform field of an idealised parallel-plate pair depends only on the surface
         charge density σ — not on the gap. The voltage between the plates does change, because{' '}
-        <InlineMath tex="V = E\,d" /> grows linearly with d, and that is the lever Chapter 2 picks
-        up to define voltage operationally.
+        <M tex="V = E\,d" /> grows linearly with d, and that is the lever Chapter 2 picks up to
+        define voltage operationally.
       </p>
 
       <TryIt
@@ -571,7 +559,7 @@ export default function Ch1WhatIsElectricity() {
         }
         hint={
           <>
-            For a point charge, <InlineMath id="potential-point-charge" />.
+            For a point charge, <M id="potential-point-charge" />.
           </>
         }
         answer={
@@ -796,10 +784,10 @@ export default function Ch1WhatIsElectricity() {
             This is the Faraday-cage theorem, and it is the same theorem Cavendish exploited
             backwards in 1773. He charged a hollow conducting sphere and looked for any charge
             induced on a second sphere placed inside it. He found none, and the absence let him
-            bound the inverse-square exponent to within about <InlineMath tex="1/50" /> of exactly 2{' '}
+            bound the inverse-square exponent to within about <M tex="1/50" /> of exactly 2{' '}
             <Cite id="cavendish-1773" in={SOURCES} />. Williams, Faller, and Hill repeated the
             experiment with concentric icosahedra in 1971 and sharpened the bound to{' '}
-            <InlineMath tex="\sim 3\times 10^{-16}" />
+            <M tex="\sim 3\times 10^{-16}" />
             <Cite id="williams-faller-hill-1971" in={SOURCES} />. If the exponent weren't exactly 2,
             the field inside a closed conductor wouldn't exactly cancel, and the car-in-storm story
             would not be as clean as it is.
@@ -821,7 +809,7 @@ export default function Ch1WhatIsElectricity() {
             18th-century picture of a single electrical fluid was wrong in detail but not in spirit:
             what we now call charge is a conserved scalar attached to particles, and the bookkeeping
             of pluses and minuses he invented still works. Each elementary charge is exactly{' '}
-            <InlineMath id="elementary-charge" /> — an exact value since the 2019 SI redefinition
+            <M id="elementary-charge" /> — an exact value since the 2019 SI redefinition
             <Cite id="codata-2018" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -829,9 +817,9 @@ export default function Ch1WhatIsElectricity() {
         <FAQItem q="Why are there exactly two kinds of charge and not three, or seven?">
           <p>
             Nobody knows a deeper reason. Empirically, every charged particle ever observed carries
-            an integer multiple of <InlineMath tex="e" />, and the sign comes in two flavors. The
-            two-sign structure falls out of the mathematics of U(1) gauge symmetry in the Standard
-            Model, but that just restates the fact at a higher level — it doesn't explain{' '}
+            an integer multiple of <M tex="e" />, and the sign comes in two flavors. The two-sign
+            structure falls out of the mathematics of U(1) gauge symmetry in the Standard Model, but
+            that just restates the fact at a higher level — it doesn't explain{' '}
             <em className="text-text italic">why</em> the universe chose U(1). For everything in
             this chapter, the relevant statement is the experimental one: like repels, unlike
             attracts, and the algebra of opposites lets ordinary matter be neutral to staggering
@@ -855,8 +843,7 @@ export default function Ch1WhatIsElectricity() {
 
         <FAQItem q="What is the constant k in Coulomb's law, and why is it so absurdly large?">
           <p>
-            In SI units <InlineMath id="coulomb-constant" />, where{' '}
-            <InlineMath tex="\varepsilon_0" /> is the{' '}
+            In SI units <M id="coulomb-constant" />, where <M tex="\varepsilon_0" /> is the{' '}
             <Term
               def={
                 <>
@@ -870,37 +857,36 @@ export default function Ch1WhatIsElectricity() {
             </Term>{' '}
             of free space
             <Cite id="codata-2018" in={SOURCES} />. It looks huge because the coulomb is a wildly
-            oversized unit — one coulomb is the charge of about{' '}
-            <InlineMath tex="6.24\times 10^{18}" /> electrons. Real laboratory charges sit at the
-            nanocoulomb to microcoulomb level, and at those scales the forces become ordinary. The
-            numerical bigness of <InlineMath tex="k" /> is really a statement about how absurdly
-            small a single electron's charge is on the scale we chose to measure it.
+            oversized unit — one coulomb is the charge of about <M tex="6.24\times 10^{18}" />{' '}
+            electrons. Real laboratory charges sit at the nanocoulomb to microcoulomb level, and at
+            those scales the forces become ordinary. The numerical bigness of <M tex="k" /> is
+            really a statement about how absurdly small a single electron's charge is on the scale
+            we chose to measure it.
           </p>
         </FAQItem>
 
         <FAQItem q="Why exactly 4π in 1/(4πε₀), and not just π or 2π?">
           <p>
-            The <InlineMath tex="4\pi" /> is the surface area of a unit sphere — it's the geometry
-            of three-dimensional space leaking into the equations.{' '}
+            The <M tex="4\pi" /> is the surface area of a unit sphere — it's the geometry of
+            three-dimensional space leaking into the equations.{' '}
             <Term
               def={
                 <>
                   <strong className="text-text font-medium">Gauss's law</strong> — the electric flux
                   through any closed surface equals the enclosed charge divided by ε₀:{' '}
-                  <InlineMath id="gauss-law" />. One of Maxwell's four equations.
+                  <M id="gauss-law" />. One of Maxwell's four equations.
                 </>
               }
             >
               Gauss's law
             </Term>{' '}
-            in its clean form reads <InlineMath id="gauss-law" />, with no <InlineMath tex="\pi" />{' '}
+            in its clean form reads <M id="gauss-law" />, with no <M tex="\pi" />
             anywhere
             <Cite id="griffiths-2017" in={SOURCES} />. When you specialize that to a point charge
-            and integrate over a sphere of radius <InlineMath tex="r" />, the sphere's area{' '}
-            <InlineMath tex="4\pi r^2" /> appears in the denominator, leaving Coulomb's law looking
-            like <InlineMath tex="F = \dfrac{Q_1 Q_2}{4\pi\varepsilon_0 r^2}" />. The{' '}
-            <InlineMath tex="4\pi" /> is where you choose to hide the geometry: in Coulomb's law, or
-            in Gauss's law, but not both.
+            and integrate over a sphere of radius <M tex="r" />, the sphere's area{' '}
+            <M tex="4\pi r^2" /> appears in the denominator, leaving Coulomb's law looking like{' '}
+            <M tex="F = \dfrac{Q_1 Q_2}{4\pi\varepsilon_0 r^2}" />. The <M tex="4\pi" /> is where
+            you choose to hide the geometry: in Coulomb's law, or in Gauss's law, but not both.
           </p>
         </FAQItem>
 
@@ -909,11 +895,10 @@ export default function Ch1WhatIsElectricity() {
             You integrate. Slice the object into infinitesimal pieces, treat each as a point charge
             dq, and sum the contributions vectorially. For continuous distributions this is a
             volume, surface, or line integral over the charge density. The field framework makes
-            this almost mechanical: every <InlineMath tex="dq" /> contributes{' '}
-            <InlineMath tex="d\vec{E} = \dfrac{k\, dq}{r^2}\,\hat{r}" />, and superposition
-            guarantees the total field is the integral. The full machinery — including the shortcut
-            of Gauss's law for symmetric distributions — is the bread and butter of any
-            electrostatics course
+            this almost mechanical: every <M tex="dq" /> contributes{' '}
+            <M tex="d\vec{E} = \dfrac{k\, dq}{r^2}\,\hat{r}" />, and superposition guarantees the
+            total field is the integral. The full machinery — including the shortcut of Gauss's law
+            for symmetric distributions — is the bread and butter of any electrostatics course
             <Cite id="griffiths-2017" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -935,11 +920,10 @@ export default function Ch1WhatIsElectricity() {
           <p>
             It has been checked to extraordinary precision. Cavendish in 1773 used a charged hollow
             sphere and showed that no charge appears on an inner sphere placed inside it — a result
-            that requires the exponent to be 2 to within about <InlineMath tex="1/50" /> by his
-            analysis <Cite id="cavendish-1773" in={SOURCES} />. Williams, Faller, and Hill in 1971
-            sharpened the technique with concentric icosahedra and bounded any deviation{' '}
-            <InlineMath tex="q" /> in the form <InlineMath tex="1/r^{2+q}" /> to{' '}
-            <InlineMath tex="q = (2.7 \pm 3.1)\times 10^{-16}" />
+            that requires the exponent to be 2 to within about <M tex="1/50" /> by his analysis{' '}
+            <Cite id="cavendish-1773" in={SOURCES} />. Williams, Faller, and Hill in 1971 sharpened
+            the technique with concentric icosahedra and bounded any deviation <M tex="q" /> in the
+            form <M tex="1/r^{2+q}" /> to <M tex="q = (2.7 \pm 3.1)\times 10^{-16}" />
             <Cite id="williams-faller-hill-1971" in={SOURCES} />. If the photon has a rest mass at
             all, it is fantastically small; the inverse-square law is one of the most precisely
             confirmed statements in physics.
@@ -948,13 +932,12 @@ export default function Ch1WhatIsElectricity() {
 
         <FAQItem q="What's the difference between the electric field E and the potential V?">
           <p>
-            <InlineMath tex="\vec{E}" /> is a vector at every point: it tells you the force per unit
-            charge and which way that force points. <InlineMath tex="V" /> is a scalar at every
-            point: it tells you the potential energy per unit charge that a test charge would have
-            if it sat there. They carry the same information for a static field — E is the negative
-            gradient of V — but V is easier to add up (no vectors) and is what voltmeters actually
-            measure. Equipotentials are level sets of V, and E always points perpendicular to them,
-            downhill
+            <M tex="\vec{E}" /> is a vector at every point: it tells you the force per unit charge
+            and which way that force points. <M tex="V" /> is a scalar at every point: it tells you
+            the potential energy per unit charge that a test charge would have if it sat there. They
+            carry the same information for a static field — E is the negative gradient of V — but V
+            is easier to add up (no vectors) and is what voltmeters actually measure. Equipotentials
+            are level sets of V, and E always points perpendicular to them, downhill
             <Cite id="feynman-II-2" in={SOURCES} />. We unpack V in Chapter 2.
           </p>
         </FAQItem>
@@ -990,8 +973,7 @@ export default function Ch1WhatIsElectricity() {
             No — it isn't made of anything; it's a vector quantity defined at every point in space.
             You can't compress it, but you <em className="text-text italic">can</em> superpose
             fields (add them) and you can store energy in them. The energy density of an
-            electrostatic field is <InlineMath id="field-energy-density" />, in joules per cubic
-            meter
+            electrostatic field is <M id="field-energy-density" />, in joules per cubic meter
             <Cite id="griffiths-2017" in={SOURCES} />. So in a real sense the field is a fuel tank
             distributed across space, even though it is not a material in the everyday sense.
           </p>
@@ -1006,8 +988,8 @@ export default function Ch1WhatIsElectricity() {
             the surface
             <Cite id="griffiths-2017" in={SOURCES} />. The total charge transferred is a very small
             fraction of a microcoulomb <Cite id="hyperphysics-emag" in={SOURCES} /> — but with{' '}
-            <InlineMath tex="k \approx 9\times 10^{9}\ \text{N·m}^2/\text{C}^2" /> and gravity weak,
-            it's enough to win <Cite id="codata-2018" in={SOURCES} />.
+            <M tex="k \approx 9\times 10^{9}\ \text{N·m}^2/\text{C}^2" /> and gravity weak, it's
+            enough to win <Cite id="codata-2018" in={SOURCES} />.
           </p>
         </FAQItem>
 
@@ -1052,7 +1034,7 @@ export default function Ch1WhatIsElectricity() {
             the electrons. The signal that flips a switch is a disturbance in the electromagnetic
             field surrounding the wire, propagating at a fraction (often ~⅔)
             <Cite id="libretexts-conduction" in={SOURCES} /> of the vacuum speed of light{' '}
-            <InlineMath tex="c = 299{,}792{,}458\ \text{m/s}" />
+            <M tex="c = 299{,}792{,}458\ \text{m/s}" />
             <Cite id="codata-2018" in={SOURCES} />. The electrons themselves drift along at
             fractions of a millimeter per second. We pull that apart properly in Chapter 2, and the
             field-flow picture lands in Chapter 8.

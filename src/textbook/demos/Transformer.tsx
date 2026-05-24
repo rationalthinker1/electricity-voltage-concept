@@ -11,13 +11,13 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -191,11 +191,50 @@ export function TransformerDemo({ figure }: Props) {
       ctx.lineTo(loadX - 14, loadY + 8);
       ctx.stroke();
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: `N₁ = ${N1}`, x: primX, y: coreBot + 6, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `V₁ = ${V1.toFixed(0)} V`, x: srcX, y: srcY + 26, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `N₂ = ${N2}`, x: secX, y: coreBot + 6, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `V₂ = ${V2.toFixed(1)} V`, x: loadX, y: loadY + 26, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: 'iron core · shared Φ', x: (coreLeft + coreRight) / 2, y: coreTop - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `N₁ = ${N1}`,
+        x: primX,
+        y: coreBot + 6,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `V₁ = ${V1.toFixed(0)} V`,
+        x: srcX,
+        y: srcY + 26,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `N₂ = ${N2}`,
+        x: secX,
+        y: coreBot + 6,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `V₂ = ${V2.toFixed(1)} V`,
+        x: loadX,
+        y: loadY + 26,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'iron core · shared Φ',
+        x: (coreLeft + coreRight) / 2,
+        y: coreTop - 14,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -251,7 +290,7 @@ export function TransformerDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Turns-ratio identity"
         left={
-          <InlineMath
+          <M
             tex={
               `\\dfrac{V_{2}}{V_{1}} \\;=\\; \\dfrac{N_{2}}{N_{1}} \\;=\\; ` +
               `\\dfrac{${N2}}{${N1}} \\;\\approx\\; ${(N2 / N1).toFixed(3)}`
@@ -260,7 +299,7 @@ export function TransformerDemo({ figure }: Props) {
         }
         rightLabel="Substituted output"
         right={
-          <InlineMath
+          <M
             tex={
               `V_{2} \\;=\\; V_{1}\\,\\dfrac{N_{2}}{N_{1}} \\;=\\; ` +
               `(${V1.toFixed(0)})(${(N2 / N1).toFixed(3)}) ` +

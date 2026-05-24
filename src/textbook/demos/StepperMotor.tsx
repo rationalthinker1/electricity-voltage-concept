@@ -18,7 +18,7 @@ import {
   MiniSlider,
   MiniToggle,
 } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -164,12 +164,10 @@ export function StepperMotorDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="angle"
         left={
-          <InlineMath
-            tex={`\\theta = N_{\\text{steps}}\\,360^\\circ/200 = ${totalDeg.toFixed(1)}^\\circ`}
-          />
+          <M tex={`\\theta = N_{\\text{steps}}\\,360^\\circ/200 = ${totalDeg.toFixed(1)}^\\circ`} />
         }
         rightLabel="turns"
-        right={<InlineMath tex={`\\text{rev} = N_{\\text{steps}}/200 = ${revs.toFixed(2)}`} />}
+        right={<M tex={`\\text{rev} = N_{\\text{steps}}/200 = ${revs.toFixed(2)}`} />}
       />
     </Demo>
   );

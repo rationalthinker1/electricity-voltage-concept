@@ -11,7 +11,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -35,8 +35,8 @@ export default function Ch21Generators() {
         Stand at the base of Hoover Dam and look up. The concrete face holds back the full pool of
         Lake Mead; the water falls roughly 180 metres of hydraulic head through penstocks the
         diameter of a city bus into the bottom of the canyon, where seventeen rotating machines —
-        each about the size of a two-storey house — turn that gravitational potential energy into
-        up to about two gigawatts of installed electrical capacity that lights kitchens hundreds of
+        each about the size of a two-storey house — turn that gravitational potential energy into up
+        to about two gigawatts of installed electrical capacity that lights kitchens hundreds of
         kilometres away
         <Cite id="grainger-power-systems-2003" in={SOURCES} />. Every one of those seventeen
         machines is the same device you met in the motors chapter (the brushed DC motor, the
@@ -56,13 +56,13 @@ export default function Ch21Generators() {
       <h2 className="chapter-h2">Run a motor backwards</h2>
 
       <p className="mb-prose-3">
-        We left the motors chapter with the synchronous motor: a rotor with its own field, locked to a
-        rotating stator field, spinning at exactly <InlineMath tex="n_s = 120\, f / p" />. The
-        rotor's field induces a sinusoidal flux through each stator coil, but a moment of thought
-        reveals that the cause-and-effect relationship was a matter of choice. The stator's rotating
-        field drives the rotor; equivalently, the rotor's rotating field induces voltage in the
-        stator. Drive the rotor by some external mechanical means (a water turbine, a steam turbine,
-        a gasoline engine, a wind blade) instead of letting the stator do it, and the same machine
+        We left the motors chapter with the synchronous motor: a rotor with its own field, locked to
+        a rotating stator field, spinning at exactly <M tex="n_s = 120\, f / p" />. The rotor's
+        field induces a sinusoidal flux through each stator coil, but a moment of thought reveals
+        that the cause-and-effect relationship was a matter of choice. The stator's rotating field
+        drives the rotor; equivalently, the rotor's rotating field induces voltage in the stator.
+        Drive the rotor by some external mechanical means (a water turbine, a steam turbine, a
+        gasoline engine, a wind blade) instead of letting the stator do it, and the same machine
         produces voltage on its stator leads instead of consuming voltage from them
         <Cite id="feynman-II-17" in={SOURCES} />.
       </p>
@@ -75,52 +75,43 @@ export default function Ch21Generators() {
       </p>
       <Formula size="lg" id="faraday-law" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\mathcal{E}" /> is the EMF induced around the
-        closed loop (in volts),
-        <InlineMath tex="\Phi" /> is the magnetic flux through the loop
-        (in webers, equivalently T·m²), and <InlineMath tex="t" /> is
-        time (in seconds). The minus sign — Lenz's law — gives the direction: the induced current
-        opposes the change in flux.
+        where <M tex="\mathcal{E}" /> is the EMF induced around the closed loop (in volts),{' '}
+        <M tex="\Phi" /> is the magnetic flux through the loop (in webers, equivalently T·m²), and{' '}
+        <M tex="t" /> is time (in seconds). The minus sign — Lenz's law — gives the direction: the
+        induced current opposes the change in flux.
       </p>
       <p className="mb-prose-3">
-        For a coil of <InlineMath tex="N" /> turns linking flux{' '}
-        <InlineMath tex="\Phi" />, the EMF is <InlineMath tex="-N\, d\Phi/dt" />. The
-        minus sign — Lenz's law — says the induced current flows in the direction that opposes the
-        change in flux that created it. In a generator, that opposition is exactly what produces the
-        mechanical resistance you have to push against to keep the rotor turning. Energy in, work
-        in, work out — strict conservation across the air gap
+        For a coil of <M tex="N" /> turns linking flux <M tex="\Phi" />, the EMF is{' '}
+        <M tex="-N\, d\Phi/dt" />. The minus sign — Lenz's law — says the induced current flows in
+        the direction that opposes the change in flux that created it. In a generator, that
+        opposition is exactly what produces the mechanical resistance you have to push against to
+        keep the rotor turning. Energy in, work in, work out — strict conservation across the air
+        gap
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
       <h2 className="chapter-h2">The simple alternator</h2>
 
       <p className="mb-prose-3">
-        Take a single rectangular coil of <InlineMath tex="N" /> turns and area{' '}
-        <InlineMath tex="A" />. Rotate it in a uniform magnetic field of magnitude{' '}
-        <InlineMath tex="B" /> at angular speed{' '}
-        <InlineMath tex="\omega" />. The flux through the coil at angle{' '}
-        <InlineMath tex="\theta = \omega t" /> is
-        <InlineMath tex="\Phi(t) = BA \cos(\omega t)" />. The induced EMF is the time derivative
+        Take a single rectangular coil of <M tex="N" /> turns and area <M tex="A" />. Rotate it in a
+        uniform magnetic field of magnitude <M tex="B" /> at angular speed <M tex="\omega" />. The
+        flux through the coil at angle <M tex="\theta = \omega t" /> is{' '}
+        <M tex="\Phi(t) = BA \cos(\omega t)" />. The induced EMF is the time derivative
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula tex="\varepsilon(t) = -N \cdot d\Phi/dt = N B A \omega \sin(\omega t)" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\mathcal{E}(t)" /> is the instantaneous EMF at
-        the coil's terminals (in volts),
-        <InlineMath tex="N" /> is the number of turns in the coil
-        (dimensionless integer),
-        <InlineMath tex="B" /> is the uniform magnetic field
-        magnitude (in tesla), <InlineMath tex="A" /> is the area
-        enclosed by one turn (in m²), <InlineMath tex="\omega = 2\pi f" /> is
-        the angular speed of rotation (in rad/s), and{' '}
-        <InlineMath tex="t" /> is time (in seconds).
+        where <M tex="\mathcal{E}(t)" /> is the instantaneous EMF at the coil's terminals (in
+        volts), <M tex="N" /> is the number of turns in the coil (dimensionless integer),{' '}
+        <M tex="B" /> is the uniform magnetic field magnitude (in tesla), <M tex="A" /> is the area
+        enclosed by one turn (in m²), <M tex="\omega = 2\pi f" /> is the angular speed of rotation
+        (in rad/s), and <M tex="t" /> is time (in seconds).
       </p>
       <p className="mb-prose-3">
-        A clean sinusoid. Peak amplitude is <InlineMath tex="NBA\omega" />; frequency is{' '}
-        <InlineMath tex="\omega / 2\pi" />. Scale up <InlineMath tex="N" />,
-        <InlineMath tex="B" />, <InlineMath tex="A" />, or{' '}
-        <InlineMath tex="\omega" /> and the output voltage goes up linearly with each.
-        The simplest possible generator — sometimes called a single-phase{' '}
+        A clean sinusoid. Peak amplitude is <M tex="NBA\omega" />; frequency is{' '}
+        <M tex="\omega / 2\pi" />. Scale up <M tex="N" />,
+        <M tex="B" />, <M tex="A" />, or <M tex="\omega" /> and the output voltage goes up linearly
+        with each. The simplest possible generator — sometimes called a single-phase{' '}
         <Term def="A generator whose output is alternating current; the rotor's field is taken out through slip rings (continuous rings, not the split commutator of a DC machine). The car-alternator usage is historical; modern automotive alternators are 3-phase machines.">
           alternator
         </Term>
@@ -132,14 +123,13 @@ export default function Ch21Generators() {
 
       <p className="mb-prose-3">
         Connect a resistive load across the coil's leads and current flows:{' '}
-        <InlineMath tex="I = \varepsilon/R" />. Now the current-carrying coil sits in the same field{' '}
-        <InlineMath tex="B" />, so the wire experiences{' '}
-        <InlineMath id="force-on-wire" />: a force on each long side, opposing the rotation. The
-        mechanical torque you must apply to keep the rotor spinning is exactly
-        <InlineMath tex="P_{\text{elec}} / \omega" />, where <InlineMath tex="P_{\text{elec}}" /> is
-        the electrical power being delivered to the load. No load → no current → no back-torque →
-        the rotor spins essentially freely (against bearing friction and windage). Full load →
-        maximum current → maximum back-torque. Energy conservation is automatic; you can't extract
+        <M tex="I = \varepsilon/R" />. Now the current-carrying coil sits in the same field{' '}
+        <M tex="B" />, so the wire experiences <M id="force-on-wire" />: a force on each long side,
+        opposing the rotation. The mechanical torque you must apply to keep the rotor spinning is
+        exactly <M tex="P_{\text{elec}} / \omega" />, where <M tex="P_{\text{elec}}" /> is the
+        electrical power being delivered to the load. No load → no current → no back-torque → the
+        rotor spins essentially freely (against bearing friction and windage). Full load → maximum
+        current → maximum back-torque. Energy conservation is automatic; you can't extract
         electrical energy without burning mechanical energy at the same rate.
       </p>
 
@@ -155,15 +145,14 @@ export default function Ch21Generators() {
         }
         hint={
           <>
-            Convert RPM to <InlineMath tex="\omega" /> in rad/s, then plug into{' '}
-            <InlineMath tex="NBA\omega" />.
+            Convert RPM to <M tex="\omega" /> in rad/s, then plug into <M tex="NBA\omega" />.
           </>
         }
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               First convert:{' '}
-              <InlineMath tex="\omega = 2\pi \cdot (3600/60) = 2\pi \cdot 60 = 120\pi \approx 377\ \text{rad/s}" />
+              <M tex="\omega = 2\pi \cdot (3600/60) = 2\pi \cdot 60 = 120\pi \approx 377\ \text{rad/s}" />
               . A = 200 cm² = 0.02 m².
             </p>
             <Formula tex="\varepsilon_{\text{peak}} = N B A \omega = (100)(0.5)(0.02)(377)" />
@@ -204,20 +193,17 @@ export default function Ch21Generators() {
       </p>
       <Formula tex="f = (n \cdot p) / 120 \quad (n\ \text{in RPM},\ p = \text{pole count})" />
       <p className="mb-prose-3">
-        where <InlineMath tex="f" /> is the electrical output
-        frequency (in Hz), <InlineMath tex="n" /> is the rotor's
-        mechanical rotation speed (in revolutions per minute), and{' '}
-        <InlineMath tex="p" /> is the machine's total pole count (a
-        dimensionless even integer). This is the inverse of the synchronous-speed formula from the
-        motors chapter.
+        where <M tex="f" /> is the electrical output frequency (in Hz), <M tex="n" /> is the rotor's
+        mechanical rotation speed (in revolutions per minute), and <M tex="p" /> is the machine's
+        total pole count (a dimensionless even integer). This is the inverse of the
+        synchronous-speed formula from the motors chapter.
       </p>
       <p className="mb-prose-3">
-        At 3600 RPM with 2 poles, <InlineMath tex="f = 60\ \text{Hz}" /> — the North American grid
-        frequency. At 3000 RPM with 2 poles,
-        <InlineMath tex="f = 50\ \text{Hz}" /> — Europe, Asia, Africa. A nuclear or large coal
-        turbine, geared so that its turbine wheel runs at exactly synchronous speed, spins forever
-        within a few parts per million of nominal because the grid frequency itself is regulated
-        that precisely
+        At 3600 RPM with 2 poles, <M tex="f = 60\ \text{Hz}" /> — the North American grid frequency.
+        At 3000 RPM with 2 poles, <M tex="f = 50\ \text{Hz}" /> — Europe, Asia, Africa. A nuclear or
+        large coal turbine, geared so that its turbine wheel runs at exactly synchronous speed,
+        spins forever within a few parts per million of nominal because the grid frequency itself is
+        regulated that precisely
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -240,7 +226,7 @@ export default function Ch21Generators() {
         }
         hint={
           <>
-            The shaft must turn at synchronous speed: <InlineMath tex="n_s = 120\, f / p" />.
+            The shaft must turn at synchronous speed: <M tex="n_s = 120\, f / p" />.
           </>
         }
         answer={
@@ -263,43 +249,40 @@ export default function Ch21Generators() {
         A synchronous generator has two control knobs and one mechanical input. The mechanical input
         is whatever the prime mover is delivering — water through a turbine, steam through a blade
         row, the rotational torque of a diesel engine. The two electrical knobs are the rotor's{' '}
-        <em className="text-text italic">field current</em> <InlineMath tex="I_f" />, which sets the
-        rotor's magnetic flux and therefore the induced-EMF magnitude <InlineMath tex="|E_f|" />,
-        and the rotor's <em className="text-text italic">load angle δ</em>, which is the
-        steady-state phase lead of the rotor's flux axis ahead of the grid voltage phasor
+        <em className="text-text italic">field current</em> <M tex="I_f" />, which sets the rotor's
+        magnetic flux and therefore the induced-EMF magnitude <M tex="|E_f|" />, and the rotor's{' '}
+        <em className="text-text italic">load angle δ</em>, which is the steady-state phase lead of
+        the rotor's flux axis ahead of the grid voltage phasor
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        At no load, <InlineMath tex="|E_f|" /> is just the open-circuit terminal voltage: more field
-        current produces more flux, more flux produces more EMF, full stop. Connect that generator
-        to a stiff grid and the story changes. The grid clamps the terminal voltage at{' '}
-        <InlineMath tex="|V_{\text{grid}}|" />; the real power transferred is
+        At no load, <M tex="|E_f|" /> is just the open-circuit terminal voltage: more field current
+        produces more flux, more flux produces more EMF, full stop. Connect that generator to a
+        stiff grid and the story changes. The grid clamps the terminal voltage at{' '}
+        <M tex="|V_{\text{grid}}|" />; the real power transferred is
       </p>
       <Formula tex="P = \dfrac{|V_{\text{grid}}| \cdot |E_f|}{X_s} \cdot \sin\delta" />
       <p className="mb-prose-3">
-        where <InlineMath tex="P" /> is the real (active) power
-        delivered to the grid (in watts, or in per-unit on the machine's MVA base),{' '}
-        <InlineMath tex="|V_{\text{grid}}|" />{' '}
+        where <M tex="P" /> is the real (active) power delivered to the grid (in watts, or in
+        per-unit on the machine's MVA base), <M tex="|V_{\text{grid}}|" />
         is the magnitude of the grid voltage phasor at the terminals (in volts, or per-unit),{' '}
-        <InlineMath tex="|E_f|" />{' '}
+        <M tex="|E_f|" />
         is the magnitude of the internal EMF set by the rotor's field current (in volts, or
-        per-unit),{' '}
-        <InlineMath tex="X_s" />{' '}
+        per-unit), <M tex="X_s" />
         is the synchronous reactance (in ohms, or per-unit; typically 1–2 pu), and{' '}
-        <InlineMath tex="\delta" /> is the load angle — the steady-state
-        phase lead of the rotor flux ahead of the grid voltage phasor (in radians).
+        <M tex="\delta" /> is the load angle — the steady-state phase lead of the rotor flux ahead
+        of the grid voltage phasor (in radians).
       </p>
       <p className="mb-prose-3">The reactive power at the terminal is</p>
       <Formula tex="Q = \dfrac{|V_{\text{grid}}| \cdot |E_f|}{X_s} \cdot \cos\delta - \dfrac{|V_{\text{grid}}|^2}{X_s}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="Q" /> is the reactive power delivered
-        by the generator (in VAR, or per-unit; positive means the machine sources VARs to the grid),
-        and the remaining symbols carry the same meanings as in the real-power equation above.
+        where <M tex="Q" /> is the reactive power delivered by the generator (in VAR, or per-unit;
+        positive means the machine sources VARs to the grid), and the remaining symbols carry the
+        same meanings as in the real-power equation above.
       </p>
       <p className="mb-prose-3">
-        Increase mechanical input and the rotor pulls ahead of the grid —{' '}
-        <InlineMath tex="\delta" /> grows until <InlineMath tex="P" /> matches.
-        Increase field current and <InlineMath tex="Q" /> grows: an over-excited
+        Increase mechanical input and the rotor pulls ahead of the grid — <M tex="\delta" /> grows
+        until <M tex="P" /> matches. Increase field current and <M tex="Q" /> grows: an over-excited
         generator supplies reactive power to the grid (acts like a capacitor); under-excited, it
         absorbs reactive power (acts like an inductor). The "V curves" familiar to power engineers —
         armature current vs field current at constant real power — fall out of these two equations
@@ -309,19 +292,18 @@ export default function Ch21Generators() {
       <ExcitationControlDemo figure="Fig. 21.3" />
 
       <p className="mb-prose-3">
-        The power-angle relation <InlineMath tex="P \propto \sin\delta" /> has a sharp limit built
-        into it. Real power peaks at <InlineMath tex="\delta = 90°" /> at a value{' '}
-        <InlineMath tex="P_{\max} = |V \cdot E_f|/X_s" />, and past that point the rotor cannot
-        transmit any more power no matter how hard the turbine pushes. The excess mechanical torque
-        accelerates the rotor beyond synchronism — the unit{' '}
+        The power-angle relation <M tex="P \propto \sin\delta" /> has a sharp limit built into it.
+        Real power peaks at <M tex="\delta = 90°" /> at a value{' '}
+        <M tex="P_{\max} = |V \cdot E_f|/X_s" />, and past that point the rotor cannot transmit any
+        more power no matter how hard the turbine pushes. The excess mechanical torque accelerates
+        the rotor beyond synchronism — the unit{' '}
         <Term def="The condition in which a synchronous generator's rotor advances by a full electrical pole past the grid phasor. The terminal currents swing through a fault-level transient and the protection relay trips the machine offline.">
           slips a pole
         </Term>
-        , the stator currents swing through a fault-level transient as <InlineMath tex="\delta" />{' '}
+        , the stator currents swing through a fault-level transient as <M tex="\delta" />
         wraps from 90° back through 270°, and the protection relay trips the generator off the bus
-        to save it. Stable steady-state operation requires <InlineMath tex="\delta" /> well below
-        90°, typically 20°–45° at rated output, with the remaining margin reserved for
-        fault-ride-through
+        to save it. Stable steady-state operation requires <M tex="\delta" /> well below 90°,
+        typically 20°–45° at rated output, with the remaining margin reserved for fault-ride-through
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
 
@@ -332,17 +314,16 @@ export default function Ch21Generators() {
         question={
           <>
             A <strong className="text-text font-medium">600 MW</strong> synchronous generator has{' '}
-            <InlineMath tex="X_s = 1.5\ \text{pu}" />,{' '}
-            <InlineMath tex="|V_{\text{grid}}| = 1\ \text{pu}" />,{' '}
-            <InlineMath tex="|E_f| = 1.4\ \text{pu}" />. What is the steady-state power angle{' '}
-            <InlineMath tex="\delta" /> when it delivers{' '}
+            <M tex="X_s = 1.5\ \text{pu}" />, <M tex="|V_{\text{grid}}| = 1\ \text{pu}" />,{' '}
+            <M tex="|E_f| = 1.4\ \text{pu}" />. What is the steady-state power angle{' '}
+            <M tex="\delta" /> when it delivers{' '}
             <strong className="text-text font-medium">500 MW</strong> at rated voltage?
           </>
         }
         hint={
           <>
             Per-unit P = 500/600. Then{' '}
-            <InlineMath tex="\sin\delta = P \cdot X_s / (|V_{\text{grid}}| \cdot |E_f|)" />.
+            <M tex="\sin\delta = P \cdot X_s / (|V_{\text{grid}}| \cdot |E_f|)" />.
           </>
         }
         answer={
@@ -355,11 +336,10 @@ export default function Ch21Generators() {
             <Formula tex="\delta = \arcsin(0.893) \approx 63°" />
             <p className="mb-prose-1 last:mb-0">
               That's a high power angle by utility-operations standards — the rotor is well up the
-              curve, with
-              <InlineMath tex="P_{\max} = |V \cdot E_f|/X_s \approx 0.93\ \text{pu}" /> (about 560
-              MW on the machine's base). Stability margin is thin; in practice the operator would
-              dispatch additional reactive support (raise <InlineMath tex="|E_f|" />) to bring{' '}
-              <InlineMath tex="\delta" /> back down before approving steady operation at this point
+              curve, with <M tex="P_{\max} = |V \cdot E_f|/X_s \approx 0.93\ \text{pu}" /> (about
+              560 MW on the machine's base). Stability margin is thin; in practice the operator
+              would dispatch additional reactive support (raise <M tex="|E_f|" />) to bring{' '}
+              <M tex="\delta" /> back down before approving steady operation at this point
               <Cite id="kundur-1994-power-stability" in={SOURCES} />.
             </p>
           </>
@@ -395,10 +375,10 @@ export default function Ch21Generators() {
         The rectified output is the <em className="text-text italic">maximum</em> of the three
         phases' rectified envelopes at each instant — six humps per electrical cycle. Ripple is
         naturally small (peak-to-valley ~13 % of peak; ripple factor ~4 % of the DC average for a
-        3-phase full-wave bridge), and the lead-acid battery sitting across the bus filters
-        whatever remains. The whole assembly — generator,
-        rectifier bridge, regulator, brushes on the rotor's two slip rings — fits in a package the
-        size of a pineapple and lives bolted to the side of the engine block for the life of the car
+        3-phase full-wave bridge), and the lead-acid battery sitting across the bus filters whatever
+        remains. The whole assembly — generator, rectifier bridge, regulator, brushes on the rotor's
+        two slip rings — fits in a package the size of a pineapple and lives bolted to the side of
+        the engine block for the life of the car
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
@@ -491,7 +471,9 @@ export default function Ch21Generators() {
       <p className="mb-prose-3">
         Once a generator is on the bus, it has to do its share of the load. And here the grid's
         defining property becomes the controlling constraint:{' '}
-        <em className="text-text italic">electric energy cannot, at grid scale, be stored cheaply.</em>{' '}
+        <em className="text-text italic">
+          electric energy cannot, at grid scale, be stored cheaply.
+        </em>{' '}
         Pumped hydro stores a few hours' worth at a steep round-trip efficiency hit, and
         utility-scale battery storage is growing rapidly but is still a small fraction of installed
         grid capacity. Generation must match load second-by-second, all the way down to the
@@ -513,9 +495,9 @@ export default function Ch21Generators() {
         and down on minute-to-hour timescales, and they're dispatched to follow the load curve as it
         swings from the night-time minimum to the morning and evening peaks. Above the peakers sits{' '}
         <em className="text-text italic">spinning reserve</em>: an allocation sized against the
-        largest single contingency on the system (in practice on the order of a few percent of
-        peak load), kept synchronised to the bus but loaded below its rating, available to ramp up
-        in seconds when an unscheduled outage drops a major generator
+        largest single contingency on the system (in practice on the order of a few percent of peak
+        load), kept synchronised to the bus but loaded below its rating, available to ramp up in
+        seconds when an unscheduled outage drops a major generator
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
 
@@ -587,11 +569,10 @@ export default function Ch21Generators() {
         How fast that initial frequency excursion proceeds depends entirely on how much rotational
         kinetic energy is actually spinning on the grid. The aggregate dynamics are captured by the{' '}
         <em className="text-text italic">swing equation</em>:{' '}
-        <InlineMath tex="2H \cdot df/dt = \Delta P/P_{\text{base}}" />,
-        where <InlineMath tex="H" /> is the system inertia constant (the kinetic
-        energy stored in all synchronous machines, divided by the system MVA base, with units of
-        seconds). A grid dominated by large synchronous machines (coal, hydro, nuclear) has{' '}
-        <InlineMath tex="H" /> in the 4–6 s range; a grid dominated by inverter-
+        <M tex="2H \cdot df/dt = \Delta P/P_{\text{base}}" />, where <M tex="H" /> is the system
+        inertia constant (the kinetic energy stored in all synchronous machines, divided by the
+        system MVA base, with units of seconds). A grid dominated by large synchronous machines
+        (coal, hydro, nuclear) has <M tex="H" /> in the 4–6 s range; a grid dominated by inverter-
         based renewables can drop below 2 s, and the same disturbance produces a frequency excursion
         two or three times as steep
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
@@ -615,11 +596,10 @@ export default function Ch21Generators() {
         tag="Try 21.6"
         question={
           <>
-            A grid with total rotational inertia{' '}
-            <InlineMath tex="H = 4\ \text{s}" /> instantly loses{' '}
+            A grid with total rotational inertia <M tex="H = 4\ \text{s}" /> instantly loses{' '}
             <strong className="text-text font-medium">500 MW</strong> of generation out of a{' '}
             <strong className="text-text font-medium">10 GW</strong> total load. What is the initial
-            rate of frequency decline <InlineMath tex="df/dt" />?
+            rate of frequency decline <M tex="df/dt" />?
           </>
         }
         hint="Swing equation: 2H · (df/dt)/f_nom = −ΔP/P_base. Solve for df/dt at f_nom = 60 Hz."
@@ -639,10 +619,9 @@ export default function Ch21Generators() {
             <p className="mb-prose-1 last:mb-0">
               That's a steep but recoverable RoCoF for a typical Western Interconnection — governors
               begin responding within a second and arrest the fall well before any under-frequency
-              load-shedding scheme kicks in. Halve{' '}
-              <InlineMath tex="H" /> to 2 s (an inverter-heavy grid) and the same
-              outage produces −0.75 Hz/s — at the edge of what conventional protection relays can
-              ride through
+              load-shedding scheme kicks in. Halve <M tex="H" /> to 2 s (an inverter-heavy grid) and
+              the same outage produces −0.75 Hz/s — at the edge of what conventional protection
+              relays can ride through
               <Cite id="kundur-1994-power-stability" in={SOURCES} />.
             </p>
           </>
@@ -652,8 +631,8 @@ export default function Ch21Generators() {
       <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
-        Faraday's <InlineMath tex="\mathcal{E} = -d\Phi/dt" /> says that a moving magnet in a
-        coil makes voltage. Wrap that into the rotational geometry of the motors chapter, drive the rotor
+        Faraday's <M tex="\mathcal{E} = -d\Phi/dt" /> says that a moving magnet in a coil makes
+        voltage. Wrap that into the rotational geometry of the motors chapter, drive the rotor
         mechanically instead of electrically, and you get a generator — the inverse of every machine
         in the last chapter. Three stator windings 120° apart give you the three-phase AC that the
         whole continental grid runs on. Shrink the same topology, add a 6-diode bridge, and you have
@@ -754,19 +733,19 @@ export default function Ch21Generators() {
             have been uprated twice — original 1936 stators in many cases, replaced rotors and
             windings — and now produce roughly 2 GW peak. Each unit has a Francis turbine spinning
             at 180 RPM and an alternator with 40 poles producing 60 Hz at the synchronous speed{' '}
-            <InlineMath tex="n_s = 120\cdot 60/40 = 180\ \text{RPM}" />. The slow rotation accommodates the high static head from Lake Mead without cavitating
-            the runner
+            <M tex="n_s = 120\cdot 60/40 = 180\ \text{RPM}" />. The slow rotation accommodates the
+            high static head from Lake Mead without cavitating the runner
             <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
             Hoover's role on the WECC grid is partly baseload (the run-of-river share) and partly
             peaking and ancillary services — its hydro units can ramp from cold to full output on
             timescales of order minutes and provide voltage support and spinning reserve to the
-            Phoenix, Las Vegas, and Los Angeles load centres. The whole installation illustrates a property of hydro that
-            thermal plants lack: nearly the entire kinetic energy of the water converts to
-            electricity, with large synchronous machines hitting efficiencies in the high nineties
-            and overall water-to-wire conversion typically around 0.85–0.90 for installations of
-            this class
+            Phoenix, Las Vegas, and Los Angeles load centres. The whole installation illustrates a
+            property of hydro that thermal plants lack: nearly the entire kinetic energy of the
+            water converts to electricity, with large synchronous machines hitting efficiencies in
+            the high nineties and overall water-to-wire conversion typically around 0.85–0.90 for
+            installations of this class
             <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
         </CaseStudy>
@@ -793,8 +772,7 @@ export default function Ch21Generators() {
               value: (
                 <>
                   a few MW for on-shore; modern off-shore designs reach into the double-digit MW
-                  range{' '}
-                  <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
+                  range <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
                 </>
               ),
             },
@@ -852,13 +830,13 @@ export default function Ch21Generators() {
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            Every Tier-III or higher data center has multiple of these — typically{' '}
-            <InlineMath tex="N{+}1" /> or <InlineMath tex="2N" />
-            {' '}redundancy on the standby generation. The unit is a turbocharged V16 diesel engine
-            direct-coupled to a 4-pole synchronous generator. At 60 Hz the rotor turns at 1800 RPM,
-            well within the diesel's optimal torque range. The engine is constantly trickle-warmed
-            (block heater + glow plugs) so it can start under load within a few seconds; the voltage
-            regulator brings the output up to nominal in a few cycles after crank-start
+            Every Tier-III or higher data center has multiple of these — typically <M tex="N{+}1" />{' '}
+            or <M tex="2N" /> redundancy on the standby generation. The unit is a turbocharged V16
+            diesel engine direct-coupled to a 4-pole synchronous generator. At 60 Hz the rotor turns
+            at 1800 RPM, well within the diesel's optimal torque range. The engine is constantly
+            trickle-warmed (block heater + glow plugs) so it can start under load within a few
+            seconds; the voltage regulator brings the output up to nominal in a few cycles after
+            crank-start
             <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
@@ -922,29 +900,29 @@ export default function Ch21Generators() {
         <FAQItem q="Why does spinning a generator faster make more voltage but the same frequency relationship?">
           <p>
             Both go up together — that's the point. EMF peak ∝ ω (Faraday's law as{' '}
-            <InlineMath tex="NBA\omega" />), and frequency ∝ ω (the same rotation
-            produces the sinusoid). So a generator at twice the shaft speed produces twice the
-            voltage at twice the frequency. To stay synchronised to a fixed-frequency grid, the
-            shaft speed must be fixed at synchronous speed — you can't trade off shaft speed against
-            voltage. To make more voltage, you increase the rotor's field current (in a wound-rotor
-            machine) or you wind more stator turns at design time
+            <M tex="NBA\omega" />
+            ), and frequency ∝ ω (the same rotation produces the sinusoid). So a generator at twice
+            the shaft speed produces twice the voltage at twice the frequency. To stay synchronised
+            to a fixed-frequency grid, the shaft speed must be fixed at synchronous speed — you
+            can't trade off shaft speed against voltage. To make more voltage, you increase the
+            rotor's field current (in a wound-rotor machine) or you wind more stator turns at design
+            time
             <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
         </FAQItem>
 
         <FAQItem q="What is reactive power and why does the grid worry about it?">
           <p>
-            Real power is <InlineMath tex="V \cdot I \cdot \cos\varphi" /> — the part of the
-            current that's in phase with the voltage and actually delivers energy to the load.
-            Reactive power is <InlineMath tex="V \cdot I \cdot \sin\varphi" /> — the part 90° out
-            of
-            phase, which sloshes back and forth between source and load each cycle without net
-            energy transfer. Inductive loads (motors, transformers) absorb reactive power;
-            capacitive loads (long lines, certain rectifier loads) produce it. The grid has to
-            supply both, because inductive currents still flow through the transmission system and
-            contribute to I²R heating in the wires. Synchronous generators control their reactive
-            output by adjusting field current — over-excited gives capacitive (leading) VARs;
-            under-excited gives inductive (lagging) VARs
+            Real power is <M tex="V \cdot I \cdot \cos\varphi" /> — the part of the current that's
+            in phase with the voltage and actually delivers energy to the load. Reactive power is{' '}
+            <M tex="V \cdot I \cdot \sin\varphi" /> — the part 90° out of phase, which sloshes back
+            and forth between source and load each cycle without net energy transfer. Inductive
+            loads (motors, transformers) absorb reactive power; capacitive loads (long lines,
+            certain rectifier loads) produce it. The grid has to supply both, because inductive
+            currents still flow through the transmission system and contribute to I²R heating in the
+            wires. Synchronous generators control their reactive output by adjusting field current —
+            over-excited gives capacitive (leading) VARs; under-excited gives inductive (lagging)
+            VARs
             <Cite id="kundur-1994-power-stability" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -953,9 +931,8 @@ export default function Ch21Generators() {
           <p>
             Synchronous generators store kinetic energy in their rotors — a 600 MW unit at 1800 RPM
             stores on the order of a few gigajoules in its spinning mass. When grid load suddenly
-            exceeds
-            generation, that stored kinetic energy converts to electrical output for the first
-            second or two, smoothing the frequency dip while governors respond. Inverter-based
+            exceeds generation, that stored kinetic energy converts to electrical output for the
+            first second or two, smoothing the frequency dip while governors respond. Inverter-based
             renewables (wind, solar) have no equivalent stored kinetic energy on the grid side — the
             inverter just synthesises whatever waveform the controller asks for. Modern grid-forming
             inverters provide <em className="text-text italic">synthetic inertia</em> by mimicking
@@ -985,11 +962,11 @@ export default function Ch21Generators() {
             generator's transient reactance and the grid's source impedance — typically a few
             percent of rated impedance. So the transient current is many times the machine's rated
             current
-            <Cite id="kundur-1994-power-stability" in={SOURCES} />, and it lasts long enough
-            (cycles to seconds) to mechanically deform the stator winding's end-turns and to jerk
-            the rotor's shaft hard enough to potentially shear the coupling. This is why every
-            modern synchronisation system has a hardwired sync-check relay that vetoes any breaker
-            close attempt that fails its window
+            <Cite id="kundur-1994-power-stability" in={SOURCES} />, and it lasts long enough (cycles
+            to seconds) to mechanically deform the stator winding's end-turns and to jerk the
+            rotor's shaft hard enough to potentially shear the coupling. This is why every modern
+            synchronisation system has a hardwired sync-check relay that vetoes any breaker close
+            attempt that fails its window
             <Cite id="kundur-1994-power-stability" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1057,9 +1034,8 @@ export default function Ch21Generators() {
             reservoir up to a higher one. At peak times the water runs back down through the same
             units now operated as generators. Round-trip efficiency is somewhat lower than a
             battery's, but pumped hydro is one of the few storage technologies that scales
-            economically into the gigawatt-hour range and historically the only one with
-            significant deployed capacity, providing a few hours of peak-shaving for many
-            continental grids
+            economically into the gigawatt-hour range and historically the only one with significant
+            deployed capacity, providing a few hours of peak-shaving for many continental grids
             <Cite id="grainger-power-systems-2003" in={SOURCES} />.
           </p>
         </FAQItem>

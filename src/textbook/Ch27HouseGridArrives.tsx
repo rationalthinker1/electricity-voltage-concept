@@ -21,7 +21,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -108,8 +108,8 @@ export default function Ch27HouseGridArrives() {
         convection coolant
         <Cite id="grainger-power-systems-2003" in={SOURCES} />. The primary winding has many turns
         and connects between one medium-voltage phase and the grounded neutral of the feeder — for a
-        12.47 kV wye feeder, that's <strong className="text-text font-medium">7,200 V</strong> across
-        the primary
+        12.47 kV wye feeder, that's <strong className="text-text font-medium">7,200 V</strong>{' '}
+        across the primary
         <Cite id="ansi-c84-1-2020" in={SOURCES} />. The secondary winding has far fewer turns and is
         wound with much thicker copper. Its two ends emerge from the can as the two "hot" service
         conductors. Critically, the secondary winding is{' '}
@@ -137,17 +137,17 @@ export default function Ch27HouseGridArrives() {
         at +170 V relative to centre, the other is at −170 V; the end-to-end RMS voltage is
         therefore <strong className="text-text font-medium">240 V</strong>, not 0, because the two
         halves are 180° out of phase about the grounded centre and so add rather than cancel. This
-        is what "split-phase" means: one phase from the utility, split into two
-        equal halves about a grounded midpoint
+        is what "split-phase" means: one phase from the utility, split into two equal halves about a
+        grounded midpoint
         <Cite id="ansi-c84-1-2020" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         The transformer itself is just a Chapter-23 transformer with k near 1 and a turns ratio
         chosen to land the secondary at the right voltage. The primary-to-half-secondary ratio is
-        roughly <InlineMath tex="7200/120 = 60:1" />, and the
-        full-secondary ratio is <InlineMath tex="7200/240 = 30:1" />.
-        Pick the ratio and the physics is fixed; everything else (KVA rating, oil volume, bushing
-        geometry) is downstream engineering choice. Common residential-feeder sizes are{' '}
+        roughly <M tex="7200/120 = 60:1" />, and the full-secondary ratio is{' '}
+        <M tex="7200/240 = 30:1" />. Pick the ratio and the physics is fixed; everything else (KVA
+        rating, oil volume, bushing geometry) is downstream engineering choice. Common
+        residential-feeder sizes are{' '}
         <strong className="text-text font-medium">10, 15, 25, 37.5, 50, 75, and 100 kVA</strong>,
         with a single pole-pig typically serving two to six houses in a North-American suburb
         depending on local load density
@@ -161,9 +161,9 @@ export default function Ch27HouseGridArrives() {
       <p className="mb-prose-3">
         The deeper physics of how the iron core, the flux linkage, and the turns ratio actually work
         is the whole of Chapter 23 — the pole-pig is a single transformer with coupling near 1 and
-        the
-        cleanest possible split-phase wiring on its secondary. The rest of this chapter takes the
-        existence of that 240/120 V three-wire output as given and follows where the three wires go.
+        the cleanest possible split-phase wiring on its secondary. The rest of this chapter takes
+        the existence of that 240/120 V three-wire output as given and follows where the three wires
+        go.
       </p>
 
       <h2 className="chapter-h2">
@@ -183,11 +183,10 @@ export default function Ch27HouseGridArrives() {
       </p>
       <Formula size="lg" id="power-vi" />
       <p className="mb-prose-3">
-        where <InlineMath tex="P" /> is the real power delivered to
-        the load (in watts), <InlineMath tex="V" /> is the RMS voltage
-        across the load (in volts), and <InlineMath tex="I" /> is the
-        RMS current through it (in amperes), for a purely resistive load. Rearrange to read off the
-        current required to deliver a given power at a given voltage:
+        where <M tex="P" /> is the real power delivered to the load (in watts), <M tex="V" /> is the
+        RMS voltage across the load (in volts), and <M tex="I" /> is the RMS current through it (in
+        amperes), for a purely resistive load. Rearrange to read off the current required to deliver
+        a given power at a given voltage:
       </p>
       <Formula tex="I = \\dfrac{P}{V}" />
       <p className="mb-prose-3">
@@ -241,8 +240,8 @@ export default function Ch27HouseGridArrives() {
         }
         hint={
           <>
-            Use <InlineMath tex="I = P/V" /> for each case, then{' '}
-            <InlineMath tex="P_{\\text{loss}} = I^2 R_{\\text{wire}}" />.
+            Use <M tex="I = P/V" /> for each case, then{' '}
+            <M tex="P_{\\text{loss}} = I^2 R_{\\text{wire}}" />.
           </>
         }
         answer={
@@ -448,7 +447,7 @@ export default function Ch27HouseGridArrives() {
         proportional to instantaneous power
         <Cite id="grainger-power-systems-2003" in={SOURCES} />. A geared mechanical register
         accumulates total disc revolutions, and so total energy delivered. The disc's spin rate at
-        any moment is proportional to <InlineMath tex="V \\cdot I" /> integrated through the meter's
+        any moment is proportional to <M tex="V \\cdot I" /> integrated through the meter's
         measuring fields; the cumulative count is the integral.
       </p>
       <p className="mb-prose-3">
@@ -474,15 +473,12 @@ export default function Ch27HouseGridArrives() {
       </p>
       <Formula tex="W = \\int P\\, dt = \\int V(t)\\, I(t)\\, dt" />
       <p className="mb-prose-3">
-        where <InlineMath tex="W" /> is the accumulated energy
-        delivered to the customer (in joules — or, the utility's unit of choice, kilowatt-hours),{' '}
-        <InlineMath tex="P" /> is the instantaneous real power (in
-        watts, W = V · A),
-        <InlineMath tex="V(t)" /> and{' '}
-        <InlineMath tex="I(t)" /> are the instantaneous service
+        where <M tex="W" /> is the accumulated energy delivered to the customer (in joules — or, the
+        utility's unit of choice, kilowatt-hours), <M tex="P" /> is the instantaneous real power (in
+        watts, W = V · A), <M tex="V(t)" /> and <M tex="I(t)" /> are the instantaneous service
         voltage and the instantaneous current crossing the meter (in volts and amperes), and{' '}
-        <InlineMath tex="t" /> is time (in seconds). The integral runs
-        from the moment the meter was installed (or last read).
+        <M tex="t" /> is time (in seconds). The integral runs from the moment the meter was
+        installed (or last read).
       </p>
       <p className="mb-prose-3">
         For the special case of a constant load — a 1,500 W heater on a steady 120 V supply, say —
@@ -490,9 +486,7 @@ export default function Ch27HouseGridArrives() {
       </p>
       <Formula tex="W = P \\times t" />
       <p className="mb-prose-3">
-        where <InlineMath tex="W" />,{' '}
-        <InlineMath tex="P" />, and{' '}
-        <InlineMath tex="t" /> mean the same things as above. The
+        where <M tex="W" />, <M tex="P" />, and <M tex="t" /> mean the same things as above. The
         practical unit is the{' '}
         <Term
           def={
@@ -506,8 +500,8 @@ export default function Ch27HouseGridArrives() {
           kilowatt-hour
         </Term>
         : one kWh is 1,000 W delivered for one hour, equal to{' '}
-        <InlineMath tex="3.6 \times 10^{6}\,\text{J}" />. North-American residential
-        rates run roughly $0.10–$0.40 per kWh depending on jurisdiction and time of day
+        <M tex="3.6 \times 10^{6}\,\text{J}" />. North-American residential rates run roughly
+        $0.10–$0.40 per kWh depending on jurisdiction and time of day
         <Cite id="ieee-std-3001-2-2017" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -540,11 +534,11 @@ export default function Ch27HouseGridArrives() {
           demand
         </Term>{' '}
         in the billing cycle, and reactive energy (
-        <InlineMath tex="\\int V \\cdot I \\cdot \\sin(\\varphi)\\, dt" />, in kVARh). Reactive
-        energy is what flows into and out of motors, fluorescent ballasts, and other reactive loads
-        without ever being dissipated. Residential customers are not usually billed on it, but it is
-        the input that lets the utility decide where to put capacitor banks — and the input that
-        lets a smart meter tell you the power factor of your overall load
+        <M tex="\\int V \\cdot I \\cdot \\sin(\\varphi)\\, dt" />, in kVARh). Reactive energy is
+        what flows into and out of motors, fluorescent ballasts, and other reactive loads without
+        ever being dissipated. Residential customers are not usually billed on it, but it is the
+        input that lets the utility decide where to put capacitor banks — and the input that lets a
+        smart meter tell you the power factor of your overall load
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
 
@@ -560,8 +554,7 @@ export default function Ch27HouseGridArrives() {
         }
         hint={
           <>
-            <InlineMath tex="W = P \\cdot t" />. Convert 1,500 W to kW first to land directly in
-            kWh.
+            <M tex="W = P \\cdot t" />. Convert 1,500 W to kW first to land directly in kWh.
           </>
         }
         answer={
@@ -591,7 +584,7 @@ export default function Ch27HouseGridArrives() {
         }
         hint={
           <>
-            <InlineMath tex="\\text{PF} = \\text{real}/\\text{apparent} = \\text{kWh}/\\sqrt{\\text{kWh}^2 + \\text{kVARh}^2}" />
+            <M tex="\\text{PF} = \\text{real}/\\text{apparent} = \\text{kWh}/\\sqrt{\\text{kWh}^2 + \\text{kVARh}^2}" />
             .
           </>
         }
@@ -706,25 +699,24 @@ export default function Ch27HouseGridArrives() {
       </p>
       <p className="mb-prose-3">
         Let Z₁ be the total impedance of every load on the L1 leg (lumped together — bulbs,
-        electronics, a partly running fridge) and Z₂ the same on the L2 leg. With neutral open,
-        the two legs are in series across the full 240 V supply, and each leg's load acts as one
-        arm of a voltage divider. The voltages individually seen by L1 and L2 are then:
+        electronics, a partly running fridge) and Z₂ the same on the L2 leg. With neutral open, the
+        two legs are in series across the full 240 V supply, and each leg's load acts as one arm of
+        a voltage divider. The voltages individually seen by L1 and L2 are then:
       </p>
       <Formula tex="V_{L1} = 240 \\cdot \\dfrac{Z_1}{Z_1 + Z_2}, \\quad V_{L2} = 240 \\cdot \\dfrac{Z_2}{Z_1 + Z_2}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="V_{L1}" /> and <InlineMath tex="V_{L2}" /> are the voltages across
-        the L1-leg and L2-leg loads respectively (in volts), and{' '}
-        <InlineMath tex="Z_1" /> and <InlineMath tex="Z_2" /> are the total load impedances on
-        each leg (in ohms), lumped at their parallel equivalent.
+        where <M tex="V_{L1}" /> and <M tex="V_{L2}" /> are the voltages across the L1-leg and
+        L2-leg loads respectively (in volts), and <M tex="Z_1" /> and <M tex="Z_2" /> are the total
+        load impedances on each leg (in ohms), lumped at their parallel equivalent.
       </p>
       <p className="mb-prose-3">
         The two add to 240 V as required, but they need not split evenly. If one leg is heavily
         loaded (low Z) and the other lightly loaded (high Z), nearly all 240 V appears across the
         lightly loaded leg — and every device on that leg sees double its rated voltage.
-        Incandescent lamp filaments fuse open with a flash, motor windings fry, and anything
-        plugged into the lightly-loaded
-        leg dies in seconds. The heavily loaded leg, meanwhile, sees a starved voltage of perhaps
-        30–60 V — too low for half its devices to run, but not low enough to be safely zero
+        Incandescent lamp filaments fuse open with a flash, motor windings fry, and anything plugged
+        into the lightly-loaded leg dies in seconds. The heavily loaded leg, meanwhile, sees a
+        starved voltage of perhaps 30–60 V — too low for half its devices to run, but not low enough
+        to be safely zero
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -765,8 +757,8 @@ export default function Ch27HouseGridArrives() {
         }
         hint={
           <>
-            Compute each load's resistance from <InlineMath tex="R = V^2/P" /> at 120 V, then divide
-            240 V across them as a series voltage divider.
+            Compute each load's resistance from <M tex="R = V^2/P" /> at 120 V, then divide 240 V
+            across them as a series voltage divider.
           </>
         }
         answer={
@@ -796,14 +788,13 @@ export default function Ch27HouseGridArrives() {
         transformer, which delivers a 240 V centre-tapped secondary as a three-wire split-phase
         service. Triplex aerial cable arcs across to the house, enters a weatherhead, and runs down
         through conduit to a meter base, where the utility's revenue meter clamps into four jaws
-        under a sealed anti-tampering ring. The meter integrates
-        <InlineMath tex="V \\cdot I" /> through time to count kilowatt-hours. Just downstream of the
-        meter, at the main service disconnect, the neutral and ground are bonded together at exactly
-        one point — and never again anywhere in the building. Break that neutral anywhere upstream
-        and the two 120 V legs become an unequal series divider across 240 V; break it downstream
-        and you have created the multi-point bond the code is designed to forbid. Every household
-        electrical safety rule that follows in the next several chapters is in some sense a
-        corollary of the geometry we have just walked.
+        under a sealed anti-tampering ring. The meter integrates <M tex="V \\cdot I" /> through time
+        to count kilowatt-hours. Just downstream of the meter, at the main service disconnect, the
+        neutral and ground are bonded together at exactly one point — and never again anywhere in
+        the building. Break that neutral anywhere upstream and the two 120 V legs become an unequal
+        series divider across 240 V; break it downstream and you have created the multi-point bond
+        the code is designed to forbid. Every household electrical safety rule that follows in the
+        next several chapters is in some sense a corollary of the geometry we have just walked.
       </p>
       <p className="mb-prose-3">
         Chapter 28 picks up where the meter base ends: behind the wall it backs into sits the main
@@ -1225,11 +1216,10 @@ export default function Ch27HouseGridArrives() {
             Because you share a pole-pig and a service drop. When their compressor motor starts, it
             draws an inrush current of perhaps 5–7× its running current for a fraction of a second,
             and that current flows through the shared transformer impedance and the shared upstream
-            conductors. The voltage at the shared bus dips by <InlineMath tex="I \\cdot Z" />, where{' '}
-            <InlineMath tex="Z" /> is the Thévenin impedance of the upstream supply seen from the
-            transformer secondary. A few percent dip is normal; more than that suggests the
-            transformer or the drop is undersized for the diversity factor the utility planners
-            assumed
+            conductors. The voltage at the shared bus dips by <M tex="I \\cdot Z" />, where{' '}
+            <M tex="Z" /> is the Thévenin impedance of the upstream supply seen from the transformer
+            secondary. A few percent dip is normal; more than that suggests the transformer or the
+            drop is undersized for the diversity factor the utility planners assumed
             <Cite id="grainger-power-systems-2003" in={SOURCES} />
             <Cite id="ieee-std-3001-2-2017" in={SOURCES} />.
           </p>
@@ -1253,15 +1243,14 @@ export default function Ch27HouseGridArrives() {
           <p>
             Not continuously — the cap on continuous load is 160 A on a standard 200 A main. The NEC
             80 % continuous-load rule (§210.19 sizes the conductor, §210.20(A) sizes the overcurrent
-            device) requires that a circuit's{' '}
-            <em className="text-text italic">continuous</em> load (one expected to run at full
-            current for three hours or more) not exceed 80 % of the breaker's ampacity, so a 200 A
-            main is good for 160 A continuous and 200 A non-continuous. The exception is a
-            100 %-rated breaker assembly (listed under UL 489), which can carry its full nameplate
-            rating continuously — uncommon in residential panels. In practice few houses ever come
-            close to 200 A continuous; the rating sets the worst-case design envelope, and the
-            diversity factor that the utility used to size the upstream transformer assumes you
-            don't sit at the envelope
+            device) requires that a circuit's <em className="text-text italic">continuous</em> load
+            (one expected to run at full current for three hours or more) not exceed 80 % of the
+            breaker's ampacity, so a 200 A main is good for 160 A continuous and 200 A
+            non-continuous. The exception is a 100 %-rated breaker assembly (listed under UL 489),
+            which can carry its full nameplate rating continuously — uncommon in residential panels.
+            In practice few houses ever come close to 200 A continuous; the rating sets the
+            worst-case design envelope, and the diversity factor that the utility used to size the
+            upstream transformer assumes you don't sit at the envelope
             <Cite id="nec-2023" in={SOURCES} />
             <Cite id="ieee-std-3001-2-2017" in={SOURCES} />.
           </p>
@@ -1270,14 +1259,13 @@ export default function Ch27HouseGridArrives() {
         <FAQItem q="How is the meter's measurement accurate to a fraction of a percent over decades?">
           <p>
             Mechanical Ferraris meters relied on geometry alone — the disc's torque was exactly
-            proportional to
-            <InlineMath tex="V \\cdot I" /> by construction, and the only thing that could drift was
-            the eddy-current brake's calibration, which utilities checked on a rotating sample.
-            Solid-state meters use a precision voltage divider, a CT or shunt-resistor current
-            sensor, and an integrating ADC that multiplies the two channels every millisecond and
-            accumulates; the multiplier circuit is calibrated at the factory and the meter's
-            firmware logs deviations from its self-test reference. Both architectures hit accuracy
-            classes of 0.2–0.5 % over their service lifetimes
+            proportional to <M tex="V \\cdot I" /> by construction, and the only thing that could
+            drift was the eddy-current brake's calibration, which utilities checked on a rotating
+            sample. Solid-state meters use a precision voltage divider, a CT or shunt-resistor
+            current sensor, and an integrating ADC that multiplies the two channels every
+            millisecond and accumulates; the multiplier circuit is calibrated at the factory and the
+            meter's firmware logs deviations from its self-test reference. Both architectures hit
+            accuracy classes of 0.2–0.5 % over their service lifetimes
             <Cite id="ieee-std-3001-2-2017" in={SOURCES} />
             <Cite id="grainger-power-systems-2003" in={SOURCES} />.
           </p>

@@ -11,15 +11,22 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { fmtFreqShort } from '@/lib/formatters';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -172,18 +179,88 @@ export function RCFilterBodeDemo({ figure }: Props) {
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-      drawLabel(ctx, { text: '0 dB', x: plotX - 4, y: yMag(0), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '-20', x: plotX - 4, y: yMag(-20), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '-40', x: plotX - 4, y: yMag(-40), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0°', x: plotX - 4, y: yPh(0), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '-90°', x: plotX - 4, y: yPh(-90), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '+90°', x: plotX - 4, y: yPh(90), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '0 dB',
+        x: plotX - 4,
+        y: yMag(0),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '-20',
+        x: plotX - 4,
+        y: yMag(-20),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '-40',
+        x: plotX - 4,
+        y: yMag(-40),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0°',
+        x: plotX - 4,
+        y: yPh(0),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '-90°',
+        x: plotX - 4,
+        y: yPh(-90),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '+90°',
+        x: plotX - 4,
+        y: yPh(90),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      drawLabel(ctx, { text: '|H(jω)|  [dB]', x: plotX + 4, y: magY0 + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'arg H(jω)  [deg]', x: plotX + 4, y: phaseY0 + 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `${mode === 'low' ? 'low-pass' : 'high-pass'}  f_c = ${fmtFreqShort(fc)}`, x: plotX + plotW - 4, y: magY0 + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '|H(jω)|  [dB]',
+        x: plotX + 4,
+        y: magY0 + 4,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'arg H(jω)  [deg]',
+        x: plotX + 4,
+        y: phaseY0 + 4,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `${mode === 'low' ? 'low-pass' : 'high-pass'}  f_c = ${fmtFreqShort(fc)}`,
+        x: plotX + plotW - 4,
+        y: magY0 + 4,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -235,12 +312,22 @@ export function RCFilterBodeDemo({ figure }: Props) {
       <EquationStrip
         leftLabel={mode === 'low' ? 'Low-pass transfer function' : 'High-pass transfer function'}
         left={
-          mode === 'low'
-            ? <InlineMath tex={`|H(j\\omega)| = \\frac{1}{\\sqrt{1+(\\omega/\\omega_c)^2}},\\quad \\omega_c = \\frac{1}{RC}`} />
-            : <InlineMath tex={`|H(j\\omega)| = \\frac{\\omega/\\omega_c}{\\sqrt{1+(\\omega/\\omega_c)^2}},\\quad \\omega_c = \\frac{1}{RC}`} />
+          mode === 'low' ? (
+            <M
+              tex={`|H(j\\omega)| = \\frac{1}{\\sqrt{1+(\\omega/\\omega_c)^2}},\\quad \\omega_c = \\frac{1}{RC}`}
+            />
+          ) : (
+            <M
+              tex={`|H(j\\omega)| = \\frac{\\omega/\\omega_c}{\\sqrt{1+(\\omega/\\omega_c)^2}},\\quad \\omega_c = \\frac{1}{RC}`}
+            />
+          )
         }
         rightLabel="Cutoff frequency"
-        right={<InlineMath tex={`f_c = \\frac{1}{2\\pi RC} = \\frac{1}{2\\pi \\cdot ${Rk < 1 ? (Rk * 1000).toFixed(0) + '\\,\\Omega' : Rk.toFixed(2) + '\\,\\text{k}\\Omega'} \\cdot ${Cnf.toFixed(0)}\\,\\text{nF}} \\approx ${fc.toFixed(0)}\\,\\text{Hz}`} />}
+        right={
+          <M
+            tex={`f_c = \\frac{1}{2\\pi RC} = \\frac{1}{2\\pi \\cdot ${Rk < 1 ? (Rk * 1000).toFixed(0) + '\\,\\Omega' : Rk.toFixed(2) + '\\,\\text{k}\\Omega'} \\cdot ${Cnf.toFixed(0)}\\,\\text{nF}} \\approx ${fc.toFixed(0)}\\,\\text{Hz}`}
+          />
+        }
       />
     </Demo>
   );

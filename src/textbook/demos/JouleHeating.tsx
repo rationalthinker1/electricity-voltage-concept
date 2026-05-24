@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
@@ -158,12 +158,28 @@ export function JouleHeatingDemo({ figure }: Props) {
       }
 
       // Overlays
-      drawLabel(ctx, { text: `P = ${pretty(P_).replace(/<[^>]+>/g, '')} W`, x: 14, y: 12, color: colors.accent, size: 13, font: '13px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `P = ${pretty(P_).replace(/<[^>]+>/g, '')} W`,
+        x: 14,
+        y: 12,
+        color: colors.accent,
+        size: 13,
+        font: '13px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
 
       ctx.fillStyle = visiblePower
         ? `rgb(${col.r},${col.g},${col.b})`
         : withAlpha(colors.textDim, 0.85);
-      drawLabel(ctx, { text: `T ≈ ${T.toFixed(0)} K`, x: w - 14, y: 12, size: 13, font: '13px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `T ≈ ${T.toFixed(0)} K`,
+        x: w - 14,
+        y: 12,
+        size: 13,
+        font: '13px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       drawLabel(ctx, {
         x: w - 14,
         y: 30,
@@ -216,10 +232,10 @@ export function JouleHeatingDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Joule heating"
-        left={<InlineMath tex="P \;=\; I^{2}\, R" />}
+        left={<M tex="P \;=\; I^{2}\, R" />}
         rightLabel="Live substitution"
         right={
-          <InlineMath
+          <M
             tex={
               `P \\;=\\; ${I.toFixed(2)}^{2} \\times ${R.toFixed(1)} ` +
               `\\;\\approx\\; ${sciTeX(P)}\\ \\text{W}`

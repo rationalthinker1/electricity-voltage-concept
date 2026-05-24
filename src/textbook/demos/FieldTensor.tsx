@@ -27,7 +27,7 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 
 import { Demo, DemoControls, EquationStrip, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
@@ -184,7 +184,6 @@ export function FieldTensorDemo({ figure }: Props) {
           {/* Column headers */}
           {labels.map((l) => (
             <div key={'col-' + l} className="text-text-dim text-1 px-xs py-sm text-center">
-
               {l}
             </div>
           ))}
@@ -201,7 +200,7 @@ export function FieldTensorDemo({ figure }: Props) {
                 return (
                   <div
                     key={`${i}-${j}`}
-                    className="border-border rounded-3 px-xs pt-md pb-sm text-center transition-[background-color] duration-fast"
+                    className="border-border rounded-3 px-xs pt-md pb-sm duration-fast text-center transition-[background-color]"
                     style={{ background: bg }}
                   >
                     <div className="text-1 mb-xs" style={{ color: fg }}>
@@ -238,16 +237,14 @@ export function FieldTensorDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Lorentz boost (x̂ direction)"
         left={
-          <InlineMath
-            tex={"E_y' = \\gamma(E_y - v B_z),\\quad B_z' = \\gamma\\!\\left(B_z - \\dfrac{v\\,E_y}{c^{2}}\\right)"}
+          <M
+            tex={
+              "E_y' = \\gamma(E_y - v B_z),\\quad B_z' = \\gamma\\!\\left(B_z - \\dfrac{v\\,E_y}{c^{2}}\\right)"
+            }
           />
         }
         rightLabel={`At β = ${beta.toFixed(2)}`}
-        right={
-          <InlineMath
-            tex={`\\gamma = \\dfrac{1}{\\sqrt{1-\\beta^{2}}} = ${gamma.toFixed(3)}`}
-          />
-        }
+        right={<M tex={`\\gamma = \\dfrac{1}{\\sqrt{1-\\beta^{2}}} = ${gamma.toFixed(3)}`} />}
       />
     </Demo>
   );

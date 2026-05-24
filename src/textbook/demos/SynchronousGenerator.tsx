@@ -13,12 +13,12 @@ import { useState } from 'react';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { withAlpha } from '@/lib/canvasTheme';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -141,16 +141,46 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
       ctx.font = 'bold 10px JetBrains Mono';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      drawLabel(ctx, { text: 'N', x: nx, y: ny, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'S', x: sxx, y: syy, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'N',
+        x: nx,
+        y: ny,
+        color: colors.bg,
+        weight: 'bold',
+        font: '10px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'S',
+        x: sxx,
+        y: syy,
+        color: colors.bg,
+        weight: 'bold',
+        font: '10px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
       ctx.lineCap = 'butt';
 
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      drawLabel(ctx, { text: 'rotor (PM or DC-excited)', x: 8, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: '3 stator coils @ 120°', x: 8, y: 22, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'rotor (PM or DC-excited)',
+        x: 8,
+        y: 8,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: '3 stator coils @ 120°',
+        x: 8,
+        y: 22,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.restore();
 
       // Divider
@@ -194,10 +224,34 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
         ctx.stroke();
       }
       ctx.font = '10px "JetBrains Mono", monospace';
-      drawLabel(ctx, { text: 'V_A', x: scopeX + 4, y: scopeY + 12, color: phaseColors[0], font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'V_B', x: scopeX + 38, y: scopeY + 12, color: phaseColors[1], font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'V_C', x: scopeX + 72, y: scopeY + 12, color: phaseColors[2], font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `${f.toFixed(0)} Hz`, x: scopeX + scopeW - 4, y: scopeY + 12, font: '10px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, {
+        text: 'V_A',
+        x: scopeX + 4,
+        y: scopeY + 12,
+        color: phaseColors[0],
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: 'V_B',
+        x: scopeX + 38,
+        y: scopeY + 12,
+        color: phaseColors[1],
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: 'V_C',
+        x: scopeX + 72,
+        y: scopeY + 12,
+        color: phaseColors[2],
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `${f.toFixed(0)} Hz`,
+        x: scopeX + scopeW - 4,
+        y: scopeY + 12,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+      });
       ctx.restore();
     },
     [],
@@ -237,13 +291,11 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Three-phase stator voltages"
         left={
-          <InlineMath
-            tex={`v_{a,b,c}(t) = V_{pk}\\cos\\!\\big(2\\pi f t - k\\cdot 120^{\\circ}\\big)`}
-          />
+          <M tex={`v_{a,b,c}(t) = V_{pk}\\cos\\!\\big(2\\pi f t - k\\cdot 120^{\\circ}\\big)`} />
         }
         rightLabel="with current f"
         right={
-          <InlineMath
+          <M
             tex={`f = ${f.toFixed(0)}\\ \\text{Hz},\\ \\ V_{rms} = V_{pk}/\\sqrt{2} \\approx ${Vrms.toFixed(3)}`}
           />
         }

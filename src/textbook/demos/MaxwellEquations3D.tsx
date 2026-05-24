@@ -30,7 +30,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS, sciTeX } from '@/lib/physics';
@@ -216,7 +216,10 @@ function drawGaussE(
     origin.y,
     rad,
   );
-  grad.addColorStop(0, q >= 0 ? withAlpha(getCanvasColors().pink, 0.65) : withAlpha(getCanvasColors().blue, 0.65));
+  grad.addColorStop(
+    0,
+    q >= 0 ? withAlpha(getCanvasColors().pink, 0.65) : withAlpha(getCanvasColors().blue, 0.65),
+  );
   grad.addColorStop(1, q >= 0 ? getCanvasColors().pink : getCanvasColors().blue);
   ctx.fillStyle = grad;
   ctx.beginPath();
@@ -324,14 +327,32 @@ function drawGaussB(
   ctx.arc(pt.x, pt.y, 9, 0, Math.PI * 2);
   ctx.fill();
   ctx.fillStyle = getCanvasColors().bg;
-  drawLabel(ctx, { text: 'N', x: pt.x, y: pt.y, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: 'N',
+    x: pt.x,
+    y: pt.y,
+    weight: 'bold',
+    size: 11,
+    font: 'bold 11px "JetBrains Mono", monospace',
+    align: 'center',
+    baseline: 'middle',
+  });
   // S pole label (bottom, blue).
   ctx.fillStyle = getCanvasColors().blue;
   ctx.beginPath();
   ctx.arc(pb.x, pb.y, 9, 0, Math.PI * 2);
   ctx.fill();
   ctx.fillStyle = getCanvasColors().bg;
-  drawLabel(ctx, { text: 'S', x: pb.x, y: pb.y, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: 'S',
+    x: pb.x,
+    y: pb.y,
+    weight: 'bold',
+    size: 11,
+    font: 'bold 11px "JetBrains Mono", monospace',
+    align: 'center',
+    baseline: 'middle',
+  });
 
   // 2. Trace closed B-field loops by integrating the dipole field forward
   //    *and* backward from a seed point. Concatenate to get a single loop.
@@ -884,8 +905,12 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
               fontFamily: '"JetBrains Mono", monospace',
               fontSize: 11,
               color: mode === m ? getCanvasColors().canvasBg : getCanvasColors().textDim,
-              background: mode === m ? getCanvasColors().accent : withAlpha(getCanvasColors().text, 0.04),
-              border: mode === m ? `1px solid ${getCanvasColors().accent}` : `1px solid ${withAlpha(getCanvasColors().text, 0.10)}`,
+              background:
+                mode === m ? getCanvasColors().accent : withAlpha(getCanvasColors().text, 0.04),
+              border:
+                mode === m
+                  ? `1px solid ${getCanvasColors().accent}`
+                  : `1px solid ${withAlpha(getCanvasColors().text, 0.1)}`,
               borderRadius: 4,
               cursor: 'pointer',
               transition: 'background 120ms, color 120ms',
@@ -922,14 +947,14 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
               <EquationStrip
                 leftLabel="LHS"
                 left={
-                  <InlineMath
-                  tex={`\\oint \\vec{E}\\cdot d\\vec{A} \\;=\\; ${sciTeX(computed.fluxE, 2, { force: true })}\\ \\text{V·m}`}
+                  <M
+                    tex={`\\oint \\vec{E}\\cdot d\\vec{A} \\;=\\; ${sciTeX(computed.fluxE, 2, { force: true })}\\ \\text{V·m}`}
                   />
                 }
                 rightLabel="RHS"
                 right={
-                  <InlineMath
-                  tex={`\\dfrac{Q_{enc}}{\\varepsilon_0} \\;=\\; \\dfrac{${q.toFixed(1)}\\times10^{-9}}{\\varepsilon_0} \\;=\\; ${sciTeX(computed.fluxE, 2, { force: true })}\\ \\text{V·m}`}
+                  <M
+                    tex={`\\dfrac{Q_{enc}}{\\varepsilon_0} \\;=\\; \\dfrac{${q.toFixed(1)}\\times10^{-9}}{\\varepsilon_0} \\;=\\; ${sciTeX(computed.fluxE, 2, { force: true })}\\ \\text{V·m}`}
                   />
                 }
               />
@@ -938,17 +963,9 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
             return (
               <EquationStrip
                 leftLabel="LHS"
-                left={
-                  <InlineMath
-                    tex={`\\oint \\vec{B}\\cdot d\\vec{A} \\;=\\; 0`}
-                  />
-                }
+                left={<M tex={`\\oint \\vec{B}\\cdot d\\vec{A} \\;=\\; 0`} />}
                 rightLabel="RHS"
-                right={
-                  <InlineMath
-                    tex={`0\\ \\text{T·m}^2`}
-                  />
-                }
+                right={<M tex={`0\\ \\text{T·m}^2`} />}
               />
             );
           case 'faraday':
@@ -956,13 +973,13 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
               <EquationStrip
                 leftLabel="LHS"
                 left={
-                  <InlineMath
+                  <M
                     tex={`|\\oint \\vec{E}\\cdot d\\vec{\\ell}| \\;=\\; ${computed.emf.toFixed(3)}\\ \\text{V}`}
                   />
                 }
                 rightLabel="RHS"
                 right={
-                  <InlineMath
+                  <M
                     tex={`\\left|\\dfrac{d\\Phi_B}{dt}\\right| \\;=\\; |${dBdt.toFixed(2)}|\\cdot ${computed.A_loop.toFixed(2)} \\;=\\; ${computed.emf.toFixed(3)}\\ \\text{V}`}
                   />
                 }
@@ -973,14 +990,14 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
               <EquationStrip
                 leftLabel="LHS"
                 left={
-                  <InlineMath
-                  tex={`\\oint \\vec{B}\\cdot d\\vec{\\ell} \\;=\\; ${sciTeX(computed.closedBline, 2, { force: true })}\\ \\text{T·m}`}
+                  <M
+                    tex={`\\oint \\vec{B}\\cdot d\\vec{\\ell} \\;=\\; ${sciTeX(computed.closedBline, 2, { force: true })}\\ \\text{T·m}`}
                   />
                 }
                 rightLabel="RHS"
                 right={
-                  <InlineMath
-                  tex={`\\mu_0(I_{enc} + \\varepsilon_0 \\dfrac{d\\Phi_E}{dt}) \\;=\\; ${sciTeX(computed.closedBline, 2, { force: true })}\\ \\text{T·m}`}
+                  <M
+                    tex={`\\mu_0(I_{enc} + \\varepsilon_0 \\dfrac{d\\Phi_E}{dt}) \\;=\\; ${sciTeX(computed.closedBline, 2, { force: true })}\\ \\text{T·m}`}
                   />
                 }
               />

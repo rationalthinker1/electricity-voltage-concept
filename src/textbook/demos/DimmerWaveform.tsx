@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -153,11 +153,11 @@ export function DimmerWaveformDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Leading-edge RMS"
         left={
-          <InlineMath tex="V_{\\text{rms}}=V_{\\text{peak}}\\sqrt{\\alpha/(2\\pi)-\\sin(2\\alpha)/(4\\pi)}" />
+          <M tex="V_{\\text{rms}}=V_{\\text{peak}}\\sqrt{\\alpha/(2\\pi)-\\sin(2\\alpha)/(4\\pi)}" />
         }
         rightLabel="Current setting"
         right={
-          <InlineMath
+          <M
             tex={`V_{\\text{rms}} = ${computed.peak.toFixed(1)}\\sqrt{${(alpha / (2 * Math.PI)).toFixed(3)} - ${(Math.sin(2 * alpha) / (4 * Math.PI)).toFixed(3)}} = ${computed.rms.toFixed(1)}\\,\\text{V}`}
           />
         }

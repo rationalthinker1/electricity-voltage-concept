@@ -17,7 +17,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 
 interface Props {
   figure: string;
@@ -131,7 +131,13 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
       // Big external-B arrow at top
       ctx.save();
       ctx.globalAlpha = 0.65;
-      drawLabel(ctx, { text: `B (external) →`, x: 16, y: 22, color: colors.text, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: `B (external) →`,
+        x: 16,
+        y: 22,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+      });
       const Bw = Math.min(140, 30 + B * 11);
       ctx.restore();
       ctx.strokeStyle = colors.textDim;
@@ -152,8 +158,20 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
 
       // Labels showing net M magnitude on each box
       ctx.restore();
-      drawLabel(ctx, { text: `M = ${mPara.toFixed(2)}`, x: boxes[0].x0 + boxes[0].w - 8, y: h - 12, color: colors.accent, align: 'right' });
-      drawLabel(ctx, { text: `M = ${mDia.toFixed(2)}`, x: boxes[1].x0 + boxes[1].w - 8, y: h - 12, color: colors.teal, align: 'right' });
+      drawLabel(ctx, {
+        text: `M = ${mPara.toFixed(2)}`,
+        x: boxes[0].x0 + boxes[0].w - 8,
+        y: h - 12,
+        color: colors.accent,
+        align: 'right',
+      });
+      drawLabel(ctx, {
+        text: `M = ${mDia.toFixed(2)}`,
+        x: boxes[1].x0 + boxes[1].w - 8,
+        y: h - 12,
+        color: colors.teal,
+        align: 'right',
+      });
 
       // Throttle React state updates
       const now = performance.now();
@@ -237,9 +255,17 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Magnetic susceptibility"
-        left={<InlineMath tex={`M = \\chi_m H;\\quad \\chi_m > 0\\text{ (para)},\\quad \\chi_m < 0\\text{ (dia)}`} />}
+        left={
+          <M
+            tex={`M = \\chi_m H;\\quad \\chi_m > 0\\text{ (para)},\\quad \\chi_m < 0\\text{ (dia)}`}
+          />
+        }
         rightLabel={`B = ${B.toFixed(1)}`}
-        right={<InlineMath tex={`M_{\\text{para}} = +${Mpara.toFixed(2)},\\quad M_{\\text{dia}} = ${Mdia.toFixed(2)}`} />}
+        right={
+          <M
+            tex={`M_{\\text{para}} = +${Mpara.toFixed(2)},\\quad M_{\\text{dia}} = ${Mdia.toFixed(2)}`}
+          />
+        }
       />
     </Demo>
   );

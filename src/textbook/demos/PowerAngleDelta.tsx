@@ -15,7 +15,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawAxes, drawHLine, drawLinePlot, drawVLine, makePlotMappers } from '@/lib/drawPlot';
@@ -146,11 +146,33 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
       }
 
       // P_max label
-      drawLabel(ctx, { text: `P_max = V·E_f/X_s = ${P_MAX.toFixed(2)} pu`, x: padL + 8, y: yOf(P_MAX) - 8, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `P_max = V·E_f/X_s = ${P_MAX.toFixed(2)} pu`,
+        x: padL + 8,
+        y: yOf(P_MAX) - 8,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
 
       // Stable / unstable region labels
-      drawLabel(ctx, { text: 'stable: δ < 90°', x: padL + 8, y: padT + plotH - 6, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
-      drawLabel(ctx, { text: 'unstable: δ > 90°', x: padL + plotW - 8, y: padT + plotH - 6, color: colors.pink, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: 'stable: δ < 90°',
+        x: padL + 8,
+        y: padT + plotH - 6,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: 'unstable: δ > 90°',
+        x: padL + plotW - 8,
+        y: padT + plotH - 6,
+        color: colors.pink,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'bottom',
+      });
     },
     [],
   );
@@ -195,19 +217,15 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Power-angle relation"
-        left={
-          <InlineMath
-            tex={`P(\\delta) = \\dfrac{|V|\\,|E_f|}{X_s}\\,\\sin\\delta`}
-          />
-        }
+        left={<M tex={`P(\\delta) = \\dfrac{|V|\\,|E_f|}{X_s}\\,\\sin\\delta`} />}
         rightLabel={computed.pullOut ? 'Beyond pull-out' : 'with current state'}
         right={
           computed.pullOut ? (
-            <InlineMath
+            <M
               tex={`P_{\\max} = \\dfrac{(${V_GRID})(${E_F})}{${X_S}} \\approx ${P_MAX.toFixed(2)}\\ \\text{pu}\\ <\\ ${pMech.toFixed(2)}\\ \\text{pu}`}
             />
           ) : (
-            <InlineMath
+            <M
               tex={
                 `${pMech.toFixed(2)} = \\dfrac{(${V_GRID})(${E_F})}{${X_S}}\\sin(${computed.delta.toFixed(1)}^{\\circ})` +
                 ` \\approx ${pMech.toFixed(2)}\\ \\text{pu}`

@@ -12,7 +12,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -66,11 +66,27 @@ export function FuelCellDemo({ figure }: Props) {
       ctx.fillStyle = colors.blue;
       ctx.fillRect(x, cellY, flowW, cellH);
       ctx.restore();
-      drawLabel(ctx, { text: 'H₂', x: x + flowW / 2, y: cellY + 4, color: colors.blue, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'H₂',
+        x: x + flowW / 2,
+        y: cellY + 4,
+        color: colors.blue,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       x += flowW;
       ctx.fillStyle = withAlpha(colors.textDim, 0.35);
       ctx.fillRect(x, cellY, anodeW, cellH);
-      drawLabel(ctx, { text: 'anode', x: x + anodeW / 2, y: cellY + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'anode',
+        x: x + anodeW / 2,
+        y: cellY + 4,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       x += anodeW;
       ctx.save();
       ctx.globalAlpha = 0.3;
@@ -100,7 +116,15 @@ export function FuelCellDemo({ figure }: Props) {
       ctx.restore();
       ctx.fillStyle = withAlpha(colors.textDim, 0.35);
       ctx.fillRect(x, cellY, cathodeW, cellH);
-      drawLabel(ctx, { text: 'cathode', x: x + cathodeW / 2, y: cellY + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'cathode',
+        x: x + cathodeW / 2,
+        y: cellY + 4,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       x += cathodeW;
       ctx.save();
       ctx.globalAlpha = 0.1;
@@ -111,8 +135,23 @@ export function FuelCellDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.75;
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'H₂ → 2H⁺ + 2e⁻', x: cellX, y: cellY + cellH + 6, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: '½O₂ + 2H⁺ + 2e⁻ → H₂O', x: cellX + cellW, y: cellY + cellH + 6, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'H₂ → 2H⁺ + 2e⁻',
+        x: cellX,
+        y: cellY + cellH + 6,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: '½O₂ + 2H⁺ + 2e⁻ → H₂O',
+        x: cellX + cellW,
+        y: cellY + cellH + 6,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       const pX = splitX + 16;
       const pY = 30;
       const pW = W - pX - 30;
@@ -148,8 +187,21 @@ export function FuelCellDemo({ figure }: Props) {
       ctx.arc(opX, opY, 5, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'V (V)', x: pX, y: 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'i (A/cm²)', x: pX + pW, y: pY + pH + 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'V (V)',
+        x: pX,
+        y: 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'i (A/cm²)',
+        x: pX + pW,
+        y: pY + pH + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       ctx0.phase = phase;
     },
     [],
@@ -187,9 +239,13 @@ export function FuelCellDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Power density"
-        left={<InlineMath tex="P = V \cdot i,\quad V = V_{\text{OCV}} - \eta_{\text{act}} - \eta_{\text{ohm}} - \eta_{\text{mass}}" />}
+        left={
+          <M tex="P = V \cdot i,\quad V = V_{\text{OCV}} - \eta_{\text{act}} - \eta_{\text{ohm}} - \eta_{\text{mass}}" />
+        }
         rightLabel={`At i = ${i.toFixed(2)} A/cm²`}
-        right={<InlineMath tex={`V = ${V.toFixed(3)}\\,\\text{V};\\quad P = ${P.toFixed(3)}\\,\\text{W/cm}^2`} />}
+        right={
+          <M tex={`V = ${V.toFixed(3)}\\,\\text{V};\\quad P = ${P.toFixed(3)}\\,\\text{W/cm}^2`} />
+        }
       />
     </Demo>
   );

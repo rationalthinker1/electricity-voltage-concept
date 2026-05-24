@@ -24,8 +24,15 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -33,7 +40,7 @@ import { project, v3, type OrbitCamera, type Point2D, type Vec3 } from '@/lib/pr
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -260,18 +267,15 @@ export function MOSFET3DDemo({ figure }: Props) {
   const regime = useMemo(() => regimeLabel(V_GS, V_DS), [V_GS, V_DS]);
   const Vov = Math.max(0, V_GS - V_T);
 
-const stateRef = useSimState({ V_GS, V_DS, showField });
+  const stateRef = useSimState({ V_GS, V_DS, showField });
 
-const setup = useSimLoop<
-typeof stateRef.current,
-{ scene: OrbitScene; electrons: Electron[] }
->(
-stateRef,
-({ ctx, w: W, h: H, colors }, s, dt, _simTime, ctx0) => {
-const cam = ctx0.scene.cam;
-const { electrons } = ctx0;
-const overdrive = Math.max(0, s.V_GS - V_T);
-const channelOn = overdrive > 0;
+  const setup = useSimLoop<typeof stateRef.current, { scene: OrbitScene; electrons: Electron[] }>(
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, s, dt, _simTime, ctx0) => {
+      const cam = ctx0.scene.cam;
+      const { electrons } = ctx0;
+      const overdrive = Math.max(0, s.V_GS - V_T);
+      const channelOn = overdrive > 0;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
@@ -397,8 +401,8 @@ const channelOn = overdrive > 0;
           // Persistent left-to-right drift + small Brownian jitter.
           e.x += (driftSpeed + e.vx) * dt;
           e.z += e.vz * dt;
-e.vx += randRange(-0.4, 0.4) * dt;
-e.vz += randRange(-0.4, 0.4) * dt;
+          e.vx += randRange(-0.4, 0.4) * dt;
+          e.vz += randRange(-0.4, 0.4) * dt;
           // Light damping so jitter doesn't blow up.
           e.vx *= 0.96;
           e.vz *= 0.96;
@@ -406,8 +410,8 @@ e.vz += randRange(-0.4, 0.4) * dt;
           if (e.z > CHAN_Z1) e.z = CHAN_Z1;
           if (e.x > CHAN_X1) {
             // Recycle at the source side.
-e.x = CHAN_X0 + randRange(0, 0.05);
-e.z = randRange(CHAN_Z0, CHAN_Z1);
+            e.x = CHAN_X0 + randRange(0, 0.05);
+            e.z = randRange(CHAN_Z0, CHAN_Z1);
           }
         }
       }
@@ -521,11 +525,7 @@ e.z = randRange(CHAN_Z0, CHAN_Z1);
       labelAt(v3((SRC.x0 + SRC.x1) / 2, SRC.y1 + 0.05, 0), 'S (n+)', 'rgba(140,220,150,0.95)');
       labelAt(v3((DRN.x0 + DRN.x1) / 2, DRN.y1 + 0.05, 0), 'D (n+)', 'rgba(140,220,150,0.95)');
       labelAt(v3(0, GATE.y1 + 0.1, 0), 'G (gate)', withAlpha(colors.accent, 0.95));
-      labelAt(
-        v3(0, GATE.y0 - 0.2, OXIDE.z1 + 0.18),
-        'oxide',
-        withAlpha(colors.text, 0.7),
-      );
+      labelAt(v3(0, GATE.y0 - 0.2, OXIDE.z1 + 0.18), 'oxide', withAlpha(colors.text, 0.7));
       labelAt(
         v3(0, SUB.y0 + 0.18, SUB.z1 - 0.05),
         'p-substrate (body)',
@@ -534,41 +534,53 @@ e.z = randRange(CHAN_Z0, CHAN_Z1);
 
       // Top-left help.
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'drag to rotate',
+        x: 12,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
 
       // Bottom-right status banner — regime + channel-on/off.
       const status = channelOn
         ? `channel ON · V_OV = ${overdrive.toFixed(2)} V`
         : `channel OFF · below V_T = ${V_T.toFixed(2)} V`;
-      ctx.fillStyle = channelOn
-        ? withAlpha(colors.accent, 0.95)
-        : withAlpha(colors.textDim, 0.7);
-      drawLabel(ctx, { text: status, x: W - 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-
-},
-[],
-({ canvas }) => {
-const scene = createOrbitScene(canvas, {
-yaw: 0.7,
-pitch: 0.45,
-distance: 6.5,
-fov: Math.PI / 4,
-});
-// Persistent electron cloud. ~80 dots; spawned across the channel
-// footprint and re-cycled when they reach the drain edge.
-const N_ELECTRONS = 80;
-const electrons: Electron[] = [];
-for (let i = 0; i < N_ELECTRONS; i++) {
-electrons.push({
-x: randRange(CHAN_X0, CHAN_X1),
-z: randRange(CHAN_Z0, CHAN_Z1),
-vx: randRange(-0.02, 0.02),
-vz: randRange(-0.02, 0.02),
-});
-}
-return { context: { scene, electrons }, cleanup: () => scene.dispose() };
-},
-);
+      ctx.fillStyle = channelOn ? withAlpha(colors.accent, 0.95) : withAlpha(colors.textDim, 0.7);
+      drawLabel(ctx, {
+        text: status,
+        x: W - 12,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+    },
+    [],
+    ({ canvas }) => {
+      const scene = createOrbitScene(canvas, {
+        yaw: 0.7,
+        pitch: 0.45,
+        distance: 6.5,
+        fov: Math.PI / 4,
+      });
+      // Persistent electron cloud. ~80 dots; spawned across the channel
+      // footprint and re-cycled when they reach the drain edge.
+      const N_ELECTRONS = 80;
+      const electrons: Electron[] = [];
+      for (let i = 0; i < N_ELECTRONS; i++) {
+        electrons.push({
+          x: randRange(CHAN_X0, CHAN_X1),
+          z: randRange(CHAN_Z0, CHAN_Z1),
+          vx: randRange(-0.02, 0.02),
+          vz: randRange(-0.02, 0.02),
+        });
+      }
+      return { context: { scene, electrons }, cleanup: () => scene.dispose() };
+    },
+  );
 
   return (
     <Demo
@@ -580,11 +592,11 @@ return { context: { scene, electrons }, cleanup: () => scene.dispose() };
           Drag to rotate. Below threshold (V<sub>GS</sub> &lt; V<sub>T</sub> ≈ 0.7 V) the green
           source and drain are isolated by a slab of p-type substrate and no current can flow. Push
           V<sub>GS</sub> past V<sub>T</sub> and the gate field — pink, pointing down through the SiO
-          <sub>2</sub> — pulls electrons up to the surface; an
-          <strong>inversion layer</strong> lights up directly under the oxide, bridging source to
-          drain. Apply V<sub>DS</sub> and those electrons drift from source to drain, carrying the
-          drain current. Toggle the field arrows to see both the vertical (gate-to-channel) and
-          lateral (drain-to-source) components.
+          <sub>2</sub> — pulls electrons up to the surface; an <strong>inversion layer</strong>{' '}
+          lights up directly under the oxide, bridging source to drain. Apply V<sub>DS</sub> and
+          those electrons drift from source to drain, carrying the drain current. Toggle the field
+          arrows to see both the vertical (gate-to-channel) and lateral (drain-to-source)
+          components.
         </>
       }
       deeperLab={{ slug: 'transistor-iv', label: 'See full lab' }}
@@ -621,13 +633,15 @@ return { context: { scene, electrons }, cleanup: () => scene.dispose() };
       </DemoControls>
       <EquationStrip
         leftLabel="Saturation region"
-        left={<InlineMath tex={`I_D = \\tfrac{k_n}{2}(V_{GS} - V_T)^2`} />}
+        left={<M tex={`I_D = \\tfrac{k_n}{2}(V_{GS} - V_T)^2`} />}
         rightLabel="Live values"
         right={
-          <InlineMath
-            tex={Vov <= 0
-              ? `V_{GS} < V_T \\Rightarrow I_D = 0`
-              : `\\tfrac{2\\,\\text{mA/V}^2}{2}\\cdot(${Vov.toFixed(2)})^2 = ${(I_D * 1000).toFixed(3)}\\,\\text{mA}`}
+          <M
+            tex={
+              Vov <= 0
+                ? `V_{GS} < V_T \\Rightarrow I_D = 0`
+                : `\\tfrac{2\\,\\text{mA/V}^2}{2}\\cdot(${Vov.toFixed(2)})^2 = ${(I_D * 1000).toFixed(3)}\\,\\text{mA}`
+            }
           />
         }
       />

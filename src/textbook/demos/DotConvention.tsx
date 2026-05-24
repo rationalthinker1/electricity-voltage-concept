@@ -14,7 +14,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -109,7 +109,7 @@ export function DotConventionDemo({ figure }: Props) {
         <>
           The dot tells you which way each coil is wound. <em>Rule of thumb:</em> if both currents
           enter at the dotted terminals, the mutual flux adds to the self-flux (mutual term is{' '}
-          <InlineMath tex="+M\,dI/dt" />
+          <M tex="+M\,dI/dt" />
           ). If one enters at the dot and the other at the non-dot, the mutual flux opposes — minus
           sign.
         </>
@@ -132,9 +132,9 @@ export function DotConventionDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="coil 2 voltage"
-        left={<InlineMath tex="v_2=L_2\frac{dI_2}{dt}\pm M\frac{dI_1}{dt}" />}
+        left={<M tex="v_2=L_2\frac{dI_2}{dt}\pm M\frac{dI_1}{dt}" />}
         rightLabel="current sign"
-        right={<InlineMath tex={`\\text{mutual term}=${sign > 0 ? '+' : '-'}M\\frac{dI_1}{dt}`} />}
+        right={<M tex={`\\text{mutual term}=${sign > 0 ? '+' : '-'}M\\frac{dI_1}{dt}`} />}
       />
     </Demo>
   );

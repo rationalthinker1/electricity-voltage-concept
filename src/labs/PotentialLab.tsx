@@ -10,7 +10,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
 import { Pullout } from '@/components/Prose';
@@ -638,8 +638,8 @@ export default function PotentialLab() {
       </p>
       <Formula tex="V(\vec{r}) = -\int_\infty^{\vec{r}} \vec{E}\cdot d\vec{\ell}" />
       <p className="mb-prose-3">
-        For a point charge Q at the origin, <InlineMath tex="\vec{E} = (kQ/r^2)\, \hat{r}" />. Take
-        a radial path from infinity inward; <InlineMath tex="d\vec{\ell} = dr\, \hat{r}" />:
+        For a point charge Q at the origin, <M tex="\vec{E} = (kQ/r^2)\, \hat{r}" />. Take a radial
+        path from infinity inward; <M tex="d\vec{\ell} = dr\, \hat{r}" />:
       </p>
       <Formula tex="V(r) = -\int_\infty^{r} \dfrac{kQ}{r'^2}\, dr' = \dfrac{kQ}{r}" />
       <p className="mb-prose-3">

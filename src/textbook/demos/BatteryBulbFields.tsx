@@ -29,8 +29,15 @@
 import { useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
@@ -196,8 +203,28 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
 
       // Polarity glyphs — used to bake into the offscreen canvas; pulled
       // out to per-frame ctx so the cache stays a plain CircuitSpec.
-      drawLabel(ctx, { text: '+', x: batX - 18, y: top, color: colors.pink, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '−', x: batX - 12, y: bot, color: colors.blue, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '+',
+        x: batX - 18,
+        y: top,
+        color: colors.pink,
+        weight: 'bold',
+        size: 12,
+        font: 'bold 12px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '−',
+        x: batX - 12,
+        y: bot,
+        color: colors.blue,
+        weight: 'bold',
+        size: 12,
+        font: 'bold 12px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
 
       // ----- B-field circles around the wire (sample points along the loop).
       if (showB && current > 0.01) {
@@ -407,7 +434,12 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
         ctx.save();
         ctx.globalAlpha = 0.7;
         ctx.fillStyle = colors.blue;
-        drawLabel(ctx, { text: 'drift speed of these dots ≈ 10⁻⁴ m/s in real copper — too slow to carry the energy', x: w / 2, y: h - 16, align: 'center' });
+        drawLabel(ctx, {
+          text: 'drift speed of these dots ≈ 10⁻⁴ m/s in real copper — too slow to carry the energy',
+          x: w / 2,
+          y: h - 16,
+          align: 'center',
+        });
         ctx.restore();
       }
     },
@@ -610,13 +642,13 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Current"
         left={
-          <InlineMath
+          <M
             tex={`I = \\dfrac{V}{R} = \\dfrac{${V.toFixed(1)}}{${R_LOAD}} = ${I.toFixed(2)} \\text{ A}`}
           />
         }
         rightLabel="|B| at wire surface"
         right={
-          <InlineMath
+          <M
             tex={`|B| = \\dfrac{\\mu_0 I}{2\\pi a} \\approx ${(computed.Bsurf * 1000).toFixed(2)} \\text{ mT}`}
           />
         }

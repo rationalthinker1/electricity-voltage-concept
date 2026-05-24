@@ -16,8 +16,15 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -118,9 +125,13 @@ export function OpAmpFollowerDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Without buffer"
-        left={<InlineMath tex={`V_{\\text{load}} = V_s \\cdot \\frac{R_L}{R_s + R_L}`} />}
+        left={<M tex={`V_{\\text{load}} = V_s \\cdot \\frac{R_L}{R_s + R_L}`} />}
         rightLabel="With unity-gain follower"
-        right={<InlineMath tex={`V_{\\text{direct}} = ${Vs.toFixed(2)} \\cdot \\frac{R_L}{R_s+R_L} = ${VdirectLoad.toFixed(3)}\\,\\text{V};\\quad V_{\\text{buffered}} = ${Vs.toFixed(2)}\\,\\text{V}`} />}
+        right={
+          <M
+            tex={`V_{\\text{direct}} = ${Vs.toFixed(2)} \\cdot \\frac{R_L}{R_s+R_L} = ${VdirectLoad.toFixed(3)}\\,\\text{V};\\quad V_{\\text{buffered}} = ${Vs.toFixed(2)}\\,\\text{V}`}
+          />
+        }
       />
     </Demo>
   );
@@ -165,10 +176,25 @@ function drawSchematic(
   ctx.stroke();
   ctx.restore();
   ctx.fillStyle = getCanvasColors().accent;
-  drawLabel(ctx, { text: 'V_s', x: xSrc, y: yWire, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: 'V_s',
+    x: xSrc,
+    y: yWire,
+    weight: 'bold',
+    font: 'bold 10px "JetBrains Mono", monospace',
+    align: 'center',
+    baseline: 'middle',
+  });
 
   ctx.fillStyle = getCanvasColors().accent;
-  drawLabel(ctx, { text: `${Vs.toFixed(2)} V`, x: xSrc - 8, y: yWire - 18, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'bottom' });
+  drawLabel(ctx, {
+    text: `${Vs.toFixed(2)} V`,
+    x: xSrc - 8,
+    y: yWire - 18,
+    weight: 'bold',
+    font: 'bold 10px "JetBrains Mono", monospace',
+    baseline: 'bottom',
+  });
 
   // Wire from source through R_s
   ctx.save();
@@ -185,7 +211,14 @@ function drawSchematic(
   ctx.strokeStyle = getCanvasColors().pink;
   ctx.strokeRect(xRsLeft, yWire - 7, 60, 14);
   ctx.fillStyle = getCanvasColors().pink;
-  drawLabel(ctx, { text: `R_s = ${fmtResistance(Rs)}`, x: xRsLeft + 30, y: yWire - 10, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+  drawLabel(ctx, {
+    text: `R_s = ${fmtResistance(Rs)}`,
+    x: xRsLeft + 30,
+    y: yWire - 10,
+    font: '10px "JetBrains Mono", monospace',
+    align: 'center',
+    baseline: 'bottom',
+  });
 
   ctx.save();
   ctx.globalAlpha = 0.55;
@@ -210,8 +243,22 @@ function drawSchematic(
     ctx.stroke();
     // + / − markings
     ctx.fillStyle = getCanvasColors().teal;
-    drawLabel(ctx, { text: '+', x: xTri + 4, y: yWire - 9, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'middle' });
-    drawLabel(ctx, { text: '−', x: xTri + 4, y: yWire + 9, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'middle' });
+    drawLabel(ctx, {
+      text: '+',
+      x: xTri + 4,
+      y: yWire - 9,
+      size: 9,
+      font: '9px "JetBrains Mono", monospace',
+      baseline: 'middle',
+    });
+    drawLabel(ctx, {
+      text: '−',
+      x: xTri + 4,
+      y: yWire + 9,
+      size: 9,
+      font: '9px "JetBrains Mono", monospace',
+      baseline: 'middle',
+    });
     // Output wire and feedback
     ctx.save();
     ctx.globalAlpha = 0.55;
@@ -261,14 +308,28 @@ function drawSchematic(
   ctx.strokeRect(xRL - 7, yWire + 4, 14, 60);
   ctx.restore();
   ctx.fillStyle = getCanvasColors().blue;
-  drawLabel(ctx, { text: `R_L = ${fmtResistance(RL)}`, x: xRL + 10, y: yWire + 34, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: `R_L = ${fmtResistance(RL)}`,
+    x: xRL + 10,
+    y: yWire + 34,
+    font: '10px "JetBrains Mono", monospace',
+    baseline: 'middle',
+  });
 
   // Probe dot at load node + V_load label
   ctx.fillStyle = getCanvasColors().accent;
   ctx.beginPath();
   ctx.arc(xNodeOut, yWire, 4, 0, Math.PI * 2);
   ctx.fill();
-  drawLabel(ctx, { text: 'V_load', x: xNodeOut, y: yWire - 8, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+  drawLabel(ctx, {
+    text: 'V_load',
+    x: xNodeOut,
+    y: yWire - 8,
+    weight: 'bold',
+    font: 'bold 10px "JetBrains Mono", monospace',
+    align: 'center',
+    baseline: 'bottom',
+  });
 
   // Ground wire connecting source-bottom to R_L bottom
   ctx.save();
@@ -300,7 +361,15 @@ function drawSchematic(
   ctx.restore();
   ctx.fillStyle = getCanvasColors().accent;
   const vLive = bufferOn ? Vs : VdirectLoad;
-  drawLabel(ctx, { text: `= ${vLive.toFixed(3)} V`, x: xNodeOut + 12, y: yWire - 20, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: `= ${vLive.toFixed(3)} V`,
+    x: xNodeOut + 12,
+    y: yWire - 20,
+    weight: 'bold',
+    size: 11,
+    font: 'bold 11px "JetBrains Mono", monospace',
+    baseline: 'middle',
+  });
 
   ctx.restore();
 }
@@ -359,7 +428,13 @@ function drawBars(
   ctx.fillStyle = bufferOn
     ? withAlpha(getCanvasColors().teal, 0.95)
     : withAlpha(getCanvasColors().pink, 0.95);
-  drawLabel(ctx, { text: bufferOn ? '⟵ live' : '⟵ live', x: padL + plotW + 4, y: padT + plotH * 0.5, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+  drawLabel(ctx, {
+    text: bufferOn ? '⟵ live' : '⟵ live',
+    x: padL + plotW + 4,
+    y: padT + plotH * 0.5,
+    font: '10px "JetBrains Mono", monospace',
+    baseline: 'top',
+  });
 
   ctx.save();
   ctx.globalAlpha = 0.65;
@@ -367,10 +442,25 @@ function drawBars(
   ctx.font = '8px "JetBrains Mono", monospace';
   ctx.textAlign = 'right';
   ctx.textBaseline = 'middle';
-  drawLabel(ctx, { text: `${vmax.toFixed(2)} V`, x: padL - 4, y: yOf(vmax), size: 8, font: '8px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-  drawLabel(ctx, { text: '0', x: padL - 4, y: yOf(0), size: 8, font: '8px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: `${vmax.toFixed(2)} V`,
+    x: padL - 4,
+    y: yOf(vmax),
+    size: 8,
+    font: '8px "JetBrains Mono", monospace',
+    align: 'right',
+    baseline: 'middle',
+  });
+  drawLabel(ctx, {
+    text: '0',
+    x: padL - 4,
+    y: yOf(0),
+    size: 8,
+    font: '8px "JetBrains Mono", monospace',
+    align: 'right',
+    baseline: 'middle',
+  });
 
   ctx.restore();
   ctx.restore();
 }
-

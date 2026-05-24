@@ -15,12 +15,19 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -187,17 +194,11 @@ export function InertialResponseDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Initial RoCoF (swing equation)"
-        left={
-          <InlineMath
-            tex={`\\dfrac{df}{dt}\\bigg|_{0} = -\\dfrac{\\Delta P}{2H}\\,f_{\\text{nom}}`}
-          />
-        }
+        left={<M tex={`\\dfrac{df}{dt}\\bigg|_{0} = -\\dfrac{\\Delta P}{2H}\\,f_{\\text{nom}}`} />}
         rightLabel="with current ΔP"
         right={
-          <InlineMath
-            tex={
-              `H=5\\!:\\ ${rocofHigh.toFixed(2)}\\ \\text{Hz/s} \\quad\\big|\\quad H=1\\!:\\ ${rocofLow.toFixed(2)}\\ \\text{Hz/s}`
-            }
+          <M
+            tex={`H=5\\!:\\ ${rocofHigh.toFixed(2)}\\ \\text{Hz/s} \\quad\\big|\\quad H=1\\!:\\ ${rocofLow.toFixed(2)}\\ \\text{Hz/s}`}
           />
         }
       />

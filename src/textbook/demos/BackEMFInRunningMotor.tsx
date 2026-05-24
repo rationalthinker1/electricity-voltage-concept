@@ -15,7 +15,7 @@ import { useMemo, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -201,18 +201,17 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       question="Why does a stalled motor pull several times its rated current — and what stops it from doing that once running?"
       caption={
         <>
-          Brushed DC motor with <InlineMath tex="V = 12\,\text{V}" />,{' '}
-          <InlineMath tex="R = 1\,\Omega" />, and <InlineMath tex="k_e = 0.05\,\text{V·s/rad}" />.
-          At <InlineMath tex="t = 0" /> the rotor is stationary and the full 12 V drops across the
-          winding, so <InlineMath tex="I = V/R = 12\,\text{A}" /> — the inrush. As the rotor
-          accelerates, back-EMF rises (<InlineMath tex="E = k_e\omega" />
-          ); the net voltage across <InlineMath tex="R" /> falls; current collapses to its small
-          running value, just enough to balance load torque. Increase the load and steady-state
-          current rises again.
+          Brushed DC motor with <M tex="V = 12\,\text{V}" />, <M tex="R = 1\,\Omega" />, and{' '}
+          <M tex="k_e = 0.05\,\text{V·s/rad}" />. At <M tex="t = 0" /> the rotor is stationary and
+          the full 12 V drops across the winding, so <M tex="I = V/R = 12\,\text{A}" /> — the
+          inrush. As the rotor accelerates, back-EMF rises (<M tex="E = k_e\omega" />
+          ); the net voltage across <M tex="R" /> falls; current collapses to its small running
+          value, just enough to balance load torque. Increase the load and steady-state current
+          rises again.
         </>
       }
-    
-      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}>
+      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}
+    >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
         <MiniSlider
@@ -256,16 +255,10 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="back-EMF"
         left={
-          <InlineMath
-            tex={`E_{\\text{back}} = k_e\\omega = ${computed.backEMFss.toFixed(2)}\\,\\text{V}`}
-          />
+          <M tex={`E_{\\text{back}} = k_e\\omega = ${computed.backEMFss.toFixed(2)}\\,\\text{V}`} />
         }
         rightLabel="running current"
-        right={
-          <InlineMath
-            tex={`I = (V - E_{\\text{back}})/R = ${computed.Iss.toFixed(2)}\\,\\text{A}`}
-          />
-        }
+        right={<M tex={`I = (V - E_{\\text{back}})/R = ${computed.Iss.toFixed(2)}\\,\\text{A}`} />}
       />
     </Demo>
   );

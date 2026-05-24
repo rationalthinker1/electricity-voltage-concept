@@ -54,20 +54,18 @@ function Reference() {
         className="gap-md relative flex flex-col"
       >
         <span className="font-3 text-1 text-text-muted tracking-4 uppercase">Lab {lab.number}</span>
-        <span className="font-2 tracking-1 text-text text-8 leading-1 font-light">
-          {lab.title}
-        </span>
+        <span className="font-2 tracking-1 text-text text-8 leading-1 font-light">{lab.title}</span>
         <div className="gap-sm flex flex-wrap items-center">
-          <span className="font-3 text-1 text-accent border-accent-soft bg-accent-soft rounded-2 px-sm py-xxs tracking-4 uppercase border">
+          <span className="font-3 text-1 text-accent border-accent-soft bg-accent-soft rounded-2 px-sm py-xxs tracking-4 border uppercase">
             Experimental
           </span>
           {lab.runtime && (
-            <span className="font-3 text-1 text-text-dim border-border rounded-2 px-sm py-xxs tracking-4 uppercase border">
+            <span className="font-3 text-1 text-text-dim border-border rounded-2 px-sm py-xxs tracking-4 border uppercase">
               {lab.runtime}
             </span>
           )}
           {lab.difficulty && (
-            <span className="font-3 text-1 text-text-dim border-border rounded-2 px-sm py-xxs tracking-4 uppercase border">
+            <span className="font-3 text-1 text-text-dim border-border rounded-2 px-sm py-xxs tracking-4 border uppercase">
               {DIFFICULTY_LABEL[lab.difficulty]}
             </span>
           )}
@@ -85,7 +83,10 @@ function Reference() {
 
   const anchorTargets: Array<{ id: string; label: string }> = [
     { id: 'sandbox', label: 'Sandboxes' },
-    ...chapters.map((cid) => ({ id: cid, label: `Ch.${CHAPTER_META[cid].eyebrow.replace(/^Chapter\s+/, '')} — ${CHAPTER_META[cid].title}` })),
+    ...chapters.map((cid) => ({
+      id: cid,
+      label: `Ch.${CHAPTER_META[cid].eyebrow.replace(/^Chapter\s+/, '')} — ${CHAPTER_META[cid].title}`,
+    })),
   ];
 
   return (
@@ -115,11 +116,8 @@ function Reference() {
         </p>
       </section>
 
-      <nav
-        aria-label="Reference sections"
-        className="px-3xl max-w-page-lg mb-3xl mx-auto"
-      >
-        <ul className="border-border-strong gap-md flex flex-wrap items-center border-t border-b py-md m-0 p-0 list-none">
+      <nav aria-label="Reference sections" className="px-3xl max-w-page-lg mb-3xl mx-auto">
+        <ul className="border-border-strong gap-md py-md m-0 flex list-none flex-wrap items-center border-t border-b p-0">
           {anchorTargets.map((t) => (
             <li key={t.id} className="m-0 p-0">
               <a

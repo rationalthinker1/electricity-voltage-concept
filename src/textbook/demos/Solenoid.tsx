@@ -14,14 +14,14 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS, sciTeX } from '@/lib/physics';
 import { fmtSIPrecision } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -138,8 +138,21 @@ export function SolenoidDemo({ figure }: Props) {
         ctx.stroke();
       }
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-      drawLabel(ctx, { text: `L = ${Lcm.toFixed(1)} cm  ·  N = ${N}  ·  n = ${fmtSIPrecision(N / (Lcm * 1e-2), '/m', 2)}`, x: w / 2, y: h - 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: `B (inside) = ${fmtSIPrecision(PHYS.mu_0 * (N / (Lcm * 1e-2)) * I, 'T', 3)}`, x: w / 2, y: 24, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: `L = ${Lcm.toFixed(1)} cm  ·  N = ${N}  ·  n = ${fmtSIPrecision(N / (Lcm * 1e-2), '/m', 2)}`,
+        x: w / 2,
+        y: h - 18,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: `B (inside) = ${fmtSIPrecision(PHYS.mu_0 * (N / (Lcm * 1e-2)) * I, 'T', 3)}`,
+        x: w / 2,
+        y: 24,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       ctx0.t0 = t0;
     },
     [],
@@ -196,22 +209,16 @@ export function SolenoidDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Turn density"
         left={
-          <InlineMath
+          <M
             tex={
               `n \\;=\\; \\dfrac{N}{L} \\;=\\; ` +
-              `\\dfrac{${N}}{${(L_m).toFixed(3)}\\ \\text{m}} ` +
+              `\\dfrac{${N}}{${L_m.toFixed(3)}\\ \\text{m}} ` +
               `\\;\\approx\\; ${n.toFixed(0)}\\ \\text{/m}`
             }
           />
         }
         rightLabel="Uniform field inside"
-        right={
-          <InlineMath
-            tex={
-              `B \\;=\\; \\mu_{0} n I \\;\\approx\\; ${sciTeX(B_in)}\\ \\text{T}`
-            }
-          />
-        }
+        right={<M tex={`B \\;=\\; \\mu_{0} n I \\;\\approx\\; ${sciTeX(B_in)}\\ \\text{T}`} />}
       />
     </Demo>
   );

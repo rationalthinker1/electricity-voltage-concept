@@ -16,7 +16,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -192,10 +192,10 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       caption={
         <>
           A balanced three-phase stator current creates a rotating magnetic field at synchronous
-          speed <InlineMath tex="n_s = 120 f/p" />. The rotor — a squirrel cage of shorted bars on a
-          steel core — lags behind by the slip <InlineMath tex="s" />. That lag changes the flux
-          linking each bar, induces currents in the bars, and those currents react with the stator
-          field to produce torque. No connection to the rotor; no commutator. Tesla, 1888.
+          speed <M tex="n_s = 120 f/p" />. The rotor — a squirrel cage of shorted bars on a steel
+          core — lags behind by the slip <M tex="s" />. That lag changes the flux linking each bar,
+          induces currents in the bars, and those currents react with the stator field to produce
+          torque. No connection to the rotor; no commutator. Tesla, 1888.
         </>
       }
       deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}
@@ -230,10 +230,10 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="synchronous speed"
-        left={<InlineMath tex={`n_s = 120f/p = ${computed.n_s.toFixed(0)}\\,\\text{rpm}`} />}
+        left={<M tex={`n_s = 120f/p = ${computed.n_s.toFixed(0)}\\,\\text{rpm}`} />}
         rightLabel="slip speed"
         right={
-          <InlineMath
+          <M
             tex={`n = n_s(1-s) = ${computed.n.toFixed(0)}\\,\\text{rpm},\\quad s = ${(computed.s * 100).toFixed(2)}\\%`}
           />
         }

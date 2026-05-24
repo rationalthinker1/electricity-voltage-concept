@@ -21,7 +21,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -73,33 +73,31 @@ export default function Ch22MagneticallyCoupledCircuits() {
 
       <p className="mb-prose-3">
         A quick refresher, framed so the rest of the chapter slots cleanly on top of it. Take a coil
-        of <InlineMath tex="N" /> turns. Push a current <InlineMath tex="I" /> through it. The
-        current produces a magnetic field; that field, threaded back through each turn of the same
-        coil, yields a total{' '}
+        of <M tex="N" /> turns. Push a current <M tex="I" /> through it. The current produces a
+        magnetic field; that field, threaded back through each turn of the same coil, yields a total{' '}
         <Term
           def={
             <>
               <strong className="text-text font-medium">flux linkage</strong> — the total magnetic
               flux times the number of turns it threads in a single coil.{' '}
-              <InlineMath tex="\lambda = N\Phi" />. SI unit: webers (or volt-seconds).
-              Self-inductance is just <InlineMath tex="\lambda/I" />.
+              <M tex="\lambda = N\Phi" />. SI unit: webers (or volt-seconds). Self-inductance is
+              just <M tex="\lambda/I" />.
             </>
           }
         >
           flux linkage
         </Term>{' '}
-        <InlineMath tex="\lambda = N\Phi" />. The whole construction is linear: double{' '}
-        <InlineMath tex="I" /> and λ doubles, because every step (B from Biot–Savart, Φ from a
-        surface integral over B) is linear in the current that produced it. That linearity is
-        exactly what lets us pull out a single proportionality constant
+        <M tex="\lambda = N\Phi" />. The whole construction is linear: double <M tex="I" /> and λ
+        doubles, because every step (B from Biot–Savart, Φ from a surface integral over B) is linear
+        in the current that produced it. That linearity is exactly what lets us pull out a single
+        proportionality constant
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula>L = λ / I = N Φ / I</Formula>
       <p className="mb-prose-3">
-        Here <InlineMath tex="L" /> is the self-inductance in henries, <InlineMath tex="\lambda" />{' '}
-        is flux linkage in webers or volt-seconds, <InlineMath tex="I" /> is the coil current,{' '}
-        <InlineMath tex="N" /> is the turn count, and <InlineMath tex="\Phi" /> is the magnetic flux
-        through one turn.
+        Here <M tex="L" /> is the self-inductance in henries, <M tex="\lambda" />
+        is flux linkage in webers or volt-seconds, <M tex="I" /> is the coil current, <M tex="N" />{' '}
+        is the turn count, and <M tex="\Phi" /> is the magnetic flux through one turn.
       </p>
       <p className="mb-prose-3">
         Three things to notice about this definition. First, L is{' '}
@@ -110,18 +108,18 @@ export default function Ch22MagneticallyCoupledCircuits() {
           def={
             <>
               <strong className="text-text font-medium">henry</strong> — SI unit of inductance.{' '}
-              <InlineMath tex="1\,\text{H}=1\,\text{V}\cdot\text{s}/\text{A}" />. A one-henry coil
-              produces a one-volt back-EMF when its current changes at one ampere per second. Named
-              after Joseph Henry, who discovered self-induction in 1832 a few months ahead of
-              Faraday's separate work on mutual induction.
+              <M tex="1\,\text{H}=1\,\text{V}\cdot\text{s}/\text{A}" />. A one-henry coil produces a
+              one-volt back-EMF when its current changes at one ampere per second. Named after
+              Joseph Henry, who discovered self-induction in 1832 a few months ahead of Faraday's
+              separate work on mutual induction.
             </>
           }
         >
           henry
         </Term>
         s (volt-seconds per amp). Third, the energy stored in the coil's magnetic field is{' '}
-        <InlineMath tex="\tfrac{1}{2}LI^{2}" /> — quadratic in I, because doubling I doubles every
-        field line everywhere and the energy density scales as B², not B.
+        <M tex="\tfrac{1}{2}LI^{2}" /> — quadratic in I, because doubling I doubles every field line
+        everywhere and the energy density scales as B², not B.
       </p>
       <p className="mb-prose-3">
         Differentiate the linkage with respect to time, and Faraday's law (Ch.7) returns the induced
@@ -131,9 +129,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
       </p>
       <Formula>ε = − dλ/dt = − L dI/dt</Formula>
       <p className="mb-prose-3">
-        Here <InlineMath tex="\varepsilon" /> is the induced EMF, <InlineMath tex="d\lambda/dt" />{' '}
-        is the time rate of change of flux linkage, and the last equality assumes{' '}
-        <InlineMath tex="L" /> is constant while the current changes.
+        Here <M tex="\varepsilon" /> is the induced EMF, <M tex="d\lambda/dt" />
+        is the time rate of change of flux linkage, and the last equality assumes <M tex="L" /> is
+        constant while the current changes.
       </p>
       <p className="mb-prose-3">
         Why the minus sign? Because the universe doesn't like flux changing. If you connect the
@@ -161,9 +159,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
       </h2>
 
       <p className="mb-prose-3">
-        Place a second coil near the first. Coil 1 still carries some current{' '}
-        <InlineMath tex="I_1" />; the field it produces fills the surrounding space. Some of that
-        field threads coil 2 — call this share the{' '}
+        Place a second coil near the first. Coil 1 still carries some current <M tex="I_1" />; the
+        field it produces fills the surrounding space. Some of that field threads coil 2 — call this
+        share the{' '}
         <Term
           def={
             <>
@@ -175,8 +173,8 @@ export default function Ch22MagneticallyCoupledCircuits() {
         >
           linking flux
         </Term>{' '}
-        <InlineMath tex="\Phi_{21}" />. The rest leaks out the sides of coil 1 without ever touching
-        coil 2 — those are the{' '}
+        <M tex="\Phi_{21}" />. The rest leaks out the sides of coil 1 without ever touching coil 2 —
+        those are the{' '}
         <Term
           def={
             <>
@@ -200,9 +198,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
       </p>
       <Formula>M = N₂ Φ₂₁ / I₁</Formula>
       <p className="mb-prose-3">
-        Here <InlineMath tex="M" /> is mutual inductance in henries, <InlineMath tex="N_2" /> is the
-        number of turns on coil 2, <InlineMath tex="\Phi_{21}" /> is the flux from coil 1 that links
-        one turn of coil 2, and <InlineMath tex="I_1" /> is the current producing that flux.
+        Here <M tex="M" /> is mutual inductance in henries, <M tex="N_2" /> is the number of turns
+        on coil 2, <M tex="\Phi_{21}" /> is the flux from coil 1 that links one turn of coil 2, and{' '}
+        <M tex="I_1" /> is the current producing that flux.
       </p>
       <p className="mb-prose-3">
         Three intuitive things fall out immediately. First, like L, the{' '}
@@ -232,7 +230,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
       <Formula>M₁₂ = M₂₁ ≡ M</Formula>
       <p className="mb-prose-3">
         The subscripts only say which coil was driven and which coil was measured. Reciprocity lets
-        us replace both directional values with one shared <InlineMath tex="M" />.
+        us replace both directional values with one shared <M tex="M" />.
       </p>
       <p className="mb-prose-3">
         The symmetry is not obvious from the definition. It comes from energy conservation: the
@@ -252,15 +250,15 @@ export default function Ch22MagneticallyCoupledCircuits() {
       </p>
       <Formula>v₂(t) = M dI₁/dt &nbsp;(open-circuit on coil 2)</Formula>
       <p className="mb-prose-3">
-        In this measurement, <InlineMath tex="v_2(t)" /> is the open-circuit secondary voltage and{' '}
-        <InlineMath tex="dI_1/dt" /> is the primary current slope. The faster coil 1 current
-        changes, the larger the induced voltage on coil 2.
+        In this measurement, <M tex="v_2(t)" /> is the open-circuit secondary voltage and{' '}
+        <M tex="dI_1/dt" /> is the primary current slope. The faster coil 1 current changes, the
+        larger the induced voltage on coil 2.
       </p>
       <p className="mb-prose-3">
         That equation is the entire physical reason the demo at the top of the chapter works. A Qi
         charger drives an alternating current in its primary over the standard's low-hundreds of
-        kilohertz operating band; the phone's nearby secondary sees a voltage{' '}
-        <InlineMath tex="M\,dI_1/dt" /> that the phone rectifies and feeds to the battery
+        kilohertz operating band; the phone's nearby secondary sees a voltage <M tex="M\,dI_1/dt" />{' '}
+        that the phone rectifies and feeds to the battery
         <Cite id="wpc-qi-1.3" in={SOURCES} />. The constant of proportionality is just M, and M
         depends entirely on how the two coils are aligned.
       </p>
@@ -269,9 +267,8 @@ export default function Ch22MagneticallyCoupledCircuits() {
         tag="Try 22.1"
         question={
           <>
-            Two coils have <InlineMath tex="L_1 = 4\,\text{mH}" />,{' '}
-            <InlineMath tex="L_2 = 9\,\text{mH}" />, and a coupling coefficient{' '}
-            <InlineMath tex="k = 0.5" />. Find M.
+            Two coils have <M tex="L_1 = 4\,\text{mH}" />, <M tex="L_2 = 9\,\text{mH}" />, and a
+            coupling coefficient <M tex="k = 0.5" />. Find M.
           </>
         }
         hint="M = k · √(L₁ L₂)."
@@ -282,7 +279,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
               M = <strong className="text-text font-medium">3 mH</strong>
             </Formula>
             <p className="mb-prose-1 last:mb-0">
-              k is the geometric coupling fraction, capped at 1; <InlineMath tex="\sqrt{L_1 L_2}" />{' '}
+              k is the geometric coupling fraction, capped at 1; <M tex="\sqrt{L_1 L_2}" />
               is the upper bound on M set by the self-inductances. Multiply the two and you get the
               actual mutual inductance
               <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />.
@@ -312,17 +309,17 @@ export default function Ch22MagneticallyCoupledCircuits() {
         >
           coupling coefficient
         </Term>{' '}
-        <InlineMath tex="k" /> — defined so that M sits as a fraction of its largest possible value:
+        <M tex="k" /> — defined so that M sits as a fraction of its largest possible value:
       </p>
       <Formula>k = M / √(L₁ L₂)</Formula>
       <p className="mb-prose-3">
-        Here <InlineMath tex="k" /> has no units: it is mutual inductance normalized by the largest
-        value allowed by the two self-inductances, <InlineMath tex="\sqrt{L_1L_2}" />.
+        Here <M tex="k" /> has no units: it is mutual inductance normalized by the largest value
+        allowed by the two self-inductances, <M tex="\sqrt{L_1L_2}" />.
       </p>
       <p className="mb-prose-3">
         Two questions immediately deserve an answer. Why the geometric mean{' '}
-        <InlineMath tex="\sqrt{L_1L_2}" /> in the denominator? And why is{' '}
-        <InlineMath tex="0\leq k\leq 1" /> a hard bound?
+        <M tex="\sqrt{L_1L_2}" /> in the denominator? And why is <M tex="0\leq k\leq 1" /> a hard
+        bound?
       </p>
       <p className="mb-prose-3">
         Both come from energy. The total magnetic energy stored when both coils carry currents (with
@@ -330,17 +327,16 @@ export default function Ch22MagneticallyCoupledCircuits() {
       </p>
       <Formula>W = ½ L₁ I₁² + ½ L₂ I₂² + M I₁ I₂</Formula>
       <p className="mb-prose-3">
-        Here <InlineMath tex="W" /> is stored magnetic energy, the two quadratic terms are the
-        self-field energies, and <InlineMath tex="M I_1 I_2" /> is the shared-field cross term for
-        the aiding sign choice.
+        Here <M tex="W" /> is stored magnetic energy, the two quadratic terms are the self-field
+        energies, and <M tex="M I_1 I_2" /> is the shared-field cross term for the aiding sign
+        choice.
       </p>
       <p className="mb-prose-3">
         That energy must be non-negative for <em className="text-text italic">any</em> choice of I₁
         and I₂, because magnetic energy is the volume integral of B²/2µ₀ and B² ≥ 0 everywhere.
-        Treat the right-hand side as a quadratic form in <InlineMath tex="(I_1,I_2)" /> and demand
-        it stays non-negative: the algebraic condition is exactly{' '}
-        <InlineMath tex="M^{2}\leq L_1L_2" />, i.e., <InlineMath tex="k^{2}\leq 1" />. That bound is
-        Cauchy–Schwarz dressed up in magnetic-field clothes
+        Treat the right-hand side as a quadratic form in <M tex="(I_1,I_2)" /> and demand it stays
+        non-negative: the algebraic condition is exactly <M tex="M^{2}\leq L_1L_2" />, i.e.,{' '}
+        <M tex="k^{2}\leq 1" />. That bound is Cauchy–Schwarz dressed up in magnetic-field clothes
         <Cite id="griffiths-2017" in={SOURCES} />
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
@@ -350,38 +346,36 @@ export default function Ch22MagneticallyCoupledCircuits() {
           def={
             <>
               <strong className="text-text font-medium">perfect coupling</strong> — the{' '}
-              <InlineMath tex="k=1" /> limit, where every relevant line of flux that one coil
-              produces links the other coil. It is an ideal limit, not a guarantee for real
-              hardware.
+              <M tex="k=1" /> limit, where every relevant line of flux that one coil produces links
+              the other coil. It is an ideal limit, not a guarantee for real hardware.
             </>
           }
         >
           perfect-coupling
         </Term>{' '}
-        limit <InlineMath tex="k=1" /> corresponds to <em className="text-text italic">every</em>{' '}
-        relevant flux line from one coil threading the other — geometrically, the two coils
-        occupying the same flux region. Shared-core transformers push toward that limit; air-core
-        links, wireless chargers, and RFID-style near-field links sit lower and compensate with
-        geometry, ferrite shielding, or resonance
+        limit <M tex="k=1" /> corresponds to <em className="text-text italic">every</em> relevant
+        flux line from one coil threading the other — geometrically, the two coils occupying the
+        same flux region. Shared-core transformers push toward that limit; air-core links, wireless
+        chargers, and RFID-style near-field links sit lower and compensate with geometry, ferrite
+        shielding, or resonance
         <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />.
       </p>
 
       <CouplingCoefficientDemo figure="Fig. 22.2" />
 
       <Pullout>
-        Every coil pair lives somewhere on a single one-dimensional axis from{' '}
-        <InlineMath tex="k=0" /> (nothing shared) to <InlineMath tex="k=1" /> (the ideal shared-flux
-        limit). All of transformers, wireless charging, RFID, and current probes is figuring out
-        where on that axis you are — and what to do about it.
+        Every coil pair lives somewhere on a single one-dimensional axis from <M tex="k=0" />{' '}
+        (nothing shared) to <M tex="k=1" /> (the ideal shared-flux limit). All of transformers,
+        wireless charging, RFID, and current probes is figuring out where on that axis you are — and
+        what to do about it.
       </Pullout>
 
       <TryIt
         tag="Try 22.2"
         question={
           <>
-            Two coils have <InlineMath tex="L_1 = 1\,\text{mH}" /> and{' '}
-            <InlineMath tex="L_2 = 4\,\text{mH}" />, wound so that k = 1 (perfectly coupled — a
-            hypothetical ideal). What is M?
+            Two coils have <M tex="L_1 = 1\,\text{mH}" /> and <M tex="L_2 = 4\,\text{mH}" />, wound
+            so that k = 1 (perfectly coupled — a hypothetical ideal). What is M?
           </>
         }
         hint="M = k · √(L₁L₂); set k = 1."
@@ -414,16 +408,16 @@ export default function Ch22MagneticallyCoupledCircuits() {
         changing flux at once: its own current's contribution (the self-inductance term) and the
         partner's contribution (the mutual term). By superposition — Maxwell's equations are linear,
         so flux superposes whenever currents do — the total flux linkage in coil 1 is{' '}
-        <InlineMath tex="L_1 I_1 + M I_2" />, and the total in coil 2 is{' '}
-        <InlineMath tex="L_2 I_2 + M I_1" />. Differentiate and (taking the passive-sign convention
-        where <InlineMath tex="v = +L\, dI/dt" /> across an inductor):
+        <M tex="L_1 I_1 + M I_2" />, and the total in coil 2 is <M tex="L_2 I_2 + M I_1" />.
+        Differentiate and (taking the passive-sign convention where <M tex="v = +L\, dI/dt" />{' '}
+        across an inductor):
       </p>
       <Formula>v₁ = L₁ dI₁/dt ± M dI₂/dt</Formula>
       <Formula>v₂ = L₂ dI₂/dt ± M dI₁/dt</Formula>
       <p className="mb-prose-3">
-        Here <InlineMath tex="v_1" /> and <InlineMath tex="v_2" /> are terminal voltages, the{' '}
-        <InlineMath tex="L\,dI/dt" /> terms are each coil's self-induced voltage, and the{' '}
-        <InlineMath tex="M\,dI/dt" /> terms are the voltages induced by the other coil.
+        Here <M tex="v_1" /> and <M tex="v_2" /> are terminal voltages, the <M tex="L\,dI/dt" />{' '}
+        terms are each coil's self-induced voltage, and the <M tex="M\,dI/dt" /> terms are the
+        voltages induced by the other coil.
       </p>
       <p className="mb-prose-3">
         The ± is doing real work. Each coil sees its own self-term (always positive in this sign
@@ -471,12 +465,12 @@ export default function Ch22MagneticallyCoupledCircuits() {
         <li>
           If the reference currents enter <em className="text-text italic">both</em> coils at their
           dotted terminals, the mutual flux <strong className="text-text font-medium">adds</strong>{' '}
-          to the self-flux: the mutual term is <InlineMath tex="+M\,dI/dt" />.
+          to the self-flux: the mutual term is <M tex="+M\,dI/dt" />.
         </li>
         <li>
           If one reference current enters at its dot and the other enters at its non-dotted
           terminal, the mutual flux <strong className="text-text font-medium">opposes</strong>: the
-          mutual term is <InlineMath tex="-M\,dI/dt" />.
+          mutual term is <M tex="-M\,dI/dt" />.
         </li>
       </ul>
       <p className="mb-prose-3">
@@ -519,9 +513,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
       </h2>
 
       <p className="mb-prose-3">
-        Connect the two coils in series. Now the same current <InlineMath tex="I" /> flows through
-        both — so <InlineMath tex="I_1=I_2=I" />. Stack the two coil equations together and you get
-        the equivalent inductance:
+        Connect the two coils in series. Now the same current <M tex="I" /> flows through both — so{' '}
+        <M tex="I_1=I_2=I" />. Stack the two coil equations together and you get the equivalent
+        inductance:
       </p>
       <Formula>
         L<sub>eq</sub> = L₁ + L₂ + 2M &nbsp;(series aiding)
@@ -530,9 +524,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
         L<sub>eq</sub> = L₁ + L₂ − 2M &nbsp;(series opposing)
       </Formula>
       <p className="mb-prose-3">
-        <InlineMath tex="L_{\text{eq}}" /> is the inductance measured at the outside terminals. The
-        plus sign applies when the two mutual voltages aid the self voltages; the minus sign applies
-        when reversing one winding makes them oppose.
+        <M tex="L_{\text{eq}}" /> is the inductance measured at the outside terminals. The plus sign
+        applies when the two mutual voltages aid the self voltages; the minus sign applies when
+        reversing one winding makes them oppose.
       </p>
       <p className="mb-prose-3">
         Where does the factor of 2 come from? It's the same place the cross-term in (a + b)² comes
@@ -544,8 +538,8 @@ export default function Ch22MagneticallyCoupledCircuits() {
       </Formula>
       <p className="mb-prose-3">
         This is the same energy equation as before, now with one shared series current. The mutual
-        term becomes <InlineMath tex="MI^{2}" /> for the aiding connection and changes sign for the
-        opposing connection.
+        term becomes <M tex="MI^{2}" /> for the aiding connection and changes sign for the opposing
+        connection.
       </p>
       <p className="mb-prose-3">
         Cancel the common I² and the L₁ + L₂ + 2M form just falls out. The "2" comes from coil 1
@@ -566,9 +560,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
         M = ( L<sub>aid</sub> − L<sub>opp</sub> ) / 4
       </Formula>
       <p className="mb-prose-3">
-        <InlineMath tex="L_{\text{aid}}" /> and <InlineMath tex="L_{\text{opp}}" /> are the two LCR
-        meter readings. Their difference is <InlineMath tex="4M" />, so one subtraction and one
-        division isolate the mutual inductance.
+        <M tex="L_{\text{aid}}" /> and <M tex="L_{\text{opp}}" /> are the two LCR meter readings.
+        Their difference is <M tex="4M" />, so one subtraction and one division isolate the mutual
+        inductance.
       </p>
       <p className="mb-prose-3">
         Two measurements, one subtraction, no flux integral. It's the standard bench technique, and
@@ -581,10 +575,10 @@ export default function Ch22MagneticallyCoupledCircuits() {
         tag="Try 22.3"
         question={
           <>
-            Two coils with <InlineMath tex="L_1 = 4\,\text{mH}" />,{' '}
-            <InlineMath tex="L_2 = 9\,\text{mH}" />, <InlineMath tex="M = 3\,\text{mH}" /> are
-            connected in series. Find L<sub>eq</sub> in both the aiding and opposing configurations,
-            then verify that M = (L<sub>aid</sub> − L<sub>opp</sub>) / 4.
+            Two coils with <M tex="L_1 = 4\,\text{mH}" />, <M tex="L_2 = 9\,\text{mH}" />,{' '}
+            <M tex="M = 3\,\text{mH}" /> are connected in series. Find L<sub>eq</sub> in both the
+            aiding and opposing configurations, then verify that M = (L<sub>aid</sub> − L
+            <sub>opp</sub>) / 4.
           </>
         }
         hint="Aiding: L₁ + L₂ + 2M. Opposing: L₁ + L₂ − 2M."
@@ -624,9 +618,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
         V₂ = jωL₂ I₂ + jωM I₁ = − Z<sub>L</sub> I₂
       </Formula>
       <p className="mb-prose-3">
-        Here <InlineMath tex="V_1,V_2" /> and <InlineMath tex="I_1,I_2" /> are phasors,{' '}
-        <InlineMath tex="j=\sqrt{-1}" />, <InlineMath tex="\omega" /> is angular frequency, and{' '}
-        <InlineMath tex="Z_L" /> is the load connected across the secondary.
+        Here <M tex="V_1,V_2" /> and <M tex="I_1,I_2" /> are phasors, <M tex="j=\sqrt{-1}" />,{' '}
+        <M tex="\omega" /> is angular frequency, and <M tex="Z_L" /> is the load connected across
+        the secondary.
       </p>
       <p className="mb-prose-3">
         (The second equation's last form uses the passive-sign convention on the load: V₂ across the
@@ -662,33 +656,32 @@ export default function Ch22MagneticallyCoupledCircuits() {
         Z<sub>in</sub> = V₁ / I₁ = jωL₁ + (ωM)² / ( jωL₂ + Z<sub>L</sub> )
       </Formula>
       <p className="mb-prose-3">
-        <InlineMath tex="Z_{\text{in}}" /> is the impedance seen by the source. The denominator{' '}
-        <InlineMath tex="j\omega L_2+Z_L" /> is often abbreviated as the secondary impedance{' '}
-        <InlineMath tex="Z_2" />, so the reflected part is <InlineMath tex="(\omega M)^2/Z_2" />.
+        <M tex="Z_{\text{in}}" /> is the impedance seen by the source. The denominator{' '}
+        <M tex="j\omega L_2+Z_L" /> is often abbreviated as the secondary impedance <M tex="Z_2" />,
+        so the reflected part is <M tex="(\omega M)^2/Z_2" />.
       </p>
       <p className="mb-prose-3">
-        Two pieces, both physical. The first piece, <InlineMath tex="j\omega L_1" />, is the
-        primary's own self-inductance — what the source would see if the secondary were open-circuit
-        (no I₂ to oppose). The second piece, <InlineMath tex="(\omega M)^{2}/Z_2" />, is what the
-        secondary's load "shows up as" on the primary side. Two things to notice about its form.
-        First, the numerator is (ωM)² — squared, because the coupling acts{' '}
-        <em className="text-text italic">twice</em>: once when I₁'s changing flux induces V₂, and
-        once again when the resulting I₂ induces a back-voltage in coil 1. Each pass picks up a
-        factor of ωM, and the two passes multiply. Second, the denominator is the secondary's{' '}
-        <em className="text-text italic">total</em> impedance jωL₂ + Z<sub>L</sub>, not just Z
-        <sub>L</sub> — because I₂ has to flow through L₂ as well as Z<sub>L</sub> on its way around
-        the secondary loop
+        Two pieces, both physical. The first piece, <M tex="j\omega L_1" />, is the primary's own
+        self-inductance — what the source would see if the secondary were open-circuit (no I₂ to
+        oppose). The second piece, <M tex="(\omega M)^{2}/Z_2" />, is what the secondary's load
+        "shows up as" on the primary side. Two things to notice about its form. First, the numerator
+        is (ωM)² — squared, because the coupling acts <em className="text-text italic">twice</em>:
+        once when I₁'s changing flux induces V₂, and once again when the resulting I₂ induces a
+        back-voltage in coil 1. Each pass picks up a factor of ωM, and the two passes multiply.
+        Second, the denominator is the secondary's <em className="text-text italic">total</em>{' '}
+        impedance jωL₂ + Z<sub>L</sub>, not just Z<sub>L</sub> — because I₂ has to flow through L₂
+        as well as Z<sub>L</sub> on its way around the secondary loop
         <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         The shape of this equation explains a tonne of practical behaviour. Short the secondary (
-        <InlineMath tex="Z_L\to 0" />
-        ): the denominator shrinks toward <InlineMath tex="j\omega L_2" />, the reflected piece
-        grows large, and the primary draws a large current — which is exactly what makes a shorted
-        transformer dangerous. Open the secondary (<InlineMath tex="Z_L\to\infty" />
+        <M tex="Z_L\to 0" />
+        ): the denominator shrinks toward <M tex="j\omega L_2" />, the reflected piece grows large,
+        and the primary draws a large current — which is exactly what makes a shorted transformer
+        dangerous. Open the secondary (<M tex="Z_L\to\infty" />
         ): the denominator blows up, the reflected piece vanishes, and the primary degenerates back
-        to just <InlineMath tex="j\omega L_1" /> — only the small magnetising current flows. The
-        whole range of transformer behaviour lives between these two limits.
+        to just <M tex="j\omega L_1" /> — only the small magnetising current flows. The whole range
+        of transformer behaviour lives between these two limits.
       </p>
 
       <ReflectedImpedanceDemo figure="Fig. 22.5" />
@@ -697,18 +690,17 @@ export default function Ch22MagneticallyCoupledCircuits() {
         tag="Try 22.4"
         question={
           <>
-            A coupled pair runs at <InlineMath tex="\omega = 10^{6}\,\text{rad/s}" /> with{' '}
-            <InlineMath tex="M = 1\,\text{mH}" />. The secondary is closed by a pure resistive load{' '}
-            <InlineMath tex="Z_L = 50\,\Omega" />
-            , and <InlineMath tex="L_2" /> is small enough that{' '}
-            <InlineMath tex="\omega L_2 \ll 50\,\Omega" />. Estimate the reflected impedance seen at
-            the primary.
+            A coupled pair runs at <M tex="\omega = 10^{6}\,\text{rad/s}" /> with{' '}
+            <M tex="M = 1\,\text{mH}" />. The secondary is closed by a pure resistive load{' '}
+            <M tex="Z_L = 50\,\Omega" />
+            , and <M tex="L_2" /> is small enough that <M tex="\omega L_2 \ll 50\,\Omega" />.
+            Estimate the reflected impedance seen at the primary.
           </>
         }
         hint={
           <>
-            <InlineMath tex="Z_{\text{reflected}} \approx (\omega M)^{2} / Z_L" /> when{' '}
-            <InlineMath tex="\omega L_2" /> is negligible.
+            <M tex="Z_{\text{reflected}} \approx (\omega M)^{2} / Z_L" /> when{' '}
+            <M tex="\omega L_2" /> is negligible.
           </>
         }
         answer={
@@ -761,25 +753,24 @@ export default function Ch22MagneticallyCoupledCircuits() {
         Self-inductance L is one coil reacting to its own current. Mutual inductance M is one coil
         reacting to another coil's current — same units, same equation, different role. The fraction
         of one coil's flux that actually links the other is the coupling coefficient{' '}
-        <InlineMath tex="k=M/\sqrt{L_1L_2}" />, bounded between 0 and 1 by energy conservation. The
-        dot convention puts a sign on the mutual term without redrawing the windings. Series aiding
-        gives <InlineMath tex="L_1+L_2+2M" />; opposing gives <InlineMath tex="L_1+L_2-2M" />;
-        subtracting the two and dividing by four is the cleanest way to measure M. From the
-        primary's terminals, a load on the secondary looks like a reflected impedance{' '}
-        <InlineMath tex="(\omega M)^2/Z_2" /> in series with the primary's own{' '}
-        <InlineMath tex="j\omega L_1" />.
+        <M tex="k=M/\sqrt{L_1L_2}" />, bounded between 0 and 1 by energy conservation. The dot
+        convention puts a sign on the mutual term without redrawing the windings. Series aiding
+        gives <M tex="L_1+L_2+2M" />; opposing gives <M tex="L_1+L_2-2M" />; subtracting the two and
+        dividing by four is the cleanest way to measure M. From the primary's terminals, a load on
+        the secondary looks like a reflected impedance <M tex="(\omega M)^2/Z_2" /> in series with
+        the primary's own <M tex="j\omega L_1" />.
       </p>
       <p className="mb-prose-3">
         Three doors open from here. The first is Chapter 23, transformers, where we send k toward 1
         by wrapping both coils on a shared iron or ferrite core — and the awkward{' '}
-        <InlineMath tex="(\omega M)^2/Z_2" /> reflected-impedance form collapses to the clean{' '}
-        <InlineMath tex="(N_1/N_2)^2Z_L" /> "turns-ratio" relation. The second is wireless power:
-        live with k well below 1, but compensate with high-Q resonant tuning on both sides so the
-        effective coupling-times-quality product <InlineMath tex="k^2Q_1Q_2" /> is large and the
-        link still delivers useful power. The third is loose-coupled signal transfer (current
-        probes, RFID, signal isolation transformers) where the magnitude of M is not the figure of
-        merit — its <em className="text-text italic">linearity</em> and bandwidth are. We follow
-        door 1 in the next chapter.
+        <M tex="(\omega M)^2/Z_2" /> reflected-impedance form collapses to the clean{' '}
+        <M tex="(N_1/N_2)^2Z_L" /> "turns-ratio" relation. The second is wireless power: live with k
+        well below 1, but compensate with high-Q resonant tuning on both sides so the effective
+        coupling-times-quality product <M tex="k^2Q_1Q_2" /> is large and the link still delivers
+        useful power. The third is loose-coupled signal transfer (current probes, RFID, signal
+        isolation transformers) where the magnitude of M is not the figure of merit — its{' '}
+        <em className="text-text italic">linearity</em> and bandwidth are. We follow door 1 in the
+        next chapter.
       </p>
 
       <CaseStudies
@@ -869,9 +860,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
             split ferrite ring that normally surrounds it. Wound on the ferrite is a many-turn
             secondary closed by a small burden resistor. By the same flux-linkage argument that gave
             us M earlier in the chapter, the changing current in the single-turn primary induces a
-            voltage in the secondary equal to <InlineMath tex="M\,dI_1/dt" />; the burden resistor
-            converts that to a measurable signal proportional to dI₁/dt, which an integrating
-            amplifier converts back to I₁
+            voltage in the secondary equal to <M tex="M\,dI_1/dt" />; the burden resistor converts
+            that to a measurable signal proportional to dI₁/dt, which an integrating amplifier
+            converts back to I₁
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
@@ -881,8 +872,8 @@ export default function Ch22MagneticallyCoupledCircuits() {
             that's irrelevant for a measurement instrument, where the figure of merit is linearity
             and bandwidth, not power transfer. A clamp meter can read large primary currents while
             keeping the measurement circuitry isolated on the secondary side; this is the canonical
-            example of using the equation <InlineMath tex="v_2=M\,dI_1/dt" /> backwards, as a
-            non-contact sensor rather than a power conduit
+            example of using the equation <M tex="v_2=M\,dI_1/dt" /> backwards, as a non-contact
+            sensor rather than a power conduit
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
           </p>
         </CaseStudy>
@@ -910,9 +901,8 @@ export default function Ch22MagneticallyCoupledCircuits() {
             its tiny logic block, modulate a reply — is powered by the magnetic field the reader
             puts up. The link is a loosely coupled coil pair, which sounds hopeless until you
             realise both coils are tuned to resonance. The effective coupling that matters for power
-            transfer includes the product <InlineMath tex="k^2Q_1Q_2" />, so a very small raw k can
-            still provide enough rectified power for a low-power tag when the coils are close and
-            aligned.
+            transfer includes the product <M tex="k^2Q_1Q_2" />, so a very small raw k can still
+            provide enough rectified power for a low-power tag when the coils are close and aligned.
           </p>
           <p className="mb-prose-2 last:mb-0">
             Note that the link is genuinely near-field: the coils sit far closer than a wavelength,
@@ -1002,11 +992,11 @@ export default function Ch22MagneticallyCoupledCircuits() {
           <p>
             From energy conservation. The total magnetic energy stored when both coils carry
             currents I₁ and I₂ is{' '}
-            <InlineMath tex="W = \tfrac{1}{2}L_1 I_1^{2} + \tfrac{1}{2}L_2 I_2^{2} + M I_1 I_2" />,
-            and this energy can be built up by ramping I₁ from zero to its final value first then
-            ramping I₂, or by ramping I₂ first then I₁. The final stored energy has to be the same
-            either way (energy is a state function), and the cross-term that survives the
-            bookkeeping ties M₁₂ to M₂₁ in one step
+            <M tex="W = \tfrac{1}{2}L_1 I_1^{2} + \tfrac{1}{2}L_2 I_2^{2} + M I_1 I_2" />, and this
+            energy can be built up by ramping I₁ from zero to its final value first then ramping I₂,
+            or by ramping I₂ first then I₁. The final stored energy has to be the same either way
+            (energy is a state function), and the cross-term that survives the bookkeeping ties M₁₂
+            to M₂₁ in one step
             <Cite id="griffiths-2017" in={SOURCES} />
             <Cite id="feynman-II-17" in={SOURCES} />. It's the cleanest proof in two-coil magnetics
             — and it's why no engineer ever distinguishes M₁₂ from M₂₁ in practice.
@@ -1017,30 +1007,28 @@ export default function Ch22MagneticallyCoupledCircuits() {
           <p>
             Because the total magnetic energy stored in the joint field is a non-negative quadratic
             form in (I₁, I₂):{' '}
-            <InlineMath tex="W = \tfrac{1}{2}L_1 I_1^{2} + \tfrac{1}{2}L_2 I_2^{2} + M I_1 I_2 \geq 0" />
+            <M tex="W = \tfrac{1}{2}L_1 I_1^{2} + \tfrac{1}{2}L_2 I_2^{2} + M I_1 I_2 \geq 0" />
             . The condition for that quadratic form to be non-negative for every choice of currents
-            is exactly <InlineMath tex="M^{2} \leq L_1 L_2" />, i.e., <InlineMath tex="k^2\leq 1" />
+            is exactly <M tex="M^{2} \leq L_1 L_2" />, i.e., <M tex="k^2\leq 1" />
             . This is the Cauchy–Schwarz inequality in magnetic-field clothing: M is the geometric
             "inner product" between the two coils' fields, and the geometric mean of their
             self-coupling caps it from above
-            <Cite id="jackson-1999" in={SOURCES} />. <InlineMath tex="k=1" /> corresponds to every
-            flux line shared between the two coils — an idealised limit that no physical pair quite
-            reaches.
+            <Cite id="jackson-1999" in={SOURCES} />. <M tex="k=1" /> corresponds to every flux line
+            shared between the two coils — an idealised limit that no physical pair quite reaches.
           </p>
         </FAQItem>
 
         <FAQItem q="Can M be negative?">
           <p>
-            By convention, no — <InlineMath tex="M" /> is defined as a non-negative number, the
-            unsigned proportionality between flux linkage and current. What{' '}
+            By convention, no — <M tex="M" /> is defined as a non-negative number, the unsigned
+            proportionality between flux linkage and current. What{' '}
             <em className="text-text italic">can</em> be negative is the mutual{' '}
             <em className="text-text italic">term</em> in a circuit equation: depending on dot
             convention (which way each coil is wound relative to the other), the mutual contribution
-            to a coil's voltage can be either <InlineMath tex="+M\, dI/dt" /> or{' '}
-            <InlineMath tex="-M\, dI/dt" />. The "sign" lives in the wiring geometry, not in{' '}
-            <InlineMath tex="M" /> itself. Old engineering texts occasionally write a signed{' '}
-            <InlineMath tex="M" /> when they want to shortcut the dot, but the modern convention
-            keeps <InlineMath tex="M" /> positive and lets the dot do the signing
+            to a coil's voltage can be either <M tex="+M\, dI/dt" /> or <M tex="-M\, dI/dt" />. The
+            "sign" lives in the wiring geometry, not in <M tex="M" /> itself. Old engineering texts
+            occasionally write a signed <M tex="M" /> when they want to shortcut the dot, but the
+            modern convention keeps <M tex="M" /> positive and lets the dot do the signing
             <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1051,8 +1039,8 @@ export default function Ch22MagneticallyCoupledCircuits() {
             <em className="text-text italic">doesn't</em> couple to the other coil. From outside,
             leakage looks like a small inductance in series with each port of an ideal-transformer
             model; in common high-coupling equivalents the uncoupled part is represented by a
-            leakage factor such as <InlineMath tex="1-k^2" />, not by a universal{' '}
-            <InlineMath tex="1-k" /> slice of each winding
+            leakage factor such as <M tex="1-k^2" />, not by a universal <M tex="1-k" /> slice of
+            each winding
             <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />. In a transformer it causes
             secondary voltage droop under load (a few percent in a well-built distribution unit) and
             limits the rate at which fault current can flow during a short — which is sometimes
@@ -1068,9 +1056,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
             By using a very large turns ratio. The current-carrying wire under test is the primary —
             usually a single pass through a toroidal ferrite core — and the secondary is many
             hundreds or thousands of turns wound on the same core. By the current-ratio relation{' '}
-            <InlineMath tex="I_2/I_1 \approx N_1/N_2" />, a 1000 A primary current at N₁ = 1 turn
-            produces only 1 A on a secondary with N₂ = 1000 turns. That 1 A flowing through a small
-            burden resistor (a few ohms) is what the meter reads
+            <M tex="I_2/I_1 \approx N_1/N_2" />, a 1000 A primary current at N₁ = 1 turn produces
+            only 1 A on a secondary with N₂ = 1000 turns. That 1 A flowing through a small burden
+            resistor (a few ohms) is what the meter reads
             <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />. Crucially, the secondary must{' '}
             <em className="text-text italic">never</em> be left open-circuit while primary current
             flows — with no I₂ to oppose the primary's flux, the core saturates and the secondary
@@ -1096,8 +1084,8 @@ export default function Ch22MagneticallyCoupledCircuits() {
         <FAQItem q="What is the difference between &ldquo;coupled inductors&rdquo; and a &ldquo;transformer&rdquo;?">
           <p>
             Mostly nomenclature, and partly the design intent. A transformer is the large-L,{' '}
-            <InlineMath tex="k" /> close to 1 limit of coupled inductors: built to maximise mutual
-            coupling, with both coils wound on a shared high-permeability core, and designed so the
+            <M tex="k" /> close to 1 limit of coupled inductors: built to maximise mutual coupling,
+            with both coils wound on a shared high-permeability core, and designed so the
             turns-ratio picture of Chapter 23 dominates the remaining leakage terms
             <Cite id="horowitz-hill-2015" in={SOURCES} />. "Coupled inductors" is the catch-all term
             for the same physical object when k is intentionally lower and the self-inductance terms
@@ -1117,9 +1105,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
             coil's winding region before ever reaching the second's, so a small fraction of
             self-flux fails to link — and that's already enough to push k below 1
             <Cite id="griffiths-2017" in={SOURCES} />. In the idealized textbook toroid with both
-            coils sharing the same perfectly confined core flux, <InlineMath tex="k=1" /> is a
-            useful limiting model. Real hardware approaches that limit by reducing stray and leakage
-            flux, but never earns the ideal as an exact geometric fact.
+            coils sharing the same perfectly confined core flux, <M tex="k=1" /> is a useful
+            limiting model. Real hardware approaches that limit by reducing stray and leakage flux,
+            but never earns the ideal as an exact geometric fact.
           </p>
         </FAQItem>
 
@@ -1146,10 +1134,10 @@ export default function Ch22MagneticallyCoupledCircuits() {
             inductance will dominate, and there will be no soft-iron path to concentrate the flux
             into the secondary. The volt-second capacity per turn at line frequency will be small,
             so air-core transformers don't work for power conversion at 50/60 Hz. Move to RF
-            frequencies where <InlineMath tex="\omega L" /> is large even for small{' '}
-            <InlineMath tex="L" />, or accept the inefficiency and add resonant compensation (as in
-            a Tesla coil or a Qi pad), and air-core coupled coils become genuinely useful. For 60 Hz
-            power transformers, the iron core is non-optional.
+            frequencies where <M tex="\omega L" /> is large even for small <M tex="L" />, or accept
+            the inefficiency and add resonant compensation (as in a Tesla coil or a Qi pad), and
+            air-core coupled coils become genuinely useful. For 60 Hz power transformers, the iron
+            core is non-optional.
           </p>
         </FAQItem>
 
@@ -1171,12 +1159,11 @@ export default function Ch22MagneticallyCoupledCircuits() {
           <p>
             Because the reflected impedance into the primary goes to (very nearly) zero. From the
             chapter's reflected-impedance result{' '}
-            <InlineMath tex="Z_{\text{in}} = j\omega L_1 + (\omega M)^{2}/(j\omega L_2 + Z_L)" />
-            , setting <InlineMath tex="Z_L \to 0" /> leaves{' '}
-            <InlineMath tex="Z_{\text{in}}=j\omega L_1+(\omega M)^2/(j\omega L_2)" />, which
-            simplifies in the high-k limit to{' '}
-            <InlineMath tex="j\omega L_1(1-k^2)=j\omega L_{\text{leak},1}" /> — only the small
-            leakage inductance on the primary side limits the current
+            <M tex="Z_{\text{in}} = j\omega L_1 + (\omega M)^{2}/(j\omega L_2 + Z_L)" />
+            , setting <M tex="Z_L \to 0" /> leaves{' '}
+            <M tex="Z_{\text{in}}=j\omega L_1+(\omega M)^2/(j\omega L_2)" />, which simplifies in
+            the high-k limit to <M tex="j\omega L_1(1-k^2)=j\omega L_{\text{leak},1}" /> — only the
+            small leakage inductance on the primary side limits the current
             <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />. The primary draws huge current,
             the windings heat by I²R, and (if nothing trips) the insulation eventually fails
             <Cite id="horowitz-hill-2015" in={SOURCES} />. This is why every utility transformer has
@@ -1191,11 +1178,11 @@ export default function Ch22MagneticallyCoupledCircuits() {
             "primary". For everything <em className="text-text italic">else</em> about a real
             transformer, no — the two coils may have very different self-inductances, very different
             turn counts, very different copper cross-sections, and very different voltage and
-            current ratings. <InlineMath tex="M" /> describes only the cross-coupling between the
-            two, not the asymmetries in their construction
+            current ratings. <M tex="M" /> describes only the cross-coupling between the two, not
+            the asymmetries in their construction
             <Cite id="griffiths-2017" in={SOURCES} />. In a simple step-down transformer,{' '}
-            <InlineMath tex="L_1" /> and <InlineMath tex="L_2" /> differ by the square of the turns
-            ratio; <InlineMath tex="M" /> sits between them.
+            <M tex="L_1" /> and <M tex="L_2" /> differ by the square of the turns ratio;{' '}
+            <M tex="M" /> sits between them.
           </p>
         </FAQItem>
 
@@ -1203,9 +1190,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
           <p>
             Even with no secondary load, the primary has to push{' '}
             <em className="text-text italic">some</em> current to establish the alternating flux in
-            the core. By Faraday's law, the applied primary voltage equals{' '}
-            <InlineMath tex="N_1\,d\Phi/dt" />, so the flux has to swing — and a real core has
-            finite permeability, so a small current is required to set up that flux
+            the core. By Faraday's law, the applied primary voltage equals <M tex="N_1\,d\Phi/dt" />
+            , so the flux has to swing — and a real core has finite permeability, so a small current
+            is required to set up that flux
             <Cite id="feynman-II-17" in={SOURCES} />. That current is the{' '}
             <Term
               def={
@@ -1220,8 +1207,8 @@ export default function Ch22MagneticallyCoupledCircuits() {
             </Term>
             . In a well-built power transformer it is much smaller than the rated load current and
             mostly reactive, so it dissipates little real power — most of the no-load loss comes
-            from core hysteresis and eddy currents, not from <InlineMath tex="I^2R" /> in the
-            magnetising current itself
+            from core hysteresis and eddy currents, not from <M tex="I^2R" /> in the magnetising
+            current itself
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
           </p>
         </FAQItem>

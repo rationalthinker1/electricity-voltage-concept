@@ -12,12 +12,12 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { withAlpha } from '@/lib/canvasTheme';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -72,8 +72,28 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       ctx.fillStyle = colors.blue;
       ctx.fillRect(splitX - 34, h * 0.18, 26, h * 0.64);
       ctx.restore();
-      drawLabel(ctx, { text: 'N', x: 21, y: h / 2, color: colors.pink, weight: 'bold', size: 12, font: '12px "JetBrains Mono"', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'S', x: splitX - 21, y: h / 2, color: colors.blue, weight: 'bold', size: 12, font: '12px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'N',
+        x: 21,
+        y: h / 2,
+        color: colors.pink,
+        weight: 'bold',
+        size: 12,
+        font: '12px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'S',
+        x: splitX - 21,
+        y: h / 2,
+        color: colors.blue,
+        weight: 'bold',
+        size: 12,
+        font: '12px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
       // Field arrows
       ctx.save();
       ctx.globalAlpha = 0.25;
@@ -117,7 +137,13 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(coilCx, coilCy + coilH / 2 + 28, 6, 0, Math.PI * 2);
       ctx.stroke();
-      drawLabel(ctx, { text: `B = ${B_T} T  ·  N = ${N_TURNS}  ·  A = ${(A_M2 * 1e4).toFixed(0)} cm²`, x: 8, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `B = ${B_T} T  ·  N = ${N_TURNS}  ·  A = ${(A_M2 * 1e4).toFixed(0)} cm²`,
+        x: 8,
+        y: 8,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.restore();
 
       // Divider
@@ -187,8 +213,22 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
         ctx.stroke();
       }
       ctx.restore();
-      drawLabel(ctx, { text: 'EMF(t)', x: scopeX, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `peak = ${peak.toFixed(1)} V`, x: scopeX + scopeW, y: 12, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'EMF(t)',
+        x: scopeX,
+        y: 12,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `peak = ${peak.toFixed(1)} V`,
+        x: scopeX + scopeW,
+        y: 12,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       ctx.restore();
     },
     [],
@@ -228,10 +268,10 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Faraday for a rotating coil"
-        left={<InlineMath tex={`\\varepsilon_{\\text{pk}} = N B A \\omega`} />}
+        left={<M tex={`\\varepsilon_{\\text{pk}} = N B A \\omega`} />}
         rightLabel="with current values"
         right={
-          <InlineMath
+          <M
             tex={
               `\\varepsilon_{\\text{pk}} = (${N_TURNS})(${B_T})(${A_M2})(${omega.toFixed(0)})` +
               ` \\approx ${computed.peak.toFixed(2)}\\ \\text{V}`

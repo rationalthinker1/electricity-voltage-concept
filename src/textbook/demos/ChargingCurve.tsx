@@ -11,13 +11,20 @@
 import { useEffect, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { fmtResistance, fmtTime } from '@/lib/formatters';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -159,19 +166,66 @@ export function ChargingCurveDemo({ figure }: Props) {
 
       // Labels
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: `V₀ = ${V0} V`, x: pX + pW - 4, y: y0line - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: `V₀ = ${V0} V`,
+        x: pX + pW - 4,
+        y: y0line - 2,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'bottom',
+      });
       ctx.fillStyle = colors.teal;
-      drawLabel(ctx, { text: '63% V₀  (after 1τ)', x: pX + pW - 4, y: y63 - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: '63% V₀  (after 1τ)',
+        x: pX + pW - 4,
+        y: y63 - 2,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'bottom',
+      });
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: '99% V₀  (after 5τ)', x: pX + pW - 4, y: y99 - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: '99% V₀  (after 5τ)',
+        x: pX + pW - 4,
+        y: y99 - 2,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'bottom',
+      });
 
       ctx.fillStyle = colors.teal;
-      drawLabel(ctx, { text: `τ = RC`, x: Math.min(xTau + 4, pX + pW - 60), y: pY + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `τ = RC`,
+        x: Math.min(xTau + 4, pX + pW - 60),
+        y: pY + 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
 
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'V_C(t)', x: pX, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `V_C = ${c.Vc.toFixed(2)} V`, x: pX + pW, y: 8, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: `window: ${fmtTime(PLOT_DURATION)} (6τ)`, x: pX + pW / 2, y: H - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: 'V_C(t)',
+        x: pX,
+        y: 8,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `V_C = ${c.Vc.toFixed(2)} V`,
+        x: pX + pW,
+        y: 8,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `window: ${fmtTime(PLOT_DURATION)} (6τ)`,
+        x: pX + pW / 2,
+        y: H - 6,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
     },
     [resetTick],
     () => ({
@@ -233,7 +287,7 @@ export function ChargingCurveDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Capacitor voltage vs. time"
         left={
-          <InlineMath
+          <M
             tex={
               `V_{C}(t) \\;=\\; V_{0}\\!\\left(1 - e^{-t/\\tau}\\right) ` +
               `\\quad\\text{with } V_{0} = 12\\ \\text{V}`
@@ -242,7 +296,7 @@ export function ChargingCurveDemo({ figure }: Props) {
         }
         rightLabel="Current setting"
         right={
-          <InlineMath
+          <M
             tex={
               `\\tau \\;=\\; RC \\;=\\; ` +
               `(${(R / 1000).toFixed(2)}\\ \\text{k}\\Omega)(${Cuf}\\ \\mu\\text{F}) ` +

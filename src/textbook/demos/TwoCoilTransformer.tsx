@@ -13,12 +13,12 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -170,13 +170,60 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       ctx.lineTo(secX + 22, loadY + 14);
       ctx.lineTo(loadX - 14, loadY + 14);
       ctx.stroke();
-      drawLabel(ctx, { text: `N_p = ${Np}`, x: primX, y: coreBot + 6, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `V_p = ${Vp.toFixed(0)} V`, x: srcX, y: srcY + 26, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `N_p = ${Np}`,
+        x: primX,
+        y: coreBot + 6,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `V_p = ${Vp.toFixed(0)} V`,
+        x: srcX,
+        y: srcY + 26,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.fillStyle = colors.teal;
-      drawLabel(ctx, { text: `N_s = ${Ns}`, x: secX, y: coreBot + 6, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `V_s = ${Vs.toFixed(1)} V`, x: loadX, y: loadY + 26, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `R = ${Rload.toFixed(0)} Ω`, x: loadX, y: loadY + 40, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: 'iron core · shared Φ(t)', x: (coreLeft + coreRight) / 2, y: coreTop - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `N_s = ${Ns}`,
+        x: secX,
+        y: coreBot + 6,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `V_s = ${Vs.toFixed(1)} V`,
+        x: loadX,
+        y: loadY + 26,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `R = ${Rload.toFixed(0)} Ω`,
+        x: loadX,
+        y: loadY + 40,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'iron core · shared Φ(t)',
+        x: (coreLeft + coreRight) / 2,
+        y: coreTop - 14,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       const isInt = Math.min(1, Math.abs(Is) / 8);
       const isCol = withAlpha(colors.accent, 0.3 + 0.7 * isInt);
       ctx.strokeStyle = isCol;
@@ -262,9 +309,13 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Ideal transformer"
-        left={<InlineMath tex="V_s/V_p = N_s/N_p,\quad I_p/I_s = N_s/N_p" />}
+        left={<M tex="V_s/V_p = N_s/N_p,\quad I_p/I_s = N_s/N_p" />}
         rightLabel="At this operating point"
-        right={<InlineMath tex={`V_s = ${computed.Vs.toFixed(1)}\\,\\text{V};\\quad I_p = ${computed.Ip.toFixed(3)}\\,\\text{A}`} />}
+        right={
+          <M
+            tex={`V_s = ${computed.Vs.toFixed(1)}\\,\\text{V};\\quad I_p = ${computed.Ip.toFixed(3)}\\,\\text{A}`}
+          />
+        }
       />
     </Demo>
   );

@@ -12,7 +12,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -59,7 +59,16 @@ export function LiIonIntercalationDemo({ figure }: Props) {
       );
       // LiCoO₂ rendered as a custom warm-brown (intentional off-palette mineral colour)
       // against a dark theme-aware backing.
-      drawLayers(ctx, cathodeX, topY, anodeW, colH, withAlpha(colors.text, 0.16), 'rgba(184,115,51,0.8)', 'LiCoO₂');
+      drawLayers(
+        ctx,
+        cathodeX,
+        topY,
+        anodeW,
+        colH,
+        withAlpha(colors.text, 0.16),
+        'rgba(184,115,51,0.8)',
+        'LiCoO₂',
+      );
       ctx.save();
       ctx.globalAlpha = 0.06;
       ctx.fillStyle = colors.accent;
@@ -107,11 +116,38 @@ export function LiIonIntercalationDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
-      drawLabel(ctx, { text: 'anode (graphite)', x: anodeX + anodeW / 2, y: topY - 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: 'cathode (LiCoO₂)', x: cathodeX + anodeW / 2, y: topY - 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: 'anode (graphite)',
+        x: anodeX + anodeW / 2,
+        y: topY - 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: 'cathode (LiCoO₂)',
+        x: cathodeX + anodeW / 2,
+        y: topY - 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
       ctx.textBaseline = 'top';
-      drawLabel(ctx, { text: 'electrolyte', x: electrolyteX + electrolyteW / 2, y: botY + 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `SOC = ${(s.soc * 100).toFixed(0)} %`, x: 10, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'electrolyte',
+        x: electrolyteX + electrolyteW / 2,
+        y: botY + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `SOC = ${(s.soc * 100).toFixed(0)} %`,
+        x: 10,
+        y: 10,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx0.phase = phase;
     },
     [],
@@ -150,9 +186,9 @@ export function LiIonIntercalationDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Open-circuit voltage (NMC approx.)"
-        left={<InlineMath tex="V_{\text{cell}} \approx 3.0 + 0.9 \cdot \text{SOC}" />}
+        left={<M tex="V_{\text{cell}} \approx 3.0 + 0.9 \cdot \text{SOC}" />}
         rightLabel={`At SOC = ${(soc * 100).toFixed(0)} %`}
-        right={<InlineMath tex={`3.0 + 0.9 \\times ${soc.toFixed(2)} = ${V.toFixed(2)}\\,\\text{V}`} />}
+        right={<M tex={`3.0 + 0.9 \\times ${soc.toFixed(2)} = ${V.toFixed(2)}\\,\\text{V}`} />}
       />
     </Demo>
   );

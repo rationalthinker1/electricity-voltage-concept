@@ -12,11 +12,11 @@ import { useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -58,9 +58,29 @@ export function ImpedanceDemo({ figure }: Props) {
       ctx.lineTo(cx, h - 20);
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'Re (Ω)', x: w - 50, y: cy - 10, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: '+jX (Ω)', x: cx + 38, y: 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: '−jX (Ω)', x: cx + 38, y: h - 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: 'Re (Ω)',
+        x: w - 50,
+        y: cy - 10,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '+jX (Ω)',
+        x: cx + 38,
+        y: 22,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: '−jX (Ω)',
+        x: cx + 38,
+        y: h - 22,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
       const p0x = cx,
         p0y = cy;
       const p1x = cx + R * scale,
@@ -83,8 +103,24 @@ export function ImpedanceDemo({ figure }: Props) {
       drawVector(ctx, p0x, p0y, p3x, p3y, withAlpha(colors.accent, 0.95), '', 2.2);
       const midX = (p0x + p3x) / 2 + 8;
       const midY = (p0y + p3y) / 2;
-      drawLabel(ctx, { text: `|Z| = ${Zmag.toFixed(2)} Ω`, x: midX, y: midY, color: colors.accent, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: `φ = ${((phi * 180) / Math.PI).toFixed(1)}°`, x: midX, y: midY + 14, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `|Z| = ${Zmag.toFixed(2)} Ω`,
+        x: midX,
+        y: midY,
+        color: colors.accent,
+        weight: 'bold',
+        size: 11,
+        font: 'bold 11px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: `φ = ${((phi * 180) / Math.PI).toFixed(1)}°`,
+        x: midX,
+        y: midY + 14,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
@@ -94,12 +130,26 @@ export function ImpedanceDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.75;
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `Z = R + j(ωL − 1/ωC)`, x: 10, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: phi > 0.01
-                  ? 'inductive (V leads I)'
-                  : phi < -0.01
-                    ? 'capacitive (I leads V)'
-                    : 'resistive (V, I in phase)', x: w - 10, y: 8, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `Z = R + j(ωL − 1/ωC)`,
+        x: 10,
+        y: 8,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text:
+          phi > 0.01
+            ? 'inductive (V leads I)'
+            : phi < -0.01
+              ? 'capacitive (I leads V)'
+              : 'resistive (V, I in phase)',
+        x: w - 10,
+        y: 8,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       ctx.restore();
     },
     [],
@@ -167,13 +217,13 @@ export function ImpedanceDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Series RLC impedance"
         left={
-          <InlineMath
+          <M
             tex={`Z = R + j(\\omega L - 1/\\omega C) = ${R} + j(${XL.toFixed(1)} - ${XC.toFixed(1)})\\,\\Omega`}
           />
         }
         rightLabel="Magnitude and phase"
         right={
-          <InlineMath
+          <M
             tex={`|Z| = ${Zmag.toFixed(2)}\\,\\Omega,\\quad \\varphi = ${((phi * 180) / Math.PI).toFixed(1)}^{\\circ}`}
           />
         }
@@ -210,6 +260,13 @@ function drawVector(
   ctx.closePath();
   ctx.fill();
   if (label) {
-    drawLabel(ctx, { text: label, x: x1 + 4, y: y1 - 4, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'bottom' });
+    drawLabel(ctx, {
+      text: label,
+      x: x1 + 4,
+      y: y1 - 4,
+      size: 9,
+      font: '9px "JetBrains Mono", monospace',
+      baseline: 'bottom',
+    });
   }
 }

@@ -12,10 +12,10 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -122,11 +122,34 @@ export function BrewsterAngleDemo({ figure }: Props) {
       ctx.lineTo(bx, y1);
       ctx.stroke();
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: `θ_B = ${brDeg.toFixed(2)}°`, x: bx, y: y1 - 4, color: colors.accent, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: `θ_B = ${brDeg.toFixed(2)}°`,
+        x: bx,
+        y: y1 - 4,
+        color: colors.accent,
+        weight: 'bold',
+        size: 11,
+        font: 'bold 11px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
-      drawLabel(ctx, { text: 'R_s · ⊥ to plane', x: x1 - 130, y: y1 + 14, color: colors.pink, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'R_p · ∥ to plane', x: x1 - 130, y: y1 + 28, color: colors.teal, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: 'R_s · ⊥ to plane',
+        x: x1 - 130,
+        y: y1 + 14,
+        color: colors.pink,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: 'R_p · ∥ to plane',
+        x: x1 - 130,
+        y: y1 + 28,
+        color: colors.teal,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
     },
     [],
   );
@@ -145,8 +168,8 @@ export function BrewsterAngleDemo({ figure }: Props) {
           use this to kill horizontal glare from wet roads.
         </>
       }
-    
-      deeperLab={{ slug: 'snell-fresnel', label: 'See full lab' }}>
+      deeperLab={{ slug: 'snell-fresnel', label: 'See full lab' }}
+    >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
@@ -162,9 +185,13 @@ export function BrewsterAngleDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Brewster's angle"
-        left={<InlineMath tex={`\\theta_B = \\arctan\\!\\left(\\frac{n_2}{n_1}\\right)`} />}
+        left={<M tex={`\\theta_B = \\arctan\\!\\left(\\frac{n_2}{n_1}\\right)`} />}
         rightLabel="At this operating point"
-        right={<InlineMath tex={`\\arctan\\!\\left(\\frac{${n2.toFixed(2)}}{${n1.toFixed(1)}}\\right) = ${brewsterDeg.toFixed(2)}°`} />}
+        right={
+          <M
+            tex={`\\arctan\\!\\left(\\frac{${n2.toFixed(2)}}{${n1.toFixed(1)}}\\right) = ${brewsterDeg.toFixed(2)}°`}
+          />
+        }
       />
     </Demo>
   );

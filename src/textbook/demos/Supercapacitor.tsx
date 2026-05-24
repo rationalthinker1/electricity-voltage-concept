@@ -11,13 +11,20 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -96,9 +103,29 @@ export function SupercapacitorDemo({ figure }: Props) {
         ctx.stroke();
       }
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'V(t)', x: pX, y: 6, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `V_max = ${s.V_max.toFixed(2)} V`, x: pX + pW - 4, y: yvm - 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: `V = ${s.V.toFixed(2)} V`, x: pX + pW, y: pY + pH + 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'V(t)',
+        x: pX,
+        y: 6,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `V_max = ${s.V_max.toFixed(2)} V`,
+        x: pX + pW - 4,
+        y: yvm - 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `V = ${s.V.toFixed(2)} V`,
+        x: pX + pW,
+        y: pY + pH + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -165,9 +192,13 @@ export function SupercapacitorDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Supercapacitor charge/discharge"
-        left={<InlineMath tex="\frac{dV}{dt} = \pm\frac{I}{C},\quad U = \tfrac{1}{2}CV^2" />}
+        left={<M tex="\frac{dV}{dt} = \pm\frac{I}{C},\quad U = \tfrac{1}{2}CV^2" />}
         rightLabel="At current state"
-        right={<InlineMath tex={`\\frac{dV}{dt} = \\frac{${I.toFixed(0)}}{${C.toFixed(0)}} = ${(I / C).toFixed(4)}\\,\\text{V/s};\\quad U = ${U.toFixed(0)}\\,\\text{J}`} />}
+        right={
+          <M
+            tex={`\\frac{dV}{dt} = \\frac{${I.toFixed(0)}}{${C.toFixed(0)}} = ${(I / C).toFixed(4)}\\,\\text{V/s};\\quad U = ${U.toFixed(0)}\\,\\text{J}`}
+          />
+        }
       />
     </Demo>
   );

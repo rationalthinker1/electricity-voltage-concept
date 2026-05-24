@@ -9,11 +9,11 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -68,7 +68,15 @@ export function NernstEquationDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.75;
-      drawLabel(ctx, { text: 'V° = 1.10 V', x: pX + pW - 4, y: ystd - 2, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: 'V° = 1.10 V',
+        x: pX + pW - 4,
+        y: ystd - 2,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'bottom',
+      });
       const slope = (R_GAS * T) / (N_ELECTRONS * F_FARADAY);
       ctx.restore();
       ctx.strokeStyle = colors.teal;
@@ -98,9 +106,28 @@ export function NernstEquationDemo({ figure }: Props) {
       ctx.stroke();
       ctx.restore();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'V (cell potential)', x: pX, y: 6, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'ln Q', x: pX + pW, y: pY + pH + 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: `T = ${T.toFixed(0)} K`, x: pX, y: pY + pH + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'V (cell potential)',
+        x: pX,
+        y: 6,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'ln Q',
+        x: pX + pW,
+        y: pY + pH + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `T = ${T.toFixed(0)} K`,
+        x: pX,
+        y: pY + pH + 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -155,9 +182,13 @@ export function NernstEquationDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Nernst equation (Cu/Zn)"
-        left={<InlineMath tex="V = V^\circ - \frac{RT}{nF}\ln Q" />}
+        left={<M tex="V = V^\circ - \frac{RT}{nF}\ln Q" />}
         rightLabel={`At T = ${T.toFixed(0)} K, Q = ${Q.toFixed(3)}`}
-        right={<InlineMath tex={`${V_STD.toFixed(2)} - ${((R_GAS * T) / (N_ELECTRONS * F_FARADAY)).toFixed(4)}\\ln(${Q.toFixed(2)}) = ${V.toFixed(3)}\\,\\text{V}`} />}
+        right={
+          <M
+            tex={`${V_STD.toFixed(2)} - ${((R_GAS * T) / (N_ELECTRONS * F_FARADAY)).toFixed(4)}\\ln(${Q.toFixed(2)}) = ${V.toFixed(3)}\\,\\text{V}`}
+          />
+        }
       />
     </Demo>
   );

@@ -16,14 +16,14 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { fmtResistance, fmtResistivity } from '@/lib/formatters';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -239,12 +239,51 @@ export function BuildAResistorDemo({ figure }: Props) {
         });
       }
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: f.label.toUpperCase(), x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `ρ = ${fmtResistivity(f.rho)} Ω·m`, x: 12, y: 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `L = ${Lmm.toFixed(0)} mm`, x: 12, y: 38, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `A = ${Amm2.toFixed(3)} mm²`, x: 12, y: 52, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `R = ${fmtResistance(R)}`, x: W - 12, y: 10, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: `±${(f.tol * 100).toFixed(f.tol < 0.01 ? 2 : 0)}%   ${fmtResistance(Rmin)} … ${fmtResistance(Rmax)}`, x: W - 12, y: 24, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: f.label.toUpperCase(),
+        x: 12,
+        y: 10,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `ρ = ${fmtResistivity(f.rho)} Ω·m`,
+        x: 12,
+        y: 24,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `L = ${Lmm.toFixed(0)} mm`,
+        x: 12,
+        y: 38,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `A = ${Amm2.toFixed(3)} mm²`,
+        x: 12,
+        y: 52,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `R = ${fmtResistance(R)}`,
+        x: W - 12,
+        y: 10,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `±${(f.tol * 100).toFixed(f.tol < 0.01 ? 2 : 0)}%   ${fmtResistance(Rmin)} … ${fmtResistance(Rmax)}`,
+        x: W - 12,
+        y: 24,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       void phase;
       ctx0.phase = phase;
     },
@@ -275,7 +314,7 @@ export function BuildAResistorDemo({ figure }: Props) {
           <button
             key={k}
             type="button"
-            className={`mini-toggle${k === familyKey ? ' on' : ''}`}
+            className={`mini-toggle${k === familyKey ? 'on' : ''}`}
             onClick={() => setFamilyKey(k)}
             aria-pressed={k === familyKey}
           >
@@ -308,9 +347,13 @@ export function BuildAResistorDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Resistance formula"
-        left={<InlineMath tex={`R = \\frac{\\rho L}{A}`} />}
+        left={<M tex={`R = \\frac{\\rho L}{A}`} />}
         rightLabel="With current settings"
-        right={<InlineMath tex={`\\frac{${fmtResistivity(fam.rho)} \\times ${Lmm.toFixed(0)}\\,\\text{mm}}{${Amm2.toFixed(3)}\\,\\text{mm}^2} = ${fmtResistance(R)}`} />}
+        right={
+          <M
+            tex={`\\frac{${fmtResistivity(fam.rho)} \\times ${Lmm.toFixed(0)}\\,\\text{mm}}{${Amm2.toFixed(3)}\\,\\text{mm}^2} = ${fmtResistance(R)}`}
+          />
+        }
       />
     </Demo>
   );

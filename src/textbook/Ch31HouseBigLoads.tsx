@@ -21,7 +21,7 @@
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Term } from '@/components/Term';
@@ -67,12 +67,11 @@ export default function Ch31HouseBigLoads() {
       </p>
       <Formula size="lg" id="power-vi" />
       <p className="mb-prose-3">
-        where <InlineMath tex="P" /> is the real power delivered to a
-        resistive load (in watts), <InlineMath tex="V" /> is the RMS
-        supply voltage at the appliance terminals (in volts), and{' '}
-        <InlineMath tex="I" /> is the RMS current through the load (in
-        amperes). The same power can be moved at any voltage you like as long as the current scales
-        inversely. Rearranged for the current required to deliver a given power:
+        where <M tex="P" /> is the real power delivered to a resistive load (in watts),{' '}
+        <M tex="V" /> is the RMS supply voltage at the appliance terminals (in volts), and{' '}
+        <M tex="I" /> is the RMS current through the load (in amperes). The same power can be moved
+        at any voltage you like as long as the current scales inversely. Rearranged for the current
+        required to deliver a given power:
       </p>
       <Formula tex="I = \\dfrac{P}{V}" />
       <p className="mb-prose-3">
@@ -89,12 +88,11 @@ export default function Ch31HouseBigLoads() {
       </p>
       <Formula tex="P_{\\text{loss}} = I^2 \\times R_{\\text{wire}}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="P_{\text{loss}}" /> is the resistive heat
-        dissipated along the round-trip length of the branch wire (in watts),{' '}
-        <InlineMath tex="I" /> is the current through the wire (in
-        amperes), and <InlineMath tex="R_{\text{wire}}" /> is the total
-        round-trip resistance of the conductor (in ohms; for residential copper at warm operating
-        temperature, on the order of a few tens of milliohms over a typical 25 m run
+        where <M tex="P_{\text{loss}}" /> is the resistive heat dissipated along the round-trip
+        length of the branch wire (in watts), <M tex="I" /> is the current through the wire (in
+        amperes), and <M tex="R_{\text{wire}}" /> is the total round-trip resistance of the
+        conductor (in ohms; for residential copper at warm operating temperature, on the order of a
+        few tens of milliohms over a typical 25 m run
         <Cite id="codata-2018" in={SOURCES} />
         ). Substitute I = P/V into the loss expression and the loss scales as the square of the load
         power divided by the square of the supply voltage:
@@ -125,8 +123,8 @@ export default function Ch31HouseBigLoads() {
         }
         hint={
           <>
-            Use <InlineMath tex="I = P/V" /> for each supply voltage, then{' '}
-            <InlineMath tex="P_{\\text{loss}} = I^2 R" /> for the same wire.
+            Use <M tex="I = P/V" /> for each supply voltage, then{' '}
+            <M tex="P_{\\text{loss}} = I^2 R" /> for the same wire.
           </>
         }
         answer={
@@ -162,7 +160,7 @@ export default function Ch31HouseBigLoads() {
       </p>
       <Formula tex="V_{LL}(t) = V_{L1}(t) - V_{L2}(t) = V_{\\text{peak}} \\cos(\\omega t) - V_{\\text{peak}} \\cos(\\omega t + \\pi) = 2\\, V_{\\text{peak}} \\cos(\\omega t)" />
       <p className="mb-prose-3">
-        where <InlineMath tex="V_{LL}(t)" /> is the instantaneous{' '}
+        where <M tex="V_{LL}(t)" /> is the instantaneous{' '}
         <Term
           def={
             <>
@@ -176,32 +174,29 @@ export default function Ch31HouseBigLoads() {
         >
           line-to-line voltage
         </Term>{' '}
-        between L1 and L2 (in volts), <InlineMath tex="V_{L1}(t)" /> and{' '}
-        <InlineMath tex="V_{L2}(t)" /> are the instantaneous voltages of
-        bus L1 and bus L2 with respect to the centre-tap neutral (in volts),{' '}
-        <InlineMath tex="V_{\text{peak}}" /> is the peak amplitude of each
-        leg's sinusoid (in volts; for a nominal 120 V RMS service,{' '}
-        <InlineMath tex="V_{\\text{peak}} \\approx 170\\ \\text{V}" />
-        ), and{' '}
-        <InlineMath tex="\\omega = 2\\pi \\cdot 60\\ \\text{rad/s} \\approx 377\\ \\text{rad/s}" />{' '}
+        between L1 and L2 (in volts), <M tex="V_{L1}(t)" /> and <M tex="V_{L2}(t)" /> are the
+        instantaneous voltages of bus L1 and bus L2 with respect to the centre-tap neutral (in
+        volts), <M tex="V_{\text{peak}}" /> is the peak amplitude of each leg's sinusoid (in volts;
+        for a nominal 120 V RMS service, <M tex="V_{\\text{peak}} \\approx 170\\ \\text{V}" />
+        ), and <M tex="\\omega = 2\\pi \\cdot 60\\ \\text{rad/s} \\approx 377\\ \\text{rad/s}" />
         is the angular frequency of the North-American grid
         <Cite id="codata-2018" in={SOURCES} />. The algebra is just the cosine-difference identity:{' '}
-        <InlineMath tex="\\cos(\\omega t + \\pi) = -\\cos(\\omega t)" />, so the difference adds
-        rather than cancels and the envelope is{' '}
-        <InlineMath tex="2\\, V_{\\text{peak}} \\approx 340\\ \\text{V peak}" />, or 240 V RMS.
+        <M tex="\\cos(\\omega t + \\pi) = -\\cos(\\omega t)" />, so the difference adds rather than
+        cancels and the envelope is <M tex="2\\, V_{\\text{peak}} \\approx 340\\ \\text{V peak}" />,
+        or 240 V RMS.
       </p>
       <p className="mb-prose-3">
         Compare to a North-American three-phase commercial 208Y/120 V service, where L1, L2, and L3
         are 120° apart on the unit circle rather than 180°. The line-to-line voltage there is the
         magnitude of the vector difference of two unit-magnitude phasors separated by 120°, which is{' '}
-        <InlineMath tex="\sqrt{3} \approx 1.732" /> times the line-to-neutral
-        voltage — about 208 V across each pair of hots, not the 240 V of a residential service
+        <M tex="\sqrt{3} \approx 1.732" /> times the line-to-neutral voltage — about 208 V across
+        each pair of hots, not the 240 V of a residential service
         <Cite id="grainger-power-systems-2003" in={SOURCES} />. A 240 V appliance plugged into a 208
-        V commercial service runs about 25% under-powered (because power scales as
-        <InlineMath tex="V^2/R" /> for a resistive load), which is why three-phase commercial
-        buildings often have a separate single-phase 240 V transformer in the electrical room for
-        appliances designed against the residential spec. The geometry of the supply matters; the
-        appliance is built for one of two topologies
+        V commercial service runs about 25% under-powered (because power scales as <M tex="V^2/R" />{' '}
+        for a resistive load), which is why three-phase commercial buildings often have a separate
+        single-phase 240 V transformer in the electrical room for appliances designed against the
+        residential spec. The geometry of the supply matters; the appliance is built for one of two
+        topologies
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -441,7 +436,7 @@ export default function Ch31HouseBigLoads() {
       </p>
       <Formula tex="\\text{FLA} = \\dfrac{P_{\\text{rated}}}{V_{\\text{supply}}}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\text{FLA}" /> is the{' '}
+        where <M tex="\text{FLA}" /> is the{' '}
         <Term
           def={
             <>
@@ -454,13 +449,12 @@ export default function Ch31HouseBigLoads() {
         >
           full-load amperage
         </Term>{' '}
-        of the motor (in amperes), <InlineMath tex="P_{\text{rated}}" /> is the
-        electrical input power at the rated operating point (in watts), and{' '}
-        <InlineMath tex="V_{\text{supply}}" /> is the supply voltage (in volts;
-        240 V for a residential heat pump on a split-phase service). FLA is the steady-state current
-        the compressor draws once it is up to speed and pumping refrigerant at its design
-        conditions. For a 5 kW input at 240 V,
-        <InlineMath tex="\\text{FLA} \\approx 5{,}000/240 \\approx 21\\ \\text{A}" />
+        of the motor (in amperes), <M tex="P_{\text{rated}}" /> is the electrical input power at the
+        rated operating point (in watts), and <M tex="V_{\text{supply}}" /> is the supply voltage
+        (in volts; 240 V for a residential heat pump on a split-phase service). FLA is the
+        steady-state current the compressor draws once it is up to speed and pumping refrigerant at
+        its design conditions. For a 5 kW input at 240 V,{' '}
+        <M tex="\\text{FLA} \\approx 5{,}000/240 \\approx 21\\ \\text{A}" />
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -472,7 +466,7 @@ export default function Ch31HouseBigLoads() {
       </p>
       <Formula tex="\\text{LRA} = (5\\ \\text{to}\\ 7) \\times \\text{FLA}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\text{LRA}" /> is the{' '}
+        where <M tex="\text{LRA}" /> is the{' '}
         <Term
           def={
             <>
@@ -486,9 +480,9 @@ export default function Ch31HouseBigLoads() {
           locked-rotor amperage
         </Term>{' '}
         of the motor (in amperes; the current the motor draws at the instant of energising, when its
-        rotor is not yet spinning), <InlineMath tex="\text{FLA}" /> is the
-        full-load amperage as defined above, and the multiplier depends on the motor's NEMA code
-        letter (typically code-G through code-K for residential compressors)
+        rotor is not yet spinning), <M tex="\text{FLA}" /> is the full-load amperage as defined
+        above, and the multiplier depends on the motor's NEMA code letter (typically code-G through
+        code-K for residential compressors)
         <Cite id="grainger-power-systems-2003" in={SOURCES} />. For the 5 kW heat pump above, LRA is
         typically 100 to 150 A — five to seven times the running 21 A — for half a second to two
         seconds.
@@ -545,8 +539,8 @@ export default function Ch31HouseBigLoads() {
         }
         hint={
           <>
-            Compute FLA from <InlineMath tex="P_{\\text{rated}}/V_{\\text{supply}}" />, then apply
-            NEC Article 440's 175–225 % multiplier for an HACR breaker.
+            Compute FLA from <M tex="P_{\\text{rated}}/V_{\\text{supply}}" />, then apply NEC
+            Article 440's 175–225 % multiplier for an HACR breaker.
           </>
         }
         answer={
@@ -699,15 +693,14 @@ export default function Ch31HouseBigLoads() {
       </p>
       <Formula tex="P_{\\text{charge}} = V \\times I \\times \\eta" />
       <p className="mb-prose-3">
-        where <InlineMath tex="P_{\text{charge}}" /> is the DC power delivered
-        to the battery pack (in watts), <InlineMath tex="V" /> is the
-        AC supply voltage at the EVSE terminals (in volts; 240 V on level 2),{' '}
-        <InlineMath tex="I" /> is the RMS AC current the EVSE delivers
-        (in amperes; up to 48 A continuous on a residential 60 A branch), and{' '}
-        <InlineMath tex="\eta" /> is the efficiency of the car's onboard
-        AC-to-DC charger (typically <strong className="text-text font-medium">~0.90 to 0.92</strong>{' '}
-        for a residential AC/DC charger; the difference is lost as heat in the charger's MOSFETs,
-        transformer, and rectifier diodes)
+        where <M tex="P_{\text{charge}}" /> is the DC power delivered to the battery pack (in
+        watts), <M tex="V" /> is the AC supply voltage at the EVSE terminals (in volts; 240 V on
+        level 2), <M tex="I" /> is the RMS AC current the EVSE delivers (in amperes; up to 48 A
+        continuous on a residential 60 A branch), and <M tex="\eta" /> is the efficiency of the
+        car's onboard AC-to-DC charger (typically{' '}
+        <strong className="text-text font-medium">~0.90 to 0.92</strong> for a residential AC/DC
+        charger; the difference is lost as heat in the charger's MOSFETs, transformer, and rectifier
+        diodes)
         <Cite id="sae-j1772" in={SOURCES} />. For a 240 V × 48 A × 0.92 install, P_charge ≈{' '}
         <strong className="text-text font-medium">10.6 kW</strong> ending up in the battery —
         roughly 0.9 kW lost as heat in the charger over a multi-hour session, dissipated through the
@@ -797,9 +790,8 @@ export default function Ch31HouseBigLoads() {
         }
         hint={
           <>
-            Compute supply current from <InlineMath tex="P_{\\text{AC}} = V \\times I" />; then DC
-            power into the battery is{' '}
-            <InlineMath tex="P_{\\text{charge}} = V \\times I \\times \\eta" />.
+            Compute supply current from <M tex="P_{\\text{AC}} = V \\times I" />; then DC power into
+            the battery is <M tex="P_{\\text{charge}} = V \\times I \\times \\eta" />.
           </>
         }
         answer={
@@ -1494,9 +1486,9 @@ export default function Ch31HouseBigLoads() {
             120° apart on the unit circle and the phasor difference is √3 × 120 ≈ 208 V
             <Cite id="grainger-power-systems-2003" in={SOURCES} />. A 240 V appliance plugged into a
             208 V commercial service runs about 25 % under-powered (power scales as{' '}
-            <InlineMath tex="V^2/R" /> for a resistive load), which is why three-phase commercial
-            buildings often have a separate single-phase 240 V transformer in the electrical room
-            for appliances designed against the residential spec.
+            <M tex="V^2/R" /> for a resistive load), which is why three-phase commercial buildings
+            often have a separate single-phase 240 V transformer in the electrical room for
+            appliances designed against the residential spec.
           </p>
         </FAQItem>
 
@@ -1519,7 +1511,7 @@ export default function Ch31HouseBigLoads() {
           <p>
             Because every ampere is a count of elementary charges per second crossing a
             cross-section: a 20 A current is{' '}
-            <InlineMath tex="20 \\times (1/1.602176634\\times 10^{-19}) \\approx 1.25\\times 10^{20}" />{' '}
+            <M tex="20 \\times (1/1.602176634\\times 10^{-19}) \\approx 1.25\\times 10^{20}" />
             electrons per second through the conductor
             <Cite id="codata-2018" in={SOURCES} />. Every voltage is, equivalently, joules of work
             per coulomb of charge moved. The 240 V on a NEMA 14-30 receptacle, the 32 A on a level-2

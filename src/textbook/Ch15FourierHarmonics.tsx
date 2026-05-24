@@ -19,7 +19,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -105,11 +105,9 @@ export default function Ch15FourierHarmonics() {
       <h2 className="chapter-h2">The series formula</h2>
 
       <p className="mb-prose-3">
-        Let <InlineMath tex="f(t)" /> be periodic with period{' '}
-        <InlineMath tex="T" />, so f(t + T) = f(t) for all t. Define
-        the fundamental angular frequency as{' '}
-        <InlineMath tex="\omega_0 = 2\pi/T" />. Fourier's theorem says that f
-        decomposes as
+        Let <M tex="f(t)" /> be periodic with period <M tex="T" />, so f(t + T) = f(t) for all t.
+        Define the fundamental angular frequency as <M tex="\omega_0 = 2\pi/T" />. Fourier's theorem
+        says that f decomposes as
         <Cite id="oppenheim-willsky-1997" in={SOURCES} />:
       </p>
       <Formula tex="f(t) = \dfrac{a_0}{2} + \sum_{n=1}^{\infty} \left[ a_n \cos(n\omega_0 t) + b_n \sin(n\omega_0 t) \right]" />
@@ -129,23 +127,22 @@ export default function Ch15FourierHarmonics() {
         is not a choice — it is forced by the periodicity.
       </p>
       <p className="mb-prose-3">
-        The{' '}
-        <InlineMath tex="a_0/2" />{' '}
+        The <M tex="a_0/2" />
         term out front is just the DC offset — the constant cosine (cos(0) = 1) that the sum needs
         in case f has a nonzero mean. The factor of 1/2 isn't a mistake; it falls out of the same
         projection formula the other coefficients use, applied to the n = 0 case. Writing it that
         way keeps all of the a<sub>n</sub> formulas below uniform.
       </p>
       <p className="mb-prose-3">
-        The integer <InlineMath tex="n" /> indexes the{' '}
+        The integer <M tex="n" /> indexes the{' '}
         <Term def="A sinusoidal component of a periodic signal at an integer multiple of the fundamental frequency. The n-th harmonic is at nf₀.">
           harmonic
         </Term>{' '}
-        of the
+        of the{' '}
         <Term def="The lowest frequency in the Fourier series of a periodic signal, f₀ = 1/T. All other components sit at integer multiples of f₀.">
           fundamental frequency
         </Term>
-        . The
+        . The{' '}
         <Term def="The amplitude a_n or b_n of one term in a Fourier series, given by an integral that projects the function onto cos(nω₀t) or sin(nω₀t).">
           Fourier coefficients
         </Term>{' '}
@@ -156,40 +153,37 @@ export default function Ch15FourierHarmonics() {
       <p className="mb-prose-3">
         These integrals look intimidating until you recognise them as{' '}
         <em className="text-text italic">dot products</em>. In ordinary 3D, the x-component of a
-        vector <InlineMath tex="v" /> is{' '}
-        <InlineMath tex="v \cdot \hat{x}" /> — the dot product with the unit vector along x.
-        The integral
-        <InlineMath tex="\int f(t) \cos(n\omega_0 t)\, dt" /> is the same construction, just applied
-        in an infinite-dimensional space whose &ldquo;axes&rdquo; are the basis functions{' '}
-        <InlineMath tex="\cos(n\omega_0 t)" /> and <InlineMath tex="\sin(n\omega_0 t)" /> rather
-        than the three Cartesian directions. The integral is the
+        vector <M tex="v" /> is <M tex="v \cdot \hat{x}" /> — the dot product with the unit vector
+        along x. The integral <M tex="\int f(t) \cos(n\omega_0 t)\, dt" /> is the same construction,
+        just applied in an infinite-dimensional space whose &ldquo;axes&rdquo; are the basis
+        functions <M tex="\cos(n\omega_0 t)" /> and <M tex="\sin(n\omega_0 t)" /> rather than the
+        three Cartesian directions. The integral is the{' '}
         <Term def="The infinite-dimensional generalisation of the dot product: ⟨f, g⟩ = ∫f(t)g(t) dt. Two functions are 'orthogonal' if this integral is zero, the same way two vectors are perpendicular when their dot product is zero.">
           inner product
         </Term>
-        ; it measures &ldquo;how much of <InlineMath tex="\cos(n\omega_0 t)" /> is in f.&rdquo;
+        ; it measures &ldquo;how much of <M tex="\cos(n\omega_0 t)" /> is in f.&rdquo;
       </p>
       <p className="mb-prose-3">
-        Where does the <InlineMath tex="2/T" /> out front come from?
-        It is just normalisation by the length of the basis vector. In 3D, x̂ is a unit vector, so{' '}
-        <InlineMath tex="\vec{v} \cdot \hat{x}" /> gives the x-component directly. The Fourier basis
-        functions are
+        Where does the <M tex="2/T" /> out front come from? It is just normalisation by the length
+        of the basis vector. In 3D, x̂ is a unit vector, so <M tex="\vec{v} \cdot \hat{x}" /> gives
+        the x-component directly. The Fourier basis functions are{' '}
         <em className="text-text italic">not</em> unit length:{' '}
-        <InlineMath tex="\int_0^T \cos^2(n\omega_0 t)\, dt = T/2" />, because cos² averages to 1/2
-        over a full period and the interval has length T. To turn a raw inner product into a
-        coefficient you divide by the squared length T/2 — which is exactly the factor 2/T. The
-        &ldquo;2&rdquo; is geometric, not magical. The reason the DC term uses a<sub>0</sub>/2 (with
-        the &frac12;) is that the constant basis function <em className="text-text italic">1</em>{' '}
-        has squared length T, not T/2 — so its normaliser is 1/T, and to write it with the same 2/T
-        formula as the other a<sub>n</sub> you carry an extra factor of 1/2 on the term itself.
+        <M tex="\int_0^T \cos^2(n\omega_0 t)\, dt = T/2" />, because cos² averages to 1/2 over a
+        full period and the interval has length T. To turn a raw inner product into a coefficient
+        you divide by the squared length T/2 — which is exactly the factor 2/T. The &ldquo;2&rdquo;
+        is geometric, not magical. The reason the DC term uses a<sub>0</sub>/2 (with the &frac12;)
+        is that the constant basis function <em className="text-text italic">1</em> has squared
+        length T, not T/2 — so its normaliser is 1/T, and to write it with the same 2/T formula as
+        the other a<sub>n</sub> you carry an extra factor of 1/2 on the term itself.
       </p>
       <p className="mb-prose-3">
         The geometry behind these formulas is the same geometry that lets you decompose a 3D vector
         into its x, y, and z components. The sines and cosines{' '}
         {`{1, cos(ω₀t), sin(ω₀t), cos(2ω₀t), sin(2ω₀t), ...}`} form an orthonormal basis on the
-        interval <InlineMath tex="[0, T]" />: any two distinct basis functions, multiplied together
-        and integrated over one period, give zero. So multiplying f(t) by the n-th basis function
-        and integrating picks out exactly that function's projection onto f. The coefficient is the
-        inner product
+        interval <M tex="[0, T]" />: any two distinct basis functions, multiplied together and
+        integrated over one period, give zero. So multiplying f(t) by the n-th basis function and
+        integrating picks out exactly that function's projection onto f. The coefficient is the
+        inner product{' '}
         <em className="text-text italic">
           {' '}
           ⟨f, basis<sub>n</sub>⟩
@@ -198,8 +192,7 @@ export default function Ch15FourierHarmonics() {
         <Cite id="bracewell-2000" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        The{' '}
-        <InlineMath tex="a_0/2" />{' '}
+        The <M tex="a_0/2" />
         term is the DC component — the mean value of f over one period. A function with zero average
         has a<sub>0</sub> = 0. If f is{' '}
         <Term def="A function with f(−t) = f(t). Its Fourier series contains only cosine (and DC) terms; all b_n vanish.">
@@ -218,16 +211,16 @@ export default function Ch15FourierHarmonics() {
       <Formula tex="\int_0^T \sin(m\omega_0 t) \cos(n\omega_0 t)\, dt = 0 \quad \text{(for all } m, n\text{)}" />
       <p className="mb-prose-3">
         Why is this zero? The product-to-sum identity rewrites the integrand as{' '}
-        <InlineMath tex="\tfrac{1}{2}[\sin((m+n)\omega_0 t) + \sin((m-n)\omega_0 t)]" /> — two pure
-        sines at integer multiples of ω<sub>0</sub>. Every such sine completes an integer number of
-        cycles in [0, T], and an integer number of cycles of a sine averages to zero. Equivalently:
-        think of <InlineMath tex="\sin(\omega_0 t)" /> and <InlineMath tex="\cos(\omega_0 t)" /> as
-        the y- and x-components of a unit phasor rotating on a circle. Sin and cos point at right
-        angles in the complex plane; their inner product is zero by the same geometry that says{' '}
-        <InlineMath tex="\hat{x} \cdot \hat{y} = 0" />. The analogous identities{' '}
-        <InlineMath tex="\int \sin(m\omega_0 t) \sin(n\omega_0 t)\, dt" /> and
-        <InlineMath tex="\int \cos(m\omega_0 t) \cos(n\omega_0 t)\, dt" /> also vanish whenever m ≠
-        n, by the same trick.
+        <M tex="\tfrac{1}{2}[\sin((m+n)\omega_0 t) + \sin((m-n)\omega_0 t)]" /> — two pure sines at
+        integer multiples of ω<sub>0</sub>. Every such sine completes an integer number of cycles in
+        [0, T], and an integer number of cycles of a sine averages to zero. Equivalently: think of{' '}
+        <M tex="\sin(\omega_0 t)" /> and <M tex="\cos(\omega_0 t)" /> as the y- and x-components of
+        a unit phasor rotating on a circle. Sin and cos point at right angles in the complex plane;
+        their inner product is zero by the same geometry that says{' '}
+        <M tex="\hat{x} \cdot \hat{y} = 0" />. The analogous identities{' '}
+        <M tex="\int \sin(m\omega_0 t) \sin(n\omega_0 t)\, dt" /> and{' '}
+        <M tex="\int \cos(m\omega_0 t) \cos(n\omega_0 t)\, dt" /> also vanish whenever m ≠ n, by the
+        same trick.
       </p>
       <Pullout>
         The Fourier series isn't a clever trick. It is just the dot product, run on functions
@@ -239,7 +232,7 @@ export default function Ch15FourierHarmonics() {
         question={
           <>
             A square wave of peak amplitude V₀ has Fourier series{' '}
-            <InlineMath tex="V(t) = (4 V_0/\pi)[\sin(\omega_0 t) + \sin(3\omega_0 t)/3 + \sin(5\omega_0 t)/5 + \cdots]" />
+            <M tex="V(t) = (4 V_0/\pi)[\sin(\omega_0 t) + \sin(3\omega_0 t)/3 + \sin(5\omega_0 t)/5 + \cdots]" />
             . What is the peak amplitude of the{' '}
             <strong className="text-text font-medium">5th harmonic</strong>?
           </>
@@ -249,8 +242,8 @@ export default function Ch15FourierHarmonics() {
           <>
             <p className="mb-prose-1 last:mb-0">
               The 5th-harmonic term in the series is{' '}
-              <InlineMath tex="(4 V_0/\pi) \cdot \sin(5\omega_0 t)/5" />. The coefficient of{' '}
-              <InlineMath tex="\sin(5\omega_0 t)" />
+              <M tex="(4 V_0/\pi) \cdot \sin(5\omega_0 t)/5" />. The coefficient of{' '}
+              <M tex="\sin(5\omega_0 t)" />
               is therefore:
             </p>
             <Formula tex="V_{5,\text{peak}} = \dfrac{4 V_0}{\pi \cdot 5} = \dfrac{4 V_0}{5\pi} \approx 0.255\, V_0" />
@@ -284,10 +277,10 @@ export default function Ch15FourierHarmonics() {
       <p className="mb-prose-3">
         Second, <em className="text-text italic">why amplitudes that fall as 1/n?</em> Each b
         <sub>n</sub> is the projection integral{' '}
-        <InlineMath tex="(2/T) \int \text{sq}(t) \sin(n\omega_0 t)\, dt" />. Because the square is
-        constant ±V<sub>0</sub>, the integral reduces to counting the net area under{' '}
-        <InlineMath tex="\sin(n\omega_0 t)" /> over a half-period — which works out to{' '}
-        <InlineMath tex="4V_0/(n\pi)" />. The factor of n in the denominator appears because a
+        <M tex="(2/T) \int \text{sq}(t) \sin(n\omega_0 t)\, dt" />. Because the square is constant
+        ±V<sub>0</sub>, the integral reduces to counting the net area under{' '}
+        <M tex="\sin(n\omega_0 t)" /> over a half-period — which works out to{' '}
+        <M tex="4V_0/(n\pi)" />. The factor of n in the denominator appears because a
         higher-frequency sine spends more time near zero and less near its peaks per half-period of
         the square; its average over the half-period scales inversely with how many extra wiggles it
         squeezes into the same span. The slow 1/n roll-off is also why a square is a stress test for
@@ -310,7 +303,7 @@ export default function Ch15FourierHarmonics() {
         3rd harmonic is added and the top of the wave starts to flatten. By N = 11 you can already
         see square corners taking shape, and by N = 25 the ripple between corners is small. But the
         corners themselves never get sharp, and there is always a small spike that overshoots the
-        target by about 9% just before each transition. That spike is the
+        target by about 9% just before each transition. That spike is the{' '}
         <Term def="The persistent ~8.95% overshoot at jump discontinuities of a truncated Fourier series, named after J. Willard Gibbs (1899). The overshoot does not vanish as N → ∞; it merely narrows in time.">
           Gibbs phenomenon
         </Term>
@@ -326,8 +319,8 @@ export default function Ch15FourierHarmonics() {
         <sub>0</sub> and nothing higher) and a band-limited function literally cannot follow an
         infinitely fast jump. So near the discontinuity the partial sum must overshoot — and it
         does, by a fixed fraction of the jump height that turns out to be{' '}
-        <InlineMath tex="(1/\pi) \cdot \int_0^\pi \text{sinc}(x)\, dx - 1/2 \approx 0.0895" />,
-        exactly 8.95% of the step. As N grows, the wave gets closer to the target everywhere{' '}
+        <M tex="(1/\pi) \cdot \int_0^\pi \text{sinc}(x)\, dx - 1/2 \approx 0.0895" />, exactly 8.95%
+        of the step. As N grows, the wave gets closer to the target everywhere{' '}
         <em className="text-text italic">except</em> in a thin band right at the jump, whose width
         shrinks like 1/N. The overshoot height stays at 9% forever; you can never sum your way out
         of it. This is more than a curiosity — the same effect appears as ringing artefacts in MRI
@@ -358,8 +351,8 @@ export default function Ch15FourierHarmonics() {
         question={
           <>
             A square wave of peak V₀ and period T is, in the time domain, equal to ±V₀ everywhere.
-            So its RMS value is <InlineMath tex="V_{RMS} = V_0" />. Verify this from the Fourier
-            coefficients using Parseval's theorem.
+            So its RMS value is <M tex="V_{RMS} = V_0" />. Verify this from the Fourier coefficients
+            using Parseval's theorem.
           </>
         }
         hint="Parseval: V_RMS² = (a₀/2)² + (1/2) Σ (a_n² + b_n²). Square wave is odd, no DC; b_n = 4V₀/(nπ) for odd n."
@@ -367,12 +360,12 @@ export default function Ch15FourierHarmonics() {
           <>
             <p className="mb-prose-1 last:mb-0">
               For a square wave, a<sub>0</sub> = 0 and a<sub>n</sub> = 0 for all n. The b
-              <sub>n</sub> are <InlineMath tex="4V_0/(n\pi)" /> for odd n, zero for even n. So:
+              <sub>n</sub> are <M tex="4V_0/(n\pi)" /> for odd n, zero for even n. So:
             </p>
             <Formula tex="V_{RMS}^2 = \dfrac{1}{2} \cdot \sum_{n\text{ odd}} \left[\dfrac{4 V_0}{n\pi}\right]^2 = \dfrac{8 V_0^2}{\pi^2} \cdot \sum_{n\text{ odd}} \dfrac{1}{n^2}" />
             <p className="mb-prose-1 last:mb-0">
-              The sum <InlineMath tex="1 + 1/9 + 1/25 + 1/49 + \cdots" /> over odd squares equals{' '}
-              <InlineMath tex="\pi^2/8" /> (a classical Euler result). Substituting:
+              The sum <M tex="1 + 1/9 + 1/25 + 1/49 + \cdots" /> over odd squares equals{' '}
+              <M tex="\pi^2/8" /> (a classical Euler result). Substituting:
             </p>
             <Formula tex="V_{RMS}^2 = \dfrac{8 V_0^2}{\pi^2} \cdot \dfrac{\pi^2}{8} = V_0^2 \quad \Rightarrow \quad V_{RMS} = V_0" />
             <p className="mb-prose-1 last:mb-0">
@@ -407,11 +400,11 @@ export default function Ch15FourierHarmonics() {
       <Formula tex="V_{RMS}^2 = \left(\dfrac{a_0}{2}\right)^2 + \dfrac{1}{2} \sum_{n=1}^{\infty} \left[a_n^2 + b_n^2\right]" />
       <p className="mb-prose-3">
         This is Pythagoras in infinite dimensions. In 3D, the squared length of a vector is the sum
-        of squared components: <InlineMath tex="\|\vec{v}\|^2 = x^2 + y^2 + z^2" />. Parseval says
-        exactly the same thing for functions — the squared &ldquo;length&rdquo; of f (defined as the
+        of squared components: <M tex="\|\vec{v}\|^2 = x^2 + y^2 + z^2" />. Parseval says exactly
+        the same thing for functions — the squared &ldquo;length&rdquo; of f (defined as the
         time-average of f²) is the sum of squared lengths of its components along each independent
         basis direction. The cross-terms{' '}
-        <InlineMath tex="a_m a_n \cdot 2\cos(m\omega_0 t)\cos(n\omega_0 t)" />
+        <M tex="a_m a_n \cdot 2\cos(m\omega_0 t)\cos(n\omega_0 t)" />
         that would otherwise show up in ⟨f, f⟩ all integrate to zero, because the basis is
         orthogonal. The factor of 1/2 in front of each squared coefficient is the same one we kept
         tripping over earlier: a sine of peak amplitude A has mean-square A²/2, because cos²
@@ -443,9 +436,9 @@ export default function Ch15FourierHarmonics() {
       </p>
       <p className="mb-prose-3">
         The practical implication: a non-sinusoidal voltage delivers more RMS — and therefore more{' '}
-        <InlineMath tex="I^{2}R" /> heating — into a resistive load than
-        its fundamental alone would suggest. A 1 V<sub>peak</sub> square wave has V<sub>RMS</sub> =
-        1 V, not 0.707 V. The extra 41% comes from the harmonic ladder above the fundamental.
+        <M tex="I^{2}R" /> heating — into a resistive load than its fundamental alone would suggest.
+        A 1 V<sub>peak</sub> square wave has V<sub>RMS</sub> = 1 V, not 0.707 V. The extra 41% comes
+        from the harmonic ladder above the fundamental.
       </p>
 
       <RMSOfComplexWaveDemo figure="Fig. 15.3" />
@@ -456,7 +449,7 @@ export default function Ch15FourierHarmonics() {
           form factor
         </Term>{' '}
         V<sub>RMS</sub>/V<sub>avg</sub> compares the RMS to the average of |V|; for a pure sine it
-        equals π/(2√2) ≈ 1.111. The
+        equals π/(2√2) ≈ 1.111. The{' '}
         <Term def="V_peak divided by V_RMS. For a pure sine, crest factor = √2 ≈ 1.414. Sharp pulses have crest factors of 3–10 or more.">
           crest factor
         </Term>{' '}
@@ -473,37 +466,34 @@ export default function Ch15FourierHarmonics() {
 
       <p className="mb-prose-3">
         Chapter 12 introduced impedance and chapter 16 introduces the transfer function{' '}
-        <InlineMath tex="H(j\omega)" />: the complex ratio of output phasor to input phasor at a
-        single frequency ω, encoding both the gain <InlineMath tex="|H(j\omega)|" /> and the phase
-        shift <InlineMath tex="\angle H(j\omega)" /> the filter applies. Fourier shifts that
-        single-frequency story into a sum-of-frequencies story. A signal with harmonics at ω
-        <sub>0</sub>, 2ω<sub>0</sub>, 3ω<sub>0</sub>, ... passes through a linear filter one
-        harmonic at a time, because the filter is by definition linear: each harmonic is
-        independently scaled by <InlineMath tex="|H(jn\omega_0)|" /> and phase-shifted by{' '}
-        <InlineMath tex="\angle H(jn\omega_0)" />
+        <M tex="H(j\omega)" />: the complex ratio of output phasor to input phasor at a single
+        frequency ω, encoding both the gain <M tex="|H(j\omega)|" /> and the phase shift{' '}
+        <M tex="\angle H(j\omega)" /> the filter applies. Fourier shifts that single-frequency story
+        into a sum-of-frequencies story. A signal with harmonics at ω<sub>0</sub>, 2ω<sub>0</sub>,
+        3ω<sub>0</sub>, ... passes through a linear filter one harmonic at a time, because the
+        filter is by definition linear: each harmonic is independently scaled by{' '}
+        <M tex="|H(jn\omega_0)|" /> and phase-shifted by <M tex="\angle H(jn\omega_0)" />
         <Cite id="oppenheim-willsky-1997" in={SOURCES} />:
       </p>
       <Formula tex="\text{if } f_{in}(t) = \sum V_n \sin(n\omega_0 t + \phi_n),\ \text{then } f_{out}(t) = \sum |H(jn\omega_0)|\, V_n \sin\!\left(n\omega_0 t + \phi_n + \angle H(jn\omega_0)\right)" />
       <p className="mb-prose-3">
         This formula is the entire reason filters are designable. The harmonics are orthogonal, so
         the filter can be analysed one frequency at a time: harmonic n enters at amplitude V
-        <sub>n</sub>, gets multiplied by the complex number
-        <InlineMath tex="H(jn\omega_0)" /> — which scales its amplitude by{' '}
-        <InlineMath tex="|H(jn\omega_0)|" /> and rotates its phase by{' '}
-        <InlineMath tex="\angle H(jn\omega_0)" /> — and exits independently of every other harmonic.
-        The filter does not couple harmonic 3 to harmonic 5; they don't talk to each other on the
-        way through. That uncoupling is exactly the same orthogonality that made the projection
+        <sub>n</sub>, gets multiplied by the complex number <M tex="H(jn\omega_0)" /> — which scales
+        its amplitude by <M tex="|H(jn\omega_0)|" /> and rotates its phase by{' '}
+        <M tex="\angle H(jn\omega_0)" /> — and exits independently of every other harmonic. The
+        filter does not couple harmonic 3 to harmonic 5; they don't talk to each other on the way
+        through. That uncoupling is exactly the same orthogonality that made the projection
         integrals work in the first place.
       </p>
       <p className="mb-prose-3">
         If filters didn't have this property, designing one would require solving a system of
         equations that coupled all frequencies at once — intractable. Instead, you draw a single
-        curve <InlineMath tex="|H(j\omega)|" /> versus ω (the
+        curve <M tex="|H(j\omega)|" /> versus ω (the{' '}
         <Term def="The magnitude of the transfer function as a function of frequency: |H(jω)| versus ω. A filter's design specification.">
           magnitude response
         </Term>
-        ) and another
-        <InlineMath tex="\angle H(j\omega)" /> versus ω (the{' '}
+        ) and another <M tex="\angle H(j\omega)" /> versus ω (the{' '}
         <Term def="The angle of the transfer function as a function of frequency: ∠H(jω) versus ω. Determines the time delay each harmonic experiences.">
           phase response
         </Term>
@@ -513,8 +503,8 @@ export default function Ch15FourierHarmonics() {
       </p>
       <p className="mb-prose-3">
         Run a square wave through an RC low-pass with corner frequency f<sub>c</sub>. The
-        fundamental at f<sub>0</sub> sees gain <InlineMath tex="1/\sqrt{1+(f_0/f_c)^2}" /> and phase{' '}
-        <InlineMath tex="-\arctan(f_0/f_c)" />. The 3rd harmonic at 3f<sub>0</sub>
+        fundamental at f<sub>0</sub> sees gain <M tex="1/\sqrt{1+(f_0/f_c)^2}" /> and phase{' '}
+        <M tex="-\arctan(f_0/f_c)" />. The 3rd harmonic at 3f<sub>0</sub>
         sees a smaller gain and bigger phase shift. The 5th, 7th, 9th, ... get knocked down
         progressively harder. Reconstruct the output and the square's corners round off into a
         slewed, droop-shaped wave whose corners take roughly RC seconds to settle.
@@ -543,7 +533,7 @@ export default function Ch15FourierHarmonics() {
           <>
             A signal is a 60 Hz fundamental at 100 V peak, plus a 3rd harmonic at 30% of fundamental
             amplitude (so 30 V peak at 180 Hz). What is its total harmonic distortion, defined as{' '}
-            <InlineMath tex="\text{THD} = \sqrt{\sum_{n \geq 2} V_n^2} / V_1" />?
+            <M tex="\text{THD} = \sqrt{\sum_{n \geq 2} V_n^2} / V_1" />?
           </>
         }
         hint="Only the 3rd harmonic exists above the fundamental, so the numerator collapses to one term."
@@ -637,7 +627,7 @@ export default function Ch15FourierHarmonics() {
       <h2 className="chapter-h2">The Fast Fourier Transform</h2>
 
       <p className="mb-prose-3">
-        Fourier's theorem is about periodic continuous functions. The
+        Fourier's theorem is about periodic continuous functions. The{' '}
         <Term def="The Fourier transform of a finite sequence of N samples — converts N samples in time to N complex amplitudes in frequency.">
           discrete Fourier transform
         </Term>{' '}
@@ -648,32 +638,30 @@ export default function Ch15FourierHarmonics() {
       <Formula tex="X[k] = \sum_{n=0}^{N-1} x[n] \cdot e^{-j 2\pi k n / N}" />
       <p className="mb-prose-3">
         Compare this with the continuous projection integral{' '}
-        <InlineMath tex="a_k = (2/T) \int f(t) \cos(k\omega_0 t)\, dt" />. The structure is
-        identical — a sum that pairs each sample of x with a complex sinusoid at frequency k. The
-        complex exponential <InlineMath tex="e^{-j 2\pi k n/N}" /> is just{' '}
-        <InlineMath tex="\cos(2\pi k n/N) - j\sin(2\pi k n/N)" />, a pair of basis functions bundled
-        into one rotating phasor. The sum is again an inner product:{' '}
-        <InlineMath tex="X[k]" /> measures &ldquo;how much of the k-th complex
-        sinusoid lives in the sample sequence x.&rdquo; The complex form is more compact than
-        carrying separate a<sub>n</sub> and b<sub>n</sub>; the real and imaginary parts of X[k] hold
-        the cosine and sine projections respectively.
+        <M tex="a_k = (2/T) \int f(t) \cos(k\omega_0 t)\, dt" />. The structure is identical — a sum
+        that pairs each sample of x with a complex sinusoid at frequency k. The complex exponential{' '}
+        <M tex="e^{-j 2\pi k n/N}" /> is just <M tex="\cos(2\pi k n/N) - j\sin(2\pi k n/N)" />, a
+        pair of basis functions bundled into one rotating phasor. The sum is again an inner product:{' '}
+        <M tex="X[k]" /> measures &ldquo;how much of the k-th complex sinusoid lives in the sample
+        sequence x.&rdquo; The complex form is more compact than carrying separate a<sub>n</sub> and
+        b<sub>n</sub>; the real and imaginary parts of X[k] hold the cosine and sine projections
+        respectively.
       </p>
       <p className="mb-prose-3">
         Compute it naively and you have N multiplies and adds for each of the N output bins — a
-        total of <InlineMath tex="N^{2}" />
+        total of <M tex="N^{2}" />
         complex operations. For N = 1024 that's about a million; for N = 65536 it's about four
         billion. In the 1960s — when computers ran at megahertz, not gigahertz — that was
         prohibitive for any real-time signal processing.
       </p>
       <p className="mb-prose-3">
         James Cooley (IBM) and John Tukey (Princeton) published in 1965 a recursive decomposition
-        that brings the count down to{' '}
-        <InlineMath tex="N \log_2 N" />
+        that brings the count down to <M tex="N \log_2 N" />
         <Cite id="cooley-tukey-1965" in={SOURCES} />. Their idea: split the N-point DFT into two
         N/2-point DFTs — one on the even-indexed samples, one on the odd-indexed — then combine the
         two with N/2 complex multiplies (the &ldquo;butterflies&rdquo;). Recurse the split log
         <sub>2</sub> N times and the total operation count collapses to N log<sub>2</sub> N. The
-        algorithm came to be called the
+        algorithm came to be called the{' '}
         <Term def="Fast Fourier Transform: any of a family of O(N log N) algorithms for computing the DFT. The Cooley-Tukey radix-2 decomposition is the most famous, published in 1965.">
           Fast Fourier Transform
         </Term>{' '}
@@ -681,17 +669,16 @@ export default function Ch15FourierHarmonics() {
       </p>
       <p className="mb-prose-3">
         It's worth pausing on <em className="text-text italic">why</em> this divide-and-conquer even
-        works. The DFT depends on the complex sinusoid <InlineMath tex="\omega_N = e^{-j 2\pi/N}" />
-        , and these have a beautiful multiplicative structure:{' '}
-        <InlineMath tex="\omega_N^2 = \omega_{N/2}" />. In words, the basis sinusoid for a length-N
-        DFT, squared, is the basis sinusoid for a length-(N/2) DFT. So whenever you encounter a
-        power <InlineMath tex="\omega_N^{2kn}" /> (which arises when you fold the even-indexed
-        samples of x together), it can be rewritten as <InlineMath tex="\omega_{N/2}^{kn}" /> — the
-        basis vector for a smaller DFT. That algebraic identity is what makes the recursion
-        possible. Each level of the recursion costs O(N) operations to combine its sub-results;
-        there are log<sub>2</sub> N levels; the total is N log N. The FFT isn't a clever shortcut{' '}
-        <em className="text-text italic">around</em> the DFT — it is the DFT computed in the order
-        its own algebra suggests.
+        works. The DFT depends on the complex sinusoid <M tex="\omega_N = e^{-j 2\pi/N}" />
+        , and these have a beautiful multiplicative structure: <M tex="\omega_N^2 = \omega_{N/2}" />
+        . In words, the basis sinusoid for a length-N DFT, squared, is the basis sinusoid for a
+        length-(N/2) DFT. So whenever you encounter a power <M tex="\omega_N^{2kn}" /> (which arises
+        when you fold the even-indexed samples of x together), it can be rewritten as{' '}
+        <M tex="\omega_{N/2}^{kn}" /> — the basis vector for a smaller DFT. That algebraic identity
+        is what makes the recursion possible. Each level of the recursion costs O(N) operations to
+        combine its sub-results; there are log<sub>2</sub> N levels; the total is N log N. The FFT
+        isn't a clever shortcut <em className="text-text italic">around</em> the DFT — it is the DFT
+        computed in the order its own algebra suggests.
       </p>
 
       <FFTAlgorithmAnimationDemo figure="Fig. 15.6" />
@@ -728,8 +715,8 @@ export default function Ch15FourierHarmonics() {
             <Formula tex="\text{naive DFT: } N^2 = 8^2 = 64\ \text{multiplies}" />
             <Formula tex="\text{FFT: } N \cdot \log_2 N = 8 \cdot 3 = 24\ \text{multiplies}" />
             <p className="mb-prose-1 last:mb-0">
-              A speed-up of <InlineMath tex="64/24 \approx 2.7\times" /> for N = 8. Modest. For N =
-              1024 the ratio is 102×; for N = 65 536 it is 1638×
+              A speed-up of <M tex="64/24 \approx 2.7\times" /> for N = 8. Modest. For N = 1024 the
+              ratio is 102×; for N = 65 536 it is 1638×
               <Cite id="cooley-tukey-1965" in={SOURCES} />. The advantage compounds dramatically
               with N because the FFT is N log N while the naive is N² — a polynomial-of-degree-2
               versus a linearithmic curve.
@@ -1001,11 +988,11 @@ export default function Ch15FourierHarmonics() {
           <p>
             Yes — the Fourier <em className="text-text italic">transform</em> handles non-periodic
             signals. The trade-off is that the spectrum becomes continuous instead of discrete:
-            instead of one amplitude per integer harmonic, you get an amplitude density
-            <InlineMath tex="X(\omega)" /> defined for all real ω, and synthesis is by
-            integral instead of sum. For most practical engineering signals (a single audio waveform
-            of finite length, a one-shot pulse) this is exactly the right tool. For periodic signals
-            (a sustained tone, an AC line voltage) the series is more natural
+            instead of one amplitude per integer harmonic, you get an amplitude density{' '}
+            <M tex="X(\omega)" /> defined for all real ω, and synthesis is by integral instead of
+            sum. For most practical engineering signals (a single audio waveform of finite length, a
+            one-shot pulse) this is exactly the right tool. For periodic signals (a sustained tone,
+            an AC line voltage) the series is more natural
             <Cite id="bracewell-2000" in={SOURCES} />. A finite-length signal can be analysed by
             either: by transforming it directly, or by treating it as one period of a periodic
             extension and using the series.
@@ -1136,8 +1123,8 @@ export default function Ch15FourierHarmonics() {
             discontinuity, where it overshoots by a fixed ~8.95% of the jump height. The band gets
             narrower with each doubling of N — its width scales as 1/N — but the peak height of the
             overshoot stays the same. Mathematically the overshoot equals{' '}
-            <InlineMath tex="(1/\pi) \cdot \int_0^\pi \sin(t)/t\, dt - 1/2 \approx 0.0895" />,
-            derived by Maxime Bôcher in 1906 and named after Gibbs's 1899 correspondence with{' '}
+            <M tex="(1/\pi) \cdot \int_0^\pi \sin(t)/t\, dt - 1/2 \approx 0.0895" />, derived by
+            Maxime Bôcher in 1906 and named after Gibbs's 1899 correspondence with{' '}
             <em className="text-text italic">Nature</em>
             <Cite id="bracewell-2000" in={SOURCES} />.
           </p>
@@ -1177,9 +1164,9 @@ export default function Ch15FourierHarmonics() {
             it a square, a triangle, a clipped sine, or a current pulse — anything with a different
             form factor — and the answer is wrong, sometimes by tens of percent. A true-RMS meter
             samples the waveform at hundreds of points per cycle and computes V<sub>RMS</sub>{' '}
-            directly from <InlineMath tex="\sqrt{\langle V^2 \rangle}" />, which is right for any
-            shape. For measurements in modern electronics — where SMPS, PWM, and digital signals are
-            everywhere — true-RMS is no longer optional
+            directly from <M tex="\sqrt{\langle V^2 \rangle}" />, which is right for any shape. For
+            measurements in modern electronics — where SMPS, PWM, and digital signals are everywhere
+            — true-RMS is no longer optional
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
           </p>
         </FAQItem>

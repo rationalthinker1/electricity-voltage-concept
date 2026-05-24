@@ -19,7 +19,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS, pretty, sciTeX } from '@/lib/physics';
@@ -168,9 +168,9 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       // ── Wire body
       const sideGrd = ctx.createLinearGradient(0, g.wireCY - r, 0, g.wireCY + r);
       const tintColor = s.supercon ? colors.teal : colors.accent;
-      sideGrd.addColorStop(0, withAlpha(tintColor, 0.10));
+      sideGrd.addColorStop(0, withAlpha(tintColor, 0.1));
       sideGrd.addColorStop(0.5, withAlpha(tintColor, 0.28));
-      sideGrd.addColorStop(1, withAlpha(tintColor, 0.10));
+      sideGrd.addColorStop(1, withAlpha(tintColor, 0.1));
       ctx.fillStyle = sideGrd;
       ctx.beginPath();
       ctx.moveTo(g.wireXL, g.wireCY - r);
@@ -252,17 +252,65 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       }
 
       // Numerics overlay
-      drawLabel(ctx, { text: s.supercon ? 'Mode: superconductor (σ → ∞)' : 'Mode: normal conductor', x: 18, y: 14, color: s.supercon ? colors.teal : colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: s.supercon ? 'Mode: superconductor (σ → ∞)' : 'Mode: normal conductor',
+        x: 18,
+        y: 14,
+        color: s.supercon ? colors.teal : colors.accent,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
 
       ctx.fillStyle = colors.pink;
-      drawLabel(ctx, { text: `E_inside = ${pretty(s.E_in)} V/m`, x: 18, y: 30, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `E_inside = ${pretty(s.E_in)} V/m`,
+        x: 18,
+        y: 30,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = colors.teal;
-      drawLabel(ctx, { text: `B_surface = ${pretty(s.B_surf)} T`, x: 18, y: 46, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `B_surface = ${pretty(s.B_surf)} T`,
+        x: 18,
+        y: 46,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: `|S|_inside = ${pretty(s.S_in)} W/m²`, x: 18, y: 62, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `|S|_inside = ${pretty(s.S_in)} W/m²`,
+        x: 18,
+        y: 62,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-      drawLabel(ctx, { text: `I = ${I.toFixed(1)} A   a = ${a_mm.toFixed(2)} mm`, x: W - 18, y: 14, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: s.supercon ? 'Energy passes parallel — never absorbed' : 'Energy absorbed at surface = V·I', x: W - 18, y: 30, color: s.supercon ? colors.teal : colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `I = ${I.toFixed(1)} A   a = ${a_mm.toFixed(2)} mm`,
+        x: W - 18,
+        y: 14,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: s.supercon
+          ? 'Energy passes parallel — never absorbed'
+          : 'Energy absorbed at surface = V·I',
+        x: W - 18,
+        y: 30,
+        color: s.supercon ? colors.teal : colors.accent,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
     },
     [],
     (info) => {
@@ -333,18 +381,12 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Poynting inflow"
         left={
-          <InlineMath
-            tex={
-              `|S| = \\dfrac{E B}{\\mu_0} = \\dfrac{(${sciTeX(E_in, 1, { fixedHi: 1e6 })})(${sciTeX(B_surf, 2, { fixedHi: 1e6 })})}{\\mu_0} \\approx ${sciTeX(S_in, 2, { fixedHi: 1e6 })} \\text{ W/m}^2`
-            }
+          <M
+            tex={`|S| = \\dfrac{E B}{\\mu_0} = \\dfrac{(${sciTeX(E_in, 1, { fixedHi: 1e6 })})(${sciTeX(B_surf, 2, { fixedHi: 1e6 })})}{\\mu_0} \\approx ${sciTeX(S_in, 2, { fixedHi: 1e6 })} \\text{ W/m}^2`}
           />
         }
         rightLabel="Power dissipated"
-        right={
-          <InlineMath
-            tex={`P = V I = ${sciTeX(P_dissipated, 2, { fixedHi: 1e6 })} \\text{ W}`}
-          />
-        }
+        right={<M tex={`P = V I = ${sciTeX(P_dissipated, 2, { fixedHi: 1e6 })} \\text{ W}`} />}
       />
     </Demo>
   );

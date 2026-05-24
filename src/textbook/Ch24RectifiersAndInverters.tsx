@@ -8,7 +8,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { Pullout } from '@/components/Prose';
@@ -93,9 +93,8 @@ export default function Ch24RectifiersAndInverters() {
           def={
             <>
               <strong className="text-text font-medium">thermal voltage</strong> —{' '}
-              <InlineMath tex="V_{T} = kT/q" />{' '}
-              ≈ 25.85 mV at T = 300 K. The natural voltage scale of any thermally-populated
-              semiconductor.
+              <M tex="V_{T} = kT/q" />≈ 25.85 mV at T = 300 K. The natural voltage scale of any
+              thermally-populated semiconductor.
             </>
           }
         >
@@ -180,18 +179,16 @@ export default function Ch24RectifiersAndInverters() {
             <>
               <strong className="text-text font-medium">half-wave rectifier</strong> — one diode in
               series with the AC source; conducts on one polarity only. The negative half of every
-              cycle is thrown away, so the output averages only{' '}
-              <InlineMath tex="V_{p}/\pi" />
-              .
+              cycle is thrown away, so the output averages only <M tex="V_{p}/\pi" />.
             </>
           }
         >
           half-wave rectifier
         </Term>
         , and it is wasteful: half the energy goes nowhere. The average DC output is only{' '}
-        <InlineMath>
+        <M>
           V<sub>p</sub>/π ≈ 0.318 V<sub>p</sub>
-        </InlineMath>
+        </M>
         .
       </p>
       <p className="mb-prose-3">
@@ -202,8 +199,7 @@ export default function Ch24RectifiersAndInverters() {
               <strong className="text-text font-medium">full-wave centre-tap rectifier</strong> —
               two diodes plus a centre-tapped transformer. Each diode handles one half-cycle; both
               halves drive the load with the same polarity. Doubles the average output to{' '}
-              <InlineMath tex="2 V_{p}/\pi" />
-              .
+              <M tex="2 V_{p}/\pi" />.
             </>
           }
         >
@@ -212,9 +208,9 @@ export default function Ch24RectifiersAndInverters() {
         does better. Two diodes plus a centre-tapped transformer let each diode handle one
         half-cycle, with the two halves arranged to drive the load in the same direction. The output
         average doubles to{' '}
-        <InlineMath>
+        <M>
           2 V<sub>p</sub>/π ≈ 0.636 V<sub>p</sub>
-        </InlineMath>
+        </M>
         , and the ripple frequency doubles too (because there are no gaps any more) — easier to
         filter
         <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />.
@@ -236,9 +232,9 @@ export default function Ch24RectifiersAndInverters() {
         does it without the transformer centre-tap. Four diodes are arranged so that whichever AC
         terminal is positive, current always reaches the load by the same polarity. Two diodes are
         always in the path, so the DC output is{' '}
-        <InlineMath>
+        <M>
           V<sub>p</sub> − 2 V<sub>F</sub>
-        </InlineMath>
+        </M>
         . The bridge is the workhorse topology of cheap power supplies: four-diode "Graetz cells"
         are sold for pennies and appear in every wall-wart, every car alternator output, every USB
         charger.
@@ -251,10 +247,8 @@ export default function Ch24RectifiersAndInverters() {
             <>
               <strong className="text-text font-medium">ripple</strong> — the AC component remaining
               on top of an imperfectly-smoothed DC supply. For a bridge rectifier feeding a
-              capacitor C through load current <InlineMath tex="I" />, the
-              peak-to-peak ripple is{' '}
-              <InlineMath tex="\Delta V \approx I / (2 f_{\text{line}} C)" />
-              .
+              capacitor C through load current <M tex="I" />, the peak-to-peak ripple is{' '}
+              <M tex="\Delta V \approx I / (2 f_{\text{line}} C)" />.
             </>
           }
         >
@@ -264,9 +258,9 @@ export default function Ch24RectifiersAndInverters() {
         between peaks, the cap discharges into the load through R<sub>load</sub>. If R
         <sub>load</sub> · C is much longer than half a line cycle, the output sags only slightly
         between peaks — the ripple voltage is{' '}
-        <InlineMath>
+        <M>
           ΔV ≈ I<sub>load</sub> / (2 f<sub>line</sub> C)
-        </InlineMath>
+        </M>
         , a direct consequence of Q = CV applied during the discharge interval
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
@@ -280,7 +274,7 @@ export default function Ch24RectifiersAndInverters() {
       </p>
 
       <TryIt
-        tag='Try 24.1'
+        tag="Try 24.1"
         question={
           <>
             A bridge rectifier feeds a <strong className="text-text font-medium">1000 µF</strong>{' '}
@@ -311,7 +305,7 @@ export default function Ch24RectifiersAndInverters() {
       />
 
       <TryIt
-        tag='Try 24.2'
+        tag="Try 24.2"
         question={
           <>
             The same <strong className="text-text font-medium">1000 µF</strong> smoothing cap, but
@@ -373,14 +367,10 @@ export default function Ch24RectifiersAndInverters() {
         P<sub>diss</sub> = (V<sub>in</sub> − V<sub>out</sub>) · I<sub>load</sub>
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="P_{\text{diss}}" />{' '}
-        is the power burned as heat in the pass transistor (in watts),{' '}
-        <InlineMath tex="V_{\text{in}}" />{' '}
-        is the regulator's input voltage (in volts),{' '}
-        <InlineMath tex="V_{\text{out}}" />{' '}
-        is the regulated output voltage (in volts), and{' '}
-        <InlineMath tex="I_{\text{load}}" />{' '}
+        where <M tex="P_{\text{diss}}" />
+        is the power burned as heat in the pass transistor (in watts), <M tex="V_{\text{in}}" />
+        is the regulator's input voltage (in volts), <M tex="V_{\text{out}}" />
+        is the regulated output voltage (in volts), and <M tex="I_{\text{load}}" />
         is the current flowing through the load (in amperes; the same current also flows through the
         pass transistor in series).
       </p>
@@ -412,7 +402,7 @@ export default function Ch24RectifiersAndInverters() {
       <LinearRegulatorDemo figure="Fig. 24.3" />
 
       <TryIt
-        tag='Try 24.3'
+        tag="Try 24.3"
         question={
           <>
             An LM7805 takes <strong className="text-text font-medium">12 V</strong> in and supplies{' '}
@@ -467,7 +457,7 @@ export default function Ch24RectifiersAndInverters() {
               <strong className="text-text font-medium">volt-second balance</strong> — in steady
               state, the average voltage across an ideal inductor over one switching period must be
               zero (otherwise the current would grow without bound). Setting{' '}
-              <InlineMath tex="\int V_{L}\, dt = 0" />{' '}
+              <M tex="\int V_{L}\, dt = 0" />
               across the on-time and off-time gives the conversion ratio of every basic SMPS
               topology.
             </>
@@ -487,7 +477,7 @@ export default function Ch24RectifiersAndInverters() {
               <strong className="text-text font-medium">buck converter</strong> — a step-down DC-DC
               topology consisting of a high-side switch, a low-side diode (or synchronous switch),
               an inductor, and an output capacitor.{' '}
-              <InlineMath tex="V_{\text{out}} = D \cdot V_{\text{in}}" />{' '}
+              <M tex="V_{\text{out}} = D \cdot V_{\text{in}}" />
               in continuous-conduction mode.
             </>
           }
@@ -500,8 +490,7 @@ export default function Ch24RectifiersAndInverters() {
             <>
               <strong className="text-text font-medium">duty cycle</strong> — the fraction of each
               switching period during which the switch is ON.{' '}
-              <InlineMath tex="D = t_{\text{on}} / T_{\text{sw}}" />
-              . Continuous from 0 to 1.
+              <M tex="D = t_{\text{on}} / T_{\text{sw}}" />. Continuous from 0 to 1.
             </>
           }
         >
@@ -517,12 +506,10 @@ export default function Ch24RectifiersAndInverters() {
         V<sub>out</sub> = D · V<sub>in</sub>
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="V_{\text{in}}" />{' '}
-        is the buck converter's DC input voltage (in volts),{' '}
-        <InlineMath tex="V_{\text{out}}" />{' '}
+        where <M tex="V_{\text{in}}" />
+        is the buck converter's DC input voltage (in volts), <M tex="V_{\text{out}}" />
         is the regulated DC output voltage (in volts), and{' '}
-        <InlineMath tex="D = t_{\text{on}}/T_{\text{sw}}" />{' '}
+        <M tex="D = t_{\text{on}}/T_{\text{sw}}" />
         is the duty cycle — the fraction of each switching period the high-side switch is closed
         (dimensionless, between 0 and 1).
       </p>
@@ -538,7 +525,7 @@ export default function Ch24RectifiersAndInverters() {
       <BuckConverterDemo figure="Fig. 24.4" />
 
       <TryIt
-        tag='Try 24.4'
+        tag="Try 24.4"
         question={
           <>
             A buck converter takes <strong className="text-text font-medium">12 V</strong> in and
@@ -572,9 +559,7 @@ export default function Ch24RectifiersAndInverters() {
             <>
               <strong className="text-text font-medium">boost converter</strong> — a step-up DC-DC
               topology: inductor on the input side, switch to ground, output diode, output
-              capacitor.{' '}
-              <InlineMath tex="V_{\text{out}} = V_{\text{in}} / (1 - D)" />
-              .
+              capacitor. <M tex="V_{\text{out}} = V_{\text{in}} / (1 - D)" />.
             </>
           }
         >
@@ -583,7 +568,7 @@ export default function Ch24RectifiersAndInverters() {
         : the switch shorts the inductor to ground for time t<sub>on</sub>, building up current;
         when the switch opens, the inductor's stored energy is forced into the output capacitor
         through a diode. Volt-second balance now gives{' '}
-        <InlineMath tex="V_{\text{out}} = V_{\text{in}} / (1 - D)" />
+        <M tex="V_{\text{out}} = V_{\text{in}} / (1 - D)" />
         , which can be made arbitrarily large in principle (though parasitic resistance kills you at
         very high duty cycles)
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />. The boost is why a 3.7 V Li-ion cell
@@ -591,7 +576,7 @@ export default function Ch24RectifiersAndInverters() {
       </p>
 
       <TryIt
-        tag='Try 24.5'
+        tag="Try 24.5"
         question={
           <>
             A boost converter runs at <strong className="text-text font-medium">75 %</strong> duty
@@ -622,13 +607,11 @@ export default function Ch24RectifiersAndInverters() {
       <BoostConverterDemo figure="Fig. 24.5" />
 
       <TryIt
-        tag='Try 24.6'
+        tag="Try 24.6"
         question={
           <>
-            A buck converter takes{' '}
-            <InlineMath tex="V_{\text{in}} = 24\,\text{V}" />{' '}
-            at duty cycle <InlineMath tex="D = 0.3" />. What is the
-            ideal output voltage? If the load draws{' '}
+            A buck converter takes <M tex="V_{\text{in}} = 24\,\text{V}" />
+            at duty cycle <M tex="D = 0.3" />. What is the ideal output voltage? If the load draws{' '}
             <strong className="text-text font-medium">5 A</strong>, what input current does the
             ideal converter pull?
           </>
@@ -805,13 +788,12 @@ export default function Ch24RectifiersAndInverters() {
         <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        After LC filtering, the output is a sinusoid of peak{' '}
-        <InlineMath tex="m \cdot V_{\text{DC}}" />
-        , where <InlineMath tex="m \in [0, 1]" /> is the modulation index. Setting the reference frequency to 60 Hz gives
-        you grid-compatible AC; setting it to a variable rate gives you a motor drive. The hard part
-        is mostly in software: the firmware must compute the PWM duty cycle in real time, dead-band
-        the two switches in each leg so they never short the bus, and current-limit the output
-        during faults.
+        After LC filtering, the output is a sinusoid of peak <M tex="m \cdot V_{\text{DC}}" />
+        , where <M tex="m \in [0, 1]" /> is the modulation index. Setting the reference frequency to
+        60 Hz gives you grid-compatible AC; setting it to a variable rate gives you a motor drive.
+        The hard part is mostly in software: the firmware must compute the PWM duty cycle in real
+        time, dead-band the two switches in each leg so they never short the bus, and current-limit
+        the output during faults.
       </p>
 
       <HBridgeInverterDemo figure="Fig. 24.7" />
@@ -831,7 +813,7 @@ export default function Ch24RectifiersAndInverters() {
       </p>
 
       <TryIt
-        tag='Try 24.7'
+        tag="Try 24.7"
         question={
           <>
             An H-bridge inverter delivers a{' '}
@@ -840,7 +822,12 @@ export default function Ch24RectifiersAndInverters() {
             peak current?
           </>
         }
-        hint={<>For an inductor, <InlineMath tex="V = L\, dI/dt" />; for sinusoidal steady state, <InlineMath tex="|I| = V/(\omega L)" />.</>}
+        hint={
+          <>
+            For an inductor, <M tex="V = L\, dI/dt" />; for sinusoidal steady state,{' '}
+            <M tex="|I| = V/(\omega L)" />.
+          </>
+        }
         answer={
           <>
             <Formula>ω = 2π · 60 ≈ 377 rad/s</Formula>
@@ -875,12 +862,11 @@ export default function Ch24RectifiersAndInverters() {
       </p>
       <p className="mb-prose-3">
         Multiply V<sub>grid</sub>(t) by I<sub>inj</sub>(t) and average over a cycle and you get two
-        terms: a real-power term proportional to{' '}
-        <InlineMath tex="\cos(\theta)" /> and a reactive-power term
-        proportional to <InlineMath tex="\sin(\theta)" />, where <InlineMath tex="\theta" /> is the
-        phase shift between the injected current and the grid voltage. Inject current in phase (θ =
-        0) and you deliver pure real power to the grid; inject it 90° lagging and you deliver pure
-        reactive power; somewhere in between you do both
+        terms: a real-power term proportional to <M tex="\cos(\theta)" /> and a reactive-power term
+        proportional to <M tex="\sin(\theta)" />, where <M tex="\theta" /> is the phase shift
+        between the injected current and the grid voltage. Inject current in phase (θ = 0) and you
+        deliver pure real power to the grid; inject it 90° lagging and you deliver pure reactive
+        power; somewhere in between you do both
         <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />. Modern grid-tie inverters can be
         commanded to mix the two, supporting grid voltage during sags or absorbing it during
         over-voltage events — the "smart inverter" functionality required by IEEE 1547-2018.
@@ -979,7 +965,7 @@ export default function Ch24RectifiersAndInverters() {
 
       <CaseStudies intro="Four working systems where this chapter's physics is the entire architecture.">
         <CaseStudy
-          tag='Case 24.1'
+          tag="Case 24.1"
           title="The brick on your laptop cord"
           summary={
             <>
@@ -1045,7 +1031,7 @@ export default function Ch24RectifiersAndInverters() {
         </CaseStudy>
 
         <CaseStudy
-          tag='Case 24.2'
+          tag="Case 24.2"
           title="The Tesla Model S traction inverter"
           summary={
             <>
@@ -1086,7 +1072,7 @@ export default function Ch24RectifiersAndInverters() {
         </CaseStudy>
 
         <CaseStudy
-          tag='Case 24.3'
+          tag="Case 24.3"
           title="A 5 kW residential solar string inverter"
           summary={
             <>
@@ -1139,7 +1125,7 @@ export default function Ch24RectifiersAndInverters() {
         </CaseStudy>
 
         <CaseStudy
-          tag='Case 24.4'
+          tag="Case 24.4"
           title="The Pacific DC Intertie"
           summary={
             <>
@@ -1169,11 +1155,11 @@ export default function Ch24RectifiersAndInverters() {
             HVDC pays off at very long distances because an AC line's distributed capacitance draws
             "charging current" along its whole length — current that delivers no real power but
             heats the conductors. DC has no reactive component, so it can run closer to its thermal
-            limit. HVDC also lets two non-synchronous grids be tied together — the canonical
-            example being the back-to-back ties between the Western and Eastern Interconnections at
-            Stegall, Sidney, and Blackwater — though the Pacific DC Intertie itself is not such a
-            case; both of its endpoints sit inside the Western Interconnection, so the win there is
-            purely line losses and reactive support
+            limit. HVDC also lets two non-synchronous grids be tied together — the canonical example
+            being the back-to-back ties between the Western and Eastern Interconnections at Stegall,
+            Sidney, and Blackwater — though the Pacific DC Intertie itself is not such a case; both
+            of its endpoints sit inside the Western Interconnection, so the win there is purely line
+            losses and reactive support
             <Cite id="kundur-1994-power-stability" in={SOURCES} />. Modern HVDC links increasingly
             use voltage-source IGBT converters instead of thyristor valves; the silicon is different
             but the topology is the same six-switch H-bridge as the laptop charger, scaled by six

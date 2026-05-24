@@ -22,7 +22,7 @@ import {
   MiniSlider,
   MiniToggle,
 } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { LayeredCanvas, type LayeredCanvasInfo } from '@/components/LayeredCanvas';
 import { Num } from '@/components/Num';
 import { drawCharge } from '@/lib/canvasPrimitives';
@@ -357,9 +357,9 @@ export function FieldArrowsDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Field at the probe"
-        left={<InlineMath tex={leftTex} />}
+        left={<M tex={leftTex} />}
         rightLabel="Force on an electron there"
-        right={<InlineMath tex={rightTex} />}
+        right={<M tex={rightTex} />}
       />
     </Demo>
   );

@@ -16,7 +16,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -110,13 +110,51 @@ export function DiffractionGratingDemo({ figure }: Props) {
       }
       ctx.setLineDash([]);
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `N = ${N}`, x: padL + 4, y: padTop + 12, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `λ = ${lamNm.toFixed(0)} nm`, x: padL + 4, y: padTop + 26, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `d = 1/${linesPerMm} mm`, x: padL + 4, y: padTop + 40, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'I/I₀', x: x0 + 30, y: padTop + 12, font: '10px "JetBrains Mono", monospace', align: 'right' });
-      drawLabel(ctx, { text: 'sin θ', x: x0 + plotW / 2, y: H - 8, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: '−1', x: x0 + 2, y: yBase + 16, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: '+1', x: x0 + plotW - 2, y: yBase + 16, font: '10px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, {
+        text: `N = ${N}`,
+        x: padL + 4,
+        y: padTop + 12,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `λ = ${lamNm.toFixed(0)} nm`,
+        x: padL + 4,
+        y: padTop + 26,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `d = 1/${linesPerMm} mm`,
+        x: padL + 4,
+        y: padTop + 40,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: 'I/I₀',
+        x: x0 + 30,
+        y: padTop + 12,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+      });
+      drawLabel(ctx, {
+        text: 'sin θ',
+        x: x0 + plotW / 2,
+        y: H - 8,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: '−1',
+        x: x0 + 2,
+        y: yBase + 16,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: '+1',
+        x: x0 + plotW - 2,
+        y: yBase + 16,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+      });
     },
     [],
   );
@@ -171,9 +209,13 @@ export function DiffractionGratingDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Grating equation (m = 1)"
-        left={<InlineMath tex={`d\\sin\\theta_m = m\\lambda`} />}
+        left={<M tex={`d\\sin\\theta_m = m\\lambda`} />}
         rightLabel={`λ = ${lamNm} nm, d = 1/${linesPerMm} mm`}
-        right={<InlineMath tex={`\\sin\\theta_1 = \\frac{\\lambda}{d} = \\frac{${lamNm}\\,\\text{nm}}{${(dGr * 1e6).toFixed(2)}\\,\\mu\\text{m}} \\Rightarrow \\theta_1 = ${theta1Deg.toFixed(2)}°`} />}
+        right={
+          <M
+            tex={`\\sin\\theta_1 = \\frac{\\lambda}{d} = \\frac{${lamNm}\\,\\text{nm}}{${(dGr * 1e6).toFixed(2)}\\,\\mu\\text{m}} \\Rightarrow \\theta_1 = ${theta1Deg.toFixed(2)}°`}
+          />
+        }
       />
     </Demo>
   );

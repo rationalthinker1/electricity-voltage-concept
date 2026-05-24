@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 
 interface Props {
@@ -49,14 +49,14 @@ export function BranchCircuitSizingDemo({ figure }: Props) {
       question="The breaker protects the wire; the wire and run length set the voltage drop."
       caption={
         <>
-          Pick a wire gauge, breaker, load current, and one-way run length. A safe branch circuit has
-          the breaker no larger than the conductor ampacity, the load no larger than the breaker, and
-          a voltage drop low enough for the equipment at the far end.
+          Pick a wire gauge, breaker, load current, and one-way run length. A safe branch circuit
+          has the breaker no larger than the conductor ampacity, the load no larger than the
+          breaker, and a voltage drop low enough for the equipment at the far end.
         </>
       }
       deeperLab={{ slug: 'resistance', label: 'See full lab' }}
     >
-      <div className="px-xl py-lg grid gap-lg bg-canvas-bg md:grid-cols-[1fr_1fr]">
+      <div className="px-xl py-lg gap-lg bg-canvas-bg grid md:grid-cols-[1fr_1fr]">
         <div className="rounded-2 border-border bg-bg-elevated border p-4">
           <div className="font-3 text-1 text-text-muted tracking-3 mb-2 uppercase">Conductor</div>
           <div className="font-1 text-7 text-text">{gauge.awg} AWG copper</div>
@@ -67,12 +67,16 @@ export function BranchCircuitSizingDemo({ figure }: Props) {
         </div>
         <div className="rounded-2 border-border bg-bg-elevated border p-4">
           <div className="font-3 text-1 text-text-muted tracking-3 mb-2 uppercase">Verdict</div>
-          <div className={computed.breakerOk && computed.loadOk ? 'text-teal text-7' : 'text-pink text-7'}>
+          <div
+            className={
+              computed.breakerOk && computed.loadOk ? 'text-teal text-7' : 'text-pink text-7'
+            }
+          >
             {verdict}
           </div>
           <p className="text-3 text-text-muted mt-2">
-            Round-trip drop is {computed.drop.toFixed(2)} V ({computed.dropPct.toFixed(1)}% of
-            120 V). Continuous-load headroom is {computed.continuousOk ? 'present' : 'not present'}.
+            Round-trip drop is {computed.drop.toFixed(2)} V ({computed.dropPct.toFixed(1)}% of 120
+            V). Continuous-load headroom is {computed.continuousOk ? 'present' : 'not present'}.
           </p>
         </div>
       </div>
@@ -118,10 +122,10 @@ export function BranchCircuitSizingDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Branch drop"
-        left={<InlineMath tex="\\Delta V = 2 I R_{\\text{per m}} L" />}
+        left={<M tex="\\Delta V = 2 I R_{\\text{per m}} L" />}
         rightLabel="Current setting"
         right={
-          <InlineMath
+          <M
             tex={`\\Delta V = 2(${load.toFixed(0)})(${gauge.rPerM.toFixed(4)})(${length.toFixed(0)}) = ${computed.drop.toFixed(2)}\\,\\text{V}`}
           />
         }

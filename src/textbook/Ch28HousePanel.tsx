@@ -18,7 +18,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -215,16 +215,14 @@ export default function Ch28HousePanel() {
       </p>
       <Formula tex="\\tilde V_{LL}=\\tilde V_{L1}-\\tilde V_{L2}=120\\angle0^\\circ-120\\angle180^\\circ=240\\ \\text{V}_{\\text{rms}}" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="\tilde V_{LL}" />{' '}
+        where <M tex="\tilde V_{LL}" />
         is the line-to-line voltage phasor between the two ungrounded bus bars,{' '}
-        <InlineMath tex="\tilde V_{L1}" />{' '}
-        is the 120 V RMS phasor from L1 to the centre-tap neutral, and{' '}
-        <InlineMath tex="\tilde V_{L2}" />{' '}
-        is the corresponding 120 V RMS phasor from L2 to neutral. L1 and L2 are exactly
-        180° apart because they come from opposite ends of the centre-tapped secondary winding of
-        the utility transformer (Ch.27). In instantaneous peak terms the same statement is
-        <InlineMath tex="+170 - (-170) \approx 340\ \text{V}_{\text{peak}}" />, whose RMS value is 240 V
+        <M tex="\tilde V_{L1}" />
+        is the 120 V RMS phasor from L1 to the centre-tap neutral, and <M tex="\tilde V_{L2}" />
+        is the corresponding 120 V RMS phasor from L2 to neutral. L1 and L2 are exactly 180° apart
+        because they come from opposite ends of the centre-tapped secondary winding of the utility
+        transformer (Ch.27). In instantaneous peak terms the same statement is{' '}
+        <M tex="+170 - (-170) \approx 340\ \text{V}_{\text{peak}}" />, whose RMS value is 240 V
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -366,12 +364,11 @@ export default function Ch28HousePanel() {
       </p>
       <Formula tex="I_{\\text{residual}} = |I_{\\text{hot}} - I_{\\text{neutral}}| > 5\\ \\text{mA}" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="I_{\text{hot}}" />{' '}
+        where <M tex="I_{\text{hot}}" />
         is the current leaving the panel on the ungrounded conductor (in amperes),{' '}
-        <InlineMath tex="I_{\text{neutral}}" />{' '}
+        <M tex="I_{\text{neutral}}" />
         is the current returning on the grounded conductor (in amperes), and{' '}
-        <InlineMath tex="I_{\text{residual}}" />{' '}
+        <M tex="I_{\text{residual}}" />
         is the{' '}
         <Term
           def={
@@ -386,9 +383,9 @@ export default function Ch28HousePanel() {
         </Term>{' '}
         that, by Kirchhoff's current law, must be returning through some other path — typically
         ground, possibly through a person. Class A GFCI protection is designed around a few
-        milliamperes of residual current; the exact trip time depends on the fault current and device
-        standard. The body-current risk curves come from Dalziel's work and the modern IEC 60479
-        curves, which Ch.32 will lay out in detail
+        milliamperes of residual current; the exact trip time depends on the fault current and
+        device standard. The body-current risk curves come from Dalziel's work and the modern IEC
+        60479 curves, which Ch.32 will lay out in detail
         <Cite id="nec-2023" in={SOURCES} />
         <Cite id="dalziel-1956" in={SOURCES} />
         <Cite id="iec-60479-2018" in={SOURCES} />.
@@ -506,26 +503,24 @@ export default function Ch28HousePanel() {
       </p>
       <Formula tex="E_{\\text{arc}} \\approx V \\times I_{\\text{fault}} \\times t_{\\text{clear}}" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="E_{\text{arc}}" />{' '}
-        is the energy released in the fault arc (in joules),{' '}
-        <InlineMath tex="V" /> is the system voltage across the arc
-        (in volts; 120 V for a single hot-to-neutral fault, 240 V for a hot-to-hot fault),{' '}
-        <InlineMath tex="I_{\text{fault}}" />{' '}
+        where <M tex="E_{\text{arc}}" />
+        is the energy released in the fault arc (in joules), <M tex="V" /> is the system voltage
+        across the arc (in volts; 120 V for a single hot-to-neutral fault, 240 V for a hot-to-hot
+        fault), <M tex="I_{\text{fault}}" />
         is the peak fault current the utility can deliver into the bolted short (in amperes), and{' '}
-        <InlineMath tex="t_{\text{clear}}" />{' '}
+        <M tex="t_{\text{clear}}" />
         is the time the breaker takes to interrupt the arc (in seconds). For a numerical sense of
-        scale, take <InlineMath tex="V = 120\,\text{V}" />, <InlineMath tex="I_{\text{fault}} = 10\,\text{kA}" />, <InlineMath tex="t_{\text{clear}} = 50\,\text{ms}" />:
+        scale, take <M tex="V = 120\,\text{V}" />, <M tex="I_{\text{fault}} = 10\,\text{kA}" />,{' '}
+        <M tex="t_{\text{clear}} = 50\,\text{ms}" />:
       </p>
       <Formula tex="E_{\\text{arc}} \\approx 120 \\times 10{,}000 \\times 0.050 = 60{,}000\\ \\text{J} = 60\\ \\text{kJ}" />
       <p className="mb-prose-3">
         Sixty kilojoules dumped into a few cubic centimetres of air in a fraction of a second can
         vaporise metal, eject molten copper, and ignite nearby material. Real arc-flash incident
-        energy is calculated with dedicated methods, not this simple <InlineMath tex="VIt" /> product,
-        but the scale explains why NFPA 70E exists as a separate standard from the NEC, why
-        power-system electricians use arc-rated PPE for energized switching tasks, and why the AIC
-        rating of the breaker has to be at least as large as the
-        worst-case{' '}
+        energy is calculated with dedicated methods, not this simple <M tex="VIt" /> product, but
+        the scale explains why NFPA 70E exists as a separate standard from the NEC, why power-system
+        electricians use arc-rated PPE for energized switching tasks, and why the AIC rating of the
+        breaker has to be at least as large as the worst-case{' '}
         <Term
           def={
             <>
@@ -595,8 +590,8 @@ export default function Ch28HousePanel() {
         }
         hint={
           <>
-            Arc power is <InlineMath tex="V \\times I" />; the branch's rated dissipation is its
-            rated voltage × rated current.
+            Arc power is <M tex="V \\times I" />; the branch's rated dissipation is its rated
+            voltage × rated current.
           </>
         }
         answer={
@@ -676,15 +671,14 @@ export default function Ch28HousePanel() {
       </p>
       <p className="mb-prose-3">
         The grounding-electrode connection to dirt is not what trips the breaker. The NEC permits a
-        single rod only when its resistance to earth is 25 Ω or less; otherwise a second electrode is
-        installed, which is still far too much impedance to clear a branch-circuit fault by itself.
-        What clears the fault is the bonded metallic path back to the transformer
-        <Cite id="nec-2023" in={SOURCES} />.
-        The rod's job is different and subtler: it pins the building's neutral and ground voltage to
-        within a few volts of the local soil potential, so that lightning strikes and downed-utility
-        events do not float the whole building's reference up to thousands of volts relative to the
-        people standing on the ground floor. The breaker clears faults; the rod handles surges and
-        keeps the reference honest.
+        single rod only when its resistance to earth is 25 Ω or less; otherwise a second electrode
+        is installed, which is still far too much impedance to clear a branch-circuit fault by
+        itself. What clears the fault is the bonded metallic path back to the transformer
+        <Cite id="nec-2023" in={SOURCES} />. The rod's job is different and subtler: it pins the
+        building's neutral and ground voltage to within a few volts of the local soil potential, so
+        that lightning strikes and downed-utility events do not float the whole building's reference
+        up to thousands of volts relative to the people standing on the ground floor. The breaker
+        clears faults; the rod handles surges and keeps the reference honest.
       </p>
 
       <Pullout>
@@ -748,17 +742,16 @@ export default function Ch28HousePanel() {
           <>
             A sub-panel sits 50 m from the main, fed by a 100 A double-pole breaker through{' '}
             <strong className="text-text font-medium">1 AWG aluminium</strong> conductors
-            (resistance ≈ 0.524 Ω per 1000 ft, or about{' '}
-            <InlineMath tex="1.72\,\text{m}\Omega/\text{m}" />). The sub is loaded at 80
-            A<Cite id="awg-table-nec" in={SOURCES} />. What is the round-trip voltage drop from the
-            main to the sub on each hot?
+            (resistance ≈ 0.524 Ω per 1000 ft, or about <M tex="1.72\,\text{m}\Omega/\text{m}" />
+            ). The sub is loaded at 80 A<Cite id="awg-table-nec" in={SOURCES} />. What is the
+            round-trip voltage drop from the main to the sub on each hot?
           </>
         }
         hint={
           <>
-            Voltage drop on one conductor is <InlineMath tex="I \\times R" />; the load current
-            flows out one hot and returns through the other hot (in a 240 V load) or through the
-            neutral (in a 120 V load). Treat one round-trip leg.
+            Voltage drop on one conductor is <M tex="I \\times R" />; the load current flows out one
+            hot and returns through the other hot (in a 240 V load) or through the neutral (in a 120
+            V load). Treat one round-trip leg.
           </>
         }
         answer={
@@ -1007,8 +1000,8 @@ export default function Ch28HousePanel() {
             <Cite id="ul-489" in={SOURCES} />, and NEC requires every overcurrent protective device
             to be listed for the panel it is installed in
             <Cite id="nec-2023" in={SOURCES} />. Stab-Lok panels remain in service today — many are
-            not, by themselves, code violations under grandfathering — but they are common replacement
-            candidates when a home is inspected or remodeled.
+            not, by themselves, code violations under grandfathering — but they are common
+            replacement candidates when a home is inspected or remodeled.
           </p>
         </CaseStudy>
       </CaseStudies>
@@ -1042,9 +1035,9 @@ export default function Ch28HousePanel() {
             </Term>{' '}
             packs two single-pole trip mechanisms into one slot's worth of physical space, letting a
             30-slot panel host effectively more circuits. They are allowed only in panel slots
-            specifically marked or listed for them by the manufacturer's labeling — typically the panel will
-            have a stamping indicating which positions accept a tandem. Putting a tandem in a
-            non-rated slot is a code violation and a common cause of nuisance tripping
+            specifically marked or listed for them by the manufacturer's labeling — typically the
+            panel will have a stamping indicating which positions accept a tandem. Putting a tandem
+            in a non-rated slot is a code violation and a common cause of nuisance tripping
             <Cite id="nec-2023" in={SOURCES} />
             <Cite id="ul-489" in={SOURCES} />.
           </p>
@@ -1224,12 +1217,12 @@ export default function Ch28HousePanel() {
           <p>
             It does not — and this is one of the most widely misunderstood points in residential
             electrical safety. Even using the NEC's 25 Ω single-rod benchmark, a direct hot-to-rod
-            path would draw only{' '}
-            <InlineMath tex="120\\ \\text{V}/25\\ \\Omega \\approx 4.8\\ \\text{A}" /> — well below a
-            20 A breaker's trip threshold. What clears a normal fault is not the dirt path; it is the
-            metallic equipment-grounding path back to the transformer through the bonded neutral.
-            Soil resistance to a single residential rod is too high to clear a branch fault by
-            itself. The rod's role is surge bonding and reference stabilisation, not fault clearing
+            path would draw only <M tex="120\\ \\text{V}/25\\ \\Omega \\approx 4.8\\ \\text{A}" /> —
+            well below a 20 A breaker's trip threshold. What clears a normal fault is not the dirt
+            path; it is the metallic equipment-grounding path back to the transformer through the
+            bonded neutral. Soil resistance to a single residential rod is too high to clear a
+            branch fault by itself. The rod's role is surge bonding and reference stabilisation, not
+            fault clearing
             <Cite id="nec-2023" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1267,8 +1260,8 @@ export default function Ch28HousePanel() {
           <p>
             Only obliquely: every current value in this chapter — 5 mA for a GFCI threshold, 10 kA
             for an available fault, 20 A for a kitchen branch — is a count of elementary charges per
-            second through a cross-section, scaled by the CODATA 2018 value of{' '}
-            <InlineMath tex="e" /> = 1.602176634×10⁻¹⁹ C exactly
+            second through a cross-section, scaled by the CODATA 2018 value of <M tex="e" /> =
+            1.602176634×10⁻¹⁹ C exactly
             <Cite id="codata-2018" in={SOURCES} />. The chapter would still be coherent without ever
             quoting the number, but every ampere on every label in the panel ultimately reduces to
             that constant.

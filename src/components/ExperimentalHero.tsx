@@ -31,16 +31,16 @@ export function ExperimentalHero({ lab }: ExperimentalHeroProps) {
 
       {/* Badge row — runtime + difficulty + a small "experimental" pill. */}
       <div className="gap-md mb-xl flex flex-wrap items-center">
-        <span className="font-3 text-2 text-accent border-accent-soft bg-accent-soft rounded-2 px-md py-xxs tracking-3 uppercase border">
+        <span className="font-3 text-2 text-accent border-accent-soft bg-accent-soft rounded-2 px-md py-xxs tracking-3 border uppercase">
           Experimental
         </span>
         {lab.runtime && (
-          <span className="font-3 text-2 text-text-dim border-border rounded-2 px-md py-xxs tracking-3 uppercase border">
+          <span className="font-3 text-2 text-text-dim border-border rounded-2 px-md py-xxs tracking-3 border uppercase">
             {lab.runtime}
           </span>
         )}
         {lab.difficulty && (
-          <span className="font-3 text-2 text-text-dim border-border rounded-2 px-md py-xxs tracking-3 uppercase border">
+          <span className="font-3 text-2 text-text-dim border-border rounded-2 px-md py-xxs tracking-3 border uppercase">
             {DIFFICULTY_LABEL[lab.difficulty]}
           </span>
         )}
@@ -52,7 +52,7 @@ export function ExperimentalHero({ lab }: ExperimentalHeroProps) {
             <div className="font-3 text-2 text-text-muted tracking-4 mb-md uppercase">
               You will need
             </div>
-            <ul className="font-1 text-6 text-text-dim leading-3 space-y-1">
+            <ul className="font-1 text-6 text-text-dim space-y-1 leading-3">
               {equipment.map((item) => (
                 <li key={item}>— {item}</li>
               ))}
@@ -64,7 +64,7 @@ export function ExperimentalHero({ lab }: ExperimentalHeroProps) {
             <div className="font-3 text-2 text-text-muted tracking-4 mb-md uppercase">
               Software / tools
             </div>
-            <ul className="font-1 text-6 text-text-dim leading-3 space-y-2">
+            <ul className="font-1 text-6 text-text-dim space-y-2 leading-3">
               {software.map((s) => (
                 <li key={s.url}>
                   <a
@@ -81,7 +81,7 @@ export function ExperimentalHero({ lab }: ExperimentalHeroProps) {
                     </span>
                   )}
                   {s.note && (
-                    <div className="font-1 text-2 text-text-muted leading-2 mt-1">{s.note}</div>
+                    <div className="font-1 text-2 text-text-muted mt-1 leading-2">{s.note}</div>
                   )}
                 </li>
               ))}

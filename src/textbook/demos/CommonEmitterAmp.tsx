@@ -21,9 +21,9 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -106,12 +106,40 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `V_CC = ${V_CC.toFixed(1)} V`, x: padL - 4, y: yOf(V_CC), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: `Q: V_CE = ${Vce.toFixed(2)} V`, x: padL - 4, y: yOf(Vce), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: padL - 4, y: yOf(0), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `V_CC = ${V_CC.toFixed(1)} V`,
+        x: padL - 4,
+        y: yOf(V_CC),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: `Q: V_CE = ${Vce.toFixed(2)} V`,
+        x: padL - 4,
+        y: yOf(Vce),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0',
+        x: padL - 4,
+        y: yOf(0),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
 
       // x-axis title
-      drawLabel(ctx, { text: 'time', x: padL + plotW / 2, y: padT + plotH + 16, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'time',
+        x: padL + plotW / 2,
+        y: padT + plotH + 16,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
 
       // input waveform: small sine, plotted on a fixed sub-band 0..0.8 V,
       // centred at 0.4 V. (Visual-only — labelled below.)
@@ -150,8 +178,22 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       ctx.stroke();
 
       // legend
-      drawLabel(ctx, { text: `V_in   amp = ${Vin_mV.toFixed(1)} mV   (shown ×80 for visibility)`, x: padL + 6, y: padT + 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `V_out  amp = ${(Math.abs(Av) * Vin_mV).toFixed(1)} mV   A_v = ${Av.toFixed(0)}`, x: padL + 6, y: padT + 18, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `V_in   amp = ${Vin_mV.toFixed(1)} mV   (shown ×80 for visibility)`,
+        x: padL + 6,
+        y: padT + 4,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `V_out  amp = ${(Math.abs(Av) * Vin_mV).toFixed(1)} mV   A_v = ${Av.toFixed(0)}`,
+        x: padL + 6,
+        y: padT + 18,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -235,9 +277,13 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Small-signal gain"
-        left={<InlineMath tex={`A_v = -g_m R_C = -\\frac{I_C}{V_T} R_C`} />}
+        left={<M tex={`A_v = -g_m R_C = -\\frac{I_C}{V_T} R_C`} />}
         rightLabel="At this Q-point"
-        right={<InlineMath tex={`A_v = -\\frac{${(Ic * 1000).toFixed(2)}\\,\\text{mA}}{25.85\\,\\text{mV}} \\times ${(R_C / 1000).toFixed(1)}\\,\\text{k}\\Omega = ${Av.toFixed(0)}`} />}
+        right={
+          <M
+            tex={`A_v = -\\frac{${(Ic * 1000).toFixed(2)}\\,\\text{mA}}{25.85\\,\\text{mV}} \\times ${(R_C / 1000).toFixed(1)}\\,\\text{k}\\Omega = ${Av.toFixed(0)}`}
+          />
+        }
       />
     </Demo>
   );

@@ -22,7 +22,7 @@ import type { ReactNode } from 'react';
 import type { ChapterSlug } from './chapters';
 import type { SourceKey } from '@/lib/sources';
 
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Cite } from '@/components/SourcesList';
 import { Num } from '@/components/Num';
 
@@ -175,9 +175,9 @@ const CAPSTONE_USBC: Capstone = {
             </li>
             <li className="my-sm">
               Input current at low line:{' '}
-              <InlineMath>
+              <M>
                 I<sub>in,rms</sub> ≈ 12.5 W / (90 V × PF)
-              </InlineMath>
+              </M>
               . With a typical bridge-rectifier power factor of 0.5, that is roughly{' '}
               <strong>0.28 A RMS</strong> — but the peak current into the bulk cap is several amps
               because conduction happens only near the AC peak
@@ -252,9 +252,9 @@ const CAPSTONE_USBC: Capstone = {
         <>
           <p className="mb-lg m-0">
             For an isolated flyback, the reflected output voltage on the primary side (call it{' '}
-            <InlineMath>
+            <M>
               V<sub>or</sub>
-            </InlineMath>
+            </M>
             ) should sit somewhere between roughly 80 V and 120 V so that:
           </p>
           <ul className="my-md mb-lg pl-xl">
@@ -269,13 +269,13 @@ const CAPSTONE_USBC: Capstone = {
           </ul>
           <p className="mb-lg m-0">
             Pick{' '}
-            <InlineMath>
+            <M>
               V<sub>or</sub> = 100 V
-            </InlineMath>{' '}
+            </M>
             and compute the primary-to-secondary turns ratio{' '}
-            <InlineMath>
+            <M>
               n = N<sub>p</sub>/N<sub>s</sub>
-            </InlineMath>
+            </M>
             . Then compute the MOSFET peak drain voltage at high-line. Use a forward diode drop of{' '}
             <strong>
               V<sub>F</sub> = 0.4 V
@@ -351,11 +351,11 @@ const CAPSTONE_USBC: Capstone = {
       problem: (
         <>
           <p className="mb-lg m-0">
-            In DCM the primary current ramps from zero to a peak
-            <InlineMath>
+            In DCM the primary current ramps from zero to a peak{' '}
+            <M>
               {' '}
               I<sub>pk</sub>
-            </InlineMath>{' '}
+            </M>
             each switching cycle, then discharges entirely through the secondary before the next
             cycle starts. The peak primary current and the magnetizing inductance are linked by the
             energy balance:
@@ -374,9 +374,9 @@ const CAPSTONE_USBC: Capstone = {
           </p>
           <p className="mb-lg m-0">
             Then verify the maximum duty cycle at low line stays below 0.5 using{' '}
-            <InlineMath>
+            <M>
               D = I<sub>pk</sub> · L<sub>p</sub> / (V<sub>in,dc,min</sub> · T<sub>sw</sub>)
-            </InlineMath>
+            </M>
             .
           </p>
         </>
@@ -397,7 +397,7 @@ const CAPSTONE_USBC: Capstone = {
             <strong>
               P<sub>in</sub>
             </strong>{' '}
-            is the input power drawn from the bulk cap (watts),
+            is the input power drawn from the bulk cap (watts),{' '}
             <strong>
               {' '}
               I<sub>pk</sub>
@@ -435,9 +435,9 @@ const CAPSTONE_USBC: Capstone = {
           </p>
           <p className="mb-lg m-0">
             The peak secondary current is{' '}
-            <InlineMath>
+            <M>
               I<sub>sec,pk</sub> = n · I<sub>pk</sub> = 18 × 1.2 = 21.6 A
-            </InlineMath>{' '}
+            </M>
             — looks alarming, but it only flows for ~9 µs each cycle and averages out to the 2 A
             output. The Schottky rectifier has to handle that peak instantaneously.
           </p>
@@ -457,17 +457,17 @@ const CAPSTONE_USBC: Capstone = {
             <li className="my-sm">
               <strong>Capacitive ripple</strong> — at switching frequency, the charge dumped per
               cycle is{' '}
-              <InlineMath>
+              <M>
                 ΔQ = I<sub>out</sub>/f<sub>sw</sub>
-              </InlineMath>
+              </M>
               . Keep capacitive ripple below 50 mV<sub>pp</sub>.
             </li>
             <li className="my-sm">
               <strong>ESR ripple</strong> — the cap's equivalent series resistance turns the
               secondary's peak current into a voltage spike{' '}
-              <InlineMath>
+              <M>
                 ΔV = ESR · I<sub>sec,pk</sub>
-              </InlineMath>
+              </M>
               . With a typical low-ESR electrolytic ESR ≈ 50 mΩ, this is about 1 V at I
               <sub>sec,pk</sub> = 21.6 A — unacceptable.
             </li>
@@ -1677,7 +1677,7 @@ const CAPSTONE_RADIO: Capstone = {
             L = 1 / (4π² · (10⁶)² · 365×10⁻¹²) ≈ <strong>69.4 µH</strong>
           </Formula>
           <p className="mb-lg m-0">
-            where <strong>L</strong> is the tank inductance (henries),
+            where <strong>L</strong> is the tank inductance (henries),{' '}
             <strong>
               {' '}
               f<sub>0</sub>
@@ -2059,9 +2059,9 @@ const CAPSTONE_RADIO: Capstone = {
         </p>
         <p className="mb-lg m-0">
           <strong>(3) Image frequency</strong>. Any signal at{' '}
-          <InlineMath>
+          <M>
             f<sub>image</sub> = f<sub>LO</sub> + f<sub>IF</sub> = 1.910 MHz
-          </InlineMath>{' '}
+          </M>
           also mixes down to 455 kHz and will be received <em>simultaneously</em> with the desired 1
           MHz station — a hard failure mode. With AM broadcast running 530–1700 kHz, an image at
           1.910 MHz is outside the band and is rejected by the antenna's preselector tank (the 69.4

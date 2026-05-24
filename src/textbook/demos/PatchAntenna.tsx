@@ -17,10 +17,10 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -79,9 +79,25 @@ export function PatchAntennaDemo({ figure }: Props) {
       ctx.restore();
       drawLabel(ctx, { text: 'feed', x: cxL - Lpx / 4, y: cyL + 14, align: 'center' });
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `L = ${Lmm.toFixed(1)} mm`, x: 12, y: 18, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `εᵣ = ${eps.toFixed(2)}`, x: 12, y: 32, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'patch (top view)', x: cxL, y: H - 12, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: `L = ${Lmm.toFixed(1)} mm`,
+        x: 12,
+        y: 18,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `εᵣ = ${eps.toFixed(2)}`,
+        x: 12,
+        y: 32,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: 'patch (top view)',
+        x: cxL,
+        y: H - 12,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       const cxR = splitX + (W - splitX) / 2;
       const cyR = H / 2;
       const R = Math.min((W - splitX) * 0.4, H * 0.4);
@@ -173,9 +189,13 @@ export function PatchAntennaDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Patch antenna resonance"
-        left={<InlineMath tex="f_0 = c\,/\,(2\,L\,\sqrt{\varepsilon_r})" />}
+        left={<M tex="f_0 = c\,/\,(2\,L\,\sqrt{\varepsilon_r})" />}
         rightLabel="At this operating point"
-        right={<InlineMath tex={`f_0 = c\\,/\\,(2 \\times ${Lmm.toFixed(1)}\\,\\text{mm} \\times \\sqrt{${eps.toFixed(2)}}) = ${f0GHz.toFixed(2)}\\,\\text{GHz}`} />}
+        right={
+          <M
+            tex={`f_0 = c\\,/\\,(2 \\times ${Lmm.toFixed(1)}\\,\\text{mm} \\times \\sqrt{${eps.toFixed(2)}}) = ${f0GHz.toFixed(2)}\\,\\text{GHz}`}
+          />
+        }
       />
     </Demo>
   );

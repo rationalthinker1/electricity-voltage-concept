@@ -18,7 +18,7 @@ import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawAxes, drawHLine, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -123,9 +123,23 @@ export function GridTieInverterDemo({ figure }: Props) {
       ctx.fill();
       const lx = padL + plotW + 8;
       ctx.fillRect(lx, padT + 8 - 1, 10, 2);
-      drawLabel(ctx, { text: 'V_grid', x: lx + 14, y: padT + 8, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'V_grid',
+        x: lx + 14,
+        y: padT + 8,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx.fillRect(lx, padT + 24 - 1, 10, 2);
-      drawLabel(ctx, { text: 'I_inj', x: lx + 14, y: padT + 24, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'I_inj',
+        x: lx + 14,
+        y: padT + 24,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx.save();
       ctx.globalAlpha = 0.6;
       ctx.fillRect(lx, padT + 40 - 2, 10, 4);
@@ -189,9 +203,13 @@ export function GridTieInverterDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Real and reactive power"
-        left={<InlineMath tex="P = V_{\text{rms}} I_{\text{rms}} \cos\theta,\quad Q = V_{\text{rms}} I_{\text{rms}} \sin\theta" />}
+        left={
+          <M tex="P = V_{\text{rms}} I_{\text{rms}} \cos\theta,\quad Q = V_{\text{rms}} I_{\text{rms}} \sin\theta" />
+        }
         rightLabel={`At θ = ${thetaDeg.toFixed(0)}°`}
-        right={<InlineMath tex={`P = ${P.toFixed(0)}\\,\\text{W},\\quad Q = ${Q.toFixed(0)}\\,\\text{VAR}`} />}
+        right={
+          <M tex={`P = ${P.toFixed(0)}\\,\\text{W},\\quad Q = ${Q.toFixed(0)}\\,\\text{VAR}`} />
+        }
       />
     </Demo>
   );

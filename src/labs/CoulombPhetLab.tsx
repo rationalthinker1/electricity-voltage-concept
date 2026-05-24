@@ -12,7 +12,7 @@
  * remaining rows are blank slots for the student to populate.
  */
 
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { LabShell } from '@/components/LabShell';
 import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
@@ -81,15 +81,14 @@ export default function CoulombPhetLab() {
         />
 
         <Prompt label="A1">
-          Plot <InlineMath tex="\log_{10} F" /> on the vertical axis vs{' '}
-          <InlineMath tex="\log_{10} r" /> on the horizontal axis. Six points. Draw the best-fit
-          straight line by eye, or use the <code className="font-3 text-3">SLOPE()</code> function
-          in your spreadsheet.
+          Plot <M tex="\log_{10} F" /> on the vertical axis vs <M tex="\log_{10} r" /> on the
+          horizontal axis. Six points. Draw the best-fit straight line by eye, or use the{' '}
+          <code className="font-3 text-3">SLOPE()</code> function in your spreadsheet.
         </Prompt>
         <Prompt label="A2">
           Report the slope of your line, with a one-decimal uncertainty estimate. The expected
-          theoretical value is <InlineMath tex="-2" /> (because Coulomb's law has{' '}
-          <InlineMath tex="r^{2}" /> in the denominator). How close did you get?
+          theoretical value is <M tex="-2" /> (because Coulomb's law has <M tex="r^{2}" /> in the
+          denominator). How close did you get?
         </Prompt>
       </Section>
 
@@ -97,9 +96,9 @@ export default function CoulombPhetLab() {
         <p className="mb-prose-2">
           Reset both spheres. Set the separation to exactly{' '}
           <strong className="text-text font-medium">5.0 cm</strong> and hold it there. Fix{' '}
-          <InlineMath tex="Q_2 = +4\ \mu\text{C}" />. Sweep <InlineMath tex="Q_1" /> through{' '}
-          <strong className="text-text font-medium">+1, +2, +4, +6, +8, +10 μC</strong>, recording
-          F at each step.
+          <M tex="Q_2 = +4\ \mu\text{C}" />. Sweep <M tex="Q_1" /> through{' '}
+          <strong className="text-text font-medium">+1, +2, +4, +6, +8, +10 μC</strong>, recording F
+          at each step.
         </p>
 
         <DataTable
@@ -125,13 +124,12 @@ export default function CoulombPhetLab() {
 
         <Prompt label="B1">
           The ratio in the last column should be roughly constant. Why? Write the answer in one
-          sentence using <InlineMath tex="F = k\, Q_1 Q_2 / r^2" />.
+          sentence using <M tex="F = k\, Q_1 Q_2 / r^2" />.
         </Prompt>
         <Prompt label="B2">
-          Take the mean of your six <InlineMath tex="F / Q_1" /> values and use it to back-solve for
-          Coulomb's constant <InlineMath tex="k" />. You have <InlineMath tex="Q_2" /> and{' '}
-          <InlineMath tex="r" /> from the setup; solve{' '}
-          <InlineMath tex="k = (F/Q_1) \cdot r^2 / Q_2" />.
+          Take the mean of your six <M tex="F / Q_1" /> values and use it to back-solve for
+          Coulomb's constant <M tex="k" />. You have <M tex="Q_2" /> and <M tex="r" /> from the
+          setup; solve <M tex="k = (F/Q_1) \cdot r^2 / Q_2" />.
         </Prompt>
         <Prompt label="B3">
           The accepted CODATA value is{' '}
@@ -146,9 +144,9 @@ export default function CoulombPhetLab() {
         <p className="mb-prose-2">
           You have now done — at undergraduate fidelity — what Coulomb did in 1785 with a torsion
           balance so delicate it could resolve the twist of a silk thread
-          <Cite id="coulomb-1785" in={SOURCES} />. The exponent <InlineMath tex="-2" /> you
-          extracted in part A is the same exponent that Williams, Faller and Hill confirmed in 1971
-          to one part in <InlineMath tex="10^{16}" /> using a charged concentric-shell experiment
+          <Cite id="coulomb-1785" in={SOURCES} />. The exponent <M tex="-2" /> you extracted in part
+          A is the same exponent that Williams, Faller and Hill confirmed in 1971 to one part in{' '}
+          <M tex="10^{16}" /> using a charged concentric-shell experiment
           <Cite id="williams-faller-hill-1971" in={SOURCES} />.
         </p>
         <Pullout>
@@ -158,14 +156,16 @@ export default function CoulombPhetLab() {
       </Section>
 
       <Section tag="05" title="Writeup">
-        <p className="mb-prose-2">
-          Submit a one-page writeup containing:
-        </p>
-        <ul className="text-6 text-text-dim space-y-1 leading-3 ml-md">
+        <p className="mb-prose-2">Submit a one-page writeup containing:</p>
+        <ul className="text-6 text-text-dim ml-md space-y-1 leading-3">
           <li>— Both completed data tables (printed or screenshot).</li>
           <li>— Both plots, with axis labels, units, and a best-fit line.</li>
-          <li>— Your extracted exponent of <InlineMath tex="r" /> with uncertainty.</li>
-          <li>— Your extracted value of <InlineMath tex="k" /> with percent error vs CODATA.</li>
+          <li>
+            — Your extracted exponent of <M tex="r" /> with uncertainty.
+          </li>
+          <li>
+            — Your extracted value of <M tex="k" /> with percent error vs CODATA.
+          </li>
           <li>
             — A one-paragraph reflection: where did the largest source of error come from, given
             that PhET is computing the exact equation internally?
@@ -176,9 +176,9 @@ export default function CoulombPhetLab() {
       <Stretch title="Going further">
         <p>
           Run Experiment A a second time at a different fixed charge product — say{' '}
-          <InlineMath tex="Q_1 = +2\ \mu\text{C}" />, <InlineMath tex="Q_2 = +8\ \mu\text{C}" /> —
-          and confirm your fitted slope is unchanged. Does the <em className="italic">intercept</em>{' '}
-          shift, and by how much? Predict the shift algebraically before measuring it.
+          <M tex="Q_1 = +2\ \mu\text{C}" />, <M tex="Q_2 = +8\ \mu\text{C}" /> — and confirm your
+          fitted slope is unchanged. Does the <em className="italic">intercept</em> shift, and by
+          how much? Predict the shift algebraically before measuring it.
         </p>
       </Stretch>
     </>
@@ -188,24 +188,23 @@ export default function CoulombPhetLab() {
     <>
       <h3 className="lab-section-h3">Why this lab exists</h3>
       <p className="mb-prose-3">
-        Every physics textbook tells you that{' '}
-        <InlineMath tex="F = k\, Q_1 Q_2 / r^2" /> is the foundational law of electrostatics.
-        Very few ask the student to <em className="text-text italic">prove it</em>. In a real
-        torsion-balance lab the equipment is delicate, the data is noisy, and the result is a
-        slope-fit on a log-log plot — the same workflow you just walked through here, but compressed
-        from days to minutes by a peer-reviewed simulation hosted at the University of Colorado
+        Every physics textbook tells you that <M tex="F = k\, Q_1 Q_2 / r^2" /> is the foundational
+        law of electrostatics. Very few ask the student to{' '}
+        <em className="text-text italic">prove it</em>. In a real torsion-balance lab the equipment
+        is delicate, the data is noisy, and the result is a slope-fit on a log-log plot — the same
+        workflow you just walked through here, but compressed from days to minutes by a
+        peer-reviewed simulation hosted at the University of Colorado
         <Cite id="phet-coulombs-law" in={SOURCES} />.
       </p>
 
       <h3 className="lab-section-h3">What you learned</h3>
       <p className="mb-prose-3">
         The empirical content of Coulomb's law is two facts. <strong>One:</strong> the force scales
-        as <InlineMath tex="1/r^2" />, which you confirmed by fitting a slope of −2 on your log-log
-        plot. <strong>Two:</strong> the force is proportional to the product of charges, which you
-        confirmed by holding <InlineMath tex="Q_2" /> and <InlineMath tex="r" /> fixed and reading
-        off a constant <InlineMath tex="F/Q_1" />. Combine those two facts and the form of the
-        equation is fully fixed; the only thing left to measure is the constant{' '}
-        <InlineMath tex="k" />, which you did in part B
+        as <M tex="1/r^2" />, which you confirmed by fitting a slope of −2 on your log-log plot.{' '}
+        <strong>Two:</strong> the force is proportional to the product of charges, which you
+        confirmed by holding <M tex="Q_2" /> and <M tex="r" /> fixed and reading off a constant{' '}
+        <M tex="F/Q_1" />. Combine those two facts and the form of the equation is fully fixed; the
+        only thing left to measure is the constant <M tex="k" />, which you did in part B
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
@@ -213,11 +212,11 @@ export default function CoulombPhetLab() {
       <p className="mb-prose-3">
         The reason the exponent is exactly −2 (and not −1.998 or −2.0001) is{' '}
         <em className="text-text italic">geometric</em>. The surface area of a sphere at radius{' '}
-        <InlineMath tex="r" /> scales as <InlineMath tex="4\pi r^2" />. The "amount of influence" a
-        point source spreads through space is conserved as it spreads outward; if it's diluted over
-        an ever-growing sphere of area <InlineMath tex="\propto r^2" />, then the field strength at
-        any one point on that sphere must fall as <InlineMath tex="1/r^2" />. The inverse-square
-        law is, at bottom, a statement that we live in three spatial dimensions
+        <M tex="r" /> scales as <M tex="4\pi r^2" />. The "amount of influence" a point source
+        spreads through space is conserved as it spreads outward; if it's diluted over an
+        ever-growing sphere of area <M tex="\propto r^2" />, then the field strength at any one
+        point on that sphere must fall as <M tex="1/r^2" />. The inverse-square law is, at bottom, a
+        statement that we live in three spatial dimensions
         <Cite id="feynman-II-2" in={SOURCES} />.
       </p>
 
@@ -225,8 +224,8 @@ export default function CoulombPhetLab() {
       <p className="mb-prose-3">
         Coulomb's law applies to <em className="text-text italic">point charges at rest</em>.
         Extended charge distributions only obey it to the extent you treat them as collections of
-        point charges and superpose. Accelerating charges radiate, and the instantaneous-action
-        form of the law breaks down in favour of the retarded fields of full electrodynamics. PhET's
+        point charges and superpose. Accelerating charges radiate, and the instantaneous-action form
+        of the law breaks down in favour of the retarded fields of full electrodynamics. PhET's
         simulation is an idealisation — the spheres in the sim are point charges with a graphical
         skin, not the conducting balls of a real torsion balance, which would induce charge in each
         other at close separation and bend the curve <Cite id="griffiths-2017" in={SOURCES} />.

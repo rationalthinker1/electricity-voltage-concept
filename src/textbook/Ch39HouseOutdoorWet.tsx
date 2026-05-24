@@ -18,7 +18,7 @@
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Term } from '@/components/Term';
@@ -170,8 +170,8 @@ export default function Ch39HouseOutdoorWet() {
         }
         hint={
           <>
-            Apply <InlineMath id="ohms-law" /> rearranged as <InlineMath tex="I = V/R" /> from
-            Ch.32, then compare to the 5 mA GFCI threshold.
+            Apply <M id="ohms-law" /> rearranged as <M tex="I = V/R" /> from Ch.32, then compare to
+            the 5 mA GFCI threshold.
           </>
         }
         answer={
@@ -266,14 +266,12 @@ export default function Ch39HouseOutdoorWet() {
       </p>
       <Formula tex="I_{\text{body}} = (V_{\text{water}} - V_{\text{ladder}}) / R_{\text{body}}" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="I_{\text{body}}" />{' '}
-        is the current through the swimmer (in amperes),{' '}
-        <InlineMath tex="V_{\text{water}}" />{' '}
+        where <M tex="I_{\text{body}}" />
+        is the current through the swimmer (in amperes), <M tex="V_{\text{water}}" />
         is the potential the fault has imposed on the pool water (in volts),{' '}
-        <InlineMath tex="V_{\text{ladder}}" />{' '}
+        <M tex="V_{\text{ladder}}" />
         is the potential of the metal the swimmer is gripping (in volts), and{' '}
-        <InlineMath tex="R_{\text{body}}" />{' '}
+        <M tex="R_{\text{body}}" />
         is the{' '}
         <Term
           def={
@@ -313,12 +311,10 @@ export default function Ch39HouseOutdoorWet() {
       </p>
       <Formula tex="V_{\text{step}} = E \times \Delta d_{\text{step}}" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="V_{\text{step}}" />{' '}
-        is the voltage difference across the gait between the two feet (in volts),{' '}
-        <InlineMath tex="E" /> is the local potential gradient in the
-        soil surface around the fault (in volts per metre), and{' '}
-        <InlineMath tex="\Delta d_{\text{step}}" />{' '}
+        where <M tex="V_{\text{step}}" />
+        is the voltage difference across the gait between the two feet (in volts), <M tex="E" /> is
+        the local potential gradient in the soil surface around the fault (in volts per metre), and{' '}
+        <M tex="\Delta d_{\text{step}}" />
         is the distance between the two feet (in metres; roughly 0.7 m for a normal walking gait).
         For a 10 kA ground-fault depositing into damp soil through a single rod, the spreading
         resistance can produce E ≈ 1 kV/m within a metre of the rod, giving V<sub>step</sub> ≈ 700 V
@@ -678,14 +674,11 @@ export default function Ch39HouseOutdoorWet() {
       </p>
       <Formula tex="P_{\text{charge}} = V \times I \times \eta" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="P_{\text{charge}}" />{' '}
-        is the AC power delivered to the vehicle's onboard charger (in watts),{' '}
-        <InlineMath tex="V" /> is the line-to-line supply voltage at
-        the EVSE (in volts, nominally 240 V on a North-American split-phase service),{' '}
-        <InlineMath tex="I" /> is the RMS current the EVSE has
-        authorised the vehicle to draw via the control-pilot duty cycle (in amperes), and{' '}
-        <InlineMath tex="\eta" /> is the{' '}
+        where <M tex="P_{\text{charge}}" />
+        is the AC power delivered to the vehicle's onboard charger (in watts), <M tex="V" /> is the
+        line-to-line supply voltage at the EVSE (in volts, nominally 240 V on a North-American
+        split-phase service), <M tex="I" /> is the RMS current the EVSE has authorised the vehicle
+        to draw via the control-pilot duty cycle (in amperes), and <M tex="\eta" /> is the{' '}
         <Term
           def={
             <>

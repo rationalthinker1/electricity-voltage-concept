@@ -20,7 +20,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
@@ -79,8 +79,23 @@ export function OhmsLawTwoViewsDemo({ figure }: Props) {
       ctx.fillRect(0, 0, w, h);
 
       // Headline at top of canvas.
-      drawLabel(ctx, { text: "Ohm's law", x: w / 2, y: 6, color: colors.text, font: '600 14px "DM Sans", sans-serif', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: 'V = I × R', x: w / 2, y: 26, font: "italic 13px 'STIX Two Text', serif", align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: "Ohm's law",
+        x: w / 2,
+        y: 6,
+        color: colors.text,
+        font: '600 14px "DM Sans", sans-serif',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'V = I × R',
+        x: w / 2,
+        y: 26,
+        font: "italic 13px 'STIX Two Text', serif",
+        align: 'center',
+        baseline: 'top',
+      });
 
       // Split canvas into two stacked sub-panels.
       const topY = 50;
@@ -175,7 +190,7 @@ export function OhmsLawTwoViewsDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Panel 1: voltage tracks current"
         left={
-          <InlineMath
+          <M
             tex={
               `V \\;=\\; R\\, I \\;=\\; 5\\times ${I_left.toFixed(2)} ` +
               `\\;=\\; ${V_left.toFixed(2)}\\ \\text{V}`
@@ -184,7 +199,7 @@ export function OhmsLawTwoViewsDemo({ figure }: Props) {
         }
         rightLabel="Panel 2: current falls as 1/R"
         right={
-          <InlineMath
+          <M
             tex={
               `I \\;=\\; V/R \\;=\\; 20/${R_right.toFixed(1)} ` +
               `\\;\\approx\\; ${I_right.toFixed(2)}\\ \\text{A}`
@@ -301,8 +316,21 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
 
   ctx.fillStyle = colors.textDim;
   const yLabel = p.mode === 'V-of-I' ? 'V' : 'R';
-  drawLabel(ctx, { text: yLabel, x: px - 6, y: py + 4, font: "italic 11px 'STIX Two Text', serif", align: 'right', baseline: 'middle' });
-  drawLabel(ctx, { text: 'I', x: px + pw - 8, y: py + ph + 6, font: "italic 11px 'STIX Two Text', serif", baseline: 'top' });
+  drawLabel(ctx, {
+    text: yLabel,
+    x: px - 6,
+    y: py + 4,
+    font: "italic 11px 'STIX Two Text', serif",
+    align: 'right',
+    baseline: 'middle',
+  });
+  drawLabel(ctx, {
+    text: 'I',
+    x: px + pw - 8,
+    y: py + ph + 6,
+    font: "italic 11px 'STIX Two Text', serif",
+    baseline: 'top',
+  });
 
   const xMax = I_MAX;
   const yMax = p.mode === 'V-of-I' ? V_MAX : R_AXIS_MAX;
@@ -351,8 +379,24 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
   ctx.fillStyle = colors.text;
   const yText =
     p.mode === 'V-of-I' ? `${dotYx.toFixed(1)}V` : `${Math.min(dotYx, yMax).toFixed(1)}Ω`;
-  drawLabel(ctx, { text: yText, x: px - 4, y: dot.y, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-  drawLabel(ctx, { text: `${dotIx.toFixed(2)}A`, x: dot.x, y: py + ph + 6, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+  drawLabel(ctx, {
+    text: yText,
+    x: px - 4,
+    y: dot.y,
+    color: colors.text,
+    font: '10px "JetBrains Mono", monospace',
+    align: 'right',
+    baseline: 'middle',
+  });
+  drawLabel(ctx, {
+    text: `${dotIx.toFixed(2)}A`,
+    x: dot.x,
+    y: py + ph + 6,
+    color: colors.text,
+    font: '10px "JetBrains Mono", monospace',
+    align: 'center',
+    baseline: 'top',
+  });
 
   ctx.fillStyle = colors.bg;
   ctx.strokeStyle = traceColor;

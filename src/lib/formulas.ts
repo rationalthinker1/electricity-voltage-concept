@@ -8,9 +8,9 @@
  *
  * Use it via:
  *   <Formula id="coulomb-force" />            // block, looks up tex + plain
- *   <InlineMath id="coulomb-force" />         // inline, same lookup
+ *   <M id="coulomb-force" />         // inline, same lookup
  *   <Formula tex="..." />                     // one-off (worked problems)
- *   <InlineMath tex="..." />                  // one-off inline
+ *   <M tex="..." />                  // one-off inline
  *
  * Worked-problem formulas (single substitutions inside TryIt answers) stay
  * inline as `tex`. The registry is for equations that appear by name across

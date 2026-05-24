@@ -13,14 +13,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo,
-  DemoControls,
-  EquationStrip,
-  MiniReadout,
-  MiniSlider,
-} from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { PHYS, sciTeX } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -120,9 +114,19 @@ export function RadiationPressureDemo({ figure }: Props) {
 
       // Labels
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: 'absorbing target · feels P = I/c', x: simCtx.targetX - 80, y: targetTop - 8, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: 'absorbing target · feels P = I/c',
+        x: simCtx.targetX - 80,
+        y: targetTop - 8,
+        font: '10px "JetBrains Mono", monospace',
+      });
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'EM wave packets →', x: xL, y: 22, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: 'EM wave packets →',
+        x: xL,
+        y: 22,
+        font: '10px "JetBrains Mono", monospace',
+      });
     },
     [],
     (info: CanvasInfo) => ({
@@ -168,7 +172,7 @@ export function RadiationPressureDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Absorbing surface"
         left={
-          <InlineMath
+          <M
             tex={
               `P \\;=\\; \\dfrac{I}{c} \\;=\\; ` +
               `\\dfrac{${I.toFixed(0)}}{2.998\\times10^{8}} ` +
@@ -178,7 +182,7 @@ export function RadiationPressureDemo({ figure }: Props) {
         }
         rightLabel="Perfect reflector"
         right={
-          <InlineMath
+          <M
             tex={
               `P \\;=\\; \\dfrac{2I}{c} \\;=\\; ` +
               `\\dfrac{2\\times${I.toFixed(0)}}{2.998\\times10^{8}} ` +

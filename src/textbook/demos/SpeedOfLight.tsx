@@ -12,14 +12,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import {
-  Demo,
-  DemoControls,
-  EquationStrip,
-  MiniReadout,
-  MiniSlider,
-} from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
@@ -127,7 +121,7 @@ export function SpeedOfLightDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Phase speed"
         left={
-          <InlineMath
+          <M
             tex={
               `v \\;=\\; \\dfrac{c}{\\sqrt{\\varepsilon_{r}\\mu_{r}}} \\;=\\; ` +
               `\\dfrac{c}{\\sqrt{${er.toFixed(2)}\\cdot${mr.toFixed(2)}}} ` +
@@ -137,7 +131,7 @@ export function SpeedOfLightDemo({ figure }: Props) {
         }
         rightLabel="Refractive index"
         right={
-          <InlineMath
+          <M
             tex={
               `n \\;=\\; \\sqrt{\\varepsilon_{r}\\mu_{r}} \\;=\\; ` +
               `\\sqrt{${er.toFixed(2)}\\cdot${mr.toFixed(2)}} \\;\\approx\\; ${n.toFixed(3)}`

@@ -8,7 +8,7 @@
 import { useState } from 'react';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { fmtResistance, fmtTolerance } from '@/lib/formatters';
 
 interface Props {
@@ -103,14 +103,14 @@ export function ColorCodeDecoderDemo({ figure }: Props) {
       <DemoControls>
         <button
           type="button"
-          className={`mini-toggle${mode === 4 ? ' on' : ''}`}
+          className={`mini-toggle${mode === 4 ? 'on' : ''}`}
           onClick={() => setMode(4)}
         >
           4-band
         </button>
         <button
           type="button"
-          className={`mini-toggle${mode === 5 ? ' on' : ''}`}
+          className={`mini-toggle${mode === 5 ? 'on' : ''}`}
           onClick={() => setMode(5)}
         >
           5-band
@@ -126,7 +126,7 @@ export function ColorCodeDecoderDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Decoding rule"
         left={
-          <InlineMath
+          <M
             tex={
               mode === 4
                 ? `R = (d_1 \\cdot 10 + d_2) \\times 10^m \\,\\Omega`
@@ -136,7 +136,7 @@ export function ColorCodeDecoderDemo({ figure }: Props) {
         }
         rightLabel="At current bands"
         right={
-          <InlineMath
+          <M
             tex={`${fmtResistance(nominal)} \\;\\pm\\; ${(tol * 100).toFixed(tol < 0.01 ? 2 : 0)}\\%`}
           />
         }

@@ -15,7 +15,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -32,8 +32,8 @@ export default function Ch30HouseSwitchesReceptacles() {
       <p className="chapter-intro">
         Open a standard duplex receptacle and look at the back. Brass-coloured screws line one side,
         silver-coloured screws line the other, and a single green screw sits at the bottom. Between
-        the top pair of brass screws and the bottom pair, a small pre-scored break-off tab joins them;
-        the same tab exists on the silver side. Snap that tab with a pair of pliers and the
+        the top pair of brass screws and the bottom pair, a small pre-scored break-off tab joins
+        them; the same tab exists on the silver side. Snap that tab with a pair of pliers and the
         receptacle is electrically two halves — top and bottom — that can be controlled
         independently. The whole device is plastic, metal stampings, and five colour-coded terminal
         screws, and yet every safety rule of residential wiring is encoded into those colours. Brass
@@ -270,8 +270,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         }
         hint={
           <>
-            Power, voltage, and current are related by <InlineMath id="power-vi" />; solve for{' '}
-            <InlineMath tex="I" />.
+            Power, voltage, and current are related by <M id="power-vi" />; solve for <M tex="I" />.
           </>
         }
         answer={
@@ -293,8 +292,8 @@ export default function Ch30HouseSwitchesReceptacles() {
       <p className="mb-prose-3">
         Every NEMA configuration is named <strong className="text-text font-medium">X-YYR</strong>{' '}
         for a receptacle or <strong className="text-text font-medium">X-YYP</strong> for a plug,
-        where <InlineMath tex="X" /> is the configuration code and{' '}
-        <InlineMath tex="YY" /> is the current rating in amperes
+        where <M tex="X" /> is the configuration code and <M tex="YY" /> is the current rating in
+        amperes
         <Cite id="nema-wd-6" in={SOURCES} />. The configuration code encodes the voltage and the
         wire count:
       </p>
@@ -341,12 +340,11 @@ export default function Ch30HouseSwitchesReceptacles() {
       </p>
       <Formula tex="P_{\\max} = V \\times I_{\\text{rated}}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="P_{\max}" /> is the maximum steady-state
-        power the receptacle can deliver (in watts),
-        <InlineMath tex="V" /> is the nominal voltage at the outlet
-        (in volts — 120 V for a 5-pattern, 240 V for a 6-pattern, 240 V line-to-line for a
-        14-pattern), and <InlineMath tex="I_{\text{rated}}" /> is the current
-        rating stamped on the device (in amperes). Plugging in the common patterns:
+        where <M tex="P_{\max}" /> is the maximum steady-state power the receptacle can deliver (in
+        watts), <M tex="V" /> is the nominal voltage at the outlet (in volts — 120 V for a
+        5-pattern, 240 V for a 6-pattern, 240 V line-to-line for a 14-pattern), and{' '}
+        <M tex="I_{\text{rated}}" /> is the current rating stamped on the device (in amperes).
+        Plugging in the common patterns:
       </p>
       <ul>
         <li>
@@ -396,15 +394,13 @@ export default function Ch30HouseSwitchesReceptacles() {
       </p>
       <Formula tex="V_{\\text{outlet}} \\approx V_{\\text{line}} - I_{\\text{branch}} \\times R_{\\text{run}}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="V_{\text{outlet}}" /> is the voltage available
-        at a given outlet (in volts), <InlineMath tex="V_{\text{line}}" /> is
-        the nominal voltage at the panel (120 V for a standard branch),{' '}
-        <InlineMath tex="I_{\text{branch}}" /> is the total current being drawn
-        by everything downstream of that point on the chain (in amperes), and
-        <InlineMath tex="R_{\text{run}}" /> is the round-trip resistance of
-        the copper from the panel to that point (in ohms; see Ch.29 for the gauge tables). Every
-        outlet on the string sees the same nominal 120 V minus a small voltage-drop term that grows
-        with the length of wire upstream of it.
+        where <M tex="V_{\text{outlet}}" /> is the voltage available at a given outlet (in volts),{' '}
+        <M tex="V_{\text{line}}" /> is the nominal voltage at the panel (120 V for a standard
+        branch), <M tex="I_{\text{branch}}" /> is the total current being drawn by everything
+        downstream of that point on the chain (in amperes), and <M tex="R_{\text{run}}" /> is the
+        round-trip resistance of the copper from the panel to that point (in ohms; see Ch.29 for the
+        gauge tables). Every outlet on the string sees the same nominal 120 V minus a small
+        voltage-drop term that grows with the length of wire upstream of it.
       </p>
       <p className="mb-prose-3">
         Crucially, there is no <em className="text-text italic">hierarchy</em>. The first outlet on
@@ -429,7 +425,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         }
         hint={
           <>
-            Sum the currents of all downstream loads. Use <InlineMath id="power-vi" /> at 120 V.
+            Sum the currents of all downstream loads. Use <M id="power-vi" /> at 120 V.
           </>
         }
         answer={
@@ -553,21 +549,19 @@ export default function Ch30HouseSwitchesReceptacles() {
       <p className="mb-prose-3">
         Wire two three-way switches with their commons at the line and the load and their travellers
         tied together between them, and the resulting circuit behaves like an XNOR: the load is on
-        when the two switch selections match. Call switch 1's state{' '}
-        <InlineMath tex="S_1 \in \{0,1\}" /> for which traveller
-        it is currently pointing at, and the same for switch 2. The load is energised when the two
-        switches have <em className="text-text italic">matching</em> travellers selected — both 0 or
-        both 1 — and de-energised when they differ. In one line of truth-table:
+        when the two switch selections match. Call switch 1's state <M tex="S_1 \in \{0,1\}" /> for
+        which traveller it is currently pointing at, and the same for switch 2. The load is
+        energised when the two switches have <em className="text-text italic">matching</em>{' '}
+        travellers selected — both 0 or both 1 — and de-energised when they differ. In one line of
+        truth-table:
       </p>
       <Formula tex="\\text{load\\_state} = \\neg(S_1 \\oplus S_2)" />
       <p className="mb-prose-3">
-        where <InlineMath tex="S_1" /> and{' '}
-        <InlineMath tex="S_2" /> are the binary states of the two
-        switches (which traveller each is presently selecting; 0 or 1),{' '}
-        <InlineMath tex="\oplus" /> is the XOR operator, and{' '}
-        <InlineMath tex="\text{load\_state} \in \{0,1\}" /> is whether
-        the lamp is on (1) or off (0). Flipping either switch alone inverts{' '}
-        <InlineMath tex="\text{load\_state}" />, which is the whole point.
+        where <M tex="S_1" /> and <M tex="S_2" /> are the binary states of the two switches (which
+        traveller each is presently selecting; 0 or 1), <M tex="\oplus" /> is the XOR operator, and{' '}
+        <M tex="\text{load\_state} \in \{0,1\}" /> is whether the lamp is on (1) or off (0).
+        Flipping either switch alone inverts <M tex="\text{load\_state}" />, which is the whole
+        point.
       </p>
       <p className="mb-prose-3">
         Two physical topologies show up in the field. The first is{' '}
@@ -634,26 +628,23 @@ export default function Ch30HouseSwitchesReceptacles() {
         }
         hint={
           <>
-            Map up/down to 0/1, compute <InlineMath tex="S_1 \\oplus S_2" />, and toggle one bit at
-            a time.
+            Map up/down to 0/1, compute <M tex="S_1 \\oplus S_2" />, and toggle one bit at a time.
           </>
         }
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               Encode up = 0 (traveller A) and down = 1 (traveller B). Initial state{' '}
-              <InlineMath tex="S_1 = 0, S_2 = 1" />, so:
+              <M tex="S_1 = 0, S_2 = 1" />, so:
             </p>
             <Formula tex="\\text{load\\_state} = \\neg(0 \\oplus 1) = \\neg 1 = 0" />
             <p className="mb-prose-1 last:mb-0">
               Lamp is <strong className="text-text font-medium">off</strong>. Flip switch 2:{' '}
-              <InlineMath tex="S_2 \\to 0" />, so{' '}
-              <InlineMath tex="\\text{load\\_state} = \\neg(0 \\oplus 0) = 1" />. Lamp{' '}
-              <strong className="text-text font-medium">on</strong>. Flip switch 1:{' '}
-              <InlineMath tex="S_1 \\to 1" />, so{' '}
-              <InlineMath tex="\\text{load\\_state} = \\neg(1 \\oplus 0) = 0" />. Lamp{' '}
-              <strong className="text-text font-medium">off</strong> again. Every flip inverts the
-              lamp regardless of the other switch's position — which is exactly the property a
+              <M tex="S_2 \\to 0" />, so <M tex="\\text{load\\_state} = \\neg(0 \\oplus 0) = 1" />.
+              Lamp <strong className="text-text font-medium">on</strong>. Flip switch 1:{' '}
+              <M tex="S_1 \\to 1" />, so <M tex="\\text{load\\_state} = \\neg(1 \\oplus 0) = 0" />.
+              Lamp <strong className="text-text font-medium">off</strong> again. Every flip inverts
+              the lamp regardless of the other switch's position — which is exactly the property a
               staircase wants.
             </p>
           </>
@@ -727,8 +718,7 @@ export default function Ch30HouseSwitchesReceptacles() {
                 <strong className="text-text font-medium">Leading-edge</strong> dimming — the dimmer
                 holds the load OFF at the start of each half-cycle then turns it ON for the
                 remainder. Built from a triac; cheap, robust, but generates a steep{' '}
-                <InlineMath tex="di/dt" /> at switch-on that can stress small
-                switching power supplies.
+                <M tex="di/dt" /> at switch-on that can stress small switching power supplies.
               </>
             }
           >
@@ -736,10 +726,9 @@ export default function Ch30HouseSwitchesReceptacles() {
           </Term>{' '}
           (forward phase-cut): the dimmer holds the line OFF at the start of each half-cycle and
           turns it ON partway through. Built from a triac; cheap, robust, and the historical default
-          for incandescent and halogen loads. The downside is the steep{' '}
-          <InlineMath tex="di/dt" /> at turn-on — the load goes from zero current
-          to whatever the resistive load wants in microseconds, which can stress electronic loads
-          not designed for the surge
+          for incandescent and halogen loads. The downside is the steep <M tex="di/dt" /> at turn-on
+          — the load goes from zero current to whatever the resistive load wants in microseconds,
+          which can stress electronic loads not designed for the surge
           <Cite id="lutron-dimmer-app-note" in={SOURCES} />.
         </li>
         <li>
@@ -782,28 +771,24 @@ export default function Ch30HouseSwitchesReceptacles() {
       </p>
       <Formula tex="V_{\\text{rms}} = V_{\\text{peak}} \\times \\sqrt{\\dfrac{\\alpha}{2\\pi} - \\dfrac{\\sin(2\\alpha)}{4\\pi}}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="V_{\text{rms}}" /> is the root-mean-square
-        voltage across the load (in volts),
-        <InlineMath tex="V_{\text{peak}}" /> is the peak of the AC line
-        waveform (in volts; for a nominal 120 V_rms line,
-        <InlineMath tex="V_{\\text{peak}} = 120 \\times \\sqrt{2} \\approx 170\\ \\text{V}" />
-        ), and <InlineMath tex="\alpha" /> is the conduction angle in
-        radians (<InlineMath tex="0 \\le \\alpha \\le \\pi" />
-        ). At
-        <InlineMath tex="\\alpha = \\pi" /> (the triac is on for the entire half-cycle), the square
-        root reduces to <InlineMath tex="\\sqrt{1/2}" />, and
-        <InlineMath tex="V_{\\text{rms}} = V_{\\text{peak}}/\\sqrt{2}" /> — the ordinary line RMS
-        voltage. In terms of the line RMS{' '}
-        <InlineMath tex="V_{\\text{line}} = V_{\\text{peak}}/\\sqrt{2}" />, the formula is
-        equivalently{' '}
-        <InlineMath tex="V_{\\text{rms}} = V_{\\text{line}} \\times \\sqrt{\\alpha/\\pi - \\sin(2\\alpha)/(2\\pi)}" />
-        , which at <InlineMath tex="\\alpha = \\pi" /> returns <InlineMath tex="V_{\\text{line}}" />{' '}
-        as expected. At <InlineMath tex="\\alpha = 0" /> (the triac never fires),{' '}
-        <InlineMath tex="V_{\\text{rms}} = 0" /> and the load is off.
+        where <M tex="V_{\text{rms}}" /> is the root-mean-square voltage across the load (in volts),{' '}
+        <M tex="V_{\text{peak}}" /> is the peak of the AC line waveform (in volts; for a nominal 120
+        V_rms line, <M tex="V_{\\text{peak}} = 120 \\times \\sqrt{2} \\approx 170\\ \\text{V}" />
+        ), and <M tex="\alpha" /> is the conduction angle in radians (
+        <M tex="0 \\le \\alpha \\le \\pi" />
+        ). At <M tex="\\alpha = \\pi" /> (the triac is on for the entire half-cycle), the square
+        root reduces to <M tex="\\sqrt{1/2}" />, and{' '}
+        <M tex="V_{\\text{rms}} = V_{\\text{peak}}/\\sqrt{2}" /> — the ordinary line RMS voltage. In
+        terms of the line RMS <M tex="V_{\\text{line}} = V_{\\text{peak}}/\\sqrt{2}" />, the formula
+        is equivalently{' '}
+        <M tex="V_{\\text{rms}} = V_{\\text{line}} \\times \\sqrt{\\alpha/\\pi - \\sin(2\\alpha)/(2\\pi)}" />
+        , which at <M tex="\\alpha = \\pi" /> returns <M tex="V_{\\text{line}}" />
+        as expected. At <M tex="\\alpha = 0" /> (the triac never fires),{' '}
+        <M tex="V_{\\text{rms}} = 0" /> and the load is off.
       </p>
       <p className="mb-prose-3">
         The average power delivered to a purely resistive load follows from the usual identity{' '}
-        <InlineMath tex="P = V_{\\text{rms}}^2/R" />, so cutting the conduction angle by half does{' '}
+        <M tex="P = V_{\\text{rms}}^2/R" />, so cutting the conduction angle by half does{' '}
         <em className="text-text italic">not</em> halve the delivered power — it removes a chunk of
         the part of the half-cycle nearest the peak, and the integrand is quadratic in voltage
         there, so the power drops faster than the average. That asymmetry is why incandescent
@@ -827,12 +812,11 @@ export default function Ch30HouseSwitchesReceptacles() {
         >
           LED bulb
         </Term>{' '}
-        contains a switched-mode driver feeding a string of diodes. The driver's
-        input draws current in narrow gulps at the peaks of the line voltage, not smoothly
-        throughout the half-cycle. Pair a leading-edge triac dimmer with an LED driver and three
-        failure modes show up regularly. <em className="text-text italic">Flicker</em>: the driver's
-        input capacitor charges so quickly that the triac mis-fires or stops conducting before the
-        half-cycle ends.
+        contains a switched-mode driver feeding a string of diodes. The driver's input draws current
+        in narrow gulps at the peaks of the line voltage, not smoothly throughout the half-cycle.
+        Pair a leading-edge triac dimmer with an LED driver and three failure modes show up
+        regularly. <em className="text-text italic">Flicker</em>: the driver's input capacitor
+        charges so quickly that the triac mis-fires or stops conducting before the half-cycle ends.
         <em className="text-text italic"> Buzzing</em>: the di/dt at triac firing excites mechanical
         resonances in the inductors inside the driver's EMI filter.{' '}
         <em className="text-text italic">Refusal to dim below 50 %</em>: at low conduction angle the
@@ -848,7 +832,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         question={
           <>
             A 1500 W incandescent shop lamp is on a leading-edge dimmer set to a conduction angle of{' '}
-            <InlineMath tex="\\alpha = \\pi/2" /> — the triac is conducting for exactly half of each
+            <M tex="\\alpha = \\pi/2" /> — the triac is conducting for exactly half of each
             half-cycle. The line is the U.S. standard 120 V_rms (V_peak ≈ 169.7 V). What is the RMS
             voltage delivered to the lamp, and what is the average power dissipated by the bulb
             (treating its filament as constant resistance for this estimate)?
@@ -856,34 +840,33 @@ export default function Ch30HouseSwitchesReceptacles() {
         }
         hint={
           <>
-            Plug <InlineMath tex="\\alpha = \\pi/2" /> into{' '}
-            <InlineMath tex="V_{\\text{rms}} = V_{\\text{peak}} \\times \\sqrt{\\alpha/(2\\pi) - \\sin(2\\alpha)/(4\\pi)}" />
-            ; note <InlineMath tex="\\sin(\\pi) = 0" />. Then compute the bulb's operating resistance
-            implied by its 1500 W rating at 120 V_rms.
+            Plug <M tex="\\alpha = \\pi/2" /> into{' '}
+            <M tex="V_{\\text{rms}} = V_{\\text{peak}} \\times \\sqrt{\\alpha/(2\\pi) - \\sin(2\\alpha)/(4\\pi)}" />
+            ; note <M tex="\\sin(\\pi) = 0" />. Then compute the bulb's operating resistance implied
+            by its 1500 W rating at 120 V_rms.
           </>
         }
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              With <InlineMath tex="\\alpha = \\pi/2" /> and{' '}
-              <InlineMath tex="\\sin(2 \\cdot \\pi/2) = \\sin(\\pi) = 0" />:
+              With <M tex="\\alpha = \\pi/2" /> and{' '}
+              <M tex="\\sin(2 \\cdot \\pi/2) = \\sin(\\pi) = 0" />:
             </p>
             <Formula tex="V_{\\text{rms}} = 169.7 \\times \\sqrt{0.25 - 0} \\approx 84.9\\ \\text{V}" />
             <p className="mb-prose-1 last:mb-0">
               That is below the nominal line RMS because the dimmer has removed the high-energy
-              leading part of every half-cycle. The resistance implied by
-              the bulb's nameplate is <InlineMath tex="R = V^2/P = 120^2/1500 = 9.6\\ \\Omega" />,
-              so the average power is:
+              leading part of every half-cycle. The resistance implied by the bulb's nameplate is{' '}
+              <M tex="R = V^2/P = 120^2/1500 = 9.6\\ \\Omega" />, so the average power is:
             </p>
             <Formula tex="P = \\dfrac{V_{\\text{rms}}^2}{R} = \\dfrac{84.9^2}{9.6} \\approx 750\\ \\text{W}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: <strong className="text-text font-medium">≈ 750 W</strong> in this
-              constant-resistance estimate. A real tungsten filament changes resistance as it cools, but the
-              calculation captures why half a conduction angle is not the same as half a visual
-              brightness setting
+              constant-resistance estimate. A real tungsten filament changes resistance as it cools,
+              but the calculation captures why half a conduction angle is not the same as half a
+              visual brightness setting
               <Cite id="lutron-dimmer-app-note" in={SOURCES} />. Dimming below half-brightness
-              requires <InlineMath tex="\\alpha < \\pi/2" />; below{' '}
-              <InlineMath tex="\\alpha = \\pi/3" /> the brightness falls off sharply.
+              requires <M tex="\\alpha < \\pi/2" />; below <M tex="\\alpha = \\pi/3" /> the
+              brightness falls off sharply.
             </p>
           </>
         }
@@ -1182,8 +1165,8 @@ export default function Ch30HouseSwitchesReceptacles() {
             <Cite id="nec-2023" in={SOURCES} />. The receptacle contains internal shutters that
             block both slots until they are pushed simultaneously — which only happens when a
             two-bladed plug enters, not when a child pushes in a hairpin or key. The rule was driven
-            by burn-injury risk in young children; the extra mechanism is now part of ordinary listed
-            residential devices.
+            by burn-injury risk in young children; the extra mechanism is now part of ordinary
+            listed residential devices.
           </p>
         </FAQItem>
 
@@ -1278,10 +1261,10 @@ export default function Ch30HouseSwitchesReceptacles() {
             leaving the load's neutral conductor tied straight back to the panel. With the switch
             off, the load is de-energised because no current can flow, but the neutral conductor is
             still electrically connected to the system neutral, which is bonded to ground at the
-            service panel. Do not treat the neutral as safe to touch: an open neutral, shared-neutral
-            wiring error, or fault can put it at a dangerous voltage. The safe rule is to verify the
-            whole box de-energised before touching any conductor; the hot conductor on the line side
-            of an open switch remains at full line voltage relative to ground.
+            service panel. Do not treat the neutral as safe to touch: an open neutral,
+            shared-neutral wiring error, or fault can put it at a dangerous voltage. The safe rule
+            is to verify the whole box de-energised before touching any conductor; the hot conductor
+            on the line side of an open switch remains at full line voltage relative to ground.
           </p>
         </FAQItem>
 
@@ -1290,8 +1273,8 @@ export default function Ch30HouseSwitchesReceptacles() {
             It mostly isn't, but the rating on the device traces all the way back to it. A 15 A
             receptacle's nameplate number is a count of coulombs per second of charge flowing
             through its contacts in steady state, and one ampere is one coulomb per second — about{' '}
-            <InlineMath tex="6.24\\times 10^{18}" /> elementary charges of{' '}
-            <InlineMath tex="e \\approx 1.602\\times 10^{-19}\\ \\text{C}" />
+            <M tex="6.24\\times 10^{18}" /> elementary charges of{' '}
+            <M tex="e \\approx 1.602\\times 10^{-19}\\ \\text{C}" />
             each, per second
             <Cite id="codata-2018" in={SOURCES} />. The brass and silver labelling and the slot
             geometry are just engineering wrappers around that count.

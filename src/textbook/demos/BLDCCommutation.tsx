@@ -15,7 +15,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -225,12 +225,12 @@ export function BLDCCommutationDemo({ figure }: Props) {
           Three stator coils 120° apart. At each step the controller drives one phase HIGH and one
           LOW (third floats), creating a stator field vector that snaps 60° around the bore. The
           permanent-magnet rotor chases that field with a fixed lead angle — six steps per
-          electrical revolution. A 4-pole rotor turns once every two electrical revolutions, so
-          <InlineMath tex="\text{RPM} = (f_{\text{elec}}/p_{\text{pairs}})\,60" />.
+          electrical revolution. A 4-pole rotor turns once every two electrical revolutions, so{' '}
+          <M tex="\text{RPM} = (f_{\text{elec}}/p_{\text{pairs}})\,60" />.
         </>
       }
-    
-      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}>
+      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}
+    >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
         <MiniSlider
@@ -248,12 +248,10 @@ export function BLDCCommutationDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="electrical rate"
         left={
-          <InlineMath
-            tex={`f_{\\text{elec}} = f_{\\text{step}}/6 = ${fElec.toFixed(2)}\\,\\text{Hz}`}
-          />
+          <M tex={`f_{\\text{elec}} = f_{\\text{step}}/6 = ${fElec.toFixed(2)}\\,\\text{Hz}`} />
         }
         rightLabel="mechanical speed"
-        right={<InlineMath tex={`\\text{RPM} = 60 f_{\\text{elec}}/2 = ${rpm.toFixed(1)}`} />}
+        right={<M tex={`\\text{RPM} = 60 f_{\\text{elec}}/2 = ${rpm.toFixed(1)}`} />}
       />
     </Demo>
   );

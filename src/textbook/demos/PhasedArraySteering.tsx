@@ -12,7 +12,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -43,9 +43,24 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left';
-      drawLabel(ctx, { text: `N = ${N} elements`, x: 12, y: 18, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `d = ${dOverLam.toFixed(2)}λ`, x: 12, y: 32, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `Δφ = ${phiDeg.toFixed(0)}°/elem`, x: 12, y: 46, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: `N = ${N} elements`,
+        x: 12,
+        y: 18,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `d = ${dOverLam.toFixed(2)}λ`,
+        x: 12,
+        y: 32,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `Δφ = ${phiDeg.toFixed(0)}°/elem`,
+        x: 12,
+        y: 46,
+        font: '10px "JetBrains Mono", monospace',
+      });
       const stripH = Math.min(H - 80, N * 18);
       const dy = stripH / Math.max(N - 1, 1);
       const x0 = splitX * 0.45;
@@ -139,9 +154,30 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
-      drawLabel(ctx, { text: 'broadside (θ=0)', x: cx + R + 12, y: cy + 4, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'θ = +90°', x: cx, y: cy - R - 6, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'θ = −90°', x: cx, y: cy + R + 14, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: 'broadside (θ=0)',
+        x: cx + R + 12,
+        y: cy + 4,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: 'θ = +90°',
+        x: cx,
+        y: cy - R - 6,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: 'θ = −90°',
+        x: cx,
+        y: cy + R + 14,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'center',
+      });
     },
     [],
   );
@@ -202,10 +238,10 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Beam-steering formula"
-        left={<InlineMath tex="\sin\theta_{\text{steer}} = \Delta\varphi\,\lambda\,/\,(2\pi d)" />}
+        left={<M tex="\sin\theta_{\text{steer}} = \Delta\varphi\,\lambda\,/\,(2\pi d)" />}
         rightLabel="Live steering angle"
         right={
-          <InlineMath
+          <M
             tex={
               Number.isFinite(steerDeg)
                 ? `\\theta_{\\text{steer}} = ${steerDeg.toFixed(1)}^\\circ`

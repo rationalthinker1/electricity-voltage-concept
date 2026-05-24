@@ -22,11 +22,11 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -103,7 +103,14 @@ export function BoostConverterDemo({ figure }: Props) {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.8;
-      drawLabel(ctx, { text: `V_out`, x: padL - 4, y: yHi, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `V_out`,
+        x: padL - 4,
+        y: yHi,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
       ctx.restore();
       drawLabel(ctx, { text: `0`, x: padL - 4, y: yLo });
       drawLabel(ctx, { text: 'switch-node voltage', x: padL + 4, y: top + 4, baseline: 'top' });
@@ -138,22 +145,53 @@ export function BoostConverterDemo({ figure }: Props) {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.8;
-      drawLabel(ctx, { text: `${Imax.toFixed(2)} A`, x: padL - 4, y: iOf(Imax), align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `${Imax.toFixed(2)} A`,
+        x: padL - 4,
+        y: iOf(Imax),
+        align: 'right',
+        baseline: 'middle',
+      });
       ctx.restore();
       drawLabel(ctx, { text: `${Iin_avg.toFixed(2)} A`, x: padL - 4, y: iOf(Iin_avg) });
       drawLabel(ctx, { text: `${Imin.toFixed(2)} A`, x: padL - 4, y: iOf(Imin) });
-      drawLabel(ctx, { text: 'inductor current I_L  (= input current)', x: padL + 4, y: mid + 4, baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'inductor current I_L  (= input current)',
+        x: padL + 4,
+        y: mid + 4,
+        baseline: 'top',
+      });
       drawLabel(ctx, { text: '0', x: padL, y: padT + plotH + 4, align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `${(tTotal * 1e6).toFixed(0)} µs`, x: padL + plotW, y: padT + plotH + 4, align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `${(tTotal * 1e6).toFixed(0)} µs`,
+        x: padL + plotW,
+        y: padT + plotH + 4,
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.globalAlpha = 0.8;
-      drawLabel(ctx, { text: `V_out = V_in / (1 − D) = ${Vout.toFixed(2)} V    I_out = ${Iout.toFixed(2)} A`, x: 4, y: 4, baseline: 'top' });
+      drawLabel(ctx, {
+        text: `V_out = V_in / (1 − D) = ${Vout.toFixed(2)} V    I_out = ${Iout.toFixed(2)} A`,
+        x: 4,
+        y: 4,
+        baseline: 'top',
+      });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.65;
       const x_on = padL + (tOn / 2 / tTotal) * plotW;
       const x_off = padL + ((tOn + (Tsw - tOn) / 2) / tTotal) * plotW;
-      drawLabel(ctx, { text: 'SW on: L charging', x: x_on, y: top + subH - 16, color: colors.accent, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'SW on: L charging',
+        x: x_on,
+        y: top + subH - 16,
+        color: colors.accent,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.restore();
       drawLabel(ctx, { text: 'SW off: dump → C', x: x_off, y: top + subH - 16 });
     },
@@ -179,8 +217,8 @@ export function BoostConverterDemo({ figure }: Props) {
           losses in the switch and inductor blow up the implicit equation past that.
         </>
       }
-    
-      deeperLab={{ slug: 'dc-dc-converter', label: 'See full lab' }}>
+      deeperLab={{ slug: 'dc-dc-converter', label: 'See full lab' }}
+    >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
@@ -222,9 +260,13 @@ export function BoostConverterDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Boost conversion"
-        left={<InlineMath tex={`V_{\\text{out}} = \\dfrac{V_{\\text{in}}}{1 - D}`} />}
+        left={<M tex={`V_{\\text{out}} = \\dfrac{V_{\\text{in}}}{1 - D}`} />}
         rightLabel="At current settings"
-        right={<InlineMath tex={`\\dfrac{${Vin.toFixed(1)}}{1 - ${(duty * 100).toFixed(0)}\\%} = ${computed.Vout.toFixed(2)}\\,\\text{V}`} />}
+        right={
+          <M
+            tex={`\\dfrac{${Vin.toFixed(1)}}{1 - ${(duty * 100).toFixed(0)}\\%} = ${computed.Vout.toFixed(2)}\\,\\text{V}`}
+          />
+        }
       />
     </Demo>
   );

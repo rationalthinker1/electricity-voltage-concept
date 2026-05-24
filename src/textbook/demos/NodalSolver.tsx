@@ -21,13 +21,13 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtCurrent } from '@/lib/formatters';
 import { useCircuitCache } from '@/lib/useCircuitCache';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -102,22 +102,62 @@ export function NodalSolverDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.85;
       ctx.fillStyle = getCanvasColors().text;
-      drawLabel(ctx, { text: `A   V_A = ${nodal.V_A.toFixed(3)} V`, x: xMid + 10, y: yTop - 6, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: `A   V_A = ${nodal.V_A.toFixed(3)} V`,
+        x: xMid + 10,
+        y: yTop - 6,
+        weight: 'bold',
+        size: 12,
+        font: 'bold 12px "JetBrains Mono", monospace',
+        baseline: 'bottom',
+      });
       ctx.restore();
 
       ctx.save();
       ctx.globalAlpha = 0.75;
       ctx.fillStyle = getCanvasColors().textDim;
-      drawLabel(ctx, { text: 'Bottom rail = reference (V = 0)', x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'KCL at A: (V₁−V_A)/R₁ + (V₂−V_A)/R₃ = V_A/R₂', x: 12, y: 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'Bottom rail = reference (V = 0)',
+        x: 12,
+        y: 10,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'KCL at A: (V₁−V_A)/R₁ + (V₂−V_A)/R₃ = V_A/R₂',
+        x: 12,
+        y: 24,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.restore();
 
       ctx.save();
       ctx.globalAlpha = 0.95;
       ctx.fillStyle = getCanvasColors().blue;
-      drawLabel(ctx, { text: `I_R₁ = ${fmtCurrent(nodal.I_R1)}`, x: (xLeft + xMid) / 2, y: yTop - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: `I_R₃ = ${fmtCurrent(nodal.I_R3)}`, x: (xMid + xRight) / 2, y: yTop - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: `I_R₂ = ${fmtCurrent(nodal.I_R2)}`, x: xMid + 14, y: h / 2, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `I_R₁ = ${fmtCurrent(nodal.I_R1)}`,
+        x: (xLeft + xMid) / 2,
+        y: yTop - 14,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: `I_R₃ = ${fmtCurrent(nodal.I_R3)}`,
+        x: (xMid + xRight) / 2,
+        y: yTop - 14,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: `I_R₂ = ${fmtCurrent(nodal.I_R2)}`,
+        x: xMid + 14,
+        y: h / 2,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx.restore();
     },
     [getStaticSchematic],
@@ -200,13 +240,15 @@ export function NodalSolverDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Nodal equation at A"
         left={
-          <InlineMath
-            tex={"V_A\\!\\left(\\tfrac{1}{R_1}+\\tfrac{1}{R_2}+\\tfrac{1}{R_3}\\right) = \\tfrac{V_1}{R_1} + \\tfrac{V_2}{R_3}"}
+          <M
+            tex={
+              'V_A\\!\\left(\\tfrac{1}{R_1}+\\tfrac{1}{R_2}+\\tfrac{1}{R_3}\\right) = \\tfrac{V_1}{R_1} + \\tfrac{V_2}{R_3}'
+            }
           />
         }
         rightLabel="Solution"
         right={
-          <InlineMath
+          <M
             tex={`V_A = ${nodal.V_A.toFixed(3)}\\,\\text{V},\\quad I_{R_2} = ${nodal.I_R2.toFixed(3)}\\,\\text{A}`}
           />
         }

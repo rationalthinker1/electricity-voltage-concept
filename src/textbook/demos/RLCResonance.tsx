@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -130,10 +130,32 @@ export function RLCResonanceDemo({ figure }: Props) {
       ctx.restore();
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textBaseline = 'top';
-      drawLabel(ctx, { text: '|I(f)| / Imax', x: plotX, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '|I(f)| / Imax',
+        x: plotX,
+        y: 8,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.textAlign = 'right';
-      drawLabel(ctx, { text: `f₀ = ${fmtFrequency(f0)}`, x: plotX + plotW, y: 8, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: '−3 dB (½ power)', x: plotX + plotW, y: plotY + plotH * 0.18, color: colors.pink, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `f₀ = ${fmtFrequency(f0)}`,
+        x: plotX + plotW,
+        y: 8,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: '−3 dB (½ power)',
+        x: plotX + plotW,
+        y: plotY + plotH * 0.18,
+        color: colors.pink,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       const Qnow = (2 * Math.PI * f0 * L) / R;
       drawLabel(ctx, {
         x: x0,
@@ -207,12 +229,12 @@ export function RLCResonanceDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Resonant frequency"
-        left={
-          <InlineMath tex={`f_0 = \\dfrac{1}{2\\pi\\sqrt{LC}} = ${f0.toFixed(2)}\\,\\text{Hz}`} />
-        }
+        left={<M tex={`f_0 = \\dfrac{1}{2\\pi\\sqrt{LC}} = ${f0.toFixed(2)}\\,\\text{Hz}`} />}
         rightLabel="Quality factor"
         right={
-          <InlineMath tex={`Q = \\dfrac{\\omega_0 L}{R} = \\dfrac{1}{R}\\sqrt{\\dfrac{L}{C}} = ${Q.toFixed(2)}`} />
+          <M
+            tex={`Q = \\dfrac{\\omega_0 L}{R} = \\dfrac{1}{R}\\sqrt{\\dfrac{L}{C}} = ${Q.toFixed(2)}`}
+          />
         }
       />
     </Demo>

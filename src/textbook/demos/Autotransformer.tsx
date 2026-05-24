@@ -17,9 +17,9 @@ import { useMemo, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -130,12 +130,40 @@ export function AutotransformerDemo({ figure }: Props) {
       ctx.stroke();
 
       // Labels
-      drawLabel(ctx, { text: `V_p = ${Vp.toFixed(0)} V`, x: coilCX + r + 18, y: coilTop + (tapY - coilTop) / 2, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: `V_s = ${(Vp * k).toFixed(0)} V`, x: coilCX + r + 18, y: tapY + (coilBot - tapY) / 2, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `V_p = ${Vp.toFixed(0)} V`,
+        x: coilCX + r + 18,
+        y: coilTop + (tapY - coilTop) / 2,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: `V_s = ${(Vp * k).toFixed(0)} V`,
+        x: coilCX + r + 18,
+        y: tapY + (coilBot - tapY) / 2,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
 
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'autotransformer', x: coilCX, y: coilTop - 12, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: `tap k = ${k.toFixed(2)}`, x: coilCX, y: coilBot + 12, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'autotransformer',
+        x: coilCX,
+        y: coilTop - 12,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: `tap k = ${k.toFixed(2)}`,
+        x: coilCX,
+        y: coilBot + 12,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
 
       // Divider
       ctx.strokeStyle = colors.border;
@@ -206,17 +234,44 @@ export function AutotransformerDemo({ figure }: Props) {
       }
 
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'isolated 2-winding', x: (pX + sX) / 2, y: coilTop - 12, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: 'same V ratio', x: (pX + sX) / 2, y: coilBot + 12, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'isolated 2-winding',
+        x: (pX + sX) / 2,
+        y: coilTop - 12,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: 'same V ratio',
+        x: (pX + sX) / 2,
+        y: coilBot + 12,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
 
       // Drag hint
       ctx.save();
       ctx.globalAlpha = 0.55;
-      drawLabel(ctx, { text: 'drag tap ↕', x: 6, y: 6, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'drag tap ↕',
+        x: 6,
+        y: 6,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.restore();
 
       // Warning ribbon
-      drawLabel(ctx, { text: 'no galvanic isolation', x: coilCX, y: 6, color: colors.accent, align: 'center' });
+      drawLabel(ctx, {
+        text: 'no galvanic isolation',
+        x: coilCX,
+        y: 6,
+        color: colors.accent,
+        align: 'center',
+      });
     },
     [],
     (info) => {
@@ -337,9 +392,13 @@ export function AutotransformerDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Voltage ratio"
-        left={<InlineMath tex={`V_s = k \\cdot V_p = ${k.toFixed(2)} \\times ${Vp.toFixed(0)} = ${computed.Vs.toFixed(1)}\\,\\text{V}`} />}
+        left={
+          <M
+            tex={`V_s = k \\cdot V_p = ${k.toFixed(2)} \\times ${Vp.toFixed(0)} = ${computed.Vs.toFixed(1)}\\,\\text{V}`}
+          />
+        }
         rightLabel="Copper saving vs two-winding"
-        right={<InlineMath tex={`\\text{saving} = k = ${(computed.copperSaving * 100).toFixed(1)}\\%`} />}
+        right={<M tex={`\\text{saving} = k = ${(computed.copperSaving * 100).toFixed(1)}\\%`} />}
       />
     </Demo>
   );

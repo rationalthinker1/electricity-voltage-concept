@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS, sciTeX } from '@/lib/physics';
@@ -240,7 +240,7 @@ export function EMSpectrumDemo({ figure }: Props) {
         color: colors.textDim,
       });
     },
-     
+
     [],
     (info) => {
       const { canvas, w, h } = info;
@@ -310,9 +310,9 @@ export function EMSpectrumDemo({ figure }: Props) {
       deeperLab={{ slug: 'em-waves', label: 'See full lab' }}
       caption={
         <>
-          Drag the cursor or use the slider to explore the spectrum. Preset ticks mark the
-          microwave oven (2.45 GHz), Wi-Fi bands, yellow light (~570 THz), and diagnostic X-rays
-          (~3 EHz). The visible band is shown as a true hue gradient.
+          Drag the cursor or use the slider to explore the spectrum. Preset ticks mark the microwave
+          oven (2.45 GHz), Wi-Fi bands, yellow light (~570 THz), and diagnostic X-rays (~3 EHz). The
+          visible band is shown as a true hue gradient.
         </>
       }
     >
@@ -349,13 +349,13 @@ export function EMSpectrumDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="wavelength"
         left={
-          <InlineMath
+          <M
             tex={`\\lambda = \\dfrac{c}{f} = \\dfrac{${sciTeX(PHYS.c)}}{${sciTeX(freq)}} = ${sciTeX(lambda)} \\text{ m}`}
           />
         }
         rightLabel="photon energy"
         right={
-          <InlineMath
+          <M
             tex={`E = hf = (${sciTeX(H_PLANCK)})(${sciTeX(freq)}) = ${sciTeX(ePhoton)} \\text{ J}`}
           />
         }

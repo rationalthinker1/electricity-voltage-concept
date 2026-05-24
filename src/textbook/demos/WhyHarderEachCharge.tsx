@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS, sciTeX } from '@/lib/physics';
@@ -115,13 +115,47 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(wX, wY, 6, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: '+q', x: wX, y: wY, color: colors.bg, weight: 'bold', size: 9, font: 'bold 9px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'push', x: wX + 12, y: (topY + botY) / 2, color: colors.accent, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '+q',
+        x: wX,
+        y: wY,
+        color: colors.bg,
+        weight: 'bold',
+        size: 9,
+        font: 'bold 9px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'push',
+        x: wX + 12,
+        y: (topY + botY) / 2,
+        color: colors.accent,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-      drawLabel(ctx, { text: 'top plate (+)', x: xL - 6, y: topY - 2, color: colors.pink, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: 'bottom plate (−)', x: xL - 6, y: botY + 2, color: colors.blue, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'top plate (+)',
+        x: xL - 6,
+        y: topY - 2,
+        color: colors.pink,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'bottom plate (−)',
+        x: xL - 6,
+        y: botY + 2,
+        color: colors.blue,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
       const tapeX = W * 0.74;
       const tapeY = 30;
       const tapeW = Math.min(W - tapeX - 24, 120);
@@ -197,7 +231,7 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Work to add the next packet"
         left={
-          <InlineMath
+          <M
             tex={
               `\\delta W \\;\\approx\\; \\delta q \\cdot V \\;\\approx\\; ` +
               `${sciTeX(workForNext)}\\ \\text{J}`
@@ -206,10 +240,8 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
         }
         rightLabel="Total stored energy"
         right={
-          <InlineMath
-            tex={
-              `U \\;=\\; \\tfrac{1}{2} C V^{2} \\;\\approx\\; ${sciTeX(W_integral)}\\ \\text{J}`
-            }
+          <M
+            tex={`U \\;=\\; \\tfrac{1}{2} C V^{2} \\;\\approx\\; ${sciTeX(W_integral)}\\ \\text{J}`}
           />
         }
       />

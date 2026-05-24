@@ -13,9 +13,9 @@ import { useEffect, useRef, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -72,7 +72,10 @@ export function FaradayLawDemo({ figure }: Props) {
       const intensity = Math.max(0, Math.abs(B0) / 0.1);
       const sym = phi >= 0 ? '⊗' : '⊙';
       const symCount = Math.round(6 + intensity * 8);
-      ctx.fillStyle = withAlpha(colors.teal, 0.25 + Math.min(0.6, (Math.abs(phi) / (B0 * A + 1e-12)) * 0.6));
+      ctx.fillStyle = withAlpha(
+        colors.teal,
+        0.25 + Math.min(0.6, (Math.abs(phi) / (B0 * A + 1e-12)) * 0.6),
+      );
       ctx.font = '14px JetBrains Mono';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -128,7 +131,14 @@ export function FaradayLawDemo({ figure }: Props) {
       }
 
       // Labels
-      drawLabel(ctx, { text: `B(t) = B₀ sin(ωt) through loop`, x: loopCx, y: loopCy + loopR + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `B(t) = B₀ sin(ωt) through loop`,
+        x: loopCx,
+        y: loopCy + loopR + 14,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
 
       // Right panel: oscilloscope
       const oscX = leftW + 16;
@@ -181,7 +191,12 @@ export function FaradayLawDemo({ figure }: Props) {
       ctx.textAlign = 'left';
       ctx.restore();
       drawLabel(ctx, { text: 'Φ_B  (teal)', x: oscX + 10, y: oscY + 8, color: colors.teal });
-      drawLabel(ctx, { text: 'EMF = −dΦ/dt  (amber)', x: oscX + 10, y: oscY + 22, color: colors.accent });
+      drawLabel(ctx, {
+        text: 'EMF = −dΦ/dt  (amber)',
+        x: oscX + 10,
+        y: oscY + 22,
+        color: colors.accent,
+      });
     },
     [],
     () => {
@@ -245,14 +260,10 @@ export function FaradayLawDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Faraday's law"
-        left={
-          <InlineMath
-            tex={`\\text{EMF} \\;=\\; -\\dfrac{d\\Phi_B}{dt}`}
-          />
-        }
+        left={<M tex={`\\text{EMF} \\;=\\; -\\dfrac{d\\Phi_B}{dt}`} />}
         rightLabel="Live substitution"
         right={
-          <InlineMath
+          <M
             tex={
               `-(${B0_mT.toFixed(0)}\\times10^{-3})(${area_cm2.toFixed(0)}\\times10^{-4})(2\\pi\\cdot${freq.toFixed(2)})\\cos(\\omega t) ` +
               `\\;=\\; ${emfNow.toFixed(3)}\\ \\text{V}`

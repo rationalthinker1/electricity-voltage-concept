@@ -15,7 +15,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -271,13 +271,13 @@ export function BrushedDCMotorDemo({ figure }: Props) {
         <>
           Cross-section of a permanent-magnet brushed DC motor. As the rotor spins, the split-ring
           <strong> commutator</strong> reverses the current in the coil every half-turn, so the
-          torque on the rotor — <InlineMath tex="\tau = N I A B \sin\theta" /> after commutation —
-          always pushes the same way. Two brushes ride on the ring and feed it from the fixed
-          external supply.
+          torque on the rotor — <M tex="\tau = N I A B \sin\theta" /> after commutation — always
+          pushes the same way. Two brushes ride on the ring and feed it from the fixed external
+          supply.
         </>
       }
-    
-      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}>
+      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}
+    >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
         <MiniSlider
@@ -304,13 +304,11 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="current"
         left={
-          <InlineMath
-            tex={`I = V/R = ${V.toFixed(1)}/${COIL_R} = ${computed.I.toFixed(2)}\\,\\text{A}`}
-          />
+          <M tex={`I = V/R = ${V.toFixed(1)}/${COIL_R} = ${computed.I.toFixed(2)}\\,\\text{A}`} />
         }
         rightLabel="rectified torque"
         right={
-          <InlineMath
+          <M
             tex={`\\bar{\\tau} = \\frac{2}{\\pi}NIAB = ${computed.tauMean.toFixed(2)}\\,\\text{N·m}`}
           />
         }

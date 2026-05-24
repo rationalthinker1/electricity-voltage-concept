@@ -17,13 +17,13 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtResistance } from '@/lib/formatters';
 import { useCircuitCache } from '@/lib/useCircuitCache';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -56,32 +56,32 @@ export function TheveninEquivalentDemo({ figure }: Props) {
       return {
         elements: [
           ...buildOriginalElements(0, 22, sw / 2, sh - 22, colors, {
-          Vs,
-          R1,
-          R2,
-          Is,
-          RL,
-          Vth,
-          Rth,
-          Vload,
-          Iload,
-        }),
-        ...buildTheveninElements(sw / 2, 22, sw / 2, sh - 22, colors, {
-          Vs,
-          R1,
-          R2,
-          Is,
-          RL,
-          Vth,
-          Rth,
-          Vload,
-          Iload,
-        }),
-      ] as CircuitElement[],
-    };
-  },
-  [Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload],
-);
+            Vs,
+            R1,
+            R2,
+            Is,
+            RL,
+            Vth,
+            Rth,
+            Vload,
+            Iload,
+          }),
+          ...buildTheveninElements(sw / 2, 22, sw / 2, sh - 22, colors, {
+            Vs,
+            R1,
+            R2,
+            Is,
+            RL,
+            Vth,
+            Rth,
+            Vload,
+            Iload,
+          }),
+        ] as CircuitElement[],
+      };
+    },
+    [Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload],
+  );
 
   const setup = useSimLoop(
     stateRef,
@@ -100,15 +100,29 @@ export function TheveninEquivalentDemo({ figure }: Props) {
       // into the offscreen canvas after renderCircuitToCanvas; now drawn
       // per-frame so the cache can stay a plain CircuitSpec. The cost is a
       // handful of ctx calls, negligible next to the cache blit it replaces.
-      ctx.strokeStyle = withAlpha(colors.border, 0.10);
+      ctx.strokeStyle = withAlpha(colors.border, 0.1);
       ctx.beginPath();
       ctx.moveTo(splitX, 14);
       ctx.lineTo(splitX, h - 14);
       ctx.stroke();
 
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-      drawLabel(ctx, { text: 'Original network', x: splitX / 2, y: 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: 'Thévenin equivalent', x: splitX + splitX / 2, y: 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'Original network',
+        x: splitX / 2,
+        y: 6,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'Thévenin equivalent',
+        x: splitX + splitX / 2,
+        y: 6,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
 
       drawLoadReadouts(ctx, colors, 0, 22, splitX, h - 22, st);
       drawLoadReadouts(ctx, colors, splitX, 22, splitX, h - 22, st);
@@ -187,13 +201,13 @@ export function TheveninEquivalentDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Thévenin equivalent"
         left={
-          <InlineMath
+          <M
             tex={`V_\\text{th} = ${Vth.toFixed(2)}\\,\\text{V},\\quad R_\\text{th} = ${Rth.toFixed(1)}\\,\\Omega`}
           />
         }
         rightLabel="Load voltage"
         right={
-          <InlineMath
+          <M
             tex={`V_\\text{load} = V_\\text{th}\\dfrac{R_L}{R_\\text{th}+R_L} = ${Vload.toFixed(2)}\\,\\text{V}`}
           />
         }
@@ -420,7 +434,21 @@ function drawLoadReadouts(
   const cy = y0 + h / 2;
   const xLoad = x0 + w - 40;
   ctx.fillStyle = colors.teal;
-  drawLabel(ctx, { text: `V_L = ${st.Vload.toFixed(2)} V`, x: xLoad + 12, y: cy - 8, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: `V_L = ${st.Vload.toFixed(2)} V`,
+    x: xLoad + 12,
+    y: cy - 8,
+    weight: 'bold',
+    font: 'bold 10px "JetBrains Mono", monospace',
+    baseline: 'middle',
+  });
   ctx.fillStyle = colors.blue;
-  drawLabel(ctx, { text: `I_L = ${(st.Iload * 1000).toFixed(1)} mA`, x: xLoad + 12, y: cy + 8, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: `I_L = ${(st.Iload * 1000).toFixed(1)} mA`,
+    x: xLoad + 12,
+    y: cy + 8,
+    weight: 'bold',
+    font: 'bold 10px "JetBrains Mono", monospace',
+    baseline: 'middle',
+  });
 }

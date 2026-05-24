@@ -12,18 +12,11 @@
  * meter that ships on every modern phone.
  */
 
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { LabShell } from '@/components/LabShell';
 import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
-import {
-  DataTable,
-  Procedure,
-  Prompt,
-  Section,
-  Step,
-  Stretch,
-} from '@/components/ExperimentalLab';
+import { DataTable, Procedure, Prompt, Section, Step, Stretch } from '@/components/ExperimentalLab';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
 const SLUG = 'faraday-cage';
@@ -35,10 +28,10 @@ export default function FaradayCageLab() {
       <Section tag="00" title="Safety and setup">
         <p className="mb-prose-2">
           Do not put a phone (or anything else) inside a powered microwave oven. The microwave-oven
-          step in §06 is run with the oven <strong className="text-text font-medium">unplugged</strong>{' '}
-          — we use the metal mesh of its door as a Faraday cage, nothing more. If you wrap a phone
-          in foil while it is on a charging cable, unplug the cable first; do not let the foil
-          contact the USB port.
+          step in §06 is run with the oven{' '}
+          <strong className="text-text font-medium">unplugged</strong> — we use the metal mesh of
+          its door as a Faraday cage, nothing more. If you wrap a phone in foil while it is on a
+          charging cable, unplug the cable first; do not let the foil contact the USB port.
         </p>
       </Section>
 
@@ -81,11 +74,7 @@ export default function FaradayCageLab() {
           same orientation. Average them. Do the same for WiFi RSSI. These are your control values.
         </p>
         <DataTable
-          headers={[
-            <>Reading</>,
-            <>Cellular RSRP (dBm)</>,
-            <>WiFi RSSI (dBm)</>,
-          ]}
+          headers={[<>Reading</>, <>Cellular RSRP (dBm)</>, <>WiFi RSSI (dBm)</>]}
           rows={[
             ['1', '−87', '−52'],
             ['2', '__', '__'],
@@ -137,8 +126,8 @@ export default function FaradayCageLab() {
           <strong className="text-text font-medium">Unplug the microwave first.</strong> Place the
           phone inside, close the door, take readings through the door's metal mesh — which is a
           professionally-engineered Faraday cage. The mesh holes are about 1 mm across; the
-          wavelength of LTE band 1 (~2 GHz) is about 15 cm; the wavelength of WiFi 5 GHz is about
-          6 cm. Both are far larger than the holes, so the mesh acts as a continuous conductor for
+          wavelength of LTE band 1 (~2 GHz) is about 15 cm; the wavelength of WiFi 5 GHz is about 6
+          cm. Both are far larger than the holes, so the mesh acts as a continuous conductor for
           those frequencies <Cite id="itu-r-p2040" in={SOURCES} />.
         </p>
       </Section>
@@ -187,25 +176,25 @@ export default function FaradayCageLab() {
           surface."
         </Prompt>
         <Prompt label="Q2">
-          Cellular at ~2 GHz and WiFi at 2.4 GHz (or 5 GHz) have wavelengths of order 15 cm and 6
-          cm respectively. The "holes" in a sealed foil wrap are sub-millimetre. Why does this mean
-          the wrap looks like a solid conductor at these frequencies? Look up "diffraction limit" or
+          Cellular at ~2 GHz and WiFi at 2.4 GHz (or 5 GHz) have wavelengths of order 15 cm and 6 cm
+          respectively. The "holes" in a sealed foil wrap are sub-millimetre. Why does this mean the
+          wrap looks like a solid conductor at these frequencies? Look up "diffraction limit" or
           "Faraday cage hole size rule" to ground your answer.
         </Prompt>
         <Prompt label="Q3">
           Inside a perfect conductor, the static electric field is exactly zero. (This is the
-          content of <InlineMath tex="\nabla \cdot \mathbf{E} = \rho/\varepsilon_0" /> applied to a
+          content of <M tex="\nabla \cdot \mathbf{E} = \rho/\varepsilon_0" /> applied to a
           conducting interior, plus the fact that any non-zero field would drive currents until it
-          went away.) The radio fields in your experiment are <em className="text-text italic">not</em>{' '}
-          static — they oscillate at 2 GHz. Why does the conductor argument still apply, at least
-          approximately, at these frequencies? Hint: how fast can the free electrons in aluminum
-          respond?
+          went away.) The radio fields in your experiment are{' '}
+          <em className="text-text italic">not</em> static — they oscillate at 2 GHz. Why does the
+          conductor argument still apply, at least approximately, at these frequencies? Hint: how
+          fast can the free electrons in aluminum respond?
         </Prompt>
         <Prompt label="Q4">
           ITU-R P.2040 lists a typical attenuation for 100 µm aluminum sheet at 2 GHz of well over
           60 dB <Cite id="itu-r-p2040" in={SOURCES} />. Your foil is roughly 16 µm thick, but your
-          measured attenuation is much less than 60 dB. Identify the dominant <em className="text-text italic">non-foil</em>{' '}
-          path the signal is taking to your phone.
+          measured attenuation is much less than 60 dB. Identify the dominant{' '}
+          <em className="text-text italic">non-foil</em> path the signal is taking to your phone.
         </Prompt>
       </Section>
 
@@ -221,19 +210,18 @@ export default function FaradayCageLab() {
         </Pullout>
         <p className="mb-prose-2">
           You measured this. Foil is ~16 µm of aluminum. Its free-electron density{' '}
-          <InlineMath tex="n \approx 1.8\times10^{29}\ \text{m}^{-3}" /> is so high that any
-          incident field is cancelled by induced surface charges within roughly a skin depth (~2 µm
-          at 2 GHz, well under the foil thickness). The interior of your foil wrap is, to
-          excellent approximation, an EM-free volume. Your phone "loses signal" not because the
-          tower stopped transmitting but because the field that used to reach the antenna is now
-          terminating on aluminum
+          <M tex="n \approx 1.8\times10^{29}\ \text{m}^{-3}" /> is so high that any incident field
+          is cancelled by induced surface charges within roughly a skin depth (~2 µm at 2 GHz, well
+          under the foil thickness). The interior of your foil wrap is, to excellent approximation,
+          an EM-free volume. Your phone "loses signal" not because the tower stopped transmitting
+          but because the field that used to reach the antenna is now terminating on aluminum
           <Cite id="griffiths-2017" in={SOURCES} />.
         </p>
       </Section>
 
       <Section tag="10" title="Writeup">
         <p className="mb-prose-2">Submit a one-page writeup containing:</p>
-        <ul className="text-6 text-text-dim space-y-1 leading-3 ml-md">
+        <ul className="text-6 text-text-dim ml-md space-y-1 leading-3">
           <li>— Both completed data tables.</li>
           <li>— A bar chart of A (dB) for cellular and WiFi across conditions A–D.</li>
           <li>— Your written answers to Q1–Q4.</li>
@@ -250,9 +238,9 @@ export default function FaradayCageLab() {
           a perforated metal screen behind it. Hold the phone at varying distances{' '}
           <em className="text-text italic">behind</em> the closed (unpowered) door and map RSRP as a
           function of distance from the screen. You should see attenuation drop sharply as the phone
-          moves away from the screen — the field doesn't penetrate the perforated metal, but it
-          does enter through the gap around the door seal, so distance from the seal matters more
-          than distance from the centre. Sketch this.
+          moves away from the screen — the field doesn't penetrate the perforated metal, but it does
+          enter through the gap around the door seal, so distance from the seal matters more than
+          distance from the centre. Sketch this.
         </p>
       </Stretch>
     </>
@@ -262,9 +250,9 @@ export default function FaradayCageLab() {
     <>
       <h3 className="lab-section-h3">What this lab is actually demonstrating</h3>
       <p className="mb-prose-3">
-        The chapter argument was that a conductor cannot sustain a non-zero static electric field
-        in its interior: any field would push the free electrons until they piled up at the surface
-        in just the right pattern to cancel it
+        The chapter argument was that a conductor cannot sustain a non-zero static electric field in
+        its interior: any field would push the free electrons until they piled up at the surface in
+        just the right pattern to cancel it
         <Cite id="griffiths-2017" in={SOURCES} />. Faraday gave the most dramatic version of this
         demonstration in 1836 by sitting inside a 12-foot conducting cage at the Royal Institution
         while assistants showered the outside with sparks from a 14-inch electrostatic generator —
@@ -296,12 +284,12 @@ export default function FaradayCageLab() {
       <p className="mb-prose-3">
         A conductor with a hole in it leaks fields through that hole proportional to a power of the
         hole size relative to wavelength. The often-quoted rule is that holes much smaller than
-        about <InlineMath tex="\lambda/20" /> behave as if they weren't there. At 2 GHz, λ is 15 cm,
-        so anything under 7.5 mm is "fine." The seams in a sloppy foil wrap can be several
-        millimetres wide; the seams in a sealed wrap are sub-millimetre. That's why Condition B
-        usually gives a much larger A than Condition A — and why doubling the layer (C vs B) gives
-        only a small additional improvement: you already had a continuous conductor; the second
-        layer doesn't add much except by improving the seams further
+        about <M tex="\lambda/20" /> behave as if they weren't there. At 2 GHz, λ is 15 cm, so
+        anything under 7.5 mm is "fine." The seams in a sloppy foil wrap can be several millimetres
+        wide; the seams in a sealed wrap are sub-millimetre. That's why Condition B usually gives a
+        much larger A than Condition A — and why doubling the layer (C vs B) gives only a small
+        additional improvement: you already had a continuous conductor; the second layer doesn't add
+        much except by improving the seams further
         <Cite id="feynman-II-2" in={SOURCES} />.
       </p>
 

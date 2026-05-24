@@ -21,7 +21,7 @@ import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -95,10 +95,22 @@ export function BuckConverterDemo({ figure }: Props) {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.8;
-      drawLabel(ctx, { text: 'V_in', x: padL - 4, y: yHi, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'V_in',
+        x: padL - 4,
+        y: yHi,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
       ctx.restore();
       drawLabel(ctx, { text: '0', x: padL - 4, y: yLo });
-      drawLabel(ctx, { text: `switch node (D = ${(duty * 100).toFixed(0)} %)`, x: padL + 4, y: top + 4, baseline: 'top' });
+      drawLabel(ctx, {
+        text: `switch node (D = ${(duty * 100).toFixed(0)} %)`,
+        x: padL + 4,
+        y: top + 4,
+        baseline: 'top',
+      });
       const dIL_pp = dIL_on * tOn;
       const Imax = Iout + dIL_pp / 2;
       const Imin = Math.max(0, Iout - dIL_pp / 2);
@@ -141,13 +153,25 @@ export function BuckConverterDemo({ figure }: Props) {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.8;
-      drawLabel(ctx, { text: `${Imax.toFixed(2)} A`, x: padL - 4, y: iOf(Imax), align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `${Imax.toFixed(2)} A`,
+        x: padL - 4,
+        y: iOf(Imax),
+        align: 'right',
+        baseline: 'middle',
+      });
       ctx.restore();
       drawLabel(ctx, { text: `${Iout.toFixed(2)} A`, x: padL - 4, y: iOf(Iout) });
       drawLabel(ctx, { text: `${Imin.toFixed(2)} A`, x: padL - 4, y: iOf(Imin) });
       drawLabel(ctx, { text: 'inductor current  I_L', x: padL + 4, y: mid + 4, baseline: 'top' });
       drawLabel(ctx, { text: `0`, x: padL, y: padT + plotH + 4, align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `${(tTotal * 1e6).toFixed(0)} µs`, x: padL + plotW, y: padT + plotH + 4, align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `${(tTotal * 1e6).toFixed(0)} µs`,
+        x: padL + plotW,
+        y: padT + plotH + 4,
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.globalAlpha = 0.8;
       drawLabel(ctx, {
@@ -214,9 +238,13 @@ export function BuckConverterDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Buck conversion"
-        left={<InlineMath tex="V_{\text{out}} = D \cdot V_{\text{in}}" />}
+        left={<M tex="V_{\text{out}} = D \cdot V_{\text{in}}" />}
         rightLabel="At these settings"
-        right={<InlineMath tex={`${(duty * 100).toFixed(0)}\\% \\times ${Vin.toFixed(1)}\\,\\text{V} = ${Vout.toFixed(2)}\\,\\text{V};\\quad \\Delta I_L = ${dIL_pp.toFixed(3)}\\,\\text{A}`} />}
+        right={
+          <M
+            tex={`${(duty * 100).toFixed(0)}\\% \\times ${Vin.toFixed(1)}\\,\\text{V} = ${Vout.toFixed(2)}\\,\\text{V};\\quad \\Delta I_L = ${dIL_pp.toFixed(3)}\\,\\text{A}`}
+          />
+        }
       />
     </Demo>
   );

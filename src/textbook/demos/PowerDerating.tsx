@@ -12,7 +12,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -197,13 +197,11 @@ export function PowerDeratingDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Derating formula"
         left={
-          <InlineMath
-            tex={`P_{\\max} = P_{\\text{rated}} \\times \\frac{\\max(0,\\;155 - T)}{155 - 70}`}
-          />
+          <M tex={`P_{\\max} = P_{\\text{rated}} \\times \\frac{\\max(0,\\;155 - T)}{155 - 70}`} />
         }
         rightLabel={`At T = ${T_C.toFixed(0)} °C`}
         right={
-          <InlineMath
+          <M
             tex={`${P_nom.toFixed(3)}\\,\\text{W} \\times ${(frac * 100).toFixed(0)}\\% = ${P_allow.toFixed(3)}\\,\\text{W}`}
           />
         }

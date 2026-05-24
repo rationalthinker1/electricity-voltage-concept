@@ -28,8 +28,15 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
@@ -204,9 +211,27 @@ export function TransformerDesignerDemo({ figure }: Props) {
         drawToroid(ctx, colors, cx, cy, W, H, fluxFill, saturating, mat.color, Np, Ns);
       }
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: mat.name.toUpperCase(), x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `B_sat = ${mat.B_sat.toFixed(2)} T`, x: 12, y: 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `μ_r  = ${mat.mu_r}`, x: 12, y: 38, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: mat.name.toUpperCase(),
+        x: 12,
+        y: 10,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `B_sat = ${mat.B_sat.toFixed(2)} T`,
+        x: 12,
+        y: 24,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `μ_r  = ${mat.mu_r}`,
+        x: 12,
+        y: 38,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       if (saturating) {
         drawLabel(ctx, {
           x: W - 12,
@@ -260,7 +285,7 @@ export function TransformerDesignerDemo({ figure }: Props) {
           <button
             key={k}
             type="button"
-            className={`mini-toggle${k === coreKey ? ' on' : ''}`}
+            className={`mini-toggle${k === coreKey ? 'on' : ''}`}
             onClick={() => setCoreKey(k)}
             aria-pressed={k === coreKey}
           >
@@ -315,7 +340,11 @@ export function TransformerDesignerDemo({ figure }: Props) {
           value={
             <span
               style={{
-                color: saturating ? getCanvasColors().pink : envelope === 'approaching' ? getCanvasColors().yellow : getCanvasColors().text,
+                color: saturating
+                  ? getCanvasColors().pink
+                  : envelope === 'approaching'
+                    ? getCanvasColors().yellow
+                    : getCanvasColors().text,
               }}
             >
               {B_max < 0.01 ? B_max.toExponential(2) : B_max.toFixed(2)}
@@ -329,7 +358,16 @@ export function TransformerDesignerDemo({ figure }: Props) {
         <MiniReadout
           label="η = P_out / P_in"
           value={
-            <span style={{ color: eta > 0.95 ? getCanvasColors().teal : eta > 0.85 ? getCanvasColors().yellow : getCanvasColors().pink }}>
+            <span
+              style={{
+                color:
+                  eta > 0.95
+                    ? getCanvasColors().teal
+                    : eta > 0.85
+                      ? getCanvasColors().yellow
+                      : getCanvasColors().pink,
+              }}
+            >
               {(eta * 100).toFixed(1)}
             </span>
           }
@@ -342,9 +380,13 @@ export function TransformerDesignerDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Transformer core equation"
-        left={<InlineMath tex="B_{\max} = V_p\,/\,(4.44\,f\,N_p\,A)" />}
+        left={<M tex="B_{\max} = V_p\,/\,(4.44\,f\,N_p\,A)" />}
         rightLabel="At this design point"
-        right={<InlineMath tex={`B_{\\max} = ${B_max.toFixed(3)}\\,\\text{T}\\;(B_{\\text{sat}} = ${mat.B_sat.toFixed(2)}\\,\\text{T})`} />}
+        right={
+          <M
+            tex={`B_{\\max} = ${B_max.toFixed(3)}\\,\\text{T}\\;(B_{\\text{sat}} = ${mat.B_sat.toFixed(2)}\\,\\text{T})`}
+          />
+        }
       />
     </Demo>
   );

@@ -11,15 +11,22 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -134,8 +141,20 @@ export function TwoParallelWiresDemo({ figure }: Props) {
         }
 
         ctx.fillStyle = withAlpha(colors.textDim, 0.9);
-        drawLabel(ctx, { text: label, x: cx, y: cy_ - wireR - 10, font: '10px "JetBrains Mono", monospace', align: 'center' });
-        drawLabel(ctx, { text: `${I.toFixed(1)} A ${intoPage ? '⊗' : '⊙'}`, x: cx, y: cy_ + wireR + 22, font: '10px "JetBrains Mono", monospace', align: 'center' });
+        drawLabel(ctx, {
+          text: label,
+          x: cx,
+          y: cy_ - wireR - 10,
+          font: '10px "JetBrains Mono", monospace',
+          align: 'center',
+        });
+        drawLabel(ctx, {
+          text: `${I.toFixed(1)} A ${intoPage ? '⊗' : '⊙'}`,
+          x: cx,
+          y: cy_ + wireR + 22,
+          font: '10px "JetBrains Mono", monospace',
+          align: 'center',
+        });
       }
       drawWire(cx1, cy, true, 'I₁', I1);
       drawWire(cx2, cy, parallel, 'I₂', I2);
@@ -174,7 +193,13 @@ export function TwoParallelWiresDemo({ figure }: Props) {
       ctx.setLineDash([]);
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
       ctx.textAlign = 'center';
-      drawLabel(ctx, { text: `d = ${dCm.toFixed(1)} cm`, x: (cx1 + cx2) / 2, y: cy + 76, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: `d = ${dCm.toFixed(1)} cm`,
+        x: (cx1 + cx2) / 2,
+        y: cy + 76,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       ctx.fillStyle = parallel ? withAlpha(colors.accent, 0.9) : withAlpha(colors.pink, 0.9);
       ctx.font = '11px "DM Sans", sans-serif';
       ctx.fillText(parallel ? 'parallel currents → attract' : 'antiparallel → repel', w / 2, 22);
@@ -242,7 +267,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Force per unit length"
         left={
-          <InlineMath
+          <M
             tex={
               `\\dfrac{F}{L} \\;=\\; \\dfrac{\\mu_{0} I_{1} I_{2}}{2\\pi d} \\;=\\; ` +
               `\\dfrac{(4\\pi\\!\\times\\!10^{-7})(${I1.toFixed(1)})(${I2.toFixed(1)})}{2\\pi(${(d_m * 100).toFixed(1)}\\!\\times\\!10^{-2})} ` +
@@ -252,8 +277,12 @@ export function TwoParallelWiresDemo({ figure }: Props) {
         }
         rightLabel="Sign convention"
         right={
-          <InlineMath
-            tex={attractive ? `\\text{parallel currents} \\to \\text{attract}` : `\\text{antiparallel currents} \\to \\text{repel}`}
+          <M
+            tex={
+              attractive
+                ? `\\text{parallel currents} \\to \\text{attract}`
+                : `\\text{antiparallel currents} \\to \\text{repel}`
+            }
           />
         }
       />

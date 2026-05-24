@@ -9,14 +9,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import {
-  Demo,
-  DemoControls,
-  EquationStrip,
-  MiniReadout,
-  MiniSlider,
-} from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -64,7 +58,12 @@ export function PlaneWaveDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fill();
       ctx.restore();
-      drawLabel(ctx, { text: 'x · direction of propagation', x: xR - 200, y: cy + 16, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: 'x · direction of propagation',
+        x: xR - 200,
+        y: cy + 16,
+        font: '10px "JetBrains Mono", monospace',
+      });
       const N = 60;
       const Eamp = Math.min(80, H * 0.28);
       const Bamp = Eamp * 0.55;
@@ -116,9 +115,29 @@ export function PlaneWaveDemo({ figure }: Props) {
         else ctx.lineTo(bx2, by2);
       }
       ctx.stroke();
-      drawLabel(ctx, { text: 'E (y)', x: 14, y: 22, color: colors.pink, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'B (z)', x: 14, y: 38, color: colors.teal, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'in phase · |B| = |E|/c', x: 14, y: 54, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: 'E (y)',
+        x: 14,
+        y: 22,
+        color: colors.pink,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: 'B (z)',
+        x: 14,
+        y: 38,
+        color: colors.teal,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: 'in phase · |B| = |E|/c',
+        x: 14,
+        y: 54,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
     },
     [],
   );
@@ -155,10 +174,10 @@ export function PlaneWaveDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Field amplitudes"
-        left={<InlineMath tex={`|B| \\;=\\; \\dfrac{|E|}{c}`} />}
+        left={<M tex={`|B| \\;=\\; \\dfrac{|E|}{c}`} />}
         rightLabel="Wavelength"
         right={
-          <InlineMath
+          <M
             tex={
               `\\lambda \\;=\\; \\dfrac{c}{f} \\;=\\; ` +
               `\\dfrac{${C_SIM}}{${f.toFixed(2)}} \\;\\approx\\; ${lambdaPx.toFixed(0)}\\ \text{px}`

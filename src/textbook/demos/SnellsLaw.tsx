@@ -11,7 +11,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -89,11 +89,35 @@ export function SnellsLawDemo({ figure }: Props) {
         drawRay(ctx, cx, cy, tx, ty, withAlpha(colors.teal, 0.95), 2.2);
       }
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `n₁ = ${n1.toFixed(2)}`, x: 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `n₂ = ${n2.toFixed(2)}`, x: 12, y: H - 8, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `θ₁ = ${thetaDeg.toFixed(1)}°`, x: cx + 8, y: cy - 30, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: `n₁ = ${n1.toFixed(2)}`,
+        x: 12,
+        y: 18,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `n₂ = ${n2.toFixed(2)}`,
+        x: 12,
+        y: H - 8,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `θ₁ = ${thetaDeg.toFixed(1)}°`,
+        x: cx + 8,
+        y: cy - 30,
+        color: colors.accent,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
       if (!totalIntRefl) {
-        drawLabel(ctx, { text: `θ₂ = ${((th2 * 180) / Math.PI).toFixed(1)}°`, x: cx + 8, y: cy + 36, color: colors.teal });
+        drawLabel(ctx, {
+          text: `θ₂ = ${((th2 * 180) / Math.PI).toFixed(1)}°`,
+          x: cx + 8,
+          y: cy + 36,
+          color: colors.teal,
+        });
       }
     },
     [],
@@ -157,12 +181,16 @@ export function SnellsLawDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Snell's law"
-        left={<InlineMath tex={`n_1 \\sin\\theta_1 = n_2 \\sin\\theta_2`} />}
+        left={<M tex={`n_1 \\sin\\theta_1 = n_2 \\sin\\theta_2`} />}
         rightLabel={`θ₁ = ${thetaDeg}°, n₁ = ${n1.toFixed(2)}, n₂ = ${n2.toFixed(2)}`}
         right={
-          tir
-            ? <InlineMath tex={`\\sin\\theta_1 > n_2/n_1 \\Rightarrow \\text{TIR}`} />
-            : <InlineMath tex={`${n1.toFixed(2)}\\sin(${thetaDeg}°) = ${n2.toFixed(2)}\\sin\\theta_2 \\Rightarrow \\theta_2 = ${((theta2 * 180) / Math.PI).toFixed(2)}°`} />
+          tir ? (
+            <M tex={`\\sin\\theta_1 > n_2/n_1 \\Rightarrow \\text{TIR}`} />
+          ) : (
+            <M
+              tex={`${n1.toFixed(2)}\\sin(${thetaDeg}°) = ${n2.toFixed(2)}\\sin\\theta_2 \\Rightarrow \\theta_2 = ${((theta2 * 180) / Math.PI).toFixed(2)}°`}
+            />
+          )
         }
       />
     </Demo>

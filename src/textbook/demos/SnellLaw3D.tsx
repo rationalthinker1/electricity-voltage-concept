@@ -26,8 +26,15 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
@@ -86,7 +93,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
   const setup = useSimLoop<(typeof stateRef)['current'], OrbitScene>(
     stateRef,
     ({ ctx, w, h, colors }, s, _dt, _simTime, scene) => {
-    const cam = scene.cam;
+      const cam = scene.cam;
       const { theta1, theta2, totalReflection } = s.computed;
 
       ctx.fillStyle = colors.bg;
@@ -169,7 +176,14 @@ export function SnellLaw3DDemo({ figure }: Props) {
       ctx.restore();
       // Label "n̂" near the top of the normal.
       ctx.fillStyle = colors.text;
-      drawLabel(ctx, { text: 'n̂', x: nTopP.x + 6, y: nTopP.y - 2, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'n̂',
+        x: nTopP.x + 6,
+        y: nTopP.y - 2,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
 
       // ─── 5. Angle arcs at the origin ───
       // Tiny 2D arcs drawn in screen space, on the side of each ray.
@@ -230,9 +244,24 @@ export function SnellLaw3DDemo({ figure }: Props) {
 
       // ─── 7. Labels and legend ───
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'drag to orbit · look along z to see the 2D triangle', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'drag to orbit · look along z to see the 2D triangle',
+        x: 12,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: 'incident', x: w - 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'incident',
+        x: w - 12,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       if (s.showReflected) {
         ctx.fillStyle = colors.pink;
         drawLabel(ctx, { text: 'reflected', x: w - 12, y: 28 });
@@ -242,7 +271,11 @@ export function SnellLaw3DDemo({ figure }: Props) {
         drawLabel(ctx, { text: 'refracted', x: w - 12, y: 44 });
       }
       ctx.fillStyle = colors.text;
-      drawLabel(ctx, { text: 'normal', x: w - 12, y: refractedEnd ? 60 : s.showReflected ? 44 : 28 });
+      drawLabel(ctx, {
+        text: 'normal',
+        x: w - 12,
+        y: refractedEnd ? 60 : s.showReflected ? 44 : 28,
+      });
 
       // Medium labels in the corners of the interface.
       ctx.fillStyle = colors.text;
@@ -341,12 +374,18 @@ export function SnellLaw3DDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Snell's law (3D)"
-        left={<InlineMath tex={`n_1 \\sin\\theta_1 = n_2 \\sin\\theta_2`} />}
+        left={<M tex={`n_1 \\sin\\theta_1 = n_2 \\sin\\theta_2`} />}
         rightLabel={`θ₁ = ${theta1Deg}°, n₁ = ${tirMode ? n2.toFixed(2) : '1.00'}, n₂ = ${tirMode ? '1.00' : n2.toFixed(2)}`}
         right={
-          computed.totalReflection
-            ? <InlineMath tex={`\\text{TIR — }\\theta_1 > \\theta_c = ${thetaCDisplay != null ? thetaCDisplay.toFixed(1) : '—'}°`} />
-            : <InlineMath tex={`\\theta_2 = ${theta2Display != null ? theta2Display.toFixed(2) : '—'}°,\\quad R = ${(computed.R * 100).toFixed(1)}\\%`} />
+          computed.totalReflection ? (
+            <M
+              tex={`\\text{TIR — }\\theta_1 > \\theta_c = ${thetaCDisplay != null ? thetaCDisplay.toFixed(1) : '—'}°`}
+            />
+          ) : (
+            <M
+              tex={`\\theta_2 = ${theta2Display != null ? theta2Display.toFixed(2) : '—'}°,\\quad R = ${(computed.R * 100).toFixed(1)}\\%`}
+            />
+          )
         }
       />
     </Demo>
@@ -397,7 +436,13 @@ function drawArrow3D(ctx: CanvasRenderingContext2D, p1: Point2D, p2: Point2D, op
  * Draw the interface (the surface) — a translucent square in the x-z plane
  * with a wireframe grid. Slightly tinted teal to read as "glass-ish".
  */
-function drawInterfacePlane(ctx: CanvasRenderingContext2D, colors: import('@/lib/canvasTheme').ThemeColors, cam: OrbitCamera, w: number, h: number) {
+function drawInterfacePlane(
+  ctx: CanvasRenderingContext2D,
+  colors: import('@/lib/canvasTheme').ThemeColors,
+  cam: OrbitCamera,
+  w: number,
+  h: number,
+) {
   const corners: Vec3[] = [
     v3(-PLANE_HALF, 0, -PLANE_HALF),
     v3(PLANE_HALF, 0, -PLANE_HALF),
@@ -542,10 +587,7 @@ function drawAngleArc(
   while (da > Math.PI) da -= 2 * Math.PI;
   while (da < -Math.PI) da += 2 * Math.PI;
 
-  const colour =
-    kind === 'theta1'
-      ? withAlpha(colors.accent, 0.85)
-      : withAlpha(colors.teal, 0.85);
+  const colour = kind === 'theta1' ? withAlpha(colors.accent, 0.85) : withAlpha(colors.teal, 0.85);
   ctx.strokeStyle = colour;
   ctx.lineWidth = 1.4;
   ctx.beginPath();

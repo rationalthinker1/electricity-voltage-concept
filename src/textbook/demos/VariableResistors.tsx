@@ -12,7 +12,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel, drawLabeledValue } from '@/lib/canvasLayout';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
@@ -86,8 +86,20 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.lineTo(trackR + 8, H - 16);
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'A', x: trackL - 8, y: H - 4, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'B', x: trackR + 8, y: H - 4, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: 'A',
+        x: trackL - 8,
+        y: H - 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: 'B',
+        x: trackR + 8,
+        y: H - 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       const wiperX = trackL + wiper * (trackR - trackL);
       ctx.strokeStyle = withAlpha(colors.text, 0.85);
       ctx.lineWidth = 2;
@@ -104,7 +116,13 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.stroke();
       ctx.fillStyle = withAlpha(colors.accent, 0.85);
       ctx.fillRect(wiperX - 6, trackY - 36, 12, 8);
-      drawLabel(ctx, { text: 'W (wiper)', x: wiperX, y: trackY - 42, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: 'W (wiper)',
+        x: wiperX,
+        y: trackY - 42,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       drawLabeledValue(ctx, {
         x: trackL,
         y: trackY + 28,
@@ -195,8 +213,20 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.lineTo(ldrCX + pW / 2 - 12, H - 16);
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `${lux.toFixed(lux < 10 ? 1 : 0)} lux`, x: ldrCX, y: ldrCY - pH / 2 - 36, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: `R = ${fmtResistance(R_LDR)}`, x: ldrCX, y: ldrCY + pH / 2 + 22, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: `${lux.toFixed(lux < 10 ? 1 : 0)} lux`,
+        x: ldrCX,
+        y: ldrCY - pH / 2 - 36,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: `R = ${fmtResistance(R_LDR)}`,
+        x: ldrCX,
+        y: ldrCY + pH / 2 + 22,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       drawLabel(ctx, {
         x: splitX + 12,
         y: 8,
@@ -251,16 +281,12 @@ export function VariableResistorsDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Potentiometer"
         left={
-          <InlineMath
+          <M
             tex={`R_{AW} + R_{WB} = R_{\\text{total}}: ${(R_AW / 1000).toFixed(1)} + ${(R_WB / 1000).toFixed(1)} = ${(R_TOTAL / 1000).toFixed(0)}\\,\\text{k}\\Omega`}
           />
         }
         rightLabel="LDR (power law)"
-        right={
-          <InlineMath
-            tex={`R = A \\cdot E^{-\\gamma} \\approx ${fmtResistance(R_LDR)}`}
-          />
-        }
+        right={<M tex={`R = A \\cdot E^{-\\gamma} \\approx ${fmtResistance(R_LDR)}`} />}
       />
     </Demo>
   );

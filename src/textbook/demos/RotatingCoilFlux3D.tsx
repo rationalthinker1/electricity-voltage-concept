@@ -20,14 +20,21 @@
 import { useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 import { useOrbitScene } from '@/lib/useOrbitScene';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -200,10 +207,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
         const intensity = Math.abs(cosT);
         const alpha = 0.05 + 0.32 * intensity * Math.min(1, st.B);
         // Tint flips: amber when Φ > 0, blue when Φ < 0.
-        const color =
-          cosT >= 0
-            ? withAlpha(colors.accent, alpha)
-            : withAlpha(colors.blue, alpha);
+        const color = cosT >= 0 ? withAlpha(colors.accent, alpha) : withAlpha(colors.blue, alpha);
         ctx.fillStyle = color;
         ctx.beginPath();
         ctx.moveTo(cornersScreen[0]!.x, cornersScreen[0]!.y);
@@ -251,13 +255,33 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
         // n̂ label near the arrow tip.
         const labelP = project({ x: nHat.x * 1.18, y: 0.05, z: nHat.z * 1.18 }, cam, w, sceneH);
         if (labelP.depth > 0) {
-          drawLabel(ctx, { text: 'n̂', x: labelP.x, y: labelP.y, color: colors.text, font: 'italic 12px "STIX Two Text", serif', baseline: 'middle' });
+          drawLabel(ctx, {
+            text: 'n̂',
+            x: labelP.x,
+            y: labelP.y,
+            color: colors.text,
+            font: 'italic 12px "STIX Two Text", serif',
+            baseline: 'middle',
+          });
         }
       }
 
       // B-field label, top-left.
-      drawLabel(ctx, { text: `B → ${st.B.toFixed(2)}  (along +x)`, x: 12, y: 12, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `θ = ${(((theta % (2 * Math.PI)) * 180) / Math.PI).toFixed(0)}°`, x: 12, y: 28, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `B → ${st.B.toFixed(2)}  (along +x)`,
+        x: 12,
+        y: 12,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `θ = ${(((theta % (2 * Math.PI)) * 180) / Math.PI).toFixed(0)}°`,
+        x: 12,
+        y: 28,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.globalAlpha = 0.55;
       drawLabel(ctx, { text: 'drag to orbit', x: 12, y: sceneH - 18 });
@@ -322,11 +346,21 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       // Plot legend.
       ctx.save();
       ctx.globalAlpha = 0.92;
-      drawLabel(ctx, { text: 'Φ_B(t) = B·A·cos(ωt)', x: plotLeft + 4, y: plotY0 + 6, color: colors.accent });
+      drawLabel(ctx, {
+        text: 'Φ_B(t) = B·A·cos(ωt)',
+        x: plotLeft + 4,
+        y: plotY0 + 6,
+        color: colors.accent,
+      });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.92;
-      drawLabel(ctx, { text: 'ε(t) = −dΦ/dt = B·A·ω·sin(ωt)', x: plotLeft + 4, y: plotY0 + 20, color: colors.teal });
+      drawLabel(ctx, {
+        text: 'ε(t) = −dΦ/dt = B·A·ω·sin(ωt)',
+        x: plotLeft + 4,
+        y: plotY0 + 20,
+        color: colors.teal,
+      });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.65;
@@ -392,14 +426,10 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Flux follows cos(θ)"
-        left={
-          <InlineMath
-            tex={`\\Phi_{B}(t) \\;=\\; B A \\cos(\\omega t)`}
-          />
-        }
+        left={<M tex={`\\Phi_{B}(t) \\;=\\; B A \\cos(\\omega t)`} />}
         rightLabel="EMF is its derivative"
         right={
-          <InlineMath
+          <M
             tex={`\\varepsilon(t) \\;=\\; -\\dfrac{d\\Phi_{B}}{dt} \\;=\\; B A \\omega \\sin(\\omega t)`}
           />
         }

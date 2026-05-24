@@ -29,7 +29,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
@@ -208,8 +208,26 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
       drawGalvanometer(ctx, xA, yMid, dV, V);
 
       // Dynamic overlay: live node potentials and chapter header.
-      drawLabel(ctx, { text: `A   ${V_A.toFixed(3)} V`, x: xA + 8, y: yTop - 6, color: withAlpha(colors.text, 0.85), weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'bottom' });
-      drawLabel(ctx, { text: `B   ${V_B.toFixed(3)} V`, x: xB + 8, y: yBot + 6, color: withAlpha(colors.text, 0.85), weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `A   ${V_A.toFixed(3)} V`,
+        x: xA + 8,
+        y: yTop - 6,
+        color: withAlpha(colors.text, 0.85),
+        weight: 'bold',
+        size: 11,
+        font: 'bold 11px "JetBrains Mono", monospace',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: `B   ${V_B.toFixed(3)} V`,
+        x: xB + 8,
+        y: yBot + 6,
+        color: withAlpha(colors.text, 0.85),
+        weight: 'bold',
+        size: 11,
+        font: 'bold 11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
 
       drawLabel(ctx, {
         x: 12,
@@ -296,14 +314,12 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Balance condition"
         left={
-          <InlineMath
+          <M
             tex={`R_x = \\dfrac{R_2 R_3}{R_1} = \\dfrac{${R2}\\times${R3}}{${R1}} = ${RxBalance.toFixed(1)}\\,\\Omega`}
           />
         }
         rightLabel="Differential output"
-        right={
-          <InlineMath tex={`V_A - V_B = ${dV.toFixed(3)}\\,\\text{V}`} />
-        }
+        right={<M tex={`V_A - V_B = ${dV.toFixed(3)}\\,\\text{V}`} />}
       />
     </Demo>
   );

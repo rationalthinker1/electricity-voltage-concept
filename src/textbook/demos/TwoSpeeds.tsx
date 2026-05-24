@@ -13,14 +13,14 @@ import { useRef, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { MATERIALS, PHYS, formatTime, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -63,9 +63,26 @@ export function TwoSpeedsDemo({ figure }: Props) {
         ctx.lineTo(trackRight, y);
         ctx.stroke();
         ctx.fillStyle = withAlpha(colors.textDim, 0.8);
-        drawLabel(ctx, { text: '0 mm', x: trackLeft, y: y + 18, font: '10px "JetBrains Mono", monospace' });
-        drawLabel(ctx, { text: '200 mm', x: trackRight, y: y + 18, font: '10px "JetBrains Mono", monospace', align: 'right' });
-        drawLabel(ctx, { text: label, x: trackLeft, y: y - 10, color: color, font: '10px "JetBrains Mono", monospace' });
+        drawLabel(ctx, {
+          text: '0 mm',
+          x: trackLeft,
+          y: y + 18,
+          font: '10px "JetBrains Mono", monospace',
+        });
+        drawLabel(ctx, {
+          text: '200 mm',
+          x: trackRight,
+          y: y + 18,
+          font: '10px "JetBrains Mono", monospace',
+          align: 'right',
+        });
+        drawLabel(ctx, {
+          text: label,
+          x: trackLeft,
+          y: y - 10,
+          color: color,
+          font: '10px "JetBrains Mono", monospace',
+        });
       }
       drawTrack(yTop, 'electron drift  (~0.03 mm/s)', colors.blue);
       drawTrack(yBot, 'EM signal in wire  (~2×10⁸ m/s)', colors.accent);
@@ -156,7 +173,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="The two speeds"
         left={
-          <InlineMath
+          <M
             tex={
               `v_{\\text{signal}} \\approx 2\\times 10^{8}\\ \\text{m/s}` +
               `\\quad\\;\\; v_{\\text{drift}} = \\tfrac{I}{nqA} \\approx ` +
@@ -166,7 +183,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
         }
         rightLabel="Ratio (1 A / 2.5 mm² Cu)"
         right={
-          <InlineMath
+          <M
             tex={
               `\\dfrac{v_{\\text{signal}}}{v_{\\text{drift}}} = ` +
               `\\dfrac{2\\times 10^{8}}{${sciTeX(v_drift, 1)}} \\approx ` +

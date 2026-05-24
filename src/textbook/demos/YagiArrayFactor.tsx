@@ -11,7 +11,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -80,7 +80,14 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       ctx.lineTo(ax - 8, cyTop + 4);
       ctx.closePath();
       ctx.fill();
-      drawLabel(ctx, { text: 'forward →', x: ax - 12, y: cyTop - 6, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, {
+        text: 'forward →',
+        x: ax - 12,
+        y: cyTop - 6,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+      });
       const cx = (split + W) / 2;
       const cy = H / 2;
       const R = Math.min((W - split) * 0.42, H * 0.42);
@@ -120,8 +127,20 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       ctx.fill();
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'forward (+x)', x: cx + R + 12, y: cy + 4, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'back (−x)', x: cx - R - 12, y: cy + 4, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: 'forward (+x)',
+        x: cx + R + 12,
+        y: cy + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: 'back (−x)',
+        x: cx - R - 12,
+        y: cy + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
     },
     [],
   );
@@ -156,9 +175,9 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Yagi gain (empirical)"
-        left={<InlineMath tex="G \approx 7.0 + 1.4\,N_{\text{dir}}\;\text{dBi}" />}
+        left={<M tex="G \approx 7.0 + 1.4\,N_{\text{dir}}\;\text{dBi}" />}
         rightLabel={`N_dir = ${nDir}`}
-        right={<InlineMath tex={`G(${nDir}) \\approx ${Gdbi.toFixed(1)}\\,\\text{dBi}`} />}
+        right={<M tex={`G(${nDir}) \\approx ${Gdbi.toFixed(1)}\\,\\text{dBi}`} />}
       />
     </Demo>
   );

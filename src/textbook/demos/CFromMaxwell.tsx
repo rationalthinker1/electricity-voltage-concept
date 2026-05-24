@@ -6,7 +6,7 @@
  * speed of light. The match to 9 figures is the punchline.
  */
 import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
@@ -97,16 +97,12 @@ export function CFromMaxwellDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Maxwell's prediction"
         left={
-          <InlineMath
+          <M
             tex={`c \\;=\\; \\dfrac{1}{\\sqrt{\\mu_0 \\varepsilon_0}} \\;=\\; ${cPredicted.toFixed(0)}\\ \\text{m/s}`}
           />
         }
         rightLabel="SI exact value"
-        right={
-          <InlineMath
-            tex={`c_{\\text{SI}} \\;=\\; ${cMeasured.toFixed(0)}\\ \\text{m/s}`}
-          />
-        }
+        right={<M tex={`c_{\\text{SI}} \\;=\\; ${cMeasured.toFixed(0)}\\ \\text{m/s}`} />}
       />
     </Demo>
   );

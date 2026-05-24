@@ -17,11 +17,11 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -118,16 +118,84 @@ export function HBridgeInverterDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.8;
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: '+V_DC', x: padL - 4, y: yTop(+V_DC), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: padL - 4, y: top + subH / 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '−V_DC', x: padL - 4, y: yTop(-V_DC), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: `+${(m * V_DC).toFixed(0)} V`, x: padL - 4, y: yMid(+m * V_DC), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: padL - 4, y: mid + subH / 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: `−${(m * V_DC).toFixed(0)} V`, x: padL - 4, y: yMid(-m * V_DC), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: `bipolar PWM (carrier ${F_SW} Hz)`, x: padL + 4, y: top + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `LC-filtered output  (${F_OUT} Hz sine)`, x: padL + 4, y: mid + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: '0', x: padL, y: padT + plotH + 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `${(tWindow * 1000).toFixed(0)} ms`, x: padL + plotW, y: padT + plotH + 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '+V_DC',
+        x: padL - 4,
+        y: yTop(+V_DC),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0',
+        x: padL - 4,
+        y: top + subH / 2,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '−V_DC',
+        x: padL - 4,
+        y: yTop(-V_DC),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: `+${(m * V_DC).toFixed(0)} V`,
+        x: padL - 4,
+        y: yMid(+m * V_DC),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0',
+        x: padL - 4,
+        y: mid + subH / 2,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: `−${(m * V_DC).toFixed(0)} V`,
+        x: padL - 4,
+        y: yMid(-m * V_DC),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: `bipolar PWM (carrier ${F_SW} Hz)`,
+        x: padL + 4,
+        y: top + 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `LC-filtered output  (${F_OUT} Hz sine)`,
+        x: padL + 4,
+        y: mid + 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: '0',
+        x: padL,
+        y: padT + plotH + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `${(tWindow * 1000).toFixed(0)} ms`,
+        x: padL + plotW,
+        y: padT + plotH + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.restore();
       ctx0.phase = phase;
     },
@@ -169,9 +237,15 @@ export function HBridgeInverterDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Sine-PWM output amplitude"
-        left={<InlineMath tex="V_{\text{pk}} = m \cdot V_{\text{DC}},\quad V_{\text{rms}} = \frac{V_{\text{pk}}}{\sqrt{2}}" />}
+        left={
+          <M tex="V_{\text{pk}} = m \cdot V_{\text{DC}},\quad V_{\text{rms}} = \frac{V_{\text{pk}}}{\sqrt{2}}" />
+        }
         rightLabel={`At m = ${m.toFixed(2)}`}
-        right={<InlineMath tex={`${m.toFixed(2)} \\times ${V_DC}\\,\\text{V} = ${Vout_peak.toFixed(0)}\\,\\text{V}_{\\text{pk}};\\quad ${Vout_rms.toFixed(1)}\\,\\text{V}_{\\text{rms}}`} />}
+        right={
+          <M
+            tex={`${m.toFixed(2)} \\times ${V_DC}\\,\\text{V} = ${Vout_peak.toFixed(0)}\\,\\text{V}_{\\text{pk}};\\quad ${Vout_rms.toFixed(1)}\\,\\text{V}_{\\text{rms}}`}
+          />
+        }
       />
     </Demo>
   );

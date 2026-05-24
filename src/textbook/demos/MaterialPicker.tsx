@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -107,13 +107,24 @@ export function MaterialPickerDemo({ figure }: Props) {
         ctx.strokeRect(x0, yMid - barH / 2, Math.max(1, x1 - x0), barH);
 
         ctx.fillStyle = isSel ? colors.accent : withAlpha(colors.text, 0.75);
-        drawLabel(ctx, { text: m.name.replace(' (filament)', '').replace(' (heater)', '').toUpperCase(), x: padL - 10, y: yMid + 3, font: isSel
-                    ? 'bold 10px "JetBrains Mono", monospace'
-                    : '10px "JetBrains Mono", monospace', align: 'right' });
+        drawLabel(ctx, {
+          text: m.name.replace(' (filament)', '').replace(' (heater)', '').toUpperCase(),
+          x: padL - 10,
+          y: yMid + 3,
+          font: isSel
+            ? 'bold 10px "JetBrains Mono", monospace'
+            : '10px "JetBrains Mono", monospace',
+          align: 'right',
+        });
 
         ctx.fillStyle = isSel ? colors.accent : withAlpha(colors.textDim, 0.85);
         const txt = fmtCurrent(ik);
-        drawLabel(ctx, { text: txt, x: Math.min(w - padR - 60, x1 + 6), y: yMid + 3, font: '10px "JetBrains Mono", monospace' });
+        drawLabel(ctx, {
+          text: txt,
+          x: Math.min(w - padR - 60, x1 + 6),
+          y: yMid + 3,
+          font: '10px "JetBrains Mono", monospace',
+        });
       });
 
       drawLabel(ctx, {
@@ -142,7 +153,7 @@ export function MaterialPickerDemo({ figure }: Props) {
           <button
             key={k}
             type="button"
-            className={`mini-toggle${k === mat ? ' on' : ''}`}
+            className={`mini-toggle${k === mat ? 'on' : ''}`}
             onClick={() => setMat(k)}
             aria-pressed={k === mat}
           >
@@ -154,18 +165,14 @@ export function MaterialPickerDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Same V, L, A — material varies"
-        left={<InlineMath tex="I \;=\; \dfrac{V \\sigma A}{L} \;=\; \dfrac{V}{R}" />}
+        left={<M tex="I \;=\; \dfrac{V \\sigma A}{L} \;=\; \dfrac{V}{R}" />}
         rightLabel={`Live substitution (${MATERIALS[mat]!.name})`}
         right={
-          <InlineMath
-            tex={
-              `I \\;=\\; \\dfrac{12}{${sciTeX(R)}} \\;\\approx\\; ` +
-              `${sciTeX(I)}\\ \\text{A}`
-            }
+          <M
+            tex={`I \\;=\\; \\dfrac{12}{${sciTeX(R)}} \\;\\approx\\; ` + `${sciTeX(I)}\\ \\text{A}`}
           />
         }
       />
     </Demo>
   );
 }
-

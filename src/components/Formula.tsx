@@ -159,6 +159,16 @@ interface InlineMathProps {
   ariaLabel?: string;
 }
 
+/**
+ * Short alias for {@link InlineMath}. JSX strips whitespace at line breaks
+ * before/after a tag, so chapter prose ends up sprinkled with `{' '}` markers
+ * around long inline-math elements. `<M tex="d" />` is short enough that
+ * Prettier (printWidth 100) keeps it on the same line as adjacent prose far
+ * more often, cutting the need for explicit `{' '}` markers. Both names point
+ * at the same component — pick whichever reads better in context.
+ */
+export { InlineMath as M };
+
 /** Inline math — small enough to live inside a sentence. */
 export function InlineMath({ id, tex, children, ariaLabel }: InlineMathProps) {
   const resolved = resolve(id, tex, ariaLabel);

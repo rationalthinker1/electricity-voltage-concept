@@ -14,7 +14,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -91,7 +91,13 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
       ctx.lineTo(wcx + 4, cy - E + 6 * dir);
       ctx.closePath();
       ctx.fill();
-      drawLabel(ctx, { text: 'E-field (vertical)', x: wcx, y: cy + Rmid + 14, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: 'E-field (vertical)',
+        x: wcx,
+        y: cy + Rmid + 14,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -113,9 +119,22 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
       ctx.lineTo(rxCx + projAmp * ux, cy + projAmp * uy);
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `P_r / P_r,max = cos²(α) = ${frac.toFixed(3)}`, x: 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: `P_r / P_r,max = cos²(α) = ${frac.toFixed(3)}`,
+        x: 12,
+        y: 18,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
       const lossLabel = Number.isFinite(lossDb) ? `loss = ${lossDb.toFixed(2)} dB` : 'loss = ∞';
-      drawLabel(ctx, { text: lossLabel, x: W - 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, {
+        text: lossLabel,
+        x: W - 12,
+        y: 18,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+      });
       ctx0.tAnim = tAnim;
     },
     [],
@@ -160,10 +179,10 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Polarization mismatch (Malus's law)"
-        left={<InlineMath tex="P_r / P_{r,\max} = \cos^2\alpha" />}
+        left={<M tex="P_r / P_{r,\max} = \cos^2\alpha" />}
         rightLabel={`α = ${alphaDeg}°`}
         right={
-          <InlineMath
+          <M
             tex={`\\cos^2(${alphaDeg}^\\circ) = ${frac.toFixed(3)}\\quad(${Number.isFinite(lossDb) ? lossDb.toFixed(1) + '\\,\\text{dB loss}' : '\\infty\\,\\text{dB}'})`}
           />
         }

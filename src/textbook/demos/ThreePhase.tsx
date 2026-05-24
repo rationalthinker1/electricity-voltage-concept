@@ -15,7 +15,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -98,11 +98,46 @@ export function ThreePhaseDemo({ figure }: Props) {
       }
       ctx.stroke();
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: 'V_a', x: plotX + 4, y: plotY + 4, color: phaseColors[0], font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'V_b', x: plotX + 36, y: plotY + 4, color: phaseColors[1], font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'V_c', x: plotX + 68, y: plotY + 4, color: phaseColors[2], font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'Σ = 0', x: plotX + 100, y: plotY + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `${f.toFixed(0)} Hz — 120° apart`, x: plotX + plotW / 2, y: h - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'V_a',
+        x: plotX + 4,
+        y: plotY + 4,
+        color: phaseColors[0],
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'V_b',
+        x: plotX + 36,
+        y: plotY + 4,
+        color: phaseColors[1],
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'V_c',
+        x: plotX + 68,
+        y: plotY + 4,
+        color: phaseColors[2],
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'Σ = 0',
+        x: plotX + 100,
+        y: plotY + 4,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `${f.toFixed(0)} Hz — 120° apart`,
+        x: plotX + plotW / 2,
+        y: h - 14,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.restore();
       ctx.strokeStyle = colors.border;
       ctx.beginPath();
@@ -159,8 +194,22 @@ export function ThreePhaseDemo({ figure }: Props) {
         });
       }
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'phasors at 120°', x: pcx, y: 10, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `Σ vectors → 0`, x: pcx, y: h - 8, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: 'phasors at 120°',
+        x: pcx,
+        y: 10,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `Σ vectors → 0`,
+        x: pcx,
+        y: h - 8,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
       ctx.restore();
       ctx0.simT = simT;
       ctx0.SCOPE_DURATION = SCOPE_DURATION;
@@ -201,10 +250,10 @@ export function ThreePhaseDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Three-phase sum"
-        left={<InlineMath tex={"V_a(t) + V_b(t) + V_c(t) = 0\\;\\text{at every instant}"} />}
+        left={<M tex={'V_a(t) + V_b(t) + V_c(t) = 0\\;\\text{at every instant}'} />}
         rightLabel="RMS value"
         right={
-          <InlineMath
+          <M
             tex={`V_\\text{rms} = V_\\text{pk}/\\sqrt{2} = ${Vpk.toFixed(2)}/\\sqrt{2} \\approx ${Vrms.toFixed(3)}\\,\\text{V}`}
           />
         }

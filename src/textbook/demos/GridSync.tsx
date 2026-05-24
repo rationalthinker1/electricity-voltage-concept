@@ -14,11 +14,11 @@ import { useMemo, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawAxes, drawHLine, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -124,15 +124,42 @@ export function GridSyncDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(padL + plotW - 18, padT + 14, 7, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: ready ? 'READY TO CLOSE' : 'NOT SYNCHRONISED', x: padL + plotW - 30, y: padT + 14, color: ready ? colors.teal : colors.pink, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: ready ? 'READY TO CLOSE' : 'NOT SYNCHRONISED',
+        x: padL + plotW - 30,
+        y: padT + 14,
+        color: ready ? colors.teal : colors.pink,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
       ctx.save();
       ctx.globalAlpha = 0.75;
-      drawLabel(ctx, { text: 'grid', x: padL + 6, y: padT + 14, color: colors.text, baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'grid',
+        x: padL + 6,
+        y: padT + 14,
+        color: colors.text,
+        baseline: 'middle',
+      });
       ctx.restore();
-      drawLabel(ctx, { text: 'generator', x: padL + 40, y: padT + 14, color: ready ? colors.teal : colors.accent });
+      drawLabel(ctx, {
+        text: 'generator',
+        x: padL + 40,
+        y: padT + 14,
+        color: ready ? colors.teal : colors.accent,
+      });
       const dPhi = Math.abs(phiDeg) % 360;
       const dPhiMin = Math.min(dPhi, 360 - dPhi);
-      drawLabel(ctx, { text: `Δf = ${(fGen - F_GRID).toFixed(2)} Hz   ·   Δφ = ${dPhiMin.toFixed(0)}°   ·   ΔV = ${((vGen - V_GRID) * 100).toFixed(1)}%`, x: padL + plotW / 2, y: padT + plotH + 26, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: `Δf = ${(fGen - F_GRID).toFixed(2)} Hz   ·   Δφ = ${dPhiMin.toFixed(0)}°   ·   ΔV = ${((vGen - V_GRID) * 100).toFixed(1)}%`,
+        x: padL + plotW / 2,
+        y: padT + plotH + 26,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
       ctx0.simT = simT;
     },
     [],
@@ -189,13 +216,13 @@ export function GridSyncDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Sync conditions"
         left={
-          <InlineMath
+          <M
             tex={`|\\Delta f| < 0.2\\ \\text{Hz},\\ \\ |\\Delta\\varphi| < 10^{\\circ},\\ \\ |\\Delta V|/V < 5\\%`}
           />
         }
         rightLabel="current mismatch"
         right={
-          <InlineMath
+          <M
             tex={
               `\\Delta f = ${(fGen - F_GRID).toFixed(2)}\\ \\text{Hz},\\ \\ ` +
               `\\Delta\\varphi = ${Math.min(Math.abs(phiDeg) % 360, 360 - (Math.abs(phiDeg) % 360)).toFixed(0)}^{\\circ},\\ \\ ` +

@@ -17,7 +17,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
@@ -176,9 +176,15 @@ export function FiberAttenuationDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Rayleigh scattering"
-        left={<InlineMath tex="\alpha(\lambda) \approx \frac{A}{\lambda^4},\quad \text{reach} = \frac{\text{budget}}{\alpha}" />}
+        left={
+          <M tex="\alpha(\lambda) \approx \frac{A}{\lambda^4},\quad \text{reach} = \frac{\text{budget}}{\alpha}" />
+        }
         rightLabel={`At λ = ${lambda.toFixed(0)} nm`}
-        right={<InlineMath tex={`\\alpha = ${loss.toFixed(2)}\\,\\text{dB/km};\\quad \\text{reach} \\approx ${reachKm.toFixed(0)}\\,\\text{km}`} />}
+        right={
+          <M
+            tex={`\\alpha = ${loss.toFixed(2)}\\,\\text{dB/km};\\quad \\text{reach} \\approx ${reachKm.toFixed(0)}\\,\\text{km}`}
+          />
+        }
       />
     </Demo>
   );

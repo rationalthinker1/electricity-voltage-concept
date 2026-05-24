@@ -12,7 +12,7 @@ import { useMemo, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -170,11 +170,10 @@ export function SynchronousMotorDemo({ figure }: Props) {
         <>
           A wound-rotor or permanent-magnet rotor is dragged around at exactly synchronous speed,
           with the rotor's N pole trailing the stator's field vector by a small load angle{' '}
-          <InlineMath tex="\delta" />. Torque is proportional to <InlineMath tex="\sin\delta" /> —
-          increase the load, <InlineMath tex="\delta" /> increases to match, but if{' '}
-          <InlineMath tex="\delta > 90^\circ" /> the rotor "slips a pole" and the machine stalls.
-          Used wherever you need a precise, constant speed: clocks, turntables, large industrial
-          drives.
+          <M tex="\delta" />. Torque is proportional to <M tex="\sin\delta" /> — increase the load,{' '}
+          <M tex="\delta" /> increases to match, but if <M tex="\delta > 90^\circ" /> the rotor
+          "slips a pole" and the machine stalls. Used wherever you need a precise, constant speed:
+          clocks, turntables, large industrial drives.
         </>
       }
       deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}
@@ -204,11 +203,9 @@ export function SynchronousMotorDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="synchronous speed"
-        left={<InlineMath tex={`n_s = 120f/p = ${computed.n.toFixed(0)}\\,\\text{rpm}`} />}
+        left={<M tex={`n_s = 120f/p = ${computed.n.toFixed(0)}\\,\\text{rpm}`} />}
         rightLabel="load angle"
-        right={
-          <InlineMath tex={`\\tau/\\tau_{\\max} = \\sin\\delta = ${computed.tau.toFixed(2)}`} />
-        }
+        right={<M tex={`\\tau/\\tau_{\\max} = \\sin\\delta = ${computed.tau.toFixed(2)}`} />}
       />
     </Demo>
   );

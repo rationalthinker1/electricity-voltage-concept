@@ -49,7 +49,8 @@ export function FerromagnetDemo({ figure }: Props) {
     stateRef,
     ({ ctx, w, h, colors }, state, _dt, _simTime, c: SimCtx) => {
       const { B } = state;
-      const { dir, Bhistory, Mhistory, cols, rows, top, panelH, bottomTop, bottomH, cellW, cellH } = c;
+      const { dir, Bhistory, Mhistory, cols, rows, top, panelH, bottomTop, bottomH, cellW, cellH } =
+        c;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -124,7 +125,12 @@ export function FerromagnetDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // Label
-      drawLabel(ctx, { text: 'Domain map (pink = +M, blue = −M)', x: 8, y: top - 8, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: 'Domain map (pink = +M, blue = −M)',
+        x: 8,
+        y: top - 8,
+        font: '10px "JetBrains Mono", monospace',
+      });
 
       // B-M plot
       const px0 = 50;
@@ -145,12 +151,42 @@ export function FerromagnetDemo({ figure }: Props) {
       ctx.stroke();
 
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'M', x: cx_ax + 4, y: py0 + 10, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'B', x: px1 - 14, y: cy_ax - 4, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: '+1', x: cx_ax + 4, y: py0 + 12, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: '−1', x: cx_ax + 4, y: py1 - 2, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: '−1', x: px0 - 2, y: cy_ax + 12, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: '+1', x: px1 - 14, y: cy_ax + 12, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: 'M',
+        x: cx_ax + 4,
+        y: py0 + 10,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: 'B',
+        x: px1 - 14,
+        y: cy_ax - 4,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: '+1',
+        x: cx_ax + 4,
+        y: py0 + 12,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: '−1',
+        x: cx_ax + 4,
+        y: py1 - 2,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: '−1',
+        x: px0 - 2,
+        y: cy_ax + 12,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: '+1',
+        x: px1 - 14,
+        y: cy_ax + 12,
+        font: '10px "JetBrains Mono", monospace',
+      });
 
       function xOf(b: number) {
         return cx_ax + ((b * (px1 - px0)) / 2) * 0.92;

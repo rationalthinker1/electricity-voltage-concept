@@ -11,10 +11,10 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -108,9 +108,26 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(cx, cy + 6, 4, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: `near-field r ≲ λ/2π = ${rNF.toFixed(0)} px`, x: 12, y: 18, color: colors.pink, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `far-field r ≫ λ/2π`, x: 12, y: 32, color: colors.teal, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `λ = ${lam.toFixed(0)} px`, x: 12, y: 46, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: `near-field r ≲ λ/2π = ${rNF.toFixed(0)} px`,
+        x: 12,
+        y: 18,
+        color: colors.pink,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `far-field r ≫ λ/2π`,
+        x: 12,
+        y: 32,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `λ = ${lam.toFixed(0)} px`,
+        x: 12,
+        y: 46,
+        font: '10px "JetBrains Mono", monospace',
+      });
     },
     [],
   );
@@ -146,9 +163,13 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Near/far-field boundary"
-        left={<InlineMath tex="r_{\text{NF}} \approx \lambda\,/\,(2\pi)" />}
+        left={<M tex="r_{\text{NF}} \approx \lambda\,/\,(2\pi)" />}
         rightLabel="In this view"
-        right={<InlineMath tex={`\\lambda = ${lamPx.toFixed(0)}\\,\\text{px};\\quad r_{\\text{NF}} \\approx ${(lamPx / (2 * Math.PI)).toFixed(1)}\\,\\text{px}`} />}
+        right={
+          <M
+            tex={`\\lambda = ${lamPx.toFixed(0)}\\,\\text{px};\\quad r_{\\text{NF}} \\approx ${(lamPx / (2 * Math.PI)).toFixed(1)}\\,\\text{px}`}
+          />
+        }
       />
     </Demo>
   );

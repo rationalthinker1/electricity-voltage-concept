@@ -179,7 +179,11 @@ export const MANIFEST: LabManifestEntry[] = [
     deck: "A guided two-stage experiment using the University of Colorado's free PhET simulation. Vary distance at fixed charge, then charge at fixed distance, record F, and back out both the exponent of r and Coulomb's constant from your own data.",
     runtime: '60–90 min',
     difficulty: 'intro',
-    equipment: ['Laptop or tablet', 'Spreadsheet (Sheets / Excel / Numbers)', 'Pencil and graph paper (optional)'],
+    equipment: [
+      'Laptop or tablet',
+      'Spreadsheet (Sheets / Excel / Numbers)',
+      'Pencil and graph paper (optional)',
+    ],
     software: [
       {
         name: "PhET — Coulomb's Law",
@@ -209,7 +213,7 @@ export const MANIFEST: LabManifestEntry[] = [
     equipment: [
       'A smartphone (iOS or Android)',
       'A roll of aluminum kitchen foil (≥ 30 cm wide)',
-      'Painter\'s or masking tape',
+      "Painter's or masking tape",
       'A friend with a second phone for the call-test variant (optional)',
     ],
     software: [
@@ -307,7 +311,8 @@ export const MANIFEST: LabManifestEntry[] = [
     heroLabel: 'Chapter 20 · Lab 2.5 — Motor Torque-Speed',
     heroHeadline: (
       <>
-        Current makes torque. <em className="text-accent font-normal italic">Speed makes back-EMF</em>.
+        Current makes torque.{' '}
+        <em className="text-accent font-normal italic">Speed makes back-EMF</em>.
       </>
     ),
     deck: 'Motor demos share the same equation spine: magnetic torque rises with current while back-EMF rises with speed. The intersection sets acceleration, stall behavior, and the usable part of the efficiency map.',
@@ -334,7 +339,7 @@ export const MANIFEST: LabManifestEntry[] = [
     kind: 'experimental',
     title: "Faraday's Law in a Rotating Coil",
     blurb:
-      'Drive PhET\'s Generator sim through three controlled experiments. Compute theoretical peak EMF from ε = NBAω, record the sim\'s voltmeter, and verify each proportionality.',
+      "Drive PhET's Generator sim through three controlled experiments. Compute theoretical peak EMF from ε = NBAω, record the sim's voltmeter, and verify each proportionality.",
     heroLabel: "Chapter 2 · Lab E2.1 — Faraday's Law in a Rotating Coil",
     heroHeadline: (
       <>
@@ -344,7 +349,11 @@ export const MANIFEST: LabManifestEntry[] = [
     deck: "A guided three-stage experiment using PhET's free Generator simulation. Vary rotation speed, number of turns, and magnet strength in turn; compute the theoretical peak EMF from Faraday's law; then compare it to the sim's live voltmeter reading.",
     runtime: '60–90 min',
     difficulty: 'core',
-    equipment: ['Laptop or tablet', 'Spreadsheet (Sheets / Excel / Numbers)', 'Pencil and graph paper (optional)'],
+    equipment: [
+      'Laptop or tablet',
+      'Spreadsheet (Sheets / Excel / Numbers)',
+      'Pencil and graph paper (optional)',
+    ],
     software: [
       {
         name: 'PhET — Generator',
@@ -461,7 +470,8 @@ export const MANIFEST: LabManifestEntry[] = [
     heroLabel: 'Chapter 14 · Lab 3.7 — PN Junctions',
     heroHeadline: (
       <>
-        A junction turns voltage into <em className="text-accent font-normal italic">exponential current</em>.
+        A junction turns voltage into{' '}
+        <em className="text-accent font-normal italic">exponential current</em>.
       </>
     ),
     deck: 'Band diagrams, depletion regions, and diode curves all meet in the Shockley equation. This lab gives the semiconductor demos their shared algebraic landing place.',
@@ -506,7 +516,8 @@ export const MANIFEST: LabManifestEntry[] = [
     heroLabel: 'Chapter 16 · Lab 3.10 — Filter Response',
     heroHeadline: (
       <>
-        Filters draw their answer on a <em className="text-accent font-normal italic">frequency axis</em>.
+        Filters draw their answer on a{' '}
+        <em className="text-accent font-normal italic">frequency axis</em>.
       </>
     ),
     deck: 'A filter equation says how much of each sinusoidal component survives. The lab connects Sallen-Key behavior and Bode-plot reading to one compact transfer-function pattern.',
@@ -521,7 +532,8 @@ export const MANIFEST: LabManifestEntry[] = [
     heroLabel: 'Chapter 16 · Lab 3.11 — Operational Amplifiers',
     heroHeadline: (
       <>
-        Feedback spends gain to make <em className="text-accent font-normal italic">a clean equation</em>.
+        Feedback spends gain to make{' '}
+        <em className="text-accent font-normal italic">a clean equation</em>.
       </>
     ),
     deck: 'Inverting, follower, and integrator demos all start with the op-amp rule that negative feedback drives the input difference small. The surrounding network then writes the useful equation.',
@@ -551,7 +563,8 @@ export const MANIFEST: LabManifestEntry[] = [
     heroLabel: 'Chapter 24 · Lab 3.13 — DC-DC Conversion',
     heroHeadline: (
       <>
-        Switching makes a controllable <em className="text-accent font-normal italic">average voltage</em>.
+        Switching makes a controllable{' '}
+        <em className="text-accent font-normal italic">average voltage</em>.
       </>
     ),
     deck: 'Buck, boost, and flyback demos share a common idea: alternate energy-storage states fast enough that the load sees an averaged conversion law.',
@@ -600,6 +613,33 @@ export const MANIFEST: LabManifestEntry[] = [
       </>
     ),
     deck: 'Li-ion intercalation, lead-acid behavior, fuel cells, and supercapacitors all become practical systems only after cell voltage, capacity, and arrangement are counted together.',
+  },
+  {
+    number: 'E3.1',
+    slug: 'falstad-ohms-law',
+    chapter: 'ch3',
+    kind: 'experimental',
+    title: "Ohm's Law, Resistance, and Power in a Virtual Circuit",
+    blurb:
+      "Build four DC circuits in Falstad's free simulator. Verify Ohm's law, series and parallel resistance rules, and Joule heating — all with live voltage and current readouts.",
+    heroLabel: 'Chapter 3 · Lab E3.1 — Virtual Circuit Lab',
+    heroHeadline: (
+      <>
+        Build the circuit, <em className="text-accent font-normal italic">read the algebra</em>.
+      </>
+    ),
+    deck: "A guided four-stage experiment using Paul Falstad's free browser-based circuit simulator. Vary voltage, add resistors in series and parallel, and watch current and power respond in real time — virtual hands-on for the macroscopic rules of conduction.",
+    runtime: '60–90 min',
+    difficulty: 'intro',
+    equipment: ['Laptop or desktop', 'Mouse (recommended for precise component placement)'],
+    software: [
+      {
+        name: 'Falstad Circuit Simulator',
+        url: 'https://www.falstad.com/circuit/',
+        free: true,
+        note: 'Runs in any modern browser; no install required.',
+      },
+    ],
   },
 
   // ─── Chapter 4 — Energy & Fields ───
@@ -749,7 +789,8 @@ export const MANIFEST: LabManifestEntry[] = [
     heroLabel: 'Chapter 17 · Lab 4.10 — Material Polarization',
     heroHeadline: (
       <>
-        Matter answers a field with <em className="text-accent font-normal italic">polarization</em>.
+        Matter answers a field with <em className="text-accent font-normal italic">polarization</em>
+        .
       </>
     ),
     deck: 'Dipoles, image charges, susceptibility, para/diamagnetic contrast, and water polarization all ask how materials respond when a field tries to align internal charge or magnetic moments.',
@@ -1073,96 +1114,41 @@ export const BASE_LAB_SOURCES: Record<string, SourceKey[]> = {
     'nilsson-riedel-2018',
     'horowitz-hill-2015',
   ],
-  'pn-junction': [
-    'shockley-1949',
-    'sedra-smith-2014',
-    'horowitz-hill-2015',
-    'codata-2018',
-  ],
-  'transistor-iv': [
-    'shockley-1949',
-    'sedra-smith-2014',
-    'horowitz-hill-2015',
-  ],
-  'fourier-series': [
-    'bracewell-2000',
-    'horowitz-hill-2015',
-    'irwin-circuit-analysis-2015',
-  ],
-  'bode-filter': [
-    'horowitz-hill-2015',
-    'irwin-circuit-analysis-2015',
-    'nilsson-riedel-2018',
-  ],
-  'op-amp': [
-    'horowitz-hill-2015',
-    'sedra-smith-2014',
-    'irwin-circuit-analysis-2015',
-  ],
-  rectifier: [
-    'mohan-undeland-robbins-2003',
-    'fleming-1904',
-    'horowitz-hill-2015',
-  ],
+  'pn-junction': ['shockley-1949', 'sedra-smith-2014', 'horowitz-hill-2015', 'codata-2018'],
+  'transistor-iv': ['shockley-1949', 'sedra-smith-2014', 'horowitz-hill-2015'],
+  'fourier-series': ['bracewell-2000', 'horowitz-hill-2015', 'irwin-circuit-analysis-2015'],
+  'bode-filter': ['horowitz-hill-2015', 'irwin-circuit-analysis-2015', 'nilsson-riedel-2018'],
+  'op-amp': ['horowitz-hill-2015', 'sedra-smith-2014', 'irwin-circuit-analysis-2015'],
+  rectifier: ['mohan-undeland-robbins-2003', 'fleming-1904', 'horowitz-hill-2015'],
   'dc-dc-converter': [
     'erickson-maksimovic-2020',
     'mohan-undeland-robbins-2003',
     'horowitz-hill-2015',
   ],
-  'pwm-inverter': [
-    'mohan-undeland-robbins-2003',
-    'erickson-maksimovic-2020',
-    'sedra-smith-2014',
-  ],
-  'cell-emf': [
-    'volta-1800-pile',
-    'nernst-1889',
-    'daniell-1836',
-    'bard-faulkner-2001',
-  ],
+  'pwm-inverter': ['mohan-undeland-robbins-2003', 'erickson-maksimovic-2020', 'sedra-smith-2014'],
+  'cell-emf': ['volta-1800-pile', 'nernst-1889', 'daniell-1836', 'bard-faulkner-2001'],
   'li-ion-cycling': [
     'whittingham-1976',
     'goodenough-1980-licoo2',
     'yoshino-1985',
     'larminie-dicks-2003-fuel-cells',
   ],
-  transformer: [
-    'faraday-1832',
-    'stanley-1886',
-    'mclyman-2004',
-    'mohan-undeland-robbins-2003',
-  ],
-  'transmission-line': [
-    'pozar-2011',
-    'kraus-marhefka-2002',
-    'horowitz-hill-2015',
-  ],
-  'polarization-susceptibility': [
+  'falstad-ohms-law': [
+    'falstad-circuit-simulator',
     'griffiths-2017',
-    'jackson-1999',
-    'feynman-II-2',
+    'joule-1841',
+    'drude-1900',
+    'ashcroft-mermin-1976',
+    'crc-resistivity',
+    'libretexts-univ-physics',
   ],
-  'snell-fresnel': [
-    'hecht-2017',
-    'fresnel-1823',
-    'feynman-II-21',
-  ],
-  'diffraction-interference': [
-    'young-1804',
-    'hecht-2017',
-    'bracewell-2000',
-  ],
-  'antenna-radiation': [
-    'friis-1946',
-    'pozar-2011',
-    'balanis-2016',
-    'kraus-marhefka-2002',
-  ],
-  'fiber-link': [
-    'agrawal-2010',
-    'hecht-2017',
-    'pozar-2011',
-  ],
+  transformer: ['faraday-1832', 'stanley-1886', 'mclyman-2004', 'mohan-undeland-robbins-2003'],
+  'transmission-line': ['pozar-2011', 'kraus-marhefka-2002', 'horowitz-hill-2015'],
+  'polarization-susceptibility': ['griffiths-2017', 'jackson-1999', 'feynman-II-2'],
+  'snell-fresnel': ['hecht-2017', 'fresnel-1823', 'feynman-II-21'],
+  'diffraction-interference': ['young-1804', 'hecht-2017', 'bracewell-2000'],
+  'antenna-radiation': ['friis-1946', 'pozar-2011', 'balanis-2016', 'kraus-marhefka-2002'],
+  'fiber-link': ['agrawal-2010', 'hecht-2017', 'pozar-2011'],
   'circuit-builder': [
     'kirchhoff-1845',
     'ho-ruehli-brennan-1975',

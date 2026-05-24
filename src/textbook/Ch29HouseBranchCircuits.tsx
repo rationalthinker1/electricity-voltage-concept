@@ -11,7 +11,7 @@
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Term } from '@/components/Term';
@@ -58,8 +58,8 @@ export default function Ch29HouseBranchCircuits() {
         . Plug a 1200 W space heater into the third outlet. Current draw at 120 V is{' '}
         <strong className="text-text font-medium">10 A</strong>. Round-trip resistance through 48 m
         of 14 AWG copper is about <strong className="text-text font-medium">0.41 Ω</strong>, so the
-        wire dissipates roughly <InlineMath tex="I^2 R \\approx 41\\ \\text{W}" /> along its length
-        — spread out, it warms the cable a few degrees above the wood around it. Fine.
+        wire dissipates roughly <M tex="I^2 R \\approx 41\\ \\text{W}" /> along its length — spread
+        out, it warms the cable a few degrees above the wood around it. Fine.
       </p>
       <p className="mb-prose-3">
         Now plug a <em className="text-text italic">second</em> 1200 W heater into one of the other
@@ -77,12 +77,12 @@ export default function Ch29HouseBranchCircuits() {
 
       <p className="mb-prose-3">
         Copper has a finite resistivity. Push current through it and you dissipate{' '}
-        <InlineMath tex="I^{2}R" /> as heat along the whole length. The thermal limit
-        on a branch-circuit wire is usually not melting copper — copper melts at 1085 °C — it is
-        the <strong className="text-text font-medium">insulation</strong> around the copper
-        softening, charring, or igniting. Residential NM-B cable has insulation rated to 90 °C
-        internally, with NEC requiring sizing to the 60 °C column because the receptacle screws and
-        breaker lugs at each end are typically only rated to 60 or 75 °C
+        <M tex="I^{2}R" /> as heat along the whole length. The thermal limit on a branch-circuit
+        wire is usually not melting copper — copper melts at 1085 °C — it is the{' '}
+        <strong className="text-text font-medium">insulation</strong> around the copper softening,
+        charring, or igniting. Residential NM-B cable has insulation rated to 90 °C internally, with
+        NEC requiring sizing to the 60 °C column because the receptacle screws and breaker lugs at
+        each end are typically only rated to 60 or 75 °C
         <Cite id="nec-2023" in={SOURCES} />. The <em className="text-text italic">weakest</em> rated
         thermal point in the whole chain sets the budget.
       </p>
@@ -93,18 +93,16 @@ export default function Ch29HouseBranchCircuits() {
       </p>
       <Formula tex="P/L = \\dfrac{I^2 \\rho}{A}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="P/L" /> is the power dissipated per
-        metre of wire (in W/m), <InlineMath tex="I" /> is the current
-        through the conductor (in amperes), <InlineMath tex="\rho" /> is
-        the resistivity of copper (≈ 1.68×10⁻⁸ Ω·m at 20 °C)
-        <Cite id="codata-2018" in={SOURCES} />, and{' '}
-        <InlineMath tex="A" /> is the conductor's cross-sectional area
-        (in m²). For a rough round-wire model, surface cooling scales with perimeter
-        (<InlineMath tex="\propto \sqrt A" />), so equating heat generated to heat removed gives
-        <InlineMath tex="I^2/A \propto \sqrt A" /> and therefore{' '}
-        <InlineMath tex="I \propto A^{3/4}" />. Real ampacity tables are empirical and conservative,
-        but the key lesson survives: doubling cross-section does <em className="text-text italic">not</em>{' '}
-        double the usable current.
+        where <M tex="P/L" /> is the power dissipated per metre of wire (in W/m), <M tex="I" /> is
+        the current through the conductor (in amperes), <M tex="\rho" /> is the resistivity of
+        copper (≈ 1.68×10⁻⁸ Ω·m at 20 °C)
+        <Cite id="codata-2018" in={SOURCES} />, and <M tex="A" /> is the conductor's cross-sectional
+        area (in m²). For a rough round-wire model, surface cooling scales with perimeter (
+        <M tex="\propto \sqrt A" />
+        ), so equating heat generated to heat removed gives <M tex="I^2/A \propto \sqrt A" /> and
+        therefore <M tex="I \propto A^{3/4}" />. Real ampacity tables are empirical and
+        conservative, but the key lesson survives: doubling cross-section does{' '}
+        <em className="text-text italic">not</em> double the usable current.
       </p>
       <p className="mb-prose-3">
         NEC{' '}
@@ -164,9 +162,9 @@ export default function Ch29HouseBranchCircuits() {
       </ul>
       <p className="mb-prose-3">
         Each step up the ladder roughly doubles the cross-section and adds 5–10 A of headroom —
-        exactly the sublinear shape the heat-balance argument predicts. The same table extends to 500 kcmil
-        aluminium service entrances at the top end; everything in a residential branch circuit lives
-        in the bottom six rungs.
+        exactly the sublinear shape the heat-balance argument predicts. The same table extends to
+        500 kcmil aluminium service entrances at the top end; everything in a residential branch
+        circuit lives in the bottom six rungs.
       </p>
 
       <BranchCircuitSizingDemo figure="Fig. 29.1" />
@@ -183,9 +181,8 @@ export default function Ch29HouseBranchCircuits() {
         }
         hint={
           <>
-            Use <InlineMath id="resistance-resistivity" /> with copper at ~75 °C resistivity ≈
-            2.1×10⁻⁸ Ω·m, then double the length for round-trip, then{' '}
-            <InlineMath tex="\\Delta V = I \\cdot R" />.
+            Use <M id="resistance-resistivity" /> with copper at ~75 °C resistivity ≈ 2.1×10⁻⁸ Ω·m,
+            then double the length for round-trip, then <M tex="\\Delta V = I \\cdot R" />.
           </>
         }
         answer={
@@ -338,27 +335,24 @@ export default function Ch29HouseBranchCircuits() {
       </p>
       <Formula tex="\\Delta V = 2 \\cdot I \\cdot R_{\\text{per metre}} \\cdot L" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\Delta V" /> is the voltage lost in the wire
-        from panel to load (in volts), the factor of{' '}
-        <InlineMath tex="2" /> accounts for the round-trip path (hot
-        out plus neutral back), <InlineMath tex="I" /> is the load
-        current (in amperes),{' '}
-        <InlineMath tex="R_{\text{per metre}}" />{' '}
+        where <M tex="\Delta V" /> is the voltage lost in the wire from panel to load (in volts),
+        the factor of <M tex="2" /> accounts for the round-trip path (hot out plus neutral back),{' '}
+        <M tex="I" /> is the load current (in amperes), <M tex="R_{\text{per metre}}" />
         is the wire's per-unit-length resistance at operating temperature (in Ω/m, tabulated in NEC
-        Chapter 9 Table 8), and <InlineMath tex="L" /> is the one-way
-        run length from the panel to the load (in metres). For 14 AWG copper at 75 °C, R
-        <sub>per metre</sub> ≈ <InlineMath tex="8.45\,\text{m}\Omega/\text{m}" />; for 12
-        AWG, it is ≈ 5.31 mΩ/m; for 10 AWG, ≈ 3.34 mΩ/m
+        Chapter 9 Table 8), and <M tex="L" /> is the one-way run length from the panel to the load
+        (in metres). For 14 AWG copper at 75 °C, R<sub>per metre</sub> ≈{' '}
+        <M tex="8.45\,\text{m}\Omega/\text{m}" />; for 12 AWG, it is ≈ 5.31 mΩ/m; for 10 AWG, ≈ 3.34
+        mΩ/m
         <Cite id="awg-table-nec" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         A worked example: a 14 AWG circuit, 30 m one-way, carrying 10 A. The drop is{' '}
-        <InlineMath tex="2 \\cdot 10 \\cdot 0.00845 \\cdot 30 \\approx 5.07\\ \\text{V}" />, or
-        about <strong className="text-text font-medium">4.2 %</strong> of 120 V. That is past the 3
-        % guideline. Going to 12 AWG on the same run:{' '}
-        <InlineMath tex="2 \\cdot 10 \\cdot 0.00531 \\cdot 30 \\approx 3.19\\ \\text{V}" />, or 2.7
-        % — within budget. On long runs, upsizing the wire is the cheapest fix; on 240 V circuits,
-        the same current drops only half the percentage because the denominator doubles. That is one
+        <M tex="2 \\cdot 10 \\cdot 0.00845 \\cdot 30 \\approx 5.07\\ \\text{V}" />, or about{' '}
+        <strong className="text-text font-medium">4.2 %</strong> of 120 V. That is past the 3 %
+        guideline. Going to 12 AWG on the same run:{' '}
+        <M tex="2 \\cdot 10 \\cdot 0.00531 \\cdot 30 \\approx 3.19\\ \\text{V}" />, or 2.7 % —
+        within budget. On long runs, upsizing the wire is the cheapest fix; on 240 V circuits, the
+        same current drops only half the percentage because the denominator doubles. That is one
         quiet reason every modern{' '}
         <Term
           def={
@@ -430,8 +424,8 @@ export default function Ch29HouseBranchCircuits() {
         The pairing rule goes one direction only. A 15 A breaker behind 12 AWG wire is fine — wasted
         copper, but perfectly safe; the breaker protects the wire even though the wire could carry
         more. A 30 A breaker behind 12 AWG is illegal under NEC Article 240, because the wire's
-        ampacity is 20 A and the breaker is not allowed to be used as if the conductor were rated for
-        that current
+        ampacity is 20 A and the breaker is not allowed to be used as if the conductor were rated
+        for that current
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -465,9 +459,9 @@ export default function Ch29HouseBranchCircuits() {
               14 AWG copper is rated <strong className="text-text font-medium">15 A</strong> by NEC
               Article 240.4(D)
               <Cite id="awg-table-nec" in={SOURCES} />. A 20 A breaker is not calibrated to protect
-              14 AWG insulation as a continuous load limit, so the wire can dissipate I²R heat beyond
-              its permitted ampacity before the breaker intervenes. The insulation softens; eventually
-              the conductor can short.
+              14 AWG insulation as a continuous load limit, so the wire can dissipate I²R heat
+              beyond its permitted ampacity before the breaker intervenes. The insulation softens;
+              eventually the conductor can short.
             </p>
             <p className="mb-prose-1 last:mb-0">
               Fix: swap the 20 A breaker for a 15 A breaker (cheap and immediate), or — if the loads
@@ -499,8 +493,9 @@ export default function Ch29HouseBranchCircuits() {
         </Term>{' '}
         is common at larger feeder and service sizes. A 200 A dwelling service commonly uses large
         aluminium service-entrance conductors such as 4/0 aluminium, depending on the installation
-        method and local utility practice. The reason is price and weight: aluminium gives the needed
-        ampacity with less cost and easier handling than an equivalent copper service conductor
+        method and local utility practice. The reason is price and weight: aluminium gives the
+        needed ampacity with less cost and easier handling than an equivalent copper service
+        conductor
         <Cite id="nec-2017-aluminum" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -600,9 +595,9 @@ export default function Ch29HouseBranchCircuits() {
               <strong className="text-text font-medium">GFCI</strong> — Ground-Fault Circuit
               Interrupter; a device that trips when the current in the hot does not match the
               current returning on the neutral, indicating leakage to ground (often through a
-              person). Class A protection trips around the 4-6 mA range, with clearing time depending
-              on fault current and the device standard. Required at many wet-area and outdoor
-              receptacles.
+              person). Class A protection trips around the 4-6 mA range, with clearing time
+              depending on fault current and the device standard. Required at many wet-area and
+              outdoor receptacles.
             </>
           }
         >
@@ -714,7 +709,7 @@ export default function Ch29HouseBranchCircuits() {
         hint={
           <>
             Apply the 80 % rule to find the breaker rating, then NEC Table 310.16 to find the gauge,
-            then <InlineMath tex="\\Delta V = 2 \\cdot I \\cdot R_{\\text{per-m}} \\cdot L" />.
+            then <M tex="\\Delta V = 2 \\cdot I \\cdot R_{\\text{per-m}} \\cdot L" />.
           </>
         }
         answer={
@@ -790,19 +785,11 @@ export default function Ch29HouseBranchCircuits() {
             },
             {
               label: 'Original load (1965)',
-              value: (
-                <>
-                  Assumed example: ~5 kW peak for lights, fridge, TV, vacuum
-                </>
-              ),
+              value: <>Assumed example: ~5 kW peak for lights, fridge, TV, vacuum</>,
             },
             {
               label: 'Modern load with EV + heat pump',
-              value: (
-                <>
-                  Assumed example: ~18 kW peak after EV + heat-pump loads
-                </>
-              ),
+              value: <>Assumed example: ~18 kW peak after EV + heat-pump loads</>,
             },
             {
               label: 'Required service upgrade',
@@ -955,19 +942,11 @@ export default function Ch29HouseBranchCircuits() {
           specs={[
             {
               label: 'Welder load',
-              value: (
-                <>
-                  Assumed example: 25 A intermittent at 240 V
-                </>
-              ),
+              value: <>Assumed example: 25 A intermittent at 240 V</>,
             },
             {
               label: 'One-way run length',
-              value: (
-                <>
-                  Assumed example: 30 m panel-to-workshop run
-                </>
-              ),
+              value: <>Assumed example: 30 m panel-to-workshop run</>,
             },
             {
               label: 'Minimum gauge by ampacity',
@@ -996,10 +975,9 @@ export default function Ch29HouseBranchCircuits() {
           </p>
           <Formula tex="\\Delta V = 2 \\cdot 25 \\cdot 0.00334 \\cdot 30 \\approx 5.0\\ \\text{V}" />
           <p className="mb-prose-2 last:mb-0">
-            where <InlineMath tex="\Delta V" /> is the round-trip voltage drop,{' '}
-            <InlineMath tex="25\ \text{A}" /> is the welder current,{' '}
-            <InlineMath tex="0.00334\ \Omega/\text{m}" /> is the warm 10 AWG copper resistance, and{' '}
-            <InlineMath tex="30\ \text{m}" /> is the one-way run length
+            where <M tex="\Delta V" /> is the round-trip voltage drop, <M tex="25\ \text{A}" /> is
+            the welder current, <M tex="0.00334\ \Omega/\text{m}" /> is the warm 10 AWG copper
+            resistance, and <M tex="30\ \text{m}" /> is the one-way run length
             <Cite id="awg-table-nec" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
@@ -1021,9 +999,9 @@ export default function Ch29HouseBranchCircuits() {
         intro={
           <>
             Branch-circuit rules are dense, but every one of them traces back to the wire's{' '}
-            <InlineMath tex="I^{2}R" /> and the sequence in which the breaker, the
-            wire, and the insulation reach their respective limits. These are the questions that
-            come up the first time you open a panel.
+            <M tex="I^{2}R" /> and the sequence in which the breaker, the wire, and the insulation
+            reach their respective limits. These are the questions that come up the first time you
+            open a panel.
           </>
         }
       >
@@ -1073,10 +1051,10 @@ export default function Ch29HouseBranchCircuits() {
             Inside NM-B cable, the conductors are solid copper — easy to terminate under device
             screws and stable when stapled in framing. Stranded copper of the same gauge has similar
             60 Hz resistance for branch-circuit purposes, but vastly better flex life, and is used
-            inside conduit (THHN), in flexible cords (SO/SOOW), and in any application where the cable
-            will move
-            <Cite id="awg-table-nec" in={SOURCES} />.
-            Solid for stud bays; stranded for raceways and cords.
+            inside conduit (THHN), in flexible cords (SO/SOOW), and in any application where the
+            cable will move
+            <Cite id="awg-table-nec" in={SOURCES} />. Solid for stud bays; stranded for raceways and
+            cords.
           </p>
         </FAQItem>
 
@@ -1105,8 +1083,7 @@ export default function Ch29HouseBranchCircuits() {
             sometimes red. A pure 240 V load such as a baseboard heater has no neutral load current;
             the equipment grounding conductor remains only a fault-clearing path. Many modern 240 V
             appliances (a dryer, a range) do need a neutral for 120 V accessory loads inside the
-            appliance, in which case 12-2 with ground is insufficient
-            and you need 12-3 with ground.
+            appliance, in which case 12-2 with ground is insufficient and you need 12-3 with ground.
           </p>
         </FAQItem>
 
@@ -1130,11 +1107,11 @@ export default function Ch29HouseBranchCircuits() {
             The EGC's job is to carry fault current long enough for the breaker to trip —
             milliseconds, not hours. NEC Table 250.122 sizes the EGC based on the upstream
             overcurrent device, not the load current it normally carries (which is zero)
-            <Cite id="nec-2023" in={SOURCES} />. For a 15 A circuit the copper EGC can be 14 AWG; for
-            a 20 A circuit it is 12 AWG, and for a 60 A circuit it must be 10 AWG. The thermal mass of a small conductor is enough
-            to carry hundreds of amperes of fault current for the few milliseconds it takes the
-            breaker to clear, so the gauge can be smaller than the hot conductors carrying the
-            steady load.
+            <Cite id="nec-2023" in={SOURCES} />. For a 15 A circuit the copper EGC can be 14 AWG;
+            for a 20 A circuit it is 12 AWG, and for a 60 A circuit it must be 10 AWG. The thermal
+            mass of a small conductor is enough to carry hundreds of amperes of fault current for
+            the few milliseconds it takes the breaker to clear, so the gauge can be smaller than the
+            hot conductors carrying the steady load.
           </p>
         </FAQItem>
 
@@ -1142,7 +1119,7 @@ export default function Ch29HouseBranchCircuits() {
           <p>
             On a 60 Hz residential branch with copper at any reasonable gauge, the inductive
             reactance per metre is small compared to the resistance per metre, so the voltage drop
-            formula <InlineMath tex="\\Delta V = 2 \\cdot I \\cdot R \\cdot L" /> is an excellent
+            formula <M tex="\\Delta V = 2 \\cdot I \\cdot R \\cdot L" /> is an excellent
             approximation
             <Cite id="nec-2023" in={SOURCES} />. NEC Chapter 9 Table 9 gives full impedance values
             including the reactive part for raceway and cable configurations, and for short

@@ -20,7 +20,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -148,8 +148,20 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
       ctx.textBaseline = 'alphabetic';
       // Plate labels (small + and − on the outside ends).
       ctx.textAlign = 'left';
-      drawLabel(ctx, { text: '+ plate (σ > 0)', x: padX, y: yTop - plateThickness - 6, color: colors.pink, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: '− plate (σ < 0)', x: padX, y: yBot + plateThickness + 14, color: colors.blue, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: '+ plate (σ > 0)',
+        x: padX,
+        y: yTop - plateThickness - 6,
+        color: colors.pink,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: '− plate (σ < 0)',
+        x: padX,
+        y: yBot + plateThickness + 14,
+        color: colors.blue,
+        font: '10px "JetBrains Mono", monospace',
+      });
 
       // Separation indicator — a dashed bracket at the right edge.
       ctx.save();
@@ -167,7 +179,12 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
       ctx.lineTo(bracketX + 14, yBot);
       ctx.stroke();
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: `d = ${dMm.toFixed(0)} mm`, x: bracketX + 18, y: (yTop + yBot) / 2, baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `d = ${dMm.toFixed(0)} mm`,
+        x: bracketX + 18,
+        y: (yTop + yBot) / 2,
+        baseline: 'middle',
+      });
       ctx.restore();
 
       // Disclosure caption — what's fixed vs what's varying.
@@ -227,7 +244,7 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Uniform field (independent of d)"
         left={
-          <InlineMath
+          <M
             tex={
               `|\\vec{E}| \\;=\\; \\dfrac{\\sigma}{\\varepsilon_{0}} \\;=\\; ` +
               `\\dfrac{${sciTeX(sigma_SI)}}{8.85\\times 10^{-12}} ` +
@@ -237,7 +254,7 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
         }
         rightLabel="Voltage (scales with d) — preview of Ch.2"
         right={
-          <InlineMath
+          <M
             tex={
               `V \\;=\\; E\\,d \\;=\\; ` +
               `(${sciTeX(E_Vm)})(${d_m.toFixed(3)}) ` +

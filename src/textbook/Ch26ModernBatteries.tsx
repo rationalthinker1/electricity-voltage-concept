@@ -17,7 +17,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -97,8 +97,8 @@ export default function Ch26ModernBatteries() {
       <Formula>PbO₂ + 3H⁺ + HSO₄⁻ + 2e⁻ → PbSO₄ + 2H₂O (cathode)</Formula>
       <p className="mb-prose-3">
         Summed:{' '}
-        <InlineMath tex="\text{Pb} + \text{PbO}_2 + 2\,\text{H}_2\text{SO}_4 \to 2\,\text{PbSO}_4 + 2\,\text{H}_2\text{O}" />.
-        The acid gets diluted as discharge progresses — its specific gravity drops from about 1.27
+        <M tex="\text{Pb} + \text{PbO}_2 + 2\,\text{H}_2\text{SO}_4 \to 2\,\text{PbSO}_4 + 2\,\text{H}_2\text{O}" />
+        . The acid gets diluted as discharge progresses — its specific gravity drops from about 1.27
         (fully charged) to 1.10 (fully discharged). For decades, mechanics measured the state of
         charge of a lead-acid cell by drawing a sample of electrolyte into a hydrometer and reading
         the SG directly. Modern sealed batteries seal the electrolyte in glass-mat or gel form, so
@@ -121,7 +121,7 @@ export default function Ch26ModernBatteries() {
       </p>
 
       <TryIt
-        tag='Try 26.1'
+        tag="Try 26.1"
         question={
           <>
             A car starter battery rated 60 Ah at 12 V delivers what total stored energy in
@@ -161,9 +161,8 @@ export default function Ch26ModernBatteries() {
         <Term def="Needle-like crystalline filaments of metal (most dangerously lithium) grown at an electrode during repeated charge cycles. They penetrate the separator between electrodes and short-circuit the cell — usually catastrophically, since the short locally heats the cell into thermal runaway.">
           dendrites
         </Term>{' '}
-        that eventually pierced the separator and
-        shorted the cell — often catastrophically. Exxon shelved the project after several lab
-        fires.
+        that eventually pierced the separator and shorted the cell — often catastrophically. Exxon
+        shelved the project after several lab fires.
       </p>
       <p className="mb-prose-3">
         John Goodenough, at Oxford in 1980, identified a fundamentally better cathode:
@@ -197,11 +196,11 @@ export default function Ch26ModernBatteries() {
         <Term def="Reversible insertion of guest ions (here, Li⁺) into the spaces between the layers of a host crystal lattice (here, graphite on the anode or LiCoO₂ on the cathode) without breaking apart the host. The host lattice keeps its structure across hundreds of charge cycles — the secret to Li-ion's long life.">
           intercalation
         </Term>
-        . Both electrodes are host lattices — graphite on the anode,
-        LiCoO₂ on the cathode — and the Li⁺ ion is the &quot;rocking-chair&quot; species that
-        shuttles between them through the electrolyte. Neither host dissolves; the chemistry simply
-        moves ions across the gap without destroying either lattice. That is why Li-ion can survive
-        500–2000 cycles, in contrast to most precursor chemistries that begin to fade after 100–300
+        . Both electrodes are host lattices — graphite on the anode, LiCoO₂ on the cathode — and the
+        Li⁺ ion is the &quot;rocking-chair&quot; species that shuttles between them through the
+        electrolyte. Neither host dissolves; the chemistry simply moves ions across the gap without
+        destroying either lattice. That is why Li-ion can survive 500–2000 cycles, in contrast to
+        most precursor chemistries that begin to fade after 100–300
         <Cite id="bard-faulkner-2001" in={SOURCES} />. The half-reactions are unusual-looking, since
         neither electrode species is &quot;oxidized&quot; or &quot;reduced&quot; in the usual sense
         — the ion-host system accepts or releases electrons as the Li⁺ goes in or out, balancing
@@ -221,7 +220,7 @@ export default function Ch26ModernBatteries() {
       </Pullout>
 
       <TryIt
-        tag='Try 26.2'
+        tag="Try 26.2"
         question={
           <>
             A modern Li-ion 18650 cell stores about 12 Wh in a 47 g package. What is its gravimetric
@@ -256,8 +255,8 @@ export default function Ch26ModernBatteries() {
         <Term def="A self-amplifying exothermic failure in a Li-ion cell: a local hotspot (from internal short, overcharge, or mechanical damage) breaks down the SEI layer; the exposed anode reacts with electrolyte; the heat propagates to adjacent cells; the cathode releases oxygen; the result is an unstoppable cascade until the cell or pack is consumed. The signature failure mode that distinguishes Li-ion from lead-acid or NiMH.">
           thermal runaway
         </Term>
-        . So the industry branched
-        into a family of related cathode chemistries, each trading one property against another
+        . So the industry branched into a family of related cathode chemistries, each trading one
+        property against another
         <Cite id="bard-faulkner-2001" in={SOURCES} />:
       </p>
       <ul>
@@ -327,17 +326,12 @@ export default function Ch26ModernBatteries() {
         V(t) = V<sub>0</sub> − (I / C) · t
       </Formula>
       <p className="mb-prose-3">
-        where <InlineMath tex="V(t)" /> is the terminal voltage at
-        time t (in volts),
-        <InlineMath tex="V_0" />{' '}
-        is the initial fully-charged voltage (in volts),
-        <InlineMath tex="I" /> is the constant discharge current (in
-        amperes; positive when current flows out of the capacitor),{' '}
-        <InlineMath tex="C" /> is the supercapacitor's capacitance (in
-        farads), and
-        <InlineMath tex="t" /> is the elapsed time since discharge
-        began (in seconds). The slope is a straight downward line — the signature of capacitive, not
-        chemical, storage.
+        where <M tex="V(t)" /> is the terminal voltage at time t (in volts), <M tex="V_0" />
+        is the initial fully-charged voltage (in volts), <M tex="I" /> is the constant discharge
+        current (in amperes; positive when current flows out of the capacitor), <M tex="C" /> is the
+        supercapacitor's capacitance (in farads), and <M tex="t" /> is the elapsed time since
+        discharge began (in seconds). The slope is a straight downward line — the signature of
+        capacitive, not chemical, storage.
       </p>
 
       <SupercapacitorDemo figure="Fig. 26.4" />
@@ -355,7 +349,7 @@ export default function Ch26ModernBatteries() {
       </p>
 
       <TryIt
-        tag='Try 26.3'
+        tag="Try 26.3"
         question={
           <>
             A 3000 F supercapacitor cell rated 2.7 V holds how much energy? Compare to a 18650
@@ -390,8 +384,8 @@ export default function Ch26ModernBatteries() {
         <Term def="Proton exchange membrane fuel cell. H₂ at the anode, O₂ at the cathode, a solid polymer electrolyte (Nafion) that conducts H⁺ ions but blocks electrons. Operates at ~80 °C and 0.7 V/cell at typical loads; stacked in series for higher voltage.">
           PEM (proton exchange membrane)
         </Term>{' '}
-        fuel cell, invented at General Electric in the 1950s (Grubb and Niedrach, 1955) and flown
-        on the Gemini space program in the mid-1960s
+        fuel cell, invented at General Electric in the 1950s (Grubb and Niedrach, 1955) and flown on
+        the Gemini space program in the mid-1960s
         <Cite id="larminie-dicks-2003-fuel-cells" in={SOURCES} />. Hydrogen feeds the anode; oxygen
         (usually from air) feeds the cathode; a thin sheet of Nafion polymer between them conducts
         protons but blocks electrons. The reactions:
@@ -403,8 +397,9 @@ export default function Ch26ModernBatteries() {
         ½O<sub>2</sub> + 2H⁺ + 2e⁻ → H<sub>2</sub>O (cathode)
       </Formula>
       <p className="mb-prose-3">
-        Net: <InlineMath tex="\text{H}_2 + \tfrac{1}{2}\text{O}_2 \to \text{H}_2\text{O} + \text{electricity} + \text{heat}" />.
-        The protons cross the Nafion membrane to balance charge; the electrons travel through the
+        Net:{' '}
+        <M tex="\text{H}_2 + \tfrac{1}{2}\text{O}_2 \to \text{H}_2\text{O} + \text{electricity} + \text{heat}" />
+        . The protons cross the Nafion membrane to balance charge; the electrons travel through the
         external circuit (this is the current). The only product is water. The thermodynamic
         open-circuit voltage at 25 °C is <strong className="text-text font-medium">1.23 V</strong>;
         real cells start around 1.0 V because of inevitable kinetic{' '}
@@ -441,7 +436,7 @@ export default function Ch26ModernBatteries() {
       </p>
 
       <TryIt
-        tag='Try 26.4'
+        tag="Try 26.4"
         question={
           <>
             A fuel-cell stack has 100 cells in series, each running at 0.65 V at 200 A. What's the
@@ -460,10 +455,9 @@ export default function Ch26ModernBatteries() {
             </Formula>
             <p className="mb-prose-1 last:mb-0">
               Enough to run a small car at cruise. Hydrogen consumption at this operating point is
-              roughly
-              <InlineMath tex="N \cdot I / (2F)" /> mol/s ≈ 0.10 mol/s ≈ 200 g/min —
-              the fuel cell drinks H₂ at a few hundred grams per minute under load, which is why the
-              on-board tank is the size of a small carry-on suitcase
+              roughly <M tex="N \cdot I / (2F)" /> mol/s ≈ 0.10 mol/s ≈ 200 g/min — the fuel cell
+              drinks H₂ at a few hundred grams per minute under load, which is why the on-board tank
+              is the size of a small carry-on suitcase
               <Cite id="larminie-dicks-2003-fuel-cells" in={SOURCES} />.
             </p>
           </>
@@ -486,16 +480,16 @@ export default function Ch26ModernBatteries() {
         the architecture hasn't.
       </p>
       <p className="mb-prose-3">
-        That ends the materials thread of the textbook. We have gone from{' '}
-        <InlineMath>F = kQ_1Q_2/r²</InlineMath> in Chapter 1 through capacitors, magnetism,
-        induction, Maxwell, special relativity, circuits, motors, generators, and now the chemistry
-        that powers them. The whole edifice rests on the same field that filled the gap in Chapter
-        1's two charges. The wire is, as the very first page promised, almost beside the point.
+        That ends the materials thread of the textbook. We have gone from <M>F = kQ_1Q_2/r²</M> in
+        Chapter 1 through capacitors, magnetism, induction, Maxwell, special relativity, circuits,
+        motors, generators, and now the chemistry that powers them. The whole edifice rests on the
+        same field that filled the gap in Chapter 1's two charges. The wire is, as the very first
+        page promised, almost beside the point.
       </p>
 
       <CaseStudies intro="Four working systems built on the chemistries above, with the numbers that determine whether they work.">
         <CaseStudy
-          tag='Case 26.1'
+          tag="Case 26.1"
           title="Tesla Model 3 long-range battery pack"
           summary="~75 kWh of energy in roughly 4400 cylindrical cells, depending on year and trim. Pack-level energy density around 165 Wh/kg."
           specs={[
@@ -538,7 +532,7 @@ export default function Ch26ModernBatteries() {
         </CaseStudy>
 
         <CaseStudy
-          tag='Case 26.2'
+          tag="Case 26.2"
           title="iPhone battery"
           summary="A single ~3.85 V Li-polymer cell, ~13 Wh capacity, rated ~500 cycles to 80%. Volume- and shape-optimized to fill the case interior."
           specs={[
@@ -562,21 +556,29 @@ export default function Ch26ModernBatteries() {
             cell and software choices in iOS. The phone learns your charging pattern and
             slow-charges from 80% to 100% only when it thinks you're about to unplug it, because
             sitting fully charged at 4.35 V (the high-voltage cutoff for a 3.85 V-nominal cell)
-            accelerates capacity fade. By the time the cell has
-            cycled 500 times to 80% — about two and a half years of typical use — it has lost ~20%
-            of nameplate capacity, and the phone starts reporting &quot;battery service&quot; in its
-            diagnostics.
+            accelerates capacity fade. By the time the cell has cycled 500 times to 80% — about two
+            and a half years of typical use — it has lost ~20% of nameplate capacity, and the phone
+            starts reporting &quot;battery service&quot; in its diagnostics.
           </p>
         </CaseStudy>
 
         <CaseStudy
-          tag='Case 26.3'
+          tag="Case 26.3"
           title="Hornsdale Power Reserve — first 100-MW-class Li-ion grid storage"
           summary="100 MW / 129 MWh of Tesla Powerpack 2 cells when commissioned in 2017; expanded to 150 MW / 193.5 MWh in 2020. Frequency response in under 100 ms."
           specs={[
-            { label: 'Power rating', value: <>100 MW at commissioning; 150 MW after 2020 expansion</> },
-            { label: 'Energy capacity', value: <>129 MWh at commissioning; 193.5 MWh after 2020 expansion</> },
-            { label: 'Cell chemistry', value: <>NMC Li-ion (Tesla Powerpack 2; Megapack didn't exist yet in 2017)</> },
+            {
+              label: 'Power rating',
+              value: <>100 MW at commissioning; 150 MW after 2020 expansion</>,
+            },
+            {
+              label: 'Energy capacity',
+              value: <>129 MWh at commissioning; 193.5 MWh after 2020 expansion</>,
+            },
+            {
+              label: 'Cell chemistry',
+              value: <>NMC Li-ion (Tesla Powerpack 2; Megapack didn't exist yet in 2017)</>,
+            },
             {
               label: 'Response time',
               value: <>&lt; 100 ms</>,
@@ -606,7 +608,7 @@ export default function Ch26ModernBatteries() {
         </CaseStudy>
 
         <CaseStudy
-          tag='Case 26.4'
+          tag="Case 26.4"
           title="Toyota Mirai PEM fuel-cell stack"
           summary="~370 series cells, 114 kW peak, fed by 5 kg of compressed H₂ at 700 bar; ~650 km range from a single fill."
           specs={[
@@ -685,12 +687,12 @@ export default function Ch26ModernBatteries() {
             <Term def="Solid-electrolyte interphase: a thin (10–100 nm) passivation film of decomposed electrolyte that forms on the anode during the first few charge cycles. Its job is to conduct Li⁺ ions but block electrons, preventing further electrolyte decomposition. When the SEI breaks down (above ~80 °C, or from mechanical stress), thermal runaway becomes possible.">
               SEI layer
             </Term>{' '}
-            (the solid-electrolyte interphase film on the anode) starts to break down,
-            exposing fresh lithium to the electrolyte and producing more heat. Above 150 °C the
-            cathode can release oxygen, which oxidizes the electrolyte (the organic carbonate
-            solvents are flammable). Above 200 °C the reactions accelerate and the cell vents flames
-            and electrolyte vapour. In a multi-cell pack the heat propagates to neighbouring cells
-            and the entire pack ignites
+            (the solid-electrolyte interphase film on the anode) starts to break down, exposing
+            fresh lithium to the electrolyte and producing more heat. Above 150 °C the cathode can
+            release oxygen, which oxidizes the electrolyte (the organic carbonate solvents are
+            flammable). Above 200 °C the reactions accelerate and the cell vents flames and
+            electrolyte vapour. In a multi-cell pack the heat propagates to neighbouring cells and
+            the entire pack ignites
             <Cite id="bard-faulkner-2001" in={SOURCES} />. Lead-acid and NiMH don't run away because
             their electrolytes are aqueous (water doesn't burn) and their cathodes don't release
             oxygen.
@@ -845,15 +847,15 @@ export default function Ch26ModernBatteries() {
             <Term def="The charge or discharge current of a cell, normalized to its capacity. A 1C rate means a cell discharges (or charges) its full capacity in one hour; 2C means half an hour; C/10 means ten hours. Manufacturers spec a max sustained C-rate (set by heat dissipation) and a higher peak C-rate (a brief burst).">
               C-rate
             </Term>{' '}
-            is the charge or discharge current normalized to capacity. A &quot;1C&quot; rate
-            on a 60 Ah cell is 60 A — enough to discharge it in 1 hour. A &quot;0.5C&quot; rate is
-            30 A, taking 2 hours. A &quot;3C&quot; rate is 180 A, taking 20 minutes. Cells are
-            specified for a maximum sustained C-rate (set by the heat the internal resistance can
-            dissipate without runaway) and a maximum peak C-rate (a brief burst the cell can handle
-            without permanent damage). Power tool cells routinely run at 10–20C; EV cells run 1–3C;
-            grid storage often runs much lower. The C-rate framing is convenient because it scales:
-            a property quoted at 1C is the same fraction of capacity per hour whether the cell is 1
-            Ah or 1000 Ah
+            is the charge or discharge current normalized to capacity. A &quot;1C&quot; rate on a 60
+            Ah cell is 60 A — enough to discharge it in 1 hour. A &quot;0.5C&quot; rate is 30 A,
+            taking 2 hours. A &quot;3C&quot; rate is 180 A, taking 20 minutes. Cells are specified
+            for a maximum sustained C-rate (set by the heat the internal resistance can dissipate
+            without runaway) and a maximum peak C-rate (a brief burst the cell can handle without
+            permanent damage). Power tool cells routinely run at 10–20C; EV cells run 1–3C; grid
+            storage often runs much lower. The C-rate framing is convenient because it scales: a
+            property quoted at 1C is the same fraction of capacity per hour whether the cell is 1 Ah
+            or 1000 Ah
             <Cite id="bard-faulkner-2001" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -878,12 +880,11 @@ export default function Ch26ModernBatteries() {
             hydrogen came from. Today, about 95% of industrial hydrogen is produced from fossil
             fuels — predominantly steam-methane reforming (CH₄ + 2H₂O → CO₂ + 4H₂), with coal
             gasification next — which emits CO₂ at a rate roughly comparable to burning the methane
-            directly. A &quot;hydrogen economy&quot; built on this kind of
-            H₂ would be no greener than a gas-powered grid. Green hydrogen, produced by
-            electrolysing water using renewable electricity, is technically straightforward but
-            currently 3–5× more expensive than reformed H₂. Whether fuel cells become a major energy
-            carrier depends on whether green H₂ production scales down in cost the way Li-ion did
-            over the last 30 years
+            directly. A &quot;hydrogen economy&quot; built on this kind of H₂ would be no greener
+            than a gas-powered grid. Green hydrogen, produced by electrolysing water using renewable
+            electricity, is technically straightforward but currently 3–5× more expensive than
+            reformed H₂. Whether fuel cells become a major energy carrier depends on whether green
+            H₂ production scales down in cost the way Li-ion did over the last 30 years
             <Cite id="larminie-dicks-2003-fuel-cells" in={SOURCES} />.
           </p>
         </FAQItem>

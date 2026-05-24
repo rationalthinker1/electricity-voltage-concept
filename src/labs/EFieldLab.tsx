@@ -9,7 +9,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
 import { Pullout } from '@/components/Prose';
@@ -507,19 +507,18 @@ export default function EFieldLab() {
 
       <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
-        Start from Coulomb's law for the force on a test charge <InlineMath tex="q_t" /> placed at
-        distance r from a source charge Q:
+        Start from Coulomb's law for the force on a test charge <M tex="q_t" /> placed at distance r
+        from a source charge Q:
       </p>
       <Formula tex="F = \dfrac{k\, Q\, q_t}{r^2}" />
       <p className="mb-prose-3">
-        Define the field as the force per unit test charge in the limit{' '}
-        <InlineMath tex="q_t \to 0" /> (so the test probe doesn't reorganise the source
-        distribution):
+        Define the field as the force per unit test charge in the limit <M tex="q_t \to 0" /> (so
+        the test probe doesn't reorganise the source distribution):
       </p>
       <Formula tex="\vec{E} \equiv \lim_{q_t \to 0} \dfrac{\vec{F}}{q_t} = \dfrac{k\, Q}{r^2}" />
       <p className="mb-prose-3">
-        The factor <InlineMath tex="q_t" /> divides out cleanly because Coulomb's law is linear in
-        it. The vector form follows by carrying along the direction{' '}
+        The factor <M tex="q_t" /> divides out cleanly because Coulomb's law is linear in it. The
+        vector form follows by carrying along the direction{' '}
         <strong className="text-text font-medium">r̂</strong> from source to probe:
       </p>
       <Formula tex="\vec{E}(\vec{r}) = \dfrac{k\, Q\, \hat{r}}{r^2}" />
@@ -536,7 +535,7 @@ export default function EFieldLab() {
       <p className="mb-prose-3">
         In a dielectric medium, the source charge polarizes the surrounding molecules, whose induced
         dipoles produce a counter-field. The net macroscopic field is the original divided by{' '}
-        <InlineMath tex="\varepsilon_r" />:
+        <M tex="\varepsilon_r" />:
       </p>
       <Formula tex="E_{\text{medium}} = \dfrac{k\, Q}{\varepsilon_r\, r^2}" />
 
@@ -554,7 +553,7 @@ export default function EFieldLab() {
         answer={
           <>
             <p className="mb-prose-3">
-              Plug into <InlineMath tex="E = kQ/r^2" /> with Q = 10⁻⁹ C, r = 0.01 m:
+              Plug into <M tex="E = kQ/r^2" /> with Q = 10⁻⁹ C, r = 0.01 m:
             </p>
             <Formula tex="E = \dfrac{(8.99\times 10^{9})(10^{-9})}{(0.01)^2} = \dfrac{8.99}{10^{-4}} = 8.99\times 10^{4}\ \text{V/m}" />
             <p className="mb-prose-3">
@@ -578,8 +577,8 @@ export default function EFieldLab() {
         answer={
           <>
             <p className="mb-prose-3">
-              Force on a charge in a field is <InlineMath tex="F = qE" />, with the test charge
-              feeling the source's field at its location:
+              Force on a charge in a field is <M tex="F = qE" />, with the test charge feeling the
+              source's field at its location:
             </p>
             <Formula tex="F = q_{\text{test}}\, E = (2\times 10^{-6})(8.99\times 10^{4}) \approx 0.180\ \text{N}" />
             <p className="mb-prose-3">
@@ -691,7 +690,7 @@ export default function EFieldLab() {
         answer={
           <>
             <p className="mb-prose-3">
-              <InlineMath tex="F = qE" />:
+              <M tex="F = qE" />:
             </p>
             <Formula tex="F = (10^{-6}\ \text{C})(100\ \text{V/m}) = 10^{-4}\ \text{N} = 0.1\ \text{mN}" />
             <p className="mb-prose-3">
@@ -748,9 +747,9 @@ export default function EFieldLab() {
             <Formula tex="1\ \text{V/m} = (1\ \text{N·m/C}) / \text{m} = 1\ \text{N/C}" />
             <p className="mb-prose-3">
               The identity reflects that the field is the spatial derivative of the potential:{' '}
-              <InlineMath tex="\vec{E} = -\nabla V" />. If V drops by 1 V across 1 m, the field
-              strength is 1 V/m — exactly the force per unit charge that would do the work of moving
-              the charge across that potential drop
+              <M tex="\vec{E} = -\nabla V" />. If V drops by 1 V across 1 m, the field strength is 1
+              V/m — exactly the force per unit charge that would do the work of moving the charge
+              across that potential drop
               <Cite id="hyperphysics-emag" in={SOURCES} />.
             </p>
           </>
@@ -772,16 +771,16 @@ export default function EFieldLab() {
           <>
             <p className="mb-prose-3">
               Surface charge density{' '}
-              <InlineMath tex="\sigma = Q/A = 10^{-9}\ \text{C} / (10^{-4}\ \text{m}^2) = 10^{-5}\ \text{C/m}^2" />
+              <M tex="\sigma = Q/A = 10^{-9}\ \text{C} / (10^{-4}\ \text{m}^2) = 10^{-5}\ \text{C/m}^2" />
               . For an ideal parallel-plate capacitor, the field between the plates is uniform:
             </p>
             <Formula tex="E = \sigma / \varepsilon_0 = \dfrac{10^{-5}}{8.854\times 10^{-12}} \approx 1.13\times 10^{6}\ \text{V/m}" />
             <p className="mb-prose-3">
               About <strong className="text-text font-medium">1.1 MV/m</strong>. The voltage across
               the gap is{' '}
-              <InlineMath tex="V = E\cdot d = (1.13\times 10^{6})(10^{-3}) \approx 1130\ \text{V}" />{' '}
-              — a substantial potential for very little charge, because the plates are close
-              together. This is the lesson of capacitance, which Lab 4.1 takes up.
+              <M tex="V = E\cdot d = (1.13\times 10^{6})(10^{-3}) \approx 1130\ \text{V}" />— a
+              substantial potential for very little charge, because the plates are close together.
+              This is the lesson of capacitance, which Lab 4.1 takes up.
             </p>
           </>
         }

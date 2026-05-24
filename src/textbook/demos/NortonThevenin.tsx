@@ -28,12 +28,12 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useCircuitCache } from '@/lib/useCircuitCache';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -82,9 +82,33 @@ export function NortonTheveninDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.85;
       ctx.fillStyle = getCanvasColors().textDim;
-      drawLabel(ctx, { text: 'Original network', x: colW / 2, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: 'Thévenin equivalent + load', x: colW + colW / 2, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: 'Norton equivalent + load', x: 2 * colW + colW / 2, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'Original network',
+        x: colW / 2,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'Thévenin equivalent + load',
+        x: colW + colW / 2,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'Norton equivalent + load',
+        x: 2 * colW + colW / 2,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.restore();
       ctx.strokeStyle = getCanvasColors().border;
       ctx.beginPath();
@@ -95,8 +119,26 @@ export function NortonTheveninDemo({ figure }: Props) {
       ctx.stroke();
 
       ctx.fillStyle = getCanvasColors().accent;
-      drawLabel(ctx, { text: '⇌', x: colW, y: h * 0.45, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: '⇌', x: 2 * colW, y: h * 0.45, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '⇌',
+        x: colW,
+        y: h * 0.45,
+        weight: 'bold',
+        size: 14,
+        font: 'bold 14px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '⇌',
+        x: 2 * colW,
+        y: h * 0.45,
+        weight: 'bold',
+        size: 14,
+        font: 'bold 14px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
     },
     [getStaticSchematic],
   );
@@ -165,13 +207,13 @@ export function NortonTheveninDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Thévenin ↔ Norton"
         left={
-          <InlineMath
+          <M
             tex={`V_\\text{Th} = ${V_oc.toFixed(3)}\\,\\text{V},\\quad R_\\text{Th} = ${R_Th.toFixed(3)}\\,\\Omega`}
           />
         }
         rightLabel="Norton equivalent"
         right={
-          <InlineMath
+          <M
             tex={`I_N = V_\\text{Th}/R_\\text{Th} = ${I_N.toFixed(3)}\\,\\text{A};\\quad V_L = ${V_L_T.toFixed(3)}\\,\\text{V}`}
           />
         }

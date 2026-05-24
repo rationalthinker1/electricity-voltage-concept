@@ -377,6 +377,14 @@ export const SOURCES: Record<string, Source> = {
     url: 'https://phet.colorado.edu/en/simulations/generator',
     note: 'Open simulation of a rotating-magnet AC generator with adjustable coil turns, magnet strength, loop area, and rotation speed. Live voltmeter readout.',
   },
+  'falstad-circuit-simulator': {
+    id: 'falstad-circuit-simulator',
+    title: 'Circuit Simulator Applet',
+    author: 'Paul Falstad',
+    year: 2024,
+    url: 'https://www.falstad.com/circuit/',
+    note: "Free, browser-based circuit simulator with live voltage/current readouts on hover. Supports DC, AC, and transient analysis. Used for virtual hands-on verification of Ohm's law, series/parallel resistance, and power dissipation.",
+  },
   'osp-tracker': {
     id: 'osp-tracker',
     title: 'Tracker — Video Analysis and Modeling Tool',
@@ -387,7 +395,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'itu-r-p2040': {
     id: 'itu-r-p2040',
-    title: 'Effects of building materials and structures on radiowave propagation above about 100 MHz',
+    title:
+      'Effects of building materials and structures on radiowave propagation above about 100 MHz',
     author: 'International Telecommunication Union, Radiocommunication Sector',
     year: 2023,
     venue: 'Recommendation ITU-R P.2040-3',
@@ -1337,7 +1346,7 @@ export const SOURCES: Record<string, Source> = {
     author: 'Allen J. Bard, Larry R. Faulkner',
     year: 2001,
     venue: 'Wiley',
-    note: 'Definitive graduate electrochemistry textbook. Source for half-cell potentials, the Butler–Volmer equation, double-layer structure, and electrode kinetics. NOT a source for modern commercial-cell datasheets or product-level specs (use Linden\'s Handbook for those).',
+    note: "Definitive graduate electrochemistry textbook. Source for half-cell potentials, the Butler–Volmer equation, double-layer structure, and electrode kinetics. NOT a source for modern commercial-cell datasheets or product-level specs (use Linden's Handbook for those).",
   },
   'linden-reddy-2011': {
     id: 'linden-reddy-2011',

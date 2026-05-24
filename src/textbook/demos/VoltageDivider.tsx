@@ -13,8 +13,15 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
@@ -142,14 +149,12 @@ export function VoltageDividerDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Unloaded divider"
         left={
-          <InlineMath
+          <M
             tex={`V_\\text{out} = V_\\text{in}\\dfrac{R_2}{R_1+R_2} = ${Vin}\\cdot\\dfrac{${R2k}}{${R1k + R2k}} = ${VoutUnloaded.toFixed(2)}\\,\\text{V}`}
           />
         }
         rightLabel="With 10 kΩ load"
-        right={
-          <InlineMath tex={`V_\\text{out (loaded)} = ${Vout.toFixed(2)}\\,\\text{V}`} />
-        }
+        right={<M tex={`V_\\text{out (loaded)} = ${Vout.toFixed(2)}\\,\\text{V}`} />}
       />
     </Demo>
   );
@@ -278,13 +283,35 @@ function drawDividerOverlay(
   ctx.arc(xSrc, (yTop + yBot) / 2, 12, 0, Math.PI * 2);
   ctx.stroke();
   ctx.fillStyle = withAlpha(getCanvasColors().accent, 0.9);
-  drawLabel(ctx, { text: 'V', x: xSrc, y: (yTop + yBot) / 2, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: 'V',
+    x: xSrc,
+    y: (yTop + yBot) / 2,
+    weight: 'bold',
+    font: 'bold 10px "JetBrains Mono", monospace',
+    align: 'center',
+    baseline: 'middle',
+  });
 
   // Per-frame value labels.
   ctx.fillStyle = getCanvasColors().accent;
-  drawLabel(ctx, { text: `V_in = ${Vin.toFixed(1)} V`, x: xSrc - 4, y: yTop - 12, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: `V_in = ${Vin.toFixed(1)} V`,
+    x: xSrc - 4,
+    y: yTop - 12,
+    weight: 'bold',
+    font: 'bold 10px "JetBrains Mono", monospace',
+    baseline: 'middle',
+  });
   ctx.fillStyle = getCanvasColors().accent;
-  drawLabel(ctx, { text: `V_out = ${Vout.toFixed(3)} V`, x: xLoad + 8, y: yTap, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: `V_out = ${Vout.toFixed(3)} V`,
+    x: xLoad + 8,
+    y: yTap,
+    weight: 'bold',
+    font: 'bold 10px "JetBrains Mono", monospace',
+    baseline: 'middle',
+  });
 
   ctx.restore();
 }
@@ -320,8 +347,24 @@ function drawBars(
 
   // Tick: V_in line
   ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.6);
-  drawLabel(ctx, { text: `${Vin.toFixed(1)} V`, x: padL - 4, y: yOf(Vin), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-  drawLabel(ctx, { text: '0', x: padL - 4, y: yOf(0), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: `${Vin.toFixed(1)} V`,
+    x: padL - 4,
+    y: yOf(Vin),
+    size: 9,
+    font: '9px "JetBrains Mono", monospace',
+    align: 'right',
+    baseline: 'middle',
+  });
+  drawLabel(ctx, {
+    text: '0',
+    x: padL - 4,
+    y: yOf(0),
+    size: 9,
+    font: '9px "JetBrains Mono", monospace',
+    align: 'right',
+    baseline: 'middle',
+  });
 
   // Bars: V_R1 (top portion of V_in) and V_R2 (= V_out)
   const VR1 = Vin - Vout;
@@ -343,12 +386,40 @@ function drawBars(
 
   // Bar labels
   ctx.fillStyle = getCanvasColors().text;
-  drawLabel(ctx, { text: 'V across R₁', x: xA + barW / 2, y: padT + plotH + 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-  drawLabel(ctx, { text: 'V_out (across R₂)', x: xB + barW / 2, y: padT + plotH + 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+  drawLabel(ctx, {
+    text: 'V across R₁',
+    x: xA + barW / 2,
+    y: padT + plotH + 4,
+    font: '10px "JetBrains Mono", monospace',
+    align: 'center',
+    baseline: 'top',
+  });
+  drawLabel(ctx, {
+    text: 'V_out (across R₂)',
+    x: xB + barW / 2,
+    y: padT + plotH + 4,
+    font: '10px "JetBrains Mono", monospace',
+    align: 'center',
+    baseline: 'top',
+  });
   ctx.fillStyle = getCanvasColors().pink;
-  drawLabel(ctx, { text: `${VR1.toFixed(2)} V`, x: xA + barW / 2, y: r1Top - 2, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+  drawLabel(ctx, {
+    text: `${VR1.toFixed(2)} V`,
+    x: xA + barW / 2,
+    y: r1Top - 2,
+    font: '10px "JetBrains Mono", monospace',
+    align: 'center',
+    baseline: 'bottom',
+  });
   ctx.fillStyle = getCanvasColors().teal;
-  drawLabel(ctx, { text: `${Vout.toFixed(3)} V`, x: xB + barW / 2, y: r2Top - 2, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+  drawLabel(ctx, {
+    text: `${Vout.toFixed(3)} V`,
+    x: xB + barW / 2,
+    y: r2Top - 2,
+    font: '10px "JetBrains Mono", monospace',
+    align: 'center',
+    baseline: 'bottom',
+  });
 
   // Title
   drawLabel(ctx, {

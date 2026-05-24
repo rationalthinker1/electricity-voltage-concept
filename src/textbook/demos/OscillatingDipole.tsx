@@ -13,14 +13,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import {
-  Demo,
-  DemoControls,
-  EquationStrip,
-  MiniReadout,
-  MiniSlider,
-} from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { drawCharge } from '@/lib/canvasPrimitives';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -130,8 +124,20 @@ export function OscillatingDipoleDemo({ figure }: Props) {
       ctx.lineTo(cx, H - 8);
       ctx.stroke();
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: 'axis · zero radiation', x: cx, y: 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'equator · max radiation →', x: 14, y: cy + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: 'axis · zero radiation',
+        x: cx,
+        y: 18,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: 'equator · max radiation →',
+        x: 14,
+        y: cy + 4,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+      });
     },
     [],
   );
@@ -168,10 +174,10 @@ export function OscillatingDipoleDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Radiation pattern"
-        left={<InlineMath tex={`I(\\theta) \\;\\propto\\; \\sin^{2}\\theta`} />}
+        left={<M tex={`I(\\theta) \\;\\propto\\; \\sin^{2}\\theta`} />}
         rightLabel="Wavelength"
         right={
-          <InlineMath
+          <M
             tex={
               `\\lambda \\;=\\; \\dfrac{c}{f} \\;=\\; ` +
               `\\dfrac{${C_SIM}}{${f.toFixed(2)}} \\;\\approx\\; ${lambdaPx.toFixed(0)}\\ \text{px}`

@@ -15,11 +15,18 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -108,7 +115,14 @@ export function SmithChartBasicsDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(cx, cy, 2, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: 'Γ = 0  (matched, Z = 50Ω)', x: cx + 4, y: cy + 4, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'Γ = 0  (matched, Z = 50Ω)',
+        x: cx + 4,
+        y: cy + 4,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.strokeStyle = colors.accent;
       ctx.setLineDash([3, 3]);
       ctx.lineWidth = 1.1;
@@ -127,7 +141,14 @@ export function SmithChartBasicsDemo({ figure }: Props) {
       ctx.lineWidth = 1;
       ctx.stroke();
       ctx.restore();
-      drawLabel(ctx, { text: 'Z_L', x: pZ.x + 8, y: pZ.y - 2, color: colors.pink, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'Z_L',
+        x: pZ.x + 8,
+        y: pZ.y - 2,
+        color: colors.pink,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       if (showQwave) {
         const pZin = gToScreen(-Gr, -Gi);
         ctx.fillStyle = colors.teal;
@@ -151,8 +172,23 @@ export function SmithChartBasicsDemo({ figure }: Props) {
         ctx.setLineDash([]);
       }
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'open  Γ=+1', x: cx + radius - 4, y: cy - 10, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: 'short  Γ=−1', x: cx - radius + 4, y: cy - 10, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'open  Γ=+1',
+        x: cx + radius - 4,
+        y: cy - 10,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'short  Γ=−1',
+        x: cx - radius + 4,
+        y: cy - 10,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
     },
     [],
   );
@@ -217,9 +253,17 @@ export function SmithChartBasicsDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Reflection coefficient"
-        left={<InlineMath tex={`\\Gamma = \\frac{Z_L/Z_0 - 1}{Z_L/Z_0 + 1},\\quad \\text{VSWR} = \\frac{1+|\\Gamma|}{1-|\\Gamma|}`} />}
+        left={
+          <M
+            tex={`\\Gamma = \\frac{Z_L/Z_0 - 1}{Z_L/Z_0 + 1},\\quad \\text{VSWR} = \\frac{1+|\\Gamma|}{1-|\\Gamma|}`}
+          />
+        }
         rightLabel={`Z_L = ${R} + j${X} Ω`}
-        right={<InlineMath tex={`|\\Gamma| = ${Gmag.toFixed(3)},\\quad \\angle\\Gamma = ${GangleDeg.toFixed(1)}°,\\quad \\text{VSWR} = ${isFinite(VSWR) ? VSWR.toFixed(2) : '\\infty'}`} />}
+        right={
+          <M
+            tex={`|\\Gamma| = ${Gmag.toFixed(3)},\\quad \\angle\\Gamma = ${GangleDeg.toFixed(1)}°,\\quad \\text{VSWR} = ${isFinite(VSWR) ? VSWR.toFixed(2) : '\\infty'}`}
+          />
+        }
       />
     </Demo>
   );

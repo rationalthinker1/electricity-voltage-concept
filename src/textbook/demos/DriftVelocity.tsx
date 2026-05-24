@@ -13,7 +13,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { MATERIALS, PHYS, formatTime, sciTeX } from '@/lib/physics';
@@ -86,8 +86,20 @@ export function DriftVelocityDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.85;
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: '+', x: wireLeft - 8, y: wireTop, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: '−', x: wireRight + 8, y: wireTop, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: '+',
+        x: wireLeft - 8,
+        y: wireTop,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: '−',
+        x: wireRight + 8,
+        y: wireTop,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
 
       // Tiny axis arrow showing E direction
       ctx.restore();
@@ -213,10 +225,10 @@ export function DriftVelocityDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Drude formula"
-        left={<InlineMath tex="v_d \;=\; \dfrac{I}{n\, q\, A}" />}
+        left={<M tex="v_d \;=\; \dfrac{I}{n\, q\, A}" />}
         rightLabel="Live substitution (Cu, e, A)"
         right={
-          <InlineMath
+          <M
             tex={
               `v_d \\;=\\; \\dfrac{${I.toFixed(1)}}` +
               `{(8.5\\times 10^{28})(1.602\\times 10^{-19})(${Amm2.toFixed(2)}\\times 10^{-6})} ` +

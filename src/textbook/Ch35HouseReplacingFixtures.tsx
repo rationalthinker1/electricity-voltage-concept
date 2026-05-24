@@ -19,7 +19,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -152,12 +152,11 @@ export default function Ch35HouseReplacingFixtures() {
       </p>
       <Formula tex="I_{\text{body}} = V_{\text{residual}} / R_{\text{body}}" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="I_{\text{body}}" />{' '}
+        where <M tex="I_{\text{body}}" />
         is the current that flows through the human standing on the circuit (in amperes),{' '}
-        <InlineMath tex="V_{\text{residual}}" />{' '}
+        <M tex="V_{\text{residual}}" />
         is whatever voltage remains across the contact points (in volts), and{' '}
-        <InlineMath tex="R_{\text{body}}" />{' '}
+        <M tex="R_{\text{body}}" />
         is the total impedance of the path through the body and the standing surface — IEC 60479
         tables this between roughly 1 kΩ (hand-to-hand, wet skin) and tens of kΩ (dry skin,
         rubber-soled shoes)
@@ -347,12 +346,9 @@ export default function Ch35HouseReplacingFixtures() {
       </p>
       <Formula tex="P_{\text{joint}} = I^2 R_{\text{contact}}" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="P_{\text{joint}}" />{' '}
-        is the power dissipated in the metal-to-metal contact (in watts),{' '}
-        <InlineMath tex="I" /> is the load current passing through
-        the joint (in amperes RMS), and{' '}
-        <InlineMath tex="R_{\text{contact}}" />{' '}
+        where <M tex="P_{\text{joint}}" />
+        is the power dissipated in the metal-to-metal contact (in watts), <M tex="I" /> is the load
+        current passing through the joint (in amperes RMS), and <M tex="R_{\text{contact}}" />
         is the contact resistance between the leaf-spring brass and the stripped copper conductor
         (in ohms). UL 498 specifies the temperature-rise test against this dissipation for the new
         device
@@ -1393,7 +1389,7 @@ export default function Ch35HouseReplacingFixtures() {
             Because every current in this chapter — the 12 A through a degraded backstab, the 5 mA
             GFCI threshold, the 10 mA let-go current — is ultimately a count of elementary charges
             per second through a cross-section, scaled by the CODATA 2018 fixed value of{' '}
-            <InlineMath tex="e = 1.602176634\times 10^{-19}\,\text{C}" /> exactly
+            <M tex="e = 1.602176634\times 10^{-19}\,\text{C}" /> exactly
             <Cite id="codata-2018" in={SOURCES} />. The chapter is intentionally pinned to that
             constant: the milliamp values that distinguish a working GFCI from a fire and from a
             corpse are not arbitrary thresholds, they are points on a current-through-body curve

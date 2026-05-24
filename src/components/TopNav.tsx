@@ -339,7 +339,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
             {mobileChaptersOpen && (
               <ul
                 id="mobile-chapters-list"
-                className="grid-list mx-md gap-xxs border-border-2 border-l pl-md mb-sm max-h-[55vh] overflow-y-auto"
+                className="grid-list mx-md gap-xxs border-border-2 pl-md mb-sm max-h-[55vh] overflow-y-auto border-l"
                 role="menu"
                 aria-label="All chapters"
               >

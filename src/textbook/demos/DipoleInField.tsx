@@ -12,8 +12,8 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
-import { drawLabel } from "@/lib/canvasLayout";
+import { M } from '@/components/Formula';
+import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -118,8 +118,21 @@ export function DipoleInFieldDemo({ figure }: Props) {
       }
 
       // Overlay alignment text
-      drawLabel(ctx, { text: `⟨cos θ⟩ = ${meanCos.toFixed(2)}`, x: 12, y: 18, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `E (applied) →`, x: w - 110, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: `⟨cos θ⟩ = ${meanCos.toFixed(2)}`,
+        x: 12,
+        y: 18,
+        color: colors.accent,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `E (applied) →`,
+        x: w - 110,
+        y: 18,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
 
       // Throttle React state updates to ~5 Hz
       const now = performance.now();
@@ -187,9 +200,17 @@ export function DipoleInFieldDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Dipole torque and alignment"
-        left={<InlineMath tex={`\\boldsymbol{\\tau} = \\mathbf{p} \\times \\mathbf{E},\\quad P = N p\\,\\langle\\cos\\theta\\rangle`} />}
+        left={
+          <M
+            tex={`\\boldsymbol{\\tau} = \\mathbf{p} \\times \\mathbf{E},\\quad P = N p\\,\\langle\\cos\\theta\\rangle`}
+          />
+        }
         rightLabel={`E = ${E.toFixed(2)}`}
-        right={<InlineMath tex={`\\langle\\cos\\theta\\rangle = ${align.toFixed(2)};\\quad P \\propto N p \\cdot ${align.toFixed(2)}`} />}
+        right={
+          <M
+            tex={`\\langle\\cos\\theta\\rangle = ${align.toFixed(2)};\\quad P \\propto N p \\cdot ${align.toFixed(2)}`}
+          />
+        }
       />
     </Demo>
   );

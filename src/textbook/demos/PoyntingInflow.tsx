@@ -17,7 +17,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 import { PHYS, pretty, sciTeX } from '@/lib/physics';
@@ -239,21 +239,64 @@ export function PoyntingInflowDemo({ figure }: Props) {
       ctx.fillStyle = colors.blue;
       ctx.fillRect(g.wireXR + 18, g.wireCY - r - 4, 4, 2 * r + 8);
       ctx.fillStyle = colors.pink;
-      drawLabel(ctx, { text: '+', x: g.wireXL - 36, y: g.wireCY, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '+',
+        x: g.wireXL - 36,
+        y: g.wireCY,
+        weight: 'bold',
+        size: 14,
+        font: 'bold 14px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
       ctx.fillStyle = colors.blue;
-      drawLabel(ctx, { text: '−', x: g.wireXR + 36, y: g.wireCY, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '−',
+        x: g.wireXR + 36,
+        y: g.wireCY,
+        weight: 'bold',
+        size: 14,
+        font: 'bold 14px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
 
       // Numerics overlay
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: `|S| = ${pretty(out.S)} W/m²`, x: 18, y: 14, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `|S| = ${pretty(out.S)} W/m²`,
+        x: 18,
+        y: 14,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = colors.pink;
-      drawLabel(ctx, { text: `E = ${pretty(out.E)} V/m`, x: 18, y: 30, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `E = ${pretty(out.E)} V/m`,
+        x: 18,
+        y: 30,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = colors.teal;
-      drawLabel(ctx, { text: `B = ${pretty(out.B)} T`, x: 18, y: 46, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `B = ${pretty(out.B)} T`,
+        x: 18,
+        y: 46,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.globalAlpha = 0.85;
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `a = ${a_mm.toFixed(2)} mm   L = ${L.toFixed(2)} m`, x: W - 18, y: 14 });
+      drawLabel(ctx, {
+        text: `a = ${a_mm.toFixed(2)} mm   L = ${L.toFixed(2)} m`,
+        x: W - 18,
+        y: 14,
+      });
       ctx.restore();
       ctx.fillStyle = colors.accent;
       drawLabel(ctx, { text: `P_surf / P_VI = ${out.match.toFixed(3)}`, x: W - 18, y: 30 });
@@ -334,15 +377,13 @@ export function PoyntingInflowDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Poynting vector magnitude"
         left={
-          <InlineMath
-            tex={
-              `|S| = \\dfrac{E B}{\\mu_0} = \\dfrac{(${sciTeX(computed.E, 1, { fixedHi: 1e6 })})(${sciTeX(computed.B, 2, { fixedHi: 1e6 })})}{\\mu_0} \\approx ${sciTeX(computed.S, 2, { fixedHi: 1e6 })} \\text{ W/m}^2`
-            }
+          <M
+            tex={`|S| = \\dfrac{E B}{\\mu_0} = \\dfrac{(${sciTeX(computed.E, 1, { fixedHi: 1e6 })})(${sciTeX(computed.B, 2, { fixedHi: 1e6 })})}{\\mu_0} \\approx ${sciTeX(computed.S, 2, { fixedHi: 1e6 })} \\text{ W/m}^2`}
           />
         }
         rightLabel="Power balance"
         right={
-          <InlineMath
+          <M
             tex={`P_{\\text{surf}} = P_{VI} = V I = ${sciTeX(computed.P_vi, 2, { fixedHi: 1e6 })} \\text{ W}`}
           />
         }

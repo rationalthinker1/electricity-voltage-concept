@@ -16,7 +16,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -108,7 +108,13 @@ export function LCOscillationDemo({ figure }: Props) {
       ctx.lineTo(cx + plateW / 2, yT + plateGap / 2);
       ctx.stroke();
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: `C  ${QSign}${Math.abs((Q / Q0) * V0).toFixed(2)}V`, x: cx + plateW / 2 + 6, y: yT, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `C  ${QSign}${Math.abs((Q / Q0) * V0).toFixed(2)}V`,
+        x: cx + plateW / 2 + 6,
+        y: yT,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
 
       // Inductor (right middle)
       drawInductorV(ctx, xR, cy, L);
@@ -133,9 +139,28 @@ export function LCOscillationDemo({ figure }: Props) {
 
       // Labels
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `L = ${Lmh.toFixed(1)} mH    C = ${Cuf.toFixed(0)} µF`, x: 10, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `f₀ = ${fmtFrequency(f0)}`, x: splitX - 10, y: 8, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: `I → ${fmtCurrent(I)}`, x: 10, y: h - 6, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: `L = ${Lmh.toFixed(1)} mH    C = ${Cuf.toFixed(0)} µF`,
+        x: 10,
+        y: 8,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `f₀ = ${fmtFrequency(f0)}`,
+        x: splitX - 10,
+        y: 8,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `I → ${fmtCurrent(I)}`,
+        x: 10,
+        y: h - 6,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'bottom',
+      });
 
       ctx.restore();
 
@@ -182,11 +207,43 @@ export function LCOscillationDemo({ figure }: Props) {
       ctx.fillRect(x2, barY + barH - hL, barW, hL);
 
       ctx.fillStyle = colors.text;
-      drawLabel(ctx, { text: 'U_C', x: x1 + barW / 2, y: barY + barH + 6, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: 'U_L', x: x2 + barW / 2, y: barY + barH + 6, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'U_C',
+        x: x1 + barW / 2,
+        y: barY + barH + 6,
+        weight: 'bold',
+        size: 11,
+        font: 'bold 11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'U_L',
+        x: x2 + barW / 2,
+        y: barY + barH + 6,
+        weight: 'bold',
+        size: 11,
+        font: 'bold 11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `${(fracC * 100).toFixed(0)}%`, x: x1 + barW / 2, y: barY + barH + 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `${(fracL * 100).toFixed(0)}%`, x: x2 + barW / 2, y: barY + barH + 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `${(fracC * 100).toFixed(0)}%`,
+        x: x1 + barW / 2,
+        y: barY + barH + 22,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `${(fracL * 100).toFixed(0)}%`,
+        x: x2 + barW / 2,
+        y: barY + barH + 22,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
 
       drawLabel(ctx, {
         x: innerX,
@@ -241,10 +298,10 @@ export function LCOscillationDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="LC resonance"
-        left={<InlineMath tex={"f_0 = \\dfrac{1}{2\\pi\\sqrt{LC}}"} />}
+        left={<M tex={'f_0 = \\dfrac{1}{2\\pi\\sqrt{LC}}'} />}
         rightLabel="At this L, C"
         right={
-          <InlineMath
+          <M
             tex={`f_0 = ${f0.toFixed(2)}\\,\\text{Hz},\\quad T_0 = ${(T0 * 1000).toFixed(2)}\\,\\text{ms}`}
           />
         }

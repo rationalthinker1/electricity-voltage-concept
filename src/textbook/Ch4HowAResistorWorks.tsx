@@ -20,7 +20,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -48,15 +48,14 @@ export default function Ch4HowAResistorWorks() {
         motherboard.
       </p>
       <p className="mb-prose-3">
-        Chapter 3 was about resistance — the physical quantity, the{' '}
-        <InlineMath>R = ρL/A</InlineMath> formula, the heat that comes out as electrons crash into
-        the lattice. This chapter is about the physical part you can hold in your hand. What's
-        inside the body. Why the stripes are coloured that way. Why a 1/4 W resistor can't actually
-        dissipate 1/4 W in your attic. Why R isn't even constant — it climbs or drops with
-        temperature, depending on what the body is made of. And the whole family of{' '}
-        <em className="text-text italic">variable</em> resistors: the volume knob, the thermistor in
-        your thermostat, the photoresistor in the streetlight. Plus, at the end, a deep cut: why a
-        piece of copper happens to be both the best electrical conductor
+        Chapter 3 was about resistance — the physical quantity, the <M>R = ρL/A</M> formula, the
+        heat that comes out as electrons crash into the lattice. This chapter is about the physical
+        part you can hold in your hand. What's inside the body. Why the stripes are coloured that
+        way. Why a 1/4 W resistor can't actually dissipate 1/4 W in your attic. Why R isn't even
+        constant — it climbs or drops with temperature, depending on what the body is made of. And
+        the whole family of <em className="text-text italic">variable</em> resistors: the volume
+        knob, the thermistor in your thermostat, the photoresistor in the streetlight. Plus, at the
+        end, a deep cut: why a piece of copper happens to be both the best electrical conductor
         <em className="text-text italic"> and</em> the best heat sink on the workbench.
       </p>
 
@@ -68,17 +67,15 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <Formula size="lg" tex="R = \dfrac{\rho L}{A}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="R" /> is the resistance (in ohms, Ω),{' '}
-        <InlineMath tex="\rho" /> is the material's resistivity (in Ω·m;
-        ≈ 1.7×10⁻⁸ for copper), <InlineMath tex="L" /> is the
-        conductor length (in metres), and
-        <InlineMath tex="A" /> is its cross-sectional area (in m²).
-        Resistance is resistivity times length over cross-section. For a fixed bit of material
-        that's a relation between three numbers, and you can dial any one of them by changing the
-        geometry. A real resistor is a small, mass-produced device engineered to land at one
-        specific value of <InlineMath tex="R" />, with one specific
-        tolerance, and to dissipate up to one specific amount of power before it catches fire.
-        Everything you read in the rest of this chapter is about how manufacturers actually do that.
+        where <M tex="R" /> is the resistance (in ohms, Ω), <M tex="\rho" /> is the material's
+        resistivity (in Ω·m; ≈ 1.7×10⁻⁸ for copper), <M tex="L" /> is the conductor length (in
+        metres), and <M tex="A" /> is its cross-sectional area (in m²). Resistance is resistivity
+        times length over cross-section. For a fixed bit of material that's a relation between three
+        numbers, and you can dial any one of them by changing the geometry. A real resistor is a
+        small, mass-produced device engineered to land at one specific value of <M tex="R" />, with
+        one specific tolerance, and to dissipate up to one specific amount of power before it
+        catches fire. Everything you read in the rest of this chapter is about how manufacturers
+        actually do that.
       </p>
       <p className="mb-prose-3">
         There are two big families. <strong className="text-text font-medium">Fixed-value</strong>{' '}
@@ -245,25 +242,21 @@ export default function Ch4HowAResistorWorks() {
       <h2 className="chapter-h2">Power, heat, and why ratings derate</h2>
 
       <p className="mb-prose-3">
-        When current <InlineMath tex="I" /> flows through a resistor
-        of value <InlineMath tex="R" />, power is dissipated at the
-        rate
+        When current <M tex="I" /> flows through a resistor of value <M tex="R" />, power is
+        dissipated at the rate
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="P = I^2 R = \dfrac{V^2}{R}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="P" /> is the power dissipated as heat
-        in the resistor (in watts, W = J/s),
-        <InlineMath tex="I" /> is the current through it (in
-        amperes), <InlineMath tex="V" /> is the voltage across it (in
-        volts), and <InlineMath tex="R" /> is its resistance (in
-        ohms). The two forms are equivalent via <InlineMath tex="V = IR" />. That
-        power becomes heat inside the resistor body. The body has to dump that heat into the
-        surrounding air, mostly by natural convection, before its internal temperature climbs past
-        the safe limit (around <strong className="text-text font-medium">155 °C</strong> for a
-        typical film resistor). A 1/4 W axial resistor running at its rated 1/4 W in 25 °C still air
-        comes to a steady-state surface temperature of roughly 150 °C — uncomfortably hot, but
-        inside the limit
+        where <M tex="P" /> is the power dissipated as heat in the resistor (in watts, W = J/s),{' '}
+        <M tex="I" /> is the current through it (in amperes), <M tex="V" /> is the voltage across it
+        (in volts), and <M tex="R" /> is its resistance (in ohms). The two forms are equivalent via{' '}
+        <M tex="V = IR" />. That power becomes heat inside the resistor body. The body has to dump
+        that heat into the surrounding air, mostly by natural convection, before its internal
+        temperature climbs past the safe limit (around{' '}
+        <strong className="text-text font-medium">155 °C</strong> for a typical film resistor). A
+        1/4 W axial resistor running at its rated 1/4 W in 25 °C still air comes to a steady-state
+        surface temperature of roughly 150 °C — uncomfortably hot, but inside the limit
         <Cite id="horowitz-hill-2015" in={SOURCES} />. Put that same resistor in a 70 °C enclosure
         and it has 80 °C less thermal headroom, so the manufacturer derates the allowed dissipation
         to keep the body under the limit.
@@ -350,8 +343,8 @@ export default function Ch4HowAResistorWorks() {
       <h2 className="chapter-h2">R is not constant: temperature coefficient</h2>
 
       <p className="mb-prose-3">
-        The resistivity ρ that goes into <InlineMath tex="R = \rho L/A" /> is itself a
-        function of temperature.{' '}
+        The resistivity ρ that goes into <M tex="R = \rho L/A" /> is itself a function of
+        temperature.{' '}
         <Term def="The empirical statement that the resistivity of a metal can be decomposed additively into a temperature-independent impurity/defect term and a temperature-dependent phonon-scattering term: ρ(T) = ρ_residual + ρ_phonon(T).">
           Matthiessen's rule
         </Term>
@@ -360,30 +353,28 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <Formula size="lg" tex="\rho(T) = \rho_{\text{residual}} + \rho_{\text{phonon}}(T)" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\rho(T)" /> is the metal's resistivity at
-        temperature <InlineMath tex="T" /> (in Ω·m),{' '}
-        <InlineMath tex="\rho_{\text{residual}}" /> is the
-        temperature-independent scattering off impurities and lattice defects (Ω·m),{' '}
-        <InlineMath tex="\rho_{\text{phonon}}(T)" /> is the
-        temperature-dependent scattering off phonons — quantized lattice vibrations whose amplitude
-        grows with temperature (Ω·m) — and{' '}
-        <InlineMath tex="T" /> is the absolute temperature in kelvin.
-        Well above the Debye temperature, ρ<sub>phonon</sub> is linear in T, giving the familiar
-        straight-line plot of resistance versus temperature for an unalloyed metal
+        where <M tex="\rho(T)" /> is the metal's resistivity at temperature <M tex="T" /> (in Ω·m),{' '}
+        <M tex="\rho_{\text{residual}}" /> is the temperature-independent scattering off impurities
+        and lattice defects (Ω·m), <M tex="\rho_{\text{phonon}}(T)" /> is the temperature-dependent
+        scattering off phonons — quantized lattice vibrations whose amplitude grows with temperature
+        (Ω·m) — and <M tex="T" /> is the absolute temperature in kelvin. Well above the Debye
+        temperature, ρ<sub>phonon</sub> is linear in T, giving the familiar straight-line plot of
+        resistance versus temperature for an unalloyed metal
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />. The slope is the
         <em className="text-text italic"> temperature coefficient of resistance</em>, or TCR,
         usually quoted in parts per million per kelvin.
       </p>
       <p className="mb-prose-3">
         For copper, TCR ≈ +3900 ppm/K — a copper wire's resistance climbs by about 0.4% per kelvin
-        near room temperature<Cite id="crc-resistivity" in={SOURCES} />. For pure tungsten the slope
-        is steeper, around +4500 ppm/K, and the dynamic range is enormous: a tungsten incandescent
-        filament at 2700 K has roughly 10–15× the resistance of the same filament at room
-        temperature. That's why an incandescent bulb at switch-on draws roughly an order of
-        magnitude more current than its steady-state value for the few milliseconds before the
-        filament heats up — the famous <em className="text-text italic">inrush</em>. Alloy films
-        (nichrome, manganin) are engineered for nearly zero TCR — manganin's was the original
-        reason for its existence as the alloy of the bench-standard resistor box
+        near room temperature
+        <Cite id="crc-resistivity" in={SOURCES} />. For pure tungsten the slope is steeper, around
+        +4500 ppm/K, and the dynamic range is enormous: a tungsten incandescent filament at 2700 K
+        has roughly 10–15× the resistance of the same filament at room temperature. That's why an
+        incandescent bulb at switch-on draws roughly an order of magnitude more current than its
+        steady-state value for the few milliseconds before the filament heats up — the famous{' '}
+        <em className="text-text italic">inrush</em>. Alloy films (nichrome, manganin) are
+        engineered for nearly zero TCR — manganin's was the original reason for its existence as the
+        alloy of the bench-standard resistor box
         <Cite id="kanthal" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -401,29 +392,24 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <Formula size="lg" tex="\dfrac{1}{T} = A + B \ln R + C (\ln R)^3" />
       <p className="mb-prose-3">
-        where <InlineMath tex="T" /> is the absolute temperature of
-        the thermistor bead (in kelvin),
-        <InlineMath tex="R" /> is its measured resistance (in ohms),
-        and <InlineMath tex="A" />,{' '}
-        <InlineMath tex="B" />,
-        <InlineMath tex="C" /> are empirical fitting constants
-        specific to a given thermistor part (units chosen so each term comes out in K⁻¹; typical
-        magnitudes: A ~ 10⁻³, B ~ 2–4×10⁻⁴, C ~ 10⁻⁷). NTCs are how every electronics enclosure
-        measures its own temperature: read R, plug into Steinhart–Hart, get T.
+        where <M tex="T" /> is the absolute temperature of the thermistor bead (in kelvin),{' '}
+        <M tex="R" /> is its measured resistance (in ohms), and <M tex="A" />, <M tex="B" />,
+        <M tex="C" /> are empirical fitting constants specific to a given thermistor part (units
+        chosen so each term comes out in K⁻¹; typical magnitudes: A ~ 10⁻³, B ~ 2–4×10⁻⁴, C ~ 10⁻⁷).
+        NTCs are how every electronics enclosure measures its own temperature: read R, plug into
+        Steinhart–Hart, get T.
       </p>
       <p className="mb-prose-3">
         The shape of the equation is worth unpacking. A semiconducting thermistor's resistance is
         dominated by the carrier population, which is thermally activated:{' '}
-        <InlineMath tex="R \propto \exp(E_g / 2k_B T)" />
-        . Take the logarithm and you get <InlineMath tex="\ln R" /> linear in{' '}
-        <InlineMath tex="1/T" /> — that's the leading{' '}
-        <InlineMath tex="B \cdot \ln R" /> term, and it would suffice for a 10 K window.
-        Across a real range (−40 °C to +125 °C, the typical span of a CPU thermistor) the bandgap
-        drifts, the mobility curves over, and the linear law in{' '}
-        <InlineMath tex="1/T" /> versus <InlineMath tex="\ln R" />{' '}
+        <M tex="R \propto \exp(E_g / 2k_B T)" />
+        . Take the logarithm and you get <M tex="\ln R" /> linear in <M tex="1/T" /> — that's the
+        leading <M tex="B \cdot \ln R" /> term, and it would suffice for a 10 K window. Across a
+        real range (−40 °C to +125 °C, the typical span of a CPU thermistor) the bandgap drifts, the
+        mobility curves over, and the linear law in <M tex="1/T" /> versus <M tex="\ln R" />
         bows gently. Steinhart and Hart found in 1968 that adding a single cubic term{' '}
-        <InlineMath tex="C \cdot (\ln R)^{3}" /> — no quadratic, empirically, since it
-        added nothing — flattens the residual to within millikelvins over the entire range
+        <M tex="C \cdot (\ln R)^{3}" /> — no quadratic, empirically, since it added nothing —
+        flattens the residual to within millikelvins over the entire range
         <Cite id="steinhart-hart-1968" in={SOURCES} />. It is a Taylor-like fit in the right
         variable, not a derivation from first principles.
       </p>
@@ -458,10 +444,9 @@ export default function Ch4HowAResistorWorks() {
 
       <p className="mb-prose-3">
         A pot has three terminals: the two ends of the resistive track (A and B), and the wiper (W).
-        Treat it as two resistors in series, with{' '}
-        <InlineMath tex="R_{AW} + R_{WB} = R_{\text{total}}" />
-        . Wire all three terminals as a voltage divider and the wiper sweeps an output voltage from
-        0 to V_in. Wire only two — say A and W — and you have a
+        Treat it as two resistors in series, with <M tex="R_{AW} + R_{WB} = R_{\text{total}}" />.
+        Wire all three terminals as a voltage divider and the wiper sweeps an output voltage from 0
+        to V_in. Wire only two — say A and W — and you have a
         <em className="text-text italic"> rheostat</em>: a variable two-terminal resistor, useful
         for current limiting. A small fixed-position trimmer (or
         <em className="text-text italic"> trimpot</em>) is what calibrates the gain of a precision
@@ -481,9 +466,9 @@ export default function Ch4HowAResistorWorks() {
         electrons across the bandgap and R drops to a few hundred ohms. The dynamic range is about
         four orders of magnitude. <em className="text-text italic">Strain gauges</em> are very thin
         metal foils glued to the surface whose strain you want to measure: stretching the foil
-        narrows its cross-section and slightly increases its resistance via the
-        <InlineMath tex="R = \rho L/A" /> geometry, by a factor of ~2 of the strain
-        itself. Every kitchen scale, bathroom scale, and tensile testing machine on Earth uses one.
+        narrows its cross-section and slightly increases its resistance via the{' '}
+        <M tex="R = \rho L/A" /> geometry, by a factor of ~2 of the strain itself. Every kitchen
+        scale, bathroom scale, and tensile testing machine on Earth uses one.
       </p>
 
       <h2 className="chapter-h2">The deep cut: Wiedemann–Franz</h2>
@@ -502,8 +487,7 @@ export default function Ch4HowAResistorWorks() {
           Wiedemann–Franz law
         </Term>
         <Cite id="wiedemann-franz-1853" in={SOURCES} />. Ludvig Lorenz extended the result two
-        decades later by showing the ratio scales as{' '}
-        <InlineMath tex="L_0 \cdot T" />, with L₀ called the{' '}
+        decades later by showing the ratio scales as <M tex="L_0 \cdot T" />, with L₀ called the{' '}
         <Term def="The universal proportionality constant in the Wiedemann–Franz law, L₀ ≈ 2.44×10⁻⁸ W·Ω·K⁻². Sommerfeld derived it from the free-electron model as L₀ = (π²/3)(k_B/e)².">
           Lorenz number
         </Term>
@@ -511,15 +495,13 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <Formula size="lg" tex="\dfrac{\kappa}{\sigma} = L_0 \, T" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\kappa" /> is the thermal conductivity (in
-        W/(m·K)), <InlineMath tex="\sigma" /> is the electrical
-        conductivity (in S/m), <InlineMath tex="T" /> is the absolute
-        temperature (in kelvin), and <InlineMath tex="L_0" /> is the
-        Lorenz number. With{' '}
-        <InlineMath tex="L_0 \approx 2.44\times 10^{-8}\,\text{W}{\cdot}\Omega{\cdot}\text{K}^{-2}" />, Sommerfeld
-        later extended Drude's classical picture to a Fermi gas and derived L₀ exactly:{' '}
-        L₀ = (π²/3)(k<sub>B</sub>/e)² with k<sub>B</sub> the Boltzmann constant and e the
-        elementary charge
+        where <M tex="\kappa" /> is the thermal conductivity (in W/(m·K)), <M tex="\sigma" /> is the
+        electrical conductivity (in S/m), <M tex="T" /> is the absolute temperature (in kelvin), and{' '}
+        <M tex="L_0" /> is the Lorenz number. With{' '}
+        <M tex="L_0 \approx 2.44\times 10^{-8}\,\text{W}{\cdot}\Omega{\cdot}\text{K}^{-2}" />,
+        Sommerfeld later extended Drude's classical picture to a Fermi gas and derived L₀ exactly:{' '}
+        L₀ = (π²/3)(k<sub>B</sub>/e)² with k<sub>B</sub> the Boltzmann constant and e the elementary
+        charge
         <Cite id="codata-2018" in={SOURCES} />
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
@@ -530,9 +512,8 @@ export default function Ch4HowAResistorWorks() {
         tag="Try 4.5"
         question={
           <>
-            Use the Wiedemann–Franz law to predict the ratio{' '}
-            <InlineMath tex="\kappa/\sigma" /> for copper at room temperature (T
-            = 300 K). Take L₀ = 2.44×10⁻⁸ W·Ω·K⁻².
+            Use the Wiedemann–Franz law to predict the ratio <M tex="\kappa/\sigma" /> for copper at
+            room temperature (T = 300 K). Take L₀ = 2.44×10⁻⁸ W·Ω·K⁻².
           </>
         }
         hint="κ/σ = L₀·T. The answer has units of W·Ω/K (= V²/K)."
@@ -557,10 +538,10 @@ export default function Ch4HowAResistorWorks() {
       <p className="mb-prose-3">
         The physics is one sentence. In a metal, the same gas of free electrons carries both the
         electrical current (drifting in an applied E field) and the heat current (diffusing down a
-        temperature gradient). Both transport coefficients are proportional to{' '}
-        <InlineMath tex="n\tau/m" />, where n is the electron density, τ
-        is the mean time between scattering events, and m is the electron mass. The ratio cancels
-        the electron-system properties and leaves only fundamental constants times T
+        temperature gradient). Both transport coefficients are proportional to <M tex="n\tau/m" />,
+        where n is the electron density, τ is the mean time between scattering events, and m is the
+        electron mass. The ratio cancels the electron-system properties and leaves only fundamental
+        constants times T
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />. The same charge carriers, doing two jobs in
         parallel; the Wiedemann–Franz constant is the conversion factor between them.
       </p>
@@ -586,15 +567,14 @@ export default function Ch4HowAResistorWorks() {
       <p className="mb-prose-3">
         A real resistor is a ceramic cylinder with a film of carbon, metal, or metal oxide wrapped
         around it — or, for high power, a coil of nichrome or manganin wire.{' '}
-        <InlineMath tex="R = \rho L/A" /> sets the value; the colour bands report it to
-        two or three significant figures plus a tolerance. The body has a power rating, which
-        derates above ~70 °C ambient because the heat has to leave the package somehow. R is itself
-        a function of T: positive and steep for pure metals, near-zero for nichrome and manganin,
-        large and negative for NTC thermistors, sharply positive at the trip point of a PTC
-        polyswitch. Pots, thermistors, photoresistors, and strain gauges complete the family — each
-        one is a fixed resistor with one of its parameters left adjustable. And the Wiedemann–Franz
-        law tells you, as a side benefit, why every wire material that's good at current is also
-        good at heat.
+        <M tex="R = \rho L/A" /> sets the value; the colour bands report it to two or three
+        significant figures plus a tolerance. The body has a power rating, which derates above ~70
+        °C ambient because the heat has to leave the package somehow. R is itself a function of T:
+        positive and steep for pure metals, near-zero for nichrome and manganin, large and negative
+        for NTC thermistors, sharply positive at the trip point of a PTC polyswitch. Pots,
+        thermistors, photoresistors, and strain gauges complete the family — each one is a fixed
+        resistor with one of its parameters left adjustable. And the Wiedemann–Franz law tells you,
+        as a side benefit, why every wire material that's good at current is also good at heat.
       </p>
       <p className="mb-prose-3">
         Next chapter: leave the wire altogether. Two metal plates with a gap between them store
@@ -646,7 +626,7 @@ export default function Ch4HowAResistorWorks() {
             circuit? You put a small precision resistor in series — say{' '}
             <strong className="text-text font-medium">1 mΩ</strong> — and measure the voltage across
             it. At 100 A the drop is 100 mV, easily read with a precision differential amplifier and
-            an ADC. <InlineMath tex="P = I^{2}R = 10\,\text{W}" />
+            an ADC. <M tex="P = I^{2}R = 10\,\text{W}" />
             is the heat the shunt has to dump, which is why such parts are built as thick metal
             strips in surface-mount packages with large copper tabs for heatsinking
             <Cite id="vishay-csm-shunt" in={SOURCES} />.
@@ -693,9 +673,8 @@ export default function Ch4HowAResistorWorks() {
             often, an external NTC thermistor on the motherboard near the socket. The NTC is a tiny
             bead of sintered nickel-manganese-cobalt oxide; at 25 °C it has a nominal resistance
             around 10 kΩ, with a temperature coefficient steep enough that R drops to ~680 Ω by 100
-            °C. Plug it into the Steinhart–Hart equation
-            <InlineMath tex="1/T = A + B\ln R + C(\ln R)^3" /> and you recover T
-            to within a kelvin or so
+            °C. Plug it into the Steinhart–Hart equation <M tex="1/T = A + B\ln R + C(\ln R)^3" />{' '}
+            and you recover T to within a kelvin or so
             <Cite id="steinhart-hart-1968" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
@@ -822,8 +801,8 @@ export default function Ch4HowAResistorWorks() {
             cumulative effect is excess "current noise" — voltage fluctuations across the resistor
             that scale with the current flowing through it. A sputtered metal film is a single
             continuous polycrystalline layer with no such granular contacts, and its noise is
-            essentially just Johnson–Nyquist (thermal) noise at the
-            <InlineMath tex="\sqrt{4k_B T R\,\Delta f}" />{' '}
+            essentially just Johnson–Nyquist (thermal) noise at the{' '}
+            <M tex="\sqrt{4k_B T R\,\Delta f}" />
             floor
             <Cite id="horowitz-hill-2015" in={SOURCES} />. For audio and instrumentation circuits
             the difference matters; for a current-limiting resistor in an LED indicator it does not.
@@ -886,8 +865,8 @@ export default function Ch4HowAResistorWorks() {
             They're the same component used in two different roles. In a precision divider, a fixed
             resistor sets a voltage ratio. In an LED current-limit, the same kind of fixed resistor
             sits in series with the LED to drop the difference between the supply voltage and the
-            LED's forward voltage, while limiting current via Ohm's law:
-            <InlineMath tex="R = (V_{\text{supply}} - V_{\text{LED}}) / I_{\text{LED}}" />
+            LED's forward voltage, while limiting current via Ohm's law:{' '}
+            <M tex="R = (V_{\text{supply}} - V_{\text{LED}}) / I_{\text{LED}}" />
             . For a 5 V supply, a red LED at ~2.0 V forward, and a target 20 mA, R = 150 Ω; the
             resistor dissipates I²R = 60 mW, comfortable for a 1/4 W part
             <Cite id="horowitz-hill-2015" in={SOURCES} />. Nothing about the resistor itself knows
@@ -911,15 +890,15 @@ export default function Ch4HowAResistorWorks() {
         <FAQItem q="Why does the inrush current of an incandescent bulb light up the wire so fiercely?">
           <p>
             Tungsten's TCR is large and positive: the filament at room temperature has somewhere
-            between a tenth and a fifteenth of the resistance of the same filament at its
-            operating temperature (~2700 K)
+            between a tenth and a fifteenth of the resistance of the same filament at its operating
+            temperature (~2700 K)
             <Cite id="ashcroft-mermin-1976" in={SOURCES} />. So at the instant the switch closes,
             with the filament still cold, the current is roughly an order of magnitude above its
             steady-state value — for a 60 W, 120 V bulb that's several amps peak versus 0.5 A
-            steady. The filament heats in
-            tens of milliseconds, R climbs, current falls to its operating value. The high inrush is
-            what makes incandescent bulbs so prone to burning out at switch-on rather than mid-life:
-            the cold-filament I²R pulse stresses the thinnest point.
+            steady. The filament heats in tens of milliseconds, R climbs, current falls to its
+            operating value. The high inrush is what makes incandescent bulbs so prone to burning
+            out at switch-on rather than mid-life: the cold-filament I²R pulse stresses the thinnest
+            point.
           </p>
         </FAQItem>
 
@@ -980,8 +959,8 @@ export default function Ch4HowAResistorWorks() {
           <p>
             A pot is two resistors in series whose junction is the wiper. Apply V_in across the two
             end terminals (A and B): current I = V_in / R_total flows through the whole track. The
-            voltage from the wiper W to terminal B is
-            <InlineMath tex="V_{WB} = I \cdot R_{WB} = V_{\text{in}} \cdot (R_{WB}/R_{\text{total}})" />
+            voltage from the wiper W to terminal B is{' '}
+            <M tex="V_{WB} = I \cdot R_{WB} = V_{\text{in}} \cdot (R_{WB}/R_{\text{total}})" />
             . As the wiper slides from B toward A, that ratio sweeps from 0 to 1. So a 10 kΩ pot
             wired as a voltage divider produces any output voltage between 0 and V_in continuously,
             with the same loading characteristics as a 10 kΩ source impedance
@@ -1039,15 +1018,12 @@ export default function Ch4HowAResistorWorks() {
         <FAQItem q="Why is a metal that conducts electricity well also a good heat conductor?">
           <p>
             Because in a metal, both currents — charge and heat — are carried by the same gas of
-            free conduction electrons. Electrical conductivity σ scales as{' '}
-            <InlineMath tex="ne^{2}\tau/m" /> (Drude); thermal
-            conductivity κ scales as{' '}
-            <InlineMath tex="nk_{B}^{2}T\tau/m" />{' '}
-            (up to a factor of π²/3 in the Sommerfeld theory). The ratio{' '}
-            <InlineMath tex="\kappa/\sigma" /> cancels n and τ, leaving{' '}
-            <InlineMath tex="L_{0} \cdot T" />{' '}
+            free conduction electrons. Electrical conductivity σ scales as <M tex="ne^{2}\tau/m" />{' '}
+            (Drude); thermal conductivity κ scales as <M tex="nk_{B}^{2}T\tau/m" />
+            (up to a factor of π²/3 in the Sommerfeld theory). The ratio <M tex="\kappa/\sigma" />{' '}
+            cancels n and τ, leaving <M tex="L_{0} \cdot T" />
             with{' '}
-            <InlineMath tex="L_{0} = (\pi^{2}/3)(k_{B}/e)^{2} \approx 2.44\times 10^{-8}\,\text{W}{\cdot}\Omega{\cdot}\text{K}^{-2}" />{' '}
+            <M tex="L_{0} = (\pi^{2}/3)(k_{B}/e)^{2} \approx 2.44\times 10^{-8}\,\text{W}{\cdot}\Omega{\cdot}\text{K}^{-2}" />
             — the Wiedemann–Franz law
             <Cite id="wiedemann-franz-1853" in={SOURCES} />
             <Cite id="ashcroft-mermin-1976" in={SOURCES} />. So choosing the best electrical

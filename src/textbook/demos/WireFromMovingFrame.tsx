@@ -28,7 +28,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
@@ -188,7 +188,16 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(tx, ty, 9, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: '+', x: tx, y: ty, color: colors.bg, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '+',
+        x: tx,
+        y: ty,
+        color: colors.bg,
+        weight: 'bold',
+        font: 'bold 10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
       drawLabel(ctx, {
         x: tx,
         y: ty - 26,
@@ -283,7 +292,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="γ in the test-charge frame"
         left={
-          <InlineMath
+          <M
             tex={
               `\\gamma_{\\text{test}} \\;=\\; \\dfrac{1}{\\sqrt{1-\\beta^{2}}} \\;=\\; ` +
               `\\dfrac{1}{\\sqrt{1-${beta.toFixed(2)}^{2}}} \\;\\approx\\; ` +
@@ -293,7 +302,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
         }
         rightLabel="Residual line charge in the boosted frame"
         right={
-          <InlineMath
+          <M
             tex={
               `\\lambda' \\;=\\; \\lambda_{0}\\,(\\gamma_{\\text{test}} - \\gamma_{e}') ` +
               `\\;\\approx\\; ${sciTeX(lambda_new, 2)}\\ \\text{C/m}`

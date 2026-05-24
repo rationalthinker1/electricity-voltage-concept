@@ -11,7 +11,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -79,8 +79,20 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       ctx.lineTo(txX, cy + 22);
       ctx.stroke();
       ctx.restore();
-      drawLabel(ctx, { text: `TX · ${Ptmw.toFixed(0)} mW`, x: txX, y: cy + 40, color: colors.accent, align: 'center' });
-      drawLabel(ctx, { text: `G_t = ${GtDbi.toFixed(1)} dBi`, x: txX, y: cy + 54, color: colors.accent, align: 'center' });
+      drawLabel(ctx, {
+        text: `TX · ${Ptmw.toFixed(0)} mW`,
+        x: txX,
+        y: cy + 40,
+        color: colors.accent,
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: `G_t = ${GtDbi.toFixed(1)} dBi`,
+        x: txX,
+        y: cy + 54,
+        color: colors.accent,
+        align: 'center',
+      });
       ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 2.5;
       ctx.beginPath();
@@ -89,7 +101,13 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       ctx.stroke();
       ctx.fillStyle = colors.teal;
       drawLabel(ctx, { text: `RX`, x: rxX, y: cy + 40, color: colors.teal, align: 'center' });
-      drawLabel(ctx, { text: `G_r = ${GrDbi.toFixed(1)} dBi`, x: rxX, y: cy + 54, color: colors.teal, align: 'center' });
+      drawLabel(ctx, {
+        text: `G_r = ${GrDbi.toFixed(1)} dBi`,
+        x: rxX,
+        y: cy + 54,
+        color: colors.teal,
+        align: 'center',
+      });
       ctx.strokeStyle = colors.borderStrong;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -97,7 +115,12 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       ctx.lineTo(rxX, cy);
       ctx.stroke();
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: `d = ${dM.toFixed(1)} m, f = ${fMHz.toFixed(0)} MHz, λ = ${((PHYS.c / (fMHz * 1e6)) * 1000).toFixed(1)} mm`, x: (txX + rxX) / 2, y: cy - 14, align: 'center' });
+      drawLabel(ctx, {
+        text: `d = ${dM.toFixed(1)} m, f = ${fMHz.toFixed(0)} MHz, λ = ${((PHYS.c / (fMHz * 1e6)) * 1000).toFixed(1)} mm`,
+        x: (txX + rxX) / 2,
+        y: cy - 14,
+        align: 'center',
+      });
       drawLabel(ctx, {
         x: (txX + rxX) / 2,
         y: 22,
@@ -177,9 +200,13 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Friis transmission equation"
-        left={<InlineMath tex="P_r = P_t G_t G_r \left(\tfrac{\lambda}{4\pi d}\right)^{\!2}" />}
+        left={<M tex="P_r = P_t G_t G_r \left(\tfrac{\lambda}{4\pi d}\right)^{\!2}" />}
         rightLabel="Live link budget"
-        right={<InlineMath tex={`P_r = ${Pr_dBm.toFixed(1)}\\,\\text{dBm};\\quad\\text{path loss} = ${(-fsplDb).toFixed(1)}\\,\\text{dB}`} />}
+        right={
+          <M
+            tex={`P_r = ${Pr_dBm.toFixed(1)}\\,\\text{dBm};\\quad\\text{path loss} = ${(-fsplDb).toFixed(1)}\\,\\text{dB}`}
+          />
+        }
       />
     </Demo>
   );

@@ -11,8 +11,15 @@ import { useState } from 'react';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { drawLabel } from '@/lib/canvasLayout';
 import type { ThemeColors } from '@/lib/canvasTheme';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { fmtRatio } from '@/lib/formatters';
@@ -233,17 +240,9 @@ export function RvsTemperatureDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Metal (linear, Cu)"
-        left={
-          <InlineMath
-            tex={`R/R_0 = 1 + \\alpha(T - T_0) = ${cuRatio(T_C).toFixed(3)}\\times`}
-          />
-        }
+        left={<M tex={`R/R_0 = 1 + \\alpha(T - T_0) = ${cuRatio(T_C).toFixed(3)}\\times`} />}
         rightLabel="NTC thermistor"
-        right={
-          <InlineMath
-            tex={`R/R_0 = e^{B(1/T - 1/T_0)} = ${ntcRatio(T_C).toFixed(3)}\\times`}
-          />
-        }
+        right={<M tex={`R/R_0 = e^{B(1/T - 1/T_0)} = ${ntcRatio(T_C).toFixed(3)}\\times`} />}
       />
     </Demo>
   );

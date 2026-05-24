@@ -104,7 +104,7 @@ export interface SciTeXOpts {
 }
 
 /** Scientific notation, TeX-source version. For numbers inside an
- *  `<InlineMath tex={…}/>` or `<Formula tex>`, embedding raw
+ *  `<M tex={…}/>` or `<Formula tex>`, embedding raw
  *  `Number.toExponential()` produces ugly `3.0e+5`-style output in math
  *  mode. This returns a proper TeX fragment like `3.00\times 10^{5}` so
  *  KaTeX renders real scientific notation. For normal ranges

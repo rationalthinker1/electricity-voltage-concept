@@ -16,7 +16,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -352,14 +352,12 @@ export default function Ch38HouseSmartRetrofits() {
 
       <Formula tex="P_{\text{bleeder}} = V_{\text{line}} \times I_{\text{bleeder}}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="P_{\text{bleeder}}" /> is the steady-state power
-        that the bleeder pulls from the line (in watts),{' '}
-        <InlineMath tex="V_{\text{line}}" /> is the RMS line voltage (120 V in
-        North America, 230 V in most of Europe), and{' '}
-        <InlineMath tex="I_{\text{bleeder}}" /> is the RMS bleeder current the
-        switch draws through the load (in amperes). At I_bleeder = 50 mA on a 120 V line, P_bleeder
-        = 6 W — and that 6 W has to be dissipated somewhere. The dimmer itself only keeps a few
-        tenths of a watt for its MCU; the rest is burned in the load.
+        where <M tex="P_{\text{bleeder}}" /> is the steady-state power that the bleeder pulls from
+        the line (in watts), <M tex="V_{\text{line}}" /> is the RMS line voltage (120 V in North
+        America, 230 V in most of Europe), and <M tex="I_{\text{bleeder}}" /> is the RMS bleeder
+        current the switch draws through the load (in amperes). At I_bleeder = 50 mA on a 120 V
+        line, P_bleeder = 6 W — and that 6 W has to be dissipated somewhere. The dimmer itself only
+        keeps a few tenths of a watt for its MCU; the rest is burned in the load.
       </p>
       <p className="mb-prose-3">
         For a 60 W incandescent bulb this is invisible. An incandescent filament needs roughly 90 V
@@ -553,7 +551,7 @@ export default function Ch38HouseSmartRetrofits() {
         </li>
       </ul>
       <p className="mb-prose-3">
-        Get the wrong edge and the failure modes are predictable: visible 120 Hz flicker, a low-end
+        Get the wrong edge and the failure modes are predictable: visible 120 Hz flicker, a low-end{' '}
         <Term
           def={
             <>
@@ -579,10 +577,9 @@ export default function Ch38HouseSmartRetrofits() {
 
       <Formula tex="V_{\text{rms}} = V_{\text{peak}} \times \sqrt{\dfrac{\alpha}{\pi} - \dfrac{\sin(2\alpha)}{2\pi}}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="V_{\text{rms}}" /> is the RMS voltage delivered
-        to the load (in volts), <InlineMath tex="V_{\text{peak}}" /> is the
-        line peak voltage (in volts; 170 V on a 120 V North American line, since V_peak = √2 ×
-        V_rms_line), and <InlineMath tex="\alpha" /> is the conduction
+        where <M tex="V_{\text{rms}}" /> is the RMS voltage delivered to the load (in volts),{' '}
+        <M tex="V_{\text{peak}}" /> is the line peak voltage (in volts; 170 V on a 120 V North
+        American line, since V_peak = √2 × V_rms_line), and <M tex="\alpha" /> is the conduction
         angle in radians, measured from the gate-on point to the next zero-crossing. The half-power
         point, α = π/2, evaluates the bracket as 1/2 − sin(π)/(2π) = 1/2 − 0 = 0.5, giving V_rms =
         170 × √0.5 ≈ 120 V × √0.5 ≈ 85 V. (For very deep dimming, α → 0 and V_rms → 0 as √α; for
@@ -595,9 +592,9 @@ export default function Ch38HouseSmartRetrofits() {
         tag="Try 38.2"
         question={
           <>
-            A trailing-edge dimmer is driving an LED at{' '}
-            <InlineMath tex="\alpha = 3\pi/4" /> conduction angle on a 120 V
-            RMS line. Compute V_rms at the load. What fraction of full power does the LED see?
+            A trailing-edge dimmer is driving an LED at <M tex="\alpha = 3\pi/4" /> conduction angle
+            on a 120 V RMS line. Compute V_rms at the load. What fraction of full power does the LED
+            see?
           </>
         }
         hint="V_peak = √2 × 120 V ≈ 170 V. Then plug into the bracket: α/π − sin(2α)/(2π)."
@@ -666,7 +663,7 @@ export default function Ch38HouseSmartRetrofits() {
               label: 'P_bleeder',
               value: (
                 <>
-                  <InlineMath tex="120\ \text{V} \times 0.035\ \text{A} = 4.2\ \text{W}" />
+                  <M tex="120\ \text{V} \times 0.035\ \text{A} = 4.2\ \text{W}" />
                 </>
               ),
             },

@@ -17,12 +17,12 @@ import { useState } from 'react';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -119,7 +119,14 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.8;
-      drawLabel(ctx, { text: 'V (volts)', x: padL + plotW / 2, y: padT + plotH + 18, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'V (volts)',
+        x: padL + plotW / 2,
+        y: padT + plotH + 18,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.restore();
       ctx.save();
       ctx.translate(14, padT + plotH / 2);
@@ -150,9 +157,27 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
       }
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-      drawLabel(ctx, { text: '+100 mA', x: padL - 4, y: yOf(0.1), align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '+50 mA', x: padL - 4, y: yOf(0.05), align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '−50 mA', x: padL - 4, y: yOf(-0.05), align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '+100 mA',
+        x: padL - 4,
+        y: yOf(0.1),
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '+50 mA',
+        x: padL - 4,
+        y: yOf(0.05),
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '−50 mA',
+        x: padL - 4,
+        y: yOf(-0.05),
+        align: 'right',
+        baseline: 'middle',
+      });
       (Object.keys(FAMILIES) as DiodeKind[]).forEach((kind) => {
         const { color } = FAMILIES[kind];
         ctx.strokeStyle = color;
@@ -199,7 +224,12 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
       });
       ctx.save();
       ctx.globalAlpha = 0.8;
-      drawLabel(ctx, { text: `I = Iₛ (exp(V/V_T) − 1)   ·   V_T = kT/q = ${(((KB * T) / Q) * 1000).toFixed(1)} mV at ${T.toFixed(0)} K`, x: padL, y: 4, baseline: 'top' });
+      drawLabel(ctx, {
+        text: `I = Iₛ (exp(V/V_T) − 1)   ·   V_T = kT/q = ${(((KB * T) / Q) * 1000).toFixed(1)} mV at ${T.toFixed(0)} K`,
+        x: padL,
+        y: 4,
+        baseline: 'top',
+      });
       ctx.restore();
     },
     [],
@@ -246,9 +276,13 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Shockley diode equation"
-        left={<InlineMath tex={`I = I_s\\!\\left(e^{qV/kT} - 1\\right),\\quad V_T = \\tfrac{kT}{q}`} />}
+        left={<M tex={`I = I_s\\!\\left(e^{qV/kT} - 1\\right),\\quad V_T = \\tfrac{kT}{q}`} />}
         rightLabel={`At V = ${V.toFixed(2)} V, T = ${T.toFixed(0)} K`}
-        right={<InlineMath tex={`V_T = ${(((KB * T) / Q) * 1000).toFixed(2)}\\,\\text{mV};\\quad I_{\\text{Si}} \\approx ${sciTeX(Isi)}\\,\\text{A}`} />}
+        right={
+          <M
+            tex={`V_T = ${(((KB * T) / Q) * 1000).toFixed(2)}\\,\\text{mV};\\quad I_{\\text{Si}} \\approx ${sciTeX(Isi)}\\,\\text{A}`}
+          />
+        }
       />
     </Demo>
   );

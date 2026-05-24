@@ -213,7 +213,11 @@ export function FFTAlgorithmAnimationDemo({ figure }: Props) {
         leftLabel="Operation counts"
         left={<InlineMath tex={`\\text{naive DFT: } N^2 \\quad\\text{FFT: } N\\log_2 N`} />}
         rightLabel={`N = ${N}`}
-        right={<InlineMath tex={`${N}^2 = ${naive.toLocaleString()} \\quad\\text{vs}\\quad ${N}\\!\\cdot\\!${logN} = ${fft.toLocaleString()} \\quad(\\times${speedup.toFixed(0)})`} />}
+        right={
+          <InlineMath
+            tex={`${N}^2 = ${naive.toLocaleString()} \\quad\\text{vs}\\quad ${N}\\!\\cdot\\!${logN} = ${fft.toLocaleString()} \\quad(\\times${speedup.toFixed(0)})`}
+          />
+        }
       />
     </Demo>
   );

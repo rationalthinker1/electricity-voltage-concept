@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -155,8 +155,20 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.65;
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'T', x: xOf(T), y: padT + plotH + 4, align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: '2T', x: xOf(tMax), y: padT + plotH + 4, align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'T',
+        x: xOf(T),
+        y: padT + plotH + 4,
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: '2T',
+        x: xOf(tMax),
+        y: padT + plotH + 4,
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.restore();
       drawLabel(ctx, {
         x: padL,
@@ -225,13 +237,13 @@ export function PowerFactorDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Real power"
         left={
-          <InlineMath
+          <M
             tex={`\\langle P \\rangle = V_\\text{rms}\\,I_\\text{rms}\\cos\\varphi = ${Vrms.toFixed(1)}\\times${Irms.toFixed(3)}\\times${pf.toFixed(3)} = ${Preal.toFixed(1)}\\,\\text{W}`}
           />
         }
         rightLabel="Power factor"
         right={
-          <InlineMath
+          <M
             tex={`\\text{pf} = \\cos(${((phi * 180) / Math.PI).toFixed(1)}^{\\circ}) = ${pf.toFixed(3)}`}
           />
         }

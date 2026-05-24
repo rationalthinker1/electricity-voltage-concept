@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
@@ -130,9 +130,24 @@ export function BCirculationDemo({ figure }: Props) {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.85;
-      drawLabel(ctx, { text: `I = ${I.toFixed(1)} A  ⊗  (into page)`, x: cx, y: cy + wireR_px * 3 + 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `I = ${I.toFixed(1)} A  ⊗  (into page)`,
+        x: cx,
+        y: cy + wireR_px * 3 + 6,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.restore();
-      drawLabel(ctx, { text: 'B  (circumferential)', x: 18, y: 14, color: colors.teal, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'B  (circumferential)',
+        x: 18,
+        y: 14,
+        color: colors.teal,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.globalAlpha = 0.7;
       drawLabel(ctx, { text: 'right-hand rule: thumb along I, fingers curl with B', x: 18, y: 30 });
@@ -194,14 +209,12 @@ export function BCirculationDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Magnetic field at surface"
         left={
-          <InlineMath
-            tex={
-              `|B| = \\dfrac{\\mu_0 I}{2\\pi a} = \\dfrac{(${sciTeX(PHYS.mu_0, 2, { fixedHi: 1e6 })})(${I.toFixed(1)})}{2\\pi (${sciTeX(a_mm * 1e-3, 2, { fixedHi: 1e6 })})} \\approx ${sciTeX(Bsurf, 2, { fixedHi: 1e6 })} \\text{ T}`
-            }
+          <M
+            tex={`|B| = \\dfrac{\\mu_0 I}{2\\pi a} = \\dfrac{(${sciTeX(PHYS.mu_0, 2, { fixedHi: 1e6 })})(${I.toFixed(1)})}{2\\pi (${sciTeX(a_mm * 1e-3, 2, { fixedHi: 1e6 })})} \\approx ${sciTeX(Bsurf, 2, { fixedHi: 1e6 })} \\text{ T}`}
           />
         }
         rightLabel="Scaling"
-        right={<InlineMath tex={`B \\propto I / a`} />}
+        right={<M tex={`B \\propto I / a`} />}
       />
     </Demo>
   );

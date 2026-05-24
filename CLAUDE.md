@@ -1004,6 +1004,15 @@ The build runs strict TypeScript and Vite together. Anything that fails
 - **`<InlineMath id="…" />` and `<Formula id="…" />` are valid.** They
   resolve against `src/lib/formulas.ts`. Don't flag them as missing-tex
   errors in code review — they're the registry-lookup form.
+- **`<M>` is `<InlineMath>`.** Same component, short alias exported from
+  `@/components/Formula`. Chapters and demos use `<M tex="…" />` because
+  Prettier (printWidth 100) keeps it on one line with surrounding prose
+  far more often, eliminating most `{' '}` markers that the longer name
+  forced. Both names are exported. The four files where `M` shadows a
+  local physics symbol (mutual inductance, magnetization, FFT bit-width)
+  keep importing `InlineMath` — `Ferromagnet`,
+  `MutualInductanceTwoCoils`, `ReflectedImpedance`,
+  `FFTAlgorithmAnimation`. Don't rename those.
 - **Raw `Number.toExponential()` interpolated into a TeX template.**
   `(3.6e-17).toExponential(2)` returns the string `"-3.60e-17"`. Dropped
   into `` <InlineMath tex={`… ${x.toExponential(2)} …`} /> ``, KaTeX reads
@@ -1150,6 +1159,7 @@ Exits 1 if any HIGH finding fires; 0 otherwise. The nine checks:
 | H3 | HIGH | `Fig`/`Try`/`Case N.x` tags out of source order (per the contiguity convention) |
 | H4 | HIGH | `Number.toExponential()` interpolated into a `` tex={`…`} `` template literal (use `sciTeX`) |
 | H5 | HIGH | `X.YY/Z.WW kV` voltage pair on a wye system that fails the `X/√3 ≈ Z` test |
+| H6 | HIGH | JSX whitespace bug — prose ends a line, next line opens with `<M>`, `<Term>`, `<strong>`, `<em>`, `<a>`, `<Link>`, `<code>`, or `<InlineMath>` self-closed, with no `{' '}` bridging the newline. JSX strips the gap, rendering "them,E" instead of "them, E" |
 | M1 | MED | Demo file header `Demo N.M` doesn't match the chapter's current integer |
 | M2 | MED | Pullout count ≠ 1 (CLAUDE.md §6 #3) |
 | M3 | MED/LOW | Term count outside the 6–30 practical band (CLAUDE.md §6 #5) |

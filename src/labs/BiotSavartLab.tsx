@@ -14,7 +14,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
 import { Pullout } from '@/components/Prose';
@@ -896,9 +896,8 @@ export default function BiotSavartLab() {
         answer={
           <>
             <p className="mb-prose-3">
-              In{' '}
-              <InlineMath tex="|\vec{B}| = \dfrac{\mu_0 I}{4\pi d}\cdot\dfrac{2L}{\sqrt{L^2 + 4d^2}}" />
-              , when d ≫ L the square root reduces to 2d:
+              In <M tex="|\vec{B}| = \dfrac{\mu_0 I}{4\pi d}\cdot\dfrac{2L}{\sqrt{L^2 + 4d^2}}" />,
+              when d ≫ L the square root reduces to 2d:
             </p>
             <Formula tex="|\vec{B}| \approx \dfrac{\mu_0 I L}{4\pi d^2}" />
             <p className="mb-prose-3">

@@ -19,8 +19,8 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
-import { drawLabel } from "@/lib/canvasLayout";
+import { M } from '@/components/Formula';
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -129,7 +129,15 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fillStyle = colors.accent;
       ctx.fill();
-      drawLabel(ctx, { text: 'E_built-in', x: (arrowL + arrowR) / 2, y: arrowY - 8, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: 'E_built-in',
+        x: (arrowL + arrowR) / 2,
+        y: arrowY - 8,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
 
       // carrier dots — drift slightly with bias.
       // Forward bias: carriers cross the junction (left→right for electrons,
@@ -174,11 +182,38 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       // labels
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textBaseline = 'top';
-      drawLabel(ctx, { text: 'n-type', x: padL + 6, y: padT + 4, color: colors.pink, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'p-type', x: padL + plotW - 6, y: padT + 4, color: colors.blue, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'n-type',
+        x: padL + 6,
+        y: padT + 4,
+        color: colors.pink,
+        weight: 'bold',
+        size: 11,
+        font: 'bold 11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'p-type',
+        x: padL + plotW - 6,
+        y: padT + 4,
+        color: colors.blue,
+        weight: 'bold',
+        size: 11,
+        font: 'bold 11px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
 
       // depletion region label
-      drawLabel(ctx, { text: `depletion region   (W/W₀ = ${w_rel.toFixed(2)})`, x: padL + plotW * 0.5, y: padT + plotH - 16, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `depletion region   (W/W₀ = ${w_rel.toFixed(2)})`,
+        x: padL + plotW * 0.5,
+        y: padT + plotH - 16,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
 
       // header
       ctx.fillStyle = colors.textDim;
@@ -187,8 +222,11 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       let mode = 'zero bias';
       if (Vbias > 0.01) mode = 'forward bias';
       else if (Vbias < -0.01) mode = 'reverse bias';
-      drawLabel(ctx, { text: `V_applied = ${Vbias.toFixed(2)} V   ·   ${mode}   ·   V_bi = ${V_BI.toFixed(2)} V`, x: padL, y: 6 });
-
+      drawLabel(ctx, {
+        text: `V_applied = ${Vbias.toFixed(2)} V   ·   ${mode}   ·   V_bi = ${V_BI.toFixed(2)} V`,
+        x: padL,
+        y: 6,
+      });
     },
     [],
     () => {
@@ -248,9 +286,13 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Depletion width"
-        left={<InlineMath tex={`\\frac{W}{W_0} = \\sqrt{\\frac{V_{bi} - V_{\\text{applied}}}{V_{bi}}}`} />}
+        left={<M tex={`\\frac{W}{W_0} = \\sqrt{\\frac{V_{bi} - V_{\\text{applied}}}{V_{bi}}}`} />}
         rightLabel="Live values"
-        right={<InlineMath tex={`\\sqrt{\\frac{${V_BI.toFixed(2)} - (${Vbias.toFixed(2)})}{${V_BI.toFixed(2)}}} = ${w_rel.toFixed(2)}`} />}
+        right={
+          <M
+            tex={`\\sqrt{\\frac{${V_BI.toFixed(2)} - (${Vbias.toFixed(2)})}{${V_BI.toFixed(2)}}} = ${w_rel.toFixed(2)}`}
+          />
+        }
       />
     </Demo>
   );

@@ -16,7 +16,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -24,7 +24,7 @@ import { MATERIALS, PHYS } from '@/lib/physics';
 import { useCircuitCache } from '@/lib/useCircuitCache';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -250,9 +250,19 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
 
       // Legend strip
       ctx.fillStyle = withAlpha(colors.teal, 0.4 + 0.5 * Inorm);
-      drawLabel(ctx, { text: 'B  (circles wire; |B| ∝ I)', x: legendCol1X, y: legendRow1Y, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: 'B  (circles wire; |B| ∝ I)',
+        x: legendCol1X,
+        y: legendRow1Y,
+        font: '10px "JetBrains Mono", monospace',
+      });
       ctx.fillStyle = withAlpha(colors.textDim, 0.7);
-      drawLabel(ctx, { text: 'fixed: R = 10 Ω · A = 1 mm² · n = 8.5×10²⁸/m³ (Cu) · dot motion ≠ to scale', x: legendCol1X, y: legendRow3Y, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: 'fixed: R = 10 Ω · A = 1 mm² · n = 8.5×10²⁸/m³ (Cu) · dot motion ≠ to scale',
+        x: legendCol1X,
+        y: legendRow3Y,
+        font: '10px "JetBrains Mono", monospace',
+      });
 
       // Drift dots
       const visSpeed = 90 * Inorm;
@@ -298,7 +308,13 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       ctx.lineTo(ax1 - 7, arrowY + 4);
       ctx.closePath();
       ctx.fill();
-      drawLabel(ctx, { text: 'I  (conventional)', x: (ax0 + ax1) / 2, y: arrowY - 6, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: 'I  (conventional)',
+        x: (ax0 + ax1) / 2,
+        y: arrowY - 6,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
 
       // Poynting-flux annotation
       const Pmax = (24 * 24) / R_OHMS;
@@ -321,7 +337,13 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       ctx.lineTo(fx1 - 7, fy + 4);
       ctx.closePath();
       ctx.fill();
-      drawLabel(ctx, { text: `P = V·I = ${(s.V * I_now).toFixed(1)} W`, x: fx1, y: fy - 6, font: '10px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, {
+        text: `P = V·I = ${(s.V * I_now).toFixed(1)} W`,
+        x: fx1,
+        y: fy - 6,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+      });
     },
     [],
     () => ({
@@ -370,7 +392,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Ohm's law (linear in V)"
         left={
-          <InlineMath
+          <M
             tex={
               `I \\;=\\; V/R \\;=\\; ` +
               `${V.toFixed(1)}/${R_OHMS} \\;=\\; ` +
@@ -380,7 +402,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
         }
         rightLabel="Power (quadratic in V)"
         right={
-          <InlineMath
+          <M
             tex={
               `P \\;=\\; V^{2}/R \\;=\\; ` +
               `${V.toFixed(1)}^{2}/${R_OHMS} \\;=\\; ` +

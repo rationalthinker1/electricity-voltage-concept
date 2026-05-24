@@ -20,11 +20,11 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -154,17 +154,91 @@ export function InRushCurrentDemo({ figure }: Props) {
       }
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: '+V', x: padL - 4, y: yV(1), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: padL - 4, y: topV + subH / 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '+B_sat', x: padL - 4, y: yB(Bsat), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '−B_sat', x: padL - 4, y: yB(-Bsat), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: 'clip', x: padL - 4, y: yI(1.4), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: `primary voltage  V_p(t) = sin(ωt + θ),  θ = ${thetaDeg.toFixed(0)}°`, x: padL + 4, y: topV + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'core flux  Φ(t)  (asymmetric if θ ≠ 90°)', x: padL + 4, y: midB + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'magnetising current  I_mag(t)', x: padL + 4, y: botI + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: '0', x: padL, y: padT + plotH + 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: '3 cycles', x: padL + plotW / 2, y: padT + plotH + 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `${((nCyc / 60) * 1000).toFixed(0)} ms`, x: padL + plotW, y: padT + plotH + 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '+V',
+        x: padL - 4,
+        y: yV(1),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0',
+        x: padL - 4,
+        y: topV + subH / 2,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '+B_sat',
+        x: padL - 4,
+        y: yB(Bsat),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '−B_sat',
+        x: padL - 4,
+        y: yB(-Bsat),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'clip',
+        x: padL - 4,
+        y: yI(1.4),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: `primary voltage  V_p(t) = sin(ωt + θ),  θ = ${thetaDeg.toFixed(0)}°`,
+        x: padL + 4,
+        y: topV + 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'core flux  Φ(t)  (asymmetric if θ ≠ 90°)',
+        x: padL + 4,
+        y: midB + 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'magnetising current  I_mag(t)',
+        x: padL + 4,
+        y: botI + 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: '0',
+        x: padL,
+        y: padT + plotH + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: '3 cycles',
+        x: padL + plotW / 2,
+        y: padT + plotH + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `${((nCyc / 60) * 1000).toFixed(0)} ms`,
+        x: padL + plotW,
+        y: padT + plotH + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -213,9 +287,15 @@ export function InRushCurrentDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Flux integration"
-        left={<InlineMath tex="\Phi(t) \propto \int V_p\,\mathrm{d}t = -\cos(\omega t + \theta) + \cos\theta" />}
+        left={
+          <M tex="\Phi(t) \propto \int V_p\,\mathrm{d}t = -\cos(\omega t + \theta) + \cos\theta" />
+        }
         rightLabel={`Switch-on at θ = ${thetaDeg}°`}
-        right={<InlineMath tex={`\\Phi_{\\text{peak}}/\\Phi_{\\text{ss}} = ${Math.abs(Bpeak).toFixed(2)}\\times;\\quad I_{\\text{inrush}}/I_{\\text{mag}} = ${Iratio.toFixed(1)}\\times`} />}
+        right={
+          <M
+            tex={`\\Phi_{\\text{peak}}/\\Phi_{\\text{ss}} = ${Math.abs(Bpeak).toFixed(2)}\\times;\\quad I_{\\text{inrush}}/I_{\\text{mag}} = ${Iratio.toFixed(1)}\\times`}
+          />
+        }
       />
     </Demo>
   );

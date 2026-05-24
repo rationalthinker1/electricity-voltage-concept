@@ -14,7 +14,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -95,9 +95,16 @@ export function WiedemannFranzDemo({ figure }: Props) {
 
         // Material label
         ctx.fillStyle = isSel ? colors.accent : withAlpha(colors.text, 0.75);
-        drawLabel(ctx, { text: mm.name.toUpperCase(), x: padL - 10, y: yMid, font: isSel
-                    ? 'bold 10px "JetBrains Mono", monospace'
-                    : '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+        drawLabel(ctx, {
+          text: mm.name.toUpperCase(),
+          x: padL - 10,
+          y: yMid,
+          font: isSel
+            ? 'bold 10px "JetBrains Mono", monospace'
+            : '10px "JetBrains Mono", monospace',
+          align: 'right',
+          baseline: 'middle',
+        });
 
         // Per-metal Lorenz value
         const L_m = mm.kappa / (mm.sigma * T_K);
@@ -160,7 +167,7 @@ export function WiedemannFranzDemo({ figure }: Props) {
           <button
             key={mm.key}
             type="button"
-            className={`mini-toggle${mm.key === metalKey ? ' on' : ''}`}
+            className={`mini-toggle${mm.key === metalKey ? 'on' : ''}`}
             onClick={() => setMetalKey(mm.key)}
             aria-pressed={mm.key === metalKey}
           >
@@ -175,13 +182,13 @@ export function WiedemannFranzDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Wiedemann–Franz"
         left={
-          <InlineMath
+          <M
             tex={`L = \\kappa / (\\sigma T) \\approx L_0 = 2.44 \\times 10^{-8}\\,\\text{W}\\cdot\\Omega\\cdot\\text{K}^{-2}`}
           />
         }
         rightLabel={`${m.name} at 295 K`}
         right={
-          <InlineMath
+          <M
             tex={`\\frac{${m.kappa.toFixed(0)}}{${(m.sigma / 1e7).toFixed(2)} \\times 10^7 \\times 295} = ${(L * 1e8).toFixed(2)} \\times 10^{-8}`}
           />
         }

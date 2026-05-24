@@ -11,12 +11,12 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { PHYS } from '@/lib/physics';
 import { fmtFrequency } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -110,7 +110,13 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       ctx.lineTo(xRes, y1);
       ctx.stroke();
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: `f₀ = ${fmtFrequency(f0_)}`, x: xRes, y: y1 - 4, color: colors.teal, align: 'center' });
+      drawLabel(ctx, {
+        text: `f₀ = ${fmtFrequency(f0_)}`,
+        x: xRes,
+        y: y1 - 4,
+        color: colors.teal,
+        align: 'center',
+      });
       const y73 = y0 - (73 / Zmax) * plotH;
       ctx.setLineDash([2, 4]);
       ctx.strokeStyle = colors.borderStrong;
@@ -158,9 +164,13 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Resonance condition"
-        left={<InlineMath tex="f_0 = c\,/\,(2L)" />}
+        left={<M tex="f_0 = c\,/\,(2L)" />}
         rightLabel={`L = ${L.toFixed(2)} m`}
-        right={<InlineMath tex={`f_0 = \\text{${fmtFrequency(f0)}},\\quad R_{\\text{rad}} \\approx 73\\,\\Omega`} />}
+        right={
+          <M
+            tex={`f_0 = \\text{${fmtFrequency(f0)}},\\quad R_{\\text{rad}} \\approx 73\\,\\Omega`}
+          />
+        }
       />
     </Demo>
   );

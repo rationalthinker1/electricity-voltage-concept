@@ -19,7 +19,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { MATERIALS, PHYS, sciTeX } from '@/lib/physics';
@@ -110,7 +110,14 @@ export function ACElectronJitterDemo({ figure }: Props) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.globalAlpha = 0.85;
-      drawLabel(ctx, { text: `±${(x_peak * 1e9).toFixed(0)} nm`, x: cx + ampPx + 4, y: cy - 32, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: `±${(x_peak * 1e9).toFixed(0)} nm`,
+        x: cx + ampPx + 4,
+        y: cy - 32,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       ctx.restore();
 
       // Current electron position. simTime is accumulated since loop start.
@@ -126,7 +133,17 @@ export function ACElectronJitterDemo({ figure }: Props) {
       ctx.strokeStyle = colors.bg;
       ctx.lineWidth = 2;
       ctx.stroke();
-      drawLabel(ctx, { text: '−', x: electronX, y: cy + 1, color: colors.bg, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '−',
+        x: electronX,
+        y: cy + 1,
+        color: colors.bg,
+        weight: 'bold',
+        size: 11,
+        font: 'bold 11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
       ctx.textBaseline = 'alphabetic';
 
       // Scale-bar tickmarks
@@ -140,13 +157,32 @@ export function ACElectronJitterDemo({ figure }: Props) {
         ctx.stroke();
         ctx.fillText(`${tick}`, tx, cy + 44);
       }
-      drawLabel(ctx, { text: 'position (nm)', x: cx, y: cy + 60, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: 'position (nm)',
+        x: cx,
+        y: cy + 60,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
 
       // Header callouts
       ctx.fillStyle = colors.textDim;
       ctx.font = '11px "JetBrains Mono", monospace';
-      drawLabel(ctx, { text: '60 Hz AC · 14-AWG copper · one electron', x: innerLeft, y: 22, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `shown at 1/${TIME_SLOWDOWN} real speed`, x: innerRight, y: 22, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, {
+        text: '60 Hz AC · 14-AWG copper · one electron',
+        x: innerLeft,
+        y: 22,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `shown at 1/${TIME_SLOWDOWN} real speed`,
+        x: innerRight,
+        y: 22,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+      });
 
       // Reference strip
       const stripY = 56;
@@ -210,11 +246,11 @@ export function ACElectronJitterDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Peak excursion at 60 Hz"
         left={
-          <InlineMath tex="x_{\text{peak}} \;=\; \dfrac{v_{\text{peak}}}{\omega} \;=\; \dfrac{\sqrt{2}\, I_{\text{rms}}}{n\, q\, A\, \omega}" />
+          <M tex="x_{\text{peak}} \;=\; \dfrac{v_{\text{peak}}}{\omega} \;=\; \dfrac{\sqrt{2}\, I_{\text{rms}}}{n\, q\, A\, \omega}" />
         }
         rightLabel="Live substitution (14-AWG Cu)"
         right={
-          <InlineMath
+          <M
             tex={
               `x_{\\text{peak}} \\;=\\; \\dfrac{${sciTeX(v_peak)}}{2\\pi\\cdot 60} ` +
               `\\;\\approx\\; ${(x_peak * 1e9).toFixed(0)}\\ \\text{nm}`

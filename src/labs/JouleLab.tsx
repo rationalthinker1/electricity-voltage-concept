@@ -243,7 +243,9 @@ export default function JouleLab() {
       else bulbTxt = `≈ ${pretty(bulbs100).replace(/<[^>]+>/g, '')} × 100 W bulbs`;
       ctx.fillText(bulbTxt, 16, 36);
 
-      ctx.fillStyle = visiblePower ? `rgb(${col.r},${col.g},${col.b})` : withAlpha(colors.textDim, 0.85);
+      ctx.fillStyle = visiblePower
+        ? `rgb(${col.r},${col.g},${col.b})`
+        : withAlpha(colors.textDim, 0.85);
       ctx.font = '14px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText(`T ≈ ${pretty(computed.T_eq).replace(/<[^>]+>/g, '')} K`, w - 16, 12);

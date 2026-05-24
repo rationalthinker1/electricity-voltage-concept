@@ -32,15 +32,22 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS, sciTeX } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
 import { project, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -408,16 +415,37 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
 
       // Annotations
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'drag to rotate',
+        x: 12,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.globalAlpha = 0.65;
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `r₁ = ${r1.toFixed(2)}   r₂ = ${r2.toFixed(2)}   r₃ = ${r3.toFixed(2)}`, x: 12, y: 28 });
+      drawLabel(ctx, {
+        text: `r₁ = ${r1.toFixed(2)}   r₂ = ${r2.toFixed(2)}   r₃ = ${r3.toFixed(2)}`,
+        x: 12,
+        y: 28,
+      });
       ctx.restore();
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: s.reverse ? 'I  amber · current −ŷ' : 'I  amber · current +ŷ', x: W - 12, y: 12, align: 'right' });
+      drawLabel(ctx, {
+        text: s.reverse ? 'I  amber · current −ŷ' : 'I  amber · current +ŷ',
+        x: W - 12,
+        y: 12,
+        align: 'right',
+      });
       ctx.fillStyle = colors.teal;
-      drawLabel(ctx, { text: 'B  teal · azimuthal (right-hand rule)', x: W - 12, y: 28, align: 'right' });
+      drawLabel(ctx, {
+        text: 'B  teal · azimuthal (right-hand rule)',
+        x: W - 12,
+        y: 28,
+        align: 'right',
+      });
       if (s.showHand) {
         ctx.save();
         ctx.globalAlpha = 0.7;
@@ -486,15 +514,13 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Long-wire B-field"
         left={
-          <InlineMath
-            tex={
-              `|\\vec{B}| \\;=\\; \\dfrac{\\mu_{0} I}{2\\pi r} \\;\\approx\\; ${sciTeX(computed.B_at_r)}\\ \\text{T}`
-            }
+          <M
+            tex={`|\\vec{B}| \\;=\\; \\dfrac{\\mu_{0} I}{2\\pi r} \\;\\approx\\; ${sciTeX(computed.B_at_r)}\\ \\text{T}`}
           />
         }
         rightLabel="At Earth-field scale (r = 1 cm)"
         right={
-          <InlineMath
+          <M
             tex={`|\\vec{B}|_{1\\,\\text{cm}} \\;\\approx\\; ${sciTeX(computed.B_at_1cm)}\\ \\text{T}`}
           />
         }

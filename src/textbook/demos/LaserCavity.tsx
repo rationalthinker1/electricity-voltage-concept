@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
 import { withAlpha } from '@/lib/canvasTheme';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -151,11 +151,34 @@ export function LaserCavityDemo({ figure }: Props) {
 
       // Labels
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: '100% mirror', x: mirrorL, y: 28, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'output coupler', x: mirrorR, y: 28, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'gain medium', x: mirrorL + 8, y: H - 8, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: '100% mirror',
+        x: mirrorL,
+        y: 28,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: 'output coupler',
+        x: mirrorR,
+        y: 28,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: 'gain medium',
+        x: mirrorL + 8,
+        y: H - 8,
+        font: '10px "JetBrains Mono", monospace',
+      });
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: 'coherent output →', x: W - 8, y: cy - 14, font: '10px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, {
+        text: 'coherent output →',
+        x: W - 8,
+        y: cy - 14,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+      });
     },
     [],
     ({ w: W, h: H }) => {

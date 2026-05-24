@@ -23,7 +23,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -121,10 +121,27 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.moveTo(pX - 6, coreBot - 10);
       ctx.lineTo(pCX, coreBot - 10);
       ctx.stroke();
-      drawLabel(ctx, { text: 'V_in', x: pCX - 2, y: (coreTop + coreBot) / 2, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'V_in',
+        x: pCX - 2,
+        y: (coreTop + coreBot) / 2,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
       ctx.fillStyle = onPhase ? withAlpha(colors.accent, 0.95) : withAlpha(colors.textDim, 0.45);
       ctx.fillRect(pCX + 4, coreBot - 16, 14, 12);
-      drawLabel(ctx, { text: onPhase ? 'ON' : 'off', x: pCX + 11, y: coreBot - 10, color: colors.bg, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: onPhase ? 'ON' : 'off',
+        x: pCX + 11,
+        y: coreBot - 10,
+        color: colors.bg,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
       const sCX = sX + 60;
       ctx.strokeStyle = colors.borderStrong;
       ctx.beginPath();
@@ -147,12 +164,27 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.moveTo(sCX, dY - 5);
       ctx.lineTo(sCX, dY + 5);
       ctx.stroke();
-      drawLabel(ctx, { text: `V_out = ${Vout.toFixed(1)} V`, x: sCX + 6, y: (coreTop + coreBot) / 2, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `V_out = ${Vout.toFixed(1)} V`,
+        x: sCX + 6,
+        y: (coreTop + coreBot) / 2,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx.fillStyle = onPhase ? withAlpha(colors.accent, 0.95) : 'rgba(255,255,255,0.10)';
       drawArrowDown(ctx, pX - 18, coreTop + 30, 14);
       ctx.fillStyle = !onPhase ? withAlpha(colors.teal, 0.95) : 'rgba(255,255,255,0.10)';
       drawArrowUp(ctx, sX + 18, coreBot - 30, 14);
-      drawLabel(ctx, { text: onPhase ? 'ON  —  storing energy in L_p' : 'OFF  —  dumping into C_out', x: w / 2, y: 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: onPhase ? 'ON  —  storing energy in L_p' : 'OFF  —  dumping into C_out',
+        x: w / 2,
+        y: 6,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       const barX = w - 28;
       const barH = h * 0.6;
       const barTop = (h - barH) / 2;
@@ -170,7 +202,15 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.75;
-      drawLabel(ctx, { text: '½L·I²', x: barX + 7, y: barTop - 2, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: '½L·I²',
+        x: barX + 7,
+        y: barTop - 2,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.7;
@@ -217,7 +257,7 @@ export function FlybackConverterDemo({ figure }: Props) {
           primary switch closed, current ramps as V<sub>in</sub>/L<sub>p</sub>, energy accumulates
           as ½ L<sub>p</sub> I². Off-time: switch opens, the magnetic field collapses, the secondary
           diode conducts, and the stored energy is delivered into the output cap through the
-          isolated secondary winding. Output voltage (CCM, ideal):
+          isolated secondary winding. Output voltage (CCM, ideal):{' '}
           <strong>
             {' '}
             V<sub>out</sub> = (D / (1 − D)) · V<sub>in</sub> / n
@@ -272,9 +312,13 @@ export function FlybackConverterDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Flyback output voltage (CCM)"
-        left={<InlineMath tex="V_{\text{out}} = \frac{D}{1-D} \cdot \frac{V_{\text{in}}}{n}" />}
+        left={<M tex="V_{\text{out}} = \frac{D}{1-D} \cdot \frac{V_{\text{in}}}{n}" />}
         rightLabel="At current settings"
-        right={<InlineMath tex={`\\frac{${(duty * 100).toFixed(0)}\\%}{${((1 - duty) * 100).toFixed(0)}\\%} \\cdot \\frac{${Math.round(Vin)}}{${Math.round(turnsN)}} = ${computed.Vout.toFixed(1)}\\,\\text{V}`} />}
+        right={
+          <M
+            tex={`\\frac{${(duty * 100).toFixed(0)}\\%}{${((1 - duty) * 100).toFixed(0)}\\%} \\cdot \\frac{${Math.round(Vin)}}{${Math.round(turnsN)}} = ${computed.Vout.toFixed(1)}\\,\\text{V}`}
+          />
+        }
       />
     </Demo>
   );

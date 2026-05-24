@@ -16,12 +16,19 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -175,13 +182,34 @@ export function BridgeRectifierDemo({ figure }: Props) {
       const lx = padL + plotW + 8;
       ctx.fillStyle = colors.text;
       ctx.fillRect(lx, padT + 8 - 1, 10, 2);
-      drawLabel(ctx, { text: 'V_in', x: lx + 14, y: padT + 8, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'V_in',
+        x: lx + 14,
+        y: padT + 8,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx.fillStyle = colors.teal;
       ctx.fillRect(lx, padT + 24 - 1, 10, 2);
-      drawLabel(ctx, { text: '|V_rect|', x: lx + 14, y: padT + 24, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '|V_rect|',
+        x: lx + 14,
+        y: padT + 24,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx.fillStyle = colors.accent;
       ctx.fillRect(lx, padT + 40 - 1, 10, 2);
-      drawLabel(ctx, { text: 'V_out', x: lx + 14, y: padT + 40, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'V_out',
+        x: lx + 14,
+        y: padT + 40,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx0.phase = phase;
     },
     [],
@@ -239,9 +267,17 @@ export function BridgeRectifierDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Rectified peak"
-        left={<InlineMath tex={`V_{\\text{DC}} \\approx V_p - 2V_F = ${Vp.toFixed(0)} - ${(2 * V_F).toFixed(1)} = ${(Vp - 2 * V_F).toFixed(1)}\\,\\text{V}`} />}
+        left={
+          <M
+            tex={`V_{\\text{DC}} \\approx V_p - 2V_F = ${Vp.toFixed(0)} - ${(2 * V_F).toFixed(1)} = ${(Vp - 2 * V_F).toFixed(1)}\\,\\text{V}`}
+          />
+        }
         rightLabel="Ripple (cap smoothed)"
-        right={<InlineMath tex={`V_{\\text{ripple}} \\approx \\frac{V_{\\text{DC}}}{2fRC} = ${sim.vRipple.toFixed(2)}\\,\\text{V}`} />}
+        right={
+          <M
+            tex={`V_{\\text{ripple}} \\approx \\frac{V_{\\text{DC}}}{2fRC} = ${sim.vRipple.toFixed(2)}\\,\\text{V}`}
+          />
+        }
       />
     </Demo>
   );

@@ -16,7 +16,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -68,10 +68,10 @@ export default function Ch25Batteries() {
         difference; stacked in series, twenty pairs add to about{' '}
         <strong className="text-text font-medium">22 V</strong> open-circuit at the thermodynamic
         ceiling
-        <Cite id="volta-1800-pile" in={SOURCES} /> (real brine piles ran lower —
-        closer to 0.7–0.9 V per pair — because hydrogen polarisation at the copper face eats into
-        the ideal value). Connect a wire between top and bottom and current flows until either the
-        zinc is consumed or the brine dries out.
+        <Cite id="volta-1800-pile" in={SOURCES} /> (real brine piles ran lower — closer to 0.7–0.9 V
+        per pair — because hydrogen polarisation at the copper face eats into the ideal value).
+        Connect a wire between top and bottom and current flows until either the zinc is consumed or
+        the brine dries out.
       </p>
 
       <VoltaicPileDemo figure="Fig. 25.1" />
@@ -92,7 +92,7 @@ export default function Ch25Batteries() {
       </p>
 
       <TryIt
-        tag='Try 25.1'
+        tag="Try 25.1"
         question={
           <>
             Volta's original pile had about 30 Zn–Cu pairs. What was its approximate open-circuit
@@ -189,8 +189,8 @@ export default function Ch25Batteries() {
       <p className="mb-prose-3">
         No more hydrogen bubbles. Instead, copper plates out as a solid metal onto the cathode while
         the anode zinc dissolves. The cell holds a remarkably stable{' '}
-        <InlineMath tex="\approx 1.10\,\text{V}" /> across the terminals for as long
-        as either rod has material left, and was the workhorse battery of 19th-century telegraphy
+        <M tex="\approx 1.10\,\text{V}" /> across the terminals for as long as either rod has
+        material left, and was the workhorse battery of 19th-century telegraphy
         <Cite id="daniell-1836" in={SOURCES} />.
       </p>
 
@@ -207,7 +207,7 @@ export default function Ch25Batteries() {
       </p>
 
       <TryIt
-        tag='Try 25.2'
+        tag="Try 25.2"
         question={
           <>
             A Daniell cell holds 1.10 V open-circuit and has internal resistance about 1 Ω. What's
@@ -252,9 +252,9 @@ export default function Ch25Batteries() {
       <Formula>E°(Cu²⁺/Cu) = +0.34 V, E°(Zn²⁺/Zn) = −0.76 V</Formula>
       <p className="mb-prose-3">
         The cell voltage is the difference:{' '}
-        <InlineMath tex="E^\circ_{\text{cell}} = E^\circ(\text{cathode}) - E^\circ(\text{anode})" />. For Daniell:
-        <InlineMath tex="E^\circ_{\text{cell}} = +0.34 - (-0.76) = +1.10\,\text{V}" />,
-        exactly what the voltmeter reads
+        <M tex="E^\circ_{\text{cell}} = E^\circ(\text{cathode}) - E^\circ(\text{anode})" />. For
+        Daniell: <M tex="E^\circ_{\text{cell}} = +0.34 - (-0.76) = +1.10\,\text{V}" />, exactly what
+        the voltmeter reads
         <Cite id="bard-faulkner-2001" in={SOURCES} />. This subtraction is how chemists predict
         whether a battery design will work and what voltage it will sit at, without doing any
         experiments. Pick any two half-cells from the table, subtract their E°s, and if the result
@@ -265,19 +265,18 @@ export default function Ch25Batteries() {
 
       <p className="mb-prose-3">
         At the extremes: lithium metal has the most negative E° of any element in the periodic table
-        (Li⁺ + e⁻ → Li sits at <InlineMath tex="-3.04\,\text{V}" />), making
-        it the strongest practical reducing agent. Fluorine sits at{' '}
-        <InlineMath tex="+2.87\,\text{V}" />, making F₂ the strongest
-        practical oxidizer. A theoretical Li / F₂ cell would deliver about{' '}
-        <strong className="text-text font-medium">5.91 V</strong> per cell — about five times the
-        voltage of Daniell. Nobody builds Li/F₂ batteries because fluorine reacts with everything
-        else in the cell and the engineering is impossible; but the thermodynamic prediction is what
-        it is, and gives a hint why Li-based chemistries dominate modern energy storage (Chapter
-        26).
+        (Li⁺ + e⁻ → Li sits at <M tex="-3.04\,\text{V}" />
+        ), making it the strongest practical reducing agent. Fluorine sits at{' '}
+        <M tex="+2.87\,\text{V}" />, making F₂ the strongest practical oxidizer. A theoretical Li /
+        F₂ cell would deliver about <strong className="text-text font-medium">5.91 V</strong> per
+        cell — about five times the voltage of Daniell. Nobody builds Li/F₂ batteries because
+        fluorine reacts with everything else in the cell and the engineering is impossible; but the
+        thermodynamic prediction is what it is, and gives a hint why Li-based chemistries dominate
+        modern energy storage (Chapter 26).
       </p>
 
       <TryIt
-        tag='Try 25.3'
+        tag="Try 25.3"
         question={
           <>
             What is the open-circuit voltage of a silver-zinc cell, given E°(Ag⁺/Ag) = +0.80 V and
@@ -314,43 +313,32 @@ export default function Ch25Batteries() {
       </p>
       <Formula>V = V° − (RT / nF) · ln Q</Formula>
       <p className="mb-prose-3">
-        where <InlineMath tex="V" /> is the open-circuit cell voltage
-        at the actual operating conditions (in volts),
-        <InlineMath tex="V^\circ" /> is the standard cell potential at 1 M
-        concentrations, 1 atm, 298 K (in volts),
-        <InlineMath tex="R" /> is the universal gas constant 8.314
-        J/(mol·K),
-        <InlineMath tex="T" /> is the absolute temperature (in
-        kelvins),
-        <InlineMath tex="n" /> is the number of electrons transferred
-        per reaction event (dimensionless integer),
-        <InlineMath tex="F" /> is the{' '}
+        where <M tex="V" /> is the open-circuit cell voltage at the actual operating conditions (in
+        volts), <M tex="V^\circ" /> is the standard cell potential at 1 M concentrations, 1 atm, 298
+        K (in volts), <M tex="R" /> is the universal gas constant 8.314 J/(mol·K), <M tex="T" /> is
+        the absolute temperature (in kelvins), <M tex="n" /> is the number of electrons transferred
+        per reaction event (dimensionless integer), <M tex="F" /> is the{' '}
         <Term def="The total charge of one mole of electrons: F = N_A · e ≈ 96 485 C/mol. The unit-conversion constant that takes you from chemistry's 'moles of electrons' to physics's 'coulombs of charge.'">
           Faraday constant
         </Term>{' '}
-        ≈ 96 485 C/mol (the charge of one mole of electrons), and
-        <InlineMath tex="Q" /> is the dimensionless reaction quotient
-        — the ratio of product activities to reactant activities at the moment of measurement
+        ≈ 96 485 C/mol (the charge of one mole of electrons), and <M tex="Q" /> is the dimensionless
+        reaction quotient — the ratio of product activities to reactant activities at the moment of
+        measurement
         <Cite id="codata-2018" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         The log is not arbitrary. The chemical potential of a dilute species scales as{' '}
-        <InlineMath tex="kT \ln c" /> — a direct consequence of the Boltzmann factor
-        governing how molecules populate energy levels at temperature T. Halve a reactant's
-        concentration and its free energy per particle drops by{' '}
-        <InlineMath tex="kT \ln 2" />; the cell voltage, which is free energy
-        divided by the charge per electron, shifts by the same amount divided by{' '}
-        <InlineMath tex="nF" />. So a tenfold concentration change moves V by
-        exactly <InlineMath tex="(RT/nF) \ln 10" />, the famous 59 mV per decade at
-        room temperature for a one-electron reaction. The <InlineMath tex="nF" />{' '}
-        in the denominator is just the unit-conversion: <InlineMath tex="n" />
-        electrons transferred per reaction event, <InlineMath tex="F" /> coulombs
-        per mole of electrons
+        <M tex="kT \ln c" /> — a direct consequence of the Boltzmann factor governing how molecules
+        populate energy levels at temperature T. Halve a reactant's concentration and its free
+        energy per particle drops by <M tex="kT \ln 2" />; the cell voltage, which is free energy
+        divided by the charge per electron, shifts by the same amount divided by <M tex="nF" />. So
+        a tenfold concentration change moves V by exactly <M tex="(RT/nF) \ln 10" />, the famous 59
+        mV per decade at room temperature for a one-electron reaction. The <M tex="nF" />
+        in the denominator is just the unit-conversion: <M tex="n" />
+        electrons transferred per reaction event, <M tex="F" /> coulombs per mole of electrons
         <Cite id="nernst-1889" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
-        For the Daniell cell, the reaction quotient simplifies to:
-      </p>
+      <p className="mb-prose-3">For the Daniell cell, the reaction quotient simplifies to:</p>
       <Formula>Q = [Zn²⁺] / [Cu²⁺]</Formula>
       <p className="mb-prose-3">
         At T = 298 K and n = 2, the prefactor RT/nF works out to about{' '}
@@ -376,7 +364,7 @@ export default function Ch25Batteries() {
       </p>
 
       <TryIt
-        tag='Try 25.4'
+        tag="Try 25.4"
         question={
           <>
             A Daniell cell has [Zn²⁺] = 0.01 M and [Cu²⁺] = 1 M, T = 298 K. What is its open-circuit
@@ -418,20 +406,17 @@ export default function Ch25Batteries() {
         V<sub>term</sub> = V<sub>OC</sub> · R<sub>L</sub> / (R<sub>int</sub> + R<sub>L</sub>)
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="V_{\text{term}}" />{' '}
-        is the loaded terminal voltage at the battery's posts (in volts),
-        <InlineMath tex="V_{\text{OC}}" />{' '}
-        is the open-circuit (no-load) voltage set by the cell chemistry (in volts),
-        <InlineMath tex="R_{\text{int}}" />{' '}
-        is the cell's effective internal resistance (in ohms), and
-        <InlineMath tex="R_{L}" />{' '}
-        is the external load resistance (in ohms). The expression is just a voltage divider between
-        <InlineMath tex="R_{\text{int}}" /> and <InlineMath tex="R_{L}" />.
+        where <M tex="V_{\text{term}}" />
+        is the loaded terminal voltage at the battery's posts (in volts), <M tex="V_{\text{OC}}" />
+        is the open-circuit (no-load) voltage set by the cell chemistry (in volts),{' '}
+        <M tex="R_{\text{int}}" />
+        is the cell's effective internal resistance (in ohms), and <M tex="R_{L}" />
+        is the external load resistance (in ohms). The expression is just a voltage divider between{' '}
+        <M tex="R_{\text{int}}" /> and <M tex="R_{L}" />.
       </p>
       <p className="mb-prose-3">
         R_int comes from three places: the bulk resistance of the electrolyte (limited ion
-        mobility), the kinetic
+        mobility), the kinetic{' '}
         <Term def="The 'extra' voltage you need to apply beyond E° to make a reaction run at a useful rate. Governed by the Butler–Volmer equation; falls logarithmically with current density. The reason a fuel cell at open-circuit reads 1.0 V instead of the thermodynamic 1.23 V.">
           {' '}
           overpotential
@@ -472,7 +457,7 @@ export default function Ch25Batteries() {
       </p>
 
       <TryIt
-        tag='Try 25.5'
+        tag="Try 25.5"
         question={
           <>
             A AA alkaline cell has V_OC = 1.5 V and R_int = 200 mΩ. What terminal voltage does it
@@ -522,7 +507,7 @@ export default function Ch25Batteries() {
 
       <CaseStudies intro="Four places where the half-reaction picture, the Nernst equation, and internal resistance show up in real-world batteries.">
         <CaseStudy
-          tag='Case 25.1'
+          tag="Case 25.1"
           title="9 V transistor radio battery (six 1.5 V cells in series)"
           summary="The classic. Six stacked alkaline Zn / MnO₂ cells in one rectangular package; ~500 mAh capacity, R_int around 35 Ω."
           specs={[
@@ -561,16 +546,16 @@ export default function Ch25Batteries() {
           <p className="mb-prose-2 last:mb-0">
             R_int is the limiting practical parameter. Each alkaline cell has R_int ~ 5–6 Ω, so six
             in series gives ~35 Ω. Short the terminals and you get about{' '}
-            <InlineMath tex="9/35 \approx 0.26\,\text{A}" />, dissipating ≈ 2.3 W
-            inside the battery — enough to warm the casing but not enough to start a fire. The high
-            R_int is why 9 V batteries are happy in low-current circuits (smoke detectors, small
-            radios) but useless for anything that wants amps
+            <M tex="9/35 \approx 0.26\,\text{A}" />, dissipating ≈ 2.3 W inside the battery — enough
+            to warm the casing but not enough to start a fire. The high R_int is why 9 V batteries
+            are happy in low-current circuits (smoke detectors, small radios) but useless for
+            anything that wants amps
             <Cite id="bard-faulkner-2001" in={SOURCES} />.
           </p>
         </CaseStudy>
 
         <CaseStudy
-          tag='Case 25.2'
+          tag="Case 25.2"
           title="AA alkaline cell (Zn / MnO₂)"
           summary="The workhorse single cell. 1.5 V open, ~2500 mAh capacity, 23 g mass. Powers most remote controls and toys on Earth."
           specs={[
@@ -616,7 +601,7 @@ export default function Ch25Batteries() {
         </CaseStudy>
 
         <CaseStudy
-          tag='Case 25.3'
+          tag="Case 25.3"
           title="Car starter battery (12 V lead-acid)"
           summary="Six 2 V cells in series; 50–100 Ah capacity; R_int of a few milliohms. Delivers ~400 A cranking current to a starter motor for a couple of seconds."
           specs={[
@@ -649,15 +634,15 @@ export default function Ch25Batteries() {
             the terminal voltage during cranking sags from 12.6 V to ~10.6 V — exactly the
             &quot;voltage dip&quot; you can see on a car's voltmeter as the starter engages. The
             heat dissipated inside the battery during that cranking is{' '}
-            <InlineMath tex="I^{2}R = 400^{2} \cdot 0.005 = 800\,\text{W}" />, but only
-            for a second or two, so the cell never gets dangerously hot
+            <M tex="I^{2}R = 400^{2} \cdot 0.005 = 800\,\text{W}" />, but only for a second or two,
+            so the cell never gets dangerously hot
             <Cite id="bard-faulkner-2001" in={SOURCES} />. This is what lead-acid is built for: big
             current, briefly, then rest while the alternator recharges.
           </p>
         </CaseStudy>
 
         <CaseStudy
-          tag='Case 25.4'
+          tag="Case 25.4"
           title="Reference half-cell in an analytical chemistry lab"
           summary="A silver / silver-chloride electrode held at +0.197 V vs SHE is the bench-standard reference for measuring unknown half-cell potentials and ion concentrations via the Nernst equation."
           specs={[
@@ -745,10 +730,10 @@ export default function Ch25Batteries() {
             Convention. When 19th-century chemists started tabulating half-cell potentials, they
             needed a reference that everybody could reproduce in their own lab, was conceptually
             clean, and didn't depend on any other arbitrary choice. The reaction{' '}
-            <InlineMath tex="2\text{H}^{+} + 2e^{-} \to \text{H}_2" /> with all species at unit activity
-            met those criteria: just platinum-coated platinum in 1 M strong acid, with hydrogen
-            bubbled over it at 1 atm. SHE potentials are independent of any acid identity (HCl vs
-            H₂SO₄ etc.) because the only relevant species is H⁺ at unit activity
+            <M tex="2\text{H}^{+} + 2e^{-} \to \text{H}_2" /> with all species at unit activity met
+            those criteria: just platinum-coated platinum in 1 M strong acid, with hydrogen bubbled
+            over it at 1 atm. SHE potentials are independent of any acid identity (HCl vs H₂SO₄
+            etc.) because the only relevant species is H⁺ at unit activity
             <Cite id="bard-faulkner-2001" in={SOURCES} />. It is awkward to actually build, which is
             why working labs use secondary references like Ag/AgCl — but the SHE remains the
             official zero of the potential scale by international agreement.
@@ -772,8 +757,8 @@ export default function Ch25Batteries() {
           <p>
             F = 96 485 C/mol is the total electric charge of one mole of electrons. Avogadro's
             number of electrons, each carrying the elementary charge e = 1.602×10⁻¹⁹ C, multiplied
-            out:
-            <InlineMath tex="F = N_A \cdot e \approx 6.022\times 10^{23} \cdot 1.602\times 10^{-19} \approx 96{,}485\,\text{C/mol}" />
+            out:{' '}
+            <M tex="F = N_A \cdot e \approx 6.022\times 10^{23} \cdot 1.602\times 10^{-19} \approx 96{,}485\,\text{C/mol}" />
             <Cite id="codata-2018" in={SOURCES} />. It is the unit-conversion constant that takes
             chemistry's natural unit (moles of electrons in a reaction) into physics's natural unit
             (coulombs of charge through a wire). Every time you compute the capacity of a battery
@@ -790,8 +775,8 @@ export default function Ch25Batteries() {
             the discharge reaction at the plate surfaces is temperature-limited and you can't
             extract energy as fast as you can at room temperature. The combination means a battery
             that easily cranks an engine at 20 °C may not at −30 °C
-            <Cite id="linden-reddy-2011" in={SOURCES} />. That's why cold-cranking amp (CCA)
-            ratings on starter batteries are specified at a defined low temperature.
+            <Cite id="linden-reddy-2011" in={SOURCES} />. That's why cold-cranking amp (CCA) ratings
+            on starter batteries are specified at a defined low temperature.
           </p>
         </FAQItem>
 
@@ -843,10 +828,10 @@ export default function Ch25Batteries() {
             Because a multimeter's voltage probe has very high input impedance — typically 10 MΩ —
             so the current it draws is microamps at most. The IR drop across the battery's internal
             resistance is negligible at that current (
-            <InlineMath tex="I \cdot R_{\text{int}} \approx 1\,\mu\text{A} \cdot 1\,\Omega = 1\,\mu\text{V}" />), and the meter
-            reads essentially V_OC. To distinguish a fresh from a tired battery you have to apply a
-            real load (50–500 mA depending on cell type) and read the terminal voltage under load —
-            that's what a proper battery tester does
+            <M tex="I \cdot R_{\text{int}} \approx 1\,\mu\text{A} \cdot 1\,\Omega = 1\,\mu\text{V}" />
+            ), and the meter reads essentially V_OC. To distinguish a fresh from a tired battery you
+            have to apply a real load (50–500 mA depending on cell type) and read the terminal
+            voltage under load — that's what a proper battery tester does
             <Cite id="bard-faulkner-2001" in={SOURCES} />. A tired battery still shows close to full
             V_OC; it just has a much higher R_int and sags hard under load.
           </p>

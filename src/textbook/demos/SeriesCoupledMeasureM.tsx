@@ -21,7 +21,7 @@ import {
   MiniSlider,
   MiniToggle,
 } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -186,7 +186,7 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       <EquationStrip
         leftLabel={aiding ? 'series aiding' : 'series opposing'}
         left={
-          <InlineMath
+          <M
             tex={`L_{\\text{eq}}=L_1+L_2${aiding ? '+2M' : '-2M'}=${computed.Lnow.toFixed(
               2,
             )}\\,\\text{mH}`}
@@ -194,7 +194,7 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
         }
         rightLabel="bench formula"
         right={
-          <InlineMath
+          <M
             tex={`M=\\frac{L_{\\text{aid}}-L_{\\text{opp}}}{4}=${computed.Mfromreadings.toFixed(
               2,
             )}\\,\\text{mH}`}

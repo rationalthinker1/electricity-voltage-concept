@@ -29,7 +29,7 @@ import {
   MiniSlider,
   MiniToggle,
 } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -37,7 +37,7 @@ import { project, v3, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -177,13 +177,28 @@ export function PointCharge3DDemo({ figure }: Props) {
       }
 
       // ── Annotations ───────────────────────────────────────────────
-      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'drag to rotate',
+        x: 12,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.globalAlpha = 0.6;
-      drawLabel(ctx, { text: `sample sphere r = ${s.rSample.toFixed(2)}   |E| ∝ k|q|/r²`, x: 12, y: 28 });
+      drawLabel(ctx, {
+        text: `sample sphere r = ${s.rSample.toFixed(2)}   |E| ∝ k|q|/r²`,
+        x: 12,
+        y: 28,
+      });
       ctx.restore();
       ctx.fillStyle = withAlpha(s.positive ? colors.pink : colors.blue, 0.92);
-      drawLabel(ctx, { text: s.positive ? 'E radial · outward' : 'E radial · inward', x: W - 12, y: 12 });
+      drawLabel(ctx, {
+        text: s.positive ? 'E radial · outward' : 'E radial · inward',
+        x: W - 12,
+        y: 12,
+      });
     },
     [],
     (info) => {
@@ -242,7 +257,7 @@ export function PointCharge3DDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Field on the sample sphere"
         left={
-          <InlineMath
+          <M
             tex={
               `|\\vec{E}| \\;=\\; \\dfrac{k|q|}{r^{2}} \\;=\\; ` +
               `\\dfrac{(1)(${q.toFixed(1)})}{(${rSample.toFixed(1)})^{2}} ` +
@@ -252,7 +267,7 @@ export function PointCharge3DDemo({ figure }: Props) {
         }
         rightLabel="Doubling r quarters E"
         right={
-          <InlineMath
+          <M
             tex={
               `\\dfrac{|\\vec{E}(r)|}{|\\vec{E}(2r)|} \\;=\\; ` +
               `\\left(\\dfrac{2r}{r}\\right)^{\\!2} \\;=\\; 4`
@@ -309,7 +324,13 @@ function drawChargeBall(
   ctx.fill();
   // Glyph.
   ctx.fillStyle = getCanvasColors().bg;
-  drawLabel(ctx, { text: signGlyph, x: centre.x, y: centre.y + 1, align: 'center', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: signGlyph,
+    x: centre.x,
+    y: centre.y + 1,
+    align: 'center',
+    baseline: 'middle',
+  });
 }
 
 /**

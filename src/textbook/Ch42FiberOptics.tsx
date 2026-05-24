@@ -10,7 +10,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -61,31 +61,25 @@ export default function Ch42FiberOptics() {
         <Term
           def={
             <>
-              <strong className="text-text font-medium">refractive index</strong>{' '}
-              <InlineMath tex="n" /> — the ratio{' '}
-              <InlineMath tex="c/v" />, where{' '}
-              <InlineMath tex="v" /> is the phase velocity of light in the medium.
-              Pure silica at 1550 nm has <InlineMath tex="n" /> ≈ 1.444. Higher
-              index means slower light, more bending at an interface.
+              <strong className="text-text font-medium">refractive index</strong> <M tex="n" /> —
+              the ratio <M tex="c/v" />, where <M tex="v" /> is the phase velocity of light in the
+              medium. Pure silica at 1550 nm has <M tex="n" /> ≈ 1.444. Higher index means slower
+              light, more bending at an interface.
             </>
           }
         >
           refractive index
         </Term>{' '}
-        <InlineMath>n</InlineMath>. At an interface between two media, Snell's law links the angles
-        on either side
+        <M>n</M>. At an interface between two media, Snell's law links the angles on either side
         <Cite id="hecht-2017" in={SOURCES} />:
       </p>
       <Formula size="lg" id="snells-law" />
       <p className="mb-prose-3">
-        where <InlineMath tex="n_1" /> and{' '}
-        <InlineMath tex="n_2" /> are the refractive indices of the two
-        media, <InlineMath tex="\theta_1" /> is the angle of the incoming
-        ray to the surface normal (in radians or degrees), and{' '}
-        <InlineMath tex="\theta_2" /> is the angle of the refracted ray on
-        the other side. When the ray is travelling from a denser medium into a less dense one (n₁
-        &gt; n₂), the refracted angle grows faster than the incident angle. At a special incident
-        angle — the{' '}
+        where <M tex="n_1" /> and <M tex="n_2" /> are the refractive indices of the two media,{' '}
+        <M tex="\theta_1" /> is the angle of the incoming ray to the surface normal (in radians or
+        degrees), and <M tex="\theta_2" /> is the angle of the refracted ray on the other side. When
+        the ray is travelling from a denser medium into a less dense one (n₁ &gt; n₂), the refracted
+        angle grows faster than the incident angle. At a special incident angle — the{' '}
         <Term
           def={
             <>
@@ -104,15 +98,14 @@ export default function Ch42FiberOptics() {
       </p>
       <Formula tex="\sin\theta_c = n_2 / n_1" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\theta_c" /> is the critical angle measured
-        from the surface normal,
-        <InlineMath tex="n_1" /> is the refractive index of the denser
-        medium the light is travelling in, and <InlineMath tex="n_2" />{' '}
+        where <M tex="\theta_c" /> is the critical angle measured from the surface normal,{' '}
+        <M tex="n_1" /> is the refractive index of the denser medium the light is travelling in, and{' '}
+        <M tex="n_2" />
         is the index of the lighter medium beyond. For a typical single-mode fiber with{' '}
-        <InlineMath tex="n_{\text{core}} = 1.448" /> and{' '}
-        <InlineMath tex="n_{\text{clad}} = 1.444" />, that critical angle (from the normal) is about{' '}
-        <strong className="text-text font-medium">85.2°</strong>. Equivalently, the ray's angle
-        measured <em className="text-text italic">from the fiber axis</em> must stay below{' '}
+        <M tex="n_{\text{core}} = 1.448" /> and <M tex="n_{\text{clad}} = 1.444" />, that critical
+        angle (from the normal) is about <strong className="text-text font-medium">85.2°</strong>.
+        Equivalently, the ray's angle measured{' '}
+        <em className="text-text italic">from the fiber axis</em> must stay below{' '}
         <strong className="text-text font-medium">4.8°</strong>. Steeper than that and the light
         leaks out of the cladding within a few millimetres; shallower and it bounces along the core
         forever.
@@ -155,14 +148,13 @@ export default function Ch42FiberOptics() {
       </p>
       <Formula tex="NA = \sqrt{n_{\text{core}}^2 - n_{\text{clad}}^2}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="NA" /> is dimensionless,{' '}
-        <InlineMath tex="n_{\text{core}}" /> and{' '}
-        <InlineMath tex="n_{\text{clad}}" /> are the refractive indices of the
-        core and the surrounding cladding. The half-angle of the acceptance cone in air is then{' '}
-        <InlineMath tex="\theta_{\max} = \arcsin(NA)" />. Standard single-mode fiber has{' '}
-        <InlineMath tex="NA \approx 0.14" /> (8° half-angle); multimode fiber pumps the index
-        difference up to <InlineMath tex="NA \approx 0.20" /> (12° half-angle) to make alignment
-        with cheap LED or VCSEL sources easier
+        where <M tex="NA" /> is dimensionless, <M tex="n_{\text{core}}" /> and{' '}
+        <M tex="n_{\text{clad}}" /> are the refractive indices of the core and the surrounding
+        cladding. The half-angle of the acceptance cone in air is then{' '}
+        <M tex="\theta_{\max} = \arcsin(NA)" />. Standard single-mode fiber has{' '}
+        <M tex="NA \approx 0.14" /> (8° half-angle); multimode fiber pumps the index difference up
+        to <M tex="NA \approx 0.20" /> (12° half-angle) to make alignment with cheap LED or VCSEL
+        sources easier
         <Cite id="saleh-teich-2007" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -191,9 +183,9 @@ export default function Ch42FiberOptics() {
         tag="Try 42.1"
         question={
           <>
-            A step-index fiber has <InlineMath tex="n_{\text{core}} = 1.50" /> and{' '}
-            <InlineMath tex="n_{\text{clad}} = 1.46" />. What is its
-            numerical aperture and acceptance half-angle in air?
+            A step-index fiber has <M tex="n_{\text{core}} = 1.50" /> and{' '}
+            <M tex="n_{\text{clad}} = 1.46" />. What is its numerical aperture and acceptance
+            half-angle in air?
           </>
         }
         hint={<>NA = √(n_core² − n_clad²); θ_max = arcsin(NA).</>}
@@ -231,30 +223,27 @@ export default function Ch42FiberOptics() {
       </p>
       <Formula tex="V = (2\pi a / \lambda) \cdot NA" />
       <p className="mb-prose-3">
-        where <InlineMath tex="a" /> is the core radius (metres),{' '}
-        <InlineMath tex="\lambda" /> the free-space wavelength (metres), and{' '}
-        <InlineMath tex="NA" /> the numerical aperture. For a
-        step-index fiber, only the lowest-order LP₀₁ mode propagates when{' '}
-        <InlineMath tex="V < 2.405" /> (the first zero of the Bessel function{' '}
-        <InlineMath tex="J_0" />
+        where <M tex="a" /> is the core radius (metres), <M tex="\lambda" /> the free-space
+        wavelength (metres), and <M tex="NA" /> the numerical aperture. For a step-index fiber, only
+        the lowest-order LP₀₁ mode propagates when <M tex="V < 2.405" /> (the first zero of the
+        Bessel function <M tex="J_0" />
         ). Standard single-mode fiber (ITU-T G.652) has a core radius of about 4.1 μm and an NA of
         0.14
-        <Cite id="itu-t-g652" in={SOURCES} />. At <InlineMath tex="\lambda = 1310\ \text{nm}" />,{' '}
-        <InlineMath tex="V = 2\pi(4.1\times 10^{-6})(0.14)/(1.31\times 10^{-6}) \approx 2.75" /> —
-        just into the multimode regime, but at 1550 nm V drops to 2.32 and the fiber is solidly
-        single-mode. The 1310 nm cutoff is deliberate: it makes the same physical fiber usable at
-        both standard telecom windows.
+        <Cite id="itu-t-g652" in={SOURCES} />. At <M tex="\lambda = 1310\ \text{nm}" />,{' '}
+        <M tex="V = 2\pi(4.1\times 10^{-6})(0.14)/(1.31\times 10^{-6}) \approx 2.75" /> — just into
+        the multimode regime, but at 1550 nm V drops to 2.32 and the fiber is solidly single-mode.
+        The 1310 nm cutoff is deliberate: it makes the same physical fiber usable at both standard
+        telecom windows.
       </p>
 
       <TryIt
         tag="Try 42.2"
         question={
           <>
-            You're designing a multimode fiber with core radius{' '}
-            <InlineMath tex="a = 25\ \mu\text{m}" /> and{' '}
-            <InlineMath tex="NA = 0.20" /> for an 850 nm datacom link.
-            How many transverse modes does it support? (For step-index fibers, the mode count is
-            roughly <InlineMath tex="V^{2}/2" />.)
+            You're designing a multimode fiber with core radius <M tex="a = 25\ \mu\text{m}" /> and{' '}
+            <M tex="NA = 0.20" /> for an 850 nm datacom link. How many transverse modes does it
+            support? (For step-index fibers, the mode count is roughly <M tex="V^{2}/2" />
+            .)
           </>
         }
         hint={<>Compute V at λ = 850 nm, then divide V²/2.</>}
@@ -372,15 +361,13 @@ export default function Ch42FiberOptics() {
       </p>
       <Formula tex="P_{\text{rx}} = P_{\text{tx}} - L_{\text{connectors}} - \alpha \cdot L" />
       <p className="mb-prose-3">
-        where <InlineMath tex="P_{\text{rx}}" /> is the power arriving at the
-        receiver (dBm), <InlineMath tex="P_{\text{tx}}" /> is the power
-        launched by the transmitter (dBm),{' '}
-        <InlineMath tex="L_{\text{connectors}}" /> is the total connector +
-        splice loss in the link (dB), <InlineMath tex="\alpha" /> is the
-        fiber attenuation (dB/km), and <InlineMath tex="L" /> is the
-        fiber length (km). The receiver locks as long as <InlineMath>P_rx</InlineMath> exceeds the
-        receiver's sensitivity (typically −28 dBm for a modern coherent 100 G receiver). The
-        difference between launched power and sensitivity is the{' '}
+        where <M tex="P_{\text{rx}}" /> is the power arriving at the receiver (dBm),{' '}
+        <M tex="P_{\text{tx}}" /> is the power launched by the transmitter (dBm),{' '}
+        <M tex="L_{\text{connectors}}" /> is the total connector + splice loss in the link (dB),{' '}
+        <M tex="\alpha" /> is the fiber attenuation (dB/km), and <M tex="L" /> is the fiber length
+        (km). The receiver locks as long as <M>P_rx</M> exceeds the receiver's sensitivity
+        (typically −28 dBm for a modern coherent 100 G receiver). The difference between launched
+        power and sensitivity is the{' '}
         <Term
           def={
             <>
@@ -393,7 +380,7 @@ export default function Ch42FiberOptics() {
         >
           link budget
         </Term>
-        ; divide by <InlineMath tex="\alpha" /> and you have the reach.
+        ; divide by <M tex="\alpha" /> and you have the reach.
       </p>
 
       <FiberLinkBudgetDemo figure="Fig. 42.3" />
@@ -455,23 +442,20 @@ export default function Ch42FiberOptics() {
         </li>
         <li>
           <strong className="text-text font-medium">Chromatic dispersion</strong> — present in every
-          fiber. Comes from the wavelength-dependence of the refractive index{' '}
-          <InlineMath tex="n(\lambda)" />: a laser pulse with some spectral width Δλ has
-          its different wavelength components arrive at slightly different times. Quantified by the
-          dispersion coefficient <InlineMath tex="D" /> in ps/nm·km. For standard
-          SMF, D ≈ +17 ps/nm·km at 1550 nm.
+          fiber. Comes from the wavelength-dependence of the refractive index <M tex="n(\lambda)" />
+          : a laser pulse with some spectral width Δλ has its different wavelength components arrive
+          at slightly different times. Quantified by the dispersion coefficient <M tex="D" /> in
+          ps/nm·km. For standard SMF, D ≈ +17 ps/nm·km at 1550 nm.
         </li>
       </ul>
       <p className="mb-prose-3">
         The pulse broadening from chromatic dispersion is{' '}
-        <InlineMath tex="\Delta t = D \cdot \Delta\lambda \cdot L" />, where{' '}
-        <InlineMath tex="\Delta t" /> is the pulse-spread in picoseconds,{' '}
-        <InlineMath tex="D" /> the dispersion coefficient (ps/nm·km),{' '}
-        <InlineMath tex="\Delta\lambda" /> the spectral width of the source (nm),
-        and <InlineMath tex="L" /> the fiber length (km). For coherent
-        100 G QPSK at 28 GBaud over 1000 km of standard SMF, raw chromatic dispersion would smear
-        pulses by ~30 ps — comparable to the symbol period itself — so coherent receivers compensate
-        it digitally in DSP, after the photodetector.
+        <M tex="\Delta t = D \cdot \Delta\lambda \cdot L" />, where <M tex="\Delta t" /> is the
+        pulse-spread in picoseconds, <M tex="D" /> the dispersion coefficient (ps/nm·km),{' '}
+        <M tex="\Delta\lambda" /> the spectral width of the source (nm), and <M tex="L" /> the fiber
+        length (km). For coherent 100 G QPSK at 28 GBaud over 1000 km of standard SMF, raw chromatic
+        dispersion would smear pulses by ~30 ps — comparable to the symbol period itself — so
+        coherent receivers compensate it digitally in DSP, after the photodetector.
       </p>
 
       <h2 className="chapter-h2">WDM, EDFAs, and the petabit pipe</h2>
@@ -664,12 +648,12 @@ export default function Ch42FiberOptics() {
         </FAQItem>
         <FAQItem q="What's the relationship between fiber dispersion and Maxwell's equations?">
           Chromatic dispersion is just the wavelength-dependence of the refractive index{' '}
-          <InlineMath tex="n(\lambda)" /> propagating through a wavepacket: the group
-          velocity <InlineMath tex="v_g = c / (n + \omega \cdot dn/d\omega)" /> depends on
-          frequency, so a pulse made of multiple frequencies spreads as it travels. The{' '}
-          <InlineMath tex="n(\lambda)" /> dispersion of silica itself comes from the
-          polarizability of the SiO₂ unit cell — an ε(ω) story (Ch.17) — modified slightly by the
-          fiber waveguide geometry. Maxwell + a material's ε(ω) gives you everything
+          <M tex="n(\lambda)" /> propagating through a wavepacket: the group velocity{' '}
+          <M tex="v_g = c / (n + \omega \cdot dn/d\omega)" /> depends on frequency, so a pulse made
+          of multiple frequencies spreads as it travels. The <M tex="n(\lambda)" /> dispersion of
+          silica itself comes from the polarizability of the SiO₂ unit cell — an ε(ω) story (Ch.17)
+          — modified slightly by the fiber waveguide geometry. Maxwell + a material's ε(ω) gives you
+          everything
           <Cite id="born-wolf-1999" in={SOURCES} />.
         </FAQItem>
         <FAQItem q="Could a fiber carry an analog signal instead of digital pulses?">

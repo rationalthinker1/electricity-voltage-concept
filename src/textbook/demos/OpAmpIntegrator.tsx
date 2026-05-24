@@ -13,14 +13,21 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { fmtTime } from '@/lib/formatters';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 type WaveKind = 'square' | 'sine' | 'triangle';
 
@@ -135,12 +142,58 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       });
       ctx.restore();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: '+8 V', x: plotX - 4, y: yV(V_SUP), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: plotX - 4, y: y0, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '-8 V', x: plotX - 4, y: yV(-V_SUP), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: `V_in (${kind})`, x: plotX + 4, y: plotY + 4, color: colors.blue, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'V_out = -(1/RC)∫V_in dt', x: plotX + 100, y: plotY + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `τ = RC = ${fmtTime(tau)}`, x: plotX + plotW - 4, y: plotY + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '+8 V',
+        x: plotX - 4,
+        y: yV(V_SUP),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0',
+        x: plotX - 4,
+        y: y0,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '-8 V',
+        x: plotX - 4,
+        y: yV(-V_SUP),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: `V_in (${kind})`,
+        x: plotX + 4,
+        y: plotY + 4,
+        color: colors.blue,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'V_out = -(1/RC)∫V_in dt',
+        x: plotX + 100,
+        y: plotY + 4,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `τ = RC = ${fmtTime(tau)}`,
+        x: plotX + plotW - 4,
+        y: plotY + 4,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -211,9 +264,13 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Op-amp integrator"
-        left={<InlineMath tex={`V_{\\text{out}}(t) = -\\frac{1}{RC}\\int V_{\\text{in}}\\,dt`} />}
+        left={<M tex={`V_{\\text{out}}(t) = -\\frac{1}{RC}\\int V_{\\text{in}}\\,dt`} />}
         rightLabel={`Sine gain at f = ${fHz} Hz`}
-        right={<InlineMath tex={`\\frac{1}{\\omega RC} = \\frac{1}{2\\pi \\cdot ${fHz}\\,\\text{Hz} \\cdot ${fmtTime(tau)}} = ${sineGainMag.toFixed(3)}`} />}
+        right={
+          <M
+            tex={`\\frac{1}{\\omega RC} = \\frac{1}{2\\pi \\cdot ${fHz}\\,\\text{Hz} \\cdot ${fmtTime(tau)}} = ${sineGainMag.toFixed(3)}`}
+          />
+        }
       />
     </Demo>
   );

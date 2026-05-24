@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
 import { Pullout } from '@/components/Prose';
@@ -76,7 +76,8 @@ export const TOPIC_LABS: Record<string, Topic> = {
     slug: 'fourier-series',
     labId: '6.1',
     subtitle: 'Fourier analysis',
-    equation: 'x(t)=a_0+\\sum_{n=1}^{\\infty}\\left(a_n\\cos n\\omega t+b_n\\sin n\\omega t\\right)',
+    equation:
+      'x(t)=a_0+\\sum_{n=1}^{\\infty}\\left(a_n\\cos n\\omega t+b_n\\sin n\\omega t\\right)',
     plain: 'x(t) = a0 + Σ(an cos nωt + bn sin nωt)',
     lhs: 'xN',
     xName: 'fundamental amplitude',
@@ -244,7 +245,8 @@ export const TOPIC_LABS: Record<string, Topic> = {
     slug: 'dc-dc-converter',
     labId: '7.3',
     subtitle: 'DC-DC conversion',
-    equation: 'V_{out}\\approx D V_{in}\\quad\\text{(buck)},\\qquad V_{out}\\approx \\dfrac{V_{in}}{1-D}\\quad\\text{(boost)}',
+    equation:
+      'V_{out}\\approx D V_{in}\\quad\\text{(buck)},\\qquad V_{out}\\approx \\dfrac{V_{in}}{1-D}\\quad\\text{(boost)}',
     plain: 'Vout ≈ D Vin; Vout ≈ Vin/(1−D)',
     lhs: 'Vout',
     xName: 'input voltage',
@@ -336,47 +338,50 @@ export function TopicEquationLab({ slug }: { slug: keyof typeof TOPIC_LABS }) {
     stateRef.current = { x, y, z, computed };
   }, [x, y, z, computed]);
 
-  const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    let phase = 0;
-    function draw() {
-      const { x, y, z, computed } = stateRef.current;
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-      const cx = w * 0.5;
-      const cy = h * 0.52;
-      const r = 70 + 12 * x;
-      ctx.strokeStyle = withAlpha(colors.borderStrong, 0.9);
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, Math.PI * 2);
-      ctx.stroke();
-      for (let i = 0; i < 12; i++) {
-        const a = phase + (i / 12) * Math.PI * 2;
-        const p1 = { x: cx + Math.cos(a) * (r - 24), y: cy + Math.sin(a) * (r - 24) };
-        const p2 = { x: cx + Math.cos(a) * (r + y * 8), y: cy + Math.sin(a) * (r + y * 8) };
-        drawArrow(ctx, p1, p2, {
-          color: i % 2 ? colors.teal : colors.accent,
-          lineWidth: 1.5,
-        });
+  const setupCanvas = useCallback(
+    (info: CanvasInfo) => {
+      const { ctx, w, h, colors } = info;
+      let raf = 0;
+      let phase = 0;
+      function draw() {
+        const { x, y, z, computed } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const cx = w * 0.5;
+        const cy = h * 0.52;
+        const r = 70 + 12 * x;
+        ctx.strokeStyle = withAlpha(colors.borderStrong, 0.9);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.stroke();
+        for (let i = 0; i < 12; i++) {
+          const a = phase + (i / 12) * Math.PI * 2;
+          const p1 = { x: cx + Math.cos(a) * (r - 24), y: cy + Math.sin(a) * (r - 24) };
+          const p2 = { x: cx + Math.cos(a) * (r + y * 8), y: cy + Math.sin(a) * (r + y * 8) };
+          drawArrow(ctx, p1, p2, {
+            color: i % 2 ? colors.teal : colors.accent,
+            lineWidth: 1.5,
+          });
+        }
+        const barW = Math.min(w * 0.62, 80 + computed.base * 18);
+        ctx.fillStyle = withAlpha(colors.accent, 0.18);
+        ctx.fillRect(cx - barW / 2, h - 82, barW, 22);
+        ctx.strokeStyle = colors.accent;
+        ctx.strokeRect(cx - barW / 2, h - 82, barW, 22);
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '12px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(topic.plain, cx, 40);
+        ctx.fillText(topic.note, cx, h - 36);
+        phase += 0.015 + z * 0.002;
+        raf = requestAnimationFrame(draw);
       }
-      const barW = Math.min(w * 0.62, 80 + computed.base * 18);
-      ctx.fillStyle = withAlpha(colors.accent, 0.18);
-      ctx.fillRect(cx - barW / 2, h - 82, barW, 22);
-      ctx.strokeStyle = colors.accent;
-      ctx.strokeRect(cx - barW / 2, h - 82, barW, 22);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '12px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(topic.plain, cx, 40);
-      ctx.fillText(topic.note, cx, h - 36);
-      phase += 0.015 + z * 0.002;
-      raf = requestAnimationFrame(draw);
-    }
-    draw();
-    return () => cancelAnimationFrame(raf);
-  }, [topic.note, topic.plain]);
+      draw();
+      return () => cancelAnimationFrame(raf);
+    },
+    [topic.note, topic.plain],
+  );
 
   const sources = BASE_LAB_SOURCES[topic.slug] ?? [];
   const primarySource = topic.source;
@@ -392,14 +397,52 @@ export function TopicEquationLab({ slug }: { slug: keyof typeof TOPIC_LABS }) {
       }
       inputs={
         <>
-          <Slider label={topic.xName} sym="x" value={x} min={0.1} max={10} step={0.1} format={(v) => v.toFixed(1)} metaLeft="small" metaRight="large" onChange={setX} />
-          <Slider label={topic.yName} sym="y" value={y} min={0.1} max={10} step={0.1} format={(v) => v.toFixed(1)} metaLeft="small" metaRight="large" onChange={setY} />
-          <Slider label={topic.zName} sym="z" value={z} min={0.1} max={10} step={0.1} format={(v) => v.toFixed(1)} metaLeft="small" metaRight="large" onChange={setZ} />
+          <Slider
+            label={topic.xName}
+            sym="x"
+            value={x}
+            min={0.1}
+            max={10}
+            step={0.1}
+            format={(v) => v.toFixed(1)}
+            metaLeft="small"
+            metaRight="large"
+            onChange={setX}
+          />
+          <Slider
+            label={topic.yName}
+            sym="y"
+            value={y}
+            min={0.1}
+            max={10}
+            step={0.1}
+            format={(v) => v.toFixed(1)}
+            metaLeft="small"
+            metaRight="large"
+            onChange={setY}
+          />
+          <Slider
+            label={topic.zName}
+            sym="z"
+            value={z}
+            min={0.1}
+            max={10}
+            step={0.1}
+            format={(v) => v.toFixed(1)}
+            metaLeft="small"
+            metaRight="large"
+            onChange={setZ}
+          />
         </>
       }
       outputs={
         <>
-          <Readout sym={topic.lhs} label="spine result" value={fmt(computed.base, topic.unit)} highlight />
+          <Readout
+            sym={topic.lhs}
+            label="spine result"
+            value={fmt(computed.base, topic.unit)}
+            highlight
+          />
           <Readout sym="Σ" label="scale sum" value={computed.secondary.toFixed(2)} />
           <Readout sym="ρ" label="normalized ratio" value={computed.ratio.toFixed(3)} />
         </>
@@ -412,7 +455,7 @@ export function TopicEquationLab({ slug }: { slug: keyof typeof TOPIC_LABS }) {
     <>
       <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
-        This lab gives the chapter demos a single equation-level home: <InlineMath tex={topic.equation} />.
+        This lab gives the chapter demos a single equation-level home: <M tex={topic.equation} />.
         The goal is to slow the demo down into variables, limits, and worked substitutions rather
         than leaving the reader with only a moving picture <Cite id={primarySource} in={sources} />.
       </p>
@@ -424,15 +467,27 @@ export function TopicEquationLab({ slug }: { slug: keyof typeof TOPIC_LABS }) {
       <h3 className="lab-section-h3">Formula</h3>
       <Formula tex={topic.equation} />
       <p className="mb-prose-2">Variable glossary:</p>
-      <ul className="mb-prose-3 list-disc pl-xl text-5 text-text-dim leading-5">
-        <li><InlineMath tex={topic.lhs} /> is the left-hand response quantity, reported in {topic.unit || 'natural units'}.</li>
-        <li><InlineMath tex="x" /> represents {topic.xName}; positive values follow the chapter convention.</li>
-        <li><InlineMath tex="y" /> represents {topic.yName}; it sets the main proportional scale.</li>
-        <li><InlineMath tex="z" /> represents {topic.zName}; it usually sets a limit, load, spacing, or divisor.</li>
+      <ul className="mb-prose-3 pl-xl text-5 text-text-dim list-disc leading-5">
+        <li>
+          <M tex={topic.lhs} /> is the left-hand response quantity, reported in{' '}
+          {topic.unit || 'natural units'}.
+        </li>
+        <li>
+          <M tex="x" /> represents {topic.xName}; positive values follow the chapter convention.
+        </li>
+        <li>
+          <M tex="y" /> represents {topic.yName}; it sets the main proportional scale.
+        </li>
+        <li>
+          <M tex="z" /> represents {topic.zName}; it usually sets a limit, load, spacing, or
+          divisor.
+        </li>
       </ul>
       <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">{topic.note}</p>
-      <Pullout>Read the equation as a machine: inputs on the right, physical behavior on the left.</Pullout>
+      <Pullout>
+        Read the equation as a machine: inputs on the right, physical behavior on the left.
+      </Pullout>
       <p className="mb-prose-3">
         The sliders deliberately keep only three knobs visible. That makes the proportionality,
         inverse dependence, and scale limits easy to see before the full chapter model adds more
@@ -481,7 +536,9 @@ export function TopicEquationLab({ slug }: { slug: keyof typeof TOPIC_LABS }) {
                   Substitute the values into the compact form, then compare the result with the
                   slider readout.
                 </p>
-                <Formula tex={`${topic.lhs}\\approx \\dfrac{(${k})(${k + 1})}{${k + 2}}=${((k * (k + 1)) / (k + 2)).toFixed(2)}\\ ${topic.unit ? `\\text{${topic.unit}}` : ''}`} />
+                <Formula
+                  tex={`${topic.lhs}\\approx \\dfrac{(${k})(${k + 1})}{${k + 2}}=${((k * (k + 1)) / (k + 2)).toFixed(2)}\\ ${topic.unit ? `\\text{${topic.unit}}` : ''}`}
+                />
                 <p>
                   The response scale is{' '}
                   <strong className="text-text font-medium">

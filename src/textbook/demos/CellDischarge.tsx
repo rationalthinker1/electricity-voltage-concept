@@ -9,14 +9,21 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawAxes, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -132,11 +139,46 @@ export function CellDischargeDemo({ figure }: Props) {
 
       // Labels
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'V', x: pX, y: 6, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'full', x: pX, y: pY + pH + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'empty', x: pX + pW, y: pY + pH + 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: 'V_OC (open)', x: pX + pW - 4, y: pY + 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: 'V_term (loaded)', x: pX + pW - 4, y: pY + 18, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'V',
+        x: pX,
+        y: 6,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'full',
+        x: pX,
+        y: pY + pH + 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'empty',
+        x: pX + pW,
+        y: pY + pH + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'V_OC (open)',
+        x: pX + pW - 4,
+        y: pY + 4,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'V_term (loaded)',
+        x: pX + pW - 4,
+        y: pY + 18,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -201,9 +243,15 @@ export function CellDischargeDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Terminal voltage under load"
-        left={<InlineMath tex={`V_{\\text{term}} = \\frac{V_{\\text{OC}} \\cdot R_L}{R_{\\text{int}} + R_L}`} />}
+        left={
+          <M tex={`V_{\\text{term}} = \\frac{V_{\\text{OC}} \\cdot R_L}{R_{\\text{int}} + R_L}`} />
+        }
         rightLabel="At this operating point"
-        right={<InlineMath tex={`\\frac{${V_OC.toFixed(2)} \\times ${R_L.toFixed(1)}}{${R_int.toFixed(2)} + ${R_L.toFixed(1)}} = ${V_term.toFixed(2)}\\,\\text{V}`} />}
+        right={
+          <M
+            tex={`\\frac{${V_OC.toFixed(2)} \\times ${R_L.toFixed(1)}}{${R_int.toFixed(2)} + ${R_L.toFixed(1)}} = ${V_term.toFixed(2)}\\,\\text{V}`}
+          />
+        }
       />
     </Demo>
   );

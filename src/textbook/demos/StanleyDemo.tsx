@@ -15,7 +15,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { fmtCurrent, fmtVoltage } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -128,9 +128,32 @@ export function StanleyDemo({ figure }: Props) {
       }
       ctx.fillStyle = colors.teal;
       const lcx = (lineX0 + lineX1) / 2;
-      drawLabel(ctx, { text: `V_line = ${fmtVoltage(Vline)}`, x: lcx, y: cy - 18, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: `I = ${fmtCurrent(I)}`, x: lcx, y: cy - 32, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: `${distanceKm} km · R = ${R.toFixed(1)} Ω`, x: lcx, y: cy + 24, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `V_line = ${fmtVoltage(Vline)}`,
+        x: lcx,
+        y: cy - 18,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: `I = ${fmtCurrent(I)}`,
+        x: lcx,
+        y: cy - 32,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: `${distanceKm} km · R = ${R.toFixed(1)} Ω`,
+        x: lcx,
+        y: cy + 24,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       const barX = padX,
         barY = h - 30,
         barW = w - 2 * padX,
@@ -141,8 +164,23 @@ export function StanleyDemo({ figure }: Props) {
       ctx.fillRect(barX, barY, barW * eff, barH);
       ctx.fillStyle = withAlpha(colors.accent, 0.55);
       ctx.fillRect(barX + barW * eff, barY, barW * (1 - eff), barH);
-      drawLabel(ctx, { text: `delivered: ${(eff * 100).toFixed(1)} %`, x: barX + 4, y: barY + barH / 2, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: `lost as heat: ${((1 - eff) * 100).toFixed(1)} %`, x: barX + barW - 4, y: barY + barH / 2, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `delivered: ${(eff * 100).toFixed(1)} %`,
+        x: barX + 4,
+        y: barY + barH / 2,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: `lost as heat: ${((1 - eff) * 100).toFixed(1)} %`,
+        x: barX + barW - 4,
+        y: barY + barH / 2,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
     },
     [],
   );
@@ -190,11 +228,14 @@ export function StanleyDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="HV transmission: loss law"
-        left={<InlineMath tex="P_{\text{loss}} = I^2 R = (P/V)^2\,R" />}
+        left={<M tex="P_{\text{loss}} = I^2 R = (P/V)^2\,R" />}
         rightLabel="At this operating point"
-        right={<InlineMath tex={`P_{\\text{loss}} = ${(computed.Ploss / 1e3).toFixed(1)}\\,\\text{kW};\\quad\\eta = ${(computed.eff * 100).toFixed(1)}\\%`} />}
+        right={
+          <M
+            tex={`P_{\\text{loss}} = ${(computed.Ploss / 1e3).toFixed(1)}\\,\\text{kW};\\quad\\eta = ${(computed.eff * 100).toFixed(1)}\\%`}
+          />
+        }
       />
     </Demo>
   );
 }
-

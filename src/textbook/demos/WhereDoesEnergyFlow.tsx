@@ -17,7 +17,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -145,7 +145,17 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
     stateRef,
     ({ ctx, w, h, dpr, colors }, state, _dt, _simT, context: SimCtx) => {
       const { realPicture } = state;
-      const { batteryX: _batteryX, bulbX, cyTop, cyBot, bulbR, carriers, inflow, pointAt, spawnInflow } = context;
+      const {
+        batteryX: _batteryX,
+        bulbX,
+        cyTop,
+        cyBot,
+        bulbR,
+        carriers,
+        inflow,
+        pointAt,
+        spawnInflow,
+      } = context;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -272,7 +282,9 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
         }
       }
 
-      return { context: { batteryX, bulbX, cyTop, cyBot, bulbR, carriers, inflow, pointAt, spawnInflow } };
+      return {
+        context: { batteryX, bulbX, cyTop, cyBot, bulbR, carriers, inflow, pointAt, spawnInflow },
+      };
     },
   );
 
@@ -302,13 +314,9 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Old picture"
-        left={<InlineMath tex={`P = I^2 R`} />}
+        left={<M tex={`P = I^2 R`} />}
         rightLabel="Real picture"
-        right={
-          <InlineMath
-            tex={`\\vec{S} = \\dfrac{1}{\\mu_0} \\vec{E} \\times \\vec{B}`}
-          />
-        }
+        right={<M tex={`\\vec{S} = \\dfrac{1}{\\mu_0} \\vec{E} \\times \\vec{B}`} />}
       />
     </Demo>
   );

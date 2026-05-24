@@ -13,11 +13,11 @@ import { useEffect, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
@@ -92,12 +92,37 @@ export function LeadAcidCellDemo({ figure }: Props) {
         }
       }
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'Pb', x: negX + plateW / 2, y: plateY - 2, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: 'PbO₂', x: posX + plateW / 2, y: plateY - 2, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: 'H₂SO₄(aq)', x: jarX + 8, y: jarY + jarH - 16, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'Pb',
+        x: negX + plateW / 2,
+        y: plateY - 2,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: 'PbO₂',
+        x: posX + plateW / 2,
+        y: plateY - 2,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: 'H₂SO₄(aq)',
+        x: jarX + 8,
+        y: jarY + jarH - 16,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.globalAlpha = 0.75;
-      drawLabel(ctx, { text: 'discharge:  Pb + PbO₂ + 2 H₂SO₄  →  2 PbSO₄ + 2 H₂O', x: jarX, y: jarY + jarH + 10, baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'discharge:  Pb + PbO₂ + 2 H₂SO₄  →  2 PbSO₄ + 2 H₂O',
+        x: jarX,
+        y: jarY + jarH + 10,
+        baseline: 'top',
+      });
       ctx.restore();
     },
     [],
@@ -148,9 +173,15 @@ export function LeadAcidCellDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Cell voltage vs state of charge"
-        left={<InlineMath tex="V_{\text{cell}} = V_{\text{empty}} + (V_{\text{full}} - V_{\text{empty}}) \cdot \text{SOC}" />}
+        left={
+          <M tex="V_{\text{cell}} = V_{\text{empty}} + (V_{\text{full}} - V_{\text{empty}}) \cdot \text{SOC}" />
+        }
         rightLabel="At current SOC"
-        right={<InlineMath tex={`${V_EMPTY} + (${V_FULL} - ${V_EMPTY}) \\times ${(soc * 100).toFixed(0)}\\% = ${V_cell.toFixed(2)}\\,\\text{V}`} />}
+        right={
+          <M
+            tex={`${V_EMPTY} + (${V_FULL} - ${V_EMPTY}) \\times ${(soc * 100).toFixed(0)}\\% = ${V_cell.toFixed(2)}\\,\\text{V}`}
+          />
+        }
       />
     </Demo>
   );

@@ -10,12 +10,12 @@ import { useMemo, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawAxes, drawHLine, drawLinePlot } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -95,10 +95,31 @@ export function TurnsRatioDemo({ figure }: Props) {
       });
       const plotW = rect.w;
       const plotH = rect.h;
-      drawLabel(ctx, { text: '— V_p (170 V peak)', x: padL + 8, y: padT + 6, color: colors.pink, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `— V_s = n · V_p`, x: padL + 8, y: padT + 22, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '— V_p (170 V peak)',
+        x: padL + 8,
+        y: padT + 6,
+        color: colors.pink,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `— V_s = n · V_p`,
+        x: padL + 8,
+        y: padT + 22,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = withAlpha(colors.textDim, 0.6);
-      drawLabel(ctx, { text: 't (60 Hz · 2 cycles)', x: padL + plotW, y: padT + plotH + 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 't (60 Hz · 2 cycles)',
+        x: padL + plotW,
+        y: padT + plotH + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -135,9 +156,13 @@ export function TurnsRatioDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Turns-ratio law"
-        left={<InlineMath tex="V_s = (N_s/N_p)\,V_p" />}
+        left={<M tex="V_s = (N_s/N_p)\,V_p" />}
         rightLabel={`n = ${ratio.toFixed(2)}`}
-        right={<InlineMath tex={`V_s = ${ratio.toFixed(2)} \\times 170\\,\\text{V} = ${computed.Vs.toFixed(1)}\\,\\text{V}_{\\text{pk}}\\;(${computed.VsRms.toFixed(1)}\\,\\text{V}_{\\text{rms}})`} />}
+        right={
+          <M
+            tex={`V_s = ${ratio.toFixed(2)} \\times 170\\,\\text{V} = ${computed.Vs.toFixed(1)}\\,\\text{V}_{\\text{pk}}\\;(${computed.VsRms.toFixed(1)}\\,\\text{V}_{\\text{rms}})`}
+          />
+        }
       />
     </Demo>
   );

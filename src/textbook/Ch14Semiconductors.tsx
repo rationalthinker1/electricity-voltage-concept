@@ -20,7 +20,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -48,8 +48,8 @@ export default function Ch14Semiconductors() {
         closer at any current processor — the A17 Pro in a recent iPhone, say — and that same fleck
         of silicon, scaled up to a fingernail-sized die, holds{' '}
         <strong className="text-text font-medium">tens of billions</strong>
-        of transistors. Every one of them is a direct descendant
-        of a single device John Bardeen and Walter Brattain built at Bell Labs in December 1947
+        of transistors. Every one of them is a direct descendant of a single device John Bardeen and
+        Walter Brattain built at Bell Labs in December 1947
         <Cite id="bardeen-brattain-1948" in={SOURCES} />, with a flat-topped germanium crystal and
         two gold-foil contacts a hair's width apart. Three months earlier, no one had a working
         solid-state amplifier; eighteen years later, integrated circuits were stacking thousands of
@@ -137,34 +137,35 @@ export default function Ch14Semiconductors() {
 
       <p className="mb-prose-3">
         For silicon, E<sub>g</sub> = 1.12 eV. For germanium, 0.67 eV. For gallium arsenide, 1.42 eV.
-        For diamond, 5.5 eV. At room temperature <InlineMath tex="kT \approx 0.026\ \text{eV}" />: small compared to any of these gaps,
-        but not negligibly so for silicon. The probability that a valence electron picks up enough
-        thermal energy to be promoted into the conduction band scales as{' '}
-        <InlineMath tex="\exp(-E_g / 2kT)" /> — Boltzmann's exponential, with the factor of two
+        For diamond, 5.5 eV. At room temperature <M tex="kT \approx 0.026\ \text{eV}" />: small
+        compared to any of these gaps, but not negligibly so for silicon. The probability that a
+        valence electron picks up enough thermal energy to be promoted into the conduction band
+        scales as <M tex="\exp(-E_g / 2kT)" /> — Boltzmann's exponential, with the factor of two
         coming out of the intrinsic-semiconductor carrier-statistics derivation
         <Cite id="streetman-banerjee-2015" in={SOURCES} />. Plug in silicon's numbers and you get
         ~10⁻¹⁰: ten billion-to-one odds. Multiplied by the effective density of states at the band
-        edges (~10¹⁹ cm⁻³), the resulting <em className="text-text italic">intrinsic carrier density</em>{' '}
-        is around 10¹⁰ cm⁻³ at 300 K. Pure silicon is, accordingly, a poor conductor — many orders of magnitude
-        worse than copper, many orders of magnitude better than glass.
+        edges (~10¹⁹ cm⁻³), the resulting{' '}
+        <em className="text-text italic">intrinsic carrier density</em> is around 10¹⁰ cm⁻³ at 300
+        K. Pure silicon is, accordingly, a poor conductor — many orders of magnitude worse than
+        copper, many orders of magnitude better than glass.
       </p>
       <p className="mb-prose-3">
         The exponential is the whole point. Suppose the gap were half as large — 0.56 eV instead of
-        1.12. The carrier density would not double; it would rise by a factor of
-        <InlineMath tex="\exp(0.28/0.026) \approx 50{,}000" />. The same factor explains why a 30 °C
-        summer day in a hot sealed engine bay can change a transistor's leakage by a factor of 100,
-        why germanium (E<sub>g</sub> = 0.67 eV) runs hot and leaky, and why diamond (E<sub>g</sub> =
-        5.5 eV) is an essentially perfect insulator. The picture: thermal energy kT is the currency,
-        the bandgap is the price; the carrier density is the receipt, and it is the exponential of
-        the negative of the price-to-currency ratio. Make the gap small enough relative to kT and
-        the crystal floods with carriers (a metal-like situation, in the limit). Make it large and
-        the crystal is empty.
+        1.12. The carrier density would not double; it would rise by a factor of{' '}
+        <M tex="\exp(0.28/0.026) \approx 50{,}000" />. The same factor explains why a 30 °C summer
+        day in a hot sealed engine bay can change a transistor's leakage by a factor of 100, why
+        germanium (E<sub>g</sub> = 0.67 eV) runs hot and leaky, and why diamond (E<sub>g</sub> = 5.5
+        eV) is an essentially perfect insulator. The picture: thermal energy kT is the currency, the
+        bandgap is the price; the carrier density is the receipt, and it is the exponential of the
+        negative of the price-to-currency ratio. Make the gap small enough relative to kT and the
+        crystal floods with carriers (a metal-like situation, in the limit). Make it large and the
+        crystal is empty.
       </p>
       <p className="mb-prose-3">
-        The factor of 2 in <InlineMath tex="\exp(-E_g/2kT)" /> — rather than the bare{' '}
-        <InlineMath tex="\exp(-E_g/kT)" /> — comes from the fact that the Fermi level sits roughly
-        in the middle of the gap in an intrinsic semiconductor, so a typical valence electron only
-        has to be lifted by <InlineMath tex="E_g/2" />
+        The factor of 2 in <M tex="\exp(-E_g/2kT)" /> — rather than the bare{' '}
+        <M tex="\exp(-E_g/kT)" /> — comes from the fact that the Fermi level sits roughly in the
+        middle of the gap in an intrinsic semiconductor, so a typical valence electron only has to
+        be lifted by <M tex="E_g/2" />
         in energy to reach the most-populated states in the conduction band
         <Cite id="streetman-banerjee-2015" in={SOURCES} />. Doping shortcuts this: a donor level
         only 0.045 eV below the conduction-band edge takes essentially no thermal energy to ionise.{' '}
@@ -177,8 +178,8 @@ export default function Ch14Semiconductors() {
         question={
           <>
             At room temperature (T = 300 K, so kT ≈ 0.0259 eV), what is the Boltzmann factor{' '}
-            <InlineMath tex="\exp(-E_g/2kT)" /> for silicon (E<sub>g</sub> = 1.12 eV)? For diamond
-            (E<sub>g</sub> = 5.5 eV)?
+            <M tex="\exp(-E_g/2kT)" /> for silicon (E<sub>g</sub> = 1.12 eV)? For diamond (E
+            <sub>g</sub> = 5.5 eV)?
           </>
         }
         hint="Just plug in. The factor of 2 in the denominator is standard for intrinsic semiconductors."
@@ -216,9 +217,9 @@ export default function Ch14Semiconductors() {
         . Substitute one silicon atom in every ten million with a phosphorus atom (Group V — five
         valence electrons instead of four) and the extra electron sits in a shallow donor level
         about 0.045 eV below the conduction-band edge. kT at room temperature is enough to lift
-        essentially all of those donor electrons into the conduction band. A doping density of ~5×10¹⁵
-        cm⁻³ — one phosphorus per ten million silicons — gives ~5×10¹⁵ free electrons per cm³, a
-        half-million times the intrinsic level. The crystal is now{' '}
+        essentially all of those donor electrons into the conduction band. A doping density of
+        ~5×10¹⁵ cm⁻³ — one phosphorus per ten million silicons — gives ~5×10¹⁵ free electrons per
+        cm³, a half-million times the intrinsic level. The crystal is now{' '}
         <Term
           def={
             <>
@@ -268,7 +269,7 @@ export default function Ch14Semiconductors() {
         up an electric field across the boundary that opposes further diffusion. Equilibrium is
         reached when the field's drift current exactly cancels the diffusion current. The thin strip
         of crystal between the two bulks — empty of mobile carriers, populated only by ionised
-        dopants — is the
+        dopants — is the{' '}
         <Term
           def={
             <>
@@ -305,22 +306,21 @@ export default function Ch14Semiconductors() {
       <Formula tex="V_{bi} = (kT/q)\, \ln\!\left( \dfrac{N_A N_D}{n_i^2} \right)" />
       <p className="mb-prose-3">
         The formula reads like a thermodynamic statement, because that is exactly what it is. On the
-        n-side the electron density is N<sub>D</sub>; on the p-side it is{' '}
-        <InlineMath tex="n_i^2/N_A" />
+        n-side the electron density is N<sub>D</sub>; on the p-side it is <M tex="n_i^2/N_A" />
         (mass-action). The ratio of those two — the "concentration gradient" electrons would like to
-        flatten out by diffusing — is <InlineMath tex="N_A N_D / n_i^2" />. At equilibrium the
-        built-in electric field has built up to exactly the height needed to stop that diffusion:
-        the Boltzmann factor of the energy hill, <InlineMath tex="\exp(qV_{bi}/kT)" />, must equal
-        the concentration ratio. Take the logarithm and divide by q/kT and there is the formula. It
-        is the Einstein relation between mobility and diffusion, written in disguise: drift cancels
+        flatten out by diffusing — is <M tex="N_A N_D / n_i^2" />. At equilibrium the built-in
+        electric field has built up to exactly the height needed to stop that diffusion: the
+        Boltzmann factor of the energy hill, <M tex="\exp(qV_{bi}/kT)" />, must equal the
+        concentration ratio. Take the logarithm and divide by q/kT and there is the formula. It is
+        the Einstein relation between mobility and diffusion, written in disguise: drift cancels
         diffusion when the voltage across the region is{' '}
-        <InlineMath tex="V_T \cdot \ln(\text{concentration ratio})" />
+        <M tex="V_T \cdot \ln(\text{concentration ratio})" />
         <Cite id="streetman-banerjee-2015" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         Plug in numbers. For typical silicon doping (N<sub>A</sub> = N<sub>D</sub> = 5×10¹⁵ cm⁻³, n
-        <sub>i</sub> = 10¹⁰ cm⁻³ at 300 K), the ratio is 5×10¹¹. With V<sub>T</sub> ≈ 25.85 mV and
-        <InlineMath tex="\ln(5\times10^{11}) \approx 27.0" />, V<sub>bi</sub> ≈ 0.70 V. That number — the
+        <sub>i</sub> = 10¹⁰ cm⁻³ at 300 K), the ratio is 5×10¹¹. With V<sub>T</sub> ≈ 25.85 mV and{' '}
+        <M tex="\ln(5\times10^{11}) \approx 27.0" />, V<sub>bi</sub> ≈ 0.70 V. That number — the
         equilibrium voltage your crystal sets up <em className="text-text italic">by itself</em>,
         with no external bias — is also the height of the energy barrier any electron must climb to
         cross the junction. Forward bias reduces it; reverse bias raises it. For typical silicon
@@ -355,24 +355,23 @@ export default function Ch14Semiconductors() {
       <Formula tex="I = I_s\, \left( \exp(qV / nkT) - 1 \right)" />
       <p className="mb-prose-3">
         Stare at the shape of the formula until it stops looking like algebra. Forward bias lowers
-        the energy hill that electrons on the n-side have to climb to reach the p-side, from
-        <InlineMath tex="qV_{bi}" /> down to <InlineMath tex="q(V_{bi} - V)" />. The number of
-        electrons with enough thermal energy to surmount a barrier of height ΔE is Boltzmann's{' '}
-        <InlineMath tex="\exp(-\Delta E/kT)" />; that is statistical mechanics, not transistor
-        physics. So the population that crosses scales as
-        <InlineMath tex="\exp(qV/kT)" />. The pre-factor I<sub>s</sub> is what the same exponential
-        gives at V = 0 — the tiny thermal back-flow of minority carriers across the junction in
-        either direction.
+        the energy hill that electrons on the n-side have to climb to reach the p-side, from{' '}
+        <M tex="qV_{bi}" /> down to <M tex="q(V_{bi} - V)" />. The number of electrons with enough
+        thermal energy to surmount a barrier of height ΔE is Boltzmann's{' '}
+        <M tex="\exp(-\Delta E/kT)" />; that is statistical mechanics, not transistor physics. So
+        the population that crosses scales as <M tex="\exp(qV/kT)" />. The pre-factor I<sub>s</sub>{' '}
+        is what the same exponential gives at V = 0 — the tiny thermal back-flow of minority
+        carriers across the junction in either direction.
       </p>
       <p className="mb-prose-3">
         The "−1" is a bookkeeping demand of equilibrium. At V = 0, the forward Boltzmann flux and
         the reverse minority-carrier flux must be equal and opposite — no net current can flow
         across a junction at thermal equilibrium. The forward term is{' '}
-        <InlineMath tex="I_s \cdot \exp(qV/kT)" />, which at V = 0 is just I<sub>s</sub>;
-        subtracting I<sub>s</sub> gives the net flow, and forces I = 0 at V = 0 as required. In
-        strong reverse bias the exponential collapses to zero and <InlineMath tex="I \to -I_s" />:
-        that is the saturation current, the maximum reverse current the device can supply by
-        sweeping out spontaneously-generated minority carriers.
+        <M tex="I_s \cdot \exp(qV/kT)" />, which at V = 0 is just I<sub>s</sub>; subtracting I
+        <sub>s</sub> gives the net flow, and forces I = 0 at V = 0 as required. In strong reverse
+        bias the exponential collapses to zero and <M tex="I \to -I_s" />: that is the saturation
+        current, the maximum reverse current the device can supply by sweeping out
+        spontaneously-generated minority carriers.
       </p>
       <p className="mb-prose-3">
         The{' '}
@@ -381,8 +380,8 @@ export default function Ch14Semiconductors() {
             <>
               <strong className="text-text font-medium">thermal voltage</strong> V<sub>T</sub> =
               kT/q — the natural voltage scale of semiconductor physics. At 300 K, V<sub>T</sub> ≈
-              25.85 mV. Every junction's I-V curve changes by a factor of{' '}
-              <InlineMath tex="e" /> per V<sub>T</sub> of bias change.
+              25.85 mV. Every junction's I-V curve changes by a factor of <M tex="e" /> per V
+              <sub>T</sub> of bias change.
             </>
           }
         >
@@ -390,28 +389,28 @@ export default function Ch14Semiconductors() {
         </Term>{' '}
         V<sub>T</sub> = kT/q ≈ 25.85 mV at 300 K is the natural unit
         <Cite id="codata-2018" in={SOURCES} />: it is the voltage scale over which the Boltzmann
-        factor changes by a factor of <InlineMath tex="e" />, and the voltage scale
-        over which any junction physics changes meaningfully. Every "60 mV per decade" rule of thumb
-        in this chapter comes from <InlineMath tex="V_T \cdot \ln(10) \approx 60\ \text{mV}" />.
+        factor changes by a factor of <M tex="e" />, and the voltage scale over which any junction
+        physics changes meaningfully. Every "60 mV per decade" rule of thumb in this chapter comes
+        from <M tex="V_T \cdot \ln(10) \approx 60\ \text{mV}" />.
       </p>
       <p className="mb-prose-3">
         Here I<sub>s</sub> is the reverse-saturation current (~10⁻⁹ A for silicon, ~10⁻⁵ A for
         Schottky), n is an ideality factor (≈1 for an ideal junction, 1.5–2 for a real diode at low
         current), q is the elementary charge, k is Boltzmann's constant, and T is absolute
-        temperature. The exponential covers about eight orders of magnitude across a 0.5 V swing. At V =
-        0 the current is zero; at V = 0.6 V the device is already conducting a few milliamps; at V =
-        0.7 V it is conducting tens of milliamps. That is what an engineer means when they say "a
-        silicon diode drops 0.7 V"
+        temperature. The exponential covers about eight orders of magnitude across a 0.5 V swing. At
+        V = 0 the current is zero; at V = 0.6 V the device is already conducting a few milliamps; at
+        V = 0.7 V it is conducting tens of milliamps. That is what an engineer means when they say
+        "a silicon diode drops 0.7 V"
         <Cite id="sedra-smith-2014" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         The much-quoted "0.7 V" is therefore not a fundamental constant of silicon, but a
         consequence of two engineering choices: typical operating currents in the milliamp range,
-        and a typical I<sub>s</sub> in the femto- to nanoamp range. With
-        <InlineMath tex="V_T \cdot \ln(10) \approx 60\ \text{mV}" /> per decade, getting from
-        femtoamps to milliamps takes about twelve decades, or ~720 mV. Push a diode to microamps
-        instead and V<sub>F</sub> sits around 0.5 V; push it to amps and V<sub>F</sub> rises to ~0.9
-        V. Same equation, different operating point.
+        and a typical I<sub>s</sub> in the femto- to nanoamp range. With{' '}
+        <M tex="V_T \cdot \ln(10) \approx 60\ \text{mV}" /> per decade, getting from femtoamps to
+        milliamps takes about twelve decades, or ~720 mV. Push a diode to microamps instead and V
+        <sub>F</sub> sits around 0.5 V; push it to amps and V<sub>F</sub> rises to ~0.9 V. Same
+        equation, different operating point.
       </p>
 
       <p className="mb-prose-3">
@@ -431,8 +430,8 @@ export default function Ch14Semiconductors() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              KVL around the loop: <InlineMath tex="V_{\text{supply}} - V_R - V_F = 0" />. The
-              resistor drops 5 − 0.7 = 4.3 V. Ohm's law gives the current:
+              KVL around the loop: <M tex="V_{\text{supply}} - V_R - V_F = 0" />. The resistor drops
+              5 − 0.7 = 4.3 V. Ohm's law gives the current:
             </p>
             <Formula tex="I = V_R / R = 4.3\ \text{V} / 1000\ \Omega = 4.3\ \text{mA}" />
             <p className="mb-prose-1 last:mb-0">
@@ -621,7 +620,7 @@ export default function Ch14Semiconductors() {
         reverse-biased and the device acts roughly as a small voltage source. Above that, the{' '}
         <em className="text-text italic">active region</em>, I<sub>C</sub> is nearly flat,
         independent of V<sub>CE</sub> — a remarkable property — and equal to{' '}
-        <InlineMath tex="\beta \cdot I_B" />. The residual slope across the active region is the{' '}
+        <M tex="\beta \cdot I_B" />. The residual slope across the active region is the{' '}
         <Term
           def={
             <>
@@ -763,18 +762,17 @@ export default function Ch14Semiconductors() {
       <Formula tex="I_D = k_n\, \left[ (V_{GS} - V_T)\, V_{DS} - V_{DS}^2/2 \right]" />
       <p className="mb-prose-3">
         Unpack the formula one factor at a time. The gate-oxide capacitance per unit area is C
-        <sub>ox</sub>; the voltage above threshold is <InlineMath tex="(V_{GS} - V_T)" />; so the
-        sheet charge density of mobile carriers in the inversion layer is
-        <InlineMath tex="Q_s = C_{ox}(V_{GS} - V_T)" /> — exactly the parallel-plate capacitor
-        result from Ch.5, except one of the "plates" is now a thin sheet of induced electrons. The
-        width W (perpendicular to current flow) and length L (along current flow) set the channel's
-        aspect ratio. A field <InlineMath tex="E \approx V_{DS}/L" /> drives the carriers at drift
-        velocity <InlineMath tex="v = \mu_n \cdot E" />. Current is charge per length × velocity ×
-        width:
-        <InlineMath tex="I_D \approx (C_{ox} \cdot W \cdot V_{OV}) \cdot (\mu_n \cdot V_{DS}/L)" />,
-        which is the first term. The −V<sub>DS</sub>²/2 correction accounts for the fact that the
-        channel is being squeezed thinner toward the drain end as V<sub>DS</sub> rises — the charge
-        density isn't uniform, it tapers.
+        <sub>ox</sub>; the voltage above threshold is <M tex="(V_{GS} - V_T)" />; so the sheet
+        charge density of mobile carriers in the inversion layer is{' '}
+        <M tex="Q_s = C_{ox}(V_{GS} - V_T)" /> — exactly the parallel-plate capacitor result from
+        Ch.5, except one of the "plates" is now a thin sheet of induced electrons. The width W
+        (perpendicular to current flow) and length L (along current flow) set the channel's aspect
+        ratio. A field <M tex="E \approx V_{DS}/L" /> drives the carriers at drift velocity{' '}
+        <M tex="v = \mu_n \cdot E" />. Current is charge per length × velocity × width:{' '}
+        <M tex="I_D \approx (C_{ox} \cdot W \cdot V_{OV}) \cdot (\mu_n \cdot V_{DS}/L)" />, which is
+        the first term. The −V<sub>DS</sub>²/2 correction accounts for the fact that the channel is
+        being squeezed thinner toward the drain end as V<sub>DS</sub> rises — the charge density
+        isn't uniform, it tapers.
       </p>
       <p className="mb-prose-3">
         which is approximately linear in V<sub>DS</sub> for small V<sub>DS</sub> — a
@@ -798,20 +796,20 @@ export default function Ch14Semiconductors() {
       <Formula tex="I_D = (k_n/2)(V_{GS} - V_T)^2" />
       <p className="mb-prose-3">
         Why a square law? Picture two things multiplying. The inversion-layer charge density is
-        proportional to the overdrive <InlineMath tex="V_{OV} = V_{GS} - V_T" /> (more gate voltage
-        above threshold piles up more electrons). The average longitudinal field that moves them
-        along the channel is also proportional to V<sub>OV</sub> at pinch-off (because in saturation
-        V<sub>DS</sub> at the pinch point equals V<sub>OV</sub>, and the field is
-        <InlineMath tex="V_{OV}/L" />
+        proportional to the overdrive <M tex="V_{OV} = V_{GS} - V_T" /> (more gate voltage above
+        threshold piles up more electrons). The average longitudinal field that moves them along the
+        channel is also proportional to V<sub>OV</sub> at pinch-off (because in saturation V
+        <sub>DS</sub> at the pinch point equals V<sub>OV</sub>, and the field is{' '}
+        <M tex="V_{OV}/L" />
         ). Current = charge × velocity, and both factors carry one power of V<sub>OV</sub>. Multiply
-        them: <InlineMath tex="V_{OV}^2" />. The factor of ½ is the geometric average, accounting
-        for the channel tapering from full thickness at the source to zero at the drain
+        them: <M tex="V_{OV}^2" />. The factor of ½ is the geometric average, accounting for the
+        channel tapering from full thickness at the source to zero at the drain
         <Cite id="sedra-smith-2014" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        with <InlineMath tex="k_n = \mu_n C_{ox} W/L" /> the transconductance parameter. For a
-        small-signal n-MOSFET, k<sub>n</sub> is in the milliamp-per-volt-squared range; for a power
-        MOSFET, several amps per volt squared.
+        with <M tex="k_n = \mu_n C_{ox} W/L" /> the transconductance parameter. For a small-signal
+        n-MOSFET, k<sub>n</sub> is in the milliamp-per-volt-squared range; for a power MOSFET,
+        several amps per volt squared.
       </p>
       <p className="mb-prose-3">
         Below threshold, V<sub>OV</sub> is negative, the square law would give a nonsensical answer,
@@ -878,7 +876,7 @@ export default function Ch14Semiconductors() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              The overdrive voltage is <InlineMath tex="V_{OV} = V_{GS} - V_T = 2\ \text{V}" />.
+              The overdrive voltage is <M tex="V_{OV} = V_{GS} - V_T = 2\ \text{V}" />.
             </p>
             <Formula tex="I_D = (k_n/2)\, V_{OV}^2 = (1\ \text{mA/V}^2 / 2)(2\ \text{V})^2 = 2\ \text{mA}" />
             <p className="mb-prose-1 last:mb-0">
@@ -925,8 +923,8 @@ export default function Ch14Semiconductors() {
       <Formula tex="g_m = \dfrac{\partial I_C}{\partial V_{BE}} = \dfrac{I_C}{V_T}" />
       <p className="mb-prose-3">
         Differentiate the Shockley equation and the result almost writes itself. I<sub>C</sub> is
-        proportional to <InlineMath tex="\exp(V_{BE}/V_T)" />, so dI/dV brings down a factor of{' '}
-        <InlineMath tex="1/V_T" />
+        proportional to <M tex="\exp(V_{BE}/V_T)" />, so dI/dV brings down a factor of{' '}
+        <M tex="1/V_T" />
         and reproduces the same I<sub>C</sub> in front. The slope of an exponential is the
         exponential itself divided by its scale. Numerically: at I<sub>C</sub> = 1 mA and V
         <sub>T</sub>= 25.85 mV, g<sub>m</sub> = 38.7 mS — a 1 mV wiggle on V<sub>BE</sub> shifts I
@@ -936,9 +934,9 @@ export default function Ch14Semiconductors() {
         <Cite id="razavi-2021" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        where <InlineMath tex="V_T = kT/q \approx 25.85\ \text{mV}" /> at room temperature
-        <Cite id="codata-2018" in={SOURCES} />. For an MOSFET in saturation,
-        <InlineMath tex="g_m = k_n (V_{GS} - V_T) = \sqrt{2 k_n I_D}" />. The{' '}
+        where <M tex="V_T = kT/q \approx 25.85\ \text{mV}" /> at room temperature
+        <Cite id="codata-2018" in={SOURCES} />. For an MOSFET in saturation,{' '}
+        <M tex="g_m = k_n (V_{GS} - V_T) = \sqrt{2 k_n I_D}" />. The{' '}
         <Term
           def={
             <>
@@ -953,17 +951,17 @@ export default function Ch14Semiconductors() {
           small-signal model
         </Term>{' '}
         replaces the whole nonlinear device with a linear equivalent: a voltage-controlled current
-        source <InlineMath tex="g_m \cdot v_\pi" /> in parallel with the Early-effect resistance r
-        <sub>o</sub>, plus an input resistance <InlineMath tex="r_\pi = \beta/g_m" />
+        source <M tex="g_m \cdot v_\pi" /> in parallel with the Early-effect resistance r
+        <sub>o</sub>, plus an input resistance <M tex="r_\pi = \beta/g_m" />
         <Cite id="razavi-2021" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        The MOSFET expression <InlineMath tex="g_m = k_n \cdot V_{OV} = \sqrt{2 k_n I_D}" />
+        The MOSFET expression <M tex="g_m = k_n \cdot V_{OV} = \sqrt{2 k_n I_D}" />
         tells a different story. Differentiate the square law:{' '}
-        <InlineMath tex="dI_D/dV_{GS} = k_n(V_{GS} - V_T)" />. For the{' '}
-        <em className="text-text italic">same</em> bias current, the BJT's
-        <InlineMath tex="g_m = I/V_T = I/(0.026\ \text{V})" /> is much larger than the MOSFET's{' '}
-        <InlineMath tex="I/(V_{OV}/2)" />
+        <M tex="dI_D/dV_{GS} = k_n(V_{GS} - V_T)" />. For the{' '}
+        <em className="text-text italic">same</em> bias current, the BJT's{' '}
+        <M tex="g_m = I/V_T = I/(0.026\ \text{V})" /> is much larger than the MOSFET's{' '}
+        <M tex="I/(V_{OV}/2)" />
         with V<sub>OV</sub> typically 0.2–0.5 V. That is the small price you pay for the MOSFET's
         infinite gate input impedance: less transconductance per amp of bias. Modern analog
         designers spend a lot of effort recovering it — wide channels (large W/L), short-channel
@@ -992,10 +990,10 @@ export default function Ch14Semiconductors() {
         That is Kirchhoff's voltage law applied to a single loop — nothing more. The supply V
         <sub>CC</sub> is fixed; whatever current flows through R<sub>C</sub> drops some voltage
         across it; whatever is left appears across the transistor as V<sub>CE</sub>. Solve for I
-        <sub>C</sub> and you get a line of slope <InlineMath tex="-1/R_C" /> with two end-points: at
-        V<sub>CE</sub> = V<sub>CC</sub> the current is zero (cut-off), and at V<sub>CE</sub> = 0 the
-        current is <InlineMath tex="V_{CC}/R_C" /> (saturation, the maximum the resistor can pass).
-        Every (I<sub>C</sub>, V<sub>CE</sub>) point the circuit can{' '}
+        <sub>C</sub> and you get a line of slope <M tex="-1/R_C" /> with two end-points: at V
+        <sub>CE</sub> = V<sub>CC</sub> the current is zero (cut-off), and at V<sub>CE</sub> = 0 the
+        current is <M tex="V_{CC}/R_C" /> (saturation, the maximum the resistor can pass). Every (I
+        <sub>C</sub>, V<sub>CE</sub>) point the circuit can{' '}
         <em className="text-text italic">possibly</em> occupy lies on this line, regardless of what
         the transistor is doing.
       </p>
@@ -1010,11 +1008,10 @@ export default function Ch14Semiconductors() {
       </p>
       <p className="mb-prose-3">
         Plotted on the I<sub>C</sub>-V<sub>CE</sub> plane, that line runs from{' '}
-        <InlineMath tex="(V_{CC}, 0)" />
-        to <InlineMath tex="(0, V_{CC}/R_C)" />. The Q-point is where the load line crosses the
-        transistor's I<sub>B</sub>-trace. Move I<sub>B</sub> a little — by injecting a small AC
-        signal at the base — and Q slides up and down the load line, producing a swing in V
-        <sub>CE</sub>.
+        <M tex="(V_{CC}, 0)" />
+        to <M tex="(0, V_{CC}/R_C)" />. The Q-point is where the load line crosses the transistor's
+        I<sub>B</sub>-trace. Move I<sub>B</sub> a little — by injecting a small AC signal at the
+        base — and Q slides up and down the load line, producing a swing in V<sub>CE</sub>.
       </p>
 
       <LoadLineAnalysisDemo figure="Fig. 14.7" />
@@ -1023,32 +1020,32 @@ export default function Ch14Semiconductors() {
         Two graphical observations follow. (1) The maximum swing is constrained at one end by V
         <sub>CE</sub> = V<sub>CE(sat)</sub> ≈ 0.2 V (the transistor saturates) and at the other end
         by V<sub>CE</sub> = V<sub>CC</sub> (the transistor cuts off). For symmetrical swing, Q is
-        placed in the middle. (2) The slope of the load line is <InlineMath tex="-1/R_C" />, so the
-        voltage swing per unit current swing is exactly R<sub>C</sub>. Combined with g<sub>m</sub>,
-        which gives current swing per unit base-voltage swing, the small-signal voltage gain is the
+        placed in the middle. (2) The slope of the load line is <M tex="-1/R_C" />, so the voltage
+        swing per unit current swing is exactly R<sub>C</sub>. Combined with g<sub>m</sub>, which
+        gives current swing per unit base-voltage swing, the small-signal voltage gain is the
         product:
       </p>
       <Formula tex="A_v = \dfrac{\Delta V_{CE}}{\Delta v_{be}} = -g_m \cdot R_C" />
       <p className="mb-prose-3">
         Read it as a chain rule. A small input wiggle Δv<sub>be</sub> changes the collector current
-        by <InlineMath tex="\Delta I_C = g_m \cdot \Delta v_{be}" /> (the device's transconductance,
-        doing its one job). That current wiggle, forced through R<sub>C</sub> by Ohm's law, produces
-        a voltage swing <InlineMath tex="\Delta V_{RC} = R_C \cdot \Delta I_C" /> across the
-        resistor. Since V<sub>CC</sub> is held constant by the supply, every millivolt that appears
-        across the resistor disappears from V<sub>CE</sub> — hence the minus sign. Multiply:{' '}
-        <InlineMath tex="dV_{out}/dV_{in} = -g_m \cdot R_C" />. The transistor converts voltage to
-        current; the resistor converts current back to voltage; their product is the voltage gain.
+        by <M tex="\Delta I_C = g_m \cdot \Delta v_{be}" /> (the device's transconductance, doing
+        its one job). That current wiggle, forced through R<sub>C</sub> by Ohm's law, produces a
+        voltage swing <M tex="\Delta V_{RC} = R_C \cdot \Delta I_C" /> across the resistor. Since V
+        <sub>CC</sub> is held constant by the supply, every millivolt that appears across the
+        resistor disappears from V<sub>CE</sub> — hence the minus sign. Multiply:{' '}
+        <M tex="dV_{out}/dV_{in} = -g_m \cdot R_C" />. The transistor converts voltage to current;
+        the resistor converts current back to voltage; their product is the voltage gain.
       </p>
       <p className="mb-prose-3">
         The product also reveals where amplification gets its leverage. Substitute{' '}
-        <InlineMath tex="g_m = I_C/V_T" />
-        and the gain becomes <InlineMath tex="A_v = -(I_C \cdot R_C)/V_T" />.
-        <InlineMath tex="I_C \cdot R_C" /> is just the DC voltage dropped across the load resistor
-        at the quiescent point — call it V<sub>RC</sub> — and V<sub>T</sub> is fixed at ~26 mV. Gain{' '}
-        <InlineMath tex="\approx V_{RC}/V_T" />. Drop a few volts across R<sub>C</sub> and you get a
-        few hundred-fold voltage gain, automatically. That is the whole secret of the common-emitter
+        <M tex="g_m = I_C/V_T" />
+        and the gain becomes <M tex="A_v = -(I_C \cdot R_C)/V_T" />.
+        <M tex="I_C \cdot R_C" /> is just the DC voltage dropped across the load resistor at the
+        quiescent point — call it V<sub>RC</sub> — and V<sub>T</sub> is fixed at ~26 mV. Gain{' '}
+        <M tex="\approx V_{RC}/V_T" />. Drop a few volts across R<sub>C</sub> and you get a few
+        hundred-fold voltage gain, automatically. That is the whole secret of the common-emitter
         amplifier: it converts headroom (DC voltage across the load) into gain (AC voltage at the
-        output) at a fixed conversion ratio of <InlineMath tex="1/V_T" />.
+        output) at a fixed conversion ratio of <M tex="1/V_T" />.
       </p>
 
       <h2 className="chapter-h2">The common-emitter amplifier</h2>
@@ -1358,13 +1355,12 @@ export default function Ch14Semiconductors() {
           <p>
             Because of the shape of the Shockley exponential. The reverse-saturation current of a
             silicon p-n junction at room temperature is ~10⁻⁹ A. To get a "normal" forward current
-            of a few mA, you need
-            <InlineMath tex="\exp(qV/kT) \approx 10^6" /> — i.e.{' '}
-            <InlineMath tex="V \approx 6 \cdot V_T \cdot \ln(10) \approx 6 \cdot 0.0259 \cdot 2.30 \approx 0.36\ \text{V}" />
+            of a few mA, you need <M tex="\exp(qV/kT) \approx 10^6" /> — i.e.{' '}
+            <M tex="V \approx 6 \cdot V_T \cdot \ln(10) \approx 6 \cdot 0.0259 \cdot 2.30 \approx 0.36\ \text{V}" />
             ; doubling the desired current adds only one{' '}
-            <InlineMath tex="V_T \cdot \ln(2) \approx 18\ \text{mV}" />. So the practical "knee" of
-            a silicon diode lands around 0.6–0.7 V for typical operating currents. Schottky diodes
-            have I<sub>s</sub> ~10⁻⁵ A and the same logic gives V<sub>F</sub> ≈ 0.3 V
+            <M tex="V_T \cdot \ln(2) \approx 18\ \text{mV}" />. So the practical "knee" of a silicon
+            diode lands around 0.6–0.7 V for typical operating currents. Schottky diodes have I
+            <sub>s</sub> ~10⁻⁵ A and the same logic gives V<sub>F</sub> ≈ 0.3 V
             <Cite id="sedra-smith-2014" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1436,9 +1432,8 @@ export default function Ch14Semiconductors() {
             positive slope vs. V<sub>CE</sub> in the active region, parameterised by the Early
             voltage V<sub>A</sub>. In a MOSFET in saturation, raising V<sub>DS</sub> moves the
             pinch-off point slightly toward the source, shortening the effective channel length and
-            increasing I<sub>D</sub>; parameterised by <InlineMath tex="\lambda \approx 1/V_A" />.
-            Both limit the achievable small-signal gain — the output resistance{' '}
-            <InlineMath tex="r_o = V_A/I_C" />
+            increasing I<sub>D</sub>; parameterised by <M tex="\lambda \approx 1/V_A" />. Both limit
+            the achievable small-signal gain — the output resistance <M tex="r_o = V_A/I_C" />
             sits in parallel with R<sub>C</sub> and drags the gain down
             <Cite id="sedra-smith-2014" in={SOURCES} />.
           </p>
@@ -1460,11 +1455,11 @@ export default function Ch14Semiconductors() {
           <p>
             Subthreshold swing S is the gate-source voltage you need to apply to a MOSFET to change
             the drain current by one decade in the subthreshold (V<sub>GS</sub> &lt; V<sub>T</sub>)
-            regime. The diffusion-limited theoretical minimum is
-            <InlineMath tex="S = (kT/q) \ln(10) \approx 60\ \text{mV/decade}" /> at room
-            temperature. Real MOSFETs achieve 70–90 mV/decade. That number sets the lowest practical
-            supply voltage of a digital chip: you need at least ~6–7 S worth of V<sub>GS</sub>{' '}
-            headroom to get the I<sub>on</sub>/I<sub>off</sub>
+            regime. The diffusion-limited theoretical minimum is{' '}
+            <M tex="S = (kT/q) \ln(10) \approx 60\ \text{mV/decade}" /> at room temperature. Real
+            MOSFETs achieve 70–90 mV/decade. That number sets the lowest practical supply voltage of
+            a digital chip: you need at least ~6–7 S worth of V<sub>GS</sub> headroom to get the I
+            <sub>on</sub>/I<sub>off</sub>
             ratio that defines a "1" vs. a "0." Below that, leakage swamps signal. The inability to
             push S below 60 mV/decade with conventional MOSFETs is the reason CMOS supply voltages
             plateaued at ~0.7 V around 2010 and have barely moved since
@@ -1527,11 +1522,11 @@ export default function Ch14Semiconductors() {
             enormous change in current. Drive an LED from a fixed voltage and any manufacturing
             variation or temperature shift in V<sub>F</sub> sends the current either to near-zero
             (dim) or to several amps (dead). A series resistor converts "fixed voltage" into "fixed
-            current": <InlineMath tex="R = (V_{\text{supply}} - V_F)/I_{\text{target}}" />. For a 5
-            V supply, a red LED at V<sub>F</sub> ≈ 2 V, and a 20 mA target, R = 150 Ω. The resistor
-            dissipates <InlineMath tex="I^2 R = 60\ \text{mW}" /> — small compared to the LED's ~40
-            mW of light — but it stabilises the operating point. Higher-end LED drivers use a
-            switching regulator with a current sense to do the same job efficiently
+            current": <M tex="R = (V_{\text{supply}} - V_F)/I_{\text{target}}" />. For a 5 V supply,
+            a red LED at V<sub>F</sub> ≈ 2 V, and a 20 mA target, R = 150 Ω. The resistor dissipates{' '}
+            <M tex="I^2 R = 60\ \text{mW}" /> — small compared to the LED's ~40 mW of light — but it
+            stabilises the operating point. Higher-end LED drivers use a switching regulator with a
+            current sense to do the same job efficiently
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1539,11 +1534,10 @@ export default function Ch14Semiconductors() {
         <FAQItem q="What's a 'transistor amplifier's input impedance' and why does it matter?">
           <p>
             It is the impedance the previous stage sees when looking into the amplifier's input. For
-            a common-emitter BJT, <InlineMath tex="r_\pi = \beta/g_m" />; for I<sub>C</sub> = 1 mA
-            and β = 100,{' '}
-            <InlineMath tex="r_\pi = 100 / 38.7\ \text{mS} \approx 2.6\ \text{k}\Omega" /> — modest.
-            For a MOSFET common-source stage, the gate input impedance is essentially infinite at DC
-            and megohms at audio. It matters because a low input impedance loads the source: a
+            a common-emitter BJT, <M tex="r_\pi = \beta/g_m" />; for I<sub>C</sub> = 1 mA and β =
+            100, <M tex="r_\pi = 100 / 38.7\ \text{mS} \approx 2.6\ \text{k}\Omega" /> — modest. For
+            a MOSFET common-source stage, the gate input impedance is essentially infinite at DC and
+            megohms at audio. It matters because a low input impedance loads the source: a
             high-impedance signal source (a guitar pickup at ~250 kΩ, a piezo at ~10 MΩ) feeding a
             low-impedance amplifier suffers a huge voltage divider and most of the signal
             disappears. That's why FET-input op-amps and JFET preamps dominate high-impedance sensor

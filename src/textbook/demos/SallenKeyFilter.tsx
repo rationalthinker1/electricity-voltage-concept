@@ -19,14 +19,14 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { fmtFreqShort } from '@/lib/formatters';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -196,18 +196,88 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-      drawLabel(ctx, { text: '+20 dB', x: plotX - 4, y: yMag(20), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: plotX - 4, y: yMag(0), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '-40', x: plotX - 4, y: yMag(-40), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0°', x: plotX - 4, y: yPh(0), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '-90°', x: plotX - 4, y: yPh(-90), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '-180°', x: plotX - 4, y: yPh(-180), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '+20 dB',
+        x: plotX - 4,
+        y: yMag(20),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0',
+        x: plotX - 4,
+        y: yMag(0),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '-40',
+        x: plotX - 4,
+        y: yMag(-40),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0°',
+        x: plotX - 4,
+        y: yPh(0),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '-90°',
+        x: plotX - 4,
+        y: yPh(-90),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '-180°',
+        x: plotX - 4,
+        y: yPh(-180),
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      drawLabel(ctx, { text: '|H(jω)|  [dB]   (dashed = 1st-order RC reference)', x: plotX + 4, y: magY0 + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'arg H(jω)  [deg]', x: plotX + 4, y: phY0 + 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `K = ${K.toFixed(2)},  Q = ${Q.toFixed(2)},  f₀ = ${fmtFreqShort(f0)}`, x: plotX + plotW - 4, y: magY0 + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '|H(jω)|  [dB]   (dashed = 1st-order RC reference)',
+        x: plotX + 4,
+        y: magY0 + 4,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'arg H(jω)  [deg]',
+        x: plotX + 4,
+        y: phY0 + 4,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `K = ${K.toFixed(2)},  Q = ${Q.toFixed(2)},  f₀ = ${fmtFreqShort(f0)}`,
+        x: plotX + plotW - 4,
+        y: magY0 + 4,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -263,9 +333,13 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Sallen-Key 2nd-order LPF"
-        left={<InlineMath tex={`f_0 = \\frac{1}{2\\pi RC},\\quad Q = \\frac{1}{3-K}`} />}
+        left={<M tex={`f_0 = \\frac{1}{2\\pi RC},\\quad Q = \\frac{1}{3-K}`} />}
         rightLabel={`K = ${K.toFixed(2)}`}
-        right={<InlineMath tex={`f_0 = ${f0.toFixed(0)}\\,\\text{Hz},\\quad Q = \\frac{1}{3-${K.toFixed(2)}} = ${Q.toFixed(2)}`} />}
+        right={
+          <M
+            tex={`f_0 = ${f0.toFixed(0)}\\,\\text{Hz},\\quad Q = \\frac{1}{3-${K.toFixed(2)}} = ${Q.toFixed(2)}`}
+          />
+        }
       />
     </Demo>
   );

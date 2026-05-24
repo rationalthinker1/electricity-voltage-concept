@@ -26,7 +26,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
@@ -99,20 +99,48 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.8;
       ctx.fillStyle = getCanvasColors().text;
-      drawLabel(ctx, { text: 'A', x: xMid + 6, y: yTop - 4, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'bottom' });
-      drawLabel(ctx, { text: 'B', x: xMid + 6, y: yBot + 6, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'A',
+        x: xMid + 6,
+        y: yTop - 4,
+        weight: 'bold',
+        size: 11,
+        font: 'bold 11px "JetBrains Mono", monospace',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: 'B',
+        x: xMid + 6,
+        y: yBot + 6,
+        weight: 'bold',
+        size: 11,
+        font: 'bold 11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.restore();
 
       ctx.save();
       ctx.globalAlpha = 0.95;
       ctx.fillStyle = getCanvasColors().blue;
-      drawLabel(ctx, { text: `I_R₂ = I₁ − I₂ = ${fmtCurrent(sol.I_R2)}`, x: xMid + 14, y: h / 2, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `I_R₂ = I₁ − I₂ = ${fmtCurrent(sol.I_R2)}`,
+        x: xMid + 14,
+        y: h / 2,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx.restore();
 
       ctx.save();
       ctx.globalAlpha = 0.7;
       ctx.fillStyle = getCanvasColors().textDim;
-      drawLabel(ctx, { text: 'Two clockwise mesh currents I₁, I₂', x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'Two clockwise mesh currents I₁, I₂',
+        x: 12,
+        y: 10,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.restore();
 
       // Per-frame overlay: rotating arrowhead around each mesh-loop ellipse.
@@ -210,13 +238,13 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Mesh equations"
         left={
-          <InlineMath
+          <M
             tex={`(R_1+R_2)I_1 - R_2 I_2 = V_1 \\;\\Rightarrow\\; I_1 = ${sol.I1.toFixed(3)}\\,\\text{A}`}
           />
         }
         rightLabel="Shared branch"
         right={
-          <InlineMath
+          <M
             tex={`I_{R_2} = I_1 - I_2 = ${sol.I1.toFixed(3)} - ${sol.I2.toFixed(3)} = ${sol.I_R2.toFixed(3)}\\,\\text{A}`}
           />
         }

@@ -10,8 +10,15 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow } from '@/lib/canvasPrimitives';
@@ -57,7 +64,14 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
       ctx.fillRect(px, yBot, plateW, 6);
       ctx.save();
       ctx.globalAlpha = 0.65;
-      drawLabel(ctx, { text: `+ free charge   V = ${V.toFixed(1)} V`, x: w / 2, y: yTop - 14, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: `+ free charge   V = ${V.toFixed(1)} V`,
+        x: w / 2,
+        y: yTop - 14,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       ctx.restore();
       drawLabel(ctx, { text: `− free charge`, x: w / 2, y: yBot + 18 });
       const ticks = 12;
@@ -82,7 +96,13 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
         ctx.strokeStyle = colors.teal;
         ctx.lineWidth = 1;
         ctx.strokeRect(px + 12, slabTop, plateW - 24, slabBot - slabTop);
-        drawLabel(ctx, { text: `dielectric  ε_r = ${er.toFixed(1)}`, x: px + 18, y: slabTop + 14, color: colors.teal, font: '10px "JetBrains Mono", monospace' });
+        drawLabel(ctx, {
+          text: `dielectric  ε_r = ${er.toFixed(1)}`,
+          x: px + 18,
+          y: slabTop + 14,
+          color: colors.teal,
+          font: '10px "JetBrains Mono", monospace',
+        });
 
         // Bound surface charges on the slab faces: top = negative (attracted toward + plate),
         // bottom = positive (attracted toward − plate). They partially cancel free charge.
@@ -229,9 +249,13 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Field inside dielectric"
-        left={<InlineMath tex={`E = \\frac{V}{\\varepsilon_r d}`} />}
+        left={<M tex={`E = \\frac{V}{\\varepsilon_r d}`} />}
         rightLabel="Capacitance with dielectric"
-        right={<InlineMath tex={`C = \\varepsilon_0 \\varepsilon_r \\frac{A}{d} = ${(C_eff * 1e12).toFixed(2)}\\,\\text{pF}`} />}
+        right={
+          <M
+            tex={`C = \\varepsilon_0 \\varepsilon_r \\frac{A}{d} = ${(C_eff * 1e12).toFixed(2)}\\,\\text{pF}`}
+          />
+        }
       />
     </Demo>
   );

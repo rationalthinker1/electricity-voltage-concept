@@ -12,10 +12,10 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -105,10 +105,32 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
       ctx.arc(cx, cy + 8, 5, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'axis · 0', x: cx, y: cy - R - 12, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'axis · π', x: cx, y: cy + R + 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'equator', x: cx + R + 4, y: cy + 4, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: '|E|² ∝ sin²θ', x: 12, y: 18, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: 'axis · 0',
+        x: cx,
+        y: cy - R - 12,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: 'axis · π',
+        x: cx,
+        y: cy + R + 18,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: 'equator',
+        x: cx + R + 4,
+        y: cy + 4,
+        font: '10px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: '|E|² ∝ sin²θ',
+        x: 12,
+        y: 18,
+        font: '10px "JetBrains Mono", monospace',
+      });
     },
     [],
   );
@@ -143,9 +165,9 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Dipole radiation pattern"
-        left={<InlineMath tex="|E|^2 \propto \sin^2\theta" />}
+        left={<M tex="|E|^2 \propto \sin^2\theta" />}
         rightLabel={`At θ = ${probeDeg}°`}
-        right={<InlineMath tex={`\\sin^2(${probeDeg}^\\circ) = ${intensity.toFixed(3)}`} />}
+        right={<M tex={`\\sin^2(${probeDeg}^\\circ) = ${intensity.toFixed(3)}`} />}
       />
     </Demo>
   );

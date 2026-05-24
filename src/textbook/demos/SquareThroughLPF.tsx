@@ -12,7 +12,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -191,9 +191,13 @@ export function SquareThroughLPFDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="RC low-pass transfer function"
-        left={<InlineMath tex={`|H(f)| = \\frac{1}{\\sqrt{1 + (f/f_c)^2}}`} />}
+        left={<M tex={`|H(f)| = \\frac{1}{\\sqrt{1 + (f/f_c)^2}}`} />}
         rightLabel={`At f_c = ${fcRatio.toFixed(1)}·f₀`}
-        right={<InlineMath tex={`|H(f_0)| = \\frac{1}{\\sqrt{1+(1/${fcRatio.toFixed(1)})^2}} = ${Hfund.toFixed(3)} = ${(20 * Math.log10(Hfund)).toFixed(1)}\\,\\text{dB}`} />}
+        right={
+          <M
+            tex={`|H(f_0)| = \\frac{1}{\\sqrt{1+(1/${fcRatio.toFixed(1)})^2}} = ${Hfund.toFixed(3)} = ${(20 * Math.log10(Hfund)).toFixed(1)}\\,\\text{dB}`}
+          />
+        }
       />
     </Demo>
   );

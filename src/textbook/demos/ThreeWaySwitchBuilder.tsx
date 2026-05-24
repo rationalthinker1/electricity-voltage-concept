@@ -31,7 +31,7 @@ import { useCallback, useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, drawGlowPath, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -249,7 +249,16 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
   const xorBit = s1Bit === s2Bit ? 0 : 1;
   const logicLit = xorBit === 0;
 
-  const stateRef = useSimState({ wires, s1, s2, inProgressFrom, hoverTerm, pointer, badWireIds, bulbLit });
+  const stateRef = useSimState({
+    wires,
+    s1,
+    s2,
+    inProgressFrom,
+    hoverTerm,
+    pointer,
+    badWireIds,
+    bulbLit,
+  });
 
   // Stable callbacks the canvas needs to call.
   const handleTerminalClick = useCallback((t: TerminalId) => {
@@ -294,189 +303,195 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
       } = state;
       const L = layout(w, h);
 
-        // Background.
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
+      // Background.
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
 
-        // Static elements: power source (battery), bulb, switches drawn manually.
-        const staticElements: CircuitElement[] = [
-          // Source label box on the left — vertical battery glyph.
-          {
-            kind: 'battery',
-            at: { x: L['power-hot'].x, y: (L['power-hot'].y + L['power-neutral'].y) / 2 },
-            color: withAlpha(colors.text, 0.7),
-            label: '120 V',
-            labelOffset: { x: -22, y: 0 },
-            leadLength: (L['power-neutral'].y - L['power-hot'].y) / 2,
-            plateGap: 8,
-            positivePlateLength: 24,
-            negativePlateLength: 14,
-          },
-          // Bulb on the right.
-          {
-            kind: 'bulb',
-            at: { x: L['bulb-hot'].x, y: (L['bulb-hot'].y + L['bulb-neutral'].y) / 2 },
-            radius: 16,
-            brightness: stBulbLit ? 1 : 0,
-            label: 'lamp',
-            labelOffset: { x: 0, y: 36 },
-          },
-          // Short stub leads from the bulb's body to its terminal dots.
-          {
-            kind: 'wire',
-            points: [
-              { x: L['bulb-hot'].x, y: L['bulb-hot'].y },
-              { x: L['bulb-hot'].x, y: (L['bulb-hot'].y + L['bulb-neutral'].y) / 2 - 16 },
-            ],
-            color: withAlpha(colors.text, 0.45),
-            lineWidth: 2,
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: L['bulb-neutral'].x, y: (L['bulb-hot'].y + L['bulb-neutral'].y) / 2 + 16 },
-              { x: L['bulb-neutral'].x, y: L['bulb-neutral'].y },
-            ],
-            color: withAlpha(colors.text, 0.45),
-            lineWidth: 2,
-          },
-        ];
-        drawCircuit(ctx, { elements: staticElements });
+      // Static elements: power source (battery), bulb, switches drawn manually.
+      const staticElements: CircuitElement[] = [
+        // Source label box on the left — vertical battery glyph.
+        {
+          kind: 'battery',
+          at: { x: L['power-hot'].x, y: (L['power-hot'].y + L['power-neutral'].y) / 2 },
+          color: withAlpha(colors.text, 0.7),
+          label: '120 V',
+          labelOffset: { x: -22, y: 0 },
+          leadLength: (L['power-neutral'].y - L['power-hot'].y) / 2,
+          plateGap: 8,
+          positivePlateLength: 24,
+          negativePlateLength: 14,
+        },
+        // Bulb on the right.
+        {
+          kind: 'bulb',
+          at: { x: L['bulb-hot'].x, y: (L['bulb-hot'].y + L['bulb-neutral'].y) / 2 },
+          radius: 16,
+          brightness: stBulbLit ? 1 : 0,
+          label: 'lamp',
+          labelOffset: { x: 0, y: 36 },
+        },
+        // Short stub leads from the bulb's body to its terminal dots.
+        {
+          kind: 'wire',
+          points: [
+            { x: L['bulb-hot'].x, y: L['bulb-hot'].y },
+            { x: L['bulb-hot'].x, y: (L['bulb-hot'].y + L['bulb-neutral'].y) / 2 - 16 },
+          ],
+          color: withAlpha(colors.text, 0.45),
+          lineWidth: 2,
+        },
+        {
+          kind: 'wire',
+          points: [
+            { x: L['bulb-neutral'].x, y: (L['bulb-hot'].y + L['bulb-neutral'].y) / 2 + 16 },
+            { x: L['bulb-neutral'].x, y: L['bulb-neutral'].y },
+          ],
+          color: withAlpha(colors.text, 0.45),
+          lineWidth: 2,
+        },
+      ];
+      drawCircuit(ctx, { elements: staticElements });
 
-        // Draw switch bodies (custom — they have three terminals).
-        for (const sw of ['s1', 's2'] as const) {
-          const com = L[`${sw}-common`];
-          const t1 = L[`${sw}-t1`];
-          const t2 = L[`${sw}-t2`];
-          const pos = sw === 's1' ? stS1 : stS2;
-          const active = pos === 'up' ? t1 : t2;
+      // Draw switch bodies (custom — they have three terminals).
+      for (const sw of ['s1', 's2'] as const) {
+        const com = L[`${sw}-common`];
+        const t1 = L[`${sw}-t1`];
+        const t2 = L[`${sw}-t2`];
+        const pos = sw === 's1' ? stS1 : stS2;
+        const active = pos === 'up' ? t1 : t2;
 
-          // Box outline around the switch.
-          ctx.save();
-          ctx.strokeStyle = withAlpha(colors.textDim, 0.35);
-          ctx.lineWidth = 1;
-          const boxL = Math.min(t1.x, t2.x, com.x) - 14;
-          const boxR = Math.max(t1.x, t2.x, com.x) + 14;
-          const boxT = Math.min(t1.y, t2.y, com.y) - 14;
-          const boxB = Math.max(t1.y, t2.y, com.y) + 14;
-          ctx.strokeRect(boxL, boxT, boxR - boxL, boxB - boxT);
-          drawLabel(ctx, {
-            x: (boxL + boxR) / 2,
-            y: boxT - 4,
-            text: sw.toUpperCase(),
-            color: withAlpha(colors.textDim, 0.7),
-            size: 9,
-            align: 'center',
-            baseline: 'bottom',
+        // Box outline around the switch.
+        ctx.save();
+        ctx.strokeStyle = withAlpha(colors.textDim, 0.35);
+        ctx.lineWidth = 1;
+        const boxL = Math.min(t1.x, t2.x, com.x) - 14;
+        const boxR = Math.max(t1.x, t2.x, com.x) + 14;
+        const boxT = Math.min(t1.y, t2.y, com.y) - 14;
+        const boxB = Math.max(t1.y, t2.y, com.y) + 14;
+        ctx.strokeRect(boxL, boxT, boxR - boxL, boxB - boxT);
+        drawLabel(ctx, {
+          x: (boxL + boxR) / 2,
+          y: boxT - 4,
+          text: sw.toUpperCase(),
+          color: withAlpha(colors.textDim, 0.7),
+          size: 9,
+          align: 'center',
+          baseline: 'bottom',
+        });
+        ctx.restore();
+
+        // Blade — the internal SPDT contact from common to active traveller.
+        ctx.save();
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(com.x, com.y);
+        ctx.lineTo(active.x, active.y);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Draw wires the reader has placed.
+      for (const wr of stWires) {
+        const a = L[wr.from];
+        const b = L[wr.to];
+        const isBad = stBadWireIds.has(wr.id);
+        if (isBad) {
+          drawGlowPath(ctx, [a, b], {
+            color: colors.pink,
+            glowColor: withAlpha(colors.pink, 0.35),
+            lineWidth: 2.4,
+            glowWidth: 7,
           });
-          ctx.restore();
-
-          // Blade — the internal SPDT contact from common to active traveller.
+        } else if (stBulbLit) {
+          drawGlowPath(ctx, [a, b], {
+            color: colors.accent,
+            glowColor: withAlpha(colors.accent, 0.32),
+            lineWidth: 2.2,
+            glowWidth: 6,
+          });
+        } else {
           ctx.save();
-          ctx.strokeStyle = colors.accent;
+          ctx.strokeStyle = withAlpha(colors.text, 0.6);
           ctx.lineWidth = 2;
           ctx.lineCap = 'round';
           ctx.beginPath();
-          ctx.moveTo(com.x, com.y);
-          ctx.lineTo(active.x, active.y);
-          ctx.stroke();
-          ctx.restore();
-        }
-
-        // Draw wires the reader has placed.
-        for (const wr of stWires) {
-          const a = L[wr.from];
-          const b = L[wr.to];
-          const isBad = stBadWireIds.has(wr.id);
-          if (isBad) {
-            drawGlowPath(ctx, [a, b], {
-              color: colors.pink,
-              glowColor: withAlpha(colors.pink, 0.35),
-              lineWidth: 2.4,
-              glowWidth: 7,
-            });
-          } else if (stBulbLit) {
-            drawGlowPath(ctx, [a, b], {
-              color: colors.accent,
-              glowColor: withAlpha(colors.accent, 0.32),
-              lineWidth: 2.2,
-              glowWidth: 6,
-            });
-          } else {
-            ctx.save();
-            ctx.strokeStyle = withAlpha(colors.text, 0.6);
-            ctx.lineWidth = 2;
-            ctx.lineCap = 'round';
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-            ctx.restore();
-          }
-        }
-
-        // In-progress rubber-band wire from the held terminal to the pointer.
-        if (stInProgressFrom && stPointer) {
-          const a = L[stInProgressFrom];
-          ctx.save();
-          ctx.strokeStyle = withAlpha(colors.accent, 0.55);
-          ctx.lineWidth = 1.8;
-          ctx.setLineDash([4, 4]);
-          ctx.beginPath();
           ctx.moveTo(a.x, a.y);
-          ctx.lineTo(stPointer.x, stPointer.y);
+          ctx.lineTo(b.x, b.y);
           ctx.stroke();
           ctx.restore();
         }
+      }
 
-        // Draw terminal dots on top.
-        for (const t of ALL_TERMINALS) {
-          const p = L[t];
-          const isHover = stHoverTerm === t;
-          const isHeld = stInProgressFrom === t;
-          const isPower = t === 'power-hot' || t === 'power-neutral';
-          const isBulb = t === 'bulb-hot' || t === 'bulb-neutral';
-          const isHot = t === 'power-hot' || t === 'bulb-hot';
-          const isNeu = t === 'power-neutral' || t === 'bulb-neutral';
-          ctx.save();
-          let fill = withAlpha(colors.text, 0.8);
-          if (isHot && (isPower || isBulb)) fill = colors.pink;
-          else if (isNeu && (isPower || isBulb)) fill = colors.blue;
-          else if (isSwitchTerminal(t)) fill = colors.text;
-          ctx.fillStyle = fill;
-          if (isHeld) {
-            ctx.strokeStyle = colors.accent;
-            ctx.lineWidth = 2;
-          } else if (isHover) {
-            ctx.strokeStyle = withAlpha(colors.accent, 0.65);
-            ctx.lineWidth = 1.5;
-          } else {
-            ctx.strokeStyle = withAlpha(colors.bg, 0.55);
-            ctx.lineWidth = 1;
-          }
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, isHover || isHeld ? 6 : 4.5, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-          // Label below terminals (above for the top row).
-          ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-          ctx.font = '9px "JetBrains Mono", monospace';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = p.y < h / 2 ? 'bottom' : 'top';
-          const dy = p.y < h / 2 ? -10 : 10;
-          ctx.fillText(TERMINAL_LABEL[t], p.x, p.y + dy);
-          ctx.restore();
-        }
-
-        // Footer hint.
+      // In-progress rubber-band wire from the held terminal to the pointer.
+      if (stInProgressFrom && stPointer) {
+        const a = L[stInProgressFrom];
         ctx.save();
-        ctx.fillStyle = withAlpha(colors.textDim, 0.65);
-        const hint = stInProgressFrom
-          ? `wiring from ${TERMINAL_LABEL[stInProgressFrom]} — click another terminal to complete (or empty space to cancel)`
-          : 'click a terminal to start a wire · click a wire to delete · click a switch body to toggle';
-        drawLabel(ctx, { text: hint, x: w / 2, y: h - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+        ctx.strokeStyle = withAlpha(colors.accent, 0.55);
+        ctx.lineWidth = 1.8;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(stPointer.x, stPointer.y);
+        ctx.stroke();
         ctx.restore();
+      }
 
+      // Draw terminal dots on top.
+      for (const t of ALL_TERMINALS) {
+        const p = L[t];
+        const isHover = stHoverTerm === t;
+        const isHeld = stInProgressFrom === t;
+        const isPower = t === 'power-hot' || t === 'power-neutral';
+        const isBulb = t === 'bulb-hot' || t === 'bulb-neutral';
+        const isHot = t === 'power-hot' || t === 'bulb-hot';
+        const isNeu = t === 'power-neutral' || t === 'bulb-neutral';
+        ctx.save();
+        let fill = withAlpha(colors.text, 0.8);
+        if (isHot && (isPower || isBulb)) fill = colors.pink;
+        else if (isNeu && (isPower || isBulb)) fill = colors.blue;
+        else if (isSwitchTerminal(t)) fill = colors.text;
+        ctx.fillStyle = fill;
+        if (isHeld) {
+          ctx.strokeStyle = colors.accent;
+          ctx.lineWidth = 2;
+        } else if (isHover) {
+          ctx.strokeStyle = withAlpha(colors.accent, 0.65);
+          ctx.lineWidth = 1.5;
+        } else {
+          ctx.strokeStyle = withAlpha(colors.bg, 0.55);
+          ctx.lineWidth = 1;
+        }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, isHover || isHeld ? 6 : 4.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        // Label below terminals (above for the top row).
+        ctx.fillStyle = withAlpha(colors.textDim, 0.85);
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = p.y < h / 2 ? 'bottom' : 'top';
+        const dy = p.y < h / 2 ? -10 : 10;
+        ctx.fillText(TERMINAL_LABEL[t], p.x, p.y + dy);
+        ctx.restore();
+      }
+
+      // Footer hint.
+      ctx.save();
+      ctx.fillStyle = withAlpha(colors.textDim, 0.65);
+      const hint = stInProgressFrom
+        ? `wiring from ${TERMINAL_LABEL[stInProgressFrom]} — click another terminal to complete (or empty space to cancel)`
+        : 'click a terminal to start a wire · click a wire to delete · click a switch body to toggle';
+      drawLabel(ctx, {
+        text: hint,
+        x: w / 2,
+        y: h - 6,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
+      ctx.restore();
     },
     [handleSwitchClick, handleTerminalClick, handleWireClick],
     (info) => {
@@ -655,12 +670,10 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
       )}
       <EquationStrip
         leftLabel="Switch logic"
-        left={<InlineMath tex="\\text{load\\_state} = \\neg(S_1 \\oplus S_2)" />}
+        left={<M tex="\\text{load\\_state} = \\neg(S_1 \\oplus S_2)" />}
         rightLabel="Current positions"
         right={
-          <InlineMath
-            tex={`\\neg(${s1Bit} \\oplus ${s2Bit}) = \\neg ${xorBit} = ${logicLit ? 1 : 0}`}
-          />
+          <M tex={`\\neg(${s1Bit} \\oplus ${s2Bit}) = \\neg ${xorBit} = ${logicLit ? 1 : 0}`} />
         }
       />
     </Demo>

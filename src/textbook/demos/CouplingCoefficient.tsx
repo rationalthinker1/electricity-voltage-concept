@@ -16,7 +16,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -217,10 +217,10 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="resonant link"
-        left={<InlineMath tex="\eta=\frac{k^2Q_1Q_2}{(1+\sqrt{1+k^2Q_1Q_2})^2}" />}
+        left={<M tex="\eta=\frac{k^2Q_1Q_2}{(1+\sqrt{1+k^2Q_1Q_2})^2}" />}
         rightLabel="live value"
         right={
-          <InlineMath
+          <M
             tex={`k^2Q_1Q_2=${computed.couplingProduct.toFixed(1)},\\ \\eta=${(
               computed.eta * 100
             ).toFixed(0)}\\%`}

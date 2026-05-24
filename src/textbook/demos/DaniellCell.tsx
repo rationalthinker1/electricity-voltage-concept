@@ -8,8 +8,15 @@
 import { useEffect, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -58,13 +65,29 @@ export function DaniellCellDemo({ figure }: Props) {
       drawBeaker(ctx, rightX, beakerY, beakerW, beakerH, withAlpha(colors.accent, 0.18), 'CuSO₄');
       ctx.fillStyle = colors.textDim;
       ctx.fillRect(W / 2 - 6, beakerY + 20, 12, beakerH - 30);
-      drawLabel(ctx, { text: 'porous', x: W / 2, y: beakerY + beakerH - 8, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'porous',
+        x: W / 2,
+        y: beakerY + beakerH - 8,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       const znRodWBase = 16;
       const znRodW = znRodWBase * (1 - 0.5 * s.erosion);
       const rodX_Zn = leftX + beakerW / 2 - znRodW / 2;
       ctx.fillStyle = '#c4c8cc';
       ctx.fillRect(rodX_Zn, beakerY + 10, znRodW, beakerH - 30);
-      drawLabel(ctx, { text: 'Zn', x: leftX + beakerW / 2, y: beakerY - 6, color: 'rgba(196,200,204,0.85)', font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'Zn',
+        x: leftX + beakerW / 2,
+        y: beakerY - 6,
+        color: 'rgba(196,200,204,0.85)',
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       const cuRodW = 16 + 12 * s.erosion;
       const rodX_Cu = rightX + beakerW / 2 - cuRodW / 2;
       ctx.fillStyle = '#b87333';
@@ -79,7 +102,14 @@ export function DaniellCellDemo({ figure }: Props) {
           ctx.fill();
         }
       }
-      drawLabel(ctx, { text: 'Cu', x: rightX + beakerW / 2, y: beakerY - 6, color: 'rgba(184,115,51,0.95)', font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: 'Cu',
+        x: rightX + beakerW / 2,
+        y: beakerY - 6,
+        color: 'rgba(184,115,51,0.95)',
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       const wireY = beakerY - 22;
       ctx.save();
       ctx.globalAlpha = 0.85;
@@ -139,8 +169,21 @@ export function DaniellCellDemo({ figure }: Props) {
         }
       }
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'anode: Zn → Zn²⁺ + 2e⁻', x: 10, y: H - 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'cathode: Cu²⁺ + 2e⁻ → Cu', x: W - 10, y: H - 24, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'anode: Zn → Zn²⁺ + 2e⁻',
+        x: 10,
+        y: H - 24,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'cathode: Cu²⁺ + 2e⁻ → Cu',
+        x: W - 10,
+        y: H - 24,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       ctx0.phase = phase;
     },
     [],
@@ -186,9 +229,13 @@ export function DaniellCellDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Loaded cell voltage"
-        left={<InlineMath tex="V_{\text{term}} = \frac{V_{\text{OC}} \cdot R_L}{R_{\text{int}} + R_L}" />}
+        left={<M tex="V_{\text{term}} = \frac{V_{\text{OC}} \cdot R_L}{R_{\text{int}} + R_L}" />}
         rightLabel="At current load"
-        right={<InlineMath tex={`\\frac{${V_OC} \\times ${R_L.toFixed(1)}}{${R_INT.toFixed(1)} + ${R_L.toFixed(1)}} = ${V_term.toFixed(3)}\\,\\text{V}`} />}
+        right={
+          <M
+            tex={`\\frac{${V_OC} \\times ${R_L.toFixed(1)}}{${R_INT.toFixed(1)} + ${R_L.toFixed(1)}} = ${V_term.toFixed(3)}\\,\\text{V}`}
+          />
+        }
       />
     </Demo>
   );

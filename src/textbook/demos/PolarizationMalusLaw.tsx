@@ -19,8 +19,15 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -163,8 +170,23 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
       ctx.lineTo(panelW * 2.05, cyMid);
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `I/I₀ = ${fracOut.toFixed(3)}`, x: 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: qwp ? 'λ/4 plate inserted between P₁ and P₂' : 'Δθ = ' + (t2Deg - t1Deg).toFixed(0) + '°', x: W - 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, {
+        text: `I/I₀ = ${fracOut.toFixed(3)}`,
+        x: 12,
+        y: 18,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: qwp
+          ? 'λ/4 plate inserted between P₁ and P₂'
+          : 'Δθ = ' + (t2Deg - t1Deg).toFixed(0) + '°',
+        x: W - 12,
+        y: 18,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+      });
       ctx0.tAnim = tAnim;
     },
     [],
@@ -217,15 +239,13 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Malus's law"
-        left={
-          <InlineMath tex={"\\tfrac{I}{I_0} = \\tfrac{1}{2}\\cos^{2}(\\Delta\\theta)"} />
-        }
+        left={<M tex={'\\tfrac{I}{I_0} = \\tfrac{1}{2}\\cos^{2}(\\Delta\\theta)'} />}
         rightLabel="At this setting"
         right={
-          <InlineMath
+          <M
             tex={
               qwp
-                ? "\\tfrac{I}{I_0} = \\tfrac{1}{4} = 0.250\\;(\\text{QWP active})"
+                ? '\\tfrac{I}{I_0} = \\tfrac{1}{4} = 0.250\\;(\\text{QWP active})'
                 : `\\tfrac{I}{I_0} = \\tfrac{1}{2}\\cos^{2}(${(t2Deg - t1Deg).toFixed(0)}^{\\circ}) = ${fracOut.toFixed(3)}`
             }
           />

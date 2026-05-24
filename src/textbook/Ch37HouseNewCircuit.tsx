@@ -23,7 +23,7 @@
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Term } from '@/components/Term';
@@ -54,10 +54,10 @@ export default function Ch37HouseNewCircuit() {
         is the compressed-into-legalese version of a physics result from earlier in the book. Demand
         factors come out of statistical load aggregation; the 125% continuous-load multiplier comes
         from breaker time-current curves; ampacity tables come from conductor heating; voltage drop
-        comes from <InlineMath tex="I \cdot R" />; the bond-once-only rule comes from the
-        fault-clearing geometry of Ch.28. The chapter assumes the reader has already read Ch.28 (the
-        panel), Ch.29 (branch circuits), and Ch.31 (big 240 V loads); it builds on the vocabulary
-        without re-deriving it.
+        comes from <M tex="I \cdot R" />; the bond-once-only rule comes from the fault-clearing
+        geometry of Ch.28. The chapter assumes the reader has already read Ch.28 (the panel), Ch.29
+        (branch circuits), and Ch.31 (big 240 V loads); it builds on the vocabulary without
+        re-deriving it.
       </p>
 
       <h2 className="chapter-h2">Step 0: confirm the panel has headroom</h2>
@@ -86,12 +86,10 @@ export default function Ch37HouseNewCircuit() {
       </p>
       <Formula tex="I_{\text{demand}} = \dfrac{3 \times W_{\text{first10k}}/1000 + 0.40 \times W_{\text{remainder}}/1000}{V}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="I_{\text{demand}}" /> is the calculated service
-        demand current (in amperes RMS) that the panel needs to be able to carry,{' '}
-        <InlineMath tex="W_{\text{first10k}}" /> is the first 10 000 VA of
-        summed connected load (taken at 100%),{' '}
-        <InlineMath tex="W_{\text{remainder}}" /> is everything above 10 000 VA
-        (taken at 40% to account for{' '}
+        where <M tex="I_{\text{demand}}" /> is the calculated service demand current (in amperes
+        RMS) that the panel needs to be able to carry, <M tex="W_{\text{first10k}}" /> is the first
+        10 000 VA of summed connected load (taken at 100%), <M tex="W_{\text{remainder}}" /> is
+        everything above 10 000 VA (taken at 40% to account for{' '}
         <Term
           def={
             <>
@@ -106,7 +104,7 @@ export default function Ch37HouseNewCircuit() {
           diversity
         </Term>{' '}
         — almost no household actually runs the dryer, the oven, the heat pump and the dishwasher
-        all at full power simultaneously), and <InlineMath tex="V" />{' '}
+        all at full power simultaneously), and <M tex="V" />
         is the service voltage (240 V for a standard split-phase residential service). The factor of
         3 on the first chunk and 0.40 on the remainder are the two empirical numbers the NEC
         committee chose to make the formula match observed peak loads on real residential services
@@ -220,13 +218,12 @@ export default function Ch37HouseNewCircuit() {
       </p>
       <Formula tex="I_{\text{conductor}} \geq 1.25 \times I_{\text{continuous}} + 1.0 \times I_{\text{noncontinuous}}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="I_{\text{conductor}}" /> is the minimum
-        allowable conductor ampacity (in amperes),{' '}
-        <InlineMath tex="I_{\text{continuous}}" />
+        where <M tex="I_{\text{conductor}}" /> is the minimum allowable conductor ampacity (in
+        amperes), <M tex="I_{\text{continuous}}" />
         is the portion of the branch's load that is continuous (in amperes), and{' '}
-        <InlineMath tex="I_{\text{noncontinuous}}" /> is any non-continuous
-        portion sharing the same conductor. The 1.25 factor is a derating multiplier that takes the
-        breaker out of the steepest part of its{' '}
+        <M tex="I_{\text{noncontinuous}}" /> is any non-continuous portion sharing the same
+        conductor. The 1.25 factor is a derating multiplier that takes the breaker out of the
+        steepest part of its{' '}
         <Term
           def={
             <>
@@ -269,26 +266,24 @@ export default function Ch37HouseNewCircuit() {
           ampacity
         </Term>{' '}
         of 12 AWG is set by how hot the conductor gets at the rated current. But long runs have a
-        second problem: even well below the thermal limit, the <InlineMath tex="I \cdot R" /> drop along the conductor pair
-        lowers the voltage delivered to the load. NEC 210.19 Informational Note 4 (not a hard
-        requirement, just a strong recommendation) suggests keeping branch-circuit voltage drop
-        under 3% and combined feeder-plus-branch drop under 5%
+        second problem: even well below the thermal limit, the <M tex="I \cdot R" /> drop along the
+        conductor pair lowers the voltage delivered to the load. NEC 210.19 Informational Note 4
+        (not a hard requirement, just a strong recommendation) suggests keeping branch-circuit
+        voltage drop under 3% and combined feeder-plus-branch drop under 5%
         <Cite id="nec-2023" in={SOURCES} />. The arithmetic is straightforward:
       </p>
       <Formula tex="V_{\text{drop}} = 2 \times I \times R_{\text{per\_ft}} \times L_{\text{oneway}}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="V_{\text{drop}}" /> is the total round-trip
-        voltage drop seen by the load (in volts),
-        <InlineMath tex="I" /> is the operating current (in amperes),{' '}
-        <InlineMath tex="R_{\text{per\_ft}}" /> is the conductor's resistance
-        per foot (in ohms per foot; the table value for 12 AWG copper at 75 °C is approximately 1.59
-        mΩ/ft, or about 0.00159 Ω/ft), <InlineMath tex="L_{\text{oneway}}" />{' '}
+        where <M tex="V_{\text{drop}}" /> is the total round-trip voltage drop seen by the load (in
+        volts), <M tex="I" /> is the operating current (in amperes), <M tex="R_{\text{per\_ft}}" />{' '}
+        is the conductor's resistance per foot (in ohms per foot; the table value for 12 AWG copper
+        at 75 °C is approximately 1.59 mΩ/ft, or about 0.00159 Ω/ft), <M tex="L_{\text{oneway}}" />
         is the one-way length of the run from panel to load (in feet), and the leading factor of 2
         accounts for the round trip — current flows out on the hot and returns on the neutral,
         dropping voltage on both conductors
         <Cite id="nec-2023" in={SOURCES} />. For a 16 A operating current and a 100 ft one-way run,
-        the drop is <InlineMath tex="2 \times 16 \times 0.00159 \times 100 \approx 5.1\,\text{V}" />,
-        or about 4.2% of 120 V — slightly over the 3% recommendation, which means a 100 ft run would
+        the drop is <M tex="2 \times 16 \times 0.00159 \times 100 \approx 5.1\,\text{V}" />, or
+        about 4.2% of 120 V — slightly over the 3% recommendation, which means a 100 ft run would
         prefer 10 AWG even though 12 AWG satisfies ampacity.
       </p>
 
@@ -323,8 +318,8 @@ export default function Ch37HouseNewCircuit() {
               Answer: <strong className="text-text font-medium">compliant, but at the limit</strong>
               . If the run length crept up by even ten feet (or if the load were nudged from 14 A to
               16 A), the upsize is 10 AWG copper —{' '}
-              <InlineMath tex="R/\text{ft} \approx 1.00\,\text{m}\Omega/\text{ft}" /> — which
-              roughly halves the drop. The 20 A breaker stays the same; only the wire gets fatter.
+              <M tex="R/\text{ft} \approx 1.00\,\text{m}\Omega/\text{ft}" /> — which roughly halves
+              the drop. The 20 A breaker stays the same; only the wire gets fatter.
             </p>
           </>
         }
@@ -563,19 +558,16 @@ export default function Ch37HouseNewCircuit() {
       </p>
       <Formula tex="V_{\text{box}} \geq \sum(n_{\text{cond}} \times v_{\text{cond}}) + V_{\text{devices}} + V_{\text{grounds}} + V_{\text{clamps}}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="V_{\text{box}}" /> is the labelled internal
-        volume of the box (in cubic inches),
-        <InlineMath tex="n_{\text{cond}}" /> is the number of insulated
-        current-carrying conductors entering and remaining in the box (in count),{' '}
-        <InlineMath tex="v_{\text{cond}}" /> is the volume allowance per
-        conductor for that conductor's gauge from NEC Table 314.16(B) (in cubic inches; 2.00 for 14
-        AWG, 2.25 for 12 AWG, 2.50 for 10 AWG),
-        <InlineMath tex="V_{\text{devices}}" /> is two conductor-volumes per
-        yoke or strap that holds a device (receptacle or switch),{' '}
-        <InlineMath tex="V_{\text{grounds}}" /> is one conductor-volume total
-        for the entire bundle of grounding conductors regardless of how many there are, and{' '}
-        <InlineMath tex="V_{\text{clamps}}" /> is one conductor-volume total if
-        any internal cable clamps are present (zero for boxes that use only external clamps)
+        where <M tex="V_{\text{box}}" /> is the labelled internal volume of the box (in cubic
+        inches), <M tex="n_{\text{cond}}" /> is the number of insulated current-carrying conductors
+        entering and remaining in the box (in count), <M tex="v_{\text{cond}}" /> is the volume
+        allowance per conductor for that conductor's gauge from NEC Table 314.16(B) (in cubic
+        inches; 2.00 for 14 AWG, 2.25 for 12 AWG, 2.50 for 10 AWG), <M tex="V_{\text{devices}}" />{' '}
+        is two conductor-volumes per yoke or strap that holds a device (receptacle or switch),{' '}
+        <M tex="V_{\text{grounds}}" /> is one conductor-volume total for the entire bundle of
+        grounding conductors regardless of how many there are, and <M tex="V_{\text{clamps}}" /> is
+        one conductor-volume total if any internal cable clamps are present (zero for boxes that use
+        only external clamps)
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -841,10 +833,9 @@ export default function Ch37HouseNewCircuit() {
             <Formula tex="I = 1200\ \text{W} / 120\ \text{V} = 10\ \text{A}" />
             <Formula tex="V_{\text{drop}} = 2 \times 10 \times 0.00252 \times 100 = 5.04\ \text{V}" />
             <p className="mb-prose-1 last:mb-0">
-              On a 120 V branch that is{' '}
-              <InlineMath tex="5.04 / 120 = 4.2\%" />, well over the 3% informational
-              recommendation. Upsizing to 12 AWG (
-              <InlineMath tex="R/\text{ft} \approx 1.59\,\text{m}\Omega/\text{ft}" />) gives:
+              On a 120 V branch that is <M tex="5.04 / 120 = 4.2\%" />, well over the 3%
+              informational recommendation. Upsizing to 12 AWG (
+              <M tex="R/\text{ft} \approx 1.59\,\text{m}\Omega/\text{ft}" />) gives:
             </p>
             <Formula tex="V_{\text{drop,12AWG}} = 2 \times 10 \times 0.00159 \times 100 = 3.18\ \text{V} \to 2.65\%" />
             <p className="mb-prose-1 last:mb-0">
@@ -942,7 +933,7 @@ export default function Ch37HouseNewCircuit() {
               label: 'Voltage drop at 12.5 A',
               value: (
                 <>
-                  <InlineMath tex="2 \times 12.5 \times 0.00159 \times 35 \approx 1.4\ \text{V} \to 1.2\%" />
+                  <M tex="2 \times 12.5 \times 0.00159 \times 35 \approx 1.4\ \text{V} \to 1.2\%" />
                 </>
               ),
             },
@@ -1382,8 +1373,7 @@ export default function Ch37HouseNewCircuit() {
         <FAQItem q="Why is every current on every label in this chapter still a count of CODATA elementary charges?">
           <p>
             Because amperes are by definition a count of charges per second, and the elementary
-            charge is set by CODATA at <InlineMath tex="e" /> = 1.602176634×10⁻¹⁹ C
-            exactly
+            charge is set by CODATA at <M tex="e" /> = 1.602176634×10⁻¹⁹ C exactly
             <Cite id="codata-2018" in={SOURCES} />. A 20 A branch therefore carries 20 / 1.602×10⁻¹⁹
             ≈ 1.25×10²⁰ electrons through its cross section every second. The 220.82 demand calc,
             the 125% continuous multiplier, the 5 mA GFCI threshold, and the 14 V drop at the end of

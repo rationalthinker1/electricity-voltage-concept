@@ -960,12 +960,7 @@ export const CHAPTERS: ChapterEntry[] = [
     blurb:
       'The last mile of the power grid: how three-phase transmission steps down through a distribution transformer on a pole or pad to the single-phase 240 V split that enters most North American homes, why neutral is bonded to ground at the service entrance, and what the rotating disk or LCD on your meter is actually measuring.',
     relatedLabs: ['ohms-law', 'joule'],
-    sources: [
-      'ansi-c84-1-2020',
-      'nec-2023',
-      'ieee-std-3001-2-2017',
-      'grainger-power-systems-2003',
-    ],
+    sources: ['ansi-c84-1-2020', 'nec-2023', 'ieee-std-3001-2-2017', 'grainger-power-systems-2003'],
     punchline:
       'The three-phase grid steps down through one final transformer on a pole or pad into a 240 V split-phase service that lands at your meter base — that is the first piece of electricity you actually own.',
     objectives: [
@@ -1265,13 +1260,7 @@ export const CHAPTERS: ChapterEntry[] = [
     blurb:
       "The retrofit market has its own ecology. Lutron Caséta (proprietary 434 MHz, works without a neutral via the bleeder). Z-Wave (sub-GHz mesh). Zigbee (2.4 GHz mesh). Matter over Thread (the new convergence). And the structural NEC 404.2(C) requirement of a neutral in every switch box that finally caught up with smart switches. Three-way smart pairs, dimmable-LED phase choice (leading vs trailing), and what 'companion' vs 'add-on' means.",
     relatedLabs: ['ohms-law', 'inductance'],
-    sources: [
-      'nec-2023',
-      'lutron-dimmer-app-note',
-      'ul-498',
-      'horowitz-hill-2015',
-      'codata-2018',
-    ],
+    sources: ['nec-2023', 'lutron-dimmer-app-note', 'ul-498', 'horowitz-hill-2015', 'codata-2018'],
     punchline:
       'A smart switch is a radio plus a triac plus a 30 mW microcontroller — and the most interesting design trade is how it stays powered when the load is off.',
     objectives: [
@@ -1315,13 +1304,7 @@ export const CHAPTERS: ChapterEntry[] = [
     blurb:
       "A lightning strike can put 10 kA on the service drop for 20 µs. The grounding electrode system (ground rod, Ufer, water bond), the bonding jumper, and the layered SPD installation (Type 1 ahead of the meter, Type 2 inside the panel, Type 3 at sensitive loads per UL 1449) divert that surge to dirt without letting it cook the wiring or the equipment. Plus generator interlocks, transfer switches, and what 'isolated ground' actually means.",
     relatedLabs: ['joule', 'ohms-law', 'capacitance'],
-    sources: [
-      'nec-2023',
-      'ul-1449',
-      'ieee-c62-41',
-      'nfpa-70e-2024',
-      'codata-2018',
-    ],
+    sources: ['nec-2023', 'ul-1449', 'ieee-c62-41', 'nfpa-70e-2024', 'codata-2018'],
     punchline:
       'A surge protector does not stop a lightning strike — it gives the strike a much cheaper path to ground than your refrigerator.',
     objectives: [

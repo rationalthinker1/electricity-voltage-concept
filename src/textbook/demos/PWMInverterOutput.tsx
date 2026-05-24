@@ -19,7 +19,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { fmtFrequency } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -114,10 +114,37 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-      drawLabel(ctx, { text: '+V_DC', x: padL - 4, y: yTime(+V_DC), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: padL - 4, y: top + subH / 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '−V_DC', x: padL - 4, y: yTime(-V_DC), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: `raw PWM (carrier ${(fSw / 1e3).toFixed(1)} kHz)  +  60 Hz filtered`, x: padL + 4, y: top + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '+V_DC',
+        x: padL - 4,
+        y: yTime(+V_DC),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0',
+        x: padL - 4,
+        y: top + subH / 2,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '−V_DC',
+        x: padL - 4,
+        y: yTime(-V_DC),
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: `raw PWM (carrier ${(fSw / 1e3).toFixed(1)} kHz)  +  60 Hz filtered`,
+        x: padL + 4,
+        y: top + 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       const fLo = 10;
       const fHi = 1e6;
       const xOfF = (f: number) => padL + (Math.log10(f / fLo) / Math.log10(fHi / fLo)) * plotW;
@@ -253,11 +280,16 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Output and sidelobe location"
-        left={<InlineMath tex="V_{\text{pk}} = m \cdot V_{\text{DC}},\quad f_{\text{SL}} \approx f_{sw} - 2f_{\text{out}}" />}
+        left={
+          <M tex="V_{\text{pk}} = m \cdot V_{\text{DC}},\quad f_{\text{SL}} \approx f_{sw} - 2f_{\text{out}}" />
+        }
         rightLabel="At current settings"
-        right={<InlineMath tex={`${m.toFixed(2)} \\times ${V_DC}\\,\\text{V} = ${computed.Vpeak.toFixed(0)}\\,\\text{V}_{\\text{pk}};\\quad f_{\\text{SL}} = ${(computed.fSidelobe / 1e3).toFixed(1)}\\,\\text{kHz}`} />}
+        right={
+          <M
+            tex={`${m.toFixed(2)} \\times ${V_DC}\\,\\text{V} = ${computed.Vpeak.toFixed(0)}\\,\\text{V}_{\\text{pk}};\\quad f_{\\text{SL}} = ${(computed.fSidelobe / 1e3).toFixed(1)}\\,\\text{kHz}`}
+          />
+        }
       />
     </Demo>
   );
 }
-

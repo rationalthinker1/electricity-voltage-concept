@@ -18,7 +18,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -71,38 +71,32 @@ export default function Ch19Antennas() {
       </p>
       <p className="mb-prose-3">
         That radiation carries energy. By Poynting (Chapter 8), the time-averaged outward flux from
-        an accelerating charge is{' '}
-        <InlineMath tex="\langle S\rangle = \tfrac{1}{2}\varepsilon_0 c |E|^{2}" />. Integrate over a
-        sphere far from the source and you get the total radiated power, which (for a non-
-        relativistic charge) is the Larmor formula:
+        an accelerating charge is <M tex="\langle S\rangle = \tfrac{1}{2}\varepsilon_0 c |E|^{2}" />
+        . Integrate over a sphere far from the source and you get the total radiated power, which
+        (for a non- relativistic charge) is the Larmor formula:
       </p>
       <Formula>
         P<sub>rad</sub> = (q² a²) / (6π ε₀ c³)
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="P_{\text{rad}}" />{' '}
-        is the total time-averaged radiated power (in watts),
-        <InlineMath tex="q" /> is the charge (in coulombs),{' '}
-        <InlineMath tex="a" /> is the magnitude of the charge's
-        acceleration (in m/s²),{' '}
-        <InlineMath tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" /> is the permittivity
-        of free space, and <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is
-        the speed of light.
+        where <M tex="P_{\text{rad}}" />
+        is the total time-averaged radiated power (in watts), <M tex="q" /> is the charge (in
+        coulombs), <M tex="a" /> is the magnitude of the charge's acceleration (in m/s²),{' '}
+        <M tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" /> is the permittivity of
+        free space, and <M tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light.
       </p>
       <p className="mb-prose-3">
-        Three features of that formula are worth pausing on. The{' '}
-        <InlineMath tex="a^2" /> says everything: a charge moving at constant
-        velocity does not radiate (uniform translation is just a Lorentz boost of a Coulomb field),
-        but the moment it accelerates, the field has to "kink" to propagate the news outward and
-        that kink carries away a flux proportional to <InlineMath tex="|a|^2" />.
-        The <InlineMath tex="q^2" /> is the same square-of-source you see in every
+        Three features of that formula are worth pausing on. The <M tex="a^2" /> says everything: a
+        charge moving at constant velocity does not radiate (uniform translation is just a Lorentz
+        boost of a Coulomb field), but the moment it accelerates, the field has to "kink" to
+        propagate the news outward and that kink carries away a flux proportional to{' '}
+        <M tex="|a|^2" />. The <M tex="q^2" /> is the same square-of-source you see in every
         two-step radiation argument — the field scales as q, the intensity as |field|². The factor
-        of <InlineMath tex="1/c^3" /> is the smoking gun for non-relativistic
-        radiation: two powers of c come from the retarded transverse-field amplitude (which scales
-        as a/c²), and another power emerges when Poynting flux{' '}
-        <InlineMath tex="\varepsilon c E^2" /> is integrated over the radiation sphere; the net
-        result is that radiation is an intrinsically feeble effect at speeds well below c
+        of <M tex="1/c^3" /> is the smoking gun for non-relativistic radiation: two powers of c come
+        from the retarded transverse-field amplitude (which scales as a/c²), and another power
+        emerges when Poynting flux <M tex="\varepsilon c E^2" /> is integrated over the radiation
+        sphere; the net result is that radiation is an intrinsically feeble effect at speeds well
+        below c
         <Cite id="jackson-1999" in={SOURCES} />
         <Cite id="griffiths-2017" in={SOURCES} />. That is why an electron in a steady
         current-carrying wire does not radiate, but a single shaken charge — or, equivalently, an
@@ -140,18 +134,13 @@ export default function Ch19Antennas() {
         E(r, θ) ∝ (I<sub>0</sub> L ω / c) · sin θ · cos(kr − ωt) / r
       </Formula>
       <p className="mb-prose-3">
-        where <InlineMath tex="E(r,\theta)" /> is the magnitude of the
-        radiated electric field (in V/m) at radial distance{' '}
-        <InlineMath tex="r" /> (in metres) and polar angle{' '}
-        <InlineMath tex="\theta" /> measured from the dipole axis (in
-        radians),{' '}
-        <InlineMath tex="I_0" />{' '}
-        is the peak current in the wire (in amperes),{' '}
-        <InlineMath tex="L" /> is the dipole length (in metres),{' '}
-        <InlineMath tex="\omega = 2\pi f" /> is the angular frequency (in
-        rad/s), <InlineMath tex="k = \omega/c" /> is the free-space
-        wavenumber (in m⁻¹), and{' '}
-        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light.
+        where <M tex="E(r,\theta)" /> is the magnitude of the radiated electric field (in V/m) at
+        radial distance <M tex="r" /> (in metres) and polar angle <M tex="\theta" /> measured from
+        the dipole axis (in radians), <M tex="I_0" />
+        is the peak current in the wire (in amperes), <M tex="L" /> is the dipole length (in
+        metres), <M tex="\omega = 2\pi f" /> is the angular frequency (in rad/s),{' '}
+        <M tex="k = \omega/c" /> is the free-space wavenumber (in m⁻¹), and{' '}
+        <M tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light.
       </p>
       <p className="mb-prose-3">
         Two important features of that formula. (1) The 1/r dependence — far enough away, the field
@@ -224,27 +213,20 @@ export default function Ch19Antennas() {
         P<sub>rad</sub> = (π η<sub>0</sub> / 3) · (L/λ)² · I<sub>0</sub>²
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="P_{\text{rad}}" />{' '}
-        is the total time-averaged radiated power (in watts),{' '}
-        <InlineMath tex="\eta_0" /> is the impedance of free space (in
-        ohms; defined below),{' '}
-        <InlineMath tex="L" /> is the dipole's physical length (in
-        metres), <InlineMath tex="\lambda" /> is the free-space wavelength
-        of the radiation (in metres), and{' '}
-        <InlineMath tex="I_0" />{' '}
+        where <M tex="P_{\text{rad}}" />
+        is the total time-averaged radiated power (in watts), <M tex="\eta_0" /> is the impedance of
+        free space (in ohms; defined below), <M tex="L" /> is the dipole's physical length (in
+        metres), <M tex="\lambda" /> is the free-space wavelength of the radiation (in metres), and{' '}
+        <M tex="I_0" />
         is the peak current at the feedpoint (in amperes).
       </p>
       <p className="mb-prose-3">
-        with <InlineMath tex="\eta_0 = \sqrt{\mu_0/\varepsilon_0} \approx 377\,\Omega" /> the{' '}
+        with <M tex="\eta_0 = \sqrt{\mu_0/\varepsilon_0} \approx 377\,\Omega" /> the{' '}
         <Term def="η₀ = √(μ₀/ε₀) ≈ 377 Ω. The ratio |E|/|H| in a plane EM wave travelling in vacuum, with units of impedance. Sets the link between radiation pressure, Poynting flux, and antenna impedances.">
           impedance of free space
         </Term>
-        . Pull out the I₀² and you have{' '}
-        <InlineMath tex="P = \tfrac{1}{2}R_{\text{rad}}I_0^{2}" />{' '}
-        with{' '}
-        <InlineMath tex="R_{\text{rad}} = (2\pi\eta_0/3)(L/\lambda)^{2}" />
-        .{' '}
+        . Pull out the I₀² and you have <M tex="P = \tfrac{1}{2}R_{\text{rad}}I_0^{2}" />
+        with <M tex="R_{\text{rad}} = (2\pi\eta_0/3)(L/\lambda)^{2}" />.{' '}
         <Term def="The fictitious resistance that, in series with the antenna's reactance, accounts for the energy lost to radiation. Not heat — just energy converted to outgoing EM waves. For a short dipole R_rad = (2π η₀/3)(L/λ)²; for a half-wave dipole, ≈73 Ω.">
           Radiation resistance
         </Term>{' '}
@@ -269,12 +251,11 @@ export default function Ch19Antennas() {
         f<sub>0</sub> = c / (2 L)
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="f_0" />{' '}
+        where <M tex="f_0" />
         is the fundamental resonant frequency of the dipole (in Hz),{' '}
-        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light,
-        and <InlineMath tex="L" /> is the total physical length of the
-        dipole wire (in metres) — half a wavelength at resonance.
+        <M tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light, and{' '}
+        <M tex="L" /> is the total physical length of the dipole wire (in metres) — half a
+        wavelength at resonance.
       </p>
       <p className="mb-prose-3">
         A 1.5-m dipole resonates at 100 MHz; a 50-mm dipole resonates at 3 GHz; a 0.5-µm dipole —
@@ -343,14 +324,10 @@ export default function Ch19Antennas() {
         F<sub>total</sub>(θ, φ) = F<sub>element</sub>(θ, φ) × F<sub>array</sub>(θ, φ)
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="F_{\text{total}}(\theta,\phi)" />{' '}
-        is the dimensionless total radiation pattern of the array at polar angle{' '}
-        <InlineMath tex="\theta" /> and azimuthal angle{' '}
-        <InlineMath tex="\phi" /> (both in radians),{' '}
-        <InlineMath tex="F_{\text{element}}" />{' '}
-        is the pattern of a single radiating element in isolation, and{' '}
-        <InlineMath tex="F_{\text{array}}" />{' '}
+        where <M tex="F_{\text{total}}(\theta,\phi)" />
+        is the dimensionless total radiation pattern of the array at polar angle <M tex="\theta" />{' '}
+        and azimuthal angle <M tex="\phi" /> (both in radians), <M tex="F_{\text{element}}" />
+        is the pattern of a single radiating element in isolation, and <M tex="F_{\text{array}}" />
         is the array factor — the geometric interference pattern that the array of N elements would
         produce if every element were an isotropic point source.
       </p>
@@ -403,13 +380,10 @@ export default function Ch19Antennas() {
         sin θ<sub>steer</sub> = (Δφ · λ) / (2π d)
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="\theta_{\text{steer}}" />{' '}
-        is the angle the main beam makes with broadside (in radians),{' '}
-        <InlineMath tex="\Delta\phi" /> is the progressive phase shift applied
-        between adjacent elements (in radians), <InlineMath tex="\lambda" />{' '}
-        is the free-space wavelength (in metres), and{' '}
-        <InlineMath tex="d" /> is the spacing between adjacent
+        where <M tex="\theta_{\text{steer}}" />
+        is the angle the main beam makes with broadside (in radians), <M tex="\Delta\phi" /> is the
+        progressive phase shift applied between adjacent elements (in radians), <M tex="\lambda" />
+        is the free-space wavelength (in metres), and <M tex="d" /> is the spacing between adjacent
         elements (in metres).
       </p>
       <p className="mb-prose-3">
@@ -494,19 +468,13 @@ export default function Ch19Antennas() {
         P<sub>r</sub> = P<sub>t</sub> · G<sub>t</sub> · G<sub>r</sub> · (λ / 4πd)²
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="P_r" />{' '}
-        is the power delivered to the matched receive antenna (in watts),{' '}
-        <InlineMath tex="P_t" />{' '}
-        is the transmitted power (in watts),{' '}
-        <InlineMath tex="G_t" />{' '}
-        and{' '}
-        <InlineMath tex="G_r" />{' '}
+        where <M tex="P_r" />
+        is the power delivered to the matched receive antenna (in watts), <M tex="P_t" />
+        is the transmitted power (in watts), <M tex="G_t" />
+        and <M tex="G_r" />
         are the dimensionless transmit and receive antenna gains relative to isotropic (often quoted
-        in dBi),{' '}
-        <InlineMath tex="\lambda" /> is the operating wavelength (in
-        metres), and <InlineMath tex="d" /> is the line-of-sight
-        distance between the antennas (in metres).
+        in dBi), <M tex="\lambda" /> is the operating wavelength (in metres), and <M tex="d" /> is
+        the line-of-sight distance between the antennas (in metres).
       </p>
       <p className="mb-prose-3">
         The (λ/4πd)² factor is the <em className="text-text italic">free-space path loss</em> — the
@@ -541,10 +509,10 @@ export default function Ch19Antennas() {
         <Term def="The factor cos²α by which received power drops when transmitter and receiver linear polarisations are misaligned by angle α. The antenna analogue of Malus's law in optics — a dipole only couples to the E-field component along its axis.">
           polarisation-loss factor
         </Term>{' '}
-        of <InlineMath tex="\cos^{2}\alpha" />, where α is the angle between
-        the two linear polarisation axes. Same Malus's law as optics: an antenna is a polarisation
-        filter that only couples to the E-field component along its own axis. A 45° mismatch costs 3
-        dB; a 90° mismatch is a full null on paper and 20–40 dB of suppression in practice
+        of <M tex="\cos^{2}\alpha" />, where α is the angle between the two linear polarisation
+        axes. Same Malus's law as optics: an antenna is a polarisation filter that only couples to
+        the E-field component along its own axis. A 45° mismatch costs 3 dB; a 90° mismatch is a
+        full null on paper and 20–40 dB of suppression in practice
         <Cite id="balanis-2016" in={SOURCES} />.
       </p>
 
@@ -586,20 +554,20 @@ export default function Ch19Antennas() {
       <h2 className="chapter-h2">Near field vs far field</h2>
 
       <p className="mb-prose-3">
-        Friis assumes <InlineMath tex="d \gg \lambda" />. Closer to an antenna
-        than that, the simple 1/r far-field picture doesn't apply. The radiation field of any
-        oscillating source has three components: a 1/r³ "near zone" piece that looks essentially
-        like a quasi-static dipole, a 1/r² intermediate piece, and a 1/r "radiation zone" piece. The
-        first two carry no net time-averaged Poynting flux to infinity; they store reactive energy
-        that sloshes back and forth between electric and magnetic forms. Only the 1/r piece radiates
+        Friis assumes <M tex="d \gg \lambda" />. Closer to an antenna than that, the simple 1/r
+        far-field picture doesn't apply. The radiation field of any oscillating source has three
+        components: a 1/r³ "near zone" piece that looks essentially like a quasi-static dipole, a
+        1/r² intermediate piece, and a 1/r "radiation zone" piece. The first two carry no net
+        time-averaged Poynting flux to infinity; they store reactive energy that sloshes back and
+        forth between electric and magnetic forms. Only the 1/r piece radiates
         <Cite id="balanis-2016" in={SOURCES} />
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        The boundary between these regions is at{' '}
-        <InlineMath tex="r \approx \lambda/(2\pi)" />. Inside that radius, the field
-        structure is dominated by the reactive near-zone terms. Outside, the radiation zone takes
-        over and the field looks locally like a plane EM wave with |E|/|H| = η₀.
+        The boundary between these regions is at <M tex="r \approx \lambda/(2\pi)" />. Inside that
+        radius, the field structure is dominated by the reactive near-zone terms. Outside, the
+        radiation zone takes over and the field looks locally like a plane EM wave with |E|/|H| =
+        η₀.
       </p>
 
       <NearFarFieldTransitionDemo figure="Fig. 19.8" />
@@ -607,11 +575,11 @@ export default function Ch19Antennas() {
       <p className="mb-prose-3">
         For large aperture antennas (a parabolic dish, a phased array), there's an additional
         "Fraunhofer / Fresnel" distance set by the antenna's physical size:{' '}
-        <InlineMath tex="r_{\text{far}} \approx 2D^{2}/\lambda" />,
-        where D is the largest aperture dimension. For a 70-m DSN dish at 8.4 GHz this works out
-        to ≈ 2.7 km — meaning the diffraction pattern over which the dish's gain pattern is properly
-        defined doesn't start until you're several kilometres downstream of the antenna. For nearby
-        satellites or aircraft, the antenna is effectively in its own near field
+        <M tex="r_{\text{far}} \approx 2D^{2}/\lambda" />, where D is the largest aperture
+        dimension. For a 70-m DSN dish at 8.4 GHz this works out to ≈ 2.7 km — meaning the
+        diffraction pattern over which the dish's gain pattern is properly defined doesn't start
+        until you're several kilometres downstream of the antenna. For nearby satellites or
+        aircraft, the antenna is effectively in its own near field
         <Cite id="balanis-2016" in={SOURCES} />.
       </p>
 
@@ -658,15 +626,12 @@ export default function Ch19Antennas() {
         L ≈ λ / (2 √ε<sub>r</sub>) &nbsp;⇔&nbsp; f<sub>0</sub> ≈ c / (2 L √ε<sub>r</sub>)
       </Formula>
       <p className="mb-prose-3">
-        where <InlineMath tex="L" /> is the physical length of the
-        patch in the resonant direction (in metres),{' '}
-        <InlineMath tex="\lambda = c/f_0" />{' '}
-        is the free-space wavelength at the resonant frequency (in metres),{' '}
-        <InlineMath tex="f_0" />{' '}
+        where <M tex="L" /> is the physical length of the patch in the resonant direction (in
+        metres), <M tex="\lambda = c/f_0" />
+        is the free-space wavelength at the resonant frequency (in metres), <M tex="f_0" />
         is the design resonant frequency (in Hz),{' '}
-        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light,
-        and{' '}
-        <InlineMath tex="\varepsilon_r" />{' '}
+        <M tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light, and{' '}
+        <M tex="\varepsilon_r" />
         is the dimensionless relative permittivity of the dielectric substrate beneath the patch.
       </p>
       <p className="mb-prose-3">
@@ -755,11 +720,7 @@ export default function Ch19Antennas() {
             { label: 'Beamwidth (X-band)', value: <>~0.04° (~0.7 mrad)</> },
             {
               label: 'Spacecraft transmit power',
-              value: (
-                <>
-                  ~20 W (Voyager TWTA) at +30 dBi
-                </>
-              ),
+              value: <>~20 W (Voyager TWTA) at +30 dBi</>,
             },
             { label: 'Path loss at 24 billion km', value: <>~318 dB at X-band</> },
           ]}
@@ -776,10 +737,11 @@ export default function Ch19Antennas() {
             Voyager 1 at its current distance (≈24 billion km) transmits at 20 W; the free-space
             path loss at 8.4 GHz is around 318 dB. After spacecraft antenna gain (+30 dBi) and
             Earth-station gain (+73 dBi) and the various pointing/atmospheric/cable losses, the
-            received signal is on the order of <strong className="text-text font-medium">−165 dBm</strong>,
-            or 3 × 10⁻¹⁹ W. The cryogenic HEMT LNA front end on the DSN dish has a noise temperature
-            of ~15 K, and a 160 bit/s downlink can be received with bit-error rate &lt;10⁻⁵ via
-            long-baseline forward-error-correction codes
+            received signal is on the order of{' '}
+            <strong className="text-text font-medium">−165 dBm</strong>, or 3 × 10⁻¹⁹ W. The
+            cryogenic HEMT LNA front end on the DSN dish has a noise temperature of ~15 K, and a 160
+            bit/s downlink can be received with bit-error rate &lt;10⁻⁵ via long-baseline
+            forward-error-correction codes
             <Cite id="friis-1946" in={SOURCES} />
             <Cite id="balanis-2016" in={SOURCES} />.
           </p>
@@ -943,7 +905,7 @@ export default function Ch19Antennas() {
             emits equally in all directions, total solid angle 4π steradians). dBd is gain
             referenced to a <em className="text-text italic">half-wave dipole</em>. Since the
             half-wave dipole itself has gain ≈2.15 dBi over isotropic, the conversion is simply{' '}
-            <InlineMath tex="\text{dBi} = \text{dBd} + 2.15" />{' '}
+            <M tex="\text{dBi} = \text{dBd} + 2.15" />
             <Cite id="balanis-2016" in={SOURCES} />. A "10 dBi" antenna and a "7.85 dBd" antenna are
             the same thing. Manufacturers' marketing prefers dBi (the larger number), engineering
             practice often uses dBd (the smaller, more intuitive number for hams). Always check
@@ -1052,8 +1014,7 @@ export default function Ch19Antennas() {
         <FAQItem q="Why does the Friis formula have a (λ/4πd)² instead of just 1/d²?">
           <p>
             Two factors that look like they're "of d" combine into the (λ/4πd)². The transmitter's
-            radiated intensity at distance d falls as{' '}
-            <InlineMath tex="I = P_t G_t / (4\pi d^{2})" />{' '}
+            radiated intensity at distance d falls as <M tex="I = P_t G_t / (4\pi d^{2})" />
             (power per unit area on the sphere). The receiver's{' '}
             <em className="text-text italic">effective aperture</em> — the area-equivalent of its
             sensitivity — is A<sub>eff</sub> = G<sub>r</sub> λ²/(4π). Power captured is P

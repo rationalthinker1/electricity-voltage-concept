@@ -25,8 +25,15 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS, sciTeX } from '@/lib/physics';
@@ -34,7 +41,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { fmtSI } from '@/lib/formatters';
 import { project, v3, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -493,15 +500,13 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Geometry"
         left={
-          <InlineMath
-            tex={
-              `C \\;=\\; \\dfrac{\\varepsilon_{0} A}{d} \\;\\approx\\; ${(computed.C * 1e12).toFixed(1)}\\ \\text{pF}`
-            }
+          <M
+            tex={`C \\;=\\; \\dfrac{\\varepsilon_{0} A}{d} \\;\\approx\\; ${(computed.C * 1e12).toFixed(1)}\\ \\text{pF}`}
           />
         }
         rightLabel="Uniform field in the gap"
         right={
-          <InlineMath
+          <M
             tex={
               `E \\;=\\; \\dfrac{V}{d} \\;=\\; ` +
               `\\dfrac{${V.toFixed(1)}}{${sciTeX(d_mm * 1e-3, 1)}} ` +

@@ -49,7 +49,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
@@ -222,9 +222,30 @@ export function FilterDesignerDemo({ figure }: Props) {
 
       // Labels
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: 'noisy input  1 kHz tone + 60 Hz hum', x: inX0 + 6, y: inY0 + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'filtered output', x: outX0 + 6, y: outY0 + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: '|H(f)|  [dB]', x: bodeX0 + 6, y: bodeY0 + 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'noisy input  1 kHz tone + 60 Hz hum',
+        x: inX0 + 6,
+        y: inY0 + 4,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'filtered output',
+        x: outX0 + 6,
+        y: outY0 + 4,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: '|H(f)|  [dB]',
+        x: bodeX0 + 6,
+        y: bodeY0 + 4,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
 
       // === Time-domain plots ===
       // 50 ms of signal; horizontal axis = time, vertical = amplitude.
@@ -310,8 +331,24 @@ export function FilterDesignerDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.55;
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `peak ≈ ${inPeak.toFixed(2)}`, x: inX1 - 6, y: inY1 - 4, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
-      drawLabel(ctx, { text: `peak ≈ ${outPeak.toFixed(3)}`, x: outX1 - 6, y: outY1 - 4, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: `peak ≈ ${inPeak.toFixed(2)}`,
+        x: inX1 - 6,
+        y: inY1 - 4,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: `peak ≈ ${outPeak.toFixed(3)}`,
+        x: outX1 - 6,
+        y: outY1 - 4,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'bottom',
+      });
 
       // === Bode plot ===
       // Log-f axis from 10 Hz to 100 kHz; magnitude in dB from -80 to +10.
@@ -385,8 +422,24 @@ export function FilterDesignerDemo({ figure }: Props) {
       ctx.lineTo(xAudio, by + bh);
       ctx.stroke();
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: '60 Hz hum', x: xHum + 3, y: by + 16, color: colors.pink, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: '1 kHz audio', x: xAudio + 3, y: by + 16, color: colors.teal, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '60 Hz hum',
+        x: xHum + 3,
+        y: by + 16,
+        color: colors.pink,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: '1 kHz audio',
+        x: xAudio + 3,
+        y: by + 16,
+        color: colors.teal,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
 
       // |H(f)| curve
       const Nb = 240;
@@ -420,7 +473,6 @@ export function FilterDesignerDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(xHum, yHum, 3.5, 0, Math.PI * 2);
       ctx.fill();
-
     },
     [],
   );
@@ -529,7 +581,7 @@ export function FilterDesignerDemo({ figure }: Props) {
       <EquationStrip
         leftLabel={isResonant ? 'Centre frequency' : 'Cutoff frequency'}
         left={
-          <InlineMath
+          <M
             tex={
               topology === 'lc-lp'
                 ? `f_0 = \\frac{1}{2\\pi\\sqrt{LC}} = ${fc >= 1000 ? `${(fc / 1000).toFixed(2)}\\,\\text{kHz}` : `${fc.toFixed(1)}\\,\\text{Hz}`}`
@@ -541,7 +593,7 @@ export function FilterDesignerDemo({ figure }: Props) {
         }
         rightLabel="Audio / hum score"
         right={
-          <InlineMath
+          <M
             tex={`20\\log_{10}\\!\\left(\\frac{|H_{1\\,\\text{kHz}}|}{|H_{60\\,\\text{Hz}}|}\\right) = ${scoreDb.toFixed(1)}\\,\\text{dB}`}
           />
         }

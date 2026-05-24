@@ -21,8 +21,15 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
@@ -93,7 +100,7 @@ export function ImageChargeField3DDemo({ figure }: Props) {
   const setup = useSimLoop<(typeof stateRef)['current'], OrbitScene>(
     stateRef,
     ({ ctx, w, h, colors }, state, _dt, _simTime, scene) => {
-    const cam = scene.cam;
+      const cam = scene.cam;
       const { q, d, showImage, showSigma } = state;
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -267,7 +274,17 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(realPos.x, realPos.y, realR, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: '+', x: realPos.x, y: realPos.y, color: colors.bg, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '+',
+        x: realPos.x,
+        y: realPos.y,
+        color: colors.bg,
+        weight: 'bold',
+        size: 12,
+        font: 'bold 12px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
       ctx.restore();
 
       // 5. Image -q sphere at (0, -d, 0) — dashed outline, translucent fill.
@@ -398,9 +415,11 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Image charge and surface density"
-        left={<InlineMath tex={`\\sigma(r) = -\\frac{qd}{2\\pi(r^2+d^2)^{3/2}},\\quad \\int\\sigma\\,dA = -q`} />}
+        left={
+          <M tex={`\\sigma(r) = -\\frac{qd}{2\\pi(r^2+d^2)^{3/2}},\\quad \\int\\sigma\\,dA = -q`} />
+        }
         rightLabel={`q = ${q.toFixed(1)}, d = ${d.toFixed(2)}`}
-        right={<InlineMath tex={`\\int\\sigma\\,dA = -q = ${totalInduced.toFixed(2)}`} />}
+        right={<M tex={`\\int\\sigma\\,dA = -q = ${totalInduced.toFixed(2)}`} />}
       />
     </Demo>
   );

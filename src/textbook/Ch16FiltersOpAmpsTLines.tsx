@@ -11,7 +11,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { Pullout } from '@/components/Prose';
@@ -38,11 +38,10 @@ export default function Ch16FiltersOpAmpsTLines() {
         Kirchhoff's two laws. That's enough to analyse a circuit at one frequency, or one moment in
         time. But three more questions follow immediately, and the working analog engineer spends
         most of their career inside the answers. What does the circuit do across{' '}
-        <em className="text-text italic">every</em>{' '}
-        frequency, not just one (filters and the Bode plot)? How do you build a single component
-        whose gain is whatever you want it to be (the op-amp)? And what happens when a wire is
-        finally long enough that the signal takes real time to get from one end to the other
-        (transmission lines)?
+        <em className="text-text italic">every</em> frequency, not just one (filters and the Bode
+        plot)? How do you build a single component whose gain is whatever you want it to be (the
+        op-amp)? And what happens when a wire is finally long enough that the signal takes real time
+        to get from one end to the other (transmission lines)?
       </p>
       <p className="mb-prose-3">
         This chapter is three sections, six demos, and the bridge from undergraduate circuit theory
@@ -58,23 +57,22 @@ export default function Ch16FiltersOpAmpsTLines() {
       <p className="mb-prose-3">
         Impedance turned circuit ODEs into algebra; the next step is to ask not "what is the
         steady-state current at one frequency?" but "what does the circuit do across{' '}
-        <em className="text-text italic">all</em>{' '}
-        frequencies at once?" That is the move from circuit analysis to{' '}
-        <strong className="text-text font-medium">signal processing</strong>, and the bridge is the{' '}
+        <em className="text-text italic">all</em> frequencies at once?" That is the move from
+        circuit analysis to <strong className="text-text font-medium">signal processing</strong>,
+        and the bridge is the{' '}
         <Term
           def={
             <>
               <strong className="text-text font-medium">transfer function</strong> — the complex
               ratio of output to input phasors as a function of frequency:{' '}
-              <InlineMath tex="H(j\omega) = V_{out}/V_{in}" />
-              . Its magnitude tells you how much amplitude survives at each ω; its argument tells
-              you the phase shift.
+              <M tex="H(j\omega) = V_{out}/V_{in}" />. Its magnitude tells you how much amplitude
+              survives at each ω; its argument tells you the phase shift.
             </>
           }
         >
           transfer function
         </Term>{' '}
-        <InlineMath tex="H(j\omega) = V_{out}(j\omega) / V_{in}(j\omega)" />.
+        <M tex="H(j\omega) = V_{out}(j\omega) / V_{in}(j\omega)" />.
       </p>
       <p className="mb-prose-3">
         For an RC low-pass filter — a resistor R driving a capacitor C with V<sub>out</sub> taken
@@ -82,35 +80,29 @@ export default function Ch16FiltersOpAmpsTLines() {
       </p>
       <Formula tex="H(j\omega) = \dfrac{1/(j\omega C)}{R + 1/(j\omega C)} = \dfrac{1}{1 + j\omega RC}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="H(j\omega)" /> is the complex transfer
-        function (dimensionless ratio of output phasor to input phasor) at angular frequency{' '}
-        <InlineMath tex="\omega" /> (in radians per second),{' '}
-        <InlineMath tex="R" /> is the series resistance (in ohms),
-        <InlineMath tex="C" /> is the shunt capacitance (in farads),
-        and
-        <InlineMath tex="j = \sqrt{-1}" /> is the imaginary unit.
+        where <M tex="H(j\omega)" /> is the complex transfer function (dimensionless ratio of output
+        phasor to input phasor) at angular frequency <M tex="\omega" /> (in radians per second),{' '}
+        <M tex="R" /> is the series resistance (in ohms), <M tex="C" /> is the shunt capacitance (in
+        farads), and <M tex="j = \sqrt{-1}" /> is the imaginary unit.
       </p>
       <p className="mb-prose-3">whose magnitude is</p>
       <Formula tex="|H(j\omega)| = \dfrac{1}{\sqrt{1 + (\omega/\omega_c)^2}}, \quad \omega_c = 1/RC" />
       <p className="mb-prose-3">
-        where <InlineMath tex="|H(j\omega)|" /> is the dimensionless
-        magnitude of the transfer function at angular frequency{' '}
-        <InlineMath tex="\omega" /> (in radians per second), and{' '}
-        <InlineMath tex="\omega_c = 1/RC" />{' '}
+        where <M tex="|H(j\omega)|" /> is the dimensionless magnitude of the transfer function at
+        angular frequency <M tex="\omega" /> (in radians per second), and{' '}
+        <M tex="\omega_c = 1/RC" />
         is the cutoff angular frequency (also in radians per second), set by the resistance{' '}
-        <InlineMath tex="R" /> (in ohms) and the capacitance{' '}
-        <InlineMath tex="C" /> (in farads).
+        <M tex="R" /> (in ohms) and the capacitance <M tex="C" /> (in farads).
       </p>
       <p className="mb-prose-3">
-        Why does the corner land at exactly <InlineMath tex="\omega_c = 1/RC" />? It is the
-        frequency where the capacitor's impedance{' '}
-        <InlineMath tex="|1/(j\omega C)| = 1/(\omega C)" /> crosses through R — below that crossover
-        the cap looks like an open circuit and the divider passes the signal nearly unchanged; above
-        it, the cap is the smaller impedance and shorts the output toward ground. Same crossover,
-        same intuition, for the RL low-pass and every first-order filter: the corner is wherever the
-        frequency-dependent impedance equals the frequency-independent one. At ω<sub>c</sub> the two
-        are equal, so <InlineMath tex="|H| = 1/\sqrt{2}" /> (the output divider sees a complex
-        equal-magnitude divider), which is exactly the −3 dB power-half point
+        Why does the corner land at exactly <M tex="\omega_c = 1/RC" />? It is the frequency where
+        the capacitor's impedance <M tex="|1/(j\omega C)| = 1/(\omega C)" /> crosses through R —
+        below that crossover the cap looks like an open circuit and the divider passes the signal
+        nearly unchanged; above it, the cap is the smaller impedance and shorts the output toward
+        ground. Same crossover, same intuition, for the RL low-pass and every first-order filter:
+        the corner is wherever the frequency-dependent impedance equals the frequency-independent
+        one. At ω<sub>c</sub> the two are equal, so <M tex="|H| = 1/\sqrt{2}" /> (the output divider
+        sees a complex equal-magnitude divider), which is exactly the −3 dB power-half point
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -120,11 +112,8 @@ export default function Ch16FiltersOpAmpsTLines() {
             <>
               <strong className="text-text font-medium">cutoff frequency</strong> — the frequency at
               which a filter's magnitude response has dropped to 1/√2 of its passband value (−3 dB).
-              For an RC filter,{' '}
-              <InlineMath tex="\omega_c = 1/RC" />
-              ;{' '}
-              <InlineMath tex="f_c = 1/(2\pi RC)" />
-              .
+              For an RC filter, <M tex="\omega_c = 1/RC" />
+              ; <M tex="f_c = 1/(2\pi RC)" />.
             </>
           }
         >
@@ -144,10 +133,9 @@ export default function Ch16FiltersOpAmpsTLines() {
             def={
               <>
                 <strong className="text-text font-medium">Bode plot</strong> — a pair of plots of a
-                transfer function on logarithmic frequency axes:{' '}
-                <InlineMath tex="|H(j\omega)|" /> in dB versus log ω (magnitude), and
-                arg <InlineMath tex="H(j\omega)" /> versus log ω (phase). Named after
-                Hendrik Bode at Bell Labs (1940s).
+                transfer function on logarithmic frequency axes: <M tex="|H(j\omega)|" /> in dB
+                versus log ω (magnitude), and arg <M tex="H(j\omega)" /> versus log ω (phase). Named
+                after Hendrik Bode at Bell Labs (1940s).
               </>
             }
           >
@@ -166,9 +154,9 @@ export default function Ch16FiltersOpAmpsTLines() {
 
       <p className="mb-prose-3">
         Swap R and C and you get the mirror filter: a high-pass with{' '}
-        <InlineMath tex="H(j\omega) = j\omega RC/(1+j\omega RC)" />. Below ω<sub>c</sub> the
-        response ramps up at +20 dB/decade; above ω<sub>c</sub> it flattens at 0 dB. The phase ramps
-        from +90° down to 0° as ω crosses the corner. Same components, opposite job.
+        <M tex="H(j\omega) = j\omega RC/(1+j\omega RC)" />. Below ω<sub>c</sub> the response ramps
+        up at +20 dB/decade; above ω<sub>c</sub> it flattens at 0 dB. The phase ramps from +90° down
+        to 0° as ω crosses the corner. Same components, opposite job.
       </p>
       <p className="mb-prose-3">
         Add an inductor and you can shape the response further. A series RLC with the output taken
@@ -176,21 +164,18 @@ export default function Ch16FiltersOpAmpsTLines() {
       </p>
       <Formula tex="H(j\omega) = \dfrac{R}{R + j\omega L + 1/(j\omega C)} = \dfrac{j\omega RC}{1 - \omega^2 LC + j\omega RC}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="H(j\omega)" /> is the complex
-        (dimensionless) transfer function at angular frequency{' '}
-        <InlineMath tex="\omega" /> (in radians per second),{' '}
-        <InlineMath tex="R" /> is the series resistance (in ohms),{' '}
-        <InlineMath tex="L" /> is the inductance (in henries),
-        <InlineMath tex="C" /> is the capacitance (in farads), and{' '}
-        <InlineMath tex="j = \sqrt{-1}" />.
+        where <M tex="H(j\omega)" /> is the complex (dimensionless) transfer function at angular
+        frequency <M tex="\omega" /> (in radians per second), <M tex="R" /> is the series resistance
+        (in ohms), <M tex="L" /> is the inductance (in henries), <M tex="C" /> is the capacitance
+        (in farads), and <M tex="j = \sqrt{-1}" />.
       </p>
       <p className="mb-prose-3">
-        which peaks at <InlineMath tex="\omega_0 = 1/\sqrt{LC}" /> and is small everywhere else — a{' '}
+        which peaks at <M tex="\omega_0 = 1/\sqrt{LC}" /> and is small everywhere else — a{' '}
         <strong className="text-text font-medium">band-pass filter</strong>. Its bandwidth (the
-        width of the −3 dB band around ω<sub>0</sub>) is{' '}
-        <InlineMath tex="\Delta\omega = \omega_0/Q" />, so the same Q-factor that set the sharpness
-        of the resonance peak in Ch.12 also sets the selectivity of this filter. AM and FM
-        receivers, FM-radio IF strips, EEG bandpass front-ends — all sit on this transfer function.
+        width of the −3 dB band around ω<sub>0</sub>) is <M tex="\Delta\omega = \omega_0/Q" />, so
+        the same Q-factor that set the sharpness of the resonance peak in Ch.12 also sets the
+        selectivity of this filter. AM and FM receivers, FM-radio IF strips, EEG bandpass front-ends
+        — all sit on this transfer function.
       </p>
 
       <RLCBandpassDemo figure="Fig. 16.2" />
@@ -236,20 +221,15 @@ export default function Ch16FiltersOpAmpsTLines() {
       </p>
       <Formula tex="H(j\omega) = \dfrac{K}{1 - (\omega/\omega_0)^2 + j(\omega/\omega_0)(3 - K)}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="H(j\omega)" /> is the (dimensionless)
-        complex transfer function at angular frequency{' '}
-        <InlineMath tex="\omega" /> (in radians per second),{' '}
-        <InlineMath tex="K = 1 + R_f/R_g" />{' '}
+        where <M tex="H(j\omega)" /> is the (dimensionless) complex transfer function at angular
+        frequency <M tex="\omega" /> (in radians per second), <M tex="K = 1 + R_f/R_g" />
         is the dimensionless non-inverting DC gain set by the feedback divider,{' '}
-        <InlineMath tex="\omega_0 = 1/(RC)" />{' '}
-        is the cutoff angular frequency (in radians per second) for equal components{' '}
-        <InlineMath tex="R" /> (in ohms) and{' '}
-        <InlineMath tex="C" /> (in farads), and
-        <InlineMath tex="j = \sqrt{-1}" />.
+        <M tex="\omega_0 = 1/(RC)" />
+        is the cutoff angular frequency (in radians per second) for equal components <M tex="R" />{' '}
+        (in ohms) and <M tex="C" /> (in farads), and <M tex="j = \sqrt{-1}" />.
       </p>
       <p className="mb-prose-3">
-        with corner <InlineMath tex="\omega_0 = 1/(RC)" /> and <InlineMath tex="Q = 1/(3-K)" />. The
-        stopband slope is
+        with corner <M tex="\omega_0 = 1/(RC)" /> and <M tex="Q = 1/(3-K)" />. The stopband slope is
         <strong className="text-text font-medium"> −40 dB/decade</strong>, twice as steep as a
         passive first-order RC; K controls the peaking at f<sub>0</sub>. Cascading two such stages
         with Q = 0.54 and Q = 1.31 produces a 4th-order Butterworth (maximally flat passband, −80
@@ -261,10 +241,10 @@ export default function Ch16FiltersOpAmpsTLines() {
 
       <p className="mb-prose-3">
         K = 1 (R<sub>f</sub> = 0, a unity-gain follower) gives Q = 1/2, almost a Butterworth single
-        stage. K = 1.586 gives the canonical Butterworth <InlineMath tex="Q = 1/\sqrt{2}" />. Past K
-        = 3 the denominator's imaginary part flips sign and the circuit oscillates — the textbook
-        Sallen-Key instability. Sit just shy of that boundary and you get an extremely sharp peak
-        useful for narrow-band detection.
+        stage. K = 1.586 gives the canonical Butterworth <M tex="Q = 1/\sqrt{2}" />. Past K = 3 the
+        denominator's imaginary part flips sign and the circuit oscillates — the textbook Sallen-Key
+        instability. Sit just shy of that boundary and you get an extremely sharp peak useful for
+        narrow-band detection.
       </p>
 
       <TryIt
@@ -277,8 +257,8 @@ export default function Ch16FiltersOpAmpsTLines() {
         }
         hint={
           <>
-            <InlineMath tex="f_0 = 1/(2\pi R C)" /> for the equal-component Sallen-Key, exactly as
-            for a passive RC.
+            <M tex="f_0 = 1/(2\pi R C)" /> for the equal-component Sallen-Key, exactly as for a
+            passive RC.
           </>
         }
         answer={
@@ -308,7 +288,7 @@ export default function Ch16FiltersOpAmpsTLines() {
         }
         hint={
           <>
-            <InlineMath tex="f_c = 1/(2\pi R C)" />. Solve for R.
+            <M tex="f_c = 1/(2\pi R C)" />. Solve for R.
           </>
         }
         answer={
@@ -348,10 +328,10 @@ export default function Ch16FiltersOpAmpsTLines() {
       <ul>
         <li>
           <strong className="text-text font-medium">Virtual short.</strong> Because{' '}
-          <InlineMath tex="A_{OL} \to \infty" />, even a microvolt of differential input would
-          saturate the output. So in negative feedback the loop drives the two inputs to the same
-          voltage: <InlineMath tex="V_+ = V_-" />. Whatever the (+) input is doing, the (−) input is
-          dragged along to match.
+          <M tex="A_{OL} \to \infty" />, even a microvolt of differential input would saturate the
+          output. So in negative feedback the loop drives the two inputs to the same voltage:{' '}
+          <M tex="V_+ = V_-" />. Whatever the (+) input is doing, the (−) input is dragged along to
+          match.
         </li>
         <li>
           <strong className="text-text font-medium">
@@ -369,8 +349,8 @@ export default function Ch16FiltersOpAmpsTLines() {
             </Term>
           </strong>{' '}
           (and no input current). The inputs draw zero current — input impedance is infinite. In an
-          inverting topology with <InlineMath tex="V_+ = 0" />, the virtual-short condition forces{' '}
-          <InlineMath tex="V_- = 0" /> too: the (−) pin sits at ground while drawing no current.
+          inverting topology with <M tex="V_+ = 0" />, the virtual-short condition forces{' '}
+          <M tex="V_- = 0" /> too: the (−) pin sits at ground while drawing no current.
         </li>
       </ul>
       <p className="mb-prose-3">
@@ -378,15 +358,15 @@ export default function Ch16FiltersOpAmpsTLines() {
         <Cite id="sedra-smith-2014" in={SOURCES} />. An{' '}
         <strong className="text-text font-medium">inverting amplifier</strong> with input resistor R
         <sub>in</sub> and feedback resistor R<sub>f</sub>: the input current{' '}
-        <InlineMath tex="V_{in}/R_{in}" /> must equal the feedback current{' '}
-        <InlineMath tex="-V_{out}/R_f" /> (signs because both flow into the virtual ground), so
+        <M tex="V_{in}/R_{in}" /> must equal the feedback current <M tex="-V_{out}/R_f" /> (signs
+        because both flow into the virtual ground), so
       </p>
       <Formula tex="V_{out} = -\dfrac{R_f}{R_{in}} \cdot V_{in}" />
       <p className="mb-prose-3">
         A <strong className="text-text font-medium">non-inverting amplifier</strong> with R
         <sub>f</sub> from output to (−) and R<sub>g</sub> from (−) to ground: virtual short forces{' '}
-        <InlineMath tex="V_- = V_{in}" />, the divider then says{' '}
-        <InlineMath tex="V_- = V_{out} \cdot R_g/(R_f+R_g)" />, so
+        <M tex="V_- = V_{in}" />, the divider then says{' '}
+        <M tex="V_- = V_{out} \cdot R_g/(R_f+R_g)" />, so
       </p>
       <Formula tex="V_{out} = \left(1 + \dfrac{R_f}{R_g}\right) \cdot V_{in}" />
       <p className="mb-prose-3">
@@ -433,12 +413,12 @@ export default function Ch16FiltersOpAmpsTLines() {
       <p className="mb-prose-3">
         Swap the feedback resistor for a capacitor and the inverting amp becomes an
         <strong className="text-text font-medium"> integrator</strong>: the input current{' '}
-        <InlineMath tex="V_{in}/R" /> now flows onto the feedback cap, building voltage according to{' '}
-        <InlineMath tex="V_{out} = -(1/RC) \int V_{in}\, dt" />. Drive it with a square wave and the
-        output ramps up and down linearly between the rails — a triangle wave. Drive it with a sine
-        and the output is a 90°-lagging cosine attenuated by
-        <InlineMath tex="1/(\omega RC)" />. The integrator is the heart of every analog PID
-        controller, every Δ-Σ ADC's first stage, and every analog computer ever built
+        <M tex="V_{in}/R" /> now flows onto the feedback cap, building voltage according to{' '}
+        <M tex="V_{out} = -(1/RC) \int V_{in}\, dt" />. Drive it with a square wave and the output
+        ramps up and down linearly between the rails — a triangle wave. Drive it with a sine and the
+        output is a 90°-lagging cosine attenuated by <M tex="1/(\omega RC)" />. The integrator is
+        the heart of every analog PID controller, every Δ-Σ ADC's first stage, and every analog
+        computer ever built
         <Cite id="sedra-smith-2014" in={SOURCES} />.
       </p>
 
@@ -467,14 +447,14 @@ export default function Ch16FiltersOpAmpsTLines() {
         tag="Try 16.2"
         question={
           <>
-            An inverting op-amp has <InlineMath tex="R_f = 100\ \text{k}\Omega" />,{' '}
-            <InlineMath tex="R_{in} = 10\ \text{k}\Omega" />, and supply rails of ±10 V. What is V
+            An inverting op-amp has <M tex="R_f = 100\ \text{k}\Omega" />,{' '}
+            <M tex="R_{in} = 10\ \text{k}\Omega" />, and supply rails of ±10 V. What is V
             <sub>out</sub> for V<sub>in</sub> = 0.5 V? What happens when V<sub>in</sub> = 2 V?
           </>
         }
         hint={
           <>
-            Gain <InlineMath tex="= -R_f/R_{in}" />. Multiply, then check against the rails.
+            Gain <M tex="= -R_f/R_{in}" />. Multiply, then check against the rails.
           </>
         }
         answer={
@@ -520,9 +500,9 @@ export default function Ch16FiltersOpAmpsTLines() {
               <>
                 <strong className="text-text font-medium">characteristic impedance</strong> — the
                 ratio of voltage to current in a traveling wave on a lossless transmission line:{' '}
-                <InlineMath tex="Z_0 = \sqrt{L'/C'}" />, where L′ and C′ are
-                per-unit-length inductance and capacitance. A purely real number (in ohms), but not
-                a resistor — Z₀ describes wave propagation, not dissipation.
+                <M tex="Z_0 = \sqrt{L'/C'}" />, where L′ and C′ are per-unit-length inductance and
+                capacitance. A purely real number (in ohms), but not a resistor — Z₀ describes wave
+                propagation, not dissipation.
               </>
             }
           >
@@ -532,17 +512,15 @@ export default function Ch16FiltersOpAmpsTLines() {
       </p>
       <Formula tex="Z_0 = \sqrt{L'/C'}" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="Z_0" />{' '}
-        is the characteristic impedance of the line (in ohms),{' '}
-        <InlineMath tex="L'" /> is the inductance per unit length (in
-        henries per metre), and <InlineMath tex="C'" /> is the
-        capacitance per unit length (in farads per metre). Z<sub>0</sub> is purely real for a
-        lossless line but does not dissipate energy — it sets the ratio of voltage to current in a
-        wave traveling along the line.
+        where <M tex="Z_0" />
+        is the characteristic impedance of the line (in ohms), <M tex="L'" /> is the inductance per
+        unit length (in henries per metre), and <M tex="C'" /> is the capacitance per unit length
+        (in farads per metre). Z<sub>0</sub> is purely real for a lossless line but does not
+        dissipate energy — it sets the ratio of voltage to current in a wave traveling along the
+        line.
       </p>
       <p className="mb-prose-3">
-        and a propagation velocity <InlineMath tex="v = 1/\sqrt{L'C'}" /> which works out to roughly
+        and a propagation velocity <M tex="v = 1/\sqrt{L'C'}" /> which works out to roughly
         two-thirds of c in a plastic-dielectric coax. Z<sub>0</sub> is real (in ohms) but it is not
         a resistor in the dissipative sense — it is the ratio of voltage to current in a wave
         travelling along the line. The canonical numbers are{' '}
@@ -555,19 +533,18 @@ export default function Ch16FiltersOpAmpsTLines() {
         <Cite id="johnson-graham-1993" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        Terminate the line in a load <InlineMath tex="Z_L = Z_0" /> and the wave is absorbed
-        completely: all of the power launched into the line ends up dissipated in the load. Mismatch
-        the termination and a portion bounces back, with{' '}
+        Terminate the line in a load <M tex="Z_L = Z_0" /> and the wave is absorbed completely: all
+        of the power launched into the line ends up dissipated in the load. Mismatch the termination
+        and a portion bounces back, with{' '}
         <strong className="text-text font-medium">
           <Term
             def={
               <>
                 <strong className="text-text font-medium">reflection coefficient</strong> — the
                 complex ratio of reflected to incident voltage at a transmission-line termination:{' '}
-                <InlineMath tex="\Gamma = (Z_L - Z_0)/(Z_L + Z_0)" />
-                . <InlineMath tex="\Gamma = 0" /> for matched,{' '}
-                <InlineMath tex="+1" /> for an open,{' '}
-                <InlineMath tex="-1" /> for a short.
+                <M tex="\Gamma = (Z_L - Z_0)/(Z_L + Z_0)" />
+                . <M tex="\Gamma = 0" /> for matched, <M tex="+1" /> for an open, <M tex="-1" /> for
+                a short.
               </>
             }
           >
@@ -577,21 +554,19 @@ export default function Ch16FiltersOpAmpsTLines() {
       </p>
       <Formula tex="\Gamma = \dfrac{Z_L - Z_0}{Z_L + Z_0}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\Gamma" /> is the dimensionless (in general
-        complex) reflection coefficient — the ratio of the reflected to the incident voltage phasor
-        at the termination —{' '}
-        <InlineMath tex="Z_L" />{' '}
+        where <M tex="\Gamma" /> is the dimensionless (in general complex) reflection coefficient —
+        the ratio of the reflected to the incident voltage phasor at the termination —{' '}
+        <M tex="Z_L" />
         is the load impedance at the end of the line (in ohms, in general complex), and{' '}
-        <InlineMath tex="Z_0" />{' '}
+        <M tex="Z_0" />
         is the line's characteristic impedance (in ohms, real for a lossless line).
       </p>
       <p className="mb-prose-3">
-        For a matched load, Γ = 0 (no reflection). For a short (<InlineMath tex="Z_L = 0" />
+        For a matched load, Γ = 0 (no reflection). For a short (<M tex="Z_L = 0" />
         ), Γ = −1 (full inverted reflection — same magnitude, opposite sign). For an open (
-        <InlineMath tex="Z_L \to \infty" />
+        <M tex="Z_L \to \infty" />
         ), Γ = +1 (full same-sign reflection). In between, the load gets a fraction{' '}
-        <InlineMath tex="(1 - |\Gamma|^2)" /> of the incident power and the rest goes back to the
-        source
+        <M tex="(1 - |\Gamma|^2)" /> of the incident power and the rest goes back to the source
         <Cite id="pozar-2011" in={SOURCES} />.
       </p>
 
@@ -607,7 +582,7 @@ export default function Ch16FiltersOpAmpsTLines() {
               <>
                 <strong className="text-text font-medium">VSWR</strong> — voltage standing-wave
                 ratio: the ratio of the maximum to minimum voltage magnitude along a mismatched
-                transmission line. <InlineMath tex="\text{VSWR} = (1 + |\Gamma|)/(1 - |\Gamma|)" />.{' '}
+                transmission line. <M tex="\text{VSWR} = (1 + |\Gamma|)/(1 - |\Gamma|)" />.{' '}
                 <em className="text-text italic">1:1</em> is perfect match;{' '}
                 <em className="text-text italic">2:1</em> is mediocre;{' '}
                 <em className="text-text italic">∞:1</em> is full reflection (short or open).
@@ -621,14 +596,12 @@ export default function Ch16FiltersOpAmpsTLines() {
       </p>
       <Formula tex="\text{VSWR} = \dfrac{V_{max}}{V_{min}} = \dfrac{1 + |\Gamma|}{1 - |\Gamma|}" />
       <p className="mb-prose-3">
-        where <InlineMath tex="\text{VSWR}" /> is the dimensionless voltage
-        standing-wave ratio,{' '}
-        <InlineMath tex="V_{\max}" />{' '}
-        and{' '}
-        <InlineMath tex="V_{\min}" />{' '}
+        where <M tex="\text{VSWR}" /> is the dimensionless voltage standing-wave ratio,{' '}
+        <M tex="V_{\max}" />
+        and <M tex="V_{\min}" />
         are the maximum and minimum voltage envelope magnitudes along the line (in volts), and{' '}
-        <InlineMath tex="|\Gamma|" /> is the magnitude of the reflection
-        coefficient (dimensionless, between 0 and 1 for a passive load).
+        <M tex="|\Gamma|" /> is the magnitude of the reflection coefficient (dimensionless, between
+        0 and 1 for a passive load).
       </p>
       <p className="mb-prose-3">
         A perfectly matched line shows VSWR = 1; a 2:1 mismatch is the practical limit for most RF
@@ -645,7 +618,7 @@ export default function Ch16FiltersOpAmpsTLines() {
         Philip Smith, working at Bell Labs in 1939, found that the right way to visualise it is to
         plot Γ directly on the unit disk of the complex plane — and to overlay the disk with the
         conformal images of the constant-resistance and constant-reactance lines under the bilinear
-        map <InlineMath tex="\Gamma = (z - 1)/(z + 1)" />, where <InlineMath tex="z = Z_L/Z_0" />
+        map <M tex="\Gamma = (z - 1)/(z + 1)" />, where <M tex="z = Z_L/Z_0" />
         <Cite id="pozar-2011" in={SOURCES} />. Constant-r becomes a family of circles; constant-x
         becomes a family of arcs. Every passive load lies inside the unit disk; the centre is the
         matched load (Γ = 0, VSWR = 1); the rim is total reflection.
@@ -657,10 +630,10 @@ export default function Ch16FiltersOpAmpsTLines() {
         The Smith chart's killer feature is that moving along the line corresponds to rotating
         around the origin. Drop the load Z<sub>L</sub> at the right end of a piece of cable and the
         impedance the generator sees at the left end is the original marker, rotated clockwise by{' '}
-        <InlineMath tex="2\beta\ell = 4\pi \cdot (\ell/\lambda)" /> on the chart. A quarter-wave
-        section (<InlineMath tex="\ell = \lambda/4" />) rotates exactly 180° — turning a short into
-        an open, an open into a short, and a load Z<sub>L</sub> into{' '}
-        <InlineMath tex="Z_{in} = Z_0^2/Z_L" />. That last identity is the basis of the{' '}
+        <M tex="2\beta\ell = 4\pi \cdot (\ell/\lambda)" /> on the chart. A quarter-wave section (
+        <M tex="\ell = \lambda/4" />) rotates exactly 180° — turning a short into an open, an open
+        into a short, and a load Z<sub>L</sub> into <M tex="Z_{in} = Z_0^2/Z_L" />. That last
+        identity is the basis of the{' '}
         <strong className="text-text font-medium">quarter-wave transformer</strong>, the single most
         popular impedance-matching trick in RF and microwave design
         <Cite id="pozar-2011" in={SOURCES} />.
@@ -677,8 +650,7 @@ export default function Ch16FiltersOpAmpsTLines() {
         }
         hint={
           <>
-            For a quarter-wave line, <InlineMath tex="Z_{in} = Z_0^2/Z_L" />. Solve for Z
-            <sub>0</sub>.
+            For a quarter-wave line, <M tex="Z_{in} = Z_0^2/Z_L" />. Solve for Z<sub>0</sub>.
           </>
         }
         answer={
@@ -722,8 +694,8 @@ export default function Ch16FiltersOpAmpsTLines() {
         }
         hint={
           <>
-            <InlineMath tex="\Gamma = (Z_L - Z_0)/(Z_L + Z_0)" />; transmitted-power fraction is{' '}
-            <InlineMath tex="1 - |\Gamma|^2" />.
+            <M tex="\Gamma = (Z_L - Z_0)/(Z_L + Z_0)" />; transmitted-power fraction is{' '}
+            <M tex="1 - |\Gamma|^2" />.
           </>
         }
         answer={
@@ -733,8 +705,8 @@ export default function Ch16FiltersOpAmpsTLines() {
               The reflected voltage is +1/3 of the incident; |Γ|² = 1/9 of the power bounces back,
               so the load receives <strong className="text-text font-medium">8/9 ≈ 89%</strong> of
               the incident power. The standing wave ratio is{' '}
-              <InlineMath tex="\text{VSWR} = (1 + 1/3)/(1 - 1/3) = 2{:}1" /> — borderline acceptable
-              for most RF work
+              <M tex="\text{VSWR} = (1 + 1/3)/(1 - 1/3) = 2{:}1" /> — borderline acceptable for most
+              RF work
               <Cite id="pozar-2011" in={SOURCES} />.
             </p>
           </>
@@ -776,14 +748,14 @@ export default function Ch16FiltersOpAmpsTLines() {
         >
           <p className="mb-prose-2 last:mb-0">
             For an air-dielectric coaxial cable, the per-unit-length attenuation depends on the
-            ratio b/a of outer to inner conductor radii through
-            <InlineMath tex="Z_0 = (\eta_0/2\pi) \ln(b/a)" />. Minimising conductor loss for a fixed
-            outer diameter is a calculus problem with a clean answer: the optimum sits at{' '}
+            ratio b/a of outer to inner conductor radii through{' '}
+            <M tex="Z_0 = (\eta_0/2\pi) \ln(b/a)" />. Minimising conductor loss for a fixed outer
+            diameter is a calculus problem with a clean answer: the optimum sits at{' '}
             <strong className="text-text font-medium">
               Z<sub>0</sub> ≈ 77 Ω
             </strong>
             . Maximising the power the cable can carry before air breakdown lands at a different
-            optimum,
+            optimum,{' '}
             <strong className="text-text font-medium">
               {' '}
               Z<sub>0</sub> ≈ 30 Ω
@@ -929,8 +901,8 @@ export default function Ch16FiltersOpAmpsTLines() {
             and reflections become visible on the bench
             <Cite id="johnson-graham-1993" in={SOURCES} />. Modern CMOS edges are 50–500 ps, which
             drops the threshold under 1 cm and is why every motherboard's high-speed signal lanes
-            (DDR, PCIe, USB 3, HDMI) are routed as carefully impedance-controlled differential
-            pairs with matched lengths.
+            (DDR, PCIe, USB 3, HDMI) are routed as carefully impedance-controlled differential pairs
+            with matched lengths.
           </p>
         </FAQItem>
 

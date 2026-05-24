@@ -16,7 +16,7 @@ import {
   MiniSlider,
   MiniToggle,
 } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow, drawCharge } from '@/lib/canvasPrimitives';
@@ -174,10 +174,10 @@ export function TwoChargesDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Coulomb's law"
-        left={<InlineMath tex="F \;=\; \dfrac{k\, Q_1 Q_2}{r^{2}}" />}
+        left={<M tex="F \;=\; \dfrac{k\, Q_1 Q_2}{r^{2}}" />}
         rightLabel="Live substitution"
         right={
-          <InlineMath
+          <M
             tex={
               `F \\;=\\; \\dfrac{(8.99\\times 10^{9})` +
               `(${sciTeX(q1q2)})}` +

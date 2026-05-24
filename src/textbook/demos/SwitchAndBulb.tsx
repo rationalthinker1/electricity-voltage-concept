@@ -17,7 +17,7 @@ import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useCircuitCache } from '@/lib/useCircuitCache';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -184,16 +184,52 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       }
 
       // Polarity glyphs
-      drawLabel(ctx, { text: '+', x: batX - 18, y: top, color: colors.pink, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '−', x: batX - 12, y: bot, color: colors.blue, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '+',
+        x: batX - 18,
+        y: top,
+        color: colors.pink,
+        weight: 'bold',
+        size: 11,
+        font: '11px "JetBrains Mono"',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '−',
+        x: batX - 12,
+        y: bot,
+        color: colors.blue,
+        weight: 'bold',
+        size: 11,
+        font: '11px "JetBrains Mono"',
+        align: 'right',
+        baseline: 'middle',
+      });
 
       // Annotations
       ctx.fillStyle = s.closed ? colors.accent : withAlpha(colors.textDim, 0.55);
-      drawLabel(ctx, { text: s.closed
-                  ? 'field propagates at ~⅔ c · reaches bulb in ~5 ns'
-                  : 'switch open — no field, no current', x: w / 2, y: h - 32, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: s.closed
+          ? 'field propagates at ~⅔ c · reaches bulb in ~5 ns'
+          : 'switch open — no field, no current',
+        x: w / 2,
+        y: h - 32,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
       ctx.fillStyle = withAlpha(colors.blue, 0.7);
-      drawLabel(ctx, { text: 'an electron starting at the switch would take ~13 hours to reach the bulb', x: w / 2, y: h - 14, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'an electron starting at the switch would take ~13 hours to reach the bulb',
+        x: w / 2,
+        y: h - 14,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'middle',
+      });
     },
     [],
     () => ({ context: { closedAtSimTime: null } }),

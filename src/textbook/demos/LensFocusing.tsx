@@ -15,12 +15,19 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -91,8 +98,22 @@ export function LensFocusingDemo({ figure }: Props) {
       focalDot(lensX + fpx);
       focalDot(lensX - fpx);
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: 'F', x: lensX + fpx, y: axisY + 16, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'F', x: lensX - fpx, y: axisY + 16, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: 'F',
+        x: lensX + fpx,
+        y: axisY + 16,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: 'F',
+        x: lensX - fpx,
+        y: axisY + 16,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
       const rayYs = [-30, 0, 30];
       ctx.lineWidth = 1.3;
       for (const dy of rayYs) {
@@ -229,10 +250,29 @@ export function LensFocusingDemo({ figure }: Props) {
         ctx.stroke();
       }
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `f = ${convex ? '+' : '−'}${fAbs.toFixed(1)} cm`, x: 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `d₀ = ${dObj.toFixed(1)} cm`, x: 12, y: 34, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, {
+        text: `f = ${convex ? '+' : '−'}${fAbs.toFixed(1)} cm`,
+        x: 12,
+        y: 18,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
+      drawLabel(ctx, {
+        text: `d₀ = ${dObj.toFixed(1)} cm`,
+        x: 12,
+        y: 34,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+      });
       ctx.fillStyle = convex ? withAlpha(colors.teal, 0.9) : withAlpha(colors.accent, 0.9);
-      drawLabel(ctx, { text: convex ? 'convex' : 'concave', x: W - 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, {
+        text: convex ? 'convex' : 'concave',
+        x: W - 12,
+        y: 18,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'right',
+      });
     },
     [],
   );
@@ -281,12 +321,16 @@ export function LensFocusingDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Thin lens equation"
-        left={<InlineMath tex={`\\frac{1}{f} = \\frac{1}{d_o} + \\frac{1}{d_i},\\quad m = -\\frac{d_i}{d_o}`} />}
+        left={
+          <M tex={`\\frac{1}{f} = \\frac{1}{d_o} + \\frac{1}{d_i},\\quad m = -\\frac{d_i}{d_o}`} />
+        }
         rightLabel={`f = ${f.toFixed(1)} cm, d₀ = ${dObj.toFixed(1)} cm`}
         right={
-          Number.isFinite(dImg)
-            ? <InlineMath tex={`d_i = ${dImg.toFixed(2)}\\,\\text{cm},\\quad m = ${mag.toFixed(2)}\\times`} />
-            : <InlineMath tex={`d_i \\to \\infty\\text{ (object at focal point)}`} />
+          Number.isFinite(dImg) ? (
+            <M tex={`d_i = ${dImg.toFixed(2)}\\,\\text{cm},\\quad m = ${mag.toFixed(2)}\\times`} />
+          ) : (
+            <M tex={`d_i \\to \\infty\\text{ (object at focal point)}`} />
+          )
         }
       />
     </Demo>

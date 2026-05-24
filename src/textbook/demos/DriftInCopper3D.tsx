@@ -38,7 +38,7 @@ import {
   MiniSlider,
   MiniToggle,
 } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { MATERIALS, PHYS, sciTeX } from '@/lib/physics';
@@ -47,7 +47,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -362,10 +362,21 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       }
 
       // Annotations.
-      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'drag to rotate',
+        x: 12,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.globalAlpha = 0.55;
-      drawLabel(ctx, { text: 'copper · 56 free electrons · thermal & drift scaled for visibility', x: 12, y: H - 18 });
+      drawLabel(ctx, {
+        text: 'copper · 56 free electrons · thermal & drift scaled for visibility',
+        x: 12,
+        y: H - 18,
+      });
       ctx.restore();
       drawLabel(ctx, { text: 'electrons (cyan)', x: W - 12, y: 12, color: colors.teal });
       drawLabel(ctx, { text: 'Cu+ ions (amber)', x: W - 12, y: 28, color: colors.accent });
@@ -466,16 +477,13 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Drift velocity"
         left={
-          <InlineMath
-            tex={
-              `v_d \\;=\\; \\dfrac{I}{n q A} \\;=\\; ` +
-              `${sciTeX(computed.vd)}\\ \\text{m/s}`
-            }
+          <M
+            tex={`v_d \\;=\\; \\dfrac{I}{n q A} \\;=\\; ` + `${sciTeX(computed.vd)}\\ \\text{m/s}`}
           />
         }
         rightLabel="Thermal (classical RMS) speed"
         right={
-          <InlineMath
+          <M
             tex={
               `v_{\\text{th}} \\;=\\; \\sqrt{\\dfrac{3 k_B T}{m_e}} \\;=\\; ` +
               `${sciTeX(computed.vth)}\\ \\text{m/s}`

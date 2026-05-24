@@ -22,7 +22,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow, drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -107,7 +107,12 @@ export function VabWorkEnergyDemo({ figure }: Props) {
         if (labelSide === 'left') {
           drawLabel(ctx, { text: `${label} = ${Vval.toFixed(1)} V`, x: xLeft, y: wallTop - 6 });
         } else {
-          drawLabel(ctx, { text: `${label} = ${Vval.toFixed(1)} V`, x: xRight, y: wallTop - 6, align: 'right' });
+          drawLabel(ctx, {
+            text: `${label} = ${Vval.toFixed(1)} V`,
+            x: xRight,
+            y: wallTop - 6,
+            align: 'right',
+          });
         }
       };
       drawWall(leftWallLeft, leftWallRight, leftColor, 'V_a', Va_, 'left');
@@ -140,9 +145,23 @@ export function VabWorkEnergyDemo({ figure }: Props) {
           }
         }
         ctx.fillStyle = withAlpha(colors.accent, eAlpha + 0.2);
-        drawLabel(ctx, { text: `E points high V → low V    (|V_ab| = ${Eabs.toFixed(1)} V drives it)`, x: (channelLeft + channelRight) / 2, y: channelTop - 4, font: 'italic 11px "STIX Two Text", serif', align: 'center', baseline: 'bottom' });
+        drawLabel(ctx, {
+          text: `E points high V → low V    (|V_ab| = ${Eabs.toFixed(1)} V drives it)`,
+          x: (channelLeft + channelRight) / 2,
+          y: channelTop - 4,
+          font: 'italic 11px "STIX Two Text", serif',
+          align: 'center',
+          baseline: 'bottom',
+        });
       } else {
-        drawLabel(ctx, { text: 'V_a = V_b — no field, no motion', x: (channelLeft + channelRight) / 2, y: channelMidY, font: 'italic 11px "STIX Two Text", serif', align: 'center', baseline: 'middle' });
+        drawLabel(ctx, {
+          text: 'V_a = V_b — no field, no motion',
+          x: (channelLeft + channelRight) / 2,
+          y: channelMidY,
+          font: 'italic 11px "STIX Two Text", serif',
+          align: 'center',
+          baseline: 'middle',
+        });
       }
 
       // Physics update
@@ -198,7 +217,14 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(xC, yC, radius, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: positive ? '+' : '−', x: xC, y: yC + 1, color: colors.bg, align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: positive ? '+' : '−',
+        x: xC,
+        y: yC + 1,
+        color: colors.bg,
+        align: 'center',
+        baseline: 'middle',
+      });
 
       // Energy bar: PE + KE = constant
       const barTop = wallBot + 18;
@@ -222,14 +248,31 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       ctx.fillStyle = withAlpha(colors.accent, 0.55 + 0.25 * keFrac);
       ctx.fillRect(barLeft + pePx, barTop, kePx, barH);
       const labelY = barTop + barH / 2;
-      drawLabel(ctx, { text: `total energy |qV_ab| = ${dPE_uJ.toFixed(2)} µJ`, x: barLeft, y: barTop - 4, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: `total energy |qV_ab| = ${dPE_uJ.toFixed(2)} µJ`,
+        x: barLeft,
+        y: barTop - 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'bottom',
+      });
       const pe_uJ = dPE_uJ * peFrac;
       const ke_uJ = dPE_uJ * keFrac;
       if (pePx > 60) {
-        drawLabel(ctx, { text: `PE  ${pe_uJ.toFixed(2)} µJ`, x: barLeft + 6, y: labelY, color: colors.text });
+        drawLabel(ctx, {
+          text: `PE  ${pe_uJ.toFixed(2)} µJ`,
+          x: barLeft + 6,
+          y: labelY,
+          color: colors.text,
+        });
       }
       if (kePx > 60) {
-        drawLabel(ctx, { text: `KE  ${ke_uJ.toFixed(2)} µJ`, x: barLeft + barW - 6, y: labelY, color: colors.bg, align: 'right' });
+        drawLabel(ctx, {
+          text: `KE  ${ke_uJ.toFixed(2)} µJ`,
+          x: barLeft + barW - 6,
+          y: labelY,
+          color: colors.bg,
+          align: 'right',
+        });
       }
 
       drawLabel(ctx, {
@@ -244,7 +287,6 @@ export function VabWorkEnergyDemo({ figure }: Props) {
     [],
     () => ({ context: { s: 0, v: 0 } }),
   );
-
 
   return (
     <Demo
@@ -317,7 +359,7 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Voltage between the two points"
         left={
-          <InlineMath
+          <M
             tex={
               `V_{ab} \\;=\\; V_{b} - V_{a} \\;=\\; ` +
               `${Vb.toFixed(1)} - ${Va.toFixed(1)} \\;=\\; ` +
@@ -328,8 +370,8 @@ export function VabWorkEnergyDemo({ figure }: Props) {
         rightLabel="Work and energy across the trip"
         right={
           <div className="flex flex-col items-center gap-1">
-            <InlineMath tex={`W \\;=\\; q\\,V_{ab} \\;=\\; \\Delta U`} />
-            <InlineMath
+            <M tex={`W \\;=\\; q\\,V_{ab} \\;=\\; \\Delta U`} />
+            <M
               tex={
                 `=\\; (${qMicro >= 0 ? '+' : ''}${qMicro.toFixed(2)}\\times 10^{-6})` +
                 `(${Vab >= 0 ? '+' : ''}${Vab.toFixed(2)}) ` +

@@ -17,7 +17,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -55,8 +55,8 @@ export default function Ch5Capacitors() {
         rises linearly with charge; the energy stored climbs quadratically; and the energy itself
         lives not on the plates but in the field between them
         <Cite id="feynman-II-2" in={SOURCES} />. Along the way we will pick up the formula{' '}
-        <InlineMath>Q = CV</InlineMath>, the geometry rule
-        <InlineMath> C = ε₀A/d</InlineMath>, and the time constant <InlineMath>τ = RC</InlineMath>{' '}
+        <M>Q = CV</M>, the geometry rule
+        <M> C = ε₀A/d</M>, and the time constant <M>τ = RC</M>
         that governs every switch-on transient in every circuit ever built.
       </p>
 
@@ -132,36 +132,34 @@ export default function Ch5Capacitors() {
 
       <h3 className="chapter-h3">Intuition: how much charge fits per volt</h3>
       <p className="mb-prose-3">
-        Before any equation, the picture: capacitance is the size of the bucket. Push a volt
-        across the gap and some amount of charge piles up on the plates. Push two volts and twice
-        as much fits. The capacitor's <em className="text-text italic">capacity</em> is how
-        steeply that line rises — how many coulombs per volt the geometry will hold. Big plates,
-        thin gap, easy-to-polarise material in between: a deep bucket. Small plates, wide gap:
-        shallow. The earlier "Build one charge at a time" demo is exactly this picture made
-        kinetic — each electron drops in, the voltage climbs, and the slope of that climb is
-        determined by the geometry, not by you.
+        Before any equation, the picture: capacitance is the size of the bucket. Push a volt across
+        the gap and some amount of charge piles up on the plates. Push two volts and twice as much
+        fits. The capacitor's <em className="text-text italic">capacity</em> is how steeply that
+        line rises — how many coulombs per volt the geometry will hold. Big plates, thin gap,
+        easy-to-polarise material in between: a deep bucket. Small plates, wide gap: shallow. The
+        earlier "Build one charge at a time" demo is exactly this picture made kinetic — each
+        electron drops in, the voltage climbs, and the slope of that climb is determined by the
+        geometry, not by you.
       </p>
 
       <h3 className="chapter-h3">Formal: charge divided by potential</h3>
       <p className="mb-prose-3">
         At the field-theoretic level, capacitance is defined as the ratio of the charge on a
-        conductor to the resulting potential difference between it and a chosen reference (the
-        other plate, or infinity). The potential itself is the line integral of the electric field
-        across the gap,
+        conductor to the resulting potential difference between it and a chosen reference (the other
+        plate, or infinity). The potential itself is the line integral of the electric field across
+        the gap,
       </p>
       <Formula
         size="lg"
         tex="C \;\equiv\; \dfrac{Q}{V}, \qquad V \;=\; -\!\!\int_{-}^{+}\!\! \mathbf{E}\cdot d\boldsymbol{\ell}"
       />
       <p className="mb-prose-3">
-        where <InlineMath tex="Q" /> is the magnitude of the charge
-        stored on one conductor (in coulombs),{' '}
-        <InlineMath tex="V" /> is the resulting potential difference
-        (in volts), <InlineMath tex="E" /> is the electric field in
-        the gap (in V/m), and the integral runs from the negative to the positive plate along any
-        path through the gap. Maxwell's equations make the result path-independent for an
-        electrostatic configuration; the ratio depends only on geometry and the dielectric, never
-        on the source
+        where <M tex="Q" /> is the magnitude of the charge stored on one conductor (in coulombs),{' '}
+        <M tex="V" /> is the resulting potential difference (in volts), <M tex="E" /> is the
+        electric field in the gap (in V/m), and the integral runs from the negative to the positive
+        plate along any path through the gap. Maxwell's equations make the result path-independent
+        for an electrostatic configuration; the ratio depends only on geometry and the dielectric,
+        never on the source
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
@@ -171,11 +169,9 @@ export default function Ch5Capacitors() {
       </p>
       <Formula size="lg" tex="Q = CV" />
       <p className="mb-prose-3">
-        where <InlineMath tex="Q" /> is the magnitude of charge on
-        each plate (in coulombs; the two plates carry +Q and −Q),{' '}
-        <InlineMath tex="V" /> is the voltage across the gap (in
-        volts), and <InlineMath tex="C" /> is the capacitance —
-        measured in{' '}
+        where <M tex="Q" /> is the magnitude of charge on each plate (in coulombs; the two plates
+        carry +Q and −Q), <M tex="V" /> is the voltage across the gap (in volts), and <M tex="C" />{' '}
+        is the capacitance — measured in{' '}
         <Term def="SI unit of capacitance. 1 F = 1 coulomb per volt. A huge unit — practical capacitors range from picofarads to millifarads; only supercapacitors reach whole farads.">
           farads
         </Term>
@@ -188,12 +184,10 @@ export default function Ch5Capacitors() {
         <Term def="The textbook capacitor geometry: two flat conductors of area A separated by a thin gap d, with C = ε₀εᵣA/d. The basis for almost every capacitance calculation.">
           parallel-plate
         </Term>
-        s of area <InlineMath tex="A" /> separated by a vacuum gap of
-        width <InlineMath tex="d" />, Gauss's law applied to the
-        surface of one plate gives a uniform field{' '}
-        <InlineMath tex="E = Q/(\varepsilon_0 A)" /> in the gap, and integrating
-        that field across the gap yields a voltage{' '}
-        <InlineMath tex="V = Ed = Qd/(\varepsilon_0 A)" />. Re-arranging
+        s of area <M tex="A" /> separated by a vacuum gap of width <M tex="d" />, Gauss's law
+        applied to the surface of one plate gives a uniform field{' '}
+        <M tex="E = Q/(\varepsilon_0 A)" /> in the gap, and integrating that field across the gap
+        yields a voltage <M tex="V = Ed = Qd/(\varepsilon_0 A)" />. Re-arranging
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="C = \dfrac{\varepsilon_0 A}{d}" />
@@ -206,7 +200,7 @@ export default function Ch5Capacitors() {
         </Term>{' '}
         — into the gap and its molecules polarise: each one sets up a tiny counter-field that
         partially cancels the applied one, dropping V for a given Q and pushing C up by a factor{' '}
-        <InlineMath tex="\varepsilon_r" />, the material's{' '}
+        <M tex="\varepsilon_r" />, the material's{' '}
         <Term def="Dimensionless number εᵣ giving how much a dielectric reduces the field for the same charge on the plates. Vacuum is 1; air ≈ 1; water ≈ 80; specialised ceramics push past 1000.">
           relative permittivity
         </Term>
@@ -227,19 +221,15 @@ export default function Ch5Capacitors() {
 
       <p className="mb-prose-3">
         The 3D view above makes the underlying picture geometrical. The surface-charge density{' '}
-        <InlineMath tex="\sigma = Q/A" /> sits on the inner faces of the
-        two plates as equal and opposite sheets; between them, the field is the same everywhere —
-        uniform in magnitude and direction — with{' '}
-        <InlineMath tex="E = \sigma/\varepsilon_0 = V/d" />. Toggle the Gauss pillbox
-        to see the operational statement of Gauss's law: a closed cylinder piercing one plate has
-        its top cap outside the conductor (where E = 0) and its bottom cap in the field-filled gap.
-        The only nonzero contribution to{' '}
-        <InlineMath tex="\oint \mathbf{D} \cdot d\mathbf{A}" /> comes from that bottom cap, and
-        it equals exactly the charge{' '}
-        <InlineMath tex="\sigma A" /> on the slice of plate the pillbox
-        encloses
-        <Cite id="jackson-1999" in={SOURCES} />. Re-arrange and you get back{' '}
-        <InlineMath>C = ε₀ A / d</InlineMath>.
+        <M tex="\sigma = Q/A" /> sits on the inner faces of the two plates as equal and opposite
+        sheets; between them, the field is the same everywhere — uniform in magnitude and direction
+        — with <M tex="E = \sigma/\varepsilon_0 = V/d" />. Toggle the Gauss pillbox to see the
+        operational statement of Gauss's law: a closed cylinder piercing one plate has its top cap
+        outside the conductor (where E = 0) and its bottom cap in the field-filled gap. The only
+        nonzero contribution to <M tex="\oint \mathbf{D} \cdot d\mathbf{A}" /> comes from that
+        bottom cap, and it equals exactly the charge <M tex="\sigma A" /> on the slice of plate the
+        pillbox encloses
+        <Cite id="jackson-1999" in={SOURCES} />. Re-arrange and you get back <M>C = ε₀ A / d</M>.
       </p>
 
       <TryIt
@@ -274,13 +264,13 @@ export default function Ch5Capacitors() {
       />
 
       <p className="mb-prose-3">
-        The constant <InlineMath tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" />
+        The constant <M tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" />
         <Cite id="codata-2018" in={SOURCES} /> is so small that real-world capacitors live in the
-        picofarad-to-millifarad range. Two metal plates of 1 cm² area held 1 mm apart in vacuum give
-        <InlineMath tex="C \approx 0.9\,\text{pF}" />. A whole farad in air would
-        need plates the size of a small lake. The reason the capacitor industry exists at all is the
-        εᵣ trick: stack thin layers of high-permittivity ceramic between thin metallised foils and
-        you can fit a microfarad into a millimetre cube
+        picofarad-to-millifarad range. Two metal plates of 1 cm² area held 1 mm apart in vacuum give{' '}
+        <M tex="C \approx 0.9\,\text{pF}" />. A whole farad in air would need plates the size of a
+        small lake. The reason the capacitor industry exists at all is the εᵣ trick: stack thin
+        layers of high-permittivity ceramic between thin metallised foils and you can fit a
+        microfarad into a millimetre cube
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
@@ -289,17 +279,13 @@ export default function Ch5Capacitors() {
       </h2>
 
       <p className="mb-prose-3">
-        Imagine the capacitor at some intermediate state, with charge{' '}
-        <InlineMath tex="q" /> already on its plates and voltage
-        <InlineMath tex="v = q/C" /> across them. To move one more
-        coulomb's worth of charge — a tiny <InlineMath tex="dq" /> —
-        from the negative plate to the positive plate, you have to do work{' '}
-        <InlineMath tex="v \cdot dq" /> against the existing field. The cost
-        per coulomb is exactly the present voltage. For a real, finite chunk of charge δq, the work
-        is
-        <InlineMath tex="\delta q \cdot v" />, which is to say{' '}
-        <InlineMath tex="\delta q \cdot q / C" /> — proportional to how full the
-        cap already is.
+        Imagine the capacitor at some intermediate state, with charge <M tex="q" /> already on its
+        plates and voltage <M tex="v = q/C" /> across them. To move one more coulomb's worth of
+        charge — a tiny <M tex="dq" /> — from the negative plate to the positive plate, you have to
+        do work <M tex="v \cdot dq" /> against the existing field. The cost per coulomb is exactly
+        the present voltage. For a real, finite chunk of charge δq, the work is{' '}
+        <M tex="\delta q \cdot v" />, which is to say <M tex="\delta q \cdot q / C" /> —
+        proportional to how full the cap already is.
       </p>
       <p className="mb-prose-3">
         A worked example. Suppose you have a 10 µF capacitor that already carries 100 µC of charge,
@@ -346,29 +332,24 @@ export default function Ch5Capacitors() {
         This is also why the capacitor is the cleanest physical model of the
         running-out-of-easy-wins phenomenon — the more you've put in, the harder the next addition.
         It is the single-line summary of why charging takes work, why discharging gives the work
-        back, and why the total energy stored is not <InlineMath tex="QV" /> but
-        half of <InlineMath tex="QV" />.
+        back, and why the total energy stored is not <M tex="QV" /> but half of <M tex="QV" />.
       </p>
 
       <h2 className="chapter-h2">Where the energy goes</h2>
 
       <p className="mb-prose-3">
-        Sum the work from empty to full charge: integrate{' '}
-        <InlineMath tex="v(q)\cdot dq" /> from 0 to Q, with v = q/C.
+        Sum the work from empty to full charge: integrate <M tex="v(q)\cdot dq" /> from 0 to Q, with
+        v = q/C.
       </p>
       <Formula
         size="lg"
         tex="U = \int_0^Q \dfrac{q}{C}\, dq = \dfrac{Q^2}{2C} = \tfrac{1}{2} C V^2"
       />
       <p className="mb-prose-3">
-        where <InlineMath tex="U" /> is the total energy stored in the
-        capacitor (in joules), <InlineMath tex="Q" /> is the final
-        charge on each plate (in coulombs),{' '}
-        <InlineMath tex="V = Q/C" /> is the final voltage across it
-        (in volts),
-        <InlineMath tex="C" /> is the capacitance (in farads), and
-        the dummy variable <InlineMath tex="q" /> runs from 0 to{' '}
-        <InlineMath tex="Q" />
+        where <M tex="U" /> is the total energy stored in the capacitor (in joules), <M tex="Q" />{' '}
+        is the final charge on each plate (in coulombs), <M tex="V = Q/C" /> is the final voltage
+        across it (in volts), <M tex="C" /> is the capacitance (in farads), and the dummy variable{' '}
+        <M tex="q" /> runs from 0 to <M tex="Q" />
         across the integration. The factor of one half is doing real work in that formula. If the
         relationship between charge and voltage were not linear — if the (N+1)<sup>th</sup> charge
         cost the <em className="text-text italic">same</em> as the first — the answer would be QV.
@@ -388,25 +369,22 @@ export default function Ch5Capacitors() {
         u<sub>E</sub> = ½ ε₀ ε<sub>r</sub> E²
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="u_E" />{' '}
-        is the electric-field energy per unit volume (in J/m³),
-        <InlineMath tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" /> is the vacuum
+        where <M tex="u_E" />
+        is the electric-field energy per unit volume (in J/m³),{' '}
+        <M tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" /> is the vacuum
         permittivity <Cite id="codata-2018" in={SOURCES} />,
-        <InlineMath tex="\varepsilon_r" />{' '}
+        <M tex="\varepsilon_r" />
         is the dimensionless relative permittivity of whatever fills the gap (1 for vacuum), and{' '}
-        <InlineMath tex="E" /> is the local electric-field magnitude
-        (in V/m).
+        <M tex="E" /> is the local electric-field magnitude (in V/m).
       </p>
 
       <EnergyInTheGapDemo figure="Fig. 5.6" />
 
       <p className="mb-prose-3">
-        Multiply this density by the gap volume{' '}
-        <InlineMath tex="A \cdot d" /> for an idealised parallel-plate cap
-        and you recover exactly <InlineMath tex="\tfrac{1}{2}CV^2" />. The two
-        answers — the integrated work and the field-volume integral — are the same number, computed
-        two different ways. That equivalence is not a coincidence; it is a special case of the more
+        Multiply this density by the gap volume <M tex="A \cdot d" /> for an idealised
+        parallel-plate cap and you recover exactly <M tex="\tfrac{1}{2}CV^2" />. The two answers —
+        the integrated work and the field-volume integral — are the same number, computed two
+        different ways. That equivalence is not a coincidence; it is a special case of the more
         general statement that electromagnetic fields carry energy in their own right
         <Cite id="feynman-II-27" in={SOURCES} />, which will become the Poynting story in Chapter 8.
       </p>
@@ -464,17 +442,12 @@ export default function Ch5Capacitors() {
       </p>
       <Formula size="lg" tex="V_C(t) = V_0 \left(1 - e^{-t/RC}\right)" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="V_C(t)" />{' '}
-        is the voltage across the capacitor as a function of time (in volts),
-        <InlineMath tex="V_0" />{' '}
-        is the (constant) source/battery voltage (in volts),{' '}
-        <InlineMath tex="t" /> is time elapsed since the switch closed
-        (in seconds), <InlineMath tex="R" /> is the series resistance
-        (in ohms), and
-        <InlineMath tex="C" /> is the capacitance (in farads). The
-        product <InlineMath tex="RC" /> has units of seconds and sets
-        the timescale of the exponential approach.
+        where <M tex="V_C(t)" />
+        is the voltage across the capacitor as a function of time (in volts), <M tex="V_0" />
+        is the (constant) source/battery voltage (in volts), <M tex="t" /> is time elapsed since the
+        switch closed (in seconds), <M tex="R" /> is the series resistance (in ohms), and{' '}
+        <M tex="C" /> is the capacitance (in farads). The product <M tex="RC" /> has units of
+        seconds and sets the timescale of the exponential approach.
       </p>
 
       <ChargingCurveDemo figure="Fig. 5.7" />
@@ -507,7 +480,7 @@ export default function Ch5Capacitors() {
       />
 
       <p className="mb-prose-3">
-        The product <InlineMath tex="\tau = RC" /> is the{' '}
+        The product <M tex="\tau = RC" /> is the{' '}
         <Term def="τ = RC. The characteristic time for an RC circuit to respond — V_C reaches (1 − 1/e) ≈ 63% of its final value in one τ, and 99.3% by 5τ.">
           time constant
         </Term>{' '}
@@ -569,9 +542,9 @@ export default function Ch5Capacitors() {
         the plates — it lives in the field in the gap. Hook the cap up through a resistor and the
         charging curve is an exponential approach with time constant τ = RC. The whole device is set
         by geometry and material:{' '}
-        <InlineMath>
+        <M>
           C = ε₀ ε<sub>r</sub> A / d
-        </InlineMath>
+        </M>
         .
       </p>
       <p className="mb-prose-3">
@@ -626,15 +599,14 @@ export default function Ch5Capacitors() {
           <p className="mb-prose-2 last:mb-0">
             A clinical defibrillator is a capacitor with a job. Charge a high-voltage cap of roughly
             <strong className="text-text font-medium"> 150 µF</strong> to roughly{' '}
-            <strong className="text-text font-medium">2 kV</strong> and you have stored
-            <InlineMath tex="\tfrac{1}{2}CV^2 \approx 300\,\text{J}" /> of energy — the order
-            of a joule per kilogram of patient mass, enough to depolarise the heart muscle and reset
-            its rhythm
+            <strong className="text-text font-medium">2 kV</strong> and you have stored{' '}
+            <M tex="\tfrac{1}{2}CV^2 \approx 300\,\text{J}" /> of energy — the order of a joule per
+            kilogram of patient mass, enough to depolarise the heart muscle and reset its rhythm
             <Cite id="horowitz-hill-2015" in={SOURCES} />. Connect the terminals through the chest,
             whose transthoracic impedance is around{' '}
             <strong className="text-text font-medium">50 Ω</strong>, and the discharge time constant{' '}
-            <InlineMath tex="\tau = RC \approx 7\,\text{ms}" /> is short enough to
-            deliver the energy in a single biphasic pulse.
+            <M tex="\tau = RC \approx 7\,\text{ms}" /> is short enough to deliver the energy in a
+            single biphasic pulse.
           </p>
           <p className="mb-prose-2 last:mb-0">
             Every piece of this chapter is in that device. The energy is sourced from a step-up
@@ -686,10 +658,10 @@ export default function Ch5Capacitors() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             The single underlying fact is the geometry rule{' '}
-            <InlineMath tex="C = \varepsilon_0 \varepsilon_r A / d" />: change the geometry,
-            change the capacitance. A finger near the glass is a new conductor cutting into the
-            field's geometry. The capacitor doesn't care that the change came from a person; it just
-            reports a new C.
+            <M tex="C = \varepsilon_0 \varepsilon_r A / d" />: change the geometry, change the
+            capacitance. A finger near the glass is a new conductor cutting into the field's
+            geometry. The capacitor doesn't care that the change came from a person; it just reports
+            a new C.
           </p>
         </CaseStudy>
 
@@ -713,10 +685,10 @@ export default function Ch5Capacitors() {
           <p className="mb-prose-2 last:mb-0">
             Pure electrochemical supercapacitors store charge in the "electric double layer" that
             forms at the boundary between a porous electrode and a liquid electrolyte. The effective
-            plate area is enormous — thousands of square metres per gram of activated carbon — and the
-            effective gap d is the Debye length of the electrolyte, a nanometre or so. Putting both
-            into <InlineMath tex="C = \varepsilon_0 \varepsilon_r A / d" /> gives
-            capacitances in the thousands of farads per cell
+            plate area is enormous — thousands of square metres per gram of activated carbon — and
+            the effective gap d is the Debye length of the electrolyte, a nanometre or so. Putting
+            both into <M tex="C = \varepsilon_0 \varepsilon_r A / d" /> gives capacitances in the
+            thousands of farads per cell
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
@@ -751,7 +723,7 @@ export default function Ch5Capacitors() {
             trickles charge into a <strong className="text-text font-medium">~150 µF</strong>{' '}
             electrolytic capacitor over several seconds, building it up to roughly{' '}
             <strong className="text-text font-medium">330 V</strong>. The cap then holds{' '}
-            <InlineMath tex="\tfrac{1}{2}CV^2 \approx 8\,\text{J}" /> in its field.
+            <M tex="\tfrac{1}{2}CV^2 \approx 8\,\text{J}" /> in its field.
           </p>
           <p className="mb-prose-2 last:mb-0">
             When you press the shutter, a small trigger transformer ionises the xenon tube, the cap
@@ -767,13 +739,11 @@ export default function Ch5Capacitors() {
       <FAQ intro="Loose threads from the chapter — the questions a careful reader tends to surface.">
         <FAQItem q="What does it mean to “store” charge if the total charge on a capacitor is zero?">
           <p>
-            The capacitor's two plates always have net charges of{' '}
-            <InlineMath tex="+Q" /> and{' '}
-            <InlineMath tex="-Q" />, summing to zero. What's stored is
-            the <em className="text-text italic">separation</em>: a configuration in which positive
-            charge sits on one conductor and negative on another, with a field connecting them
-            across the gap. The energy that this configuration represents lives in that field, not
-            in the charges themselves
+            The capacitor's two plates always have net charges of <M tex="+Q" /> and <M tex="-Q" />,
+            summing to zero. What's stored is the <em className="text-text italic">separation</em>:
+            a configuration in which positive charge sits on one conductor and negative on another,
+            with a field connecting them across the gap. The energy that this configuration
+            represents lives in that field, not in the charges themselves
             <Cite id="feynman-II-2" in={SOURCES} />. Saying "stored charge" is loose shorthand for
             "stored charge separation" — the latter is what costs work to assemble and yields work
             when undone.
@@ -782,15 +752,13 @@ export default function Ch5Capacitors() {
 
         <FAQItem q="Why does adding the N-th charge cost more work than the first?">
           <p>
-            Because by the time you add the N-th charge there are already{' '}
-            <InlineMath tex="N-1" /> like charges on the same plate
-            (and N−1 opposite charges on the other), and the field they have already established
-            opposes the new charge's motion across the gap. The first charge moved through nothing;
-            the second moved against the field of one; the millionth moved against the field of nine
-            hundred and ninety-nine thousand nine hundred and ninety-nine. The work cost is{' '}
-            <InlineMath tex="q \cdot V" />, and{' '}
-            <InlineMath tex="V" /> grows linearly with how many
-            charges are already there
+            Because by the time you add the N-th charge there are already <M tex="N-1" /> like
+            charges on the same plate (and N−1 opposite charges on the other), and the field they
+            have already established opposes the new charge's motion across the gap. The first
+            charge moved through nothing; the second moved against the field of one; the millionth
+            moved against the field of nine hundred and ninety-nine thousand nine hundred and
+            ninety-nine. The work cost is <M tex="q \cdot V" />, and <M tex="V" /> grows linearly
+            with how many charges are already there
             <Cite id="griffiths-2017" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -823,8 +791,7 @@ export default function Ch5Capacitors() {
           <p>
             In series, the same charge Q must sit on every cap (the wire between two caps is
             isolated, so what comes in must equal what goes out). The voltages add: V_total = V₁ +
-            V₂ + … = Q/C₁ + Q/C₂ + …. So
-            <InlineMath tex="1/C_{\text{total}} = 1/C_1 + 1/C_2 + \cdots" />.
+            V₂ + … = Q/C₁ + Q/C₂ + …. So <M tex="1/C_{\text{total}} = 1/C_1 + 1/C_2 + \cdots" />.
             Geometrically: stacking two identical caps in series is like doubling the gap d while
             keeping A fixed, which halves C<Cite id="horowitz-hill-2015" in={SOURCES} />. Parallel
             is the reverse — voltages match, charges add, so C_total = C₁ + C₂ + ….
@@ -837,7 +804,7 @@ export default function Ch5Capacitors() {
             is infinite. In practice the loop always has some resistance — wire resistance, internal
             battery resistance, the capacitor's own equivalent series resistance — and the energy
             dissipated in that resistance, integrated over the charging transient, is exactly{' '}
-            <InlineMath tex="\tfrac{1}{2}CV^2" /> regardless of the value of R
+            <M tex="\tfrac{1}{2}CV^2" /> regardless of the value of R
             <Cite id="horowitz-hill-2015" in={SOURCES} />. So the battery puts in CV² of energy
             total, half ends up in the cap as ½CV² and half gets burned as heat in R, no matter how
             small R is.
@@ -848,13 +815,11 @@ export default function Ch5Capacitors() {
           <p>
             Dimensional analysis answers this. Resistance is volts per amp = volts per
             coulomb-per-second. Capacitance is coulombs per volt. Multiply them:{' '}
-            <InlineMath tex="R \cdot C" /> has units of (V/(C/s))·(C/V) ={' '}
-            seconds. Neither R/C nor R+C has
-            units of time. More mechanically, the ODE
-            <InlineMath tex="dQ/dt = (V_0 - Q/C)/R" /> rearranges to{' '}
-            <InlineMath tex="R \cdot C \cdot dQ/dt = (CV_0 - Q)" />, in which the
-            coefficient on the time derivative is RC. So τ = RC falls straight out of the
-            differential equation as the only timescale in the problem
+            <M tex="R \cdot C" /> has units of (V/(C/s))·(C/V) = seconds. Neither R/C nor R+C has
+            units of time. More mechanically, the ODE <M tex="dQ/dt = (V_0 - Q/C)/R" /> rearranges
+            to <M tex="R \cdot C \cdot dQ/dt = (CV_0 - Q)" />, in which the coefficient on the time
+            derivative is RC. So τ = RC falls straight out of the differential equation as the only
+            timescale in the problem
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -864,9 +829,8 @@ export default function Ch5Capacitors() {
             In steady-state DC the capacitor charges up to the source voltage and then no more
             current flows — the cap looks like an open circuit. For AC, the voltage is constantly
             reversing, the cap is always part-way through charging or discharging, and current flows
-            continuously in and out. The impedance of an ideal capacitor is
-            <InlineMath tex="Z = 1/(j\omega C)" />: infinite at DC (ω = 0),
-            small at high frequency
+            continuously in and out. The impedance of an ideal capacitor is{' '}
+            <M tex="Z = 1/(j\omega C)" />: infinite at DC (ω = 0), small at high frequency
             <Cite id="horowitz-hill-2015" in={SOURCES} />. That's why caps appear as coupling and
             bypass elements throughout audio and RF — they pass the AC signal while blocking any DC
             bias on top of it.
@@ -932,10 +896,9 @@ export default function Ch5Capacitors() {
             are the metal-electrolyte interface; the "gap" is the Debye length of the electrolyte, a
             nanometre or less; and the effective area is the internal surface area of activated
             carbon, thousands of m² per gram. The geometry rule{' '}
-            <InlineMath tex="C = \varepsilon_0 \varepsilon_r A / d" /> then gives
-            capacitances in the thousands of farads per cell. The penalty is the breakdown voltage
-            of the electrolyte (~2.7 V per cell), so high-voltage supercap banks need many cells in
-            series
+            <M tex="C = \varepsilon_0 \varepsilon_r A / d" /> then gives capacitances in the
+            thousands of farads per cell. The penalty is the breakdown voltage of the electrolyte
+            (~2.7 V per cell), so high-voltage supercap banks need many cells in series
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
           </p>
         </FAQItem>

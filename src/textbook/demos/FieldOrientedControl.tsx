@@ -15,7 +15,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -181,10 +181,10 @@ export function FieldOrientedControlDemo({ figure }: Props) {
       caption={
         <>
           Clarke (3-phase → α-β) and Park (α-β → d-q, rotated by the rotor angle{' '}
-          <InlineMath tex="\theta_e" />) transforms decouple the stator current vector into{' '}
-          <InlineMath tex="i_d" /> (flux-producing, kept at zero for a surface PMSM) and{' '}
-          <InlineMath tex="i_q" /> (torque-producing). Two PI loops control them independently —
-          exactly as if the AC machine were a brushed DC motor.
+          <M tex="\theta_e" />) transforms decouple the stator current vector into <M tex="i_d" />{' '}
+          (flux-producing, kept at zero for a surface PMSM) and <M tex="i_q" /> (torque-producing).
+          Two PI loops control them independently — exactly as if the AC machine were a brushed DC
+          motor.
         </>
       }
       deeperLab={{ slug: 'lorentz', label: 'See Lorentz lab' }}
@@ -214,16 +214,10 @@ export function FieldOrientedControlDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="current vector"
-        left={
-          <InlineMath
-            tex={`|I_s| = \\sqrt{i_d^2+i_q^2} = ${computed.iMag.toFixed(2)}\\,\\text{A}`}
-          />
-        }
+        left={<M tex={`|I_s| = \\sqrt{i_d^2+i_q^2} = ${computed.iMag.toFixed(2)}\\,\\text{A}`} />}
         rightLabel="torque command"
         right={
-          <InlineMath
-            tex={`\\tau/\\tau_{\\text{rated}} \\approx i_q/10 = ${computed.tauPU.toFixed(2)}`}
-          />
+          <M tex={`\\tau/\\tau_{\\text{rated}} \\approx i_q/10 = ${computed.tauPU.toFixed(2)}`} />
         }
       />
     </Demo>

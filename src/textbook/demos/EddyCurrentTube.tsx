@@ -22,8 +22,15 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
 import { drawLabel } from '@/lib/canvasLayout';
@@ -117,8 +124,7 @@ export function EddyCurrentTubeDemo({ figure }: Props) {
       const tubeOuter = 90;
       const tubeBore = 50;
       // Map world y in [0, TUBE_LEN_M] to canvas y in [tubeYTop, tubeYBot]
-      const yPx = (yWorld: number) =>
-        tubeYTop + (yWorld / TUBE_LEN_M) * (tubeYBot - tubeYTop);
+      const yPx = (yWorld: number) => tubeYTop + (yWorld / TUBE_LEN_M) * (tubeYBot - tubeYTop);
 
       // Tube walls (two vertical rectangles flanking the bore)
       const leftWallX = cx - tubeOuter / 2;
@@ -328,8 +334,8 @@ export function EddyCurrentTubeDemo({ figure }: Props) {
       caption={
         <>
           The magnet's changing flux through each ring of the copper wall drives a circulating eddy
-          current; that current creates its own B-field, which by Lenz's law pulls back on the magnet.
-          The drag force scales linearly with velocity, so the magnet accelerates only until{' '}
+          current; that current creates its own B-field, which by Lenz's law pulls back on the
+          magnet. The drag force scales linearly with velocity, so the magnet accelerates only until{' '}
           <strong>m g = k v</strong> and then drifts down at a terminal speed orders of magnitude
           below free-fall. Thicker walls mean lower ring resistance, larger k, slower terminal v.
         </>
@@ -366,17 +372,11 @@ export function EddyCurrentTubeDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Linear drag from induction"
-        left={
-          <InlineMath
-            tex={`F_{\\text{drag}} \\;=\\; k v, \\quad k \\propto \\dfrac{B^{2} L^{2}}{R}`}
-          />
-        }
+        left={<M tex={`F_{\\text{drag}} \\;=\\; k v, \\quad k \\propto \\dfrac{B^{2} L^{2}}{R}`} />}
         rightLabel="Terminal velocity"
         right={
-          <InlineMath
-            tex={
-              `v_{\\text{term}} \\;=\\; \\dfrac{m g}{k} \\;\\approx\\; ${v_term.toFixed(3)}\\ \\text{m/s}`
-            }
+          <M
+            tex={`v_{\\text{term}} \\;=\\; \\dfrac{m g}{k} \\;\\approx\\; ${v_term.toFixed(3)}\\ \\text{m/s}`}
           />
         }
       />

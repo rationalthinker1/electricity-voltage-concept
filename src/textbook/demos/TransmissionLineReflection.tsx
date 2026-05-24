@@ -19,13 +19,13 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -76,7 +76,15 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       ctx.moveTo(lineX0 - 16, cy - 22);
       ctx.lineTo(lineX0 - 16, cy + 22);
       ctx.stroke();
-      drawLabel(ctx, { text: 'source', x: lineX0 - 22, y: cy, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'source',
+        x: lineX0 - 22,
+        y: cy,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
       ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 2;
       const y0r = cy - 14,
@@ -93,8 +101,23 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       ctx.lineTo(lineX1, y1r);
       ctx.lineTo(lineX1, cy + 18);
       ctx.stroke();
-      drawLabel(ctx, { text: `Z_L = ${ZL >= 1e5 ? '∞' : ZL.toFixed(0) + ' Ω'}`, x: lineX1 + 8, y: cy, color: colors.teal, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: `Z₀ = ${Z0} Ω`, x: (lineX0 + lineX1) / 2, y: cy + 28, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `Z_L = ${ZL >= 1e5 ? '∞' : ZL.toFixed(0) + ' Ω'}`,
+        x: lineX1 + 8,
+        y: cy,
+        color: colors.teal,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: `Z₀ = ${Z0} Ω`,
+        x: (lineX0 + lineX1) / 2,
+        y: cy + 28,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       const Lx = lineX1 - lineX0;
       const yPulse = (level: number) => cy - 24 - 26 * level;
       const drawPulse = (xc: number, s: number) => {
@@ -125,8 +148,23 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       } else {
         // brief pause then loop
       }
-      drawLabel(ctx, { text: 'Γ = (Z_L − Z₀)/(Z_L + Z₀)', x: 10, y: 8, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `Γ = ${Gamma.toFixed(3)}    |Γ| = ${Math.abs(Gamma).toFixed(3)}    VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`, x: w - 10, y: 8, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'Γ = (Z_L − Z₀)/(Z_L + Z₀)',
+        x: 10,
+        y: 8,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `Γ = ${Gamma.toFixed(3)}    |Γ| = ${Math.abs(Gamma).toFixed(3)}    VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`,
+        x: w - 10,
+        y: 8,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -165,9 +203,17 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Reflection coefficient"
-        left={<InlineMath tex={`\\Gamma = \\frac{Z_L - Z_0}{Z_L + Z_0},\\quad \\text{VSWR} = \\frac{1+|\\Gamma|}{1-|\\Gamma|}`} />}
+        left={
+          <M
+            tex={`\\Gamma = \\frac{Z_L - Z_0}{Z_L + Z_0},\\quad \\text{VSWR} = \\frac{1+|\\Gamma|}{1-|\\Gamma|}`}
+          />
+        }
         rightLabel={`Z_L = ${ZL} Ω, Z₀ = ${Z0} Ω`}
-        right={<InlineMath tex={`\\Gamma = \\frac{${ZL}-${Z0}}{${ZL}+${Z0}} = ${Gamma.toFixed(3)},\\quad \\text{VSWR} = ${VSWR === Infinity ? '\\infty' : VSWR.toFixed(2)}`} />}
+        right={
+          <M
+            tex={`\\Gamma = \\frac{${ZL}-${Z0}}{${ZL}+${Z0}} = ${Gamma.toFixed(3)},\\quad \\text{VSWR} = ${VSWR === Infinity ? '\\infty' : VSWR.toFixed(2)}`}
+          />
+        }
       />
     </Demo>
   );

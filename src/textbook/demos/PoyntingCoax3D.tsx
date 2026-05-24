@@ -24,8 +24,15 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 
 import { drawGlowPath } from '@/lib/canvasPrimitives';
@@ -265,11 +272,22 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
 
       // Annotations
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'drag to rotate',
+        x: 12,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.globalAlpha = 0.6;
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `inner radius a = ${R_INNER.toFixed(2)}   outer b = ${R_OUTER.toFixed(2)}`, x: 12, y: 28 });
+      drawLabel(ctx, {
+        text: `inner radius a = ${R_INNER.toFixed(2)}   outer b = ${R_OUTER.toFixed(2)}`,
+        x: 12,
+        y: 28,
+      });
       ctx.restore();
       ctx.fillStyle = colors.pink;
       drawLabel(ctx, { text: 'E  pink · radial', x: W - 12, y: 12 });
@@ -336,16 +354,12 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Power delivered"
         left={
-          <InlineMath
+          <M
             tex={`P = V I = ${V.toFixed(0)} \\times ${I.toFixed(1)} = ${sciTeX(computed.P, 2, { fixedHi: 1e6 })} \\text{ W}`}
           />
         }
         rightLabel="Integral identity"
-        right={
-          <InlineMath
-            tex={`\\oint \\vec{S} \\cdot d\\vec{A} = V I`}
-          />
-        }
+        right={<M tex={`\\oint \\vec{S} \\cdot d\\vec{A} = V I`} />}
       />
     </Demo>
   );

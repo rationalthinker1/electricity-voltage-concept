@@ -10,14 +10,21 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS, sciTeX } from '@/lib/physics';
 import { fmtSIPrecision } from '@/lib/formatters';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -132,7 +139,13 @@ export function WireBFieldDemo({ figure }: Props) {
 
       // Wire label
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-      drawLabel(ctx, { text: `I = ${I.toFixed(1)} A ${intoPage ? '⊗' : '⊙'}`, x: cx0, y: cy0 + wireR * 3 + 14, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: `I = ${I.toFixed(1)} A ${intoPage ? '⊗' : '⊙'}`,
+        x: cx0,
+        y: cy0 + wireR * 3 + 14,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
 
       // Probe
       const px = probe.x * w,
@@ -160,12 +173,34 @@ export function WireBFieldDemo({ figure }: Props) {
       ctx.arc(px, py, 9, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
-      drawLabel(ctx, { text: 'P', x: px, y: py, color: colors.accent, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'P',
+        x: px,
+        y: py,
+        color: colors.accent,
+        weight: 'bold',
+        font: '10px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
 
       // Probe distance label
       ctx.fillStyle = withAlpha(colors.text, 0.85);
-      drawLabel(ctx, { text: `r = ${(r_m * 1000).toFixed(0)} mm`, x: px, y: py - 16, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: `|B| = ${fmtSIPrecision(Bprobe, 'T', 2)}`, x: px, y: py + 22, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, {
+        text: `r = ${(r_m * 1000).toFixed(0)} mm`,
+        x: px,
+        y: py - 16,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
+      drawLabel(ctx, {
+        text: `|B| = ${fmtSIPrecision(Bprobe, 'T', 2)}`,
+        x: px,
+        y: py + 22,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+      });
     },
     [],
     ({ canvas, w, h }) => {
@@ -287,18 +322,12 @@ export function WireBFieldDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Long-wire B-field"
         left={
-          <InlineMath
-            tex={
-              `|\\vec{B}| \\;=\\; \\dfrac{\\mu_{0} I}{2\\pi r} \\;\\approx\\; ${sciTeX(Bprobe)}\\ \\text{T}`
-            }
+          <M
+            tex={`|\\vec{B}| \\;=\\; \\dfrac{\\mu_{0} I}{2\\pi r} \\;\\approx\\; ${sciTeX(Bprobe)}\\ \\text{T}`}
           />
         }
         rightLabel="Falls as 1 / r"
-        right={
-          <InlineMath
-            tex={`|\\vec{B}(2r)| \\;=\\; \\tfrac{1}{2}\\,|\\vec{B}(r)|`}
-          />
-        }
+        right={<M tex={`|\\vec{B}(2r)| \\;=\\; \\tfrac{1}{2}\\,|\\vec{B}(r)|`} />}
       />
     </Demo>
   );

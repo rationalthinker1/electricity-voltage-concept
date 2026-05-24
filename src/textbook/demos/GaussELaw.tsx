@@ -10,15 +10,22 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { PHYS, sciTeX } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -91,7 +98,15 @@ export function GaussELawDemo({ figure }: Props) {
       ctx.lineWidth = 1.6;
       ctx.strokeRect(bx, by, bw, bh);
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: 'Gaussian surface', x: bx + 8, y: by - 16, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'Gaussian surface',
+        x: bx + 8,
+        y: by - 16,
+        color: colors.accent,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       const cR = 10 + Math.min(8, Math.abs(qNC) * 0.6);
       const cColor = qNC >= 0 ? colors.pink : colors.blue;
       drawHalo(ctx, {
@@ -106,9 +121,30 @@ export function GaussELawDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(chargeX, chargeY, cR, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: qNC >= 0 ? '+' : '−', x: chargeX, y: chargeY, color: colors.bg, align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: outside ? 'Q outside → no net flux' : `Q_enc = ${qNC.toFixed(1)} nC inside`, x: chargeX, y: chargeY + cR + 10, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: '∮E·dA = Q_enc / ε₀', x: 14, y: 14, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: qNC >= 0 ? '+' : '−',
+        x: chargeX,
+        y: chargeY,
+        color: colors.bg,
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: outside ? 'Q outside → no net flux' : `Q_enc = ${qNC.toFixed(1)} nC inside`,
+        x: chargeX,
+        y: chargeY + cR + 10,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: '∮E·dA = Q_enc / ε₀',
+        x: 14,
+        y: 14,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -149,13 +185,11 @@ export function GaussELawDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Gauss's law for E"
         left={
-          <InlineMath
-            tex={`\\oint \\vec{E}\\cdot d\\vec{A} \\;=\\; \\dfrac{Q_{enc}}{\\varepsilon_0}`}
-          />
+          <M tex={`\\oint \\vec{E}\\cdot d\\vec{A} \\;=\\; \\dfrac{Q_{enc}}{\\varepsilon_0}`} />
         }
         rightLabel="Live substitution"
         right={
-          <InlineMath
+          <M
             tex={
               `\\dfrac{${outside ? '0' : qNC.toFixed(1)}\\times10^{-9}}{\\varepsilon_0} ` +
               `\\;=\\; ${sciTeX(flux, 2, { force: true })}`

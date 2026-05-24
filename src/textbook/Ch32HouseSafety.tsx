@@ -20,7 +20,7 @@
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Term } from '@/components/Term';
@@ -382,13 +382,11 @@ export default function Ch32HouseSafety() {
       </p>
       <Formula tex="I_{\\text{body}} = \\dfrac{V_{\\text{fault}}}{R_{\\text{body}}}" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="I_{\text{body}}" />{' '}
+        where <M tex="I_{\text{body}}" />
         is the current diverted from the normal hot-neutral loop into the body (in amperes),{' '}
-        <InlineMath tex="V_{\text{fault}}" />{' '}
+        <M tex="V_{\text{fault}}" />
         is the voltage that appears across the body when it becomes part of the fault path (in
-        volts; typically the full line voltage, 120 V or 240 V), and{' '}
-        <InlineMath tex="R_{\text{body}}" />{' '}
+        volts; typically the full line voltage, 120 V or 240 V), and <M tex="R_{\text{body}}" />
         is the{' '}
         <Term
           def={
@@ -530,16 +528,13 @@ export default function Ch32HouseSafety() {
       </p>
       <Formula tex="P_{\\text{arc}} \\approx V_{\\text{arc}} \\times I_{\\text{arc}} \\times \\delta" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="P_{\text{arc}}" />{' '}
-        is the time-averaged power dissipated in the arc gap (in watts),{' '}
-        <InlineMath tex="V_{\text{arc}}" />{' '}
+        where <M tex="P_{\text{arc}}" />
+        is the time-averaged power dissipated in the arc gap (in watts), <M tex="V_{\text{arc}}" />
         is the voltage drop across the arc itself (in volts; for low-current residential arcs
         typically 30–50 V, set by the physics of the air-gap plasma rather than by the supply
-        voltage),{' '}
-        <InlineMath tex="I_{\text{arc}}" />{' '}
-        is the current through the arc while it is conducting (in amperes), and{' '}
-        <InlineMath tex="\delta" /> is the{' '}
+        voltage), <M tex="I_{\text{arc}}" />
+        is the current through the arc while it is conducting (in amperes), and <M tex="\delta" />{' '}
+        is the{' '}
         <Term
           def={
             <>
@@ -553,12 +548,12 @@ export default function Ch32HouseSafety() {
           duty cycle
         </Term>{' '}
         — the fraction of the AC half-cycle that the arc is actually conducting. For{' '}
-        <InlineMath tex="V_{\\text{arc}} = 50\\ \\text{V}" />,
-        <InlineMath tex="I_{\\text{arc}} = 10\\ \\text{A}" />, <InlineMath tex="\\delta = 0.5" />,{' '}
-        <InlineMath tex="P_{\\text{arc}} \\approx 250\\ \\text{W}" /> of heat concentrated in a few
-        cubic millimetres of charred insulation. The arc plasma itself sits at a few thousand
-        kelvin, hot enough to ignite the cord jacket immediately and, after that, anything else in
-        the cavity — curtain fabric, blown-in cellulose, lath-and-plaster, framing lumber.
+        <M tex="V_{\\text{arc}} = 50\\ \\text{V}" />,
+        <M tex="I_{\\text{arc}} = 10\\ \\text{A}" />, <M tex="\\delta = 0.5" />,{' '}
+        <M tex="P_{\\text{arc}} \\approx 250\\ \\text{W}" /> of heat concentrated in a few cubic
+        millimetres of charred insulation. The arc plasma itself sits at a few thousand kelvin, hot
+        enough to ignite the cord jacket immediately and, after that, anything else in the cavity —
+        curtain fabric, blown-in cellulose, lath-and-plaster, framing lumber.
       </p>
       <p className="mb-prose-3">
         Per the National Fire Protection Association's annual fire-loss statistics,
@@ -589,18 +584,18 @@ export default function Ch32HouseSafety() {
             An arc fault in a damaged extension cord draws an average of{' '}
             <strong className="text-text font-medium">8 A</strong> through an arc gap with a
             measured drop of <strong className="text-text font-medium">40 V</strong>, with the arc
-            conducting for half of each AC half-cycle (<InlineMath tex="\\delta = 0.5" />
+            conducting for half of each AC half-cycle (<M tex="\\delta = 0.5" />
             ). What is the time-averaged power dissipated in the arc, and is that enough to ignite
             cellulose insulation, whose autoignition threshold is roughly{' '}
-            <InlineMath tex="50\,\text{W/cm}^{2}" /> of contact area for
-            paper-like materials at piloted ignition?
+            <M tex="50\,\text{W/cm}^{2}" /> of contact area for paper-like materials at piloted
+            ignition?
           </>
         }
         hint={
           <>
-            <InlineMath tex="P_{\\text{arc}} = V_{\\text{arc}} \\times I_{\\text{arc}} \\times \\delta" />
-            . Then compare the resulting power to the ignition threshold per square centimetre,
-            given an arc footprint of roughly a few square millimetres.
+            <M tex="P_{\\text{arc}} = V_{\\text{arc}} \\times I_{\\text{arc}} \\times \\delta" />.
+            Then compare the resulting power to the ignition threshold per square centimetre, given
+            an arc footprint of roughly a few square millimetres.
           </>
         }
         answer={
@@ -787,13 +782,11 @@ export default function Ch32HouseSafety() {
       </p>
       <Formula tex="E_{\\text{arc}} \\approx \\dfrac{V \\times I_{\\text{bolted}} \\times t_{\\text{clear}}}{4\\pi d^2}" />
       <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="E_{\text{arc}}" />{' '}
+        where <M tex="E_{\text{arc}}" />
         is the incident energy delivered to a surface at distance d during the arc (in joules per
         square metre; convert by 1 cal/cm² = 41 840 J/m² to compare with NFPA 70E's tabulated
-        cal/cm²), <InlineMath tex="V" /> is the operating voltage
-        across the arc (in volts),{' '}
-        <InlineMath tex="I_{\text{bolted}}" />{' '}
+        cal/cm²), <M tex="V" /> is the operating voltage across the arc (in volts),{' '}
+        <M tex="I_{\text{bolted}}" />
         is the available{' '}
         <Term
           def={
@@ -808,15 +801,15 @@ export default function Ch32HouseSafety() {
           bolted short-circuit current
         </Term>{' '}
         the upstream transformer can deliver into a zero-impedance fault (in amperes),{' '}
-        <InlineMath tex="t_{\text{clear}}" />{' '}
-        is the time the upstream breaker takes to interrupt the arc (in seconds),{' '}
-        <InlineMath tex="d" /> is the working distance from the arc to
-        the worker's face and torso (in metres; NFPA 70E's default for low-voltage panel work is 450
-        mm), and <InlineMath tex="4\pi d^{2}" /> is the area of a sphere of
-        radius d at the worker's position over which the radiated energy is assumed to spread. The
-        model is conservative — it ignores the directionality of an enclosed panel and the spectral
-        content of the arc — but it captures the scaling: incident energy goes linearly with
-        voltage, current, and clearing time, and falls as the inverse square of working distance
+        <M tex="t_{\text{clear}}" />
+        is the time the upstream breaker takes to interrupt the arc (in seconds), <M tex="d" /> is
+        the working distance from the arc to the worker's face and torso (in metres; NFPA 70E's
+        default for low-voltage panel work is 450 mm), and <M tex="4\pi d^{2}" /> is the area of a
+        sphere of radius d at the worker's position over which the radiated energy is assumed to
+        spread. The model is conservative — it ignores the directionality of an enclosed panel and
+        the spectral content of the arc — but it captures the scaling: incident energy goes linearly
+        with voltage, current, and clearing time, and falls as the inverse square of working
+        distance
         <Cite id="nfpa-70e-2024" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -856,14 +849,12 @@ export default function Ch32HouseSafety() {
         question={
           <>
             A residential panel has an available bolted fault current of{' '}
-            <InlineMath tex="I_{\text{bolted}} = 8{,}000\,\text{A}" />{' '}
-            at <InlineMath tex="V = 240\,\text{V}" />. The upstream main
-            breaker clears in{' '}
-            <InlineMath tex="t_{\text{clear}} = 0.05\,\text{s}" />
-            . At a working distance of <InlineMath tex="d = 450\,\text{mm}" />
+            <M tex="I_{\text{bolted}} = 8{,}000\,\text{A}" />
+            at <M tex="V = 240\,\text{V}" />. The upstream main breaker clears in{' '}
+            <M tex="t_{\text{clear}} = 0.05\,\text{s}" />
+            . At a working distance of <M tex="d = 450\,\text{mm}" />
             , what is the incident energy in cal/cm², and what NFPA 70E PPE category does it
-            correspond to? (Recall{' '}
-            <InlineMath tex="1\\ \\text{cal/cm}^2 = 41{,}840\\ \\text{J/m}^2" />
+            correspond to? (Recall <M tex="1\\ \\text{cal/cm}^2 = 41{,}840\\ \\text{J/m}^2" />
             .)
           </>
         }
@@ -1343,8 +1334,10 @@ export default function Ch32HouseSafety() {
             It does — but not instantly. A thermal-magnetic main breaker takes one to a few AC
             cycles (roughly 20–50 ms) to clear a bolted short circuit; during that interval the full
             8 kA of fault current flows through the arc and feeds the arc-flash energy
-            <Cite id="nfpa-70e-2024" in={SOURCES} />. The arc-flash energy is the product <InlineMath tex="V \times I \times t_{\text{clear}}" />; the breaker minimises <InlineMath tex="t_{\text{clear}}" />, but cannot drive it to zero.
-            Faster-acting current-limiting fuses and electronic-trip breakers cut <InlineMath tex="t_{\text{clear}}" />{' '}
+            <Cite id="nfpa-70e-2024" in={SOURCES} />. The arc-flash energy is the product{' '}
+            <M tex="V \times I \times t_{\text{clear}}" />; the breaker minimises{' '}
+            <M tex="t_{\text{clear}}" />, but cannot drive it to zero. Faster-acting
+            current-limiting fuses and electronic-trip breakers cut <M tex="t_{\text{clear}}" />
             into the single-millisecond range and correspondingly cut arc-flash energy, which is why
             industrial switchgear that protects high-fault-current buses is often fused rather than
             relying on thermal-magnetic breakers alone
@@ -1357,11 +1350,11 @@ export default function Ch32HouseSafety() {
             Only obliquely: every milliampere threshold on the IEC 60479-1 chart — 1 mA, 5 mA, 10
             mA, 100 mA — is a count of elementary charges per second crossing a section of body
             tissue, scaled by the CODATA 2018 value of the elementary charge,{' '}
-            <InlineMath tex="e = 1.602176634\times 10^{-19}\,\text{C}" /> exactly
+            <M tex="e = 1.602176634\times 10^{-19}\,\text{C}" /> exactly
             <Cite id="codata-2018" in={SOURCES} />. A 5 mA GFCI threshold is, in fundamental units,{' '}
-            <InlineMath tex="5\times 10^{-3} / 1.602\times 10^{-19} \approx 3\times 10^{16}" /> charges per second crossing the cardiac muscle. The
-            numbers in the safety chart and the numbers on the breaker label ultimately reduce to
-            the same constant.
+            <M tex="5\times 10^{-3} / 1.602\times 10^{-19} \approx 3\times 10^{16}" /> charges per
+            second crossing the cardiac muscle. The numbers in the safety chart and the numbers on
+            the breaker label ultimately reduce to the same constant.
           </p>
         </FAQItem>
       </FAQ>

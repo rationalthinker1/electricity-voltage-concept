@@ -12,12 +12,12 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -118,15 +118,68 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       });
       ctx.restore();
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: '+10 V', x: plotX - 4, y: yPos, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: plotX - 4, y: y0, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '-10 V', x: plotX - 4, y: yNeg, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: 'V_in', x: plotX + 4, y: plotY + 4, color: colors.blue, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'V_out', x: plotX + 40, y: plotY + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `gain = ${gain.toFixed(1)}×`, x: plotX + plotW - 4, y: plotY + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '+10 V',
+        x: plotX - 4,
+        y: yPos,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '0',
+        x: plotX - 4,
+        y: y0,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: '-10 V',
+        x: plotX - 4,
+        y: yNeg,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'V_in',
+        x: plotX + 4,
+        y: plotY + 4,
+        color: colors.blue,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'V_out',
+        x: plotX + 40,
+        y: plotY + 4,
+        color: colors.accent,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `gain = ${gain.toFixed(1)}×`,
+        x: plotX + plotW - 4,
+        y: plotY + 4,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       const peakOut = Math.abs(gain * Vamp);
       if (peakOut > V_SUP) {
-        drawLabel(ctx, { text: 'RAILED — V_out clipped to ±10 V supply', x: plotX + plotW / 2, y: plotY + plotH - 4, color: colors.pink, align: 'center', baseline: 'bottom' });
+        drawLabel(ctx, {
+          text: 'RAILED — V_out clipped to ±10 V supply',
+          x: plotX + plotW / 2,
+          y: plotY + plotH - 4,
+          color: colors.pink,
+          align: 'center',
+          baseline: 'bottom',
+        });
       }
     },
     [],
@@ -182,9 +235,13 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Inverting amplifier"
-        left={<InlineMath tex={`V_{\\text{out}} = -\\frac{R_f}{R_{\\text{in}}} \\cdot V_{\\text{in}}`} />}
+        left={<M tex={`V_{\\text{out}} = -\\frac{R_f}{R_{\\text{in}}} \\cdot V_{\\text{in}}`} />}
         rightLabel={`R_in = ${RinK} kΩ, R_f = ${RfK} kΩ`}
-        right={<InlineMath tex={`A_v = -\\frac{${RfK}}{${RinK}} = ${gain.toFixed(1)},\\quad V_{\\text{out,pk}} = ${Vout_peak.toFixed(2)}\\,\\text{V}${railed ? '\\text{ (clipped)}' : ''}`} />}
+        right={
+          <M
+            tex={`A_v = -\\frac{${RfK}}{${RinK}} = ${gain.toFixed(1)},\\quad V_{\\text{out,pk}} = ${Vout_peak.toFixed(2)}\\,\\text{V}${railed ? '\\text{ (clipped)}' : ''}`}
+          />
+        }
       />
     </Demo>
   );

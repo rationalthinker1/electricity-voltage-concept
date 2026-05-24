@@ -25,7 +25,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -139,13 +139,13 @@ export function YDeltaTransformDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Y → Δ (Kennelly)"
         left={
-          <InlineMath
+          <M
             tex={`R_{AB} = \\dfrac{R_a R_b + R_b R_c + R_c R_a}{R_c} = ${delta.R_AB.toFixed(2)}\\,\\Omega`}
           />
         }
         rightLabel="Verification A–B"
         right={
-          <InlineMath
+          <M
             tex={`R_{AB}^{\\text{Y}} = R_a+R_b = ${RAB_Y.toFixed(3)}\\,\\Omega = R_{AB}^{\\Delta}`}
           />
         }

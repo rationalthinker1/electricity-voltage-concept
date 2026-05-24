@@ -10,7 +10,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
 import { Pullout } from '@/components/Prose';
@@ -224,7 +224,9 @@ export default function GaussLab() {
           const stillInSphere = dCenter < R_mm;
           ctx.beginPath();
           ctx.arc(tx, ty, 1.8, 0, Math.PI * 2);
-          ctx.fillStyle = stillInSphere ? withAlpha(colors.blue, 0.85) : withAlpha(colors.accent, 0.95);
+          ctx.fillStyle = stillInSphere
+            ? withAlpha(colors.blue, 0.85)
+            : withAlpha(colors.accent, 0.95);
           ctx.save();
           ctx.globalAlpha = 0.55;
           ctx.shadowColor = colors.accent;
@@ -605,8 +607,8 @@ export default function GaussLab() {
         answer={
           <>
             <p className="mb-prose-3">
-              The flux through any closed surface enclosing Q is{' '}
-              <InlineMath tex="Q/\varepsilon_0" /> — the radius doesn't matter:
+              The flux through any closed surface enclosing Q is <M tex="Q/\varepsilon_0" /> — the
+              radius doesn't matter:
             </p>
             <Formula tex="\Phi = Q / \varepsilon_0 = \dfrac{10^{-9}}{8.854\times 10^{-12}} \approx 113\ \text{V·m}" />
             <p className="mb-prose-3">
@@ -658,7 +660,7 @@ export default function GaussLab() {
           <>
             <p className="mb-prose-3">
               Spherical symmetry: E is radial and depends only on r. Wrap a Gaussian sphere of
-              radius <InlineMath tex="r > R" /> around the source. The full charge Q is enclosed:
+              radius <M tex="r > R" /> around the source. The full charge Q is enclosed:
             </p>
             <Formula tex="\oint \vec{E}\cdot d\vec{A} = E\cdot 4\pi r^2 = \dfrac{Q}{\varepsilon_0}" />
             <Formula tex="E = \dfrac{Q}{4\pi\varepsilon_0\, r^2} = \dfrac{k\, Q}{r^2}" />
@@ -684,7 +686,7 @@ export default function GaussLab() {
           <>
             <p className="mb-prose-3">
               Only the charge inside radius r contributes. For a uniform volume density{' '}
-              <InlineMath tex="\rho" />, the enclosed charge scales as <InlineMath tex="r^3/R^3" />:
+              <M tex="\rho" />, the enclosed charge scales as <M tex="r^3/R^3" />:
             </p>
             <Formula tex="Q_{\text{enc}}(r) = Q \cdot (r^3 / R^3)" />
             <Formula tex="E\cdot 4\pi r^2 = \dfrac{Q\, (r^3/R^3)}{\varepsilon_0} \;\Rightarrow\; E = \dfrac{k\, Q}{R^3}\, r" />
@@ -715,7 +717,7 @@ export default function GaussLab() {
               Cylindrical symmetry forces E to be radial and to depend only on perpendicular
               distance r. Wrap a cylindrical Gaussian surface of length L and radius r around the
               line. The end caps contribute nothing (E is parallel to them). The side wall has area{' '}
-              <InlineMath tex="2\pi r L" />, with E uniform on it:
+              <M tex="2\pi r L" />, with E uniform on it:
             </p>
             <Formula tex="E\cdot 2\pi r L = \dfrac{\lambda L}{\varepsilon_0}" />
             <Formula tex="E = \dfrac{\lambda}{2\pi\varepsilon_0\, r}" />
@@ -744,14 +746,14 @@ export default function GaussLab() {
           <>
             <p className="mb-prose-3">
               Each infinite sheet alone, by Gauss with a pillbox of area A straddling it, produces
-              field <InlineMath tex="\sigma/(2\varepsilon_0)" /> on each side, pointing away (for{' '}
-              <InlineMath tex="+\sigma" />) or toward (for <InlineMath tex="-\sigma" />) the sheet:
+              field <M tex="\sigma/(2\varepsilon_0)" /> on each side, pointing away (for{' '}
+              <M tex="+\sigma" />) or toward (for <M tex="-\sigma" />) the sheet:
             </p>
             <Formula tex="E_{\text{single sheet}} = \dfrac{\sigma}{2\varepsilon_0}" />
             <p className="mb-prose-3">
               Between two oppositely charged sheets, the contributions add: both fields point from
-              the <InlineMath tex="+\sigma" /> sheet toward the <InlineMath tex="-\sigma" /> sheet.
-              Outside the sheets, they cancel:
+              the <M tex="+\sigma" /> sheet toward the <M tex="-\sigma" /> sheet. Outside the
+              sheets, they cancel:
             </p>
             <Formula tex="E_{\text{between}} = \dfrac{\sigma}{2\varepsilon_0} + \dfrac{\sigma}{2\varepsilon_0} = \dfrac{\sigma}{\varepsilon_0}" />
             <Formula tex="E_{\text{outside}} = \dfrac{\sigma}{2\varepsilon_0} - \dfrac{\sigma}{2\varepsilon_0} = 0" />
@@ -869,8 +871,8 @@ export default function GaussLab() {
           <>
             <p className="mb-prose-3">
               Cylindrical symmetry: E radial, depends only on r. Wrap a Gaussian cylinder of length
-              L, radius r. Total enclosed charge is <InlineMath tex="\lambda L" /> (everything on
-              the conductor's surface inside our cylinder):
+              L, radius r. Total enclosed charge is <M tex="\lambda L" /> (everything on the
+              conductor's surface inside our cylinder):
             </p>
             <Formula tex="E\cdot 2\pi r L = \dfrac{\lambda L}{\varepsilon_0}" />
             <Formula tex="E = \dfrac{\lambda}{2\pi\varepsilon_0\, r}" />
@@ -896,10 +898,10 @@ export default function GaussLab() {
           <>
             <p className="mb-prose-3">
               Symmetry: E points perpendicular to the sheet, with equal magnitude on each side (and
-              opposite directions, away from the sheet for <InlineMath tex="\sigma > 0" />
+              opposite directions, away from the sheet for <M tex="\sigma > 0" />
               ). Wrap a cylindrical "pillbox" Gaussian surface of cross-sectional area A straddling
               the sheet. The side wall contributes nothing (E parallel to it). Each end cap
-              contributes <InlineMath tex="E\cdot A" />:
+              contributes <M tex="E\cdot A" />:
             </p>
             <Formula tex="\oint \vec{E}\cdot d\vec{A} = 2\, E\, A = \dfrac{\sigma A}{\varepsilon_0}" />
             <Formula tex="E = \dfrac{\sigma}{2\varepsilon_0}" />

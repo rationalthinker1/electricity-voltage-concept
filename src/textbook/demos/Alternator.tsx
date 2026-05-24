@@ -15,11 +15,11 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure: string;
@@ -131,13 +131,40 @@ export function AlternatorDemo({ figure }: Props) {
       ctx.lineTo(padL + plotW, yReg);
       ctx.stroke();
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: '14 V', x: padL - 4, y: yReg, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: '14 V',
+        x: padL - 4,
+        y: yReg,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'middle',
+      });
 
       // Labels
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: 'raw 3-phase AC', x: padL + 4, y: topY + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'rectified + regulated DC', x: padL + 4, y: topY + plotH + midGap + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `f_elec = ${f.toFixed(0)} Hz`, x: padL + plotW - 4, y: topY + 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'raw 3-phase AC',
+        x: padL + 4,
+        y: topY + 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'rectified + regulated DC',
+        x: padL + 4,
+        y: topY + plotH + midGap + 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `f_elec = ${f.toFixed(0)} Hz`,
+        x: padL + plotW - 4,
+        y: topY + 4,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
     },
     [],
     () => ({ context: { scaledT: 0 } }),
@@ -156,8 +183,8 @@ export function AlternatorDemo({ figure }: Props) {
           battery and any large capacitors absorb whatever ripple remains.
         </>
       }
-    
-      deeperLab={{ slug: 'synchronous-machine', label: 'See full lab' }}>
+      deeperLab={{ slug: 'synchronous-machine', label: 'See full lab' }}
+    >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
@@ -175,14 +202,10 @@ export function AlternatorDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Alternator electrical frequency"
-        left={
-          <InlineMath
-            tex={`f_{\\text{elec}} = \\dfrac{n_{\\text{alt}}}{60}\\cdot p_{\\text{pairs}}`}
-          />
-        }
+        left={<M tex={`f_{\\text{elec}} = \\dfrac{n_{\\text{alt}}}{60}\\cdot p_{\\text{pairs}}`} />}
         rightLabel="with current state"
         right={
-          <InlineMath
+          <M
             tex={
               `f_{\\text{elec}} = \\dfrac{${computed.altRpm.toFixed(0)}}{60}\\cdot ${POLE_PAIRS}` +
               ` \\approx ${computed.f.toFixed(0)}\\ \\text{Hz}`

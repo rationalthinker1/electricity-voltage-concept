@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { drawLabel } from '@/lib/canvasLayout';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -59,8 +59,22 @@ export function VoltaicPileDemo({ figure }: Props) {
       }
       if (N > 0) {
         ctx.fillStyle = colors.textDim;
-        drawLabel(ctx, { text: 'Cu (bottom)', x: cx - pileW / 2 - 8, y: baseY - layerH * 1.5, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-        drawLabel(ctx, { text: 'Zn (top)', x: cx - pileW / 2 - 8, y: baseY - layers * layerH + layerH * 1.5, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+        drawLabel(ctx, {
+          text: 'Cu (bottom)',
+          x: cx - pileW / 2 - 8,
+          y: baseY - layerH * 1.5,
+          font: '10px "JetBrains Mono", monospace',
+          align: 'right',
+          baseline: 'middle',
+        });
+        drawLabel(ctx, {
+          text: 'Zn (top)',
+          x: cx - pileW / 2 - 8,
+          y: baseY - layers * layerH + layerH * 1.5,
+          font: '10px "JetBrains Mono", monospace',
+          align: 'right',
+          baseline: 'middle',
+        });
       }
       const topY = baseY - layers * layerH;
       const wireRightX = splitX + 30;
@@ -118,8 +132,20 @@ export function VoltaicPileDemo({ figure }: Props) {
         });
       }
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: `${N} Zn-Cu pairs`, x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `open-circuit V ≈ ${s.V.toFixed(2)} V`, x: 12, y: 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `${N} Zn-Cu pairs`,
+        x: 12,
+        y: 10,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `open-circuit V ≈ ${s.V.toFixed(2)} V`,
+        x: 12,
+        y: 24,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx0.phase = phase;
     },
     [],
@@ -157,9 +183,9 @@ export function VoltaicPileDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Series cells add voltages"
-        left={<InlineMath tex="V_{\text{total}} = N \cdot V_{\text{cell}}" />}
+        left={<M tex="V_{\text{total}} = N \cdot V_{\text{cell}}" />}
         rightLabel={`At N = ${pairs}`}
-        right={<InlineMath tex={`${pairs} \\times 1.10\\,\\text{V} = ${V.toFixed(2)}\\,\\text{V}`} />}
+        right={<M tex={`${pairs} \\times 1.10\\,\\text{V} = ${V.toFixed(2)}\\,\\text{V}`} />}
       />
     </Demo>
   );

@@ -15,7 +15,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { fmtFrequency } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -72,17 +72,78 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       const accentFill = scale > 1 ? withAlpha(colors.accent, 0.2) : withAlpha(colors.teal, 0.18);
       drawIsoCube(ctx, rightCX, cy, newSide, accentColor, accentFill);
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: '60 Hz mains (Si steel)', x: leftCX, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `${fmtFrequency(f)}`, x: rightCX, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `V ≈ ${V_REF_CM3} cm³`, x: leftCX, y: cy + refSide / 2 + 24, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `mass ≈ ${M_REF_G} g`, x: leftCX, y: cy + refSide / 2 + 38, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `V ≈ ${formatVol(V_REF_CM3 * scale)}`, x: rightCX, y: cy + refSide / 2 + 24, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `mass ≈ ${formatMass(M_REF_G * scale)}`, x: rightCX, y: cy + refSide / 2 + 38, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '60 Hz mains (Si steel)',
+        x: leftCX,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `${fmtFrequency(f)}`,
+        x: rightCX,
+        y: 12,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `V ≈ ${V_REF_CM3} cm³`,
+        x: leftCX,
+        y: cy + refSide / 2 + 24,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `mass ≈ ${M_REF_G} g`,
+        x: leftCX,
+        y: cy + refSide / 2 + 38,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `V ≈ ${formatVol(V_REF_CM3 * scale)}`,
+        x: rightCX,
+        y: cy + refSide / 2 + 24,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: `mass ≈ ${formatMass(M_REF_G * scale)}`,
+        x: rightCX,
+        y: cy + refSide / 2 + 38,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
       ctx.save();
       ctx.globalAlpha = 0.65;
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: '100 W reference', x: 8, y: h - 16, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'V ∝ 1/f   (constant V, B_max, N)', x: w - 8, y: h - 16, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '100 W reference',
+        x: 8,
+        y: h - 16,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        text: 'V ∝ 1/f   (constant V, B_max, N)',
+        x: w - 8,
+        y: h - 16,
+        size: 9,
+        font: '9px "JetBrains Mono", monospace',
+        align: 'right',
+        baseline: 'top',
+      });
       let tag = '';
       if (f < 100) tag = '1950s linear supply';
       else if (f < 1000) tag = 'mains transformer';
@@ -143,9 +204,13 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Faraday constraint"
-        left={<InlineMath tex="V = 4.44\,f\,N\,B\,A \;\Rightarrow\; A \propto 1/f" />}
+        left={<M tex="V = 4.44\,f\,N\,B\,A \;\Rightarrow\; A \propto 1/f" />}
         rightLabel={`f = ${fmtFrequency(f)} vs 60 Hz`}
-        right={<InlineMath tex={`\\text{volume scale} = ${computed.scale.toFixed(2)}\\times;\\quad m \\approx ${computed.Mg.toFixed(0)}\\,\\text{g}`} />}
+        right={
+          <M
+            tex={`\\text{volume scale} = ${computed.scale.toFixed(2)}\\times;\\quad m \\approx ${computed.Mg.toFixed(0)}\\,\\text{g}`}
+          />
+        }
       />
     </Demo>
   );
@@ -197,7 +262,6 @@ function drawIsoCube(
   ctx.fill();
   ctx.stroke();
 }
-
 
 function formatVol(v: number): string {
   if (v < 0.1) return (v * 1000).toFixed(1) + ' mm³';

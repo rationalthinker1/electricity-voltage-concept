@@ -32,7 +32,7 @@ import {
   MiniSlider,
   MiniToggle,
 } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS, sciTeX } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -118,7 +118,6 @@ function classifyRegime(LoverLambda: number): string {
   if (LoverLambda <= 1.1) return 'Full-wave dipole (L ≈ λ)';
   return 'Multi-lobe (L > λ)';
 }
-
 
 interface SimCtx {
   scene: OrbitScene;
@@ -293,10 +292,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
             ny = ux;
 
           // Colour: pink for +I, blue for −I (matching charge-polarity palette).
-          const col =
-            Iraw >= 0
-              ? withAlpha(colors.pink, 0.85)
-              : withAlpha(colors.blue, 0.85);
+          const col = Iraw >= 0 ? withAlpha(colors.pink, 0.85) : withAlpha(colors.blue, 0.85);
           ctx.strokeStyle = col;
           ctx.fillStyle = col;
           ctx.lineWidth = 1.4;
@@ -317,18 +313,60 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
 
       // Wire-tip labels.
       ctx.fillStyle = colors.textDim;
-      drawLabel(ctx, { text: '+L/2', x: pTop.x, y: pTop.y - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: '−L/2', x: pBot.x, y: pBot.y + 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: '+L/2',
+        x: pTop.x,
+        y: pTop.y - 6,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: '−L/2',
+        x: pBot.x,
+        y: pBot.y + 6,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
 
       // Top-left readout overlay.
       ctx.fillStyle = colors.accent;
-      drawLabel(ctx, { text: `f = ${fmtFrequency(fHz)}`, x: 14, y: 14, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `f = ${fmtFrequency(fHz)}`,
+        x: 14,
+        y: 14,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = colors.teal;
-      drawLabel(ctx, { text: `λ = ${lam >= 1 ? lam.toFixed(2) + ' m' : (lam * 100).toFixed(1) + ' cm'}`, x: 14, y: 30, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `λ = ${lam >= 1 ? lam.toFixed(2) + ' m' : (lam * 100).toFixed(1) + ' cm'}`,
+        x: 14,
+        y: 30,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = withAlpha(colors.text, 0.78);
-      drawLabel(ctx, { text: `L/λ = ${(L_METERS / lam).toFixed(3)}`, x: 14, y: 46, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `L/λ = ${(L_METERS / lam).toFixed(3)}`,
+        x: 14,
+        y: 46,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       ctx.fillStyle = withAlpha(colors.textDim, 0.65);
-      drawLabel(ctx, { text: 'drag to orbit', x: 14, y: H - 18, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'drag to orbit',
+        x: 14,
+        y: H - 18,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
 
       // Bottom scale bar — L vs λ on a common axis. Highlight when L = λ/2.
       const barY = H - 28;
@@ -349,13 +387,17 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       ctx.lineTo(barX0 + wirePix, barY);
       ctx.stroke();
       ctx.fillStyle = colors.text;
-      drawLabel(ctx, { text: 'L = 1 m', x: barX0, y: barY - 4, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
+      drawLabel(ctx, {
+        text: 'L = 1 m',
+        x: barX0,
+        y: barY - 4,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'bottom',
+      });
 
       // λ bar (teal; highlights amber near half-wave).
       const halfWave = LoverLambda > 0.45 && LoverLambda < 0.6;
-      const lamCol = halfWave
-        ? withAlpha(colors.accent, 0.95)
-        : withAlpha(colors.teal, 0.85);
+      const lamCol = halfWave ? withAlpha(colors.accent, 0.95) : withAlpha(colors.teal, 0.85);
       ctx.strokeStyle = lamCol;
       ctx.lineWidth = halfWave ? 3 : 2;
       ctx.beginPath();
@@ -370,7 +412,14 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       ctx.moveTo(barX0 + halfLamPix, barY + 6);
       ctx.lineTo(barX0 + halfLamPix, barY + 14);
       ctx.stroke();
-      drawLabel(ctx, { text: lam > 2 ? `λ = ${lam.toFixed(2)} m (off-scale)` : `λ = ${lam.toFixed(2)} m`, x: barX0, y: barY + 14, color: lamCol, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: lam > 2 ? `λ = ${lam.toFixed(2)} m (off-scale)` : `λ = ${lam.toFixed(2)} m`,
+        x: barX0,
+        y: barY + 14,
+        color: lamCol,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
       if (halfWave) {
         ctx.fillStyle = colors.accent;
         drawLabel(ctx, { text: 'half-wave resonance', x: barX1, y: barY - 18, align: 'right' });
@@ -438,7 +487,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       <EquationStrip
         leftLabel="Wavelength"
         left={
-          <InlineMath
+          <M
             tex={
               `\\lambda \\;=\\; \\dfrac{c}{f} \\;=\\; ` +
               `\\dfrac{2.998\\times10^{8}}{${sciTeX(fMHz * 1e6, 0)}} ` +
@@ -447,7 +496,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
           />
         }
         rightLabel="Regime"
-        right={<InlineMath tex={`L/\\lambda \\;=\\; ${LoverLambda.toFixed(3)}\\quad\\text{(${regime})}`} />}
+        right={<M tex={`L/\\lambda \\;=\\; ${LoverLambda.toFixed(3)}\\quad\\text{(${regime})}`} />}
       />
     </Demo>
   );

@@ -18,7 +18,7 @@ import {
   MiniSlider,
   MiniToggle,
 } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
@@ -220,14 +220,14 @@ export function SeriesVsParallelDemo({ figure }: Props) {
         leftLabel={series ? 'Series combination' : 'Parallel combination'}
         left={
           series ? (
-            <InlineMath
+            <M
               tex={
                 `R_{\\text{tot}} \\;=\\; R_1 + R_2 \\;=\\; ` +
                 `${R1.toFixed(0)} + ${R2.toFixed(0)} \\;=\\; ${Rtot.toFixed(2)}\\ \\Omega`
               }
             />
           ) : (
-            <InlineMath
+            <M
               tex={
                 `R_{\\text{tot}} \\;=\\; \\dfrac{R_1 R_2}{R_1 + R_2} \\;=\\; ` +
                 `\\dfrac{${R1.toFixed(0)} \\times ${R2.toFixed(0)}}` +
@@ -238,7 +238,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
         }
         rightLabel="Loop current at V = 12 V"
         right={
-          <InlineMath
+          <M
             tex={
               `I \\;=\\; V / R_{\\text{tot}} \\;=\\; 12 / ${Rtot.toFixed(2)} ` +
               `\\;\\approx\\; ${Itot.toFixed(3)}\\ \\text{A}`
@@ -453,6 +453,14 @@ function drawVoltageProbe(ctx: CanvasRenderingContext2D, x: number, y: number, v
   ctx.strokeStyle = withAlpha(colors.accent, 0.55);
   ctx.lineWidth = 1;
   ctx.strokeRect(x - boxW / 2, y - boxH / 2, boxW, boxH);
-  drawLabel(ctx, { text: text, x: x, y: y, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+  drawLabel(ctx, {
+    text: text,
+    x: x,
+    y: y,
+    color: colors.accent,
+    font: '10px "JetBrains Mono", monospace',
+    align: 'center',
+    baseline: 'middle',
+  });
   ctx.restore();
 }

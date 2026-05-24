@@ -15,7 +15,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -114,7 +114,16 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
 
       // Coil label
       ctx.textBaseline = 'top';
-      drawLabel(ctx, { text: `Coil · N = ${N} turns`, x: coilCx, y: cy + loopHeight / 2 + 24, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `Coil · N = ${N} turns`,
+        x: coilCx,
+        y: cy + loopHeight / 2 + 24,
+        color: colors.accent,
+        size: 11,
+        font: '11px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
 
       // Wire from one end of coil down to indicator lamp on the right
       const lampX = w - 50;
@@ -151,7 +160,14 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       ctx.arc(lampX, lampY, 12, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
-      drawLabel(ctx, { text: 'lamp', x: lampX, y: lampY + 26, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, {
+        text: 'lamp',
+        x: lampX,
+        y: lampY + 26,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'top',
+      });
 
       // Bar magnet — N (pink) / S (blue) halves
       const magW = 84,
@@ -174,8 +190,28 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       ctx.font = 'bold 14px JetBrains Mono';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      drawLabel(ctx, { text: 'S', x: mx - magW / 4, y: magY, color: colors.bg, weight: 'bold', size: 14, font: '14px "JetBrains Mono"', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'N', x: mx + magW / 4, y: magY, color: colors.bg, weight: 'bold', size: 14, font: '14px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'S',
+        x: mx - magW / 4,
+        y: magY,
+        color: colors.bg,
+        weight: 'bold',
+        size: 14,
+        font: '14px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'N',
+        x: mx + magW / 4,
+        y: magY,
+        color: colors.bg,
+        weight: 'bold',
+        size: 14,
+        font: '14px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
 
       // Faint field-line cue from N pole pointing rightward
       ctx.save();
@@ -303,17 +339,11 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Faraday's law"
-        left={
-          <InlineMath
-            tex={`\\varepsilon \\;=\\; -N\\,\\dfrac{d\\Phi}{dt}`}
-          />
-        }
+        left={<M tex={`\\varepsilon \\;=\\; -N\\,\\dfrac{d\\Phi}{dt}`} />}
         rightLabel="Live readout"
         right={
-          <InlineMath
-            tex={
-              `N \\;=\\; ${N}, \\quad \\varepsilon \\;\\approx\\; ${emfNow.toFixed(3)}\\ \\text{(a.u.)}`
-            }
+          <M
+            tex={`N \\;=\\; ${N}, \\quad \\varepsilon \\;\\approx\\; ${emfNow.toFixed(3)}\\ \\text{(a.u.)}`}
           />
         }
       />

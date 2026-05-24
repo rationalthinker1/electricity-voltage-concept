@@ -11,7 +11,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula, InlineMath } from '@/components/Formula';
+import { Formula, M } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
 import { Pullout } from '@/components/Prose';
@@ -522,7 +522,7 @@ export default function CoulombLab() {
           <>
             <p className="mb-prose-3">
               Plug into Coulomb's law with Q₁ = Q₂ = 1×10⁻⁹ C, r = 1×10⁻³ m,{' '}
-              <InlineMath tex="\varepsilon_r = 1" />:
+              <M tex="\varepsilon_r = 1" />:
             </p>
             <Formula tex="F = \dfrac{k\, Q_1 Q_2}{r^2} = \dfrac{(8.99\times 10^{9})(10^{-9})(10^{-9})}{(10^{-3})^2}" />
             <Formula tex="F = \dfrac{8.99\times 10^{-9}}{10^{-6}} = 8.99\times 10^{-3}\ \text{N}" />
@@ -605,8 +605,8 @@ export default function CoulombLab() {
         answer={
           <>
             <p className="mb-prose-3">
-              Treat air as vacuum (<InlineMath tex="\varepsilon_r \approx 1.0006" />, negligible
-              here). With Q₁ = 10⁻⁶ C, Q₂ = −2×10⁻⁶ C, r = 0.05 m:
+              Treat air as vacuum (<M tex="\varepsilon_r \approx 1.0006" />, negligible here). With
+              Q₁ = 10⁻⁶ C, Q₂ = −2×10⁻⁶ C, r = 0.05 m:
             </p>
             <Formula tex="F = \dfrac{k\, Q_1 Q_2}{r^2} = \dfrac{(8.99\times 10^{9})(10^{-6})(-2\times 10^{-6})}{(0.05)^2}" />
             <Formula tex="F = \dfrac{-1.798\times 10^{-2}}{2.5\times 10^{-3}} \approx -7.19\ \text{N}" />
@@ -632,7 +632,7 @@ export default function CoulombLab() {
         answer={
           <>
             <p className="mb-prose-3">
-              The medium divides Coulomb's force by <InlineMath tex="\varepsilon_r" />:
+              The medium divides Coulomb's force by <M tex="\varepsilon_r" />:
             </p>
             <Formula tex="F_{\text{water}} = F_{\text{vacuum}} / \varepsilon_r = 7.19\ \text{N} / 80 \approx 8.99\times 10^{-2}\ \text{N}" />
             <p className="mb-prose-3">
@@ -684,8 +684,7 @@ export default function CoulombLab() {
           <>
             <p className="mb-prose-3">
               Hold Q₁Q₂ fixed and require F to fall by a factor of 4. Since{' '}
-              <InlineMath tex="F \propto 1/r^2" />, r must grow by a factor of{' '}
-              <InlineMath tex="\sqrt{4} = 2" />:
+              <M tex="F \propto 1/r^2" />, r must grow by a factor of <M tex="\sqrt{4} = 2" />:
             </p>
             <Formula tex="F_1 / F_2 = r_2^2 / r_1^2 \;\Rightarrow\; r_2 = r_1 \sqrt{F_1/F_2} = (1\ \text{m})\sqrt{100/25} = 2\ \text{m}" />
             <p className="mb-prose-3">
@@ -708,7 +707,7 @@ export default function CoulombLab() {
         answer={
           <>
             <p className="mb-prose-3">
-              With <InlineMath tex="q_p = +e" />, <InlineMath tex="q_e = -e" />, r = 5.29×10⁻¹¹ m:
+              With <M tex="q_p = +e" />, <M tex="q_e = -e" />, r = 5.29×10⁻¹¹ m:
             </p>
             <Formula tex="F = \dfrac{k\, e^2}{r^2} = \dfrac{(8.99\times 10^{9})(1.602\times 10^{-19})^2}{(5.29\times 10^{-11})^2}" />
             <Formula tex="F = \dfrac{2.307\times 10^{-28}}{2.80\times 10^{-21}} \approx 8.24\times 10^{-8}\ \text{N}" />

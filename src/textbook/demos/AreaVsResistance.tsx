@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawEyebrowStats, drawLabeledValue } from '@/lib/canvasLayout';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
@@ -150,10 +150,10 @@ export function AreaVsResistanceDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Geometric resistance"
-        left={<InlineMath tex="R \;=\; \dfrac{\\rho L}{A}" />}
+        left={<M tex="R \;=\; \dfrac{\\rho L}{A}" />}
         rightLabel="Live substitution (Cu, L = 1 m)"
         right={
-          <InlineMath
+          <M
             tex={
               `R \\;=\\; \\dfrac{1.68\\times 10^{-8} \\times 1}` +
               `{${Amm2.toFixed(2)}\\times 10^{-6}} \\;\\approx\\; ${sciTeX(R)}\\ \\Omega`

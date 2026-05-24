@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -101,8 +101,28 @@ export function LenzsLawDemo({ figure }: Props) {
       ctx.strokeRect(cx - magW / 2, magY - magH / 2, magW, magH);
       ctx.restore();
       ctx.fillStyle = colors.bg;
-      drawLabel(ctx, { text: 'S', x: cx, y: magY - magH / 4, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'N', x: cx, y: magY + magH / 4, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'S',
+        x: cx,
+        y: magY - magH / 4,
+        color: colors.bg,
+        weight: 'bold',
+        size: 11,
+        font: '11px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        text: 'N',
+        x: cx,
+        y: magY + magH / 4,
+        color: colors.bg,
+        weight: 'bold',
+        size: 11,
+        font: '11px "JetBrains Mono"',
+        align: 'center',
+        baseline: 'middle',
+      });
 
       // Magnet's own B-field arrow — pink, pointing down toward loop
       ctx.fillStyle = colors.pink;
@@ -123,7 +143,14 @@ export function LenzsLawDemo({ figure }: Props) {
       ctx.lineTo(cx + 5, arrowToY - 7);
       ctx.closePath();
       ctx.fill();
-      drawLabel(ctx, { text: 'B (magnet)', x: cx + 10, y: (arrowFromY + arrowToY) / 2, color: colors.pink, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: 'B (magnet)',
+        x: cx + 10,
+        y: (arrowFromY + arrowToY) / 2,
+        color: colors.pink,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
 
       // Induced-B arrow (teal) inside the loop. dir = +1 (approaching) → B_ind UP (out of loop, opposing).
       // dir = −1 (retreating) → B_ind DOWN (into loop, supporting fading flux).
@@ -221,7 +248,13 @@ export function LenzsLawDemo({ figure }: Props) {
           : dir < 0
             ? 'magnet retreating · Φ ↓ · current sustains'
             : 'static · no induction';
-      drawLabel(ctx, { text: status, x: 14, y: 14, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: status,
+        x: 14,
+        y: 14,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
     },
     [],
     () => ({
@@ -271,14 +304,10 @@ export function LenzsLawDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="The minus sign is the whole story"
-        left={
-          <InlineMath
-            tex={`\\varepsilon \\;=\\; -\\dfrac{d\\Phi}{dt}`}
-          />
-        }
+        left={<M tex={`\\varepsilon \\;=\\; -\\dfrac{d\\Phi}{dt}`} />}
         rightLabel="Rate of change (signed, a.u.)"
         right={
-          <InlineMath
+          <M
             tex={`\\dfrac{d\\Phi}{dt} \\;\\approx\\; ${rate === 0 ? '0' : (rate > 0 ? '+' : '') + rate.toFixed(2)}`}
           />
         }

@@ -13,7 +13,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawAxes, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -133,14 +133,42 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
         { color: colors.teal, lineWidth: 1.8 },
       );
       ctx.fillStyle = colors.teal;
-      drawLabel(ctx, { text: `V_CC = ${V_CC.toFixed(1)} V`, x: xOf(V_CC), y: yOf(0) - 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: `V_CC/R_C = ${(I_sat * 1000).toFixed(1)} mA`, x: xOf(0) + 6, y: yOf(Math.min(Imax, I_sat)), color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, {
+        text: `V_CC = ${V_CC.toFixed(1)} V`,
+        x: xOf(V_CC),
+        y: yOf(0) - 4,
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        align: 'center',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: `V_CC/R_C = ${(I_sat * 1000).toFixed(1)} mA`,
+        x: xOf(0) + 6,
+        y: yOf(Math.min(Imax, I_sat)),
+        color: colors.teal,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'middle',
+      });
       ctx.fillStyle = colors.text;
       ctx.beginPath();
       ctx.arc(xOf(Vq), yOf(Math.min(Imax, Iq)), 5, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: `Q-point  (${Vq.toFixed(2)} V, ${(Iq * 1000).toFixed(2)} mA)`, x: xOf(Vq) + 8, y: yOf(Math.min(Imax, Iq)) - 6, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
-      drawLabel(ctx, { text: `V_CC = ${V_CC.toFixed(1)} V   R_C = ${R_C.toFixed(0)} Ω   I_B = ${(I_B * 1e6).toFixed(1)} µA   β = ${beta}`, x: padL, y: 6, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, {
+        text: `Q-point  (${Vq.toFixed(2)} V, ${(Iq * 1000).toFixed(2)} mA)`,
+        x: xOf(Vq) + 8,
+        y: yOf(Math.min(Imax, Iq)) - 6,
+        color: colors.text,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'bottom',
+      });
+      drawLabel(ctx, {
+        text: `V_CC = ${V_CC.toFixed(1)} V   R_C = ${R_C.toFixed(0)} Ω   I_B = ${(I_B * 1e6).toFixed(1)} µA   β = ${beta}`,
+        x: padL,
+        y: 6,
+        font: '10px "JetBrains Mono", monospace',
+        baseline: 'top',
+      });
     },
     [],
   );
@@ -194,9 +222,13 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Load line (KVL)"
-        left={<InlineMath tex={`V_{CE} = V_{CC} - I_C R_C`} />}
+        left={<M tex={`V_{CE} = V_{CC} - I_C R_C`} />}
         rightLabel={`Q-point (I_B = ${(I_B * 1e6).toFixed(0)} µA)`}
-        right={<InlineMath tex={`V_{CE}(Q) = ${Vq.toFixed(2)}\\,\\text{V},\\quad I_C(Q) = ${(Iq * 1000).toFixed(2)}\\,\\text{mA}`} />}
+        right={
+          <M
+            tex={`V_{CE}(Q) = ${Vq.toFixed(2)}\\,\\text{V},\\quad I_C(Q) = ${(Iq * 1000).toFixed(2)}\\,\\text{mA}`}
+          />
+        }
       />
     </Demo>
   );
