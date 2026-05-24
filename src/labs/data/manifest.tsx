@@ -642,6 +642,37 @@ export const MANIFEST: LabManifestEntry[] = [
     ],
   },
 
+  {
+    number: 'E3.2',
+    slug: 'resistivity-measurement',
+    chapter: 'ch3',
+    kind: 'experimental',
+    title: 'Measuring Resistivity and Temperature Coefficients',
+    blurb:
+      'Draw pencil-graphite traces on paper, measure R vs length and width, and back-solve for resistivity. Then heat a nichrome coil in a water bath and extract its temperature coefficient of resistance.',
+    heroLabel: 'Chapter 3 · Lab E3.2 — Resistivity Measurement',
+    heroHeadline: (
+      <>
+        Pencil on paper,{' '}
+        <em className="text-accent font-normal italic">resistivity in your hand</em>.
+      </>
+    ),
+    deck: 'A two-part hands-on lab that makes the formula R = ρL/A real. Vary the length and width of a pencil-graphite trace on paper to extract the geometry dependence; then submerge a nichrome coil in water baths at four temperatures and fit the linear temperature coefficient α — the same number that determines whether a resistor drifts with heat.',
+    runtime: '75–100 min',
+    difficulty: 'core',
+    equipment: [
+      'Digital multimeter (Ω mode, ≥ 2 kΩ range)',
+      'Soft pencil (2B or darker)',
+      'Plain printer paper (80 g/m²)',
+      'Ruler and fine marker',
+      'Alligator-clip leads or coins for probe contact',
+      '~1 m of 30 AWG nichrome wire (or copper magnet wire)',
+      'Kitchen or lab thermometer (0–100 °C)',
+      'Two cups of water at different temperatures (cool tap and hot kettle)',
+    ],
+    software: [],
+  },
+
   // ─── Chapter 4 — Energy & Fields ───
   {
     number: '4.1',
@@ -1141,6 +1172,17 @@ export const BASE_LAB_SOURCES: Record<string, SourceKey[]> = {
     'ashcroft-mermin-1976',
     'crc-resistivity',
     'libretexts-univ-physics',
+  ],
+  'resistivity-measurement': [
+    'drude-1900',
+    'ashcroft-mermin-1976',
+    'crc-resistivity',
+    'kanthal',
+    'matthiessen-1864',
+    'griffiths-2017',
+    'wiedemann-franz-1853',
+    'vishay-z-foil',
+    'libretexts-conduction',
   ],
   transformer: ['faraday-1832', 'stanley-1886', 'mclyman-2004', 'mohan-undeland-robbins-2003'],
   'transmission-line': ['pozar-2011', 'kraus-marhefka-2002', 'horowitz-hill-2015'],

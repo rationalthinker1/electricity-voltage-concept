@@ -42,6 +42,7 @@ const LAB_MODULES: Record<string, ReturnType<typeof lazy>> = {
   'cell-emf': lazy(() => import('@/labs/CellEMFLab')),
   'li-ion-cycling': lazy(() => import('@/labs/LiIonCyclingLab')),
   'falstad-ohms-law': lazy(() => import('@/labs/FalstadOhmsLawLab')),
+  'resistivity-measurement': lazy(() => import('@/labs/ResistivityMeasurementLab')),
   transformer: lazy(() => import('@/labs/TransformerEquationLab')),
   'transmission-line': lazy(() => import('@/labs/TransmissionLineLab')),
   'polarization-susceptibility': lazy(() => import('@/labs/PolarizationSusceptibilityLab')),
