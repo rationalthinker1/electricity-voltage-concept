@@ -14,7 +14,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle 
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -158,7 +158,7 @@ export function GaussELawDemo({ figure }: Props) {
           <InlineMath
             tex={
               `\\dfrac{${outside ? '0' : qNC.toFixed(1)}\\times10^{-9}}{\\varepsilon_0} ` +
-              `\\;=\\; ${flux.toExponential(2).replace('e+', '\\times10^{').replace('e-', '\\times10^{-') + '}'}`
+              `\\;=\\; ${sciTeX(flux, 2, { force: true })}`
             }
           />
         }

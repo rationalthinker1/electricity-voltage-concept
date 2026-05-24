@@ -94,17 +94,29 @@ export function sciJsx(n: number, digits = 2): ReactNode {
   );
 }
 
+export interface SciTeXOpts {
+  /** Always emit scientific notation, even for values in the normal range. */
+  force?: boolean;
+  /** Lower bound (inclusive) of the fixed-decimal fallback window. Default 1e-2. */
+  fixedLo?: number;
+  /** Upper bound (exclusive) of the fixed-decimal fallback window. Default 1e4. */
+  fixedHi?: number;
+}
+
 /** Scientific notation, TeX-source version. For numbers inside an
  *  `<InlineMath tex={…}/>` or `<Formula tex>`, embedding raw
  *  `Number.toExponential()` produces ugly `3.0e+5`-style output in math
  *  mode. This returns a proper TeX fragment like `3.00\times 10^{5}` so
  *  KaTeX renders real scientific notation. For normal ranges
  *  (1e-2 ≤ |n| < 1e4) it falls back to a fixed-decimal string so the
- *  equation reads naturally. */
-export function sciTeX(n: number, digits = 2): string {
+ *  equation reads naturally; widen with `{ fixedHi }` or skip with
+ *  `{ force: true }`. */
+export function sciTeX(n: number, digits = 2, opts: SciTeXOpts = {}): string {
   if (n === 0 || !isFinite(n)) return '0';
   const abs = Math.abs(n);
-  if (abs >= 1e-2 && abs < 1e4) return n.toFixed(digits);
+  const lo = opts.fixedLo ?? 1e-2;
+  const hi = opts.fixedHi ?? 1e4;
+  if (!opts.force && abs >= lo && abs < hi) return n.toFixed(digits);
   const exp = Math.floor(Math.log10(abs));
   const mantissa = n / Math.pow(10, exp);
   return `${mantissa.toFixed(digits)}\\times 10^{${exp}}`;

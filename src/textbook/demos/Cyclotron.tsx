@@ -17,7 +17,7 @@ import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { fmtSIPrecision } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -220,7 +220,7 @@ export function CyclotronDemo({ figure }: Props) {
         left={
           <InlineMath
             tex={
-              `r \\;=\\; \\dfrac{mv}{qB} \\;\\approx\\; ${r_real.toExponential(2)}\\ \\text{m}`
+              `r \\;=\\; \\dfrac{mv}{qB} \\;\\approx\\; ${sciTeX(r_real)}\\ \\text{m}`
             }
           />
         }
@@ -228,7 +228,7 @@ export function CyclotronDemo({ figure }: Props) {
         right={
           <InlineMath
             tex={
-              `T \\;=\\; \\dfrac{2\\pi m}{qB} \\;\\approx\\; ${T_real.toExponential(2)}\\ \\text{s}`
+              `T \\;=\\; \\dfrac{2\\pi m}{qB} \\;\\approx\\; ${sciTeX(T_real)}\\ \\text{s}`
             }
           />
         }

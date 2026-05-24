@@ -986,6 +986,16 @@ The build runs strict TypeScript and Vite together. Anything that fails
 - **`<InlineMath id="…" />` and `<Formula id="…" />` are valid.** They
   resolve against `src/lib/formulas.ts`. Don't flag them as missing-tex
   errors in code review — they're the registry-lookup form.
+- **Raw `Number.toExponential()` interpolated into a TeX template.**
+  `(3.6e-17).toExponential(2)` returns the string `"-3.60e-17"`. Dropped
+  into `` <InlineMath tex={`… ${x.toExponential(2)} …`} /> ``, KaTeX reads
+  `e` as Euler's number and `-17` as binary subtraction — you get
+  `3.60e − 17` on the page (note the visible gap), silently
+  misrepresenting the value. Use `sciTeX(x)` from `@/lib/physics`, which
+  emits proper `3.60\times 10^{-17}` TeX. The bug only fires inside math
+  typesetting; `toExponential` is fine inside `MiniSlider format=`
+  callbacks, `drawLabel({ text: … })`, or pure formatter return values
+  in `*/solver.ts`.
 
 ---
 

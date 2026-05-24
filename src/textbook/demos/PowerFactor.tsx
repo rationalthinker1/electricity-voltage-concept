@@ -174,6 +174,7 @@ export function PowerFactorDemo({ figure }: Props) {
       figure={figure}
       title="Power factor — the average of v·i for an R+L load"
       question="Crank L up. The shaded area under p(t) — the energy actually delivered — shrinks."
+      deeperLab={{ slug: 'ac-impedance', label: 'See full lab' }}
       caption={
         <>
           Drive a series R+L load with a sine V<sub>p</sub> = 100 V. The current lags by φ =

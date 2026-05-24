@@ -89,6 +89,7 @@ export function SpeedOfLightDemo({ figure }: Props) {
       figure={figure}
       title="Maxwell's prediction · v = 1/√(εᵣ μᵣ ε₀ μ₀)"
       question="What sets the speed of light?"
+      deeperLab={{ slug: 'em-waves', label: 'See full lab' }}
       caption={
         <>
           Two pulses racing. The top one is the reference (vacuum, v = c). The bottom one is the

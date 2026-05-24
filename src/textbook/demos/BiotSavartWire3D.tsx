@@ -36,7 +36,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle 
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
 import { project, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
@@ -488,14 +488,14 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
         left={
           <InlineMath
             tex={
-              `|\\vec{B}| \\;=\\; \\dfrac{\\mu_{0} I}{2\\pi r} \\;\\approx\\; ${computed.B_at_r.toExponential(2)}\\ \\text{T}`
+              `|\\vec{B}| \\;=\\; \\dfrac{\\mu_{0} I}{2\\pi r} \\;\\approx\\; ${sciTeX(computed.B_at_r)}\\ \\text{T}`
             }
           />
         }
         rightLabel="At Earth-field scale (r = 1 cm)"
         right={
           <InlineMath
-            tex={`|\\vec{B}|_{1\\,\\text{cm}} \\;\\approx\\; ${computed.B_at_1cm.toExponential(2)}\\ \\text{T}`}
+            tex={`|\\vec{B}|_{1\\,\\text{cm}} \\;\\approx\\; ${sciTeX(computed.B_at_1cm)}\\ \\text{T}`}
           />
         }
       />

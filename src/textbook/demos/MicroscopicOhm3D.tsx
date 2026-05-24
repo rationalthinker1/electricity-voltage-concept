@@ -31,7 +31,7 @@ import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { MATERIALS, type MaterialKey, PHYS } from '@/lib/physics';
+import { MATERIALS, type MaterialKey, PHYS, sciTeX } from '@/lib/physics';
 import { project, v3, type OrbitCamera, type Point2D, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -205,9 +205,9 @@ export function MicroscopicOhm3DDemo({ figure }: Props) {
         right={
           <InlineMath
             tex={
-              `J \\;=\\; ${computed.sigma.toExponential(2)} \\times ` +
-              `${computed.E.toExponential(2)} \\;\\approx\\; ` +
-              `${computed.J.toExponential(2)}\\ \\text{A/m}^{2}`
+              `J \\;=\\; ${sciTeX(computed.sigma)} \\times ` +
+              `${sciTeX(computed.E)} \\;\\approx\\; ` +
+              `${sciTeX(computed.J)}\\ \\text{A/m}^{2}`
             }
           />
         }

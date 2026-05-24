@@ -110,6 +110,7 @@ export function ImpedanceDemo({ figure }: Props) {
       figure={figure}
       title="Impedance — Ohm's law in the complex plane"
       question="Slide ω. Where do the three vectors point — and why does their sum lean?"
+      deeperLab={{ slug: 'ac-impedance', label: 'See full lab' }}
       caption={
         <>
           Each component contributes one vector: a resistor along the real axis, an inductor upward

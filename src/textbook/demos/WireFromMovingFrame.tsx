@@ -243,6 +243,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       figure={figure}
       title="Same wire, viewed from the moving frame"
       question="Boost into the test charge's rest frame. Where does the force come from now?"
+      deeperLab={{ slug: 'relativistic-em', label: 'See full lab' }}
       caption={
         <>
           In this frame ions and electrons both move, but with <em>different</em> speeds, so they

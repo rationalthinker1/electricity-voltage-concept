@@ -17,7 +17,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/co
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { fmtSIPrecision } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -208,7 +208,7 @@ export function SolenoidDemo({ figure }: Props) {
         right={
           <InlineMath
             tex={
-              `B \\;=\\; \\mu_{0} n I \\;\\approx\\; ${B_in.toExponential(2)}\\ \\text{T}`
+              `B \\;=\\; \\mu_{0} n I \\;\\approx\\; ${sciTeX(B_in)}\\ \\text{T}`
             }
           />
         }

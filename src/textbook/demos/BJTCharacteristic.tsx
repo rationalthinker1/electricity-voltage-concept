@@ -158,7 +158,8 @@ export function BJTCharacteristicDemo({ figure }: Props) {
           effect, parameterised by V_A — the curves would be perfectly flat if V_A → ∞.
         </>
       }
-    >
+    
+      deeperLab={{ slug: 'transistor-iv', label: 'See full lab' }}>
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider

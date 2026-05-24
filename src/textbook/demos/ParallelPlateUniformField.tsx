@@ -24,7 +24,7 @@ import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -230,8 +230,8 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
           <InlineMath
             tex={
               `|\\vec{E}| \\;=\\; \\dfrac{\\sigma}{\\varepsilon_{0}} \\;=\\; ` +
-              `\\dfrac{${sigma_SI.toExponential(2)}}{8.85\\times 10^{-12}} ` +
-              `\\;\\approx\\; ${E_Vm.toExponential(2)}\\ \\text{V/m}`
+              `\\dfrac{${sciTeX(sigma_SI)}}{8.85\\times 10^{-12}} ` +
+              `\\;\\approx\\; ${sciTeX(E_Vm)}\\ \\text{V/m}`
             }
           />
         }
@@ -240,8 +240,8 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
           <InlineMath
             tex={
               `V \\;=\\; E\\,d \\;=\\; ` +
-              `(${E_Vm.toExponential(2)})(${d_m.toFixed(3)}) ` +
-              `\\;\\approx\\; ${V.toExponential(2)}\\ \\text{V}`
+              `(${sciTeX(E_Vm)})(${d_m.toFixed(3)}) ` +
+              `\\;\\approx\\; ${sciTeX(V)}\\ \\text{V}`
             }
           />
         }

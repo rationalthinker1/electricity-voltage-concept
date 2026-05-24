@@ -176,6 +176,7 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
       figure={figure}
       title="Malus's law — two polarizers and an angle"
       question="What fraction of the original intensity gets through both polarizers?"
+      deeperLab={{ slug: 'em-waves', label: 'See full lab' }}
       caption={
         <>
           Unpolarised light loses half its intensity at the first polarizer (P₁), emerging linearly

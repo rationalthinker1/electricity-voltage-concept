@@ -23,16 +23,9 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawWire } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-
-function fmtSci(n: number) {
-  const s = n.toExponential(2);
-  const m = s.match(/^(-?[\d.]+)e([+-]?\d+)$/);
-  if (!m) return s;
-  return `${m[1]}\\times10^{${m[2]!.replace(/^\+/, '')}}`;
-}
 
 interface Props {
   figure: string;
@@ -254,7 +247,7 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
           <InlineMath
             tex={
               `\\mu_0(${I.toFixed(2)} + ${I_disp.toFixed(2)}) ` +
-              `\\;=\\; ${fmtSci(PHYS.mu_0 * I)}\\ \\text{T·m}`
+              `\\;=\\; ${sciTeX(PHYS.mu_0 * I, 2, { force: true })}\\ \\text{T·m}`
             }
           />
         }

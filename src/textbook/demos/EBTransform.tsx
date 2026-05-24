@@ -148,6 +148,7 @@ export function EBTransformDemo({ figure }: Props) {
       figure={figure}
       title="A pure E field becomes E + B when you move"
       question="Start with E only. Boost. What does the new frame measure?"
+      deeperLab={{ slug: 'relativistic-em', label: 'See full lab' }}
       caption={
         <>
           Left: a pure electric field <em>E_y</em>, say between the plates of a stationary

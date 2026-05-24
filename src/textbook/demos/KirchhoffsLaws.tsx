@@ -320,6 +320,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       figure={figure}
       title="Kirchhoff's two laws on a two-loop network"
       question="Toggle KCL / KVL — every equation balances, every time."
+      deeperLab={{ slug: 'ac-impedance', label: 'See full lab' }}
       caption={
         <>
           One battery, three resistors. The middle branch (R₂) is shared between two loops.

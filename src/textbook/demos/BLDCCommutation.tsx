@@ -229,7 +229,8 @@ export function BLDCCommutationDemo({ figure }: Props) {
           <InlineMath tex="\text{RPM} = (f_{\text{elec}}/p_{\text{pairs}})\,60" />.
         </>
       }
-    >
+    
+      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}>
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
         <MiniSlider

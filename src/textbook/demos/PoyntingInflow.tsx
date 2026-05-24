@@ -20,7 +20,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/co
 import { InlineMath } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
-import { PHYS, pretty } from '@/lib/physics';
+import { PHYS, pretty, sciTeX } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -40,16 +40,6 @@ interface SimCtx {
   inflow: InflowParticle[];
   getWireGeom(): { wireXL: number; wireXR: number; wireCY: number; r: number };
   spawnInflow(S: number): void;
-}
-
-function fmtLatex(n: number, digits = 2): string {
-  if (!isFinite(n)) return '—';
-  const abs = Math.abs(n);
-  if (abs === 0) return '0';
-  if (abs >= 1e-2 && abs < 1e6) return n.toFixed(digits);
-  const s = n.toExponential(digits);
-  const [m, e] = s.split('e');
-  return `${m} \\times 10^{${parseInt(e!, 10)}}`;
 }
 
 export function PoyntingInflowDemo({ figure }: Props) {
@@ -346,14 +336,14 @@ export function PoyntingInflowDemo({ figure }: Props) {
         left={
           <InlineMath
             tex={
-              `|S| = \\dfrac{E B}{\\mu_0} = \\dfrac{(${fmtLatex(computed.E, 1)})(${fmtLatex(computed.B, 2)})}{\\mu_0} \\approx ${fmtLatex(computed.S, 2)} \\text{ W/m}^2`
+              `|S| = \\dfrac{E B}{\\mu_0} = \\dfrac{(${sciTeX(computed.E, 1, { fixedHi: 1e6 })})(${sciTeX(computed.B, 2, { fixedHi: 1e6 })})}{\\mu_0} \\approx ${sciTeX(computed.S, 2, { fixedHi: 1e6 })} \\text{ W/m}^2`
             }
           />
         }
         rightLabel="Power balance"
         right={
           <InlineMath
-            tex={`P_{\\text{surf}} = P_{VI} = V I = ${fmtLatex(computed.P_vi, 2)} \\text{ W}`}
+            tex={`P_{\\text{surf}} = P_{VI} = V I = ${sciTeX(computed.P_vi, 2, { fixedHi: 1e6 })} \\text{ W}`}
           />
         }
       />

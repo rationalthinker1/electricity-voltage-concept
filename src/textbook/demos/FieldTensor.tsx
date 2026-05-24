@@ -155,6 +155,7 @@ export function FieldTensorDemo({ figure }: Props) {
       figure={figure}
       title="One tensor, six components"
       question="What's the relationship between E and B? They're entries in the same matrix."
+      deeperLab={{ slug: 'relativistic-em', label: 'See full lab' }}
       caption={
         <>
           The electromagnetic field tensor{' '}

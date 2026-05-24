@@ -14,7 +14,7 @@ import { Num } from '@/components/Num';
 import { drawEyebrowStats } from '@/lib/canvasLayout';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { MATERIALS } from '@/lib/physics';
+import { MATERIALS, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -129,7 +129,7 @@ export function LengthVsResistanceDemo({ figure }: Props) {
           <InlineMath
             tex={
               `R \\;=\\; \\dfrac{1.68\\times 10^{-8} \\times ${L.toFixed(2)}}` +
-              `{2.5\\times 10^{-6}} \\;\\approx\\; ${R.toExponential(2)}\\ \\Omega`
+              `{2.5\\times 10^{-6}} \\;\\approx\\; ${sciTeX(R)}\\ \\Omega`
             }
           />
         }

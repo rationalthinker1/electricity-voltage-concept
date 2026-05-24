@@ -257,7 +257,7 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
           <button
             key={m}
             type="button"
-            className={`mini-toggle${motorType === m ? 'on' : ''}`}
+            className={`mini-toggle${motorType === m ? ' on' : ''}`}
             onClick={() => setMotorType(m)}
             aria-pressed={motorType === m}
           >

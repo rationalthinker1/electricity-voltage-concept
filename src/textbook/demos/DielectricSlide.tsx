@@ -238,6 +238,7 @@ export function DielectricSlideDemo({ figure }: Props) {
       figure={figure}
       title="Slide a dielectric into the gap"
       question="What happens to V when you push a slab of high-εᵣ material between the plates?"
+      deeperLab={{ slug: 'capacitance', label: 'See full lab' }}
       caption={
         <>
           Two modes, two stories. With the battery <strong>disconnected</strong> (Q held fixed), the

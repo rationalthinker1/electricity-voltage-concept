@@ -22,7 +22,7 @@ import {
 } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -41,13 +41,6 @@ interface SimCtx {
   packets: Packet[];
   targetX: number;
   spawnAcc: number;
-}
-
-function latexSci(n: number, digits = 2): string {
-  const s = n.toExponential(digits);
-  const m = s.match(/^([\d.]+)e([+-]?\d+)$/);
-  if (!m) return s;
-  return `${m[1]}\\times10^{${parseInt(m[2], 10)}}`;
 }
 
 export function RadiationPressureDemo({ figure }: Props) {
@@ -146,6 +139,7 @@ export function RadiationPressureDemo({ figure }: Props) {
       figure={figure}
       title="Radiation pressure"
       question="If light has momentum, what does it push on?"
+      deeperLab={{ slug: 'em-waves', label: 'See full lab' }}
       caption={
         <>
           A stream of wave-packets travelling rightward into an absorbing target. Each packet
@@ -178,7 +172,7 @@ export function RadiationPressureDemo({ figure }: Props) {
             tex={
               `P \\;=\\; \\dfrac{I}{c} \\;=\\; ` +
               `\\dfrac{${I.toFixed(0)}}{2.998\\times10^{8}} ` +
-              `\\;\\approx\\; ${latexSci(P)}\\ \text{Pa}`
+              `\\;\\approx\\; ${sciTeX(P, 2, { force: true })}\\ \text{Pa}`
             }
           />
         }
@@ -188,7 +182,7 @@ export function RadiationPressureDemo({ figure }: Props) {
             tex={
               `P \\;=\\; \\dfrac{2I}{c} \\;=\\; ` +
               `\\dfrac{2\\times${I.toFixed(0)}}{2.998\\times10^{8}} ` +
-              `\\;\\approx\\; ${latexSci(P_refl)}\\ \text{Pa}`
+              `\\;\\approx\\; ${sciTeX(P_refl, 2, { force: true })}\\ \text{Pa}`
             }
           />
         }

@@ -16,7 +16,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/co
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { MATERIALS, PHYS, formatTime } from '@/lib/physics';
+import { MATERIALS, PHYS, formatTime, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -220,7 +220,7 @@ export function DriftVelocityDemo({ figure }: Props) {
             tex={
               `v_d \\;=\\; \\dfrac{${I.toFixed(1)}}` +
               `{(8.5\\times 10^{28})(1.602\\times 10^{-19})(${Amm2.toFixed(2)}\\times 10^{-6})} ` +
-              `\\;\\approx\\; ${vd.toExponential(2)}\\ \\text{m/s}`
+              `\\;\\approx\\; ${sciTeX(vd)}\\ \\text{m/s}`
             }
           />
         }

@@ -211,7 +211,8 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
           current rises again.
         </>
       }
-    >
+    
+      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}>
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
         <MiniSlider

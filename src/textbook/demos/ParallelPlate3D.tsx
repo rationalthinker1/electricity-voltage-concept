@@ -29,7 +29,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle 
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
 import { fmtSI } from '@/lib/formatters';
 import { project, v3, type Vec3 } from '@/lib/projection3d';
@@ -438,6 +438,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       figure={figure}
       title="A parallel-plate capacitor, in 3D"
       question="What does the field in the gap actually look like — and why is ∮D·dA on a pillbox piercing the plate exactly Q_enclosed?"
+      deeperLab={{ slug: 'capacitance', label: 'See full lab' }}
       caption={
         <>
           Two square conducting plates separated by a thin vacuum gap. Push charge Q onto the top
@@ -503,8 +504,8 @@ export function ParallelPlate3DDemo({ figure }: Props) {
           <InlineMath
             tex={
               `E \\;=\\; \\dfrac{V}{d} \\;=\\; ` +
-              `\\dfrac{${V.toFixed(1)}}{${(d_mm * 1e-3).toExponential(1)}} ` +
-              `\\;\\approx\\; ${computed.E.toExponential(2)}\\ \\text{V/m}`
+              `\\dfrac{${V.toFixed(1)}}{${sciTeX(d_mm * 1e-3, 1)}} ` +
+              `\\;\\approx\\; ${sciTeX(computed.E)}\\ \\text{V/m}`
             }
           />
         }
@@ -512,4 +513,3 @@ export function ParallelPlate3DDemo({ figure }: Props) {
     </Demo>
   );
 }
-

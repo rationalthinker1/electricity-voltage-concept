@@ -496,11 +496,11 @@ p {
     }
   }
 
-  /* Lab hero formula. Fraunces italic at fluid clamp() size. Descendant
-     sub/sup styling matches .formula-content/.formula-inline; size and
-     align values tuned for the larger clamp() type. */
+  /* Lab hero formula. Fraunces italic, accent-tinted, sized as a sub-line
+     under the main hero headline rather than competing with it. Descendant
+     sub/sup styling matches .formula-content/.formula-inline. */
   .formula-hero {
-    @apply font-4 italic text-text my-xl text-[clamp(48px,8vw,96px)];
+    @apply font-4 italic text-accent my-lg text-[clamp(24px,3.5vw,44px)] leading-2 max-w-col;
     sub { @apply text-[.58em] leading-none align-[-.32em]; }
     sup { @apply text-[.58em] leading-none align-[.5em]; }
   }

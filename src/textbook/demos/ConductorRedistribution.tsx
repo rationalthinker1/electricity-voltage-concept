@@ -134,6 +134,7 @@ export function ConductorRedistributionDemo({ figure }: Props) {
       figure={figure}
       title="Conductor vs. insulator"
       question="What's the actual difference between a metal and a plastic?"
+      deeperLab={{ slug: 'gauss', label: 'See full lab' }}
       caption={
         <>
           Same charges, same box. Toggle the material. In a conductor every charge can move and they

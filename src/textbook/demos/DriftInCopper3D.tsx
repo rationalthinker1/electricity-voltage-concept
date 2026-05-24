@@ -41,7 +41,7 @@ import {
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { MATERIALS, PHYS } from '@/lib/physics';
+import { MATERIALS, PHYS, sciTeX } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -469,7 +469,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
           <InlineMath
             tex={
               `v_d \\;=\\; \\dfrac{I}{n q A} \\;=\\; ` +
-              `${computed.vd.toExponential(2)}\\ \\text{m/s}`
+              `${sciTeX(computed.vd)}\\ \\text{m/s}`
             }
           />
         }
@@ -478,7 +478,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
           <InlineMath
             tex={
               `v_{\\text{th}} \\;=\\; \\sqrt{\\dfrac{3 k_B T}{m_e}} \\;=\\; ` +
-              `${computed.vth.toExponential(2)}\\ \\text{m/s}`
+              `${sciTeX(computed.vth)}\\ \\text{m/s}`
             }
           />
         }

@@ -121,6 +121,7 @@ export function TheveninEquivalentDemo({ figure }: Props) {
       figure={figure}
       title="Thévenin equivalent of a two-source network"
       question="The two circuits load the same R_L. Do they ever disagree?"
+      deeperLab={{ slug: 'ac-impedance', label: 'See full lab' }}
       caption={
         <>
           Left: a voltage source V<sub>s</sub> and a current source I<sub>s</sub> wrapped around two

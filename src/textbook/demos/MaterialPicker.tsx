@@ -13,7 +13,7 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { fmtCurrent } from '@/lib/formatters';
-import { MATERIALS, type MaterialKey } from '@/lib/physics';
+import { MATERIALS, type MaterialKey, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -142,7 +142,7 @@ export function MaterialPickerDemo({ figure }: Props) {
           <button
             key={k}
             type="button"
-            className={`mini-toggle${k === mat ? 'on' : ''}`}
+            className={`mini-toggle${k === mat ? ' on' : ''}`}
             onClick={() => setMat(k)}
             aria-pressed={k === mat}
           >
@@ -159,8 +159,8 @@ export function MaterialPickerDemo({ figure }: Props) {
         right={
           <InlineMath
             tex={
-              `I \\;=\\; \\dfrac{12}{${R.toExponential(2)}} \\;\\approx\\; ` +
-              `${I.toExponential(2)}\\ \\text{A}`
+              `I \\;=\\; \\dfrac{12}{${sciTeX(R)}} \\;\\approx\\; ` +
+              `${sciTeX(I)}\\ \\text{A}`
             }
           />
         }

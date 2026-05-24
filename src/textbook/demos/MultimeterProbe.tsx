@@ -511,6 +511,7 @@ export function MultimeterProbeDemo({ figure }: { figure: string }) {
       figure={figure}
       title="What the multimeter actually reads"
       question="Drag the red and black probes between TPs. Switch modes. The display tracks."
+      deeperLab={{ slug: 'ac-impedance', label: 'See full lab' }}
       caption={
         <>
           A fixed bench network: 12 V into R₁ = 470 Ω, splitting into two parallel branches — R₂

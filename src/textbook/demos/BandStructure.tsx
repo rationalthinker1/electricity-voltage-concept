@@ -21,7 +21,7 @@ import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -172,7 +172,8 @@ export function BandStructureDemo({ figure }: Props) {
           direct-gap material for LEDs and lasers.
         </>
       }
-    >
+    
+      deeperLab={{ slug: 'pn-junction', label: 'See full lab' }}>
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <label className="mini-slider">
@@ -215,7 +216,7 @@ export function BandStructureDemo({ figure }: Props) {
         leftLabel="Boltzmann occupancy"
         left={<InlineMath tex={`\\frac{n}{N_C} \\approx \\exp\\!\\left(\\frac{-E_g}{2kT}\\right)`} />}
         rightLabel={`${label} at ${T.toFixed(0)} K`}
-        right={<InlineMath tex={`\\exp\\!\\left(\\frac{-${Eg.toFixed(2)}}{2 \\times ${kT_meV.toFixed(1)}\\,\\text{meV}}\\right) \\approx ${occ.toExponential(2)}`} />}
+        right={<InlineMath tex={`\\exp\\!\\left(\\frac{-${Eg.toFixed(2)}}{2 \\times ${kT_meV.toFixed(1)}\\,\\text{meV}}\\right) \\approx ${sciTeX(occ)}`} />}
       />
     </Demo>
   );

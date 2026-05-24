@@ -21,7 +21,7 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow, drawCharge } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -132,9 +132,7 @@ export function TwoChargesDemo({ figure }: Props) {
   );
 
   // Signed product of charges, in C² — used in the EquationStrip substitution.
-  const q1q2 = q1 * q2; // signed C²
-  const q1q2Abs = Math.abs(q1q2);
-  const q1q2Sign = q1q2 >= 0 ? '+' : '-';
+  const q1q2 = q1 * q2;
 
   return (
     <Demo
@@ -182,9 +180,9 @@ export function TwoChargesDemo({ figure }: Props) {
           <InlineMath
             tex={
               `F \\;=\\; \\dfrac{(8.99\\times 10^{9})` +
-              `(${q1q2Sign}${q1q2Abs.toExponential(2)})}` +
+              `(${sciTeX(q1q2)})}` +
               `{(${r.toFixed(3)})^{2}} \\;\\approx\\; ` +
-              `${F >= 0 ? '+' : ''}${F.toExponential(2)}\\ \\text{N}`
+              `${sciTeX(F)}\\ \\text{N}`
             }
           />
         }

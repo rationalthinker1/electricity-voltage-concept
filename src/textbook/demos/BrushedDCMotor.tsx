@@ -276,7 +276,8 @@ export function BrushedDCMotorDemo({ figure }: Props) {
           external supply.
         </>
       }
-    >
+    
+      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}>
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
         <MiniSlider

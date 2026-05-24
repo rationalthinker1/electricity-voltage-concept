@@ -155,6 +155,7 @@ export function PolarizationDemo({ figure }: Props) {
       figure={figure}
       title="Polarization"
       question="What direction does E point — and is it staying put?"
+      deeperLab={{ slug: 'em-waves', label: 'See full lab' }}
       caption={
         <>
           Looking down the propagation axis at the tip of <strong>E</strong>. With phase shift δ = 0

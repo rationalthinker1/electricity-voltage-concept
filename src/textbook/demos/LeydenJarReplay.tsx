@@ -206,6 +206,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
       figure={figure}
       title="The Leyden jar"
       question="What did electricity look like before there were batteries?"
+      deeperLab={{ slug: 'capacitance', label: 'See full lab' }}
       caption={
         <>
           A glass cylinder lined with metal foil inside and out is a serviceable parallel-plate

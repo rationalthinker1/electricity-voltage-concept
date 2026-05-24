@@ -14,7 +14,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/co
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
@@ -307,6 +307,7 @@ export function EMSpectrumDemo({ figure }: Props) {
       figure={figure}
       title="The electromagnetic spectrum"
       question="How do frequency, wavelength, and photon energy change across the EM spectrum?"
+      deeperLab={{ slug: 'em-waves', label: 'See full lab' }}
       caption={
         <>
           Drag the cursor or use the slider to explore the spectrum. Preset ticks mark the
@@ -349,13 +350,13 @@ export function EMSpectrumDemo({ figure }: Props) {
         leftLabel="wavelength"
         left={
           <InlineMath
-            tex={`\\lambda = \\dfrac{c}{f} = \\dfrac{${PHYS.c.toExponential(2)}}{${freq.toExponential(2)}} = ${lambda.toExponential(2)} \\text{ m}`}
+            tex={`\\lambda = \\dfrac{c}{f} = \\dfrac{${sciTeX(PHYS.c)}}{${sciTeX(freq)}} = ${sciTeX(lambda)} \\text{ m}`}
           />
         }
         rightLabel="photon energy"
         right={
           <InlineMath
-            tex={`E = hf = (${H_PLANCK.toExponential(2)})(${freq.toExponential(2)}) = ${ePhoton.toExponential(2)} \\text{ J}`}
+            tex={`E = hf = (${sciTeX(H_PLANCK)})(${sciTeX(freq)}) = ${sciTeX(ePhoton)} \\text{ J}`}
           />
         }
       />

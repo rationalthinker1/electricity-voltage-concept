@@ -25,6 +25,7 @@ export function CFromMaxwellDemo({ figure }: Props) {
       figure={figure}
       title="Light, predicted"
       question="What speed do the four equations say a wave in vacuum must travel at?"
+      deeperLab={{ slug: 'maxwell-synthesis', label: 'See full lab' }}
       caption={
         <>
           Plug the experimentally-measured values of <strong>ε₀</strong> and <strong>μ₀</strong>{' '}

@@ -1,12 +1,19 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 
 import { CHAPTERS } from '@/textbook/data/chapters';
+import { MANIFEST } from '@/labs/data/manifest';
 
 export const Route = createFileRoute('/')({
   component: Home,
 });
 
 function Home() {
+  const equationLabCount = MANIFEST.filter(
+    (l) => (l.kind ?? 'equation') === 'equation' && !l.number.startsWith('A.'),
+  ).length;
+  const experimentalLabCount = MANIFEST.filter((l) => l.kind === 'experimental').length;
+  const sandboxCount = MANIFEST.filter((l) => l.number.startsWith('A.')).length;
+
   return (
     <>
       <section className="px-3xl pb-4xl max-w-page-lg mx-auto pt-[180px]">
@@ -66,7 +73,9 @@ function Home() {
       <footer>
         <div className="colophon">
           <span>
-            Field · Theory · 6 chapters · 16 equation labs · vanilla physics, real sources
+            Field · Theory · {CHAPTERS.length} chapters · {equationLabCount} equation labs ·{' '}
+            {experimentalLabCount} experimental labs · {sandboxCount} sandboxes · vanilla physics,
+            real sources
           </span>
           <span>
             <Link to="/reference" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>

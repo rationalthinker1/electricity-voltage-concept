@@ -30,6 +30,7 @@ import { Num } from '@/components/Num';
 
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha, type ThemeColors } from '@/lib/canvasTheme';
+import { sciTeX } from '@/lib/physics';
 import { depthSortIndices, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 import { useCanvasCache } from '@/lib/useCanvasCache';
 import { useOrbitScene } from '@/lib/useOrbitScene';
@@ -64,16 +65,6 @@ interface ArrowSpec {
   from: Vec3;
   to: Vec3;
   kind: 'E' | 'B' | 'S';
-}
-
-function fmtLatex(n: number, digits = 2): string {
-  if (!isFinite(n)) return '—';
-  const abs = Math.abs(n);
-  if (abs === 0) return '0';
-  if (abs >= 1e-2 && abs < 1e6) return n.toFixed(digits);
-  const s = n.toExponential(digits);
-  const [m, e] = s.split('e');
-  return `${m} \\times 10^{${parseInt(e!, 10)}}`;
 }
 
 export function PoyntingCoax3DDemo({ figure }: Props) {
@@ -346,7 +337,7 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
         leftLabel="Power delivered"
         left={
           <InlineMath
-            tex={`P = V I = ${V.toFixed(0)} \\times ${I.toFixed(1)} = ${fmtLatex(computed.P, 2)} \\text{ W}`}
+            tex={`P = V I = ${V.toFixed(0)} \\times ${I.toFixed(1)} = ${sciTeX(computed.P, 2, { fixedHi: 1e6 })} \\text{ W}`}
           />
         }
         rightLabel="Integral identity"

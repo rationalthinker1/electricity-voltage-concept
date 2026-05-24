@@ -33,7 +33,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/co
 import { Formula, InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import {
@@ -50,13 +50,6 @@ import {
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-
-function fmtSci(n: number) {
-  const s = n.toExponential(2);
-  const m = s.match(/^(-?[\d.]+)e([+-]?\d+)$/);
-  if (!m) return s;
-  return `${m[1]}\\times10^{${m[2]!.replace(/^\+/, '')}}`;
-}
 
 interface Props {
   figure: string;
@@ -851,6 +844,7 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
       figure={figure}
       title="The Maxwell box — all four laws on one rotating object"
       question="Can you see each Maxwell equation as a geometric statement about flux through faces or circulation around loops — in the same cubical region of space?"
+      deeperLab={{ slug: 'maxwell-synthesis', label: 'See full lab' }}
       caption={
         <>
           A single 3D scene with four toggleable facets. Mode 1 puts a point charge inside the cube
@@ -929,13 +923,13 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
                 leftLabel="LHS"
                 left={
                   <InlineMath
-                    tex={`\\oint \\vec{E}\\cdot d\\vec{A} \\;=\\; ${fmtSci(computed.fluxE)}\\ \\text{V·m}`}
+                  tex={`\\oint \\vec{E}\\cdot d\\vec{A} \\;=\\; ${sciTeX(computed.fluxE, 2, { force: true })}\\ \\text{V·m}`}
                   />
                 }
                 rightLabel="RHS"
                 right={
                   <InlineMath
-                    tex={`\\dfrac{Q_{enc}}{\\varepsilon_0} \\;=\\; \\dfrac{${q.toFixed(1)}\\times10^{-9}}{\\varepsilon_0} \\;=\\; ${fmtSci(computed.fluxE)}\\ \\text{V·m}`}
+                  tex={`\\dfrac{Q_{enc}}{\\varepsilon_0} \\;=\\; \\dfrac{${q.toFixed(1)}\\times10^{-9}}{\\varepsilon_0} \\;=\\; ${sciTeX(computed.fluxE, 2, { force: true })}\\ \\text{V·m}`}
                   />
                 }
               />
@@ -980,13 +974,13 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
                 leftLabel="LHS"
                 left={
                   <InlineMath
-                    tex={`\\oint \\vec{B}\\cdot d\\vec{\\ell} \\;=\\; ${fmtSci(computed.closedBline)}\\ \\text{T·m}`}
+                  tex={`\\oint \\vec{B}\\cdot d\\vec{\\ell} \\;=\\; ${sciTeX(computed.closedBline, 2, { force: true })}\\ \\text{T·m}`}
                   />
                 }
                 rightLabel="RHS"
                 right={
                   <InlineMath
-                    tex={`\\mu_0(I_{enc} + \\varepsilon_0 \\dfrac{d\\Phi_E}{dt}) \\;=\\; ${fmtSci(computed.closedBline)}\\ \\text{T·m}`}
+                  tex={`\\mu_0(I_{enc} + \\varepsilon_0 \\dfrac{d\\Phi_E}{dt}) \\;=\\; ${sciTeX(computed.closedBline, 2, { force: true })}\\ \\text{T·m}`}
                   />
                 }
               />

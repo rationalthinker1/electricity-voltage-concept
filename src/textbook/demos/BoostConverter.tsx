@@ -179,7 +179,8 @@ export function BoostConverterDemo({ figure }: Props) {
           losses in the switch and inductor blow up the implicit equation past that.
         </>
       }
-    >
+    
+      deeperLab={{ slug: 'dc-dc-converter', label: 'See full lab' }}>
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider

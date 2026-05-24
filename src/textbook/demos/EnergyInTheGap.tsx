@@ -12,7 +12,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -130,8 +130,8 @@ export function EnergyInTheGapDemo({ figure }: Props) {
           <InlineMath
             tex={
               `u_{E} \\;=\\; \\tfrac{1}{2}\\varepsilon_{0} E^{2} \\;=\\; ` +
-              `\\tfrac{1}{2}(8.854\\!\\times\\!10^{-12})(${E.toExponential(2)})^{2} ` +
-              `\\;\\approx\\; ${u_E.toExponential(2)}\\ \\text{J/m}^{3}`
+              `\\tfrac{1}{2}(8.854\\!\\times\\!10^{-12})(${sciTeX(E)})^{2} ` +
+              `\\;\\approx\\; ${sciTeX(u_E)}\\ \\text{J/m}^{3}`
             }
           />
         }
@@ -139,7 +139,7 @@ export function EnergyInTheGapDemo({ figure }: Props) {
         right={
           <InlineMath
             tex={
-              `U \\;=\\; u_{E} \\cdot A d \\;\\approx\\; ${U.toExponential(2)}\\ \\text{J}`
+              `U \\;=\\; u_{E} \\cdot A d \\;\\approx\\; ${sciTeX(U)}\\ \\text{J}`
             }
           />
         }

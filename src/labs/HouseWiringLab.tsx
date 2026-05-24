@@ -377,7 +377,7 @@ export default function HouseWiringLab() {
             onClick={() => toggleBonding('mainBondingJumper')}
             title="Main bonding jumper at service panel"
           >
-            MBJ: {doc.mainBondingJumper ? 'on' : 'off'}
+            MBJ: {doc.mainBondingJumper ? ' on' : 'off'}
           </button>
           <button
             type="button"

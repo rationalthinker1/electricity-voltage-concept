@@ -186,6 +186,7 @@ export function WireFromRestDemo({ figure }: Props) {
       figure={figure}
       title="The wire from the lab frame"
       question="A wire carries current. A test charge sits next to it, motionless. Does it feel a force?"
+      deeperLab={{ slug: 'relativistic-em', label: 'See full lab' }}
       caption={
         <>
           In the lab frame, equal densities of positive ions and drifting electrons make the wire

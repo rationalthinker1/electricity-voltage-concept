@@ -145,7 +145,8 @@ export function BrewsterAngleDemo({ figure }: Props) {
           use this to kill horizontal glare from wet roads.
         </>
       }
-    >
+    
+      deeperLab={{ slug: 'snell-fresnel', label: 'See full lab' }}>
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider

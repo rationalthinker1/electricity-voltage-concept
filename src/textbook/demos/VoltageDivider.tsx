@@ -85,6 +85,7 @@ export function VoltageDividerDemo({ figure }: Props) {
       figure={figure}
       title="The voltage divider — and what 'loading' does to it"
       question="With no load, V_out = V_in · R₂/(R₁+R₂). Attach a 10 kΩ load — what happens?"
+      deeperLab={{ slug: 'ac-impedance', label: 'See full lab' }}
       caption={
         <>
           Two resistors in series across V<sub>in</sub>; the output is the voltage across the lower

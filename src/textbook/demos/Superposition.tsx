@@ -112,6 +112,7 @@ export function SuperpositionDemo({ figure }: Props) {
       figure={figure}
       title="Superposition — the engine behind Thévenin"
       question="Turn V1 and V2 on independently. The live currents add up exactly."
+      deeperLab={{ slug: 'ac-impedance', label: 'See full lab' }}
       caption={
         <>
           A linear three-resistor bridge with two voltage sources. With V<sub>2</sub> shorted, V

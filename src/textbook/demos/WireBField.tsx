@@ -15,7 +15,7 @@ import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { fmtSIPrecision } from '@/lib/formatters';
 import { drawLabel } from "@/lib/canvasLayout";
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -289,7 +289,7 @@ export function WireBFieldDemo({ figure }: Props) {
         left={
           <InlineMath
             tex={
-              `|\\vec{B}| \\;=\\; \\dfrac{\\mu_{0} I}{2\\pi r} \\;\\approx\\; ${Bprobe.toExponential(2)}\\ \\text{T}`
+              `|\\vec{B}| \\;=\\; \\dfrac{\\mu_{0} I}{2\\pi r} \\;\\approx\\; ${sciTeX(Bprobe)}\\ \\text{T}`
             }
           />
         }

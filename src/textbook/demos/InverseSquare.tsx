@@ -11,7 +11,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/co
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 
-import { PHYS, pretty } from '@/lib/physics';
+import { PHYS, pretty, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -184,7 +184,7 @@ export function InverseSquareDemo({ figure }: Props) {
             tex={
               `F \\;=\\; \\dfrac{(8.99\\times 10^{9})(10^{-6})^{2}}` +
               `{(${r.toFixed(3)})^{2}} \\;\\approx\\; ` +
-              `${F.toExponential(2)}\\ \\text{N}`
+              `${sciTeX(F)}\\ \\text{N}`
             }
           />
         }

@@ -15,7 +15,7 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { PHYS, pretty } from '@/lib/physics';
+import { PHYS, pretty, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -222,7 +222,7 @@ export function JouleHeatingDemo({ figure }: Props) {
           <InlineMath
             tex={
               `P \\;=\\; ${I.toFixed(2)}^{2} \\times ${R.toFixed(1)} ` +
-              `\\;\\approx\\; ${P.toExponential(2)}\\ \\text{W}`
+              `\\;\\approx\\; ${sciTeX(P)}\\ \\text{W}`
             }
           />
         }

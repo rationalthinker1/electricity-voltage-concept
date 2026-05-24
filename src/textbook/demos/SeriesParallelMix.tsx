@@ -281,7 +281,7 @@ export function SeriesParallelMixDemo({ figure }: Props) {
           <button
             key={tp.id}
             type="button"
-            className={`mini-toggle${topology === tp.id ? 'on' : ''}`}
+            className={`mini-toggle${topology === tp.id ? ' on' : ''}`}
             onClick={() => setTopology(tp.id)}
             aria-pressed={topology === tp.id}
           >

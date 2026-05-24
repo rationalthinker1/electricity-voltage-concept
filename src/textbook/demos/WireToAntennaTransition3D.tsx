@@ -34,7 +34,7 @@ import {
 } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
 import { project, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
@@ -400,6 +400,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       figure={figure}
       title="From wire to antenna — a continuous spectrum"
       question="The same metre of wire. Where does the radiation pattern come from?"
+      deeperLab={{ slug: 'em-waves', label: 'See full lab' }}
       caption={
         <>
           A vertical wire of fixed length <strong>L = 1 m</strong>, fed at the centre by a
@@ -440,7 +441,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
           <InlineMath
             tex={
               `\\lambda \\;=\\; \\dfrac{c}{f} \\;=\\; ` +
-              `\\dfrac{2.998\\times10^{8}}{${(fMHz * 1e6).toExponential(0).replace('+', '')}} ` +
+              `\\dfrac{2.998\\times10^{8}}{${sciTeX(fMHz * 1e6, 0)}} ` +
               `\\;\\approx\\; ${lambda >= 1 ? lambda.toFixed(2) : (lambda * 100).toFixed(1)}\\ \text{${lambda >= 1 ? 'm' : 'cm'}}`
             }
           />

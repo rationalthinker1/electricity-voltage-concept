@@ -22,7 +22,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/co
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { MATERIALS, PHYS } from '@/lib/physics';
+import { MATERIALS, PHYS, sciTeX } from '@/lib/physics';
 
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -181,6 +181,7 @@ export function ACElectronJitterDemo({ figure }: Props) {
       figure={figure}
       title="A single electron in a 60 Hz wall outlet"
       question="If the current reverses 120 times a second, how far does any one electron actually go?"
+      deeperLab={{ slug: 'drift', label: 'See full lab' }}
       caption={
         <>
           At 5 A through a 14-gauge copper lamp cord, each conduction electron oscillates with a
@@ -215,7 +216,7 @@ export function ACElectronJitterDemo({ figure }: Props) {
         right={
           <InlineMath
             tex={
-              `x_{\\text{peak}} \\;=\\; \\dfrac{${v_peak.toExponential(2)}}{2\\pi\\cdot 60} ` +
+              `x_{\\text{peak}} \\;=\\; \\dfrac{${sciTeX(v_peak)}}{2\\pi\\cdot 60} ` +
               `\\;\\approx\\; ${(x_peak * 1e9).toFixed(0)}\\ \\text{nm}`
             }
           />

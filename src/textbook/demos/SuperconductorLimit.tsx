@@ -22,7 +22,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniToggle } from '@/co
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { PHYS, pretty } from '@/lib/physics';
+import { PHYS, pretty, sciTeX } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -48,16 +48,6 @@ interface SimCtx {
   getWireGeom(): { wireXL: number; wireXR: number; wireCY: number; r: number };
   spawnInflow(S: number): void;
   spawnParallel(): void;
-}
-
-function fmtLatex(n: number, digits = 2): string {
-  if (!isFinite(n)) return '—';
-  const abs = Math.abs(n);
-  if (abs === 0) return '0';
-  if (abs >= 1e-2 && abs < 1e6) return n.toFixed(digits);
-  const s = n.toExponential(digits);
-  const [m, e] = s.split('e');
-  return `${m} \\times 10^{${parseInt(e!, 10)}}`;
 }
 
 export function SuperconductorLimitDemo({ figure }: Props) {
@@ -345,14 +335,14 @@ export function SuperconductorLimitDemo({ figure }: Props) {
         left={
           <InlineMath
             tex={
-              `|S| = \\dfrac{E B}{\\mu_0} = \\dfrac{(${fmtLatex(E_in, 1)})(${fmtLatex(B_surf, 2)})}{\\mu_0} \\approx ${fmtLatex(S_in, 2)} \\text{ W/m}^2`
+              `|S| = \\dfrac{E B}{\\mu_0} = \\dfrac{(${sciTeX(E_in, 1, { fixedHi: 1e6 })})(${sciTeX(B_surf, 2, { fixedHi: 1e6 })})}{\\mu_0} \\approx ${sciTeX(S_in, 2, { fixedHi: 1e6 })} \\text{ W/m}^2`
             }
           />
         }
         rightLabel="Power dissipated"
         right={
           <InlineMath
-            tex={`P = V I = ${fmtLatex(P_dissipated, 2)} \\text{ W}`}
+            tex={`P = V I = ${sciTeX(P_dissipated, 2, { fixedHi: 1e6 })} \\text{ W}`}
           />
         }
       />

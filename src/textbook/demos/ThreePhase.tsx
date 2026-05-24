@@ -174,6 +174,7 @@ export function ThreePhaseDemo({ figure }: Props) {
       figure={figure}
       title="Three-phase — why the grid uses three wires"
       question="Three sinusoids, each 120° behind the previous. What's special about that sum?"
+      deeperLab={{ slug: 'ac-impedance', label: 'See full lab' }}
       caption={
         <>
           Three voltages 120° apart in phase add to exactly zero at every instant. That means a

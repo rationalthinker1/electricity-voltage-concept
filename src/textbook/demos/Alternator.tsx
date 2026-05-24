@@ -156,7 +156,8 @@ export function AlternatorDemo({ figure }: Props) {
           battery and any large capacitors absorb whatever ripple remains.
         </>
       }
-    >
+    
+      deeperLab={{ slug: 'synchronous-machine', label: 'See full lab' }}>
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider

@@ -259,6 +259,12 @@ export const FORMULAS = {
     plain: 'γ = 1/√(1−v²/c²)',
     name: 'Lorentz factor',
   },
+  'em-field-transform-perp': {
+    tex: 'E_{\\perp}^{\\prime}=\\gamma\\left(E_{\\perp}+\\vec{v}\\times\\vec{B}\\right),\\qquad B_{\\perp}^{\\prime}=\\gamma\\left(B_{\\perp}-\\dfrac{\\vec{v}\\times\\vec{E}}{c^2}\\right)',
+    plain: "E'⊥ = γ(E⊥ + v×B), B'⊥ = γ(B⊥ − v×E/c²)",
+    name: 'Lorentz transformation of transverse electromagnetic fields',
+    source: 'einstein-1905',
+  },
 
   /* ---------- Chapter 12: AC circuits ---------- */
   'reactance-inductor': {

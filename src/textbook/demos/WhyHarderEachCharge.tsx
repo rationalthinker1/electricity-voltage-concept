@@ -18,7 +18,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/co
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -168,6 +168,7 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       figure={figure}
       title="Why each charge is harder than the last"
       question="What does the (N+1)ᵗʰ charge actually push against?"
+      deeperLab={{ slug: 'capacitance', label: 'See full lab' }}
       caption={
         <>
           The orange test charge climbs the gap against the field already set up by the{' '}
@@ -199,7 +200,7 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
           <InlineMath
             tex={
               `\\delta W \\;\\approx\\; \\delta q \\cdot V \\;\\approx\\; ` +
-              `${workForNext.toExponential(2)}\\ \\text{J}`
+              `${sciTeX(workForNext)}\\ \\text{J}`
             }
           />
         }
@@ -207,7 +208,7 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
         right={
           <InlineMath
             tex={
-              `U \\;=\\; \\tfrac{1}{2} C V^{2} \\;\\approx\\; ${W_integral.toExponential(2)}\\ \\text{J}`
+              `U \\;=\\; \\tfrac{1}{2} C V^{2} \\;\\approx\\; ${sciTeX(W_integral)}\\ \\text{J}`
             }
           />
         }

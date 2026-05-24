@@ -17,7 +17,7 @@ import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { MATERIALS, PHYS, formatTime } from '@/lib/physics';
+import { MATERIALS, PHYS, formatTime, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -160,7 +160,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
             tex={
               `v_{\\text{signal}} \\approx 2\\times 10^{8}\\ \\text{m/s}` +
               `\\quad\\;\\; v_{\\text{drift}} = \\tfrac{I}{nqA} \\approx ` +
-              `${v_drift.toExponential(1)}\\ \\text{m/s}`
+              `${sciTeX(v_drift, 1)}\\ \\text{m/s}`
             }
           />
         }
@@ -169,7 +169,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
           <InlineMath
             tex={
               `\\dfrac{v_{\\text{signal}}}{v_{\\text{drift}}} = ` +
-              `\\dfrac{2\\times 10^{8}}{${v_drift.toExponential(1)}} \\approx ` +
+              `\\dfrac{2\\times 10^{8}}{${sciTeX(v_drift, 1)}} \\approx ` +
               `${ratioMantissa.toFixed(1)}\\times 10^{${ratioExp}}`
             }
           />

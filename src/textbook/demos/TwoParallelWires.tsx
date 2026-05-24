@@ -16,7 +16,7 @@ import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -246,7 +246,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
             tex={
               `\\dfrac{F}{L} \\;=\\; \\dfrac{\\mu_{0} I_{1} I_{2}}{2\\pi d} \\;=\\; ` +
               `\\dfrac{(4\\pi\\!\\times\\!10^{-7})(${I1.toFixed(1)})(${I2.toFixed(1)})}{2\\pi(${(d_m * 100).toFixed(1)}\\!\\times\\!10^{-2})} ` +
-              `\\;\\approx\\; ${Math.abs(F_per_L).toExponential(2)}\\ \\text{N/m}`
+              `\\;\\approx\\; ${sciTeX(Math.abs(F_per_L))}\\ \\text{N/m}`
             }
           />
         }

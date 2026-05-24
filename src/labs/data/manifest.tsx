@@ -297,6 +297,36 @@ export const MANIFEST: LabManifestEntry[] = [
     ),
     deck: 'A changing magnetic flux through a closed loop induces an EMF around that loop. Move the magnet, spin the coil, change the current upstream — the rule is the same. Every generator on Earth runs on this equation.',
   },
+  {
+    number: '2.5',
+    slug: 'motor-torque-speed',
+    chapter: 'ch2',
+    title: 'Motor Torque-Speed',
+    formula: <Formula tex="\tau=k_t I,\qquad E_b=k_e\omega" />,
+    blurb: 'Torque, back-EMF, and speed limits in one motor curve.',
+    heroLabel: 'Chapter 20 · Lab 2.5 — Motor Torque-Speed',
+    heroHeadline: (
+      <>
+        Current makes torque. <em className="text-accent font-normal italic">Speed makes back-EMF</em>.
+      </>
+    ),
+    deck: 'Motor demos share the same equation spine: magnetic torque rises with current while back-EMF rises with speed. The intersection sets acceleration, stall behavior, and the usable part of the efficiency map.',
+  },
+  {
+    number: '2.6',
+    slug: 'synchronous-machine',
+    chapter: 'ch2',
+    title: 'Synchronous Machines',
+    formula: <Formula tex="P\approx \dfrac{EV}{X_s}\sin\delta" />,
+    blurb: 'Generator loading and stability are governed by a power-angle equation.',
+    heroLabel: 'Chapter 21 · Lab 2.6 — Synchronous Machines',
+    heroHeadline: (
+      <>
+        Grid power is an <em className="text-accent font-normal italic">angle equation</em>.
+      </>
+    ),
+    deck: 'Alternators, excitation, grid sync, and inertia all lean on the same relation between internal EMF, terminal voltage, synchronous reactance, and rotor angle. This lab turns the grid demos into worked substitutions.',
+  },
 
   // ─── Chapter 3 — Conduction ───
   {
@@ -364,6 +394,186 @@ export const MANIFEST: LabManifestEntry[] = [
     ),
     deck: 'All resistance dissipates power. The energy comes from the electric field; the lattice receives it as heat. Joule (1841) measured this carefully and got the unit named after him. Every heater, filament, and CPU cooler runs on I²R.',
   },
+  {
+    number: '3.5',
+    slug: 'ac-impedance',
+    chapter: 'ch3',
+    title: 'AC Impedance',
+    formula: FORMULAS['impedance-complex'].plain,
+    blurb: 'Resistance, reactance, phase, and power factor in one phasor triangle.',
+    heroLabel: 'Chapter 12 · Lab 3.5 — AC Impedance',
+    heroHeadline: (
+      <>
+        Ohm's law learns <em className="text-accent font-normal italic">phase</em>.
+      </>
+    ),
+    deck: 'Complex impedance turns sinusoidal steady-state circuits into algebra. Resistance dissipates energy; reactance stores and returns it; the angle between voltage and current decides how much real power the source actually delivers.',
+  },
+  {
+    number: '3.6',
+    slug: 'network-analysis',
+    chapter: 'ch3',
+    title: 'Network Analysis',
+    formula: <Formula tex="V_{th}=V_{oc},\qquad R_{th}=V_{oc}/I_{sc}" />,
+    blurb: 'Kirchhoff, Thevenin, Norton, bridge, and delta-wye reductions.',
+    heroLabel: 'Chapter 13 · Lab 3.6 — Network Analysis',
+    heroHeadline: (
+      <>
+        Big circuits become <em className="text-accent font-normal italic">one equivalent</em>.
+      </>
+    ),
+    deck: 'Linear networks can be solved by node voltages, mesh currents, or source transformations. The lab emphasizes the invariants that survive every reduction: terminal voltage, terminal current, and delivered power.',
+  },
+  {
+    number: '3.7',
+    slug: 'pn-junction',
+    chapter: 'ch3',
+    title: 'PN Junctions',
+    formula: <Formula tex="I=I_S\left(e^{V_D/(nV_T)}-1\right)" />,
+    blurb: 'Diode current is exponential in junction voltage.',
+    heroLabel: 'Chapter 14 · Lab 3.7 — PN Junctions',
+    heroHeadline: (
+      <>
+        A junction turns voltage into <em className="text-accent font-normal italic">exponential current</em>.
+      </>
+    ),
+    deck: 'Band diagrams, depletion regions, and diode curves all meet in the Shockley equation. This lab gives the semiconductor demos their shared algebraic landing place.',
+  },
+  {
+    number: '3.8',
+    slug: 'transistor-iv',
+    chapter: 'ch3',
+    title: 'Transistor I-V Curves',
+    formula: <Formula tex="I_D\approx \tfrac{1}{2}k(V_{GS}-V_T)^2(1+\lambda V_{DS})" />,
+    blurb: 'Transistors are voltage-controlled current laws plus load lines.',
+    heroLabel: 'Chapter 14 · Lab 3.8 — Transistor I-V Curves',
+    heroHeadline: (
+      <>
+        A small terminal voltage <em className="text-accent font-normal italic">steers current</em>.
+      </>
+    ),
+    deck: 'MOSFET, BJT, load-line, and amplifier demos need the same habit: read the I-V family, choose a bias point, then ask what signal motion does around it.',
+  },
+  {
+    number: '3.9',
+    slug: 'fourier-series',
+    chapter: 'ch3',
+    title: 'Fourier Analysis',
+    formula: <Formula tex="x(t)=a_0+\sum_{n=1}^{\infty}(a_n\cos n\omega t+b_n\sin n\omega t)" />,
+    blurb: 'Signals become sums of sinusoids before filters act on them.',
+    heroLabel: 'Chapter 15 · Lab 3.9 — Fourier Analysis',
+    heroHeadline: (
+      <>
+        Any periodic waveform is a <em className="text-accent font-normal italic">sine recipe</em>.
+      </>
+    ),
+    deck: 'Harmonics, RMS, FFTs, THD, and low-pass response are all easier once a waveform is written as sinusoidal components. This lab makes that decomposition the explicit equation workbench.',
+  },
+  {
+    number: '3.10',
+    slug: 'bode-filter',
+    chapter: 'ch3',
+    title: 'Filter Response',
+    formula: <Formula tex="|H(j\omega)|=\dfrac{1}{\sqrt{1+(\omega/\omega_c)^2}}" />,
+    blurb: 'Magnitude and phase as a frequency-by-frequency transfer function.',
+    heroLabel: 'Chapter 16 · Lab 3.10 — Filter Response',
+    heroHeadline: (
+      <>
+        Filters draw their answer on a <em className="text-accent font-normal italic">frequency axis</em>.
+      </>
+    ),
+    deck: 'A filter equation says how much of each sinusoidal component survives. The lab connects Sallen-Key behavior and Bode-plot reading to one compact transfer-function pattern.',
+  },
+  {
+    number: '3.11',
+    slug: 'op-amp',
+    chapter: 'ch3',
+    title: 'Operational Amplifiers',
+    formula: <Formula tex="V_{out}\approx-\dfrac{R_f}{R_{in}}V_{in}" />,
+    blurb: 'Feedback turns large open-loop gain into predictable closed-loop gain.',
+    heroLabel: 'Chapter 16 · Lab 3.11 — Operational Amplifiers',
+    heroHeadline: (
+      <>
+        Feedback spends gain to make <em className="text-accent font-normal italic">a clean equation</em>.
+      </>
+    ),
+    deck: 'Inverting, follower, and integrator demos all start with the op-amp rule that negative feedback drives the input difference small. The surrounding network then writes the useful equation.',
+  },
+  {
+    number: '3.12',
+    slug: 'rectifier',
+    chapter: 'ch3',
+    title: 'Rectifiers',
+    formula: <Formula tex="\Delta V\approx\dfrac{I_{load}}{f_{ripple}C}" />,
+    blurb: 'Ripple is load current divided by recharge rate and reservoir capacitance.',
+    heroLabel: 'Chapter 24 · Lab 3.12 — Rectifiers',
+    heroHeadline: (
+      <>
+        AC becomes DC by <em className="text-accent font-normal italic">charging between peaks</em>.
+      </>
+    ),
+    deck: 'Diodes enforce polarity; capacitors carry the load between peaks. This lab ties bridge rectifiers and linear supplies to the ripple equation that sets usable DC headroom.',
+  },
+  {
+    number: '3.13',
+    slug: 'dc-dc-converter',
+    chapter: 'ch3',
+    title: 'DC-DC Conversion',
+    formula: <Formula tex="V_{out}\approx D V_{in},\qquad V_{out}\approx\dfrac{V_{in}}{1-D}" />,
+    blurb: 'Duty cycle averages switched topologies into a DC transfer ratio.',
+    heroLabel: 'Chapter 24 · Lab 3.13 — DC-DC Conversion',
+    heroHeadline: (
+      <>
+        Switching makes a controllable <em className="text-accent font-normal italic">average voltage</em>.
+      </>
+    ),
+    deck: 'Buck, boost, and flyback demos share a common idea: alternate energy-storage states fast enough that the load sees an averaged conversion law.',
+  },
+  {
+    number: '3.14',
+    slug: 'pwm-inverter',
+    chapter: 'ch3',
+    title: 'PWM Inverters',
+    formula: <Formula tex="V_{1,rms}\approx m_a\dfrac{V_{dc}}{2\sqrt{2}}" />,
+    blurb: 'Modulation index controls the fundamental while switching ripple moves high.',
+    heroLabel: 'Chapter 24 · Lab 3.14 — PWM Inverters',
+    heroHeadline: (
+      <>
+        Pulses hide a <em className="text-accent font-normal italic">smooth fundamental</em>.
+      </>
+    ),
+    deck: 'H-bridges, PWM outputs, and grid-tie inverters all convert a DC bus into an AC fundamental by arranging switching states in time.',
+  },
+  {
+    number: '3.15',
+    slug: 'cell-emf',
+    chapter: 'ch3',
+    title: 'Electrochemical Cell EMF',
+    formula: <Formula tex="E=E^\circ-\dfrac{RT}{nF}\ln Q" />,
+    blurb: 'Cell voltage is chemical free energy per coulomb.',
+    heroLabel: 'Chapter 25 · Lab 3.15 — Electrochemical Cell EMF',
+    heroHeadline: (
+      <>
+        Chemistry writes a <em className="text-accent font-normal italic">voltage</em>.
+      </>
+    ),
+    deck: 'Voltaic piles, half-cell potentials, Daniell cells, Nernst shifts, and discharge curves all trace back to free energy divided by charge transfer.',
+  },
+  {
+    number: '3.16',
+    slug: 'li-ion-cycling',
+    chapter: 'ch3',
+    title: 'Battery Pack Energy',
+    formula: <Formula tex="E_{pack}=N_sN_pV_{cell}Q_{cell}" />,
+    blurb: 'Cell chemistry multiplied by series and parallel topology.',
+    heroLabel: 'Chapter 26 · Lab 3.16 — Battery Pack Energy',
+    heroHeadline: (
+      <>
+        A pack is chemistry plus <em className="text-accent font-normal italic">topology</em>.
+      </>
+    ),
+    deck: 'Li-ion intercalation, lead-acid behavior, fuel cells, and supercapacitors all become practical systems only after cell voltage, capacity, and arrangement are counted together.',
+  },
 
   // ─── Chapter 4 — Energy & Fields ───
   {
@@ -426,6 +636,156 @@ export const MANIFEST: LabManifestEntry[] = [
       </>
     ),
     deck: 'Around a current-carrying wire, E points along the axis and B circles it. Their cross product points radially inward — energy enters the wire from every direction at once. Integrate that flux over the wire’s lateral surface and you get exactly VI.',
+  },
+  {
+    number: '4.5',
+    slug: 'em-waves',
+    chapter: 'ch4',
+    title: 'Electromagnetic Waves',
+    formula: FORMULAS['speed-of-light'].plain,
+    blurb: "Maxwell's constants set the speed; frequency sets the wavelength.",
+    heroLabel: 'Chapter 9 · Lab 4.5 — Electromagnetic Waves',
+    heroHeadline: (
+      <>
+        Fields leave the wire and <em className="text-accent font-normal italic">keep going</em>.
+      </>
+    ),
+    deck: 'A changing electric field curls a magnetic field, and a changing magnetic field curls an electric field. In a uniform medium the coupled fields propagate at v = 1/√(με), with E, B, and the direction of travel locked at right angles.',
+  },
+  {
+    number: '4.6',
+    slug: 'maxwell-synthesis',
+    chapter: 'ch4',
+    title: "Maxwell's Equations",
+    formula: <>∮E·dA, ∮B·dA, ∮E·dℓ, ∮B·dℓ</>,
+    blurb: 'The four field laws as one geometry of sources, flux, and circulation.',
+    heroLabel: "Chapter 10 · Lab 4.6 — Maxwell's Equations",
+    heroHeadline: (
+      <>
+        Four laws. <em className="text-accent font-normal italic">One field.</em>
+      </>
+    ),
+    deck: 'Gauss, Faraday, Ampere, and Maxwell’s displacement current become one system when written as flux and circulation laws. The synthesis explains static fields, induction, capacitors, and the wave speed c from the same geometry.',
+  },
+  {
+    number: '4.7',
+    slug: 'relativistic-em',
+    chapter: 'ch4',
+    title: 'Relativistic EM',
+    formula: FORMULAS['em-field-transform-perp'].plain,
+    blurb: 'Electric and magnetic fields are frame-dependent components of one object.',
+    heroLabel: 'Chapter 11 · Lab 4.7 — Relativistic Electromagnetism',
+    heroHeadline: (
+      <>
+        Magnetism is electricity <em className="text-accent font-normal italic">in motion</em>.
+      </>
+    ),
+    deck: 'A Lorentz boost mixes transverse electric and magnetic field components. The same physical force can be magnetic in one frame and electric in another, which is the practical meaning of E and B belonging to one electromagnetic field tensor.',
+  },
+  {
+    number: '4.8',
+    slug: 'transformer',
+    chapter: 'ch4',
+    title: 'Transformer Ratios',
+    formula: <Formula tex="\dfrac{V_p}{V_s}=\dfrac{N_p}{N_s}=\dfrac{I_s}{I_p}" />,
+    blurb: 'Flux linkage makes voltage ratio follow turns ratio.',
+    heroLabel: 'Chapter 23 · Lab 4.8 — Transformer Ratios',
+    heroHeadline: (
+      <>
+        Turns count becomes <em className="text-accent font-normal italic">voltage ratio</em>.
+      </>
+    ),
+    deck: 'Transformer demos share the same field idea: changing core flux links windings. The winding count sets voltage ratio, reflected impedance, inrush, and high-frequency design limits.',
+  },
+  {
+    number: '4.9',
+    slug: 'transmission-line',
+    chapter: 'ch4',
+    title: 'Transmission Lines',
+    formula: <Formula tex="\Gamma=\dfrac{Z_L-Z_0}{Z_L+Z_0}" />,
+    blurb: 'Mismatch sends part of a travelling wave back toward the source.',
+    heroLabel: 'Chapter 16 · Lab 4.9 — Transmission Lines',
+    heroHeadline: (
+      <>
+        Long wires become <em className="text-accent font-normal italic">wave guides</em>.
+      </>
+    ),
+    deck: 'Reflection coefficient, standing waves, and Smith-chart motion are all boundary-condition math. This lab anchors the line demos in impedance mismatch.',
+  },
+  {
+    number: '4.10',
+    slug: 'polarization-susceptibility',
+    chapter: 'ch4',
+    title: 'Material Polarization',
+    formula: <Formula tex="\vec{P}=\varepsilon_0\chi_e\vec{E}" />,
+    blurb: 'Fields align microscopic dipoles and create macroscopic polarization.',
+    heroLabel: 'Chapter 17 · Lab 4.10 — Material Polarization',
+    heroHeadline: (
+      <>
+        Matter answers a field with <em className="text-accent font-normal italic">polarization</em>.
+      </>
+    ),
+    deck: 'Dipoles, image charges, susceptibility, para/diamagnetic contrast, and water polarization all ask how materials respond when a field tries to align internal charge or magnetic moments.',
+  },
+  {
+    number: '4.11',
+    slug: 'snell-fresnel',
+    chapter: 'ch4',
+    title: 'Refraction and Fresnel Boundaries',
+    formula: <Formula tex="n_1\sin\theta_1=n_2\sin\theta_2" />,
+    blurb: 'Boundary conditions bend rays and split reflected power.',
+    heroLabel: 'Chapter 18 · Lab 4.11 — Refraction and Fresnel Boundaries',
+    heroHeadline: (
+      <>
+        Interfaces bend waves by <em className="text-accent font-normal italic">matching phase</em>.
+      </>
+    ),
+    deck: 'Snell, Brewster, thin-film, lens, and dispersion demos are all boundary-condition stories. The lab gives the angle and index math a common home.',
+  },
+  {
+    number: '4.12',
+    slug: 'diffraction-interference',
+    chapter: 'ch4',
+    title: 'Diffraction and Interference',
+    formula: <Formula tex="d\sin\theta=m\lambda" />,
+    blurb: 'Path difference creates bright and dark directions.',
+    heroLabel: 'Chapter 18 · Lab 4.12 — Diffraction and Interference',
+    heroHeadline: (
+      <>
+        Geometry decides where waves <em className="text-accent font-normal italic">add</em>.
+      </>
+    ),
+    deck: 'Double slits, gratings, and laser cavities are coherent-wave bookkeeping: count path difference in wavelengths, then predict the angular pattern.',
+  },
+  {
+    number: '4.13',
+    slug: 'antenna-radiation',
+    chapter: 'ch4',
+    title: 'Antenna Radiation',
+    formula: <Formula tex="P_r=P_tG_tG_r\left(\dfrac{\lambda}{4\pi R}\right)^2" />,
+    blurb: 'Radiated power spreads with range while antennas redirect it.',
+    heroLabel: 'Chapter 19 · Lab 4.13 — Antenna Radiation',
+    heroHeadline: (
+      <>
+        Antennas shape how fields <em className="text-accent font-normal italic">leave space</em>.
+      </>
+    ),
+    deck: 'Dipoles, arrays, polarization loss, near/far transition, and link budgets are all one story: geometry sets the radiation pattern and range sets the received power.',
+  },
+  {
+    number: '4.14',
+    slug: 'fiber-link',
+    chapter: 'ch4',
+    title: 'Fiber Link Budget',
+    formula: <Formula tex="P_{rx,dBm}=P_{tx,dBm}-\alpha L+G-L_{margin}" />,
+    blurb: 'Optical power budget after attenuation, gain, and margin.',
+    heroLabel: 'Chapter 42 · Lab 4.14 — Fiber Link Budget',
+    heroHeadline: (
+      <>
+        Light in glass still obeys a <em className="text-accent font-normal italic">budget</em>.
+      </>
+    ),
+    deck: 'Fiber demos combine guiding, attenuation, amplification, and margin. This lab gives those visual demos a compact dB equation to work through.',
   },
 
   // ─── Appendix — Sandboxes ───
@@ -613,6 +973,14 @@ export const BASE_LAB_SOURCES: Record<string, SourceKey[]> = {
   resistance: ['ashcroft-mermin-1976', 'crc-resistivity', 'griffiths-2017', 'kanthal'],
   drift: ['drude-1900', 'ashcroft-mermin-1976', 'kittel-2005', 'libretexts-conduction'],
   joule: ['joule-1841', 'griffiths-2017', 'crc-resistivity', 'kanthal'],
+  'ac-impedance': [
+    'steinmetz-1893',
+    'irwin-circuit-analysis-2015',
+    'nilsson-riedel-2018',
+    'horowitz-hill-2015',
+    'kirchhoff-1845',
+    'codata-2018',
+  ],
   capacitance: ['griffiths-2017', 'jackson-1999', 'feynman-II-2', 'codata-2018'],
   inductance: ['griffiths-2017', 'feynman-II-17', 'jackson-1999', 'codata-2018'],
   'energy-density': ['poynting-1884', 'jackson-1999', 'griffiths-2017'],
@@ -622,6 +990,144 @@ export const BASE_LAB_SOURCES: Record<string, SourceKey[]> = {
     'davis-kaplan-2011',
     'morris-styer-2012',
     'jackson-1999',
+  ],
+  'em-waves': [
+    'maxwell-1865',
+    'hertz-1888',
+    'griffiths-2017',
+    'jackson-1999',
+    'feynman-II-18',
+    'feynman-II-21',
+    'poynting-1884',
+    'hecht-2017',
+    'balanis-2016',
+    'codata-2018',
+  ],
+  'maxwell-synthesis': [
+    'maxwell-1865',
+    'feynman-II-18',
+    'griffiths-2017',
+    'jackson-1999',
+    'gauss-1813',
+    'faraday-1832',
+    'ampere-1826',
+    'codata-2018',
+  ],
+  'relativistic-em': [
+    'einstein-1905',
+    'purcell-morin-2013',
+    'feynman-II-13',
+    'griffiths-2017',
+    'jackson-1999',
+    'codata-2018',
+  ],
+  'motor-torque-speed': [
+    'mohan-undeland-robbins-2003',
+    'sedra-smith-2014',
+    'griffiths-2017',
+    'codata-2018',
+  ],
+  'synchronous-machine': [
+    'kundur-1994-power-stability',
+    'grainger-power-systems-2003',
+    'faraday-1832',
+    'codata-2018',
+  ],
+  'network-analysis': [
+    'kirchhoff-1845',
+    'irwin-circuit-analysis-2015',
+    'nilsson-riedel-2018',
+    'horowitz-hill-2015',
+  ],
+  'pn-junction': [
+    'shockley-1949',
+    'sedra-smith-2014',
+    'horowitz-hill-2015',
+    'codata-2018',
+  ],
+  'transistor-iv': [
+    'shockley-1949',
+    'sedra-smith-2014',
+    'horowitz-hill-2015',
+  ],
+  'fourier-series': [
+    'bracewell-2000',
+    'horowitz-hill-2015',
+    'irwin-circuit-analysis-2015',
+  ],
+  'bode-filter': [
+    'horowitz-hill-2015',
+    'irwin-circuit-analysis-2015',
+    'nilsson-riedel-2018',
+  ],
+  'op-amp': [
+    'horowitz-hill-2015',
+    'sedra-smith-2014',
+    'irwin-circuit-analysis-2015',
+  ],
+  rectifier: [
+    'mohan-undeland-robbins-2003',
+    'fleming-1904',
+    'horowitz-hill-2015',
+  ],
+  'dc-dc-converter': [
+    'erickson-maksimovic-2020',
+    'mohan-undeland-robbins-2003',
+    'horowitz-hill-2015',
+  ],
+  'pwm-inverter': [
+    'mohan-undeland-robbins-2003',
+    'erickson-maksimovic-2020',
+    'sedra-smith-2014',
+  ],
+  'cell-emf': [
+    'volta-1800-pile',
+    'nernst-1889',
+    'daniell-1836',
+    'bard-faulkner-2001',
+  ],
+  'li-ion-cycling': [
+    'whittingham-1976',
+    'goodenough-1980-licoo2',
+    'yoshino-1985',
+    'larminie-dicks-2003-fuel-cells',
+  ],
+  transformer: [
+    'faraday-1832',
+    'stanley-1886',
+    'mclyman-2004',
+    'mohan-undeland-robbins-2003',
+  ],
+  'transmission-line': [
+    'pozar-2011',
+    'kraus-marhefka-2002',
+    'horowitz-hill-2015',
+  ],
+  'polarization-susceptibility': [
+    'griffiths-2017',
+    'jackson-1999',
+    'feynman-II-2',
+  ],
+  'snell-fresnel': [
+    'hecht-2017',
+    'fresnel-1823',
+    'feynman-II-21',
+  ],
+  'diffraction-interference': [
+    'young-1804',
+    'hecht-2017',
+    'bracewell-2000',
+  ],
+  'antenna-radiation': [
+    'friis-1946',
+    'pozar-2011',
+    'balanis-2016',
+    'kraus-marhefka-2002',
+  ],
+  'fiber-link': [
+    'agrawal-2010',
+    'hecht-2017',
+    'pozar-2011',
   ],
   'circuit-builder': [
     'kirchhoff-1845',

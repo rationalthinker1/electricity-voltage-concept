@@ -13,7 +13,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle 
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -156,15 +156,16 @@ export function EMWaveSpeedDemo({ figure }: Props) {
     [],
   );
 
-  const epsStr = eps.toExponential(2);
-  const muStr = mu.toExponential(2);
-  const cPredStr = cPredicted.toExponential(3);
+  const epsStr = sciTeX(eps);
+  const muStr = sciTeX(mu);
+  const cPredStr = sciTeX(cPredicted, 3);
 
   return (
     <Demo
       figure={figure}
       title="Wave speed from ε₀ and μ₀"
       question="What happens to the wave when you change the vacuum constants?"
+      deeperLab={{ slug: 'maxwell-synthesis', label: 'See full lab' }}
       caption={
         <>
           The propagation speed is <InlineMath>c = 1/√(μ₀ε₀)</InlineMath>. Drag the sliders to scale
