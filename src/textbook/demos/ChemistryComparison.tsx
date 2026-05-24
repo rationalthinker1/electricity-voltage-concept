@@ -176,6 +176,7 @@ export function ChemistryComparisonDemo({ figure }: Props) {
           commodity cells; specific vendor SKUs vary by tens of percent.
         </>
       }
+      deeperLab={{ slug: 'li-ion-cycling', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>

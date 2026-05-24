@@ -160,6 +160,7 @@ export function RMSOfComplexWaveDemo({ figure }: Props) {
           (2048 pts/cycle) matches the analytic value to within rounding error.
         </>
       }
+      deeperLab={{ slug: 'fourier-series', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>

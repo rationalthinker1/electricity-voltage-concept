@@ -170,6 +170,7 @@ export function DipoleInFieldDemo({ figure }: Props) {
           times the dipole moment per molecule.
         </>
       }
+      deeperLab={{ slug: 'polarization-susceptibility', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

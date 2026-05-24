@@ -172,6 +172,7 @@ export function SusceptibilityDemo({ figure }: Props) {
           feebly diamagnetic — note the small dip below zero.
         </>
       }
+      deeperLab={{ slug: 'polarization-susceptibility', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

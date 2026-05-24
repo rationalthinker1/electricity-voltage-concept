@@ -138,6 +138,7 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
           circular polarisation, which costs only a fixed 3 dB regardless of orientation.
         </>
       }
+      deeperLab={{ slug: 'antenna-radiation', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>

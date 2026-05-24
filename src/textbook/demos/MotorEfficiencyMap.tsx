@@ -250,6 +250,7 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
           operating point.
         </>
       }
+      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

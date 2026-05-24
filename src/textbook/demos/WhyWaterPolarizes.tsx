@@ -145,6 +145,7 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
           thermal jitter, less alignment). Even at boiling point water still has ε<sub>r</sub> ≈ 55.
         </>
       }
+      deeperLab={{ slug: 'polarization-susceptibility', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

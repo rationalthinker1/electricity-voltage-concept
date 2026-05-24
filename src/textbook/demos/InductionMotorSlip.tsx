@@ -198,6 +198,7 @@ export function InductionMotorSlipDemo({ figure }: Props) {
           field to produce torque. No connection to the rotor; no commutator. Tesla, 1888.
         </>
       }
+      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

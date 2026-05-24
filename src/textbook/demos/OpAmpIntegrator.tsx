@@ -159,6 +159,7 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
           every analog filter, every PID controller, and the first stage of a sigma-delta ADC.
         </>
       }
+      deeperLab={{ slug: 'op-amp', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>

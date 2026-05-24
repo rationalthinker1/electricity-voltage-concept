@@ -227,6 +227,7 @@ export function SallenKeyFilterDemo({ figure }: Props) {
           4th-order Butterworth.
         </>
       }
+      deeperLab={{ slug: 'bode-filter', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

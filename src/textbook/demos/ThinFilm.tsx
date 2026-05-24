@@ -144,6 +144,7 @@ export function ThinFilmDemo({ figure }: Props) {
           effect that gives soap films their swirling colours and oil slicks their rainbows.
         </>
       }
+      deeperLab={{ slug: 'snell-fresnel', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>

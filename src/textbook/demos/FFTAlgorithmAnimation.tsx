@@ -192,6 +192,7 @@ export function FFTAlgorithmAnimationDemo({ figure }: Props) {
           the speed-up is 340×. Without it, real-time spectral processing would not exist.
         </>
       }
+      deeperLab={{ slug: 'fourier-series', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

@@ -143,6 +143,7 @@ export function DoubleSlitDemo({ figure }: Props) {
           on the screen.
         </>
       }
+      deeperLab={{ slug: 'diffraction-interference', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

@@ -218,6 +218,7 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
           why the diode's forward voltage drifts ~−2 mV/K with heat.
         </>
       }
+      deeperLab={{ slug: 'pn-junction', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

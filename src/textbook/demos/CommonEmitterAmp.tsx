@@ -170,6 +170,7 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
           against the supply rails.
         </>
       }
+      deeperLab={{ slug: 'transistor-iv', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

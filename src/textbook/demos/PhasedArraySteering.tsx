@@ -163,6 +163,7 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
           introduces unwanted "grating lobes" on the other side of broadside.
         </>
       }
+      deeperLab={{ slug: 'antenna-radiation', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

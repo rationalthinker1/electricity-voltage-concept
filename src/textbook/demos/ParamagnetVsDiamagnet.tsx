@@ -219,6 +219,7 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
           electrons.
         </>
       }
+      deeperLab={{ slug: 'polarization-susceptibility', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

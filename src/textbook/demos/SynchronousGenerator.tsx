@@ -217,6 +217,7 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
           the planet, from 1 MW gas peakers to 1.3 GW nuclear units.
         </>
       }
+      deeperLab={{ slug: 'synchronous-machine', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

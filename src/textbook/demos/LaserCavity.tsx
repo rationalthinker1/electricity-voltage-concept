@@ -188,6 +188,7 @@ export function LaserCavityDemo({ figure }: Props) {
           transmitting; the small leakage out that side is the laser beam.
         </>
       }
+      deeperLab={{ slug: 'diffraction-interference', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>

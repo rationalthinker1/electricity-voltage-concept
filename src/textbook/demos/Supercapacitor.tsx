@@ -116,6 +116,7 @@ export function SupercapacitorDemo({ figure }: Props) {
           magnitude. Two complementary devices, not interchangeable.
         </>
       }
+      deeperLab={{ slug: 'li-ion-cycling', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={220} setup={setup} />
       <DemoControls>

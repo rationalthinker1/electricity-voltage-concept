@@ -145,6 +145,7 @@ export function OpAmpInvertingDemo({ figure }: Props) {
           either, the real op-amp saturates and the waveform flattens against the rail.
         </>
       }
+      deeperLab={{ slug: 'op-amp', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>

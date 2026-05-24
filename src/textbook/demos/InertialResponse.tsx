@@ -167,6 +167,7 @@ export function InertialResponseDemo({ figure }: Props) {
           the heart of the modern grid stability debate.
         </>
       }
+      deeperLab={{ slug: 'synchronous-machine', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

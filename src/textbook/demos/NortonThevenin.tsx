@@ -116,6 +116,7 @@ export function NortonTheveninDemo({ figure }: Props) {
           indistinguishable for any linear load.
         </>
       }
+      deeperLab={{ slug: 'network-analysis', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

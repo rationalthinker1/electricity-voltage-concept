@@ -154,6 +154,7 @@ export function FiberOpticDemo({ figure }: Props) {
           half-angle.
         </>
       }
+      deeperLab={{ slug: 'fiber-link', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={220} setup={setup} />
       <DemoControls>

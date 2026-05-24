@@ -158,6 +158,7 @@ export function FiberAttenuationDemo({ figure }: Props) {
           gain band of erbium-doped fiber amplifiers).
         </>
       }
+      deeperLab={{ slug: 'fiber-link', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>

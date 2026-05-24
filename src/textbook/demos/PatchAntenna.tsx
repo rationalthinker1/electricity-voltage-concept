@@ -147,6 +147,7 @@ export function PatchAntennaDemo({ figure }: Props) {
           this geometry — sized for 2.4, 1.5 and 0.9 GHz respectively.
         </>
       }
+      deeperLab={{ slug: 'antenna-radiation', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>

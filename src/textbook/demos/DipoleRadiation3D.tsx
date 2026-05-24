@@ -364,6 +364,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
           longer end-fire structure with a narrower main lobe.
         </>
       }
+      deeperLab={{ slug: 'antenna-radiation', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={360} setup={setup} ariaLabel="3D dipole radiation pattern" />
       <DemoControls>

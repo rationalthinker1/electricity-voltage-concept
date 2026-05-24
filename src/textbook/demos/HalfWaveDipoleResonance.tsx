@@ -140,6 +140,7 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
           which energy is sucked out of the circuit and into the far-field, not heat.
         </>
       }
+      deeperLab={{ slug: 'antenna-radiation', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

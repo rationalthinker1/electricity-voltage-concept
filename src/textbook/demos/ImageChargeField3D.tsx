@@ -364,6 +364,7 @@ export function ImageChargeField3DDemo({ figure }: Props) {
           its surface), and the total induced charge on the plane integrates to exactly −q.
         </>
       }
+      deeperLab={{ slug: 'polarization-susceptibility', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={360} setup={setup} />
       <DemoControls>

@@ -595,6 +595,7 @@ export function MOSFET3DDemo({ figure }: Props) {
           lateral (drain-to-source) components.
         </>
       }
+      deeperLab={{ slug: 'transistor-iv', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={360} setup={setup} />
       <DemoControls>

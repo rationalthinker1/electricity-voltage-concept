@@ -139,6 +139,7 @@ export function VoltaicPileDemo({ figure }: Props) {
           the experimenter a memorable shock.
         </>
       }
+      deeperLab={{ slug: 'cell-emf', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

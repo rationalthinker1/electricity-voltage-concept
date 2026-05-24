@@ -55,6 +55,7 @@ export function HalfCellPotentialsDemo({ figure }: Props) {
           built from those two half-reactions.
         </>
       }
+      deeperLab={{ slug: 'cell-emf', label: 'See full lab' }}
     >
       <div
         style={{

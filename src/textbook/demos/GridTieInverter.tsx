@@ -160,6 +160,7 @@ export function GridTieInverterDemo({ figure }: Props) {
           commanded to mix the two.
         </>
       }
+      deeperLab={{ slug: 'pwm-inverter', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>

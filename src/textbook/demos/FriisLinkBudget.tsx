@@ -122,6 +122,7 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
           margin, atmospheric loss, and antenna mismatch on top.
         </>
       }
+      deeperLab={{ slug: 'antenna-radiation', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={220} setup={setup} />
       <DemoControls>

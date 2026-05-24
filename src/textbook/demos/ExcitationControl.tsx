@@ -217,6 +217,7 @@ export function ExcitationControlDemo({ figure }: Props) {
           minimum sits at unity power factor.
         </>
       }
+      deeperLab={{ slug: 'synchronous-machine', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

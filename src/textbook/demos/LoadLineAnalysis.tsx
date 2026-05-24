@@ -158,6 +158,7 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
           load line.
         </>
       }
+      deeperLab={{ slug: 'transistor-iv', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

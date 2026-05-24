@@ -136,6 +136,7 @@ export function DiffractionGratingDemo({ figure }: Props) {
           is shown in the readout.
         </>
       }
+      deeperLab={{ slug: 'diffraction-interference', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

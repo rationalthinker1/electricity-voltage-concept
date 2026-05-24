@@ -167,6 +167,7 @@ export function DispersionDemo({ figure }: Props) {
           glass: <strong>A ≈ 1.50, B ≈ 0.004 µm²</strong>.
         </>
       }
+      deeperLab={{ slug: 'snell-fresnel', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

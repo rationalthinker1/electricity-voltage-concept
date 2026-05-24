@@ -128,6 +128,7 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
           the field becomes a true outgoing wave carrying Poynting flux to infinity.
         </>
       }
+      deeperLab={{ slug: 'antenna-radiation', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

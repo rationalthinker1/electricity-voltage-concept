@@ -169,6 +169,7 @@ export function THDAndDistortionDemo({ figure }: Props) {
           THD range; an audiophile power amp aims for under 0.01%.
         </>
       }
+      deeperLab={{ slug: 'fourier-series', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

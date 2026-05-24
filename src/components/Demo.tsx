@@ -208,7 +208,7 @@ export function EquationStrip({ leftLabel, left, rightLabel, right }: EquationSt
         {leftLabel && (
           <div className="font-3 text-1 text-text-muted tracking-3 mb-1 uppercase">{leftLabel}</div>
         )}
-        <div className="equation-strip-math ![&.formula-inline]:text-3 text-3 min-h-[3.75rem] overflow-hidden leading-5">
+        <div className="equation-strip-math [&_.formula-inline]:text-3 flex justify-center items-center text-3 min-h-[3.75rem] overflow-hidden leading-5">
           {left}
         </div>
       </div>
@@ -218,7 +218,7 @@ export function EquationStrip({ leftLabel, left, rightLabel, right }: EquationSt
             {rightLabel}
           </div>
         )}
-        <div className="equation-strip-math text-3 container min-h-[3.75rem] overflow-hidden leading-5">
+        <div className="equation-strip-math text-3 [&_.formula-inline]:text-3 flex justify-center items-center container min-h-[3.75rem] overflow-hidden leading-5">
           {right}
         </div>
       </div>

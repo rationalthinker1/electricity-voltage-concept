@@ -113,6 +113,7 @@ export function SnellsLawDemo({ figure }: Props) {
           <strong> sin θ_c = n₂/n₁</strong>, the boundary stops transmitting and the ray reflects.
         </>
       }
+      deeperLab={{ slug: 'snell-fresnel', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

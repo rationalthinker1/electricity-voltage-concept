@@ -186,6 +186,7 @@ export function InRushCurrentDemo({ figure }: Props) {
           upstream breakers have inverse-time curves rather than instantaneous trips.
         </>
       }
+      deeperLab={{ slug: 'transformer', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

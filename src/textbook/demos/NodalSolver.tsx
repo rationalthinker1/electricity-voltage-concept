@@ -139,6 +139,7 @@ export function NodalSolverDemo({ figure }: Props) {
           precision (residual below).
         </>
       }
+      deeperLab={{ slug: 'network-analysis', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

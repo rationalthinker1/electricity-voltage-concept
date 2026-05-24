@@ -230,6 +230,7 @@ export function PNJunctionFormationDemo({ figure }: Props) {
           .
         </>
       }
+      deeperLab={{ slug: 'pn-junction', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

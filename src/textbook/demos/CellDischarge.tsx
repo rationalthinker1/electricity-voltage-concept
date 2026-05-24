@@ -157,6 +157,7 @@ export function CellDischargeDemo({ figure }: Props) {
           voltage follows.
         </>
       }
+      deeperLab={{ slug: 'cell-emf', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={240} setup={setup} />
       <DemoControls>

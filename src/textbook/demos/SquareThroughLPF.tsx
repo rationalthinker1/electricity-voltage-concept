@@ -169,6 +169,7 @@ export function SquareThroughLPFDemo({ figure }: Props) {
           corners; drop below 1 and you see roughly a sine at the fundamental.
         </>
       }
+      deeperLab={{ slug: 'fourier-series', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={360} setup={setup} />
       <DemoControls>

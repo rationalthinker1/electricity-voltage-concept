@@ -226,6 +226,7 @@ export function FlybackConverterDemo({ figure }: Props) {
           charger above ~5 W.
         </>
       }
+      deeperLab={{ slug: 'dc-dc-converter', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

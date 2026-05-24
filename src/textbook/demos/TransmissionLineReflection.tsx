@@ -145,6 +145,7 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
           (1+|Γ|)/(1−|Γ|).
         </>
       }
+      deeperLab={{ slug: 'transmission-line', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>

@@ -98,6 +98,7 @@ export function YDeltaTransformDemo({ figure }: Props) {
           un-reducible by series/parallel alone — suddenly tractable.
         </>
       }
+      deeperLab={{ slug: 'network-analysis', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

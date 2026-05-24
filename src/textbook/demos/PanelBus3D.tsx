@@ -327,6 +327,7 @@ export function PanelBus3DDemo({ figure }: Props) {
           and ground are tied together.
         </>
       }
+      deeperLab={{ slug: 'house-wiring', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={420} setup={setup} />
       <DemoControls>

@@ -176,6 +176,7 @@ export function BuckConverterDemo({ figure }: Props) {
           routine in modern synchronous buck silicon.
         </>
       }
+      deeperLab={{ slug: 'dc-dc-converter', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

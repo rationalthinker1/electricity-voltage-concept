@@ -116,6 +116,7 @@ export function LeadAcidCellDemo({ figure }: Props) {
           amps for the brief job of cranking an engine.
         </>
       }
+      deeperLab={{ slug: 'li-ion-cycling', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>

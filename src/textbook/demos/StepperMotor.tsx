@@ -137,6 +137,7 @@ export function StepperMotorDemo({ figure }: Props) {
           printers, CNC tables, optical-rig stages, dome telescopes.
         </>
       }
+      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

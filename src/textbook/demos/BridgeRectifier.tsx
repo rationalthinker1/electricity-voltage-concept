@@ -201,7 +201,7 @@ export function BridgeRectifierDemo({ figure }: Props) {
           <sub>load</sub> / (2 f C): bigger C, smaller ripple.
         </>
       }
-      deeperLab={{ slug: 'rc-circuit', label: 'See RC transient lab' }}
+      deeperLab={{ slug: 'rectifier', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>

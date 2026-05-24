@@ -160,6 +160,7 @@ export function DaniellCellDemo({ figure }: Props) {
           <strong>≈ 1.10 V</strong> = E°(Cu) − E°(Zn) = +0.34 V − (−0.76 V).
         </>
       }
+      deeperLab={{ slug: 'cell-emf', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

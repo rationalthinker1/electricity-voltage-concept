@@ -126,6 +126,7 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
           off the relative intensity at any θ.
         </>
       }
+      deeperLab={{ slug: 'antenna-radiation', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

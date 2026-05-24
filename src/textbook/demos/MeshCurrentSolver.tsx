@@ -154,6 +154,7 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
           network the system is N×N — far smaller than the branch count.
         </>
       }
+      deeperLab={{ slug: 'network-analysis', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

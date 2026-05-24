@@ -218,6 +218,7 @@ export function FourierSpectrumDemo({ figure }: Props) {
           power supply.
         </>
       }
+      deeperLab={{ slug: 'fourier-series', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

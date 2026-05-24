@@ -236,6 +236,7 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
           resistance comparator ever invented.
         </>
       }
+      deeperLab={{ slug: 'network-analysis', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

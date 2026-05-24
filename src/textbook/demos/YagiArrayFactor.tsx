@@ -139,6 +139,7 @@ export function YagiArrayFactorDemo({ figure }: Props) {
           with each director added, at the cost of bandwidth.
         </>
       }
+      deeperLab={{ slug: 'antenna-radiation', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

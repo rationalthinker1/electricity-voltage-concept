@@ -181,6 +181,7 @@ export function MaxPowerTransferDemo({ figure }: Props) {
           recovers the same peak; an unmatched reactance pushes the operating point down the curve.
         </>
       }
+      deeperLab={{ slug: 'network-analysis', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

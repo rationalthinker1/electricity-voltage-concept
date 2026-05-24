@@ -617,6 +617,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
           the same screw, or the neutral routed through a switch — the offending wire turns red.
         </>
       }
+      deeperLab={{ slug: 'house-wiring', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={340} setup={setup} ariaLabel="Three-way switch wiring builder" />
       <DemoControls>

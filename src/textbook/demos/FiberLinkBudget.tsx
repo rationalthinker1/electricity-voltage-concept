@@ -135,6 +135,7 @@ export function FiberLinkBudgetDemo({ figure }: Props) {
           between EDFAs on a long-haul span.
         </>
       }
+      deeperLab={{ slug: 'fiber-link', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={240} setup={setup} />
       <DemoControls>

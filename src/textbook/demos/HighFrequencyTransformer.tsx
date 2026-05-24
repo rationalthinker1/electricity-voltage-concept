@@ -119,6 +119,7 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
           the core simply gets too big to carry.
         </>
       }
+      deeperLab={{ slug: 'transformer', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

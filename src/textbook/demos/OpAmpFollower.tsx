@@ -71,6 +71,7 @@ export function OpAmpFollowerDemo({ figure }: Props) {
           The follower has gain 1; its <em>point</em> is impedance translation.
         </>
       }
+      deeperLab={{ slug: 'op-amp', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

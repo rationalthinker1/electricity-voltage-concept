@@ -438,6 +438,7 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
           .
         </>
       }
+      deeperLab={{ slug: 'polarization-susceptibility', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={360} setup={setup} />
       <DemoControls>

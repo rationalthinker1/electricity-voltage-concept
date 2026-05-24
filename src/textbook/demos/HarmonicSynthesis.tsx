@@ -195,6 +195,7 @@ export function HarmonicSynthesisDemo({ figure }: Props) {
           {gibbsPct.toFixed(1)}% with N = {N}.
         </>
       }
+      deeperLab={{ slug: 'fourier-series', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>

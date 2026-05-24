@@ -185,6 +185,7 @@ export function LoadFollowingDemo({ figure }: Props) {
           synchronised, ready to pick up an unscheduled outage in seconds.
         </>
       }
+      deeperLab={{ slug: 'synchronous-machine', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

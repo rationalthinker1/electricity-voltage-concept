@@ -168,6 +168,7 @@ export function FuelCellDemo({ figure }: Props) {
           and drop with current as activation, ohmic, and mass-transport losses stack up.
         </>
       }
+      deeperLab={{ slug: 'li-ion-cycling', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={240} setup={setup} />
       <DemoControls>

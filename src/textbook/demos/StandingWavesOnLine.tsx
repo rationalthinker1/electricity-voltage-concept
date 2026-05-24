@@ -144,6 +144,7 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
           wavelength.
         </>
       }
+      deeperLab={{ slug: 'transmission-line', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>

@@ -229,6 +229,7 @@ export function LinearRegulatorDemo({ figure }: Props) {
           milliamps and lose to switchers above ~50% step-down ratios.
         </>
       }
+      deeperLab={{ slug: 'rectifier', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

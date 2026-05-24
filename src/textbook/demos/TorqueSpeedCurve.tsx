@@ -196,6 +196,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
           want.
         </>
       }
+      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

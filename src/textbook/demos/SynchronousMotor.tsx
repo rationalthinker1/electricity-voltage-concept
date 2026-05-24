@@ -177,6 +177,7 @@ export function SynchronousMotorDemo({ figure }: Props) {
           drives.
         </>
       }
+      deeperLab={{ slug: 'motor-torque-speed', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

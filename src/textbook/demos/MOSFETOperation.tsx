@@ -262,6 +262,7 @@ export function MOSFETOperationDemo({ figure }: Props) {
           I_D saturates at (k<sub>n</sub>/2)(V_GS − V_T)².
         </>
       }
+      deeperLab={{ slug: 'transistor-iv', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

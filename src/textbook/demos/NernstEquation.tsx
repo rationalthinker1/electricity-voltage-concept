@@ -119,6 +119,7 @@ export function NernstEquationDemo({ figure }: Props) {
           decade).
         </>
       }
+      deeperLab={{ slug: 'cell-emf', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={240} setup={setup} />
       <DemoControls>

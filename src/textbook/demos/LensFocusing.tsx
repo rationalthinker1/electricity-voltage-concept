@@ -253,6 +253,7 @@ export function LensFocusingDemo({ figure }: Props) {
           means inverted; |m| &gt; 1 means enlarged.
         </>
       }
+      deeperLab={{ slug: 'snell-fresnel', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

@@ -153,6 +153,7 @@ export function GridSyncDemo({ figure }: Props) {
           Hz, ~10°, ~5% and the indicator goes green.
         </>
       }
+      deeperLab={{ slug: 'synchronous-machine', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>

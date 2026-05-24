@@ -221,6 +221,7 @@ export function PWMInverterOutputDemo({ figure }: Props) {
           shrinks every passive in the output filter.
         </>
       }
+      deeperLab={{ slug: 'pwm-inverter', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>

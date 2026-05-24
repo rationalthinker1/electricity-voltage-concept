@@ -129,6 +129,7 @@ export function LiIonIntercalationDemo({ figure }: Props) {
           ~500–2000 cycles before significant fade.
         </>
       }
+      deeperLab={{ slug: 'li-ion-cycling', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>

@@ -173,6 +173,7 @@ export function SmithChartBasicsDemo({ figure }: Props) {
           single piece of cable.
         </>
       }
+      deeperLab={{ slug: 'transmission-line', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={340} setup={setup} />
       <DemoControls>
