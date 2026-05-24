@@ -357,7 +357,7 @@ export default function Ch23Transformers() {
       />
 
       <TryIt
-        tag='Try 23.5'
+        tag='Try 23.3'
         question={
           <>
             A step-up transformer raises <strong className="text-text font-medium">12 V</strong> to{' '}
@@ -448,7 +448,7 @@ export default function Ch23Transformers() {
       <StanleyDemo figure="Fig. 23.3" />
 
       <TryIt
-        tag='Try 23.3'
+        tag='Try 23.4'
         question={
           <>
             Deliver <strong className="text-text font-medium">1 MW</strong> over a{' '}
@@ -551,7 +551,7 @@ export default function Ch23Transformers() {
       </p>
 
       <TryIt
-        tag='Try 23.4'
+        tag='Try 23.5'
         question={
           <>
             An <strong className="text-text font-medium">8 Ω</strong> speaker is connected to a

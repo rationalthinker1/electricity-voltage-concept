@@ -497,7 +497,12 @@ Every chapter must include, in this order:
    chapter. See §13b.
 5. **Glossary terms via `<Term def="…">…</Term>`** — first mention of any
    technical term gets a dotted-underline + hover/tap popover with a
-   short definition. Aim for ~8–15 tagged terms per chapter. See §13b.
+   short definition. Aim for ~8–15 tagged terms per chapter; the
+   practical band is 6–30. Synthesis chapters (e.g. Ch.8 Poynting
+   capstone) legitimately have fewer; jargon-heavy chapters
+   (semiconductors, rectifiers, op-amps, the applied-track house
+   chapters Ch.27–40) routinely run 20–30 because every device name,
+   NEC §, and fixture type is a glossary candidate. See §13b.
 6. **`<CaseStudies>` block** — ≥2 `<CaseStudy>` cards with real-world
    examples and a `specs` sheet of 3–6 cited numbers.
 7. **`<FAQ>` block** — ≥12 `<FAQItem>` entries mixing beginner / sharper
@@ -1123,3 +1128,46 @@ the build uses and provides a uniform dry-run / write flag.
 For agents that fan out edits across the textbook: lead with the AST
 helper. If the helper isn't a fit, drop down to grep + Edit but flag
 that you considered the AST path.
+
+### Pre-flight audit: `npm run lint:chapters`
+
+`scripts/chapter-lint.mjs` is a deterministic mechanical pass that
+runs everything the audit agents used to do by hand:
+
+```
+npm run lint:chapters                       # whole textbook
+node scripts/chapter-lint.mjs --chapter 25  # one chapter (by integer or slug)
+node scripts/chapter-lint.mjs --quiet       # only HIGH-severity
+node scripts/chapter-lint.mjs --json        # machine-readable
+```
+
+Exits 1 if any HIGH finding fires; 0 otherwise. The nine checks:
+
+| Code | Severity | What it catches |
+|---|---|---|
+| H1 | HIGH | Chapter integer drift between filename, docblock, and `chapters.ts` |
+| H2 | HIGH | `<Cite id="X">` where X is not in `sources.ts` or not in `chapter.sources[]` (renders `[?]`) |
+| H3 | HIGH | `Fig`/`Try`/`Case N.x` tags out of source order (per the contiguity convention) |
+| H4 | HIGH | `Number.toExponential()` interpolated into a `` tex={`…`} `` template literal (use `sciTeX`) |
+| H5 | HIGH | `X.YY/Z.WW kV` voltage pair on a wye system that fails the `X/√3 ≈ Z` test |
+| M1 | MED | Demo file header `Demo N.M` doesn't match the chapter's current integer |
+| M2 | MED | Pullout count ≠ 1 (CLAUDE.md §6 #3) |
+| M3 | MED/LOW | Term count outside the 6–30 practical band (CLAUDE.md §6 #5) |
+| M4 | MED | Source key listed in `chapter.sources[]` but never `<Cite>`d |
+| M5 | MED | `Chapter N` / `Ch.N` reference to a non-existent chapter number |
+
+**Run this before invoking any audit agent.** It does not catch semantic
+issues — factual errors, broken physics, prose nits — those still need
+`chapter-reviewer` and its fact-check / pedagogy / prose subagents. But
+it does catch every mechanical issue cheaply, in milliseconds, with no
+LLM tokens spent.
+
+**When to skip it:** authoring brand-new chapter prose before the
+content has settled (tags will be churning by definition). Run it once
+the chapter is structurally stable.
+
+**Adding a new check:** add a function `check…(chapter)` to
+`scripts/chapter-lint.mjs` that pushes findings via `add(chapter, file,
+line, severity, code, message)`, and wire it into `lintOne()`. Keep
+the script regex-based and read-only — it's the cheap, deterministic
+counterpart to the LLM agents, not a codemod.

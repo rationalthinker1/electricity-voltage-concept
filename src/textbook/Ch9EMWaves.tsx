@@ -406,7 +406,7 @@ export default function Ch9EMWaves() {
       </p>
 
       <PolarizationDemo figure="Fig. 9.3" />
-      <PolarizationMalusLawDemo figure="Fig. 9.10" />
+      <PolarizationMalusLawDemo figure="Fig. 9.4" />
 
       <p className="mb-prose-3">
         Polarization is what 3D glasses, polarized sunglasses, and LCD displays manipulate. A
@@ -468,7 +468,7 @@ export default function Ch9EMWaves() {
         length.
       </p>
 
-      <OscillatingDipoleDemo figure="Fig. 9.4" />
+      <OscillatingDipoleDemo figure="Fig. 9.5" />
 
       <p className="mb-prose-3">
         This is what Hertz built and confirmed in 1887. A spark-gap oscillator drove a short antenna
@@ -512,7 +512,7 @@ export default function Ch9EMWaves() {
         was how its electromagnetic field behaves at the new wavelength.
       </p>
 
-      <WireToAntennaTransition3DDemo figure="Fig. 9.5" />
+      <WireToAntennaTransition3DDemo figure="Fig. 9.6" />
 
       <h2 className="chapter-h2">
         Energy and <em>momentum</em> in a wave
@@ -591,7 +591,7 @@ export default function Ch9EMWaves() {
         accelerate a solar sail to interplanetary speeds.
       </p>
 
-      <RadiationPressureDemo figure="Fig. 9.6" />
+      <RadiationPressureDemo figure="Fig. 9.7" />
 
       <TryIt
         tag="Try 9.4"
@@ -683,7 +683,7 @@ export default function Ch9EMWaves() {
         left is everything else.
       </p>
 
-      <EMSpectrumDemo figure="Fig. 9.7" />
+      <EMSpectrumDemo figure="Fig. 9.8" />
 
       <CaseStudies intro="Four real engineering systems, all running on solutions of the same wave equation. Different λ, different hardware, identical physics.">
         <CaseStudy

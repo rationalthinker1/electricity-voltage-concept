@@ -118,7 +118,7 @@ export default function Ch42FiberOptics() {
         forever.
       </p>
 
-      <FiberOpticDemo figure="Fig. 42.5" />
+      <FiberOpticDemo figure="Fig. 42.1" />
 
       <p className="mb-prose-3">
         Drag the angle slider in the demo. Below the critical angle, the ray zig-zags down the fiber

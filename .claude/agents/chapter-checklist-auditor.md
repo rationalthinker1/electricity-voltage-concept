@@ -13,6 +13,8 @@ You audit one Field·Theory chapter file for structural completeness against the
 
 Audit-only — `Grep`/`Bash` is the right tool for counting `<h2>`, `<Demo>`, `<TryIt>`, `<CaseStudy>`, `<FAQItem>`, and `<Term>` instances. If a finding is acted on (e.g. "add three more TryIts"), the orchestrator hands it to the user; no codemod helper is involved.
 
+**Run `npm run lint:chapters -- --chapter {N}` first.** That script (CLAUDE.md §15) catches M2 (Pullout count ≠ 1) and M3 (Term count outside 8–15) deterministically. Treat its findings as authoritative for those two items. Your job is the harder structural checks: opening hook quality, `<h2>` count and naming, presence of a `<Formula>` block in sections that introduce a quantity, distributed-vs-bunched `<TryIt>` placement, `<CaseStudy>` and `<FAQItem>` counts and quality, **applied-track exception** (Ch.27–40 don't need ≥1 demo per h2 per CLAUDE.md §6).
+
 ## The checklist (CLAUDE.md §6)
 
 A chapter must include, in this order:

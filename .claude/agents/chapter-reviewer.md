@@ -42,8 +42,15 @@ If the request is ambiguous (e.g. "review the magnetism chapter" matches multipl
 ## Workflow
 
 1. **Resolve the chapter** (slug → file path → confirm file exists).
-2. **Read `CLAUDE.md`** once. This grounds your aggregation and recommendations.
-3. **Launch all seven sub-agents in parallel in a single message.** Each sub-agent prompt must include:
+2. **Run the mechanical pre-flight first.** Before launching any sub-agent:
+   ```
+   node scripts/chapter-lint.mjs --chapter {N}
+   ```
+   That script (CLAUDE.md §15) deterministically catches everything mechanical: tag drift, broken cites, source-key misses, voltage-pair arithmetic, Pullout/Term counts, demo header drift, `toExponential` in TeX templates, stale chapter cross-references. It runs in milliseconds and costs nothing.
+
+   Capture its output verbatim and use it to seed the "Fact-check" / "Conventions / pitfalls" / "Structural gaps" buckets — most HIGH-severity items the sub-agents would otherwise flag are already there. The sub-agents then add only the semantic findings (factual errors, physics, prose) that the script can't detect.
+3. **Read `CLAUDE.md`** once. This grounds your aggregation and recommendations.
+4. **Launch all seven sub-agents in parallel in a single message.** Each sub-agent prompt must include:
    - The chapter slug.
    - The chapter file path.
    - A one-line scope statement so the sub-agent knows it is part of a larger review.
@@ -55,7 +62,7 @@ If the request is ambiguous (e.g. "review the magnetism chapter" matches multipl
 
    Send all seven `Agent` tool calls in a single response so they run concurrently. Do not run them sequentially — that's the whole point of the split.
 
-4. **Aggregate.** Concatenate the markdown sections under one chapter header:
+5. **Aggregate.** Concatenate the markdown sections under one chapter header:
 
    ```
    ## Chapter N — {title} ({src/textbook/Ch{N}…tsx})
@@ -63,7 +70,7 @@ If the request is ambiguous (e.g. "review the magnetism chapter" matches multipl
 
    Order the sections by severity (see below).
 
-5. **Sort by severity.** Anything that breaks the build or renders `[?]` in the live page goes to the top:
+6. **Sort by severity.** Anything that breaks the build or renders `[?]` in the live page goes to the top:
    1. Broken citations (`<Cite>` keys not in registry / not in chapter sources array) — from `chapter-fact-checker`.
    2. Factual errors with corrected values — from `chapter-fact-checker`.
    3. Code-pattern traps that break behaviour (`pretty()` in JSX, hand-rolled `useRef + useEffect + useCallback + rAF` instead of `useSimState` + `useSimLoop`, per-frame accumulators reset inside the draw closure) — from `chapter-codepat-auditor`.
@@ -75,7 +82,15 @@ If the request is ambiguous (e.g. "review the magnetism chapter" matches multipl
    9. Demo proposals — from `demo-ideator`.
    10. Spelling and prose nits — from `chapter-prose-auditor`.
 
-6. **Write the Recommendations paragraph.** 3–5 highest-payoff findings, grouped so the user can say "do bucket A" or "A and B" and the parent agent can act. Pick from across the sub-agent reports, not just one section. Each recommendation should name the specific findings it covers by line number.
+7. **Write the Recommendations paragraph.** 3–5 highest-payoff findings, grouped so the user can say "do bucket A" or "A and B" and the parent agent can act. Pick from across the sub-agent reports and the pre-flight script, not just one section. Each recommendation should name the specific findings it covers by line number.
+
+8. **Cross-chapter consistency for shared canonical numbers.** Script can't know these; check them yourself:
+     - Residential distribution feeder: `12.47/7.2 kV` (Ch.23 Case 23.1, Ch.27 — 12.47 line-to-line, 7.2 line-to-neutral, `12.47 / √3 = 7.20`). The H5 check catches arithmetic errors *within* a single pair; this check catches a chapter quoting a *different* canonical pair than the rest of the book uses.
+     - Split-phase service: `240 V` end-to-end, `±120 V` to neutral (Ch.27).
+     - 60 Hz mains (US); 50 Hz mains (EU).
+     - CODATA constants (electron mass, Planck, Boltzmann, ε₀, μ₀, c) via `codata-2018`.
+
+9. **Return the punch list AS THE TOOL RESULT.** Not a summary of what you did, not a list of memories saved — the actual prioritised findings with file:line citations and concrete fixes. The orchestrator (parent agent) acts on the tool result; if you return only a meta-summary, the parent has to re-invoke you to get the findings. Belt-and-suspenders: also `Write` the full punch list to `/tmp/ch{N}-review.md` so the user can recover it if the harness summarises your tool result.
 
 ## Output format
 

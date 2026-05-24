@@ -369,6 +369,14 @@ export const SOURCES: Record<string, Source> = {
     url: 'https://phet.colorado.edu/en/simulations/charges-and-fields',
     note: 'Open simulation for placing point charges and reading off E-vectors, equipotentials, and field lines. Used in the field-mapping lab.',
   },
+  'phet-generator': {
+    id: 'phet-generator',
+    title: 'PhET Interactive Simulation — Generator',
+    author: 'University of Colorado Boulder (PhET Interactive Simulations)',
+    year: 2024,
+    url: 'https://phet.colorado.edu/en/simulations/generator',
+    note: 'Open simulation of a rotating-magnet AC generator with adjustable coil turns, magnet strength, loop area, and rotation speed. Live voltmeter readout.',
+  },
   'osp-tracker': {
     id: 'osp-tracker',
     title: 'Tracker — Video Analysis and Modeling Tool',

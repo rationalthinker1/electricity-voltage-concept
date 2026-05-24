@@ -327,6 +327,33 @@ export const MANIFEST: LabManifestEntry[] = [
     ),
     deck: 'Alternators, excitation, grid sync, and inertia all lean on the same relation between internal EMF, terminal voltage, synchronous reactance, and rotor angle. This lab turns the grid demos into worked substitutions.',
   },
+  {
+    number: 'E2.1',
+    slug: 'faraday-generator',
+    chapter: 'ch2',
+    kind: 'experimental',
+    title: "Faraday's Law in a Rotating Coil",
+    blurb:
+      'Drive PhET\'s Generator sim through three controlled experiments. Compute theoretical peak EMF from ε = NBAω, record the sim\'s voltmeter, and verify each proportionality.',
+    heroLabel: "Chapter 2 · Lab E2.1 — Faraday's Law in a Rotating Coil",
+    heroHeadline: (
+      <>
+        Spin a magnet, <em className="text-accent font-normal italic">conjure a voltage</em>.
+      </>
+    ),
+    deck: "A guided three-stage experiment using PhET's free Generator simulation. Vary rotation speed, number of turns, and magnet strength in turn; compute the theoretical peak EMF from Faraday's law; then compare it to the sim's live voltmeter reading.",
+    runtime: '60–90 min',
+    difficulty: 'core',
+    equipment: ['Laptop or tablet', 'Spreadsheet (Sheets / Excel / Numbers)', 'Pencil and graph paper (optional)'],
+    software: [
+      {
+        name: 'PhET — Generator',
+        url: 'https://phet.colorado.edu/en/simulations/generator',
+        free: true,
+        note: 'Runs in any modern browser; no install required.',
+      },
+    ],
+  },
 
   // ─── Chapter 3 — Conduction ───
   {
@@ -969,6 +996,13 @@ export const BASE_LAB_SOURCES: Record<string, SourceKey[]> = {
   ampere: ['ampere-1826', 'maxwell-1865', 'feynman-II-13', 'griffiths-2017'],
   lorentz: ['feynman-II-13', 'griffiths-2017', 'hall-1879', 'codata-2018'],
   faraday: ['faraday-1832', 'feynman-II-17', 'griffiths-2017'],
+  'faraday-generator': [
+    'faraday-1832',
+    'feynman-II-17',
+    'griffiths-2017',
+    'libretexts-univ-physics',
+    'phet-generator',
+  ],
   'ohms-law': ['drude-1900', 'ashcroft-mermin-1976', 'crc-resistivity', 'libretexts-conduction'],
   resistance: ['ashcroft-mermin-1976', 'crc-resistivity', 'griffiths-2017', 'kanthal'],
   drift: ['drude-1900', 'ashcroft-mermin-1976', 'kittel-2005', 'libretexts-conduction'],

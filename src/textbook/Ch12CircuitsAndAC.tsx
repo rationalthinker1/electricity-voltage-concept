@@ -207,7 +207,7 @@ export default function Ch12CircuitsAndAC() {
       </p>
 
       <TryIt
-        tag="Try 12.7"
+        tag="Try 12.1"
         question={
           <>
             A 9 V battery drives a series chain with R<sub>1</sub> = 1 kΩ and R<sub>2</sub> = 2 kΩ.
@@ -295,7 +295,7 @@ export default function Ch12CircuitsAndAC() {
         the two probe tips.
       </p>
 
-      <MultimeterProbeDemo figure="Fig. 12.7" />
+      <MultimeterProbeDemo figure="Fig. 12.3" />
 
       <p className="mb-prose-3">
         Try V_DC with red on TP1 and black on GND: you get the 8.66 V drop across the bottom
@@ -374,7 +374,7 @@ export default function Ch12CircuitsAndAC() {
           correctIds: ['c'],
         }}
       >
-        <RCTransientDemo figure="Fig. 12.3" />
+        <RCTransientDemo figure="Fig. 12.4" />
       </PredictThenObserve>
 
       <p className="mb-prose-3">
@@ -387,7 +387,7 @@ export default function Ch12CircuitsAndAC() {
       </p>
 
       <TryIt
-        tag="Try 12.1"
+        tag="Try 12.2"
         question={
           <>
             What is the RMS voltage of a sinusoidal mains signal with peak{' '}
@@ -482,7 +482,7 @@ export default function Ch12CircuitsAndAC() {
           correctIds: ['b'],
         }}
       >
-        <LCOscillationDemo figure="Fig. 12.4" />
+        <LCOscillationDemo figure="Fig. 12.5" />
       </PredictThenObserve>
 
       <p className="mb-prose-3">
@@ -491,7 +491,7 @@ export default function Ch12CircuitsAndAC() {
       </p>
 
       <TryIt
-        tag="Try 12.2"
+        tag="Try 12.3"
         question={
           <>
             Find the resonant frequency f₀ of an LC tank with{' '}
@@ -610,11 +610,11 @@ export default function Ch12CircuitsAndAC() {
           correctIds: ['a'],
         }}
       >
-        <RLCResonanceDemo figure="Fig. 12.5" />
+        <RLCResonanceDemo figure="Fig. 12.6" />
       </PredictThenObserve>
 
       <TryIt
-        tag="Try 12.3"
+        tag="Try 12.4"
         question={
           <>
             For the series RLC with <InlineMath tex="R" /> = 1 Ω,{' '}
@@ -644,10 +644,6 @@ export default function Ch12CircuitsAndAC() {
         feeds it to the demodulator. Modern silicon-tuned receivers do the same thing in principle —
         they just synthesize the LC behavior digitally.
       </p>
-      <Pullout>
-        Every radio is a tunable RLC circuit waiting for the frequency it agrees with. So is every
-        quartz watch, every MRI coil, every cell tower.
-      </Pullout>
 
       <h2 className="chapter-h2">
         <em>Impedance</em> — AC's complex resistance
@@ -761,7 +757,7 @@ export default function Ch12CircuitsAndAC() {
         <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
       </p>
 
-      <ImpedanceDemo figure="Fig. 12.6" />
+      <ImpedanceDemo figure="Fig. 12.7" />
 
       <p className="mb-prose-3">
         Slide <InlineMath tex="\omega" />. At low frequencies, <InlineMath tex="1/(\omega C)" />{' '}
@@ -775,7 +771,7 @@ export default function Ch12CircuitsAndAC() {
       </p>
 
       <TryIt
-        tag="Try 12.4"
+        tag="Try 12.5"
         question={
           <>
             Compute the reactance of a <strong className="text-text font-medium">10 µF</strong>{' '}
@@ -953,7 +949,7 @@ export default function Ch12CircuitsAndAC() {
       </p>
 
       <TryIt
-        tag="Try 12.8"
+        tag="Try 12.6"
         question={
           <>
             An AC load draws <strong className="text-text font-medium">1 kW</strong> of real power
@@ -990,7 +986,7 @@ export default function Ch12CircuitsAndAC() {
       />
 
       <TryIt
-        tag="Try 12.5"
+        tag="Try 12.7"
         question={
           <>
             A factory draws <strong className="text-text font-medium">1000 VA</strong> at a power
@@ -1112,7 +1108,7 @@ export default function Ch12CircuitsAndAC() {
       </p>
 
       <TryIt
-        tag="Try 12.6"
+        tag="Try 12.8"
         question={
           <>
             A 9 V battery has an internal resistance of{' '}

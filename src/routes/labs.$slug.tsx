@@ -29,6 +29,7 @@ const LAB_MODULES: Record<string, ReturnType<typeof lazy>> = {
   'relativistic-em': lazy(() => import('@/labs/RelativisticEMLab')),
   'motor-torque-speed': lazy(() => import('@/labs/MotorTorqueSpeedLab')),
   'synchronous-machine': lazy(() => import('@/labs/SynchronousMachineLab')),
+  'faraday-generator': lazy(() => import('@/labs/FaradayGeneratorLab')),
   'network-analysis': lazy(() => import('@/labs/NetworkAnalysisLab')),
   'pn-junction': lazy(() => import('@/labs/PNJunctionLab')),
   'transistor-iv': lazy(() => import('@/labs/TransistorIVLab')),

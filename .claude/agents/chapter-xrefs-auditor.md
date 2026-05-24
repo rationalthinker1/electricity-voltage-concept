@@ -13,6 +13,8 @@ You audit one Field·Theory chapter file for stale chapter cross-references. You
 
 Audit-only — `Grep`/`Bash` is the right tool. If a finding is acted on, the orchestrator routes it to `chapter-tag-bumper`, which decides between `scripts/chapter-tag-bumper.mjs` (regex pass) and a fresh codemod via `scripts/lib/jsx-codemod.ts`.
 
+**Run `npm run lint:chapters -- --chapter {N}` first.** That script catches M5 (`Chapter N` references to non-existent integers, multi-line aware) deterministically. Its findings are authoritative for that category — start with them as your seed list and only add semantic findings the script can't reach (e.g. a `Ch.21` reference that resolves to a valid chapter integer but points at the wrong *topic* after a renumber).
+
 ## What you check
 
 The chapter map renumbers as new chapters slot in. **Slugs are stable; chapter numbers drift.** Any literal "Chapter N", "Ch.N", or "ChapterN" in prose may be pointing at a different chapter than it did when it was written.
@@ -54,6 +56,22 @@ If the file path is missing, resolve it from the slug by reading `src/textbook/d
 6. Also flag any reference whose target topic you can't confidently identify from the surrounding prose — it might be correct but you couldn't verify it. Mark these "unverified — caller should confirm topic." Forward-pointing unverifiables are worth flagging more aggressively than backward-pointing ones.
 
 Do not flag references inside code blocks, file paths, or strings that are clearly route slugs.
+
+## Multi-line forward-ref gotcha
+
+JSX prose often wraps the literal `Chapter` token onto a different line from the number, producing source patterns like:
+
+```jsx
+              … we'll get to lead-acid in Chapter
+              19
+```
+
+A single-line grep for `Chapter\s+\d+` misses these. Two fixes:
+
+1. Use `grep -nE` with the `-A1` flag, or `pcregrep -M` to span newlines: `pcregrep -nM 'Chapter\s+[0-9]+' <file>` (note the multi-line `\s` matches `\n`).
+2. Read the chapter file end-to-end at least once; the line-wrapped patterns visually pop out (`Chapter` at end of one line, bare integer on the next).
+
+Canonical example caught (Ch.25, 2026): `Ch25Batteries.tsx:225` had `we'll get to lead-acid in Chapter\n19` (forward-ref to lead-acid, which moved to Ch.26). The single-line grep missed it; a `pcregrep -M` or visual scan caught it.
 
 ## Output
 

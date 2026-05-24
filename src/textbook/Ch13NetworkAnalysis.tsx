@@ -173,7 +173,7 @@ export default function Ch13NetworkAnalysis() {
       </p>
 
       <TryIt
-        tag="Try 13.0"
+        tag="Try 13.1"
         question={
           <>
             A planar network has <strong className="text-text font-medium">N = 7 nodes</strong> and
@@ -285,7 +285,7 @@ export default function Ch13NetworkAnalysis() {
       </p>
 
       <TryIt
-        tag="Try 13.1"
+        tag="Try 13.2"
         question={
           <>
             For the two-mesh network with V₁ = 12 V, V₂ = 6 V, R₁ = 4 Ω, R₂ = 8 Ω, R₃ = 6 Ω, solve
@@ -390,7 +390,7 @@ export default function Ch13NetworkAnalysis() {
       </Pullout>
 
       <TryIt
-        tag="Try 13.2"
+        tag="Try 13.3"
         question={
           <>
             Use nodal analysis on a single-node network where V₁ = 10 V drives R₁ = 5 Ω into node A,
@@ -490,7 +490,7 @@ export default function Ch13NetworkAnalysis() {
       </p>
 
       <TryIt
-        tag="Try 13.3"
+        tag="Try 13.4"
         question={
           <>
             A linear network responds to a 10 V source alone with V<sub>out</sub> = 3 V, and to a 4
@@ -613,7 +613,7 @@ export default function Ch13NetworkAnalysis() {
         <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />.
       </p>
 
-      <NortonTheveninDemo figure="Fig. 13.5" />
+      <NortonTheveninDemo figure="Fig. 13.3" />
 
       <p className="mb-prose-3">
         The demo's three panels — original, Thévenin, Norton — drive an identical load and produce
@@ -623,7 +623,7 @@ export default function Ch13NetworkAnalysis() {
       </p>
 
       <TryIt
-        tag="Try 13.4"
+        tag="Try 13.5"
         question={
           <>
             A network has open-circuit voltage V<sub>oc</sub> = 8 V at its terminals and
@@ -664,7 +664,7 @@ export default function Ch13NetworkAnalysis() {
       />
 
       <TryIt
-        tag="Try 13.4b"
+        tag="Try 13.5b"
         question={
           <>
             A 24 V battery in series with 8 Ω feeds the same node as a 12 V battery in series with 4
@@ -717,7 +717,7 @@ export default function Ch13NetworkAnalysis() {
         branch sits on at least one loop that connects through every other branch.
       </p>
 
-      <WheatstoneBridgeDemo figure="Fig. 13.3" />
+      <WheatstoneBridgeDemo figure="Fig. 13.4" />
 
       <p className="mb-prose-3">
         Push R<sub>x</sub> through the balance point and the galvanometer needle crosses zero
@@ -808,7 +808,7 @@ export default function Ch13NetworkAnalysis() {
         demo below confirms the equivalence numerically.
       </p>
 
-      <YDeltaTransformDemo figure="Fig. 13.4" />
+      <YDeltaTransformDemo figure="Fig. 13.5" />
 
       <p className="mb-prose-3">
         Slide the Y resistors and the Δ resistors track in lockstep; the test impedance between any
@@ -832,7 +832,7 @@ export default function Ch13NetworkAnalysis() {
       </p>
 
       <TryIt
-        tag="Try 13.5"
+        tag="Try 13.6"
         question={
           <>
             A Δ network has R<sub>AB</sub> = 60 Ω, R<sub>BC</sub> = 30 Ω, R<sub>CA</sub> = 20 Ω.
@@ -1053,7 +1053,7 @@ export default function Ch13NetworkAnalysis() {
       </p>
 
       <TryIt
-        tag="Try 13.6"
+        tag="Try 13.7"
         question={
           <>
             A source has V<sub>Th</sub> = 12 V and R<sub>S</sub> = 4 Ω. Find the load resistance for

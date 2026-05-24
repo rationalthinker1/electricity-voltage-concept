@@ -167,7 +167,7 @@ export default function Ch2VoltageAndCurrent() {
         same energy a negative charge of equal magnitude releases falling the other way.
       </p>
 
-      <VoltageDrivesFlowDemo figure="Fig. 2.5" />
+      <VoltageDrivesFlowDemo figure="Fig. 2.3" />
 
       <p className="mb-prose-3">
         That operational picture has a knob the reader can already turn. Hook a battery of voltage{' '}
@@ -435,13 +435,13 @@ export default function Ch2VoltageAndCurrent() {
       <p className="mb-prose-3">
         where{' '}
         <InlineMath tex="v_d" />{' '}
-        is the average drift speed of the carriers (in m/s),
+        is the average drift speed of the carriers (in m/s),{' '}
         <InlineMath tex="I" /> is the current (in amperes),{' '}
         <InlineMath tex="n" /> is the free-carrier number density (in
         carriers per m³;{' '}
         <InlineMath tex="\approx 8.5\times 10^{28}\ /\text{m}^3" /> for copper{' '}
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />
-        ),
+        ),{' '}
         <InlineMath tex="q" /> is the charge per carrier (in
         coulombs; for electrons, the elementary charge{' '}
         <InlineMath tex="e \approx 1.602\times 10^{-19}\ \text{C}" />
@@ -480,7 +480,7 @@ export default function Ch2VoltageAndCurrent() {
           correctIds: ['d'],
         }}
       >
-        <DriftVelocityDemo figure="Fig. 2.3" />
+        <DriftVelocityDemo figure="Fig. 2.4" />
       </PredictThenObserve>
 
       <p className="mb-prose-3">
@@ -500,7 +500,7 @@ export default function Ch2VoltageAndCurrent() {
         rearranging — is what the next demo lets you watch.
       </p>
 
-      <CursorEFieldOnWireDemo figure="Fig. 2.4" />
+      <CursorEFieldOnWireDemo figure="Fig. 2.5" />
 
       <TryIt
         tag="Try 2.3"

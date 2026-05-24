@@ -162,7 +162,7 @@ export default function Ch16FiltersOpAmpsTLines() {
         dropped by exactly half.
       </p>
 
-      <RCFilterBodeDemo figure="Fig. 16.7" />
+      <RCFilterBodeDemo figure="Fig. 16.1" />
 
       <p className="mb-prose-3">
         Swap R and C and you get the mirror filter: a high-pass with{' '}
@@ -193,7 +193,7 @@ export default function Ch16FiltersOpAmpsTLines() {
         receivers, FM-radio IF strips, EEG bandpass front-ends — all sit on this transfer function.
       </p>
 
-      <RLCBandpassDemo figure="Fig. 16.8" />
+      <RLCBandpassDemo figure="Fig. 16.2" />
 
       <p className="mb-prose-3">
         A working filter designer faces a concrete problem: pick R, L, C (or equivalently the
@@ -257,7 +257,7 @@ export default function Ch16FiltersOpAmpsTLines() {
         <Cite id="oppenheim-willsky-1997" in={SOURCES} />.
       </p>
 
-      <SallenKeyFilterDemo figure="Fig. 16.1" />
+      <SallenKeyFilterDemo figure="Fig. 16.4" />
 
       <p className="mb-prose-3">
         K = 1 (R<sub>f</sub> = 0, a unity-gain follower) gives Q = 1/2, almost a Butterworth single
@@ -402,7 +402,7 @@ export default function Ch16FiltersOpAmpsTLines() {
         follow from the same two rules.
       </p>
 
-      <OpAmpInvertingDemo figure="Fig. 16.9" />
+      <OpAmpInvertingDemo figure="Fig. 16.5" />
 
       <p className="mb-prose-3">
         Push V<sub>in</sub> past the limit where R<sub>f</sub>/R<sub>in</sub> would demand more than
@@ -442,7 +442,7 @@ export default function Ch16FiltersOpAmpsTLines() {
         <Cite id="sedra-smith-2014" in={SOURCES} />.
       </p>
 
-      <OpAmpIntegratorDemo figure="Fig. 16.10" />
+      <OpAmpIntegratorDemo figure="Fig. 16.6" />
 
       <p className="mb-prose-3">
         The single most undersold topology, though, is the one with no gain at all: the
@@ -455,7 +455,7 @@ export default function Ch16FiltersOpAmpsTLines() {
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <OpAmpFollowerDemo figure="Fig. 16.2" />
+      <OpAmpFollowerDemo figure="Fig. 16.7" />
 
       <p className="mb-prose-3">
         Every well-designed measurement front-end has a follower (or its differential-input sibling,
@@ -595,7 +595,7 @@ export default function Ch16FiltersOpAmpsTLines() {
         <Cite id="pozar-2011" in={SOURCES} />.
       </p>
 
-      <TransmissionLineReflectionDemo figure="Fig. 16.11" />
+      <TransmissionLineReflectionDemo figure="Fig. 16.8" />
 
       <p className="mb-prose-3">
         When the source drives the line continuously instead of with a single pulse, the incident
@@ -636,7 +636,7 @@ export default function Ch16FiltersOpAmpsTLines() {
         transmitter that wasn't designed to absorb its own reflected power.
       </p>
 
-      <StandingWavesOnLineDemo figure="Fig. 16.12" />
+      <StandingWavesOnLineDemo figure="Fig. 16.9" />
 
       <h3 className="chapter-h3">The Smith chart</h3>
 
@@ -651,7 +651,7 @@ export default function Ch16FiltersOpAmpsTLines() {
         matched load (Γ = 0, VSWR = 1); the rim is total reflection.
       </p>
 
-      <SmithChartBasicsDemo figure="Fig. 16.4" />
+      <SmithChartBasicsDemo figure="Fig. 16.10" />
 
       <p className="mb-prose-3">
         The Smith chart's killer feature is that moving along the line corresponds to rotating

@@ -3,6 +3,6 @@
 - [Run environment may lack Agent tool](feedback_no_agent_tool_fallback.md) — when sub-agent fanout isn't possible, run the seven scopes sequentially under one orchestrator and say so up front
 - [Stale chapter-xref line-wrap blind spot](feedback_stale_chapter_xref_linewrap.md) — grep for "Chapter\s+\d+" misses when digits wrap to the next source line
 - [Fig./Try./Case. ordering walks source order, not integer](feedback_fig_ordering_walk_source.md) — Ch.25 had Fig 25.1, 25.2, 25.5, 25.3, 25.4 with correct count and wrong order
-- [TeX double-backslash trap](feedback_tex_double_backslash_trap.md) — `tex="\\dfrac"` in JSX attributes breaks KaTeX; convention is single `\`
+- [TeX backslash conventions](feedback_tex_double_backslash_trap.md) — both `\` and `\\` work in JSX tex="…"; real trap is JS escapes like `\t` / `\n` / `\u`
 - [Compute the voltage arithmetic in prose](feedback_internal_voltage_arithmetic_check.md) — when chapter states "X / √3 = Y" plug the numbers in
 - [Bard & Faulkner over-cite trap](feedback_bardfaulkner_overcite.md) — B&F is methods, not product specs; the catch-all cite weakens claims it can't back

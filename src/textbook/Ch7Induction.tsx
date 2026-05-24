@@ -251,7 +251,7 @@ export default function Ch7Induction() {
 
       <LenzsLawDemo figure="Fig. 7.2" />
 
-      <EddyCurrentTubeDemo figure="Fig. 7.7" />
+      <EddyCurrentTubeDemo figure="Fig. 7.3" />
 
       <Pullout>
         Magnetism never <em className="text-text italic">moves</em>; only the flux does. Move the
@@ -301,7 +301,7 @@ export default function Ch7Induction() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <RotatingCoilDemo figure="Fig. 7.8" />
+      <RotatingCoilDemo figure="Fig. 7.4" />
 
       <p className="mb-prose-3">
         The oscilloscope above tells you <em className="text-text italic">what</em> comes out the
@@ -324,7 +324,7 @@ export default function Ch7Induction() {
         <Cite id="feynman-II-17" in={SOURCES} />.
       </p>
 
-      <RotatingCoilFlux3DDemo figure="Fig. 7.9" />
+      <RotatingCoilFlux3DDemo figure="Fig. 7.5" />
 
       <TryIt
         tag="Try 7.2"
@@ -406,7 +406,7 @@ export default function Ch7Induction() {
         core and copper losses.
       </p>
 
-      <TransformerDemo figure="Fig. 7.10" />
+      <TransformerDemo figure="Fig. 7.6" />
 
       <TryIt
         tag="Try 7.3"

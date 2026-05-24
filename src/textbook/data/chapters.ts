@@ -115,7 +115,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'coulomb-1785',
       'cavendish-1773',
       'williams-faller-hill-1971',
-      'gauss-1813',
       'griffiths-2017',
       'feynman-II-2',
       'codata-2018',
@@ -255,6 +254,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'griffiths-2017',
       'jackson-1999',
       'feynman-II-2',
+      'feynman-II-27',
       'horowitz-hill-2015',
       'codata-2018',
     ],
@@ -465,6 +465,8 @@ export const CHAPTERS: ChapterEntry[] = [
       'kaplan-hegarty-2017',
       'schwinger-1949',
       'bruning-lhc-2004',
+      'williams-faller-hill-1971',
+      'codata-2018',
     ],
     punchline:
       'E and B are not two fields but one tensor — what looks magnetic in one frame is the electric force on length-contracted charge in another.',
@@ -493,7 +495,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'irwin-circuit-analysis-2015',
       'grainger-power-systems-2003',
       'horowitz-hill-2015',
-      'codata-2018',
       'ansi-c84-1-2020',
       'erickson-maksimovic-2020',
       'keysight-34465a-datasheet',
@@ -527,8 +528,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'irwin-circuit-analysis-2015',
       'horowitz-hill-2015',
       'hayt-kemmerly-durbin-2018',
-      'griffiths-2017',
-      'codata-2018',
     ],
     punchline:
       'Any linear network reduces to a small system of linear equations — mesh, nodal, Thévenin, Norton, Y-Δ, and max-power are the standard tools for writing them.',
@@ -590,8 +589,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'bracewell-2000',
       'cooley-tukey-1965',
       'horowitz-hill-2015',
-      'griffiths-2017',
-      'codata-2018',
       'grainger-power-systems-2003',
     ],
     punchline:
@@ -622,8 +619,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'widlar-1965',
       'pozar-2011',
       'johnson-graham-1993',
-      'griffiths-2017',
-      'codata-2018',
     ],
     punchline:
       'Transfer functions compress filters to two straight lines, op-amps with feedback turn gain into a resistor ratio, and transmission lines kick in the moment a wire is no longer a single node.',
@@ -682,10 +677,8 @@ export const CHAPTERS: ChapterEntry[] = [
     relatedLabs: ['poynting', 'energy-density'],
     sources: [
       'maxwell-1865',
-      'feynman-II-21',
       'griffiths-2017',
       'jackson-1999',
-      'codata-2018',
       'hecht-2017',
       'born-wolf-1999',
       'young-1804',
@@ -724,7 +717,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'friis-1946',
       'yagi-1928',
       'kraus-marhefka-2002',
-      'codata-2018',
     ],
     punchline:
       'An antenna is a length of wire whose current pattern radiates a known field — pick the geometry to pick the beam.',
@@ -750,12 +742,10 @@ export const CHAPTERS: ChapterEntry[] = [
     sources: [
       'feynman-II-13',
       'griffiths-2017',
-      'jackson-1999',
       'tesla-1888',
       'fitzgerald-kingsley-umans-2014',
       'krishnan-2010-bldc',
       'grainger-power-systems-2003',
-      'codata-2018',
     ],
     punchline:
       'The Lorentz force on a current-carrying coil in a B-field is a torque — commutation is the engineering art of keeping that torque pushing the same way as the coil rotates.',
@@ -785,7 +775,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'grainger-power-systems-2003',
       'fitzgerald-kingsley-umans-2014',
       'kundur-1994-power-stability',
-      'codata-2018',
     ],
     punchline:
       'Run a motor backwards and you have a generator — three of them on one shaft gives 3-phase, and tens of thousands of them in lockstep give the continental grid.',
@@ -821,7 +810,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'horowitz-hill-2015',
       'wpc-qi-1.3',
       'lucia-induction-2014',
-      'codata-2018',
     ],
     punchline:
       'Two coils sharing flux are described by mutual inductance M and coupling coefficient k — the dot convention keeps signs honest, and reflected impedance handles everything else.',
@@ -853,7 +841,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'fitzgerald-kingsley-umans-2014',
       'grainger-power-systems-2003',
       'steinmetz-1893',
-      'codata-2018',
       'kundur-1994-power-stability',
       'erickson-maksimovic-2020',
       'horowitz-hill-2015',
@@ -948,8 +935,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'larminie-dicks-2003-fuel-cells',
       'bard-faulkner-2001',
       'linden-reddy-2011',
-      'griffiths-2017',
-      'codata-2018',
     ],
     punchline:
       'From lead-acid through Li-ion to solid-state, flow, and fuel cells, the chemistry varies but every cell still trades electron energy across two half-reactions.',
@@ -980,7 +965,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'nec-2023',
       'ieee-std-3001-2-2017',
       'grainger-power-systems-2003',
-      'codata-2018',
     ],
     punchline:
       'The three-phase grid steps down through one final transformer on a pole or pad into a 240 V split-phase service that lands at your meter base — that is the first piece of electricity you actually own.',
@@ -1144,7 +1128,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'ansi-c12-1-2014',
       'ansi-c12-20-2015',
       'ieee-1547-2018',
-      'codata-2018',
       'grainger-power-systems-2003',
     ],
     punchline:
@@ -1286,7 +1269,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'nec-2023',
       'lutron-dimmer-app-note',
       'ul-498',
-      'nema-wd-6',
       'horowitz-hill-2015',
       'codata-2018',
     ],
@@ -1338,7 +1320,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'ul-1449',
       'ieee-c62-41',
       'nfpa-70e-2024',
-      'iec-60479-2018',
       'codata-2018',
     ],
     punchline:
@@ -1409,7 +1390,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'hecht-2017',
       'born-wolf-1999',
       'desurvire-1987',
-      'codata-2018',
     ],
     punchline:
       'A telecom fiber is a transparent rod whose only job is to keep light bouncing inside it — and the entire global internet rides on getting the bouncing angle right to within a tenth of a degree.',

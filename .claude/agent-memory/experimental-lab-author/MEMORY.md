@@ -2,5 +2,6 @@
 - [JSX-key trap inside DataTable rows](feedback_jsx_key_trap.md) — any JSX element placed in a row array needs an explicit `key`, or eslint blocks the pre-commit hook
 - [Worked-example-rows pattern](feedback_worked_example_rows.md) — pre-fill the first 1–2 rows with real values, mark the rest `"__"`; confirmed effective in E1.1 and E1.2
 - [Ch.1 experimental lab inventory](project_ch1_lab_inventory.md) — E1.1 coulomb-phet (software, PhET), E1.2 faraday-cage (hands-on); 5 more ideated and not yet built
+- [Ch.2 experimental lab inventory](project_ch2_lab_inventory.md) — E2.1 faraday-generator (software, PhET Generator); complements the six ch2 equation labs
 - [TopNav appendix-label quirk](project_topnav_appendix_label.md) — TopNav.tsx hardcodes "Lab N · appendix" for every /labs/* — pre-existing, misleading for experimental labs, candidate for a small follow-up edit
 - [External tools known to work](reference_external_tools.md) — PhET, Tracker (Open Source Physics), Falstad, GeoGebra, ITU-R P.2040, Network Cell Info Lite, iOS Field Test Mode

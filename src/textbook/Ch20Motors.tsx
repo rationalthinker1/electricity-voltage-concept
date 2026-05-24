@@ -206,7 +206,7 @@ export default function Ch20Motors() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <BackEMFInRunningMotorDemo figure="Fig. 20.7" />
+      <BackEMFInRunningMotorDemo figure="Fig. 20.2" />
 
       <TryIt
         tag="Try 20.2"
@@ -278,7 +278,7 @@ export default function Ch20Motors() {
         <Cite id="krishnan-2010-bldc" in={SOURCES} />.
       </p>
 
-      <BLDCCommutationDemo figure="Fig. 20.2" />
+      <BLDCCommutationDemo figure="Fig. 20.3" />
 
       <p className="mb-prose-3">
         The full-fat version is called the{' '}
@@ -309,7 +309,7 @@ export default function Ch20Motors() {
         <Cite id="krishnan-2010-bldc" in={SOURCES} />.
       </p>
 
-      <FieldOrientedControlDemo figure="Fig. 20.8" />
+      <FieldOrientedControlDemo figure="Fig. 20.4" />
 
       <TryIt
         tag="Try 20.3"
@@ -392,7 +392,7 @@ export default function Ch20Motors() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <RotatingMagField3DDemo figure="Fig. 20.3" />
+      <RotatingMagField3DDemo figure="Fig. 20.5" />
 
       <p className="mb-prose-3">
         It is worth pausing on the algebraic miracle that makes the three-phase trick work. Each
@@ -410,7 +410,7 @@ export default function Ch20Motors() {
         <Cite id="tesla-1888" in={SOURCES} />.
       </p>
 
-      <InductionMotorSlipDemo figure="Fig. 20.4" />
+      <InductionMotorSlipDemo figure="Fig. 20.6" />
 
       <p className="mb-prose-3">
         Here is the subtle point. If the rotor ever caught up exactly to synchronous speed, the
@@ -506,7 +506,7 @@ export default function Ch20Motors() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <SynchronousMotorDemo figure="Fig. 20.5" />
+      <SynchronousMotorDemo figure="Fig. 20.7" />
 
       <p className="mb-prose-3">
         Synchronous motors are where you need precise speed: the spindle in a hard drive, the
@@ -536,7 +536,7 @@ export default function Ch20Motors() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <StepperMotorDemo figure="Fig. 20.6" />
+      <StepperMotorDemo figure="Fig. 20.8" />
 
       <h2 className="chapter-h2">Torque, speed, and matching to a load</h2>
 
@@ -595,7 +595,7 @@ export default function Ch20Motors() {
       </p>
 
       <TryIt
-        tag="Try 20.7"
+        tag="Try 20.5"
         question={
           <>
             A brushed DC motor has stall torque{' '}

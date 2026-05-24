@@ -14,9 +14,9 @@
 import { fmtSIPrecision } from '@/lib/formatters';
 import type { PlacedComponent } from './types';
 
-export const GRID_PX = 20;
+export const GRID_PX = 40;
 /** Half-thickness of the "body" of a component perpendicular to its axis. */
-const BODY_HALF = 10;
+const BODY_HALF = 20;
 
 import type { ThemeColors } from '@/lib/canvasTheme';
 export type { ThemeColors };

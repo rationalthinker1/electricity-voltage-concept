@@ -248,7 +248,7 @@ export default function Ch18Optics() {
         designer does.
       </p>
 
-      <LensFocusingDemo figure="Fig. 18.8" />
+      <LensFocusingDemo figure="Fig. 18.3" />
 
       <TryIt
         tag="Try 18.1b"
@@ -313,7 +313,7 @@ export default function Ch18Optics() {
         earlier.
       </p>
 
-      <DispersionDemo figure="Fig. 18.3" />
+      <DispersionDemo figure="Fig. 18.4" />
 
       <p className="mb-prose-3">
         The microscopic reason n depends on frequency is straightforward classical mechanics: an
@@ -406,7 +406,7 @@ export default function Ch18Optics() {
         <Cite id="brewster-1815" in={SOURCES} />.
       </p>
 
-      <BrewsterAngleDemo figure="Fig. 18.4" />
+      <BrewsterAngleDemo figure="Fig. 18.5" />
 
       <p className="mb-prose-3">
         At Brewster's angle the reflected ray is completely <InlineMath tex="s" />-polarised: an unpolarised beam (sun, light bulb, sky) splits into a fully-polarised
@@ -436,7 +436,7 @@ export default function Ch18Optics() {
         <Cite id="hecht-2017" in={SOURCES} />.
       </p>
 
-      <PolarizationMalusLawDemo figure="Fig. 18.10" />
+      <PolarizationMalusLawDemo figure="Fig. 18.6" />
 
       <TryIt
         tag="Try 18.3"
@@ -494,7 +494,7 @@ export default function Ch18Optics() {
         were the strongest early evidence that light had a wave nature.
       </p>
 
-      <ThinFilmDemo figure="Fig. 18.5" />
+      <ThinFilmDemo figure="Fig. 18.7" />
 
       <p className="mb-prose-3">
         The other consequence of Snell's law worth pulling out:{' '}
@@ -519,7 +519,7 @@ export default function Ch18Optics() {
         <Cite id="hecht-2017" in={SOURCES} />.
       </p>
 
-      <FiberOpticDemo figure="Fig. 18.6" />
+      <FiberOpticDemo figure="Fig. 18.8" />
 
       <TryIt
         tag="Try 18.4"
@@ -594,7 +594,7 @@ export default function Ch18Optics() {
         <Cite id="born-wolf-1999" in={SOURCES} />.
       </p>
 
-      <DoubleSlitDemo figure="Fig. 18.7" />
+      <DoubleSlitDemo figure="Fig. 18.9" />
 
       <TryIt
         tag="Try 18.5"
@@ -637,7 +637,7 @@ export default function Ch18Optics() {
         <Cite id="born-wolf-1999" in={SOURCES} />.
       </p>
 
-      <DiffractionGratingDemo figure="Fig. 18.9" />
+      <DiffractionGratingDemo figure="Fig. 18.10" />
 
       <TryIt
         tag="Try 18.5b"

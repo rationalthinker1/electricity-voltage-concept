@@ -313,7 +313,7 @@ export default function Ch1WhatIsElectricity() {
           correctIds: ['c'],
         }}
       >
-        <InverseSquareDemo figure="Fig. 1.3" />
+        <InverseSquareDemo figure="Fig. 1.2" />
       </PredictThenObserve>
 
       <TryIt
@@ -421,7 +421,7 @@ export default function Ch1WhatIsElectricity() {
         <Cite id="feynman-II-2" in={SOURCES} />.
       </p>
 
-      <FieldArrowsDemo figure="Fig. 1.2" />
+      <FieldArrowsDemo figure="Fig. 1.3" />
 
       <PointCharge3DDemo figure="Fig. 1.4" />
 

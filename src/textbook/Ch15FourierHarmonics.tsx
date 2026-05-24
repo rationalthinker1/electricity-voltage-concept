@@ -448,7 +448,7 @@ export default function Ch15FourierHarmonics() {
         1 V, not 0.707 V. The extra 41% comes from the harmonic ladder above the fundamental.
       </p>
 
-      <RMSOfComplexWaveDemo figure="Fig. 15.5" />
+      <RMSOfComplexWaveDemo figure="Fig. 15.3" />
 
       <p className="mb-prose-3">
         Two more shape descriptors come up in power engineering. The{' '}
@@ -520,7 +520,7 @@ export default function Ch15FourierHarmonics() {
         slewed, droop-shaped wave whose corners take roughly RC seconds to settle.
       </p>
 
-      <SquareThroughLPFDemo figure="Fig. 15.3" />
+      <SquareThroughLPFDemo figure="Fig. 15.4" />
 
       <p className="mb-prose-3">
         A square wave is just a list of sine waves with the right amplitudes. The low-pass filter
@@ -590,7 +590,7 @@ export default function Ch15FourierHarmonics() {
         harder — a positive-feedback loop that bothers utilities everywhere.
       </p>
 
-      <THDAndDistortionDemo figure="Fig. 15.4" />
+      <THDAndDistortionDemo figure="Fig. 15.5" />
 
       <p className="mb-prose-3">
         The shorthand for the problem is{' '}

@@ -234,7 +234,7 @@ export default function Ch17Materials() {
         <Cite id="clausius-1850" in={SOURCES} />.
       </p>
 
-      <DipoleAlignment3DDemo figure="Fig. 17.3" />
+      <DipoleAlignment3DDemo figure="Fig. 17.2" />
 
       <p className="mb-prose-3">
         Drag the block to rotate it. At{' '}
@@ -262,7 +262,7 @@ export default function Ch17Materials() {
         capacitor and watch what changes.
       </p>
 
-      <DielectricBetweenPlatesDemo figure="Fig. 17.2" />
+      <DielectricBetweenPlatesDemo figure="Fig. 17.3" />
 
       <p className="mb-prose-3">
         Two things happen at once. The bound charge that appears on the dielectric's faces partially
@@ -432,7 +432,7 @@ export default function Ch17Materials() {
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <ImageChargeField3DDemo figure="Fig. 17.7" />
+      <ImageChargeField3DDemo figure="Fig. 17.5" />
 
       <p className="mb-prose-3">
         Drag the scene to orbit. Every field line leaving{' '}
@@ -540,7 +540,7 @@ export default function Ch17Materials() {
         This is the regime where you can feel the force with your fingers.
       </p>
 
-      <ParamagnetVsDiamagnetDemo figure="Fig. 17.5" />
+      <ParamagnetVsDiamagnetDemo figure="Fig. 17.6" />
 
       <TryIt
         tag="Try 17.3"
@@ -634,7 +634,7 @@ export default function Ch17Materials() {
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <FerromagnetDemo figure="Fig. 17.6" />
+      <FerromagnetDemo figure="Fig. 17.7" />
 
       <p className="mb-prose-3">
         Trace one full B sweep and the M-vs-B curve closes a loop — the{' '}

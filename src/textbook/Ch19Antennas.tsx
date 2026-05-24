@@ -421,7 +421,7 @@ export default function Ch19Antennas() {
         shifters in every element to point the beam wherever needed in microseconds.
       </p>
 
-      <PhasedArraySteeringDemo figure="Fig. 19.6" />
+      <PhasedArraySteeringDemo figure="Fig. 19.5" />
 
       <TryIt
         tag="Try 19.3b"
@@ -517,7 +517,7 @@ export default function Ch19Antennas() {
         loss by focusing the transmitted and received power into narrower angular cones.
       </p>
 
-      <FriisLinkBudgetDemo figure="Fig. 19.5" />
+      <FriisLinkBudgetDemo figure="Fig. 19.6" />
 
       <p className="mb-prose-3">
         Plug in some numbers for a typical home Wi-Fi link: P<sub>t</sub> = 100 mW = +20 dBm, G
