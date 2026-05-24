@@ -7,11 +7,11 @@
  * and fuel cells (continuous reactant supply).
  *
  * Demos:
- *   19.1  Lead-acid cell             (Planté, both plates → PbSO₄ on discharge)
- *   19.2  Li-ion intercalation       (Li⁺ shuttles between graphite and LiCoO₂)
- *   19.3  Chemistry comparison       (energy / cycle life / cost across families)
- *   19.4  Supercapacitor             (linear V-vs-Q ramp, not flat plateau)
- *   19.5  PEM fuel cell              (continuous H₂ + O₂ → H₂O with V(I) curve)
+ *   26.1  Lead-acid cell             (Planté, both plates → PbSO₄ on discharge)
+ *   26.2  Li-ion intercalation       (Li⁺ shuttles between graphite and LiCoO₂)
+ *   26.3  Chemistry comparison       (energy / cycle life / cost across families)
+ *   26.4  Supercapacitor             (linear V-vs-Q ramp, not flat plateau)
+ *   26.5  PEM fuel cell              (continuous H₂ + O₂ → H₂O with V(I) curve)
  */
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
@@ -157,7 +157,11 @@ export default function Ch26ModernBatteries() {
         <Cite id="whittingham-1976" in={SOURCES} />. The cell ran at ~2.4 V, much higher than
         aqueous chemistries, because lithium metal sits at −3.04 V vs SHE and TiS₂ is a strong
         oxidizer. But the lithium anode was a problem: on repeated cycling, lithium plated back not
-        as a smooth metal film but as branching dendrites that eventually pierced the separator and
+        as a smooth metal film but as branching{' '}
+        <Term def="Needle-like crystalline filaments of metal (most dangerously lithium) grown at an electrode during repeated charge cycles. They penetrate the separator between electrodes and short-circuit the cell — usually catastrophically, since the short locally heats the cell into thermal runaway.">
+          dendrites
+        </Term>{' '}
+        that eventually pierced the separator and
         shorted the cell — often catastrophically. Exxon shelved the project after several lab
         fires.
       </p>
@@ -189,7 +193,11 @@ export default function Ch26ModernBatteries() {
       <LiIonIntercalationDemo figure="Fig. 26.2" />
 
       <p className="mb-prose-3">
-        The trick is intercalation. Both electrodes are host lattices — graphite on the anode,
+        The trick is{' '}
+        <Term def="Reversible insertion of guest ions (here, Li⁺) into the spaces between the layers of a host crystal lattice (here, graphite on the anode or LiCoO₂ on the cathode) without breaking apart the host. The host lattice keeps its structure across hundreds of charge cycles — the secret to Li-ion's long life.">
+          intercalation
+        </Term>
+        . Both electrodes are host lattices — graphite on the anode,
         LiCoO₂ on the cathode — and the Li⁺ ion is the &quot;rocking-chair&quot; species that
         shuttles between them through the electrolyte. Neither host dissolves; the chemistry simply
         moves ions across the gap without destroying either lattice. That is why Li-ion can survive
@@ -244,7 +252,11 @@ export default function Ch26ModernBatteries() {
         Goodenough's LiCoO₂ was the original Li-ion cathode and is still found in consumer
         electronics (your phone is almost certainly an LCO derivative). But the LCO recipe is
         expensive (cobalt is scarce and ethically fraught to source) and thermally unstable above
-        ~150 °C, where it can release oxygen and feed a thermal runaway. So the industry branched
+        ~150 °C, where it can release oxygen and feed a{' '}
+        <Term def="A self-amplifying exothermic failure in a Li-ion cell: a local hotspot (from internal short, overcharge, or mechanical damage) breaks down the SEI layer; the exposed anode reacts with electrolyte; the heat propagates to adjacent cells; the cathode releases oxygen; the result is an unstoppable cascade until the cell or pack is consumed. The signature failure mode that distinguishes Li-ion from lead-acid or NiMH.">
+          thermal runaway
+        </Term>
+        . So the industry branched
         into a family of related cathode chemistries, each trading one property against another
         <Cite id="bard-faulkner-2001" in={SOURCES} />:
       </p>
@@ -330,11 +342,6 @@ export default function Ch26ModernBatteries() {
 
       <SupercapacitorDemo figure="Fig. 26.4" />
 
-      <Pullout>
-        A battery stores chemistry. A supercapacitor just stores field. The reactions cap the rate;
-        the field doesn't.
-      </Pullout>
-
       <p className="mb-prose-3">
         Two practical consequences. First, supercapacitors charge and discharge at speeds limited
         only by their ESR — milliseconds to seconds, not hours — and survive hundreds of thousands
@@ -383,7 +390,8 @@ export default function Ch26ModernBatteries() {
         <Term def="Proton exchange membrane fuel cell. H₂ at the anode, O₂ at the cathode, a solid polymer electrolyte (Nafion) that conducts H⁺ ions but blocks electrons. Operates at ~80 °C and 0.7 V/cell at typical loads; stacked in series for higher voltage.">
           PEM (proton exchange membrane)
         </Term>{' '}
-        fuel cell, invented in the 1960s at General Electric for the Gemini space program
+        fuel cell, invented at General Electric in the 1950s (Grubb and Niedrach, 1955) and flown
+        on the Gemini space program in the mid-1960s
         <Cite id="larminie-dicks-2003-fuel-cells" in={SOURCES} />. Hydrogen feeds the anode; oxygen
         (usually from air) feeds the cathode; a thin sheet of Nafion polymer between them conducts
         protons but blocks electrons. The reactions:
@@ -423,7 +431,7 @@ export default function Ch26ModernBatteries() {
       </p>
       <p className="mb-prose-3">
         Stack hundreds of cells in series for higher voltage. A Toyota Mirai's fuel-cell stack has
-        ~370 cells in series, delivering ~250 V at peak power and ~114 kW peak. Compressed hydrogen
+        ~370 cells in series, delivering ~245 V at peak power and ~114 kW peak. Compressed hydrogen
         (~5 kg in two 700-bar tanks) gives roughly 650 km of range. The catch is the fuel: green
         hydrogen production at scale is hard, and the distribution infrastructure is sparse. Fuel
         cells make sense where battery weight is prohibitive (long-haul trucks, marine, aerospace)
@@ -495,12 +503,7 @@ export default function Ch26ModernBatteries() {
             { label: 'Pack voltage', value: <>~360 V nominal</> },
             {
               label: 'Cell chemistry',
-              value: (
-                <>
-                  NCA (Panasonic 2170) or LFP (CATL) depending on market{' '}
-                  <Cite id="bard-faulkner-2001" in={SOURCES} />
-                </>
-              ),
+              value: <>NCA (Panasonic 2170) or LFP (CATL) depending on market and trim</>,
             },
             { label: 'Pack energy density', value: <>~165 Wh/kg</> },
             { label: 'Cycle life', value: <>~1500 cycles to 80% capacity</> },
@@ -523,7 +526,7 @@ export default function Ch26ModernBatteries() {
             kilograms to roll around at highway speed. The industry's pursuit of solid-state and
             lithium-metal anodes is partly a chase for higher energy density (~400 Wh/kg
             theoretical) that would lighten the pack by a factor of two
-            <Cite id="bard-faulkner-2001" in={SOURCES} />.
+            <Cite id="linden-reddy-2011" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
             Cycle life is a careful balance. Tesla limits the &quot;daily&quot; charge level to
@@ -552,14 +555,14 @@ export default function Ch26ModernBatteries() {
             dedicated chip (the gas gauge) integrates the current in and out to track state of
             charge to better than 1%, while the battery-management circuit on the same chip limits
             charge/discharge current and trips an emergency disconnect if cell voltage or
-            temperature ever leaves its safe envelope
-            <Cite id="bard-faulkner-2001" in={SOURCES} />.
+            temperature ever leaves its safe envelope.
           </p>
           <p className="mb-prose-2 last:mb-0">
             Apple's rated 500-cycle service life is a result of careful chemistry choices in the
             cell and software choices in iOS. The phone learns your charging pattern and
             slow-charges from 80% to 100% only when it thinks you're about to unplug it, because
-            sitting fully charged at 4.2 V accelerates capacity fade. By the time the cell has
+            sitting fully charged at 4.35 V (the high-voltage cutoff for a 3.85 V-nominal cell)
+            accelerates capacity fade. By the time the cell has
             cycled 500 times to 80% — about two and a half years of typical use — it has lost ~20%
             of nameplate capacity, and the phone starts reporting &quot;battery service&quot; in its
             diagnostics.
@@ -568,33 +571,30 @@ export default function Ch26ModernBatteries() {
 
         <CaseStudy
           tag='Case 26.3'
-          title="Hornsdale Power Reserve — Tesla Megapack grid storage"
-          summary="100 MW / 150 MWh of Li-ion cells in a single grid-connected installation. Frequency response in under 100 ms."
+          title="Hornsdale Power Reserve — first 100-MW-class Li-ion grid storage"
+          summary="100 MW / 129 MWh of Tesla Powerpack 2 cells when commissioned in 2017; expanded to 150 MW / 193.5 MWh in 2020. Frequency response in under 100 ms."
           specs={[
-            { label: 'Power rating', value: <>100 MW (charge or discharge)</> },
-            { label: 'Energy capacity', value: <>150 MWh</> },
-            { label: 'Cell chemistry', value: <>NMC Li-ion (Tesla Megapack)</> },
+            { label: 'Power rating', value: <>100 MW at commissioning; 150 MW after 2020 expansion</> },
+            { label: 'Energy capacity', value: <>129 MWh at commissioning; 193.5 MWh after 2020 expansion</> },
+            { label: 'Cell chemistry', value: <>NMC Li-ion (Tesla Powerpack 2; Megapack didn't exist yet in 2017)</> },
             {
               label: 'Response time',
-              value: (
-                <>
-                  &lt; 100 ms <Cite id="bard-faulkner-2001" in={SOURCES} />
-                </>
-              ),
+              value: <>&lt; 100 ms</>,
             },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
             The Hornsdale Power Reserve in South Australia, commissioned in 2017, was the first
-            utility-scale Li-ion grid battery and became the model for hundreds that followed. It is
-            a paddock of refrigerator-sized Tesla Megapack units holding 150 MWh of NMC Li-ion
-            cells, connected to the grid through bidirectional inverters capable of 100 MW in or
-            out. The job is not bulk energy storage (it would discharge in 90 minutes flat at full
-            power) but <em className="text-text italic">frequency response</em>: when a coal plant
-            trips offline somewhere on the network and grid frequency starts to dip, Hornsdale dumps
-            tens of megawatts onto the bus within 100 ms — faster than any spinning machine can
-            react
-            <Cite id="bard-faulkner-2001" in={SOURCES} />.
+            100-MW-class Li-ion grid battery and became the model for hundreds that followed
+            (earlier utility installations like AES Laurel Mountain in 2011 and Tehachapi in 2014
+            were a fraction of the scale). It is a paddock of refrigerator-sized Tesla Powerpack 2
+            units holding 129 MWh of NMC Li-ion cells, connected to the grid through bidirectional
+            inverters capable of 100 MW in or out — figures expanded to 150 MW / 193.5 MWh in the
+            2020 upgrade. The job is not bulk energy storage (it would discharge in roughly 80
+            minutes at full power) but <em className="text-text italic">frequency response</em>:
+            when a coal plant trips offline somewhere on the network and grid frequency starts to
+            dip, Hornsdale dumps tens of megawatts onto the bus within 100 ms — faster than any
+            spinning machine can react.
           </p>
           <p className="mb-prose-2 last:mb-0">
             Within its first two years of operation, Hornsdale recovered its capital cost from
@@ -626,8 +626,8 @@ export default function Ch26ModernBatteries() {
         >
           <p className="mb-prose-2 last:mb-0">
             The Toyota Mirai (Japanese for &quot;future&quot;) is the most commercially successful
-            fuel-cell passenger car. Its stack is ~370 cells in series at peak operating point ~0.65
-            V per cell, delivering ~240 V and up to 114 kW peak. Hydrogen is stored in two
+            fuel-cell passenger car. Its stack is ~370 cells in series at peak operating point ~0.66
+            V per cell, delivering ~245 V and up to 114 kW peak. Hydrogen is stored in two
             carbon-fibre-wrapped tanks at 700 bar — about 5 kg total, which corresponds to{' '}
             <strong className="text-text font-medium">~166 kWh</strong> of chemical energy if all
             were converted at 100% efficiency. At real-world fuel-cell efficiency (~55%) that's{' '}
@@ -681,8 +681,11 @@ export default function Ch26ModernBatteries() {
         <FAQItem q="What is 'thermal runaway' and why is it specifically a Li-ion problem?">
           <p>
             Thermal runaway is a feedback loop: a Li-ion cell that has been damaged (mechanical
-            penetration), overcharged, or internally shorted heats up. Above about 80 °C the SEI
-            layer (the solid-electrolyte interphase film on the anode) starts to break down,
+            penetration), overcharged, or internally shorted heats up. Above about 80 °C the{' '}
+            <Term def="Solid-electrolyte interphase: a thin (10–100 nm) passivation film of decomposed electrolyte that forms on the anode during the first few charge cycles. Its job is to conduct Li⁺ ions but block electrons, preventing further electrolyte decomposition. When the SEI breaks down (above ~80 °C, or from mechanical stress), thermal runaway becomes possible.">
+              SEI layer
+            </Term>{' '}
+            (the solid-electrolyte interphase film on the anode) starts to break down,
             exposing fresh lithium to the electrolyte and producing more heat. Above 150 °C the
             cathode can release oxygen, which oxidizes the electrolyte (the organic carbonate
             solvents are flammable). Above 200 °C the reactions accelerate and the cell vents flames
@@ -839,7 +842,10 @@ export default function Ch26ModernBatteries() {
 
         <FAQItem q="What is C-rate, and why do batteries have one?">
           <p>
-            C-rate is the charge or discharge current normalized to capacity. A &quot;1C&quot; rate
+            <Term def="The charge or discharge current of a cell, normalized to its capacity. A 1C rate means a cell discharges (or charges) its full capacity in one hour; 2C means half an hour; C/10 means ten hours. Manufacturers spec a max sustained C-rate (set by heat dissipation) and a higher peak C-rate (a brief burst).">
+              C-rate
+            </Term>{' '}
+            is the charge or discharge current normalized to capacity. A &quot;1C&quot; rate
             on a 60 Ah cell is 60 A — enough to discharge it in 1 hour. A &quot;0.5C&quot; rate is
             30 A, taking 2 hours. A &quot;3C&quot; rate is 180 A, taking 20 minutes. Cells are
             specified for a maximum sustained C-rate (set by the heat the internal resistance can
@@ -869,9 +875,10 @@ export default function Ch26ModernBatteries() {
         <FAQItem q="If a fuel cell's only emission is water, why isn't it the universal future of energy?">
           <p>
             Because the &quot;water-only&quot; emission profile depends entirely on where the
-            hydrogen came from. Today, about 95% of industrial hydrogen is produced by steam-methane
-            reforming (CH₄ + 2H₂O → CO₂ + 4H₂), which emits CO₂ at a rate roughly comparable to
-            burning the methane directly — so a &quot;hydrogen economy&quot; built on this kind of
+            hydrogen came from. Today, about 95% of industrial hydrogen is produced from fossil
+            fuels — predominantly steam-methane reforming (CH₄ + 2H₂O → CO₂ + 4H₂), with coal
+            gasification next — which emits CO₂ at a rate roughly comparable to burning the methane
+            directly. A &quot;hydrogen economy&quot; built on this kind of
             H₂ would be no greener than a gas-powered grid. Green hydrogen, produced by
             electrolysing water using renewable electricity, is technically straightforward but
             currently 3–5× more expensive than reformed H₂. Whether fuel cells become a major energy

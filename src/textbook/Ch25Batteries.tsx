@@ -6,11 +6,11 @@
  * equation, and finally internal resistance and the loaded-discharge curve.
  *
  * Demos:
- *   18.1  Voltaic pile          (stacked Zn-Cu discs add to ~1.1 V each)
- *   18.2  Daniell cell          (Zn/ZnSO₄ // CuSO₄/Cu — 1.10 V at the terminals)
- *   18.3  Nernst equation       (V = V° − (RT/nF)·lnQ)
- *   18.4  Cell discharge        (V_term sags with R_int and falls as SOC ↓)
- *   18.5  Half-cell potentials  (pick anode + cathode; predict E°_cell)
+ *   25.1  Voltaic pile          (stacked Zn-Cu discs add to ~1.1 V each)
+ *   25.2  Daniell cell          (Zn/ZnSO₄ // CuSO₄/Cu — 1.10 V at the terminals)
+ *   25.3  Half-cell potentials  (pick anode + cathode; predict E°_cell)
+ *   25.4  Nernst equation       (V = V° − (RT/nF)·lnQ)
+ *   25.5  Cell discharge        (V_term sags with R_int and falls as SOC ↓)
  */
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
@@ -66,9 +66,12 @@ export default function Ch25Batteries() {
         thirty times. The top and bottom of the stack become the two electrical terminals. Between
         each adjacent Zn-Cu pair, a chemical reaction at the metal surfaces creates a small voltage
         difference; stacked in series, twenty pairs add to about{' '}
-        <strong className="text-text font-medium">22 V</strong> open-circuit
-        <Cite id="volta-1800-pile" in={SOURCES} />. Connect a wire between top and bottom and
-        current flows until either the zinc is consumed or the brine dries out.
+        <strong className="text-text font-medium">22 V</strong> open-circuit at the thermodynamic
+        ceiling
+        <Cite id="volta-1800-pile" in={SOURCES} /> (real brine piles ran lower —
+        closer to 0.7–0.9 V per pair — because hydrogen polarisation at the copper face eats into
+        the ideal value). Connect a wire between top and bottom and current flows until either the
+        zinc is consumed or the brine dries out.
       </p>
 
       <VoltaicPileDemo figure="Fig. 25.1" />
@@ -222,7 +225,7 @@ export default function Ch25Batteries() {
               Not enormous — which is exactly why telegraph circuits, which needed only milliamps to
               flick a relay, were perfectly happy with Daniell cells. Cranking a car engine would
               need cells with R_int of a few milliohms, not ohms; we'll get to lead-acid in Chapter
-              19
+              26
               <Cite id="bard-faulkner-2001" in={SOURCES} />.
             </p>
           </>
@@ -258,7 +261,7 @@ export default function Ch25Batteries() {
         is positive the cell runs spontaneously in that direction.
       </p>
 
-      <HalfCellPotentialsDemo figure="Fig. 25.5" />
+      <HalfCellPotentialsDemo figure="Fig. 25.3" />
 
       <p className="mb-prose-3">
         At the extremes: lithium metal has the most negative E° of any element in the periodic table
@@ -270,7 +273,7 @@ export default function Ch25Batteries() {
         voltage of Daniell. Nobody builds Li/F₂ batteries because fluorine reacts with everything
         else in the cell and the engineering is impossible; but the thermodynamic prediction is what
         it is, and gives a hint why Li-based chemistries dominate modern energy storage (Chapter
-        19).
+        26).
       </p>
 
       <TryIt
@@ -321,8 +324,11 @@ export default function Ch25Batteries() {
         kelvins),
         <InlineMath tex="n" /> is the number of electrons transferred
         per reaction event (dimensionless integer),
-        <InlineMath tex="F" /> is the Faraday constant ≈ 96 485 C/mol
-        (the charge of one mole of electrons), and
+        <InlineMath tex="F" /> is the{' '}
+        <Term def="The total charge of one mole of electrons: F = N_A · e ≈ 96 485 C/mol. The unit-conversion constant that takes you from chemistry's 'moles of electrons' to physics's 'coulombs of charge.'">
+          Faraday constant
+        </Term>{' '}
+        ≈ 96 485 C/mol (the charge of one mole of electrons), and
         <InlineMath tex="Q" /> is the dimensionless reaction quotient
         — the ratio of product activities to reactant activities at the moment of measurement
         <Cite id="codata-2018" in={SOURCES} />.
@@ -343,16 +349,7 @@ export default function Ch25Batteries() {
         <Cite id="nernst-1889" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        Here R is the gas constant (8.314 J/mol·K), T is absolute temperature, n is the number of
-        electrons transferred per reaction event, F is the{' '}
-        <Term def="The total charge of one mole of electrons: F = N_A · e ≈ 96 485 C/mol. The unit-conversion constant that takes you from chemistry's 'moles of electrons' to physics's 'coulombs of charge.'">
-          Faraday constant
-        </Term>{' '}
-        (the charge per mole of electrons, ≈ 96 485 C/mol)
-        <Cite id="codata-2018" in={SOURCES} />, and{' '}
-        <InlineMath tex="Q" /> is the{' '}
-        <em className="text-text italic">reaction quotient</em> — the ratio of product
-        concentrations to reactant concentrations. For the Daniell cell:
+        For the Daniell cell, the reaction quotient simplifies to:
       </p>
       <Formula>Q = [Zn²⁺] / [Cu²⁺]</Formula>
       <p className="mb-prose-3">
@@ -365,12 +362,12 @@ export default function Ch25Batteries() {
         <Cite id="bard-faulkner-2001" in={SOURCES} />.
       </p>
 
-      <NernstEquationDemo figure="Fig. 25.3" />
+      <NernstEquationDemo figure="Fig. 25.4" />
 
       <p className="mb-prose-3">
         Walther Nernst published this equation in 1889; it earned him the 1920 Nobel Prize in
         Chemistry. It is the single most useful equation in practical electrochemistry. The Nernst
-        equation tells you why a fresh alkaline cell reads 1.6 V open-circuit while a "dead" one
+        equation tells you why a fresh alkaline cell reads ~1.55 V open-circuit while a "dead" one
         still reads 1.2 V — the chemistry isn't gone, just non-standard. It tells you how a pH meter
         works: a pH-sensitive membrane sits between a sample of unknown H⁺ concentration and a
         reference of known concentration, and the Nernst equation converts the voltage difference
@@ -446,7 +443,7 @@ export default function Ch25Batteries() {
         small coin cell can be tens of ohms.
       </p>
 
-      <CellDischargeDemo figure="Fig. 25.4" />
+      <CellDischargeDemo figure="Fig. 25.5" />
 
       <p className="mb-prose-3">
         As the cell discharges, two things happen at once. The{' '}
@@ -518,7 +515,7 @@ export default function Ch25Batteries() {
       </p>
       <p className="mb-prose-3">
         Next chapter: the modern chemistries themselves. Planté's lead-acid (still in every gasoline
-        car), Whittingham– Goodenough–Yoshino's lithium-ion (in your phone, your laptop, and
+        car), Whittingham–Goodenough–Yoshino's lithium-ion (in your phone, your laptop, and
         increasingly your car), supercapacitors, flow cells, and fuel cells. Same Daniell
         architecture, six radically different materials choices.
       </p>
@@ -533,7 +530,7 @@ export default function Ch25Batteries() {
               label: 'Open-circuit voltage',
               value: (
                 <>
-                  ~9.0 V (six cells × 1.5 V) <Cite id="bard-faulkner-2001" in={SOURCES} />
+                  ~9.0 V (six cells × 1.5 V) <Cite id="linden-reddy-2011" in={SOURCES} />
                 </>
               ),
             },
@@ -541,7 +538,7 @@ export default function Ch25Batteries() {
               label: 'Capacity',
               value: (
                 <>
-                  ~500 mAh <Cite id="bard-faulkner-2001" in={SOURCES} />
+                  ~500 mAh <Cite id="linden-reddy-2011" in={SOURCES} />
                 </>
               ),
             },
@@ -582,7 +579,7 @@ export default function Ch25Batteries() {
               label: 'Capacity',
               value: (
                 <>
-                  ~2500 mAh at 20 mA discharge <Cite id="bard-faulkner-2001" in={SOURCES} />
+                  ~2500 mAh at 20 mA discharge <Cite id="linden-reddy-2011" in={SOURCES} />
                 </>
               ),
             },
@@ -591,7 +588,7 @@ export default function Ch25Batteries() {
               label: 'Energy density',
               value: (
                 <>
-                  ~150 Wh/kg <Cite id="bard-faulkner-2001" in={SOURCES} />
+                  ~150 Wh/kg <Cite id="linden-reddy-2011" in={SOURCES} />
                 </>
               ),
             },
@@ -631,7 +628,7 @@ export default function Ch25Batteries() {
               label: 'Energy density',
               value: (
                 <>
-                  ~30–40 Wh/kg <Cite id="bard-faulkner-2001" in={SOURCES} />
+                  ~30–40 Wh/kg <Cite id="linden-reddy-2011" in={SOURCES} />
                 </>
               ),
             },
@@ -793,7 +790,7 @@ export default function Ch25Batteries() {
             the discharge reaction at the plate surfaces is temperature-limited and you can't
             extract energy as fast as you can at room temperature. The combination means a battery
             that easily cranks an engine at 20 °C may not at −30 °C
-            <Cite id="bard-faulkner-2001" in={SOURCES} />. That's why cold-cranking amp (CCA)
+            <Cite id="linden-reddy-2011" in={SOURCES} />. That's why cold-cranking amp (CCA)
             ratings on starter batteries are specified at a defined low temperature.
           </p>
         </FAQItem>
@@ -865,6 +862,7 @@ export default function Ch25Batteries() {
             to assemble a cell. Modern Li-ion chemistries reach 3.0–4.2 V; specialised primary
             lithium cells (Li/SOCl₂) push 3.6 V; the upper bound for stable aqueous chemistries is
             ~2 V (above which water electrolyses)
+            <Cite id="linden-reddy-2011" in={SOURCES} />
             <Cite id="bard-faulkner-2001" in={SOURCES} />. Beyond that, you're in the world of
             organic non-aqueous electrolytes and the engineering gets hard.
           </p>
@@ -921,7 +919,7 @@ export default function Ch25Batteries() {
             occasionally pressurises the cell. Alkaline cells lose a few percent per year. NiMH
             cells lose 20–30% per month (a major reason for the &quot;low self-discharge&quot; NiMH
             variants). Li-ion cells lose ~3% per month
-            <Cite id="bard-faulkner-2001" in={SOURCES} />. The chemistry determines the rate.
+            <Cite id="linden-reddy-2011" in={SOURCES} />. The chemistry determines the rate.
           </p>
         </FAQItem>
       </FAQ>

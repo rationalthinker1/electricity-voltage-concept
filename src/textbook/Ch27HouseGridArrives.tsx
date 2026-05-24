@@ -5,7 +5,7 @@
  * single phase of the medium-voltage distribution feeder down through the
  * pole-pig transformer, along the service drop, into the meter base, and
  * onward to where the homeowner takes ownership. No new demos: this
- * chapter reuses the transformer physics from Ch.22-23 and the energy
+ * chapter reuses the transformer physics from Ch.23 and the energy
  * physics from Ch.3 / Ohms-law / Joule labs, and points readers there.
  *
  * Sections:
@@ -50,7 +50,7 @@ export default function Ch27HouseGridArrives() {
         >
           distribution
         </Term>{' '}
-        feeders. In a typical 13.8 kV three-phase{' '}
+        feeders. In a typical 12.47 kV three-phase{' '}
         <Term
           def={
             <>
@@ -65,7 +65,7 @@ export default function Ch27HouseGridArrives() {
         </Term>{' '}
         feeder, each of those wires sits at roughly{' '}
         <strong className="text-text font-medium">7,200 V</strong> with respect to a grounded
-        neutral — the 13,800 V is the difference between any two of them, and 7,200 ≈ 13,800/√3
+        neutral — the 12,470 V is the difference between any two of them, and 7,200 = 12,470/√3
         <Cite id="ansi-c84-1-2020" in={SOURCES} />. Halfway down the pole, one of those wires elbows
         down through a barrel-shaped, oil-filled can. Out of the bottom of the can come three new
         wires — two of them insulated, the third bare — and those three wires twist together into a
@@ -108,7 +108,7 @@ export default function Ch27HouseGridArrives() {
         convection coolant
         <Cite id="grainger-power-systems-2003" in={SOURCES} />. The primary winding has many turns
         and connects between one medium-voltage phase and the grounded neutral of the feeder — for a
-        13.8 kV wye feeder, that's <strong className="text-text font-medium">7,200 V</strong> across
+        12.47 kV wye feeder, that's <strong className="text-text font-medium">7,200 V</strong> across
         the primary
         <Cite id="ansi-c84-1-2020" in={SOURCES} />. The secondary winding has far fewer turns and is
         wound with much thicker copper. Its two ends emerge from the can as the two "hot" service
@@ -134,9 +134,10 @@ export default function Ch27HouseGridArrives() {
         around the core, so the voltages at the two ends — measured against the centre tap — are{' '}
         <em className="text-text italic">equal in magnitude</em> but
         <em className="text-text italic"> 180° out of phase</em> at every instant. When one end is
-        at +170 V relative to centre, the other is at −170 V; the difference between the two ends is
-        therefore <strong className="text-text font-medium">240 V</strong> peak-to-peak in RMS
-        terms, not 0. This is what "split-phase" means: one phase from the utility, split into two
+        at +170 V relative to centre, the other is at −170 V; the end-to-end RMS voltage is
+        therefore <strong className="text-text font-medium">240 V</strong>, not 0, because the two
+        halves are 180° out of phase about the grounded centre and so add rather than cancel. This
+        is what "split-phase" means: one phase from the utility, split into two
         equal halves about a grounded midpoint
         <Cite id="ansi-c84-1-2020" in={SOURCES} />.
       </p>
@@ -159,7 +160,8 @@ export default function Ch27HouseGridArrives() {
       </Pullout>
       <p className="mb-prose-3">
         The deeper physics of how the iron core, the flux linkage, and the turns ratio actually work
-        is the whole of Chapter 23 — the pole-pig is a single transformer with k ≈ 0.98 and the
+        is the whole of Chapter 23 — the pole-pig is a single transformer with coupling near 1 and
+        the
         cleanest possible split-phase wiring on its secondary. The rest of this chapter takes the
         existence of that 240/120 V three-wire output as given and follows where the three wires go.
       </p>
@@ -704,28 +706,23 @@ export default function Ch27HouseGridArrives() {
       </p>
       <p className="mb-prose-3">
         Let Z₁ be the total impedance of every load on the L1 leg (lumped together — bulbs,
-        electronics, a partly running fridge) and Z₂ the same on the L2 leg. With neutral open, the
-        voltage at the centre point (the former neutral bus) is set entirely by the divider ratio
-        between Z₁ and Z₂ across the 240 V supply:
-      </p>
-      <Formula tex="V_{\\text{centre}} = V_{240} \\cdot \\dfrac{Z_1}{Z_1 + Z_2}" />
-      <p className="mb-prose-3">
-        where{' '}
-        <InlineMath tex="V_{\text{centre}}" />{' '}
-        is the voltage of the floating centre node relative to L2 (in volts),{' '}
-        <InlineMath tex="V_{240}" />{' '}
-        is the end-to-end supply voltage (≈ 240 V RMS for a healthy service), and{' '}
-        <InlineMath tex="Z_1" /> and{' '}
-        <InlineMath tex="Z_2" /> are the total load impedances (in
-        ohms) on the L1 and L2 legs respectively, lumped at their parallel equivalent. The voltages
-        individually seen by L1 and L2 are:
+        electronics, a partly running fridge) and Z₂ the same on the L2 leg. With neutral open,
+        the two legs are in series across the full 240 V supply, and each leg's load acts as one
+        arm of a voltage divider. The voltages individually seen by L1 and L2 are then:
       </p>
       <Formula tex="V_{L1} = 240 \\cdot \\dfrac{Z_1}{Z_1 + Z_2}, \\quad V_{L2} = 240 \\cdot \\dfrac{Z_2}{Z_1 + Z_2}" />
+      <p className="mb-prose-3">
+        where <InlineMath tex="V_{L1}" /> and <InlineMath tex="V_{L2}" /> are the voltages across
+        the L1-leg and L2-leg loads respectively (in volts), and{' '}
+        <InlineMath tex="Z_1" /> and <InlineMath tex="Z_2" /> are the total load impedances on
+        each leg (in ohms), lumped at their parallel equivalent.
+      </p>
       <p className="mb-prose-3">
         The two add to 240 V as required, but they need not split evenly. If one leg is heavily
         loaded (low Z) and the other lightly loaded (high Z), nearly all 240 V appears across the
         lightly loaded leg — and every device on that leg sees double its rated voltage.
-        Incandescent lamps burst, motor windings fry, and anything plugged into the lightly-loaded
+        Incandescent lamp filaments fuse open with a flash, motor windings fry, and anything
+        plugged into the lightly-loaded
         leg dies in seconds. The heavily loaded leg, meanwhile, sees a starved voltage of perhaps
         30–60 V — too low for half its devices to run, but not low enough to be safely zero
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
@@ -837,7 +834,7 @@ export default function Ch27HouseGridArrives() {
               label: 'Distribution feeder',
               value: (
                 <>
-                  13.8 kV three-phase wye, 7.97 kV line-to-neutral{' '}
+                  12.47 kV three-phase wye, 7.20 kV line-to-neutral (12.47 / √3 = 7.20){' '}
                   <Cite id="ansi-c84-1-2020" in={SOURCES} />
                 </>
               ),
@@ -1254,14 +1251,17 @@ export default function Ch27HouseGridArrives() {
 
         <FAQItem q="If my service is rated 200 A, can I actually pull 200 A continuously?">
           <p>
-            Yes, but only because every component upstream — wiring, breaker, meter, transformer
-            share — has been sized to the same continuous rating with appropriate derating. The NEC
-            80 % continuous-load rule (§210.20) requires that a circuit's{' '}
-            <em className="text-text italic">continuous</em> load not exceed 80 % of the breaker's
-            ampacity, so a 200 A main is good for 160 A continuous and 200 A non-continuous. In
-            practice few houses ever come close to 200 A continuous; the rating sets the worst-case
-            design envelope, and the diversity factor that the utility used to size the upstream
-            transformer assumes you don't sit at the envelope
+            Not continuously — the cap on continuous load is 160 A on a standard 200 A main. The NEC
+            80 % continuous-load rule (§210.19 sizes the conductor, §210.20(A) sizes the overcurrent
+            device) requires that a circuit's{' '}
+            <em className="text-text italic">continuous</em> load (one expected to run at full
+            current for three hours or more) not exceed 80 % of the breaker's ampacity, so a 200 A
+            main is good for 160 A continuous and 200 A non-continuous. The exception is a
+            100 %-rated breaker assembly (listed under UL 489), which can carry its full nameplate
+            rating continuously — uncommon in residential panels. In practice few houses ever come
+            close to 200 A continuous; the rating sets the worst-case design envelope, and the
+            diversity factor that the utility used to size the upstream transformer assumes you
+            don't sit at the envelope
             <Cite id="nec-2023" in={SOURCES} />
             <Cite id="ieee-std-3001-2-2017" in={SOURCES} />.
           </p>

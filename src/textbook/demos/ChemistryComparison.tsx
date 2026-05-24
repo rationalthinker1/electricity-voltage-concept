@@ -1,5 +1,5 @@
 /**
- * Demo 19.3 — Battery chemistry comparison
+ * Demo 26.3 — Battery chemistry comparison
  *
  * Bar chart over selected chemistries: lead-acid, NiMH, LFP, NMC, NCA,
  * LMO. The reader picks the metric (energy density, cycle life, cost,
@@ -44,7 +44,10 @@ const METRICS: MetricSpec[] = [
 interface Chem {
   key: string;
   name: string;
-  color: string;
+  /** Slot name into `colors` — resolved per-frame so the chart picks up theme swaps.
+   *  '#7d8082' (lead-acid grey) and '#b87333' (copper) are intentionally off-palette
+   *  chart colours; the others are theme tokens. */
+  colorSlot: 'leadGrey' | 'teal' | 'blue' | 'accent' | 'pink' | 'copper';
   data: Record<MetricKey, number>;
 }
 
@@ -53,19 +56,19 @@ const CHEMS: Chem[] = [
   {
     key: 'lead',
     name: 'Lead-acid',
-    color: '#7d8082',
+    colorSlot: 'leadGrey',
     data: { energy_kg: 35, energy_L: 80, cycles: 500, cost: 90, self_discharge: 5, V_cell: 2.1 },
   },
   {
     key: 'nimh',
     name: 'NiMH',
-    color: '#6cc5c2',
+    colorSlot: 'teal',
     data: { energy_kg: 80, energy_L: 250, cycles: 800, cost: 350, self_discharge: 25, V_cell: 1.2 },
   },
   {
     key: 'lfp',
     name: 'LFP',
-    color: '#5baef8',
+    colorSlot: 'blue',
     data: {
       energy_kg: 130,
       energy_L: 270,
@@ -78,7 +81,7 @@ const CHEMS: Chem[] = [
   {
     key: 'nmc',
     name: 'NMC',
-    color: '#ff6b2a',
+    colorSlot: 'accent',
     data: {
       energy_kg: 220,
       energy_L: 530,
@@ -91,7 +94,7 @@ const CHEMS: Chem[] = [
   {
     key: 'nca',
     name: 'NCA',
-    color: '#ff3b6e',
+    colorSlot: 'pink',
     data: {
       energy_kg: 240,
       energy_L: 600,
@@ -104,10 +107,30 @@ const CHEMS: Chem[] = [
   {
     key: 'lmo',
     name: 'LMO',
-    color: '#b87333',
+    colorSlot: 'copper',
     data: { energy_kg: 120, energy_L: 280, cycles: 700, cost: 110, self_discharge: 4, V_cell: 3.7 },
   },
 ];
+
+function resolveChemColor(
+  slot: Chem['colorSlot'],
+  colors: { accent: string; teal: string; blue: string; pink: string },
+): string {
+  switch (slot) {
+    case 'leadGrey':
+      return '#7d8082';
+    case 'copper':
+      return '#b87333';
+    case 'accent':
+      return colors.accent;
+    case 'teal':
+      return colors.teal;
+    case 'blue':
+      return colors.blue;
+    case 'pink':
+      return colors.pink;
+  }
+}
 
 export function ChemistryComparisonDemo({ figure }: Props) {
   const [metric, setMetric] = useState<MetricKey>('energy_kg');
@@ -137,7 +160,7 @@ export function ChemistryComparisonDemo({ figure }: Props) {
         const x = pX + slot * i + slot / 2 - barW / 2;
         const barH = (v / vMax) * pH;
         const y = pY + pH - barH;
-        ctx.fillStyle = c.color;
+        ctx.fillStyle = resolveChemColor(c.colorSlot, colors);
         ctx.fillRect(x, y, barW, barH);
 
         // value label on top

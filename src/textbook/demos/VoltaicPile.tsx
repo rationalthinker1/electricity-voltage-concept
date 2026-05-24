@@ -1,5 +1,5 @@
 /**
- * Demo 18.1 — Volta's pile (1800)
+ * Demo 25.1 — Volta's pile (1800)
  *
  * Stack alternating Zn / Cu discs separated by brine-soaked cardboard.
  * Add or remove disc pairs; each pair contributes ~1.1 V open-circuit

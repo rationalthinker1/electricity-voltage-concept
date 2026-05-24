@@ -1,5 +1,5 @@
 /**
- * Demo 18.3 — Nernst equation
+ * Demo 25.4 — Nernst equation
  *
  * V = V° − (RT / nF) · ln(Q) for a Cu/Zn galvanic cell.
  * Sliders: anode-side [Zn²⁺], cathode-side [Cu²⁺], temperature T.

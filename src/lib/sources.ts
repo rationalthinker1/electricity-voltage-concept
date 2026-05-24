@@ -1329,7 +1329,15 @@ export const SOURCES: Record<string, Source> = {
     author: 'Allen J. Bard, Larry R. Faulkner',
     year: 2001,
     venue: 'Wiley',
-    note: 'Definitive graduate electrochemistry textbook. Source for half-cell potentials, the Butler–Volmer equation, double-layer structure, and electrode kinetics.',
+    note: 'Definitive graduate electrochemistry textbook. Source for half-cell potentials, the Butler–Volmer equation, double-layer structure, and electrode kinetics. NOT a source for modern commercial-cell datasheets or product-level specs (use Linden\'s Handbook for those).',
+  },
+  'linden-reddy-2011': {
+    id: 'linden-reddy-2011',
+    title: "Linden's Handbook of Batteries, 4th ed.",
+    author: 'Thomas B. Reddy (Ed.); David Linden (Founding Ed.)',
+    year: 2011,
+    venue: 'McGraw-Hill',
+    note: 'Canonical engineering handbook for commercial battery chemistries — datasheet-level coverage of capacity, energy density, self-discharge, internal resistance vs. temperature, and per-chemistry voltage ranges for alkaline, NiMH, Li-ion, Li primary, lead-acid, and others. Cite this for product specs that Bard & Faulkner does not cover.',
   },
 
   /* ─── Ch.19 Modern batteries ─── */

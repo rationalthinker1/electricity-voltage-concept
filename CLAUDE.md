@@ -507,6 +507,19 @@ Every chapter must include, in this order:
 Auto-rendered by `<ChapterShell>`: chapter hero, related-labs sidebar,
 sources list, prev/next chapter nav. Don't write those manually.
 
+**Applied-track exception (Ch.27–40).** The house-electrician chapters
+(Ch.27–40) are written as "physics-already-built, now apply it" and
+are deliberately prose-heavy. Rule 2's "≥1 embedded `<XxxDemo />` per
+h2" does *not* bind them — they cite earlier chapters' demos
+(Ch.7 induction, Ch.23 transformers, Ch.12 AC circuits, etc.)
+instead of re-rendering equivalents. The chapter file should open with
+a header comment stating which earlier-chapter demos it reuses, and the
+chapter-reviewer should not flag the absence of in-chapter demos in
+these chapters. The other six checklist items still bind. New demos
+that genuinely add value (e.g. a residential-only visualisation like
+the open-neutral divider, the split-phase phasor diagram, or a panel
+short-circuit calculator) are welcome but not required.
+
 ---
 
 ## 7. The demo pattern

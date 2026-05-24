@@ -1,5 +1,5 @@
 /**
- * Demo 18.4 — Cell discharge curve
+ * Demo 25.5 — Cell discharge curve
  *
  * Model: a battery has open-circuit voltage V_OC and internal resistance R_int.
  * The terminal voltage under load R_L is V_term = V_OC · R_L / (R_int + R_L).

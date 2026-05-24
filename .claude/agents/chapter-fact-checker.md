@@ -29,6 +29,39 @@ For the file or chapter under review, scrutinize:
 7. **Demo captions and equation strips** — any number printed outside slider-driven live values needs a cite.
 8. **Derived arithmetic statements** — when prose says "X × Y = Z" (or "X / Y", "X + Y", etc.) and Z is the conclusion, **compute the arithmetic yourself and confirm it matches**. The two inputs may both be properly cited, but if the multiplication is wrong, the result is wrong. Canonical example caught in Ch.1 (2026): "~5 C of charge … multiplied by a hundred million volts … works out to roughly a gigajoule" — the inputs were cited to `rakov-uman-2003`, but 5 C × 10⁸ V = 5×10⁸ J = 0.5 GJ, not ~1 GJ. The cite was real; the arithmetic doubled the answer. Always plug the cited inputs into a calculator and confirm the prose conclusion.
 
+9. **Voltage-class pair arithmetic** (recurring residential / distribution case). When prose or a case-study spec quotes an `X/Y kV` pair on a three-phase wye system, **compute `X/√3` and verify it equals `Y`**. The standard form is **line-to-line / line-to-neutral**, so the larger number is always line-to-line. Worked examples that should hold:
+   - `12.47/7.2 kV` → 12.47 / √3 = 7.20. ✓ (canonical North-American residential feeder.)
+   - `13.2/7.62 kV` → 13.2 / √3 = 7.62. ✓
+   - `25/14.4 kV` → 25 / √3 = 14.43. ✓
+   - `34.5/19.92 kV` → 34.5 / √3 = 19.92. ✓
+   - `13.8/7.97 kV` → 13.8 / √3 = 7.97. ✓ (note: `13.8/7.2` is *wrong* — that pair fails the √3 test by ~10%; this exact bug appeared in Ch.27 in 2026.)
+
+   Equivalent claims to verify with the same arithmetic:
+   - "pole-pig primary on a 12.47/7.2 kV system sees 7.2 kV" — correct for a single-bushing wye-connected primary (Ch.23 Case 23.1, fixed 2026 after originally reading 12.47 kV); only wrong if the primary is delta-connected, which is rare in modern North American residential distribution.
+   - "120/240 V split-phase" — these are *not* a wye pair; 240 V is end-to-end and 120 V is centre-tap to either end on a single secondary winding. Don't apply the √3 check.
+
+   Cross-chapter: Ch.23 (Transformers) and Ch.27 (House: the grid arrives) both quote residential feeder voltages and should agree on the same canonical pair. Flag any inconsistency.
+
+10. **Internal-consistency check** — when the same quantity appears more than once in the same chapter (often as both prose and a case-study spec), **the values must agree**. Recurring examples from past audits:
+    - Mirai fuel-cell stack voltage: Ch.26 prose said `~250 V at peak power` and the Case 26.4 spec said `~240 V` — only one can be right. Standardise on the consensus value (e.g. `~245 V`).
+    - Alkaline AA fresh open-circuit voltage: Ch.25 prose said `1.6 V` in one paragraph and `1.55 V (fresh)` in a CaseStudy spec; pick one (1.55 V matched the Linden datasheet citation) and apply throughout.
+    - 12.47/7.2 kV vs 13.8/7.97 kV (the voltage-pair issue above) — chapter body and CaseStudy must use the same feeder voltage.
+
+    Run a grep for repeated quantitative claims when auditing — `grep -E "[0-9]+\s*(V|kV|A|mAh|Wh|kWh|°C|Hz)\b"` and visually scan for duplicates that should match.
+
+11. **Source-key fit — `bard-faulkner-2001` vs `linden-reddy-2011`** (battery-chapter recurring pattern). Bard & Faulkner *Electrochemical Methods* (2001) is a graduate fundamentals text covering electrode kinetics, the Butler–Volmer equation, double-layer structure, and standard half-cell potentials. It is **not** a catalogue of commercial cell datasheets. The following kinds of claims should cite `linden-reddy-2011` (*Linden's Handbook of Batteries*, 4e) instead:
+    - "AA alkaline ~2500 mAh at 20 mA discharge"
+    - "9 V battery ~500 mAh capacity"
+    - "Lead-acid ~30–40 Wh/kg"
+    - "Li-ion ~150 Wh/kg" or any per-chemistry energy-density spec
+    - "starter battery R_int rises 2–3× at −20 °C"
+    - "alkaline lose a few %/yr; NiMH 20–30 %/mo; Li-ion ~3 %/mo" (self-discharge rates)
+    - per-chemistry voltage ranges (Li-ion 3.0–4.2 V; Li/SOCl₂ 3.6 V; etc.)
+
+    B&F still applies to: standard reduction potentials, the Nernst equation derivation, electrode-kinetics arguments, the Helmholtz double-layer story, and the aqueous-electrolysis ceiling (~2 V from water decomposition). When a single sentence asserts both a fundamentals claim (B&F-appropriate) and a product spec (Linden-appropriate), cite both — e.g. "the upper bound for stable aqueous chemistries is ~2 V <Linden><B&F>".
+
+    For modern-industry claims that *neither* source covers — Tesla pack cell counts, iPhone gas-gauge implementation, BNEF battery price curves, Hornsdale installation specifics, IEEE 1547 disconnect timing — the right move is usually **soften and drop the cite**, not chase down a fresh source. Only escalate to "add a new entry to `src/lib/sources.ts`" when the claim is load-bearing and softening would gut the paragraph.
+
 ## Your Workflow
 
 1. **Identify scope.** Determine which file(s) the user wants fact-checked. If unclear, ask. Default to the most recently edited chapter/lab file unless told otherwise.

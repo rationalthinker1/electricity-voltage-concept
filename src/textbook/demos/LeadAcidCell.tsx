@@ -1,5 +1,5 @@
 /**
- * Demo 19.1 — Lead-acid cell (Planté 1859)
+ * Demo 26.1 — Lead-acid cell (Planté 1859)
  *
  * Two lead plates in dilute H₂SO₄. Discharge:
  *   Pb + PbO₂ + 2 H₂SO₄ → 2 PbSO₄ + 2 H₂O
@@ -69,9 +69,11 @@ export function LeadAcidCellDemo({ figure }: Props) {
       const posX = jarX + jarW / 2 + gap / 2;
       const plateY = jarY + 14;
       const plateH = jarH - 22;
-      ctx.fillStyle = '#7d8082';
+      // Pb metallic plate (lighter grey) and PbO₂ plate (darker), derived from
+      // theme tokens so light/dark mode picks up the swap.
+      ctx.fillStyle = withAlpha(colors.textDim, 0.7);
       ctx.fillRect(negX, plateY, plateW, plateH);
-      ctx.fillStyle = '#3e3232';
+      ctx.fillStyle = withAlpha(colors.text, 0.18);
       ctx.fillRect(posX, plateY, plateW, plateH);
       const dischargeFrac = 1 - s.soc;
       if (dischargeFrac > 0.02) {

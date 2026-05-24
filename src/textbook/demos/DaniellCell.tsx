@@ -1,5 +1,5 @@
 /**
- * Demo 18.2 — Daniell cell (1836)
+ * Demo 25.2 — Daniell cell (1836)
  *
  * Zn rod in ZnSO₄ / Cu rod in CuSO₄, porous separator between them.
  * Reader connects a load resistor; current flows; Zn rod erodes, Cu rod

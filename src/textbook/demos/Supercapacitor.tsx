@@ -1,5 +1,5 @@
 /**
- * Demo 19.4 — Supercapacitor (electric double-layer)
+ * Demo 26.4 — Supercapacitor (electric double-layer)
  *
  * A linear charge / discharge curve through a constant-current source.
  * Unlike a battery — which holds roughly flat voltage during discharge —

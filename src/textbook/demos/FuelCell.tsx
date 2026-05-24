@@ -1,5 +1,5 @@
 /**
- * Demo 19.5 — PEM fuel cell
+ * Demo 26.5 — PEM fuel cell
  *
  * H₂ feeds the anode; O₂ feeds the cathode; protons cross the Nafion
  * membrane; electrons take the external circuit; water is the product.
@@ -15,6 +15,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/co
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { drawAxes, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -67,7 +68,7 @@ export function FuelCellDemo({ figure }: Props) {
       ctx.restore();
       drawLabel(ctx, { text: 'H₂', x: x + flowW / 2, y: cellY + 4, color: colors.blue, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       x += flowW;
-      ctx.fillStyle = '#444';
+      ctx.fillStyle = withAlpha(colors.textDim, 0.35);
       ctx.fillRect(x, cellY, anodeW, cellH);
       drawLabel(ctx, { text: 'anode', x: x + anodeW / 2, y: cellY + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       x += anodeW;
@@ -97,7 +98,7 @@ export function FuelCellDemo({ figure }: Props) {
       }
       x += membraneW;
       ctx.restore();
-      ctx.fillStyle = '#444';
+      ctx.fillStyle = withAlpha(colors.textDim, 0.35);
       ctx.fillRect(x, cellY, cathodeW, cellH);
       drawLabel(ctx, { text: 'cathode', x: x + cathodeW / 2, y: cellY + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       x += cathodeW;

@@ -1,5 +1,5 @@
 /**
- * Demo 19.2 — Lithium-ion intercalation
+ * Demo 26.2 — Lithium-ion intercalation
  *
  * Atomic-scale Li-ion cell: graphite anode on the left, LiCoO₂-style cathode
  * on the right, electrolyte in between. As SOC drops from 100% to 0%, the
@@ -53,11 +53,13 @@ export function LiIonIntercalationDemo({ figure }: Props) {
         topY,
         anodeW,
         colH,
-        '#3a3a3a',
+        withAlpha(colors.text, 0.22),
         withAlpha(colors.textDim, 0.7),
         'graphite',
       );
-      drawLayers(ctx, cathodeX, topY, anodeW, colH, '#2a1a1a', 'rgba(184,115,51,0.8)', 'LiCoO₂');
+      // LiCoO₂ rendered as a custom warm-brown (intentional off-palette mineral colour)
+      // against a dark theme-aware backing.
+      drawLayers(ctx, cathodeX, topY, anodeW, colH, withAlpha(colors.text, 0.16), 'rgba(184,115,51,0.8)', 'LiCoO₂');
       ctx.save();
       ctx.globalAlpha = 0.06;
       ctx.fillStyle = colors.accent;

@@ -1,5 +1,5 @@
 /**
- * Demo 18.5 — Standard half-cell potentials
+ * Demo 25.3 — Standard half-cell potentials
  *
  * Pick any two half-cells from a tabulated list. The cell potential is
  * E°_cell = E°_cathode − E°_anode (anode = more negative; cathode = more
