@@ -22,9 +22,9 @@
  *   (b) the small leakage flux closing through air around each winding
  * geometric — you can see one path vs the other directly.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
@@ -32,7 +32,9 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { project, v3, type Point2D, type Vec3 } from '@/lib/projection3d';
-import { createOrbitScene } from '@/lib/useOrbitScene';
+import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure: string;
@@ -123,6 +125,124 @@ function helixAroundLeg(
   return out;
 }
 
+// ─── module-level drawing helpers (explicit ctx/cam/W/H params) ─────────────
+
+// Project a polyline of 3D points to screen, returning only the segments
+// where both ends are in front of the camera. Returns an array of
+// contiguous 2D polylines (one per visible segment-run).
+function projectPolyline(
+  pts: Vec3[],
+  cam: OrbitScene['cam'],
+  W: number,
+  H: number,
+): Point2D[][] {
+  const segs: Point2D[][] = [];
+  let cur: Point2D[] = [];
+  for (const p of pts) {
+    const sp = project(p, cam, W, H);
+    if (sp.depth <= 0) {
+      if (cur.length > 1) segs.push(cur);
+      cur = [];
+    } else {
+      cur.push(sp);
+    }
+  }
+  if (cur.length > 1) segs.push(cur);
+  return segs;
+}
+
+function drawArrow2D(
+  ctx: CanvasRenderingContext2D,
+  p1: Point2D,
+  p2: Point2D,
+  color: string,
+  lineWidth: number,
+  glow: boolean,
+) {
+  if (glow) {
+    drawGlowPath(ctx, [p1, p2], {
+      color,
+      lineWidth,
+      glowColor: color.replace(/[\d.]+\)$/, '0.30)'),
+      glowWidth: lineWidth + 5,
+    });
+  } else {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
+    ctx.beginPath();
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.stroke();
+  }
+  const dx = p2.x - p1.x,
+    dy = p2.y - p1.y;
+  const len = Math.hypot(dx, dy);
+  if (len < 3) return;
+  const ux = dx / len,
+    uy = dy / len;
+  const head = glow ? 8 : 6;
+  const half = glow ? 4 : 3;
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(p2.x, p2.y);
+  ctx.lineTo(p2.x - ux * head - uy * half, p2.y - uy * head + ux * half);
+  ctx.lineTo(p2.x - ux * head + uy * half, p2.y - uy * head - ux * half);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawArrow3D(
+  ctx: CanvasRenderingContext2D,
+  cam: OrbitScene['cam'],
+  W: number,
+  H: number,
+  from: Vec3,
+  to: Vec3,
+  color: string,
+  lineWidth: number,
+  glow: boolean,
+) {
+  const p1 = project(from, cam, W, H);
+  const p2 = project(to, cam, W, H);
+  if (p1.depth <= 0 || p2.depth <= 0) return;
+  drawArrow2D(ctx, p1, p2, color, lineWidth, glow);
+}
+
+// Draw one lamination plate: outer rectangle minus inner window, at fixed z.
+function drawLamination(
+  ctx: CanvasRenderingContext2D,
+  cam: OrbitScene['cam'],
+  W: number,
+  H: number,
+  z: number,
+  depthAvg: number,
+) {
+  const fade = Math.max(0.18, Math.min(0.85, (cam.distance + 1.5 - depthAvg) / 3.5));
+  const outer = corePolygonOuter();
+  const inner = corePolygonInner();
+  const outerScreen = outer.map((p) => project(v3(p.x, p.y, z), cam, W, H));
+  const innerScreen = inner.map((p) => project(v3(p.x, p.y, z), cam, W, H));
+  if (outerScreen.some((p) => p.depth <= 0)) return;
+
+  // Filled silhouette: outer rect with inner rect punched out (even-odd).
+  ctx.save();
+  ctx.fillStyle = `rgba(60,58,52,${(0.55 * fade).toFixed(3)})`;
+  ctx.strokeStyle = `rgba(180,176,164,${(0.55 * fade).toFixed(3)})`;
+  ctx.lineWidth = 0.8;
+  ctx.beginPath();
+  // Outer ring
+  ctx.moveTo(outerScreen[0]!.x, outerScreen[0]!.y);
+  for (let i = 1; i < 4; i++) ctx.lineTo(outerScreen[i]!.x, outerScreen[i]!.y);
+  ctx.closePath();
+  // Inner window (reverse winding for even-odd hole)
+  ctx.moveTo(innerScreen[0]!.x, innerScreen[0]!.y);
+  for (let i = 3; i >= 1; i--) ctx.lineTo(innerScreen[i]!.x, innerScreen[i]!.y);
+  ctx.closePath();
+  ctx.fill('evenodd');
+  ctx.stroke();
+  ctx.restore();
+}
+
 export function TransformerFlux3DDemo({ figure }: Props) {
   const [Ip, setIp] = useState(2.0);
   const [ratioIdx, setRatioIdx] = useState(1); // 2:1 default
@@ -143,124 +263,12 @@ export function TransformerFlux3DDemo({ figure }: Props) {
     return { Vp, Vs, phi, k };
   }, [Ip, Np, Ns, showLeakage]);
 
-  const stateRef = useRef({ Ip, Np, Ns, showLeakage, showFlux, showSecCurrent });
-  useEffect(() => {
-    stateRef.current = { Ip, Np, Ns, showLeakage, showFlux, showSecCurrent };
-  }, [Ip, Np, Ns, showLeakage, showFlux, showSecCurrent]);
+  const stateRef = useSimState({ Ip, Np, Ns, showLeakage, showFlux, showSecCurrent });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H, canvas } = info;
-    let raf = 0;
-    const scene = createOrbitScene(canvas, {
-      yaw: 0.55,
-      pitch: 0.22,
-      distance: 7.5,
-      fov: Math.PI / 4,
-    });
-    const cam = scene.cam;
-    let t = 0;
-    let last = performance.now();
-
-    // Project a polyline of 3D points to screen, returning only the segments
-    // where both ends are in front of the camera. Returns an array of
-    // contiguous 2D polylines (one per visible segment-run).
-    function projectPolyline(pts: Vec3[]): Point2D[][] {
-      const segs: Point2D[][] = [];
-      let cur: Point2D[] = [];
-      for (const p of pts) {
-        const sp = project(p, cam, W, H);
-        if (sp.depth <= 0) {
-          if (cur.length > 1) segs.push(cur);
-          cur = [];
-        } else {
-          cur.push(sp);
-        }
-      }
-      if (cur.length > 1) segs.push(cur);
-      return segs;
-    }
-
-    function drawArrow2D(
-      p1: Point2D,
-      p2: Point2D,
-      color: string,
-      lineWidth: number,
-      glow: boolean,
-    ) {
-      if (glow) {
-        drawGlowPath(ctx, [p1, p2], {
-          color,
-          lineWidth,
-          glowColor: color.replace(/[\d.]+\)$/, '0.30)'),
-          glowWidth: lineWidth + 5,
-        });
-      } else {
-        ctx.strokeStyle = color;
-        ctx.lineWidth = lineWidth;
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.stroke();
-      }
-      const dx = p2.x - p1.x,
-        dy = p2.y - p1.y;
-      const len = Math.hypot(dx, dy);
-      if (len < 3) return;
-      const ux = dx / len,
-        uy = dy / len;
-      const head = glow ? 8 : 6;
-      const half = glow ? 4 : 3;
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.moveTo(p2.x, p2.y);
-      ctx.lineTo(p2.x - ux * head - uy * half, p2.y - uy * head + ux * half);
-      ctx.lineTo(p2.x - ux * head + uy * half, p2.y - uy * head - ux * half);
-      ctx.closePath();
-      ctx.fill();
-    }
-
-    function drawArrow3D(from: Vec3, to: Vec3, color: string, lineWidth: number, glow: boolean) {
-      const p1 = project(from, cam, W, H);
-      const p2 = project(to, cam, W, H);
-      if (p1.depth <= 0 || p2.depth <= 0) return;
-      drawArrow2D(p1, p2, color, lineWidth, glow);
-    }
-
-    // Draw one lamination plate: outer rectangle minus inner window, at fixed z.
-    function drawLamination(z: number, depthAvg: number) {
-      const fade = Math.max(0.18, Math.min(0.85, (cam.distance + 1.5 - depthAvg) / 3.5));
-      const outer = corePolygonOuter();
-      const inner = corePolygonInner();
-      const outerScreen = outer.map((p) => project(v3(p.x, p.y, z), cam, W, H));
-      const innerScreen = inner.map((p) => project(v3(p.x, p.y, z), cam, W, H));
-      if (outerScreen.some((p) => p.depth <= 0)) return;
-
-      // Filled silhouette: outer rect with inner rect punched out (even-odd).
-      ctx.save();
-      ctx.fillStyle = `rgba(60,58,52,${(0.55 * fade).toFixed(3)})`;
-      ctx.strokeStyle = `rgba(180,176,164,${(0.55 * fade).toFixed(3)})`;
-      ctx.lineWidth = 0.8;
-      ctx.beginPath();
-      // Outer ring
-      ctx.moveTo(outerScreen[0]!.x, outerScreen[0]!.y);
-      for (let i = 1; i < 4; i++) ctx.lineTo(outerScreen[i]!.x, outerScreen[i]!.y);
-      ctx.closePath();
-      // Inner window (reverse winding for even-odd hole)
-      ctx.moveTo(innerScreen[0]!.x, innerScreen[0]!.y);
-      for (let i = 3; i >= 1; i--) ctx.lineTo(innerScreen[i]!.x, innerScreen[i]!.y);
-      ctx.closePath();
-      ctx.fill('evenodd');
-      ctx.stroke();
-      ctx.restore();
-    }
-
-    function draw() {
-      const now = performance.now();
-      let dt = (now - last) / 1000;
-      last = now;
-      if (dt > 0.1) dt = 0.1;
-      t += dt;
-      const st = stateRef.current;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w: W, h: H }, st, _dt, simTime, scene: OrbitScene) => {
+      const cam = scene.cam;
 
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
@@ -274,7 +282,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
       const lamOrder = zs
         .map((z) => ({ z, d: project(v3(0, 0, z), cam, W, H).depth }))
         .sort((a, b) => b.d - a.d);
-      for (const lam of lamOrder) drawLamination(lam.z, lam.d);
+      for (const lam of lamOrder) drawLamination(ctx, cam, W, H, lam.z, lam.d);
 
       // ── 2) flux loop through the iron ──
       if (st.showFlux) {
@@ -313,7 +321,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         // local tangent of the closed loop (left up → top right →
         // right down → bottom left).
         const segs = fluxPts.length;
-        const phaseShift = (t * 0.6) % 1;
+        const phaseShift = (simTime * 0.6) % 1;
         for (let i = 0; i < segs; i++) {
           const fp = fluxPts[i]!;
           // Local tangent.
@@ -343,7 +351,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
           const alpha = (0.45 + 0.5 * intensity) * twinkle;
           const from = v3(fp.x - (tx * arrowLen) / 2, fp.y - (ty * arrowLen) / 2, fp.z);
           const to = v3(fp.x + (tx * arrowLen) / 2, fp.y + (ty * arrowLen) / 2, fp.z);
-          drawArrow3D(from, to, withAlpha(getCanvasColors().accent, alpha), 2.0, true);
+          drawArrow3D(ctx, cam, W, H, from, to, withAlpha(getCanvasColors().accent, alpha), 2.0, true);
         }
 
         // Φ label near the top bar.
@@ -356,7 +364,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
 
       // ── 3) primary winding (helix around left leg) ──
       const primaryPts = helixAroundLeg(LEG_LEFT_X, st.Np, PRIMARY_HELIX_HEIGHT, 36);
-      for (const segPath of projectPolyline(primaryPts)) {
+      for (const segPath of projectPolyline(primaryPts, cam, W, H)) {
         drawGlowPath(ctx, segPath, {
           color: withAlpha(getCanvasColors().pink, 0.92),
           lineWidth: 1.7,
@@ -373,7 +381,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         36,
         Math.PI / 4,
       );
-      for (const segPath of projectPolyline(secondaryPts)) {
+      for (const segPath of projectPolyline(secondaryPts, cam, W, H)) {
         drawGlowPath(ctx, segPath, {
           color: withAlpha(getCanvasColors().blue, 0.92),
           lineWidth: 1.7,
@@ -395,7 +403,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         // other side."
         const packets = 3;
         for (let k = 0; k < packets; k++) {
-          const base = (t * 0.18 + k / packets) % 1;
+          const base = (simTime * 0.18 + k / packets) % 1;
           // Sample a sub-stretch of ~7% of the helix as one packet.
           const lo = Math.max(0, base - 0.035);
           const hi = Math.min(1, base + 0.035);
@@ -403,7 +411,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
           const iHi = Math.ceil(hi * (secondaryPts.length - 1));
           const slice = secondaryPts.slice(iLo, iHi + 1);
           if (slice.length < 2) continue;
-          for (const segPath of projectPolyline(slice)) {
+          for (const segPath of projectPolyline(slice, cam, W, H)) {
             drawGlowPath(ctx, segPath, {
               color: withAlpha(getCanvasColors().accent, 0.85),
               lineWidth: 2.4,
@@ -472,7 +480,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
               arc.push(v3(ax, ay, 0));
             }
             const alpha = 0.38 + 0.25 * intensity;
-            for (const segPath of projectPolyline(arc)) {
+            for (const segPath of projectPolyline(arc, cam, W, H)) {
               drawGlowPath(ctx, segPath, {
                 color: withAlpha(getCanvasColors().teal, alpha),
                 lineWidth: 1.4,
@@ -524,16 +532,18 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         ctx.fillStyle = getCanvasColors().accent;
         drawLabel(ctx, { text: 'Φ through iron', x: W - 12, y: 44 });
       }
-
-      raf = requestAnimationFrame(draw);
-    }
-
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      scene.dispose();
-    };
-  }, []);
+    },
+    [],
+    (info) => {
+      const scene = createOrbitScene(info.canvas, {
+        yaw: 0.55,
+        pitch: 0.22,
+        distance: 7.5,
+        fov: Math.PI / 4,
+      });
+      return { context: scene, cleanup: () => scene.dispose() };
+    },
+  );
 
   return (
     <Demo

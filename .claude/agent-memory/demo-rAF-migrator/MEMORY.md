@@ -1,0 +1,1 @@
+- [Helper closure hoisting](project_helper-closure-hoisting.md) — hoist inner drawing helpers to module scope with explicit ctx/cam/W/H params when migrating demos with setup-scope helper closures to useSimLoop

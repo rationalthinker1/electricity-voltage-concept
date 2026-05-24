@@ -886,7 +886,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'mohan-undeland-robbins-2003',
       'erickson-maksimovic-2020',
       'horowitz-hill-2015',
-      'griffiths-2017',
+      'kundur-1994-power-stability',
       'codata-2018',
     ],
     punchline:
@@ -999,13 +999,18 @@ export const CHAPTERS: ChapterEntry[] = [
     subtitle: 'Bus bars, breakers, and the geometry of safety.',
     blurb:
       'The main service panel is just two bus bars, a neutral bar, a ground bar, and a stack of breakers — yet it encodes every safety rule for the building. Why two hots are 180° out of phase, how a 240 V breaker straddles both bus stabs, what AFCI / GFCI / standard breakers detect, and the bonding/grounding logic that keeps fault current finding the panel rather than you.',
-    relatedLabs: ['ohms-law', 'joule', 'resistance'],
+    relatedLabs: ['ohms-law', 'joule', 'resistance', 'house-wiring'],
     sources: [
       'nec-2023',
       'nema-ab-1',
       'ul-489',
+      'nfpa-70e-2024',
+      'iec-60479-2018',
+      'dalziel-1956',
+      'awg-table-nec',
       'square-d-qo-datasheet',
       'eaton-br-datasheet',
+      'cpsc-fpe-stablok-1983',
       'codata-2018',
     ],
     punchline:
@@ -1014,7 +1019,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'Identify every component inside a residential service panel.',
       'Explain why a 240 V breaker straddles both bus stabs.',
       'Distinguish the trip mechanisms of standard, GFCI, and AFCI breakers.',
-      'Trace a fault current from a short-circuited appliance back to the panel and out through the ground rod.',
+      'Trace a fault current from a short-circuited appliance through the equipment-grounding path, bonding jumper, service neutral, and transformer.',
     ],
     timeToRead: 30,
     prereqs: ['house-grid-arrives'],
@@ -1028,7 +1033,14 @@ export const CHAPTERS: ChapterEntry[] = [
     blurb:
       'A branch circuit is a length of wire from a breaker to a string of outlets and back. The breaker amperage, the conductor gauge, the conduit fill, and the wire insulation are all chosen together — pick one wrong and the wire melts before the breaker trips. The full chain: ampacity tables, NM-B/UF-B/THHN, voltage drop over a long run, and why kitchens want their own 20 A circuit.',
     relatedLabs: ['ohms-law', 'resistance', 'joule'],
-    sources: ['nec-2023', 'nec-2017-aluminum', 'codata-2018', 'awg-table-nec', 'nfpa-70e-2024'],
+    sources: [
+      'nec-2023',
+      'ul-489',
+      'nec-2017-aluminum',
+      'codata-2018',
+      'awg-table-nec',
+      'nfpa-70e-2024',
+    ],
     punchline:
       'A branch circuit is a length of wire that has to stay cool enough not to melt while the breaker stays slow enough not to nuisance-trip.',
     objectives: [
@@ -1048,7 +1060,7 @@ export const CHAPTERS: ChapterEntry[] = [
     subtitle: 'How the wire becomes a useable outlet — and why two switches confuse everyone.',
     blurb:
       'Inside a wall box: hot, neutral, ground, and the three brass / silver / green screw colours that make sense once you see them. Single-pole switches, three-way pairs, four-way mid-loop switches, dimmers, and smart switches. Plus the NEMA receptacle family — 5-15, 5-20, 6-15, 14-30, 14-50 — and how you can read which one to use from the device that needs power.',
-    relatedLabs: ['ohms-law', 'circuit-builder'],
+    relatedLabs: ['ohms-law', 'circuit-builder', 'house-wiring'],
     sources: ['nec-2023', 'nema-wd-6', 'ul-498', 'lutron-dimmer-app-note', 'codata-2018'],
     punchline:
       'Two three-way switches at the top and bottom of a stairwell look impossible until you see the two travellers between them — then it is just a simple two-state machine.',

@@ -27,18 +27,8 @@ export function LeydenJarReplayDemo({ figure }: Props) {
   // Decay the spark visual over ~600 ms
   useEffect(() => {
     if (sparkT === 0) return;
-    let raf = 0;
-    const start = performance.now();
-    function step() {
-      const dt = (performance.now() - start) / 600;
-      if (dt >= 1) {
-        setSparkT(0);
-        return;
-      }
-      raf = requestAnimationFrame(step);
-    }
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
+    const id = window.setTimeout(() => setSparkT(0), 600);
+    return () => window.clearTimeout(id);
   }, [sparkT]);
 
   const handleCharge = () => setCharge((c) => Math.min(1, c + 0.12));

@@ -43,12 +43,13 @@ const chaptersSrc = readFileSync(CHAPTERS_FILE, 'utf-8');
 const slugToNumber = {};
 const numberToSlug = {};
 
-const slugMatches = [...chaptersSrc.matchAll(/slug:\s*'([^']+)'/g)];
-const numberMatches = [...chaptersSrc.matchAll(/number:\s*(\d+)/g)];
+const chapterEntryMatches = [
+  ...chaptersSrc.matchAll(/\{\s*slug:\s*'([^']+)',\s*number:\s*(\d+),/g),
+];
 
-for (let i = 0; i < slugMatches.length; i++) {
-  const slug = slugMatches[i][1];
-  const num = parseInt(numberMatches[i][1], 10);
+for (const match of chapterEntryMatches) {
+  const slug = match[1];
+  const num = parseInt(match[2], 10);
   slugToNumber[slug] = num;
   numberToSlug[num] = slug;
 }

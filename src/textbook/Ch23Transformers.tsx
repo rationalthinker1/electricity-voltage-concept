@@ -161,7 +161,7 @@ export default function Ch23Transformers() {
         primitive.
       </p>
 
-      <TurnsRatioDemo figure="Fig. 23.2" />
+      <TurnsRatioDemo figure="Fig. 23.1" />
 
       <p className="mb-prose-3">
         Notice what the picture says about <em className="text-text italic">energy</em>. The flux in
@@ -279,7 +279,7 @@ export default function Ch23Transformers() {
         other through the turns ratio; the product — power — is conserved.
       </p>
 
-      <TwoCoilTransformerDemo figure="Fig. 23.1" />
+      <TwoCoilTransformerDemo figure="Fig. 23.2" />
 
       <p className="mb-prose-3">
         Real transformers approach this ideal closely. A large utility power transformer runs at
@@ -610,7 +610,7 @@ export default function Ch23Transformers() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <AutotransformerDemo figure="Fig. 23.7" />
+      <AutotransformerDemo figure="Fig. 23.5" />
 
       <p className="mb-prose-3">
         For small voltage steps the saving is dramatic: a 2:1 (k = 0.5) autotransformer uses about
@@ -706,7 +706,7 @@ export default function Ch23Transformers() {
         </li>
       </ul>
 
-      <CoreLossesDemo figure="Fig. 23.5" />
+      <CoreLossesDemo figure="Fig. 23.6" />
 
       <p className="mb-prose-3">
         With the four loss mechanisms named, here is a designer's view of how the knobs interact.
@@ -715,7 +715,7 @@ export default function Ch23Transformers() {
         how the dominant loss flips from copper to core (and back) as you sweep frequency.
       </p>
 
-      <TransformerDesignerDemo figure="Fig. 23.10" />
+      <TransformerDesignerDemo figure="Fig. 23.7" />
 
       <p className="mb-prose-3">
         Adjacent to saturation lives one more practical non-ideality:{' '}
@@ -800,7 +800,7 @@ export default function Ch23Transformers() {
         short-circuit protection mechanism on the grid.
       </p>
 
-      <TransformerFlux3DDemo figure="Fig. 23.6" />
+      <TransformerFlux3DDemo figure="Fig. 23.9" />
 
       <p className="mb-prose-3">
         Finally there is the <em className="text-text italic">magnetizing current</em> — the small
@@ -844,7 +844,7 @@ export default function Ch23Transformers() {
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
 
-      <GridHierarchyDemo figure="Fig. 23.9" />
+      <GridHierarchyDemo figure="Fig. 23.10" />
 
       <p className="mb-prose-3">
         Across this whole hierarchy the total transmission and distribution losses run around 5–8 %
@@ -918,13 +918,13 @@ export default function Ch23Transformers() {
               label: 'Primary',
               value: (
                 <>
-                  ~12.47 kV (line-to-neutral on a 12.47/7.2 kV system){' '}
+                  ~7.2 kV (line-to-neutral on a 12.47/7.2 kV system; 12.47 / √3 = 7.20){' '}
                   <Cite id="grainger-power-systems-2003" in={SOURCES} />
                 </>
               ),
             },
             { label: 'Secondary', value: <>240 V centre-tapped; ±120 V to the neutral</> },
-            { label: 'Turns ratio', value: <>~52:1</> },
+            { label: 'Turns ratio', value: <>~30:1</> },
             {
               label: 'Rating',
               value: <>25 kVA typical for one home; 50–100 kVA on shared poles</>,

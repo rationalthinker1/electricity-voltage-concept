@@ -26,16 +26,18 @@
  * drags to rotate the block; the field-arrow grid and the bound-charge
  * marks ride along with the rotation.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { depthSortIndices, project, v3, type Vec3 } from '@/lib/projection3d';
-import { createOrbitScene } from '@/lib/useOrbitScene';
+import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
@@ -130,29 +132,13 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
     return { x, meanCos, P, chi_e, eps_r };
   }, [Eext, T]);
 
-  const stateRef = useRef({ Eext, T, showBound });
-  useEffect(() => {
-    stateRef.current = { Eext, T, showBound };
-  }, [Eext, T, showBound]);
+  const stateRef = useSimState({ Eext, T, showBound });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
-    const scene = createOrbitScene(canvas, {
-      yaw: 0.55,
-      pitch: 0.28,
-      distance: 6.5,
-      fov: Math.PI / 4,
-    });
+  const setup = useSimLoop<(typeof stateRef)['current'], OrbitScene>(
+    stateRef,
+    ({ ctx, w, h, colors }, state, dt, _simTime, scene) => {
     const cam = scene.cam;
-
-    let raf = 0;
-    let last = performance.now();
-
-    function draw(now: number) {
-      const dt = Math.min(0.05, (now - last) / 1000);
-      last = now;
-
-      const { Eext, T, showBound } = stateRef.current;
+      const { Eext, T, showBound } = state;
       const dipoles = dipolesRef.current;
 
       // ── Dipole dynamics ─────────────────────────────────────────────
@@ -408,15 +394,18 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
       ctx.textAlign = 'right';
       drawLabel(ctx, { text: 'p  aligned dipole', x: w - 12, y: 12, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       drawLabel(ctx, { text: 'p  scrambled (thermal)', x: w - 12, y: 28, color: 'rgba(200,195,170,0.75)', size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      scene.dispose();
-    };
-  }, []);
+    },
+    [],
+    ({ canvas }) => {
+      const scene = createOrbitScene(canvas, {
+        yaw: 0.55,
+        pitch: 0.28,
+        distance: 6.5,
+        fov: Math.PI / 4,
+      });
+      return { context: scene, cleanup: () => scene.dispose() };
+    },
+  );
 
   return (
     <Demo

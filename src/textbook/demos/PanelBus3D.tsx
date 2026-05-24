@@ -37,9 +37,9 @@
  * polarity, used here as L1's tint), blue (negative polarity, L2),
  * teal for the neutral/ground bars and the bonding jumper glow.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
@@ -47,7 +47,9 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { depthSortIndices, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
-import { createOrbitScene } from '@/lib/useOrbitScene';
+import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure: string;
@@ -139,40 +141,28 @@ export function PanelBus3DDemo({ figure }: Props) {
     return { V_L1_N, V_L2_N, V_L1_L2, I_main, I_per };
   }, [nBreakers]);
 
-  const stateRef = useRef({ nBreakers, show2Pole, showNeutral, showBond });
-  useEffect(() => {
-    stateRef.current = { nBreakers, show2Pole, showNeutral, showBond };
-  }, [nBreakers, show2Pole, showNeutral, showBond]);
+  const stateRef = useSimState({ nBreakers, show2Pole, showNeutral, showBond });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H, canvas } = info;
-    let raf = 0;
-    const scene = createOrbitScene(canvas, {
-      yaw: 0.55,
-      pitch: 0.18,
-      distance: 7.5,
-      fov: Math.PI / 4,
-    });
-    const cam = scene.cam;
-
-    // Neutral-flow dot phase for the animated routing overlay.
-    let tFlow = 0;
-
-    function draw() {
+  const setup = useSimLoop<
+    (typeof stateRef)['current'],
+    { scene: OrbitScene; tFlow: number }
+  >(
+    stateRef,
+    ({ ctx, w: W, h: H }, s, dt, _simTime, ctx0) => {
+      const cam = ctx0.scene.cam;
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
-      tFlow = (tFlow + 0.012) % 1;
+      ctx0.tFlow = (ctx0.tFlow + dt * 0.72) % 1;
 
-      const s = stateRef.current;
       const slots = makeSlots(s.nBreakers);
 
       // Choose two adjacent slots for the 2-pole 240 V breaker. We pick
-      // the FIRST pair (i, i+1) we can find with opposite phases —
+      // the first pair (i, i+1) we can find with opposite phases —
       // which is always slot 0 and slot 1 by the alternation rule, but
       // we check defensively in case future code changes the layout.
       let twoPolePair: [Slot, Slot] | null = null;
       if (s.show2Pole && slots.length >= 2) {
-        for (let i = 1; i + 1 < slots.length; i++) {
+        for (let i = 0; i + 1 < slots.length; i++) {
           if (slots[i]!.phase !== slots[i + 1]!.phase) {
             twoPolePair = [slots[i]!, slots[i + 1]!];
             break;
@@ -264,7 +254,7 @@ export function PanelBus3DDemo({ figure }: Props) {
           if (slot.index === twoPoleIdxA || slot.index === twoPoleIdxB) continue;
           items.push({
             anchor: v3(slot.breakerCx - 0.05, (slot.y + NEUTRAL_Y) / 2, 0.13),
-            draw: (c, cm, w, h) => drawNeutralRoute(c, cm, w, h, slot, tFlow),
+            draw: (c, cm, w, h) => drawNeutralRoute(c, cm, w, h, slot, ctx0.tFlow),
           });
         }
       }
@@ -284,31 +274,40 @@ export function PanelBus3DDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.9;
       ctx.fillStyle = getCanvasColors().pink;
-      drawLabel(ctx, { text: 'L1 bus', x: W - 12, y: 12 });
+      drawLabel(ctx, { text: 'L1 bus', x: W - 12, y: 12, align: 'right' });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.9;
       ctx.fillStyle = getCanvasColors().blue;
-      drawLabel(ctx, { text: 'L2 bus', x: W - 12, y: 28 });
+      drawLabel(ctx, { text: 'L2 bus', x: W - 12, y: 28, align: 'right' });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.9;
       ctx.fillStyle = getCanvasColors().teal;
-      drawLabel(ctx, { text: 'neutral · ground · bond', x: W - 12, y: 44 });
+      drawLabel(ctx, { text: 'neutral · ground · bond', x: W - 12, y: 44, align: 'right' });
       if (s.show2Pole && twoPolePair) {
         ctx.fillStyle = getCanvasColors().accent;
-        drawLabel(ctx, { text: '2-pole 240 V breaker spans L1 + L2', x: W - 12, y: 60 });
+        drawLabel(ctx, {
+          text: '2-pole 240 V breaker spans L1 + L2',
+          x: W - 12,
+          y: 60,
+          align: 'right',
+        });
       }
-
-      raf = requestAnimationFrame(draw);
       ctx.restore();
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      scene.dispose();
-    };
-  }, []);
+    },
+    [],
+    ({ canvas }) => {
+      const scene = createOrbitScene(canvas, {
+        yaw: 0.55,
+        pitch: 0.18,
+        distance: 7.5,
+        fov: Math.PI / 4,
+      });
+      // Neutral-flow dot phase for the animated routing overlay.
+      return { context: { scene, tFlow: 0 }, cleanup: () => scene.dispose() };
+    },
+  );
 
   return (
     <Demo
@@ -578,7 +577,7 @@ function drawTwoPoleBreaker(
   const half = Math.abs(a.y - b.y) / 2 + SLOT_PITCH * 0.42;
   const cz = 0.22;
   drawBox(ctx, cam, W, H, v3(0, cy, cz), 0.22, half, 0.17, {
-    fill: 'rgba(40,28,18,0.96)',
+    fill: withAlpha(getCanvasColors().surfaceHover, 0.96),
     stroke: withAlpha(getCanvasColors().accent, 0.85),
   });
   // Two phase dots, vertically aligned with the two slots they grab.
@@ -607,7 +606,7 @@ function drawTwoPoleBreaker(
 function drawMainBreaker(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number) {
   // The main disconnect — a wide 2-pole block at the head of the column.
   drawBox(ctx, cam, W, H, v3(0, MAIN_Y, 0.22), MAIN_HW, MAIN_HH, MAIN_HD, {
-    fill: 'rgba(20,20,24,0.96)',
+    fill: withAlpha(getCanvasColors().cardBgHover, 0.96),
     stroke: withAlpha(getCanvasColors().textDim, 0.75),
   });
   // Two phase dots on the handle.

@@ -16,6 +16,8 @@ import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { BranchCircuitSizingDemo } from './demos/BranchCircuitSizing';
+import { WireVoltageDropDemo } from './demos/WireVoltageDrop';
 import { getChapter } from './data/chapters';
 
 export default function Ch29HouseBranchCircuits() {
@@ -62,9 +64,10 @@ export default function Ch29HouseBranchCircuits() {
       <p className="mb-prose-3">
         Now plug a <em className="text-text italic">second</em> 1200 W heater into one of the other
         receptacles on the same circuit. Total current climbs to about{' '}
-        <strong className="text-text font-medium">20 A</strong>. The 15 A breaker tolerates a brief
-        overload but heats internally and trips within about thirty seconds — exactly as it is
-        supposed to
+        <strong className="text-text font-medium">20 A</strong>. The 15 A breaker is now in its
+        thermal trip region: it may tolerate the overload briefly, but it is no longer a legal or
+        steady operating point
+        <Cite id="ul-489" in={SOURCES} />
         <Cite id="nec-2023" in={SOURCES} />. That single scenario contains the whole rest of this
         chapter: ampacity, gauge selection, breaker coordination, voltage drop, derating for heat,
         and why your kitchen has its own circuits.
@@ -75,7 +78,7 @@ export default function Ch29HouseBranchCircuits() {
       <p className="mb-prose-3">
         Copper has a finite resistivity. Push current through it and you dissipate{' '}
         <InlineMath tex="I^{2}R" /> as heat along the whole length. The thermal limit
-        on a wire is not melting copper — copper melts at 1085 °C, which you will never see — it is
+        on a branch-circuit wire is usually not melting copper — copper melts at 1085 °C — it is
         the <strong className="text-text font-medium">insulation</strong> around the copper
         softening, charring, or igniting. Residential NM-B cable has insulation rated to 90 °C
         internally, with NEC requiring sizing to the 60 °C column because the receptacle screws and
@@ -96,11 +99,12 @@ export default function Ch29HouseBranchCircuits() {
         the resistivity of copper (≈ 1.68×10⁻⁸ Ω·m at 20 °C)
         <Cite id="codata-2018" in={SOURCES} />, and{' '}
         <InlineMath tex="A" /> is the conductor's cross-sectional area
-        (in m²). For a fixed maximum-allowable wire temperature, the cooling side scales roughly
-        with the perimeter (i.e. √A), so the allowed current scales roughly with √A. Doubling the
-        cross-section does <em className="text-text italic">not</em> double the ampacity; it raises
-        it by about <InlineMath tex="\sqrt{2}" /> for a fixed insulation
-        rating.
+        (in m²). For a rough round-wire model, surface cooling scales with perimeter
+        (<InlineMath tex="\propto \sqrt A" />), so equating heat generated to heat removed gives
+        <InlineMath tex="I^2/A \propto \sqrt A" /> and therefore{' '}
+        <InlineMath tex="I \propto A^{3/4}" />. Real ampacity tables are empirical and conservative,
+        but the key lesson survives: doubling cross-section does <em className="text-text italic">not</em>{' '}
+        double the usable current.
       </p>
       <p className="mb-prose-3">
         NEC{' '}
@@ -152,18 +156,20 @@ export default function Ch29HouseBranchCircuits() {
         <li>
           <strong className="text-text font-medium">6 AWG</strong> —{' '}
           <strong className="text-text font-medium">13.3 mm²</strong>, rated{' '}
-          <strong className="text-text font-medium">55 A</strong> in the 75 °C column (used at 50 A
-          for residential ranges), and the working gauge for full-size 50 A level-2 EV chargers and
-          small sub-feeds
+          <strong className="text-text font-medium">55 A</strong> in the 60 °C column and{' '}
+          <strong className="text-text font-medium">65 A</strong> in the 75 °C column, commonly used
+          on 50/60 A residential equipment where the termination ratings allow it
           <Cite id="awg-table-nec" in={SOURCES} />.
         </li>
       </ul>
       <p className="mb-prose-3">
-        Each step up the ladder doubles or so the cross-section and adds 5–10 A of headroom —
-        exactly the diminishing-returns shape that √A predicts. The same table extends to 500 kcmil
+        Each step up the ladder roughly doubles the cross-section and adds 5–10 A of headroom —
+        exactly the sublinear shape the heat-balance argument predicts. The same table extends to 500 kcmil
         aluminium service entrances at the top end; everything in a residential branch circuit lives
         in the bottom six rungs.
       </p>
+
+      <BranchCircuitSizingDemo figure="Fig. 29.1" />
 
       <TryIt
         tag="Try 29.1"
@@ -323,9 +329,8 @@ export default function Ch29HouseBranchCircuits() {
         >
           voltage drop
         </Term>
-        , and Article 215 of the NEC gives an informational note (i.e. a recommendation, not a hard
-        rule) that the drop on a branch circuit should be no more than 3 % of nominal, with a total
-        of 5 % including the feeder
+        , and NEC informational notes around branch-circuit and feeder sizing recommend, rather than
+        mandate, keeping branch-circuit drop near 3 % and total feeder-plus-branch drop near 5 %
         <Cite id="nec-2023" in={SOURCES} />. For 120 V circuits, 3 % is 3.6 V.
       </p>
       <p className="mb-prose-3">
@@ -369,6 +374,8 @@ export default function Ch29HouseBranchCircuits() {
         </Term>{' '}
         for a big heat-pump or EV charger is 240 V, not 120 V.
       </p>
+
+      <WireVoltageDropDemo figure="Fig. 29.2" />
 
       <Pullout>
         Sizing a branch circuit is sizing the wire first, and only then the breaker — the wire is
@@ -423,14 +430,15 @@ export default function Ch29HouseBranchCircuits() {
         The pairing rule goes one direction only. A 15 A breaker behind 12 AWG wire is fine — wasted
         copper, but perfectly safe; the breaker protects the wire even though the wire could carry
         more. A 30 A breaker behind 12 AWG is illegal under NEC Article 240, because the wire's
-        ampacity is 20 A and the breaker can hold 25 A indefinitely without tripping
+        ampacity is 20 A and the breaker is not allowed to be used as if the conductor were rated for
+        that current
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         Article 240.4(D) lists the maximum breaker rating for each small gauge as a footnote,
         calling it <em className="text-text italic">small-conductor protection</em>: 14 AWG copper
         is fixed to 15 A regardless of any ampacity table that might say otherwise, 12 AWG to 20 A,
-        10 AWG to 30 A<Cite id="nec-2023" in={SOURCES} />. The intent is to forestall exactly the
+        10 AWG to 30 A <Cite id="nec-2023" in={SOURCES} />. The intent is to forestall exactly the
         failure mode just described. Article 240 in general is the section every electrician
         memorises before anything else.
       </p>
@@ -456,10 +464,10 @@ export default function Ch29HouseBranchCircuits() {
             <p className="mb-prose-1 last:mb-0">
               14 AWG copper is rated <strong className="text-text font-medium">15 A</strong> by NEC
               Article 240.4(D)
-              <Cite id="awg-table-nec" in={SOURCES} />. A 20 A breaker can hold up to ~25 A
-              indefinitely without tripping, so the wire can dissipate ~I²R well past its insulation
-              rating before the breaker intervenes. The insulation softens, eventually the conductor
-              shorts.
+              <Cite id="awg-table-nec" in={SOURCES} />. A 20 A breaker is not calibrated to protect
+              14 AWG insulation as a continuous load limit, so the wire can dissipate I²R heat beyond
+              its permitted ampacity before the breaker intervenes. The insulation softens; eventually
+              the conductor can short.
             </p>
             <p className="mb-prose-1 last:mb-0">
               Fix: swap the 20 A breaker for a 15 A breaker (cheap and immediate), or — if the loads
@@ -489,10 +497,10 @@ export default function Ch29HouseBranchCircuits() {
         >
           aluminium
         </Term>{' '}
-        is common at every gauge above about 6 AWG. The service-entrance feeders coming from a
-        pole-top transformer into a meter base are almost always 4/0 AWG aluminium triplex; the feed
-        from the meter base into a 200 A panel is often 2/0 aluminium SER. The reason is price —
-        aluminium is roughly 30 % cheaper for the same ampacity at equivalent gauge
+        is common at larger feeder and service sizes. A 200 A dwelling service commonly uses large
+        aluminium service-entrance conductors such as 4/0 aluminium, depending on the installation
+        method and local utility practice. The reason is price and weight: aluminium gives the needed
+        ampacity with less cost and easier handling than an equivalent copper service conductor
         <Cite id="nec-2017-aluminum" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -517,27 +525,25 @@ export default function Ch29HouseBranchCircuits() {
         <Cite id="nec-2017-aluminum" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        The fix that emerged in the late 1970s was{' '}
+        One partial device-level response that emerged in the late 1970s was{' '}
         <Term
           def={
             <>
               <strong className="text-text font-medium">CO/ALR</strong> — Copper / Aluminium
               Revised, the UL-listing designation for switches and receptacles certified safe for
-              direct connection to solid aluminium wire. The CO/ALR receptacle screw uses a specific
-              clamping geometry and corrosion-resistant plating that holds the joint tight through
-              thermal cycling.
+              direct connection to solid aluminium wire. CO/ALR devices improve the terminal
+              geometry, but CPSC does not treat device replacement by itself as the preferred
+              permanent repair for an existing aluminium-wired home.
             </>
           }
         >
           CO/ALR
         </Term>
-        -rated devices: switches and receptacles with screw terminations specifically engineered for
-        aluminium's thermal and creep behaviour, certified by UL with the CO/ALR mark
-        <Cite id="nec-2017-aluminum" in={SOURCES} />. Modern practice for legacy aluminium branch
-        circuits is either to replace all the devices with CO/ALR, or to pigtail every connection: a
-        short copper tail spliced to the aluminium with a specifically-rated connector (typically an
-        AlumiConn or Ideal Twister Al/Cu) and an antioxidant compound, with the device then landed
-        on the copper.
+        -rated devices: switches and receptacles with screw terminations engineered for aluminium's
+        thermal and creep behaviour. CPSC's repair guidance is stricter: full rewiring, COPALUM
+        crimps, or AlumiConn-style pigtails are the preferred permanent repairs; ordinary twist-on
+        copper/aluminium splices and device swaps alone are not equivalent
+        <Cite id="nec-2017-aluminum" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         Modern aluminium service entrances are well-behaved precisely because the failure mode was
@@ -567,33 +573,36 @@ export default function Ch29HouseBranchCircuits() {
         </Term>
         , each a 20 A circuit on 12 AWG, dedicated to the receptacles in the kitchen, dining area,
         pantry, and breakfast room
-        <Cite id="nec-2023" in={SOURCES} />. The countertop receptacle requirement of 210.52(C) —
-        every wall space 600 mm or wider gets a receptacle within 600 mm of any point along the
-        counter — distributes those circuits across the room so that no two adjacent receptacles
-        share a single breaker.
+        <Cite id="nec-2023" in={SOURCES} />. The countertop receptacle requirement of 210.52(C)
+        keeps receptacles close enough that no point along a qualifying countertop wall line is more
+        than 600 mm from one. It does not guarantee adjacent receptacles are on different breakers;
+        the installer decides how to distribute the two required small-appliance circuits.
       </p>
       <p className="mb-prose-3">
         The arithmetic justifies the rule. Kitchen loads are intermittent but punishing: a typical
         toaster pulls ~1100 W, a microwave 1200 W, a coffee maker 1100 W, an electric kettle 1500 W.
         Any two of those run simultaneously on a single 15 A (1800 W) circuit will trip the breaker;
         even on a 20 A (2400 W) circuit, the margin is thin. Two 20 A circuits give the kitchen 4800
-        W of total budget, and the redundancy means a tripped breaker on one circuit does not dark
+        W of total budget, and the redundancy means a tripped breaker on one circuit does not black
         out the whole room.
       </p>
       <p className="mb-prose-3">
         Article 210.11(C)(2) adds a dedicated 20 A laundry-room circuit; 210.11(C)(3) adds a
         dedicated 20 A bathroom-receptacle circuit (one shared circuit can serve all bathrooms, or
         each bathroom can have its own — both are NEC-legal)
-        <Cite id="nec-2023" in={SOURCES} />. Garages and unfinished basements similarly require a
-        dedicated 20 A circuit with{' '}
+        <Cite id="nec-2023" in={SOURCES} />. Garages require at least one 20 A receptacle branch
+        circuit, and unfinished basements require GFCI protection for receptacles in the locations
+        the NEC calls out. Both spaces are treated as higher-risk than a bedroom circuit, but the
+        requirements are not identical{' '}
         <Term
           def={
             <>
               <strong className="text-text font-medium">GFCI</strong> — Ground-Fault Circuit
               Interrupter; a device that trips when the current in the hot does not match the
               current returning on the neutral, indicating leakage to ground (often through a
-              person). Trip threshold is 5 mA with a 25 ms response. Required at every wet-area and
-              outdoor receptacle.
+              person). Class A protection trips around the 4-6 mA range, with clearing time depending
+              on fault current and the device standard. Required at many wet-area and outdoor
+              receptacles.
             </>
           }
         >
@@ -676,10 +685,10 @@ export default function Ch29HouseBranchCircuits() {
         exactly to engineering-relevant numbers. A level-2 EVSE rated to charge at{' '}
         <strong className="text-text font-medium">32 A continuous</strong> requires the circuit be
         rated at no less than 32 / 0.80 = <strong className="text-text font-medium">40 A</strong>. A
-        40 A circuit on 8 AWG copper is the resulting install. Step up to a 48 A EVSE — the largest
-        that fits without going to a 14-50 receptacle — and you need a 60 A circuit on 6 AWG. Step
-        up again to a 50 A continuous charger (rare in residential) and you need a 63 A circuit,
-        which doesn't exist as a stock size, so the answer is 80 A. Every step up the EVSE ladder
+        40 A circuit on 8 AWG copper is the resulting install. Step up to a 48 A EVSE and you need a
+        60 A hardwired circuit on 6 AWG. Step up again to a 50 A continuous charger (rare in
+        residential) and the minimum is 62.5 A, so the next standard breaker size is 70 A when the
+        equipment and conductor terminations are rated for it. Every step up the EVSE ladder
         corresponds to a step up the wire ladder, mediated by the 80 % rule
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
@@ -783,7 +792,7 @@ export default function Ch29HouseBranchCircuits() {
               label: 'Original load (1965)',
               value: (
                 <>
-                  ~5 kW peak: lights, fridge, TV, vacuum <Cite id="nec-2023" in={SOURCES} />
+                  Assumed example: ~5 kW peak for lights, fridge, TV, vacuum
                 </>
               ),
             },
@@ -791,7 +800,7 @@ export default function Ch29HouseBranchCircuits() {
               label: 'Modern load with EV + heat pump',
               value: (
                 <>
-                  ~18 kW peak <Cite id="nec-2023" in={SOURCES} />
+                  Assumed example: ~18 kW peak after EV + heat-pump loads
                 </>
               ),
             },
@@ -948,7 +957,7 @@ export default function Ch29HouseBranchCircuits() {
               label: 'Welder load',
               value: (
                 <>
-                  25 A intermittent at 240 V <Cite id="nec-2023" in={SOURCES} />
+                  Assumed example: 25 A intermittent at 240 V
                 </>
               ),
             },
@@ -956,8 +965,7 @@ export default function Ch29HouseBranchCircuits() {
               label: 'One-way run length',
               value: (
                 <>
-                  30 m (panel to far end of basement workshop){' '}
-                  <Cite id="codata-2018" in={SOURCES} />
+                  Assumed example: 30 m panel-to-workshop run
                 </>
               ),
             },
@@ -973,7 +981,7 @@ export default function Ch29HouseBranchCircuits() {
               label: 'Gauge selected for &lt;3 % drop',
               value: (
                 <>
-                  8 AWG copper, ΔV ≈ 3.1 V (1.3 %) <Cite id="nec-2023" in={SOURCES} />
+                  8 AWG copper, ΔV ≈ 3.1 V (1.3 %) <Cite id="awg-table-nec" in={SOURCES} />
                 </>
               ),
             },
@@ -987,6 +995,13 @@ export default function Ch29HouseBranchCircuits() {
             sobering: 10 AWG has R<sub>per metre</sub> ≈ 3.34 mΩ/m at 75 °C, so
           </p>
           <Formula tex="\\Delta V = 2 \\cdot 25 \\cdot 0.00334 \\cdot 30 \\approx 5.0\\ \\text{V}" />
+          <p className="mb-prose-2 last:mb-0">
+            where <InlineMath tex="\Delta V" /> is the round-trip voltage drop,{' '}
+            <InlineMath tex="25\ \text{A}" /> is the welder current,{' '}
+            <InlineMath tex="0.00334\ \Omega/\text{m}" /> is the warm 10 AWG copper resistance, and{' '}
+            <InlineMath tex="30\ \text{m}" /> is the one-way run length
+            <Cite id="awg-table-nec" in={SOURCES} />.
+          </p>
           <p className="mb-prose-2 last:mb-0">
             That is <strong className="text-text font-medium">2.1 %</strong> of 240 V — within the 3
             % branch guideline, just barely. On a welder that already pulses heavily on each strike,
@@ -1055,12 +1070,12 @@ export default function Ch29HouseBranchCircuits() {
 
         <FAQItem q="What's the difference between 14 AWG stranded and 14 AWG solid for branch wiring?">
           <p>
-            Inside NM-B cable, the conductors are solid copper — easier to terminate at screw
-            terminals, slightly higher per-meter ampacity at the same nominal cross-section because
-            of skin-effect considerations (negligible at 60 Hz, but the standard accounts for it)
-            <Cite id="awg-table-nec" in={SOURCES} />. Stranded copper of the same gauge has
-            marginally more electrical loss but vastly better flex life, and is used inside conduit
-            (THHN), in flexible cords (SO/SOOW), and in any application where the cable will move.
+            Inside NM-B cable, the conductors are solid copper — easy to terminate under device
+            screws and stable when stapled in framing. Stranded copper of the same gauge has similar
+            60 Hz resistance for branch-circuit purposes, but vastly better flex life, and is used
+            inside conduit (THHN), in flexible cords (SO/SOOW), and in any application where the cable
+            will move
+            <Cite id="awg-table-nec" in={SOURCES} />.
             Solid for stud bays; stranded for raceways and cords.
           </p>
         </FAQItem>
@@ -1075,7 +1090,9 @@ export default function Ch29HouseBranchCircuits() {
             aluminium of the 1965–1973 era) was terminated on standard brass receptacle screws never
             designed for aluminium's creep and oxide-growth behaviour, with the result that joints
             loosened over months, contact resistance grew, and I²R at the joint compounded the
-            failure. CO/ALR devices and antioxidant compound retroactively fix the small-gauge case.
+            failure. CPSC treats COPALUM crimps, AlumiConn-style pigtails, or full rewiring as the
+            permanent repair paths; CO/ALR device replacement alone is not the same level of remedy
+            <Cite id="nec-2017-aluminum" in={SOURCES} />.
           </p>
         </FAQItem>
 
@@ -1085,10 +1102,10 @@ export default function Ch29HouseBranchCircuits() {
             <Cite id="nec-2023" in={SOURCES} />. NEC 200.7(C)(1) allows the white insulated
             conductor in a multi-conductor cable to be re-identified as a hot if and only if it is
             permanently marked with coloured tape or paint at every termination — typically black,
-            sometimes red. The neutral function on a 240 V appliance that needs no neutral (e.g. a
-            baseboard heater) is then satisfied by the equipment grounding conductor for fault
-            clearing only. Many modern 240 V appliances (a dryer, a range) do need a neutral for 120
-            V accessory loads inside the appliance, in which case 12-2 with ground is insufficient
+            sometimes red. A pure 240 V load such as a baseboard heater has no neutral load current;
+            the equipment grounding conductor remains only a fault-clearing path. Many modern 240 V
+            appliances (a dryer, a range) do need a neutral for 120 V accessory loads inside the
+            appliance, in which case 12-2 with ground is insufficient
             and you need 12-3 with ground.
           </p>
         </FAQItem>
@@ -1113,8 +1130,8 @@ export default function Ch29HouseBranchCircuits() {
             The EGC's job is to carry fault current long enough for the breaker to trip —
             milliseconds, not hours. NEC Table 250.122 sizes the EGC based on the upstream
             overcurrent device, not the load current it normally carries (which is zero)
-            <Cite id="nec-2023" in={SOURCES} />. For a 15 or 20 A circuit the EGC can be 14 AWG; for
-            a 60 A circuit the EGC must be 10 AWG. The thermal mass of a small conductor is enough
+            <Cite id="nec-2023" in={SOURCES} />. For a 15 A circuit the copper EGC can be 14 AWG; for
+            a 20 A circuit it is 12 AWG, and for a 60 A circuit it must be 10 AWG. The thermal mass of a small conductor is enough
             to carry hundreds of amperes of fault current for the few milliseconds it takes the
             breaker to clear, so the gauge can be smaller than the hot conductors carrying the
             steady load.
@@ -1182,8 +1199,8 @@ export default function Ch29HouseBranchCircuits() {
           <p>
             GFCIs (Ground-Fault Circuit Interrupters) detect leakage current to ground — typically a
             person completing a circuit between hot and earth — by comparing the current in the hot
-            to the current returning on the neutral and tripping at any mismatch greater than 5 mA
-            within roughly 25 ms
+            to the current returning on the neutral and tripping when the residual current reaches
+            the Class A trip range, roughly 4-6 mA
             <Cite id="nec-2023" in={SOURCES} />. AFCIs (Arc-Fault Circuit Interrupters) listen for
             the high-frequency current signature of a parallel or series arc — a staple piercing a
             cable, a damaged extension cord — and trip before the arc ignites surrounding

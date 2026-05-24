@@ -18,9 +18,9 @@
  * The readout reports the integral of σ over the entire plane (analytic:
  * exactly -q) — a quantitative consistency check for the image construction.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
@@ -28,7 +28,9 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { add, length, normalize, project, scale, sub, v3, type Vec3 } from '@/lib/projection3d';
-import { createOrbitScene } from '@/lib/useOrbitScene';
+import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure: string;
@@ -86,24 +88,13 @@ export function ImageChargeField3DDemo({ figure }: Props) {
   const [showImage, setShowImage] = useState(false);
   const [showSigma, setShowSigma] = useState(true);
 
-  const stateRef = useRef({ q, d, showImage, showSigma });
-  useEffect(() => {
-    stateRef.current = { q, d, showImage, showSigma };
-  }, [q, d, showImage, showSigma]);
+  const stateRef = useSimState({ q, d, showImage, showSigma });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
-    const scene = createOrbitScene(canvas, {
-      yaw: 0.6,
-      pitch: 0.35,
-      distance: 9,
-      fov: Math.PI / 4,
-    });
+  const setup = useSimLoop<(typeof stateRef)['current'], OrbitScene>(
+    stateRef,
+    ({ ctx, w, h, colors }, state, _dt, _simTime, scene) => {
     const cam = scene.cam;
-    let raf = 0;
-
-    function draw() {
-      const { q, d, showImage, showSigma } = stateRef.current;
+      const { q, d, showImage, showSigma } = state;
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
@@ -335,15 +326,18 @@ export function ImageChargeField3DDemo({ figure }: Props) {
         text: 'drag to orbit',
         color: colors.textDim,
       });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      scene.dispose();
-    };
-  }, []);
+    },
+    [],
+    ({ canvas }) => {
+      const scene = createOrbitScene(canvas, {
+        yaw: 0.6,
+        pitch: 0.35,
+        distance: 9,
+        fov: Math.PI / 4,
+      });
+      return { context: scene, cleanup: () => scene.dispose() };
+    },
+  );
 
   // Analytic total induced charge: ∫σ dA = -q exactly (Griffiths §3.2).
   // We display the numerical value for the reader as a consistency check.

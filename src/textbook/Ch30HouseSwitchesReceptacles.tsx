@@ -20,6 +20,7 @@ import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { getChapter } from './data/chapters';
+import { DimmerWaveformDemo } from './demos/DimmerWaveform';
 import { ThreeWaySwitchBuilderDemo } from './demos/ThreeWaySwitchBuilder';
 
 export default function Ch30HouseSwitchesReceptacles() {
@@ -31,11 +32,11 @@ export default function Ch30HouseSwitchesReceptacles() {
       <p className="chapter-intro">
         Open a standard duplex receptacle and look at the back. Brass-coloured screws line one side,
         silver-coloured screws line the other, and a single green screw sits at the bottom. Between
-        the top pair of brass screws and the bottom pair, a small pre-broken metal tab joins them;
+        the top pair of brass screws and the bottom pair, a small pre-scored break-off tab joins them;
         the same tab exists on the silver side. Snap that tab with a pair of pliers and the
         receptacle is electrically two halves — top and bottom — that can be controlled
-        independently. The whole device is twenty grams of plastic and seven screws, and yet every
-        safety rule of residential wiring is encoded into the colours of those seven screws. Brass
+        independently. The whole device is plastic, metal stampings, and five colour-coded terminal
+        screws, and yet every safety rule of residential wiring is encoded into those colours. Brass
         means hot. Silver means neutral. Green means ground. Everything else in this chapter is just
         where those colours meet which side of which device.
       </p>
@@ -478,13 +479,14 @@ export default function Ch30HouseSwitchesReceptacles() {
         neutral side of the load is still electrically tied to the system neutral.
       </p>
       <p className="mb-prose-3">
-        That long-standing convention has one new wrinkle in the 2023 NEC. Section 404.2(C) now
+        That long-standing convention gained an important modern wrinkle when NEC 404.2(C) was added
+        in the 2011 cycle and later refined. In many new switch-box installations, the rule now
         requires that a
         <strong className="text-text font-medium">
           {' '}
-          grounded (neutral) conductor be present in every switch box
+          grounded (neutral) conductor be present in the switch box
         </strong>
-        , even when the switch itself does not use it
+        , even when the switch itself does not use it, subject to the code's listed exceptions
         <Cite id="nec-2023" in={SOURCES} />. The reason is the rising population of smart switches
         and occupancy sensors: any device that contains electronics needs a sip of standby power to
         keep its radio alive, and that standby current has to flow somewhere. Without a neutral, the
@@ -550,7 +552,8 @@ export default function Ch30HouseSwitchesReceptacles() {
       </p>
       <p className="mb-prose-3">
         Wire two three-way switches with their commons at the line and the load and their travellers
-        tied together between them, and the resulting circuit is a XOR. Call switch 1's state{' '}
+        tied together between them, and the resulting circuit behaves like an XNOR: the load is on
+        when the two switch selections match. Call switch 1's state{' '}
         <InlineMath tex="S_1 \in \{0,1\}" /> for which traveller
         it is currently pointing at, and the same for switch 2. The load is energised when the two
         switches have <em className="text-text italic">matching</em> travellers selected — both 0 or
@@ -597,7 +600,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         break the wrong leg.
       </p>
 
-      <ThreeWaySwitchBuilderDemo figure="Fig. 30.4" />
+      <ThreeWaySwitchBuilderDemo figure="Fig. 30.1" />
 
       <p className="mb-prose-3">
         For three or more switches controlling a single load — a stairwell with a switch at the top,
@@ -616,8 +619,8 @@ export default function Ch30HouseSwitchesReceptacles() {
         </Term>
         . A four-way switch has four screws and, internally, is a double-pole double-throw (DPDT)
         switch wired as a crossover: in one state it passes the two travellers straight through, in
-        the other it swaps them. Adding an N-way switch to a chain doubles the number of possible
-        configurations of the chain (2<sup>N</sup> total), and exactly half of them light the lamp.
+        the other it swaps them. Adding another four-way switch location doubles the number of
+        possible configurations of the chain, and exactly half of them light the lamp.
       </p>
 
       <TryIt
@@ -777,7 +780,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         For a leading-edge dimmer with conduction angle α (so the device fires at phase π − α and
         conducts to π), the RMS voltage delivered to a resistive load is:
       </p>
-      <Formula tex="V_{\\text{rms}} = V_{\\text{peak}} \\times \\sqrt{\\dfrac{\\alpha}{\\pi} - \\dfrac{\\sin(2\\alpha)}{2\\pi}}" />
+      <Formula tex="V_{\\text{rms}} = V_{\\text{peak}} \\times \\sqrt{\\dfrac{\\alpha}{2\\pi} - \\dfrac{\\sin(2\\alpha)}{4\\pi}}" />
       <p className="mb-prose-3">
         where <InlineMath tex="V_{\text{rms}}" /> is the root-mean-square
         voltage across the load (in volts),
@@ -788,12 +791,12 @@ export default function Ch30HouseSwitchesReceptacles() {
         radians (<InlineMath tex="0 \\le \\alpha \\le \\pi" />
         ). At
         <InlineMath tex="\\alpha = \\pi" /> (the triac is on for the entire half-cycle), the square
-        root reduces to <InlineMath tex="\\sqrt{1 - 0} = 1" />, and
-        <InlineMath tex="V_{\\text{rms}} = V_{\\text{peak}}" />, which would mean V_peak's RMS
-        equals itself — that's the dimmer fully bypassing the load. In terms of the line RMS{' '}
+        root reduces to <InlineMath tex="\\sqrt{1/2}" />, and
+        <InlineMath tex="V_{\\text{rms}} = V_{\\text{peak}}/\\sqrt{2}" /> — the ordinary line RMS
+        voltage. In terms of the line RMS{' '}
         <InlineMath tex="V_{\\text{line}} = V_{\\text{peak}}/\\sqrt{2}" />, the formula is
         equivalently{' '}
-        <InlineMath tex="V_{\\text{rms}} = V_{\\text{line}} \\times \\sqrt{2\\alpha/\\pi - \\sin(2\\alpha)/\\pi}" />
+        <InlineMath tex="V_{\\text{rms}} = V_{\\text{line}} \\times \\sqrt{\\alpha/\\pi - \\sin(2\\alpha)/(2\\pi)}" />
         , which at <InlineMath tex="\\alpha = \\pi" /> returns <InlineMath tex="V_{\\text{line}}" />{' '}
         as expected. At <InlineMath tex="\\alpha = 0" /> (the triac never fires),{' '}
         <InlineMath tex="V_{\\text{rms}} = 0" /> and the load is off.
@@ -807,6 +810,9 @@ export default function Ch30HouseSwitchesReceptacles() {
         dimmers feel "non-linear" near full bright; the lamp's brightness as a function of slider
         position has a knee.
       </p>
+
+      <DimmerWaveformDemo figure="Fig. 30.2" />
+
       <p className="mb-prose-3">
         LEDs are not a resistive load. An{' '}
         <Term
@@ -821,7 +827,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         >
           LED bulb
         </Term>{' '}
-        is an integrated circuit (a switched-mode driver) feeding a string of diodes. The driver's
+        contains a switched-mode driver feeding a string of diodes. The driver's
         input draws current in narrow gulps at the peaks of the line voltage, not smoothly
         throughout the half-cycle. Pair a leading-edge triac dimmer with an LED driver and three
         failure modes show up regularly. <em className="text-text italic">Flicker</em>: the driver's
@@ -851,9 +857,9 @@ export default function Ch30HouseSwitchesReceptacles() {
         hint={
           <>
             Plug <InlineMath tex="\\alpha = \\pi/2" /> into{' '}
-            <InlineMath tex="V_{\\text{rms}} = V_{\\text{peak}} \\times \\sqrt{\\alpha/\\pi - \\sin(2\\alpha)/(2\\pi)}" />
-            ; note <InlineMath tex="\\sin(\\pi) = 0" />. Then compute the bulb's cold-resistance
-            from its 1500 W rating at 120 V_rms.
+            <InlineMath tex="V_{\\text{rms}} = V_{\\text{peak}} \\times \\sqrt{\\alpha/(2\\pi) - \\sin(2\\alpha)/(4\\pi)}" />
+            ; note <InlineMath tex="\\sin(\\pi) = 0" />. Then compute the bulb's operating resistance
+            implied by its 1500 W rating at 120 V_rms.
           </>
         }
         answer={
@@ -862,19 +868,19 @@ export default function Ch30HouseSwitchesReceptacles() {
               With <InlineMath tex="\\alpha = \\pi/2" /> and{' '}
               <InlineMath tex="\\sin(2 \\cdot \\pi/2) = \\sin(\\pi) = 0" />:
             </p>
-            <Formula tex="V_{\\text{rms}} = 169.7 \\times \\sqrt{0.5 - 0} = 169.7 \\times \\sqrt{0.5} \\approx 120.0\\ \\text{V}" />
+            <Formula tex="V_{\\text{rms}} = 169.7 \\times \\sqrt{0.25 - 0} \\approx 84.9\\ \\text{V}" />
             <p className="mb-prose-1 last:mb-0">
-              That happens to be the nominal line RMS — at <InlineMath tex="\\alpha = \\pi/2" /> the
-              leading-edge dimmer delivers exactly the full line's RMS. The resistance implied by
+              That is below the nominal line RMS because the dimmer has removed the high-energy
+              leading part of every half-cycle. The resistance implied by
               the bulb's nameplate is <InlineMath tex="R = V^2/P = 120^2/1500 = 9.6\\ \\Omega" />,
               so the average power is:
             </p>
-            <Formula tex="P = \\dfrac{V_{\\text{rms}}^2}{R} = \\dfrac{120^2}{9.6} \\approx 1500\\ \\text{W}" />
+            <Formula tex="P = \\dfrac{V_{\\text{rms}}^2}{R} = \\dfrac{84.9^2}{9.6} \\approx 750\\ \\text{W}" />
             <p className="mb-prose-1 last:mb-0">
-              Answer: <strong className="text-text font-medium">≈ 1500 W</strong> — full brightness.
-              The phase-cut formula is symmetric about <InlineMath tex="\\alpha = \\pi/2" /> in its
-              RMS value because the cut portion of the half-cycle has the same energy as the
-              conducting portion at that conduction angle
+              Answer: <strong className="text-text font-medium">≈ 750 W</strong> in this
+              constant-resistance estimate. A real tungsten filament changes resistance as it cools, but the
+              calculation captures why half a conduction angle is not the same as half a visual
+              brightness setting
               <Cite id="lutron-dimmer-app-note" in={SOURCES} />. Dimming below half-brightness
               requires <InlineMath tex="\\alpha < \\pi/2" />; below{' '}
               <InlineMath tex="\\alpha = \\pi/3" /> the brightness falls off sharply.
@@ -952,7 +958,8 @@ export default function Ch30HouseSwitchesReceptacles() {
               label: 'Wire range',
               value: (
                 <>
-                  14 AWG to 10 AWG copper, per UL 498 <Cite id="ul-498" in={SOURCES} />
+                  Manufacturer-marked conductor range; listing tested under UL 498{' '}
+                  <Cite id="ul-498" in={SOURCES} />
                 </>
               ),
             },
@@ -969,7 +976,7 @@ export default function Ch30HouseSwitchesReceptacles() {
           <p className="mb-prose-2 last:mb-0">
             A specification-grade 20 A duplex receptacle is built to take repeated insertions and
             remove the most common failure modes of contractor-grade hardware. The slot geometry is
-            the standard 5-20R defined by NEMA WD 6<Cite id="nema-wd-6" in={SOURCES} /> — vertical
+            the standard 5-20R defined by NEMA WD 6 <Cite id="nema-wd-6" in={SOURCES} /> — vertical
             hot, T-shaped neutral so both 5-15P and 5-20P plugs fit, round ground hole below. The
             face is over-moulded onto a one-piece steel strap that gives the device its mechanical
             rigidity, and the contact stampings inside are heavier-gauge brass than the cheap
@@ -983,8 +990,8 @@ export default function Ch30HouseSwitchesReceptacles() {
             onto the conductor. The result is a gas-tight clamp on a straight wire, faster than
             wrapping a screw and tighter than a push-in. The body is qualified to the
             temperature-rise and dielectric-withstand performance criteria of UL 498
-            <Cite id="ul-498" in={SOURCES} />, which means it can be installed and forgotten for the
-            life of the building.
+            <Cite id="ul-498" in={SOURCES} />, which means the device has been qualified for its
+            listing conditions; installation quality and load history still matter.
           </p>
         </CaseStudy>
 
@@ -1046,7 +1053,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         <CaseStudy
           tag="Case 30.3"
           title="A smart-dimmer retrofit and the neutral-in-every-box rule"
-          summary="Why pulling a new switch into the 21st century requires a wire most pre-2014 boxes don't have."
+          summary="Why pulling a new switch into the 21st century often requires a wire many older boxes don't have."
           specs={[
             {
               label: 'Load type',
@@ -1100,8 +1107,8 @@ export default function Ch30HouseSwitchesReceptacles() {
             off.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            The 2023 NEC, refining a rule first introduced in the 2011 cycle, requires a grounded
-            conductor (neutral) to be present in every switch box installed in new construction
+            The 2023 NEC, refining a rule first introduced in the 2011 cycle, generally requires a
+            grounded conductor (neutral) to be present in new switch boxes, with specific exceptions
             <Cite id="nec-2023" in={SOURCES} />. The rule exists exactly so that future smart-switch
             retrofits — which the code anticipates as the dominant installation pattern — can land
             their standby current on a real neutral instead of bleeding it through the load.
@@ -1175,7 +1182,8 @@ export default function Ch30HouseSwitchesReceptacles() {
             <Cite id="nec-2023" in={SOURCES} />. The receptacle contains internal shutters that
             block both slots until they are pushed simultaneously — which only happens when a
             two-bladed plug enters, not when a child pushes in a hairpin or key. The rule was driven
-            by burn-injury statistics in young children; the device adds maybe a dollar to the cost.
+            by burn-injury risk in young children; the extra mechanism is now part of ordinary listed
+            residential devices.
           </p>
         </FAQItem>
 
@@ -1270,9 +1278,10 @@ export default function Ch30HouseSwitchesReceptacles() {
             leaving the load's neutral conductor tied straight back to the panel. With the switch
             off, the load is de-energised because no current can flow, but the neutral conductor is
             still electrically connected to the system neutral, which is bonded to ground at the
-            service panel. Touching just the neutral while standing on a grounded floor is normally
-            harmless (no potential difference); touching the hot conductor on the line side of an
-            open switch is not — it remains at full line voltage relative to ground.
+            service panel. Do not treat the neutral as safe to touch: an open neutral, shared-neutral
+            wiring error, or fault can put it at a dangerous voltage. The safe rule is to verify the
+            whole box de-energised before touching any conductor; the hot conductor on the line side
+            of an open switch remains at full line voltage relative to ground.
           </p>
         </FAQItem>
 

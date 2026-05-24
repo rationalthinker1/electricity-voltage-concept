@@ -301,6 +301,16 @@ export const SOURCES: Record<string, Source> = {
     url: 'https://www.cpsc.gov/safety-education/safety-guides/home/repairing-aluminum-wiring',
     note: 'Solid-aluminum branch-circuit wiring (15 A / 20 A) installed in U.S. homes 1965–1973 was implicated in connection-overheating fires; oxide layer and creep at terminations were the root causes.',
   },
+  'cpsc-fpe-stablok-1983': {
+    id: 'cpsc-fpe-stablok-1983',
+    title:
+      'Commission Closes Investigation Of FPE Circuit Breakers And Provides Safety Information For Consumers',
+    author: 'U.S. Consumer Product Safety Commission',
+    year: 1983,
+    venue: 'CPSC News Release 83-033',
+    url: 'https://www.cpsc.gov/Newsroom/News-Releases/1983/Commission-Closes-Investigation-Of-FPE-Circuit-Breakers-And-Provides-Safety-Information-For-Consumers',
+    note: 'CPSC summary of its Federal Pacific Electric Stab-Lok investigation, including reports of breakers failing to trip within required time limits and the decision to close the investigation without a recall.',
+  },
   'grainger-power-systems-2003': {
     id: 'grainger-power-systems-2003',
     title: 'Power System Analysis',

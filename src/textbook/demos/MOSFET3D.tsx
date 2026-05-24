@@ -21,16 +21,18 @@
  * See Sedra & Smith §5.2 for the model, Streetman & Banerjee §8 for the
  * surface-inversion picture, Kahng & Atalla 1960 for the device.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { project, v3, type OrbitCamera, type Point2D, type Vec3 } from '@/lib/projection3d';
-import { createOrbitScene } from '@/lib/useOrbitScene';
+import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
@@ -247,6 +249,8 @@ interface Electron {
   vz: number;
 }
 
+const randRange = (a: number, b: number) => a + Math.random() * (b - a);
+
 export function MOSFET3DDemo({ figure }: Props) {
   const [V_GS, setVGS] = useState(2.0);
   const [V_DS, setVDS] = useState(1.0);
@@ -256,45 +260,18 @@ export function MOSFET3DDemo({ figure }: Props) {
   const regime = useMemo(() => regimeLabel(V_GS, V_DS), [V_GS, V_DS]);
   const Vov = Math.max(0, V_GS - V_T);
 
-  const stateRef = useRef({ V_GS, V_DS, showField });
-  useEffect(() => {
-    stateRef.current = { V_GS, V_DS, showField };
-  }, [V_GS, V_DS, showField]);
+const stateRef = useSimState({ V_GS, V_DS, showField });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H, canvas, colors } = info;
-    let raf = 0;
-
-    const scene = createOrbitScene(canvas, {
-      yaw: 0.7,
-      pitch: 0.45,
-      distance: 6.5,
-      fov: Math.PI / 4,
-    });
-    const cam = scene.cam;
-
-    // Persistent electron cloud. ~80 dots; spawned across the channel
-    // footprint and re-cycled when they reach the drain edge.
-    const N_ELECTRONS = 80;
-    const electrons: Electron[] = [];
-    const rand = (a: number, b: number) => a + Math.random() * (b - a);
-    for (let i = 0; i < N_ELECTRONS; i++) {
-      electrons.push({
-        x: rand(CHAN_X0, CHAN_X1),
-        z: rand(CHAN_Z0, CHAN_Z1),
-        vx: rand(-0.02, 0.02),
-        vz: rand(-0.02, 0.02),
-      });
-    }
-
-    let last = performance.now();
-
-    function draw(now: number) {
-      const dt = Math.min(0.05, (now - last) / 1000);
-      last = now;
-      const s = stateRef.current;
-      const overdrive = Math.max(0, s.V_GS - V_T);
-      const channelOn = overdrive > 0;
+const setup = useSimLoop<
+typeof stateRef.current,
+{ scene: OrbitScene; electrons: Electron[] }
+>(
+stateRef,
+({ ctx, w: W, h: H, colors }, s, dt, _simTime, ctx0) => {
+const cam = ctx0.scene.cam;
+const { electrons } = ctx0;
+const overdrive = Math.max(0, s.V_GS - V_T);
+const channelOn = overdrive > 0;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
@@ -420,8 +397,8 @@ export function MOSFET3DDemo({ figure }: Props) {
           // Persistent left-to-right drift + small Brownian jitter.
           e.x += (driftSpeed + e.vx) * dt;
           e.z += e.vz * dt;
-          e.vx += rand(-0.4, 0.4) * dt;
-          e.vz += rand(-0.4, 0.4) * dt;
+e.vx += randRange(-0.4, 0.4) * dt;
+e.vz += randRange(-0.4, 0.4) * dt;
           // Light damping so jitter doesn't blow up.
           e.vx *= 0.96;
           e.vz *= 0.96;
@@ -429,8 +406,8 @@ export function MOSFET3DDemo({ figure }: Props) {
           if (e.z > CHAN_Z1) e.z = CHAN_Z1;
           if (e.x > CHAN_X1) {
             // Recycle at the source side.
-            e.x = CHAN_X0 + rand(0, 0.05);
-            e.z = rand(CHAN_Z0, CHAN_Z1);
+e.x = CHAN_X0 + randRange(0, 0.05);
+e.z = randRange(CHAN_Z0, CHAN_Z1);
           }
         }
       }
@@ -568,15 +545,30 @@ export function MOSFET3DDemo({ figure }: Props) {
         : withAlpha(colors.textDim, 0.7);
       drawLabel(ctx, { text: status, x: W - 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
 
-      raf = requestAnimationFrame(draw);
-    }
-
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      scene.dispose();
-    };
-  }, []);
+},
+[],
+({ canvas }) => {
+const scene = createOrbitScene(canvas, {
+yaw: 0.7,
+pitch: 0.45,
+distance: 6.5,
+fov: Math.PI / 4,
+});
+// Persistent electron cloud. ~80 dots; spawned across the channel
+// footprint and re-cycled when they reach the drain edge.
+const N_ELECTRONS = 80;
+const electrons: Electron[] = [];
+for (let i = 0; i < N_ELECTRONS; i++) {
+electrons.push({
+x: randRange(CHAN_X0, CHAN_X1),
+z: randRange(CHAN_Z0, CHAN_Z1),
+vx: randRange(-0.02, 0.02),
+vz: randRange(-0.02, 0.02),
+});
+}
+return { context: { scene, electrons }, cleanup: () => scene.dispose() };
+},
+);
 
   return (
     <Demo

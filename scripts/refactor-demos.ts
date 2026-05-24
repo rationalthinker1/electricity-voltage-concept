@@ -16,6 +16,8 @@
  *   - `const colors = getCanvasColors();` outside draw is dropped (useSimLoop
  *     destructures `colors` from CanvasInfo and re-reads it every frame, which
  *     is also the theme-correct pattern — see CLAUDE.md §9).
+ *   - setup-scope `createOrbitScene(canvas, ...)` orbit cameras are moved to
+ *     the `useSimLoop` init callback, with `scene.dispose()` cleanup.
  *   - `let phase = 0; phase += DELTA;`-style accumulators outside draw are
  *     persisted across frames via useSimLoop's `init` context callback.
  *   - `let t0 = performance.now(); ... (now - t0) / 1000` patterns are folded
@@ -26,7 +28,7 @@
  *     hands the draw callback `dt` directly.
  *
  * Demos that are still skipped (with reason logged):
- *   - orbit cameras (attachOrbit / createOrbitScene) — manual init context
+ *   - component-scope orbit hooks (`useOrbitScene`) and `attachOrbit`
  *   - LayeredCanvas
  *   - static cacheRef / StaticCache patterns
  *   - mutable arrays/objects created inside setup and modified across frames
@@ -40,10 +42,10 @@ import {
   Project,
   SourceFile,
   SyntaxKind,
-  type Statement,
   type VariableStatement,
   type FunctionDeclaration,
   type Block,
+  type VariableDeclaration,
 } from 'ts-morph';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -119,8 +121,13 @@ function transformFile(
 ): { ok: true } | { ok: false; reason: string } {
   const text = sourceFile.getText();
 
-  // Already on the new library?
+  // Already on the new library? Still allow the narrow non-canvas rAF timer
+  // cleanup pass, because those sometimes coexist with a migrated canvas loop.
   if (/\buseSimState\b/.test(text) || /\buseSimLoop\b/.test(text)) {
+    if (/requestAnimationFrame/.test(text) && transformSimpleRafTimerEffects(sourceFile)) {
+      transformImports(sourceFile);
+      return { ok: true };
+    }
     return { ok: false, reason: 'already refactored' };
   }
 
@@ -130,8 +137,11 @@ function transformFile(
   }
 
   // Complex patterns we deliberately skip
-  if (/\battachOrbit\b|\bcreateOrbitScene\b/.test(text)) {
-    return { ok: false, reason: 'orbit camera' };
+  if (/\buseOrbitScene\b/.test(text)) {
+    return { ok: false, reason: 'component-scope useOrbitScene' };
+  }
+  if (/\battachOrbit\b/.test(text)) {
+    return { ok: false, reason: 'attachOrbit camera' };
   }
   if (/\bLayeredCanvas\b/.test(text)) {
     return { ok: false, reason: 'LayeredCanvas' };
@@ -142,13 +152,12 @@ function transformFile(
     return { ok: false, reason: 'static cache pattern' };
   }
 
-  // Heuristic: mutable state created inside the setup callback?
-  if (hasMutableStateInSetup(sourceFile)) {
-    return { ok: false, reason: 'mutable local state in setup' };
-  }
-
   // ─── Start applying transforms ───
   try {
+    if (transformSimpleRafTimerEffects(sourceFile)) {
+      transformImports(sourceFile);
+      return { ok: true };
+    }
     const stateResult = transformStateRef(sourceFile);
     if (!stateResult.ok) {
       return stateResult;
@@ -161,35 +170,92 @@ function transformFile(
     // getCanvasColors) are still referenced after the body rewrite.
     transformImports(sourceFile);
     return { ok: true };
-  } catch (err: any) {
-    return { ok: false, reason: `transform error: ${err.message}` };
+  } catch (err: unknown) {
+    return { ok: false, reason: `transform error: ${err instanceof Error ? err.message : 'Unknown error'}` };
   }
 }
 
 /* ─── Import rewriting ────────────────────────────────────────────────── */
 
 function transformImports(sourceFile: SourceFile) {
-  // We only ADD the new useSimState / useSimLoop imports here. Pruning the
-  // (now-unused) React hooks, `CanvasInfo`, and `getCanvasColors` imports
-  // would require knowing whether anything else in the file still uses them —
-  // and it's brittle. Leave them in; eslint / `noUnusedLocals` will flag the
-  // leftovers and the user can sweep them with --fix.
   const allImports = sourceFile.getImportDeclarations();
   const lastImport = allImports.length > 0 ? allImports[allImports.length - 1] : undefined;
   const insertPos = lastImport ? lastImport.getEnd() : 0;
 
   const linesToAdd: string[] = [];
   const existingSpecs = new Set(allImports.map((d) => d.getModuleSpecifierValue()));
+  const text = sourceFile.getText();
 
   for (const line of IMPORTS_TO_ADD) {
     const spec = line.match(/from\s+['"]([^'"]+)['"]/)?.[1];
-    if (spec && !existingSpecs.has(spec)) {
+    const importedName = line.match(/import\s+\{\s*([^}\s]+)\s*\}/)?.[1];
+    if (spec && importedName && new RegExp(`\\b${importedName}\\b`).test(text) && !existingSpecs.has(spec)) {
       linesToAdd.push(line);
     }
   }
 
   if (linesToAdd.length) {
     sourceFile.insertText(insertPos, '\n' + linesToAdd.join('\n') + '\n');
+  }
+
+  if (/\bOrbitScene\b/.test(sourceFile.getText())) {
+    ensureNamedImport(sourceFile, '@/lib/useOrbitScene', 'OrbitScene', true);
+  }
+
+  pruneUnusedNamedImports(sourceFile, [
+    'useCallback',
+    'useEffect',
+    'useRef',
+    'CanvasInfo',
+    'getCanvasColors',
+  ]);
+}
+
+function ensureNamedImport(
+  sourceFile: SourceFile,
+  moduleSpecifier: string,
+  name: string,
+  isTypeOnly = false,
+) {
+  const existing = sourceFile
+    .getImportDeclarations()
+    .find((d) => d.getModuleSpecifierValue() === moduleSpecifier);
+  if (existing) {
+    const hasName = existing.getNamedImports().some((n) => n.getName() === name);
+    if (!hasName) {
+      existing.addNamedImport({ name, isTypeOnly });
+    }
+    return;
+  }
+  sourceFile.addImportDeclaration({
+    moduleSpecifier,
+    namedImports: [{ name, isTypeOnly }],
+  });
+}
+
+function pruneUnusedNamedImports(sourceFile: SourceFile, names: string[]) {
+  const importDecls = sourceFile.getImportDeclarations();
+  const importRanges = importDecls.map((decl) => [decl.getStart(), decl.getEnd()] as const);
+  const fullText = sourceFile.getFullText();
+  const nonImportText: string[] = [];
+  let cursor = 0;
+  for (const [start, end] of importRanges) {
+    nonImportText.push(fullText.slice(cursor, start));
+    cursor = end;
+  }
+  nonImportText.push(fullText.slice(cursor));
+  const searchable = stripStringsAndComments(nonImportText.join('\n'));
+
+  for (const decl of importDecls) {
+    for (const named of [...decl.getNamedImports()]) {
+      const name = named.getName();
+      if (!names.includes(name)) continue;
+      if (new RegExp(`\\b${escapeRegex(name)}\\b`).test(searchable)) continue;
+      named.remove();
+    }
+    if (!decl.getDefaultImport() && decl.getNamedImports().length === 0 && !decl.getNamespaceImport()) {
+      decl.remove();
+    }
   }
 }
 
@@ -250,11 +316,39 @@ function findStateRefEffect(
   return undefined;
 }
 
+function transformSimpleRafTimerEffects(sourceFile: SourceFile): boolean {
+  let changed = false;
+  for (const call of sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression)) {
+    if (call.getExpression().getText() !== 'useEffect') continue;
+    const parent = call.getParent();
+    if (parent?.getKind() !== SyntaxKind.ExpressionStatement) continue;
+    const text = parent.getText();
+    if (!/requestAnimationFrame\s*\(/.test(text) || !/cancelAnimationFrame\s*\(/.test(text)) {
+      continue;
+    }
+    const guard = text.match(/if\s*\(\s*(\w+)\s*===\s*0\s*\)\s*return\s*;/);
+    const setter = text.match(/(set[A-Z]\w*)\s*\(\s*0\s*\)/);
+    const duration = text.match(/\/\s*(\d+)\s*;/)?.[1] ?? text.match(/>=\s*1[\s\S]*?\/\s*(\d+)/)?.[1];
+    const deps = text.match(/\},\s*\[([^\]]+)\]\s*\)\s*;?$/)?.[1]?.trim();
+    if (!guard || !setter || !duration || !deps || !deps.split(',').map((d) => d.trim()).includes(guard[1])) {
+      continue;
+    }
+    parent.replaceWithText(`useEffect(() => {
+  if (${guard[1]} === 0) return;
+  const id = window.setTimeout(() => ${setter[1]}(0), ${duration});
+  return () => window.clearTimeout(id);
+}, [${deps}]);`);
+    changed = true;
+  }
+  return changed;
+}
+
 /* ─── Setup callback (useCallback + rAF → useSimLoop) ─────────────────── */
 
 interface PersistedVar {
   name: string;
   init: string;
+  type: string;
 }
 
 function transformSetupLoop(
@@ -307,26 +401,28 @@ function transformSetupLoop(
     return { ok: false, reason: 'draw has no block body' };
   }
 
-  // Bail when draw consumes the rAF timestamp directly (e.g.
-  // `function draw(now: number)` or `function draw(ts: number)`). useSimLoop
-  // hides the timestamp behind `simTime`/`dt`; mapping the parameter name is
-  // out of scope for this codemod.
-  if (drawFn.getParameters().length > 0) {
-    return { ok: false, reason: 'draw() takes a parameter (rAF timestamp)' };
+  const drawParams = drawFn.getParameters();
+  if (drawParams.length > 1) {
+    return { ok: false, reason: 'draw() has multiple parameters' };
   }
+  const drawTimestampParam = drawParams[0]?.getName() ?? null;
 
   const blockStatements = block.getStatements();
   const drawFnIndex = blockStatements.findIndex((s) => s === drawFn);
   const preStatements = blockStatements.slice(0, drawFnIndex);
   const drawBodyTextOriginal = drawBlock.getText();
 
-  // Safety: bail if setup adds event listeners outside the draw callback.
-  // Migrating those correctly needs useSimLoop's `init` callback to set up
-  // and clean up the listeners; that transform is out of scope here.
+  const initStatements: string[] = [];
+  const cleanupStatements: string[] = [];
   for (const stmt of preStatements) {
     const t = stmt.getText();
-    if (/\b(addEventListener|removeEventListener)\b/.test(t)) {
-      return { ok: false, reason: 'setup uses event listeners outside draw' };
+    if (/\bremoveEventListener\b/.test(t)) {
+      return { ok: false, reason: 'setup removes event listeners before cleanup' };
+    }
+    if (/\baddEventListener\b/.test(t)) {
+      const initStmt = t.replace(/\binfo\.canvas\./g, 'canvas.');
+      initStatements.push(initStmt);
+      cleanupStatements.push(initStmt.replace(/\baddEventListener\b/g, 'removeEventListener'));
     }
   }
 
@@ -336,6 +432,7 @@ function transformSetupLoop(
   // we're dropping from the pre-block — checked implicitly because we
   // also collect persisted vars and bail on anything else.
   const helperFunctions: string[] = [];
+  const initHelperFunctions: string[] = [];
 
   // Tracks non-default aliases used in the original `const { ctx, w: W, ... } = info;`
   // destructure, so we can reproduce them in the new useSimLoop signature.
@@ -353,7 +450,19 @@ function transformSetupLoop(
     if (/\brequestAnimationFrame\s*\(/.test(helperText)) {
       return { ok: false, reason: `helper '${fnName}' contains rAF — manual migration needed` };
     }
-    helperFunctions.push(helperText);
+    const usedInDraw = referencedInside(fnName, drawBodyTextOriginal);
+    const usedInInit = initStatements.some((stmt) => referencedInside(fnName, stmt));
+    if (usedInDraw && usedInInit) {
+      return {
+        ok: false,
+        reason: `helper '${fnName}' used by both draw and init — manual context needed`,
+      };
+    }
+    if (usedInInit) {
+      initHelperFunctions.push(helperText);
+    } else {
+      helperFunctions.push(helperText);
+    }
   }
 
   // Classify pre-block variable declarations
@@ -410,7 +519,12 @@ function transformSetupLoop(
       if (RAF_BOILERPLATE_NAMES.has(name)) continue;
 
       const usedInDraw = referencedInside(name, drawBodyTextOriginal);
+      const usedInInit = initStatements.some((stmt) => referencedInside(name, stmt));
       if (!usedInDraw) {
+        if (usedInInit && isSimpleInitializer(initText)) {
+          persistedVars.push({ name, init: initText, type: inferContextType(decl, initText) });
+          continue;
+        }
         // Declared but not used in draw — would be lost after collapse.
         // Conservatively bail unless this is the well-known `colors` cache.
         if (name === 'colors' && /getCanvasColors\s*\(/.test(initText)) {
@@ -425,10 +539,19 @@ function transformSetupLoop(
         continue;
       }
 
-      // Persist literal-initialised or performance.now()-initialised vars
-      // via useSimLoop's init context.
+      // Persist literal-initialised, performance.now()-initialised, or simple
+      // setup-scope orbit-scene vars via useSimLoop's init context.
       if (isSimpleInitializer(initText)) {
-        persistedVars.push({ name, init: initText });
+        persistedVars.push({ name, init: initText, type: inferContextType(decl, initText) });
+        continue;
+      }
+
+      if (isMutableInitializer(initText)) {
+        persistedVars.push({
+          name,
+          init: contextInitializerForMutable(decl, initText),
+          type: inferContextType(decl, initText),
+        });
         continue;
       }
 
@@ -511,15 +634,21 @@ function transformSetupLoop(
   const hasNowDecl = /(?:const|let|var)\s+now\s*=\s*performance\.now\(\)\s*;?/.test(
     drawBodyText,
   );
+  const hasDrawTimestampParam = drawTimestampParam != null;
+  const timestampName = drawTimestampParam ? escapeRegex(drawTimestampParam) : 'now';
   const hasBareDtCalc =
-    /(?:let|const|var)\s+dt\s*=\s*\(\s*now\s*-\s*(?:lastT|lastTime|last)\s*\)\s*\/\s*1000/.test(
+    new RegExp(
+      `(?:let|const|var)\\s+dt\\s*=\\s*\\(\\s*${timestampName}\\s*-\\s*(?:lastT|lastTime|last)\\s*\\)\\s*\\/\\s*1000`,
+    ).test(
       drawBodyText,
     );
-  const hasBareLastWrite = /(?<![.\w])(?:lastT|lastTime|last)\s*=\s*now\b/.test(
+  const hasBareLastWrite = new RegExp(
+    `(?<![.\\w])(?:lastT|lastTime|last)\\s*=\\s*${timestampName}\\b`,
+  ).test(
     drawBodyText,
   );
 
-  if (hasNowDecl && hasBareDtCalc && hasBareLastWrite) {
+  if ((hasNowDecl || hasDrawTimestampParam) && hasBareDtCalc && hasBareLastWrite) {
     //   const now = performance.now();
     drawBodyText = drawBodyText.replace(
       /(?:const|let|var)\s+now\s*=\s*performance\.now\(\)\s*;?\n?/g,
@@ -527,12 +656,18 @@ function transformSetupLoop(
     );
     //   let dt = (now - lastT) / 1000;
     drawBodyText = drawBodyText.replace(
-      /(?:let|const|var)\s+dt\s*=\s*\(\s*now\s*-\s*(?:lastT|lastTime|last)\s*\)\s*\/\s*1000\s*;?\n?/g,
+      new RegExp(
+        `(?:let|const|var)\\s+dt\\s*=\\s*\\(\\s*${timestampName}\\s*-\\s*(?:lastT|lastTime|last)\\s*\\)\\s*\\/\\s*1000\\s*;?\\n?`,
+        'g',
+      ),
       '',
     );
     //   lastT = now;   (bare-name form only — never `s.lastT = now;`)
     drawBodyText = drawBodyText.replace(
-      /(?<![.\w])(?:lastT|lastTime|last)\s*=\s*now\s*;?\n?/g,
+      new RegExp(
+        `(?<![.\\w])(?:lastT|lastTime|last)\\s*=\\s*${timestampName}\\s*;?\\n?`,
+        'g',
+      ),
       '',
     );
     //   if (dt > 0.1) dt = 0.1;
@@ -540,6 +675,10 @@ function transformSetupLoop(
       /if\s*\(\s*dt\s*>\s*0?\.\d+\s*\)\s*\{?\s*dt\s*=\s*0?\.\d+\s*;?\s*\}?\s*\n?/g,
       '',
     );
+  }
+
+  if (drawTimestampParam && referencedInside(drawTimestampParam, drawBodyText)) {
+    return { ok: false, reason: `rAF timestamp '${drawTimestampParam}' still used after dt rewrite` };
   }
 
   // After substitution, drop persisted-performance.now() vars that are no
@@ -591,14 +730,17 @@ function transformSetupLoop(
   const shadowsDt = bodyDeclares('dt', drawBodyText);
   const dtParam = usesDt && !shadowsDt ? 'dt' : '_dt';
   const simTimeParam = usesSimTime && !shadowsSimTime ? 'simTime' : '_simTime';
-  const ctxParam = finalPersisted.length > 0 ? ', ctx0' : '';
+  const hasInit = finalPersisted.length > 0 || initStatements.length > 0 || initHelperFunctions.length > 0;
+  const ctxParam = hasInit ? `, ${finalPersisted.length > 0 ? 'ctx0' : '_ctx0'}` : '';
 
   // Inject persisted-var read/write
   let injectTop = '';
   let injectBottom = '';
   for (const v of finalPersisted) {
     injectTop += `let ${v.name} = ctx0.${v.name};\n`;
-    injectBottom += `ctx0.${v.name} = ${v.name};\n`;
+    if (!isDisposableOrbitSceneInitializer(v.init)) {
+      injectBottom += `ctx0.${v.name} = ${v.name};\n`;
+    }
   }
 
   const bodyParts: string[] = [];
@@ -612,15 +754,17 @@ function transformSetupLoop(
     .replace(/\n/g, '\n    ');
 
   const lines: string[] = [];
-  lines.push('const setup = useSimLoop(');
+  const useSimLoopTypeArgs = hasInit
+    ? `<typeof stateRef.current, ${buildContextType(finalPersisted)}>`
+    : '';
+  lines.push(`const setup = useSimLoop${useSimLoopTypeArgs}(`);
   lines.push('  stateRef,');
   lines.push(`  ${destructure}, _state, ${dtParam}, ${simTimeParam}${ctxParam}) => {`);
   lines.push(`    ${indentedBody}`);
   lines.push('  },');
   lines.push('  [],');
-  if (finalPersisted.length > 0) {
-    const initObj = finalPersisted.map((v) => `${v.name}: ${v.init}`).join(', ');
-    lines.push(`  () => ({ context: { ${initObj} } }),`);
+  if (hasInit) {
+    lines.push(buildInitCallback(finalPersisted, initStatements, cleanupStatements, initHelperFunctions));
   }
   lines.push(');');
 
@@ -736,11 +880,13 @@ function truncate(s: string, n: number): string {
 
 function isSimpleInitializer(text: string): boolean {
   if (!text) return false;
+  if (isDisposableOrbitSceneInitializer(text)) return true;
+  if (/^\w+\.cam$/.test(text)) return true;
   // Numeric literal, optionally signed / decimal / exponent
   if (/^-?\d+(\.\d+)?(e-?\d+)?$/.test(text)) return true;
   // Math constant, optionally preceded by a unary minus, optionally followed
   // by one binary operation against a numeric literal (e.g. `-Math.PI / 2`)
-  if (/^-?Math\.(PI|E|LN2|LN10|LOG2E|LOG10E|SQRT2|SQRT1_2)(\s*[\*/+\-]\s*\d+(\.\d+)?)?$/.test(text))
+  if (/^-?Math\.(PI|E|LN2|LN10|LOG2E|LOG10E|SQRT2|SQRT1_2)(\s*[*/+-]\s*\d+(\.\d+)?)?$/.test(text))
     return true;
   if (text === 'performance.now()') return true;
   // Time marker scaled to seconds: `performance.now() / 1000`
@@ -752,39 +898,98 @@ function isSimpleInitializer(text: string): boolean {
   return false;
 }
 
-/**
- * Heuristic: does the setup callback create arrays/objects that are mutated
- * across frames? We look for const/let declarations inside the useCallback
- * whose initialiser is an array literal, Array.from, new Array, or object
- * literal.
- */
-function hasMutableStateInSetup(sourceFile: SourceFile): boolean {
-  const setupDecl = sourceFile
-    .getDescendantsOfKind(SyntaxKind.VariableDeclaration)
-    .find((d) => d.getName() === 'setup');
-  if (!setupDecl) return false;
+function isDisposableOrbitSceneInitializer(text: string): boolean {
+  return /^createOrbitScene\s*\(\s*canvas\s*,/.test(text);
+}
 
-  const init = setupDecl.getInitializer()?.asKind(SyntaxKind.CallExpression);
-  if (!init || init.getExpression().getText() !== 'useCallback') return false;
+function buildContextType(persistedVars: PersistedVar[]): string {
+  if (persistedVars.length === 0) return 'Record<string, never>';
+  return `{ ${persistedVars.map((v) => `${v.name}: ${v.type}`).join('; ')} }`;
+}
 
-  const args = init.getArguments();
-  const arrowFn = args[0]?.asKind(SyntaxKind.ArrowFunction);
-  if (!arrowFn) return false;
+function buildInitCallback(
+  persistedVars: PersistedVar[],
+  initStatements: string[],
+  cleanupStatements: string[],
+  initHelperFunctions: string[],
+): string {
+  const disposableOrbitScenes = persistedVars.filter((v) =>
+    isDisposableOrbitSceneInitializer(v.init),
+  );
+  const needsCanvas =
+    disposableOrbitScenes.length > 0 ||
+    [...initStatements, ...cleanupStatements].some((stmt) => /\bcanvas\b/.test(stmt));
 
-  const block = arrowFn.getBody().asKind(SyntaxKind.Block);
-  if (!block) return false;
+  if (
+    disposableOrbitScenes.length === 0 &&
+    initStatements.length === 0 &&
+    cleanupStatements.length === 0 &&
+    initHelperFunctions.length === 0
+  ) {
+    const initObj = persistedVars.map((v) => `${v.name}: ${v.init}`).join(', ');
+    return `  () => ({ context: { ${initObj} } }),`;
+  }
 
-  for (const stmt of block.getStatements() as Statement[]) {
-    if (stmt.getKind() !== SyntaxKind.VariableStatement) continue;
-    const decls = (stmt as VariableStatement).getDeclarations();
-    for (const decl of decls) {
-      const initText = decl.getInitializer()?.getText() ?? '';
-      if (/^\[|Array\.from|new\s+Array|^\{/.test(initText)) {
-        return true;
-      }
+  const lines: string[] = [];
+  lines.push(`  (${needsCanvas ? '{ canvas }' : ''}) => {`);
+  for (const helper of initHelperFunctions) {
+    lines.push(indentBlock(helper, 4));
+  }
+  for (const v of persistedVars) {
+    if (isDisposableOrbitSceneInitializer(v.init)) {
+      lines.push(`    const ${v.name} = ${v.init};`);
     }
   }
-  return false;
+  for (const stmt of initStatements) {
+    lines.push(`    ${stmt}`);
+  }
+  const contextEntries = persistedVars
+    .map((v) => `${v.name}: ${isDisposableOrbitSceneInitializer(v.init) ? v.name : v.init}`)
+    .join(', ');
+  const cleanupCalls = [
+    ...cleanupStatements,
+    ...disposableOrbitScenes.map((v) => `${v.name}.dispose();`),
+  ];
+  const cleanup =
+    cleanupCalls.length > 0
+      ? `, cleanup: () => { ${cleanupCalls.join(' ')} }`
+      : '';
+  lines.push(`    return { context: { ${contextEntries} }${cleanup} };`);
+  lines.push('  },');
+  return lines.join('\n');
+}
+
+function inferContextType(decl: VariableDeclaration, initText: string): string {
+  const explicit = decl.getTypeNode()?.getText();
+  if (explicit) return explicit;
+  if (isDisposableOrbitSceneInitializer(initText)) return 'OrbitScene';
+  if (/^\w+\.cam$/.test(initText)) return "OrbitScene['cam']";
+  if (/^\[/.test(initText) || /Array\.from|new\s+Array/.test(initText)) return 'unknown[]';
+  if (/^\{/.test(initText)) return 'Record<string, unknown>';
+  if (initText === 'true' || initText === 'false') return 'boolean';
+  if (initText === 'null') return 'null';
+  if (initText === 'undefined') return 'undefined';
+  if (/^(['"`])/.test(initText)) return 'string';
+  return 'number';
+}
+
+function isMutableInitializer(text: string): boolean {
+  return /^\[|Array\.from|new\s+Array|^\{/.test(text);
+}
+
+function contextInitializerForMutable(decl: VariableDeclaration, initText: string): string {
+  const explicit = decl.getTypeNode()?.getText();
+  if (explicit && initText === '[]') return `[] as ${explicit}`;
+  if (explicit && initText === '{}') return `{} as ${explicit}`;
+  return initText;
+}
+
+function indentBlock(text: string, spaces: number): string {
+  const pad = ' '.repeat(spaces);
+  return text
+    .split('\n')
+    .map((line) => `${pad}${line}`)
+    .join('\n');
 }
 
 /* ─── Run ─────────────────────────────────────────────────────────────── */

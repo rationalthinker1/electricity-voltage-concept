@@ -166,10 +166,6 @@ export default function Ch24RectifiersAndInverters() {
         falls about 2 mV per kelvin — a fact worth knowing because it is how every silicon-based
         thermometer works.
       </p>
-      <Pullout>
-        Every rectifier in the world is a diode and a clever idea about which way to point it.
-      </Pullout>
-
       <h2 className="chapter-h2">
         <em>Half-wave, full-wave, bridge</em>
       </h2>
@@ -315,7 +311,7 @@ export default function Ch24RectifiersAndInverters() {
       />
 
       <TryIt
-        tag='Try 24.7'
+        tag='Try 24.2'
         question={
           <>
             The same <strong className="text-text font-medium">1000 µF</strong> smoothing cap, but
@@ -341,8 +337,6 @@ export default function Ch24RectifiersAndInverters() {
           </>
         }
       />
-
-      <Pullout>Four diodes and a capacitor: the most ubiquitous circuit on Earth.</Pullout>
 
       <h2 className="chapter-h2">
         Regulating the <em>rough DC</em>
@@ -418,7 +412,7 @@ export default function Ch24RectifiersAndInverters() {
       <LinearRegulatorDemo figure="Fig. 24.3" />
 
       <TryIt
-        tag='Try 24.2'
+        tag='Try 24.3'
         question={
           <>
             An LM7805 takes <strong className="text-text font-medium">12 V</strong> in and supplies{' '}
@@ -544,7 +538,7 @@ export default function Ch24RectifiersAndInverters() {
       <BuckConverterDemo figure="Fig. 24.4" />
 
       <TryIt
-        tag='Try 24.3'
+        tag='Try 24.4'
         question={
           <>
             A buck converter takes <strong className="text-text font-medium">12 V</strong> in and
@@ -597,7 +591,7 @@ export default function Ch24RectifiersAndInverters() {
       </p>
 
       <TryIt
-        tag='Try 24.4'
+        tag='Try 24.5'
         question={
           <>
             A boost converter runs at <strong className="text-text font-medium">75 %</strong> duty
@@ -625,7 +619,7 @@ export default function Ch24RectifiersAndInverters() {
         }
       />
 
-      <BoostConverterDemo figure="Fig. 24.7" />
+      <BoostConverterDemo figure="Fig. 24.5" />
 
       <TryIt
         tag='Try 24.6'
@@ -689,7 +683,7 @@ export default function Ch24RectifiersAndInverters() {
         <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />.
       </p>
 
-      <FlybackConverterDemo figure="Fig. 24.8" />
+      <FlybackConverterDemo figure="Fig. 24.6" />
 
       <p className="mb-prose-3">
         High-power AC chopping is the territory of one more device family. In 1956 a Bell Labs team
@@ -820,9 +814,9 @@ export default function Ch24RectifiersAndInverters() {
         during faults.
       </p>
 
-      <HBridgeInverterDemo figure="Fig. 24.5" />
+      <HBridgeInverterDemo figure="Fig. 24.7" />
 
-      <PWMInverterOutputDemo figure="Fig. 24.9" />
+      <PWMInverterOutputDemo figure="Fig. 24.8" />
 
       <p className="mb-prose-3">
         The two sliders in the spectrum view tell the engineering story. Raise the carrier frequency
@@ -837,7 +831,7 @@ export default function Ch24RectifiersAndInverters() {
       </p>
 
       <TryIt
-        tag='Try 24.5'
+        tag='Try 24.7'
         question={
           <>
             An H-bridge inverter delivers a{' '}
@@ -892,7 +886,7 @@ export default function Ch24RectifiersAndInverters() {
         over-voltage events — the "smart inverter" functionality required by IEEE 1547-2018.
       </p>
 
-      <GridTieInverterDemo figure="Fig. 24.6" />
+      <GridTieInverterDemo figure="Fig. 24.9" />
 
       <p className="mb-prose-3">
         Two non-obvious requirements come bundled with grid-tie operation. The first is{' '}
@@ -1175,9 +1169,11 @@ export default function Ch24RectifiersAndInverters() {
             HVDC pays off at very long distances because an AC line's distributed capacitance draws
             "charging current" along its whole length — current that delivers no real power but
             heats the conductors. DC has no reactive component, so it can run closer to its thermal
-            limit. HVDC also lets two non-synchronous grids be tied together (the Western
-            Interconnection and Baja California, in this case, although both happen to run at 60 Hz
-            here)
+            limit. HVDC also lets two non-synchronous grids be tied together — the canonical
+            example being the back-to-back ties between the Western and Eastern Interconnections at
+            Stegall, Sidney, and Blackwater — though the Pacific DC Intertie itself is not such a
+            case; both of its endpoints sit inside the Western Interconnection, so the win there is
+            purely line losses and reactive support
             <Cite id="kundur-1994-power-stability" in={SOURCES} />. Modern HVDC links increasingly
             use voltage-source IGBT converters instead of thyristor valves; the silicon is different
             but the topology is the same six-switch H-bridge as the laptop charger, scaled by six
@@ -1271,7 +1267,7 @@ export default function Ch24RectifiersAndInverters() {
             <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />. Closing with larger errors would
             dump a transient current proportional to the mismatch into the inverter's output
             inductors — exactly the same physics as synchronising a rotating generator to the grid
-            (Ch.17).
+            (Ch.21).
           </p>
         </FAQItem>
 

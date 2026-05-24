@@ -11,9 +11,8 @@
  * (thermal-magnetic, GFCI, AFCI), interrupting ratings and arc-flash energy,
  * the bonding-and-grounding logic, and the no-bond rule at every sub-panel.
  *
- * No new demo components — the previous chapter's circuit-builder demo
- * is the natural place to wire one of these breakers up; this chapter
- * is prose-heavy and diagram-light by design.
+ * Includes a 3D panel-bus demo, then prose sections for breaker behavior,
+ * bonding, grounding, and sub-panel separation.
  */
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
@@ -214,19 +213,18 @@ export default function Ch28HousePanel() {
         <Cite id="nema-ab-1" in={SOURCES} />. The voltage between those two stabs is the difference
         of the two phase voltages,
       </p>
-      <Formula tex="V_{LL} = V_{L1} - V_{L2} = (+120) - (-120) = 240\\ \\text{V}" />
+      <Formula tex="\\tilde V_{LL}=\\tilde V_{L1}-\\tilde V_{L2}=120\\angle0^\\circ-120\\angle180^\\circ=240\\ \\text{V}_{\\text{rms}}" />
       <p className="mb-prose-3">
         where{' '}
-        <InlineMath tex="V_{LL}" />{' '}
-        is the line-to-line voltage between the two ungrounded bus bars (in volts RMS),{' '}
-        <InlineMath tex="V_{L1}" />{' '}
-        is the instantaneous voltage of bus L1 measured with respect to the centre-tap neutral (peak
-        ≈ +170 V; RMS ≈ +120 V at the positive crossing), and{' '}
-        <InlineMath tex="V_{L2}" />{' '}
-        is the corresponding voltage of bus L2 referenced to the same neutral. L1 and L2 are exactly
-        180° out of phase because they come from opposite ends of the centre-tapped secondary
-        winding of the utility transformer (Ch.27): when one terminal is at its positive peak the
-        other is at its negative peak. The difference is therefore twice 120 V RMS, or 240 V
+        <InlineMath tex="\tilde V_{LL}" />{' '}
+        is the line-to-line voltage phasor between the two ungrounded bus bars,{' '}
+        <InlineMath tex="\tilde V_{L1}" />{' '}
+        is the 120 V RMS phasor from L1 to the centre-tap neutral, and{' '}
+        <InlineMath tex="\tilde V_{L2}" />{' '}
+        is the corresponding 120 V RMS phasor from L2 to neutral. L1 and L2 are exactly
+        180° apart because they come from opposite ends of the centre-tapped secondary winding of
+        the utility transformer (Ch.27). In instantaneous peak terms the same statement is
+        <InlineMath tex="+170 - (-170) \approx 340\ \text{V}_{\text{peak}}" />, whose RMS value is 240 V
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -234,8 +232,8 @@ export default function Ch28HousePanel() {
         pump, the EV charger — slots into the panel without any neutral required for the high-power
         half of the appliance. The two hots already give it 240 V between them. A neutral is added
         only if the appliance has a 120 V sub-circuit inside it (a clock, a control board, an LED
-        display); pure-240 V loads like baseboard heaters and old-style ranges run on just the two
-        hots and a ground.
+        display); pure-240 V loads like baseboard heaters can run on just the two hots and an
+        equipment ground.
       </p>
 
       <TryIt
@@ -387,11 +385,13 @@ export default function Ch28HousePanel() {
           residual current
         </Term>{' '}
         that, by Kirchhoff's current law, must be returning through some other path — typically
-        ground, possibly through a person. The threshold of 5 mA and the required clearing time of
-        about 25 ms are calibrated against the Dalziel current-through-heart curves that Ch.32 will
-        lay out in detail; below 5 mA the leakage is below the let-go threshold, and above 25 ms the
-        cumulative charge through the body starts to risk fibrillation
-        <Cite id="nec-2023" in={SOURCES} />.
+        ground, possibly through a person. Class A GFCI protection is designed around a few
+        milliamperes of residual current; the exact trip time depends on the fault current and device
+        standard. The body-current risk curves come from Dalziel's work and the modern IEC 60479
+        curves, which Ch.32 will lay out in detail
+        <Cite id="nec-2023" in={SOURCES} />
+        <Cite id="dalziel-1956" in={SOURCES} />
+        <Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
 
       <h3 className="chapter-h3">AFCI</h3>
@@ -519,11 +519,12 @@ export default function Ch28HousePanel() {
       </p>
       <Formula tex="E_{\\text{arc}} \\approx 120 \\times 10{,}000 \\times 0.050 = 60{,}000\\ \\text{J} = 60\\ \\text{kJ}" />
       <p className="mb-prose-3">
-        Sixty kilojoules dumped into a few cubic centimetres of air in a tenth of a second. That is
-        enough to vaporise the local section of bus bar, eject molten copper, and ignite anything
-        within arm's length. It is also why NFPA 70E exists as a separate standard from the NEC, why
-        power-system electricians wear arc-rated face-shields and 40-cal-rated suits when racking in
-        breakers, and why the AIC rating of the breaker has to be at least as large as the
+        Sixty kilojoules dumped into a few cubic centimetres of air in a fraction of a second can
+        vaporise metal, eject molten copper, and ignite nearby material. Real arc-flash incident
+        energy is calculated with dedicated methods, not this simple <InlineMath tex="VIt" /> product,
+        but the scale explains why NFPA 70E exists as a separate standard from the NEC, why
+        power-system electricians use arc-rated PPE for energized switching tasks, and why the AIC
+        rating of the breaker has to be at least as large as the
         worst-case{' '}
         <Term
           def={
@@ -537,7 +538,8 @@ export default function Ch28HousePanel() {
         >
           available fault current
         </Term>{' '}
-        at the panel — otherwise the breaker itself becomes the fuel
+        at the panel — otherwise the breaker itself can become part of the fault
+        <Cite id="nfpa-70e-2024" in={SOURCES} />
         <Cite id="nec-2023" in={SOURCES} />
         <Cite id="ul-489" in={SOURCES} />.
       </p>
@@ -607,7 +609,8 @@ export default function Ch28HousePanel() {
               <strong className="text-text font-medium">~2.88 kW in a localised hot spot</strong> —
               more than the entire branch's nameplate load, concentrated in a few square millimetres
               of insulation. The reason AFCIs exist: a 12 A arc is not large enough to trip a 20 A
-              thermal-magnetic on overload, but it can start a fire inside ten minutes.
+              thermal-magnetic breaker on overload, but it can keep heating one damaged point until
+              nearby insulation chars or ignites.
             </p>
           </>
         }
@@ -672,9 +675,11 @@ export default function Ch28HousePanel() {
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        The grounding-electrode connection to dirt is not what trips the breaker. The dirt's
-        resistance is far too high — typically 25–100 Ω for a residential ground rod — to sink
-        enough current. What clears the fault is the bonded metallic path back to the transformer.
+        The grounding-electrode connection to dirt is not what trips the breaker. The NEC permits a
+        single rod only when its resistance to earth is 25 Ω or less; otherwise a second electrode is
+        installed, which is still far too much impedance to clear a branch-circuit fault by itself.
+        What clears the fault is the bonded metallic path back to the transformer
+        <Cite id="nec-2023" in={SOURCES} />.
         The rod's job is different and subtler: it pins the building's neutral and ground voltage to
         within a few volts of the local soil potential, so that lightning strikes and downed-utility
         events do not float the whole building's reference up to thousands of volts relative to the
@@ -745,7 +750,8 @@ export default function Ch28HousePanel() {
             <strong className="text-text font-medium">1 AWG aluminium</strong> conductors
             (resistance ≈ 0.524 Ω per 1000 ft, or about{' '}
             <InlineMath tex="1.72\,\text{m}\Omega/\text{m}" />). The sub is loaded at 80
-            A. What is the round-trip voltage drop from the main to the sub on each hot?
+            A<Cite id="awg-table-nec" in={SOURCES} />. What is the round-trip voltage drop from the
+            main to the sub on each hot?
           </>
         }
         hint={
@@ -968,12 +974,13 @@ export default function Ch28HousePanel() {
               label: 'Manufacturer',
               value: (
                 <>
-                  Federal Pacific Electric (defunct) <Cite id="nec-2023" in={SOURCES} />
+                  Federal Pacific Electric (defunct){' '}
+                  <Cite id="cpsc-fpe-stablok-1983" in={SOURCES} />
                 </>
               ),
             },
-            { label: 'Era', value: <>installed widely 1957–1984</> },
-            { label: 'Failure mode', value: <>thermal trip mechanism fails to release</> },
+            { label: 'Era', value: <>mid-century panels, investigated by CPSC in 1981-1983</> },
+            { label: 'Failure mode', value: <>reported failure to trip within required limits</> },
             {
               label: 'Modern listing standard',
               value: (
@@ -985,26 +992,23 @@ export default function Ch28HousePanel() {
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            Federal Pacific Electric's Stab-Lok panels were installed in millions of North-American
-            homes between the late 1950s and the mid-1980s. Their breakers — single-pole and
-            double-pole units that snapped onto a bus stab much like a modern QO — were nominally
-            listed to the UL 489 of the era, but field reports throughout the 1980s found a
-            disturbing failure mode: under sustained overload, a noticeable fraction of Stab-Lok
-            breakers simply <em className="text-text italic">did not trip</em>. The handle stayed in
-            the ON position, current kept flowing, and the wire downstream of the breaker overheated
-            until something — insulation, framing lumber, the breaker housing itself — ignited.
+            Federal Pacific Electric's Stab-Lok panels are a case study in why breaker listing and
+            field history matter. CPSC investigated reports of Stab-Lok residential circuit breakers
+            failing to open within required time limits under overload. The investigation closed
+            without a recall, but the agency's own consumer notice still tells owners to watch for
+            overloaded circuits, failed trips, and replacement concerns
+            <Cite id="cpsc-fpe-stablok-1983" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            The mechanical root cause was a tolerance issue between the breaker handle, the latch,
-            and the bus stab geometry: the latch could wear or shift such that the bimetallic strip
-            flexed but failed to release the contacts. Modern UL 489 includes mechanical-endurance
-            cycling tests that catch this failure mode at listing time
+            The important engineering lesson is not a single failure mechanism; it is that a breaker
+            must keep opening after years of thermal cycling, handle operation, and mounting wear.
+            Modern UL 489 includes calibration, endurance, and interrupting tests intended to catch
+            breaker designs that cannot keep meeting their trip requirements
             <Cite id="ul-489" in={SOURCES} />, and NEC requires every overcurrent protective device
             to be listed for the panel it is installed in
-            <Cite id="nec-2023" in={SOURCES} />. Stab-Lok panels remain in service today — most are
-            not, by themselves, code violations under grandfathering — but they are widely
-            recommended for replacement at any major remodel, and insurance underwriters frequently
-            price-load policies on homes that still have one.
+            <Cite id="nec-2023" in={SOURCES} />. Stab-Lok panels remain in service today — many are
+            not, by themselves, code violations under grandfathering — but they are common replacement
+            candidates when a home is inspected or remodeled.
           </p>
         </CaseStudy>
       </CaseStudies>
@@ -1038,7 +1042,7 @@ export default function Ch28HousePanel() {
             </Term>{' '}
             packs two single-pole trip mechanisms into one slot's worth of physical space, letting a
             30-slot panel host effectively more circuits. They are allowed only in panel slots
-            specifically rejected for them by the manufacturer's marking — typically the panel will
+            specifically marked or listed for them by the manufacturer's labeling — typically the panel will
             have a stamping indicating which positions accept a tandem. Putting a tandem in a
             non-rated slot is a code violation and a common cause of nuisance tripping
             <Cite id="nec-2023" in={SOURCES} />
@@ -1216,16 +1220,16 @@ export default function Ch28HousePanel() {
           </p>
         </FAQItem>
 
-        <FAQItem q="If the ground rod's resistance to dirt is 25–100 Ω, how does the system trip a 20 A breaker when something faults to earth?">
+        <FAQItem q="If the ground rod's resistance to dirt can be tens of ohms, how does the system trip a 20 A breaker when something faults to earth?">
           <p>
             It does not — and this is one of the most widely misunderstood points in residential
-            electrical safety. A bolted fault from a hot wire to a ground rod, through 25 Ω of soil,
-            draws only <InlineMath tex="120\\ \\text{V}/25\\ \\Omega \\approx 4.8\\ \\text{A}" />
-            — well below a 20 A breaker's trip threshold. What clears a normal fault is not the dirt
-            path; it is the metallic equipment-grounding path back to the transformer through the
-            bonded neutral. Soil resistance to a single residential rod is too high to clear a
-            branch fault by itself. The rod's role is surge bonding and reference stabilisation, not
-            fault clearing
+            electrical safety. Even using the NEC's 25 Ω single-rod benchmark, a direct hot-to-rod
+            path would draw only{' '}
+            <InlineMath tex="120\\ \\text{V}/25\\ \\Omega \\approx 4.8\\ \\text{A}" /> — well below a
+            20 A breaker's trip threshold. What clears a normal fault is not the dirt path; it is the
+            metallic equipment-grounding path back to the transformer through the bonded neutral.
+            Soil resistance to a single residential rod is too high to clear a branch fault by
+            itself. The rod's role is surge bonding and reference stabilisation, not fault clearing
             <Cite id="nec-2023" in={SOURCES} />.
           </p>
         </FAQItem>

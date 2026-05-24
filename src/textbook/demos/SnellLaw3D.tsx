@@ -23,9 +23,9 @@
  * average), and critical angle θ_c (defined only when going from a denser
  * medium into a rarer one).
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
@@ -33,7 +33,9 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { project, v3, type OrbitCamera, type Point2D, type Vec3 } from '@/lib/projection3d';
-import { createOrbitScene } from '@/lib/useOrbitScene';
+import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure: string;
@@ -79,24 +81,12 @@ export function SnellLaw3DDemo({ figure }: Props) {
     return { theta1, theta2, totalReflection, thetaC, R, n_in, n_out };
   }, [theta1Deg, n2, tirMode]);
 
-  const stateRef = useRef({ theta1Deg, n2, showReflected, showPlane, tirMode, computed });
-  useEffect(() => {
-    stateRef.current = { theta1Deg, n2, showReflected, showPlane, tirMode, computed };
-  }, [theta1Deg, n2, showReflected, showPlane, tirMode, computed]);
+  const stateRef = useSimState({ theta1Deg, n2, showReflected, showPlane, tirMode, computed });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
-    const scene = createOrbitScene(canvas, {
-      yaw: 0.55,
-      pitch: 0.28,
-      distance: 7.5,
-      fov: Math.PI / 4,
-    });
+  const setup = useSimLoop<(typeof stateRef)['current'], OrbitScene>(
+    stateRef,
+    ({ ctx, w, h, colors }, s, _dt, _simTime, scene) => {
     const cam = scene.cam;
-    let raf = 0;
-
-    function draw() {
-      const s = stateRef.current;
       const { theta1, theta2, totalReflection } = s.computed;
 
       ctx.fillStyle = colors.bg;
@@ -262,15 +252,18 @@ export function SnellLaw3DDemo({ figure }: Props) {
       const belowAnchor = project(v3(-PLANE_HALF * 0.85, -0.9, 0), cam, w, h);
       drawLabel(ctx, { text: labelAbove, x: aboveAnchor.x, y: aboveAnchor.y });
       drawLabel(ctx, { text: labelBelow, x: belowAnchor.x, y: belowAnchor.y });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      scene.dispose();
-    };
-  }, []);
+    },
+    [],
+    ({ canvas }) => {
+      const scene = createOrbitScene(canvas, {
+        yaw: 0.55,
+        pitch: 0.28,
+        distance: 7.5,
+        fov: Math.PI / 4,
+      });
+      return { context: scene, cleanup: () => scene.dispose() };
+    },
+  );
 
   // Readout values.
   const theta2Display = computed.totalReflection ? null : (computed.theta2! * 180) / Math.PI;

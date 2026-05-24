@@ -30,7 +30,8 @@
 import { useCallback, useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, drawGlowPath, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -243,6 +244,10 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
     const neu = connected(adj, 'power-neutral', 'bulb-neutral');
     return { hotPath: hot, neutralPath: neu, bulbLit: hot && neu };
   }, [wires, s1, s2]);
+  const s1Bit = s1 === 'up' ? 0 : 1;
+  const s2Bit = s2 === 'up' ? 0 : 1;
+  const xorBit = s1Bit === s2Bit ? 0 : 1;
+  const logicLit = xorBit === 0;
 
   const stateRef = useSimState({ wires, s1, s2, inProgressFrom, hoverTerm, pointer, badWireIds, bulbLit });
 
@@ -446,7 +451,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
             ctx.strokeStyle = withAlpha(colors.accent, 0.65);
             ctx.lineWidth = 1.5;
           } else {
-            ctx.strokeStyle = 'rgba(0,0,0,.35)';
+            ctx.strokeStyle = withAlpha(colors.bg, 0.55);
             ctx.lineWidth = 1;
           }
           ctx.beginPath();
@@ -637,9 +642,9 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
             padding: '8px 14px',
             listStyle: 'square',
             fontSize: 12,
-            color: '#ff3b6e',
+            color: getCanvasColors().pink,
             background: withAlpha(getCanvasColors().pink, 0.06),
-            border: '1px solid rgba(255,59,110,.25)',
+            border: `1px solid ${withAlpha(getCanvasColors().pink, 0.25)}`,
             borderRadius: 4,
           }}
         >
@@ -648,6 +653,16 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
           ))}
         </ul>
       )}
+      <EquationStrip
+        leftLabel="Switch logic"
+        left={<InlineMath tex="\\text{load\\_state} = \\neg(S_1 \\oplus S_2)" />}
+        rightLabel="Current positions"
+        right={
+          <InlineMath
+            tex={`\\neg(${s1Bit} \\oplus ${s2Bit}) = \\neg ${xorBit} = ${logicLit ? 1 : 0}`}
+          />
+        }
+      />
     </Demo>
   );
 }
