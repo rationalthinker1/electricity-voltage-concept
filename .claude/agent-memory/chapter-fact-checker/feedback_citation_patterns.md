@@ -19,6 +19,8 @@ metadata:
 
 **"Seventy times" for nichrome:** The actual Cu/Nichrome ratio is ~65.5×, not ~70×. Authors tend to round up to a rounder number. Flag any "~70×" or "seventy times" claims against the CRC values.
 
-**Why:** These patterns each appeared in Ch.1 and Ch.3 and likely recur in later chapters where the same authors write similar claims.
+**`kanthal` is NiCr (nichrome) only:** The Kanthal / Nikrothal-80 datasheet covers nickel-chromium resistance heating alloys. It does NOT cover manganin (Cu-Mn-Ni precision resistance alloy). Any claim about manganin — its history (developed ~1889 for resistance standards), composition (86% Cu, 12% Mn, 2% Ni), TCR (~0 at 20°C), or use in shunts/resistance boxes — must cite `horowitz-hill-2015` or `ashcroft-mermin-1976`, not `kanthal`. This misalignment appeared 4× in Ch.4 (lines 147, 378, 609, 884).
 
-**How to apply:** When auditing any chapter, check: (1) every `feynman-II-*` cite matches the correct Feynman chapter topic AND is in the page's sources array, (2) `gauss-1813` is only for the pure divergence theorem, (3) `codata-2018` is only for CODATA constants, (4) `griffiths-2017` is not a catch-all for measured/experimental values, (5) material conductivity orderings are verified against CRC values.
+**Why:** These patterns each appeared in Ch.1, Ch.3, and Ch.4 and likely recur in later chapters where the same authors write similar claims.
+
+**How to apply:** When auditing any chapter, check: (1) every `feynman-II-*` cite matches the correct Feynman chapter topic AND is in the page's sources array, (2) `gauss-1813` is only for the pure divergence theorem, (3) `codata-2018` is only for CODATA constants, (4) `griffiths-2017` is not a catch-all for measured/experimental values, (5) material conductivity orderings are verified against CRC values, (6) `kanthal` only backs nichrome/NiCr claims, not manganin claims.

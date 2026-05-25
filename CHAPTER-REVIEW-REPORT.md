@@ -58,7 +58,13 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - **MED · pedagogy** — L222–233: "Toggle the Gauss pillbox to see…" UI sentence → `ParallelPlate3DDemo`'s `caption`; keep σ/Gauss physics in prose. **Prose: clean.**
 
 ### Ch.6 — Magnetism
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~40 claims audited, 37 verify; **3 unsourced blockers + 3 numerical warnings** (two large arithmetic errors). All `<Cite>` keys resolve.
+  - **HIGH · fact** — L479: "Minkowski in **1908**" attribution + year uncited; no Minkowski source. Drop the year or add Minkowski *Raum und Zeit* (1909).
+  - **HIGH · fact** — L679–681: "about thirty confirmed magnetars" cited to `duncan-thompson-1992` — that's the *theory-prediction* paper, can't support an observed count. Soften to "dozens" + drop cite, or add `olausen-kaspi-2014` (McGill Magnetar Catalog).
+  - **HIGH · fact** — L529: MRI "**0.3 T in the early 1980s**" uncited (`lauterbur-1973` covers the 1973 proposal only). Soften to "fractions of a tesla in the early clinical era."
+  - **HIGH · fact** — L634 (Case 6.3): "hundred million times weaker than a magnetar" — Earth ~50 µT vs magnetar ~10¹⁰ T gives **2×10¹⁴**, not 10⁸. **Off by six orders of magnitude.** Fix to "~10¹⁴ times weaker."
+  - **MED · fact** — L661 (Case 6.4): "ten quadrillion times the Earth's field" (10¹⁶) overstates; actual ≈ few×10¹⁵ at best. Fix to "a few quadrillion."
+  - **LOW · fact** — L569 vs L597: LHC ring stated as `26.7 km` (spec) and `27 km` (prose); standardize to 26.7 km.
 - **HIGH · pedagogy** — L89–98: magnetic-field B **intuition analogy appears after the formula** (`|B| = μ₀I/2πr` at L98; "contour lines around a mountain" at L100). The metaphor must precede the first formula.
 - **HIGH · pedagogy** — L820 (FAQ): formula `f = qB/2πm` — `f` (cyclotron frequency) never defined, no "where" paragraph.
 - **MED · pedagogy** — L89–115: no operational tier for B (e.g. Hall-probe / `B = F/qv` measurable handle).
