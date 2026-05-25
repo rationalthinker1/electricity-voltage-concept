@@ -125,7 +125,11 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - **MED · pedagogy** — L458–467: final sentence is UI framing for `WireToAntennaTransition3DDemo` → `caption`. Formula glossaries clean. **Prose: clean.**
 
 ### Ch.10 — Maxwell's synthesis
-- **Fact-check:** _pending (running)_
+- **Fact-check:** 61 claims audited, 56 verify; **4 blockers + 1 misaligned cite + 1 warning.** All `<Cite>` IDs resolve; all TryIt arithmetic correct.
+  - **HIGH · fact (misaligned cite)** — L1030: "electron anomalous moment predicted by QED to twelve decimal places" cited to `feynman-II-18` (a 1964 lecture — predates the multi-loop result by ~60 years). Soften to "more than ten significant figures" (no source needed) or cite Hanneke 2008 / Aoyama 2019.
+  - **HIGH · fact** — L538–540: Maxwell's "310,740,000 m/s" and Fizeau's "315,000,000 m/s (1849)" both uncited (the paragraph's `maxwell-1865` is deferred to the quote). Attach `maxwell-1865`; add a Fizeau source or soften.
+  - **HIGH · fact** — Cases 10.1–10.4: **all 24 spec lines uncited** — but the backing keys already exist in the chapter (`hertz-1888`, `hong-2001-wireless`, `kaplan-hegarty-2017`, `ewen-purcell-1951`). Just attach them (21-cm lifetime ~10⁷ yr needs `griffiths-2017`).
+  - **HIGH · fact** — L778: hydrogen hyperfine "≈5.9 μeV" uncited (CODATA: 5.874 μeV). Attach `codata-2018`, optionally tighten to ~5.87 μeV.
 - **MED · pedagogy** — L409–412: displacement-current **intuition tier missing** from prose (the conceptual gloss lives only in a `<Term>` popover). Add an analogy sentence before L410. (The four equations are recaps of prior-chapter quantities — Rule A doesn't bind.)
 - **LOW · pedagogy** — L499–501: `∇×E`, `∇×B` "where" paragraph defines the curl operator but omits its SI units (V/m², T/m²).
 - **HIGH · pedagogy** — L141–152: pure demo-framing before `MaxwellEquations3DDemo` → `caption`. **Prose: clean.**
