@@ -158,3 +158,47 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - **MED · pedagogy** — L1030–1033: Thévenin formula no "where" for `V_th` (V) / `R_th` (Ω). L1042–1051: split the UI-framing clause before `SuperpositionDemo` into `caption`. **Prose: clean.**
 
 ---
+
+## Batch 3 — Chapters 13–18
+
+### Ch.13 — Network analysis methods
+- **Fact-check:** _pending (running)_
+- No three-tier violations (procedural-method chapter; the motivation-then-equation pattern is appropriate). Norton's `I_N` intuition (V-I line argument) is correctly placed.
+- **HIGH · pedagogy** — L530–532: `I_N = V_Th/R_Th, R_N = R_Th` has **no "where"** — `I_N`, `R_N`, `R_Th` never defined with names/units.
+- **MED · pedagogy** — recurring missing-units glossaries: L122–124 (`N`,`B` only in Term popovers), L238–239 (mesh-KVL), L343–344 (nodal-KCL), L748–759 (Y→Δ), L854–856 & L873–876 (max-power `P_L`, `P_L,max`) — none give SI units in a "where" paragraph.
+- **MED · pedagogy** — L779: "the demo below confirms the equivalence numerically" → `YDeltaTransformDemo` caption. **LOW** — L593–597 retrospective demo-pointing after `NortonTheveninDemo`. **Prose: clean.**
+
+### Ch.14 — Semiconductors and transistors
+- **Fact-check:** _pending (running)_
+- **HIGH · pedagogy** — L355: Shockley diode equation `I = I_s(e^{qV/nkT}−1)` has **no intuition tier** before it (the hill-height picture is scattered *after* the formula; the `<Term>` popover only labels it). Add an analogy paragraph before L355.
+- **HIGH · pedagogy** — L762: triode formula — `k_n` never defined with units (A/V²) in a "where"; its definition lands ~30 lines later at L810.
+- **HIGH · pedagogy** — L570: `I_C = β·I_B` has **no "where"** glossary; the `<Term>` for β dangles *below* the formula it defines.
+- **HIGH · pedagogy** — L726–731: pure demo-framing before `MOSFET3DDemo` → `caption`.
+- **MED · pedagogy** — L306 (`V_bi`) and L923 (`g_m`/`V_T`): intuition tier missing and "where" units deferred to later paragraphs. **Prose: clean.**
+
+### Ch.15 — Fourier and harmonic analysis
+- **Fact-check:** _pending (running)_
+- **Pedagogy:** _pending (running)_
+- **Prose: clean.**
+
+### Ch.16 — Filters, op-amps, and transmission lines
+- **Fact-check:** _pending (running)_
+- **HIGH · pedagogy** — L57–96: transfer-function / cutoff-frequency **intuition tier missing** — derives `H(jω)` and `ω_c = 1/RC` straight off; `ω_c` glossed only in a `<Term>` popover; `RCFilterBodeDemo` (L153) lands after the formal formulas.
+- **HIGH · pedagogy** — L494–513: characteristic impedance `Z₀` **intuition tier missing** — the `<Term>` popover holds the formula `Z₀ = √(L′/C′)`; no plain-words picture precedes it.
+- **HIGH · pedagogy** — L364 & L371: inverting/non-inverting op-amp gain formulas have **no "where"** paragraphs (`V_out`, `R_f`, `R_in`, `R_g` undefined with units).
+- **HIGH · pedagogy** — L183–190: pure demo-framing before `FilterDesignerDemo` → `caption`. **Prose: clean.**
+
+### Ch.17 — Materials
+- **Fact-check:** _pending (running)_
+- **HIGH · pedagogy** — L116–164: polarization `P` formal tier (`P = n⟨p⟩`, C/m²) lives **only in a `<Term>` popover** — a reader who never hovers jumps from the atom-dipole intuition straight to the operational `E_inside = E_applied/ε_r`. Surface the formal statement as narrative prose before L164.
+- **MED · pedagogy** — L64–99: permittivity ε and permeability µ formal definitions (`D = εE`, `B = µH`, F/m, H/m) confined to `<Term>` popovers.
+- All narrative `<Formula>` blocks have complete "where" paragraphs; no demo-framing violations. **Prose: clean.**
+
+### Ch.18 — Optics from EM
+- **Fact-check:** _pending (running)_
+- **HIGH · pedagogy** — L81–86: refractive index `n` — **both intuition and formal tiers absent** from prose (`n = √εᵣ` only in a `<Term>` popover); chapter jumps to the boundary-condition formula at L89. Add an intuition paragraph + a `<Formula>n = c/v = √εᵣ</Formula>` with a "where".
+- **HIGH · pedagogy** — L89–92: boundary-condition formula has **no "where"** — `D` (C/m²), `µ` (H/m), and the ∥/⊥ convention all first appear here undefined.
+- **MED · pedagogy** — L370–377: Brewster's angle `θ_B = arctan(n₂/n₁)` only inline `<M>` + `<Term>`; no three-tier structure.
+- **HIGH · pedagogy** — L142–152: pure demo-framing before `SnellLaw3DDemo` → `caption`. **Prose: clean.**
+
+---
