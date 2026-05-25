@@ -13,6 +13,12 @@ metadata:
 
 **Prose FAQ answers** are a high-risk area. Ch.1 FAQ had the "nanocoulombs over the whole head" misaligned cite and the "k around 10¹⁰" imprecision. The ~⅔c signal-velocity claim in a FAQ was cited to the wrong source.
 
+**Battery-cell voltage specs** (per-chemistry: alkaline 1.5 V, lead-acid 2.0 V, Li-ion 3.7 V) appear in FAQ answers without citation. These need `linden-reddy-2011` (Linden's Handbook of Batteries), which is not yet in the registry as of Ch.2 audit. Flag whenever seen; suggest adding to registry.
+
+**Historical-figure sign conventions** (Franklin, Thomson) given specific years without `<Cite>`. Registry has no Franklin or Thomson source. Remedy is always soften-or-add, not invent.
+
+**"Snail 50× faster" style comparisons** — when prose gives a comparison ratio derived from a cited speed vs. a computed speed, verify the arithmetic. Ch.2 "fifty times faster" was actually ~442×.
+
 **Why:** FAQ text is written last, under time pressure, and citations slip through.
 
-**How to apply:** Audit FAQ answers first in every chapter — they concentrate the most unsourced or weakly-sourced claims.
+**How to apply:** Audit FAQ answers first in every chapter — they concentrate the most unsourced or weakly-sourced claims. Also spot-check all analogy comparisons that include a specific multiplier.
