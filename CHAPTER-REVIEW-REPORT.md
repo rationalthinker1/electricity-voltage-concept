@@ -89,7 +89,13 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 ## Batch 2 — Chapters 7–12
 
 ### Ch.7 — Induction
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~38 claims audited, 31 verify; **6 blockers (5 unsourced + 1 misaligned), 0 arithmetic errors.**
+  - **HIGH · fact** — L218: "Lenz … in **1834**" — name+year uncited; no Lenz source in registry. Drop the year or add Lenz, *Ann. Phys.* 31, 483–494 (1834).
+  - **HIGH · fact (misaligned cite)** — L582–584 (Case 7.2): "≥95% for a USB-C cable" cited to `feynman-II-17` (the induction-law chapter — no cable-efficiency data). Soften and drop cite.
+  - **HIGH · fact** — L788–789 (FAQ): same "95%+ cable" claim, uncited.
+  - **HIGH · fact** — L508 (Case 7.1) & L797 (FAQ): iron-core saturation "~1.5–2 T" uncited (values are correct). Add `griffiths-2017`.
+  - **HIGH · fact** — L725–729 (FAQ): "Edison's DC grid… Tesla and Westinghouse won the AC argument" — War-of-Currents attribution uncited; appended `griffiths-2017` covers only the physics. Rephrase as physics-only (DC → dΦ/dt=0).
+  - **HIGH · fact** — L403–404 (TryIt 7.3 answer): "95–99% efficiency" uncited. Cite `lucia-induction-2014` or soften.
 - **HIGH · pedagogy** — L88–122: **EMF intuition tier missing** — chapter goes from general historical narrative straight to the flux surface integral (L99) and formal Faraday's law (L122). EMF's only plain-words gloss is a `<Term>` popover. Add a non-mathematical EMF picture before L99.
 - **HIGH · pedagogy** — L270: `Φ(t) = NBA cos(ωt)` has **no "where" paragraph**; the glossary at L274 is attached to the *next* formula (L272). Duplicate the symbol definitions onto L270 or merge the two `<Formula>` blocks.
 - **MED · pedagogy** — L99: magnetic flux Φ intuition lives only in the FAQ (L672), far from the formal definition.
