@@ -162,14 +162,26 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 ## Batch 3 — Chapters 13–18
 
 ### Ch.13 — Network analysis methods
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~70 claims audited, 65 resolve; **no misaligned cites, all 7 worked examples arithmetically correct.** Issues are uncited claims/specs:
+  - **HIGH · fact** — L1165: "codified as P48 in IEC 61938" uncited; `IEC 61938` not in registry. Soften or add `iec-61938` (real standard).
+  - **HIGH · fact** — L1108: "SPICE first release: 1973" uncited — `ho-ruehli-brennan-1975` **is in the registry but not in `chapter.sources[]`**; add it + cite, or soften to "circa 1970s."
+  - **HIGH · fact** — L1112: "Per-iteration cost: O(N^1.2) sparse LU" uncited specific complexity claim. Soften to "near-linear" or cite.
+  - **MED · fact** — Cases 13.1/13.3/13.4 spec arrays (gauge factor, P48 ±4 V, Class-AB/D efficiencies, VSWR loss) uncited — but `horowitz-hill-2015` in adjacent prose covers them; attach the cite inside the specs.
+  - **MED · fact** — L899–901: "half of the source's open-circuit energy budget" is not physically meaningful (open-circuit power = 0). Rephrase in terms of short-circuit power.
+  - **LOW · fact** — L1068: full-bridge output label "≈5–10 mV" should be 10–20 mV (or the label should say half-bridge).
 - No three-tier violations (procedural-method chapter; the motivation-then-equation pattern is appropriate). Norton's `I_N` intuition (V-I line argument) is correctly placed.
 - **HIGH · pedagogy** — L530–532: `I_N = V_Th/R_Th, R_N = R_Th` has **no "where"** — `I_N`, `R_N`, `R_Th` never defined with names/units.
 - **MED · pedagogy** — recurring missing-units glossaries: L122–124 (`N`,`B` only in Term popovers), L238–239 (mesh-KVL), L343–344 (nodal-KCL), L748–759 (Y→Δ), L854–856 & L873–876 (max-power `P_L`, `P_L,max`) — none give SI units in a "where" paragraph.
 - **MED · pedagogy** — L779: "the demo below confirms the equivalence numerically" → `YDeltaTransformDemo` caption. **LOW** — L593–597 retrospective demo-pointing after `NortonTheveninDemo`. **Prose: clean.**
 
 ### Ch.14 — Semiconductors and transistors
-- **Fact-check:** _pending (running)_
+- **Fact-check:** 60 claims audited, 13 flagged (9 HIGH, 2 MED, 2 LOW).
+  - **HIGH · fact (arithmetic)** — L322–323: `V_bi` ratio stated 5×10¹¹ but `N_A·N_D/n_i² = (5×10¹⁵)²/(10¹⁰)² = 2.5×10¹¹`; `ln` should be 26.24 (not 27.0), V_bi = 0.678 V. Fix the ratio and ln.
+  - **HIGH · fact (misaligned cite)** — L1163–1171: "TSMC N3" + "≈19×10⁹ transistors" (A17 Pro, 2023) cited to `razavi-2021` (a 2021 textbook). Soften to descriptive prose.
+  - **HIGH · fact** — L1175: A17 Pro die area "≈103 mm²" uncited (no source for it). Soften/remove.
+  - **HIGH · fact** — Cases 14.2/14.3/14.4 spec rows (LED λ/Vf, 12AX7 µ≈100, 2N5457 gm, optocoupler isolation), L1341 (175 °C vs 80 °C Ge), L1419 (LED 40–50% wall-plug), L1488 (1.5 W heater, "few thousand hours") all uncited — attach `horowitz-hill-2015`/`streetman-banerjee-2015` or soften.
+  - **MED · fact** — L1216 vs L1229: Case 14.2 spec "~940 nm" contradicts prose "λ ≈ 873 nm" from E_g=1.42 eV (873 is correct for GaAs). Fix spec to ~880 nm or relabel material AlGaAs.
+  - **MED · fact** — L1358–1364 (FAQ): diode-knee derivation's intermediate "6·V_T·ln(10) ≈ 0.36 V" doesn't reach the stated 0.6–0.7 V; rework or drop the step.
 - **HIGH · pedagogy** — L355: Shockley diode equation `I = I_s(e^{qV/nkT}−1)` has **no intuition tier** before it (the hill-height picture is scattered *after* the formula; the `<Term>` popover only labels it). Add an analogy paragraph before L355.
 - **HIGH · pedagogy** — L762: triode formula — `k_n` never defined with units (A/V²) in a "where"; its definition lands ~30 lines later at L810.
 - **HIGH · pedagogy** — L570: `I_C = β·I_B` has **no "where"** glossary; the `<Term>` for β dangles *below* the formula it defines.
@@ -193,7 +205,11 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - **HIGH · pedagogy** — L183–190: pure demo-framing before `FilterDesignerDemo` → `caption`. **Prose: clean.**
 
 ### Ch.17 — Materials
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~60 claims audited, 54 resolve, all arithmetic correct; **2 genuine physics errors + several uncited values.**
+  - **HIGH · fact (wrong physics)** — L1047–1049: "copper atom has just one [unpaired d electron]" — Cu is [Ar]3d¹⁰4s¹, the 3d shell is **full** (zero unpaired 3d electrons); the lone unpaired electron is 4s. Correct the statement.
+  - **HIGH · fact (wrong physics)** — L1053: "copper is a paramagnet at most" — bulk Cu is weakly **diamagnetic** (χ_m ≈ −1×10⁻⁵). Replace with "weakly diamagnetic in bulk."
+  - **MED · fact** — uncited values, all backable by keys already in `chapter.sources`: L1191 (MRI 1.5–3 T, Earth ~50 µT → `codata-2018`/`kittel-2005`), L1167–1169 (Meissner χ_m=−1 → `kittel-2005`), L961–964 (Nd₂Fe₁₄B Curie ~580 K → `kittel-2005`), L847–852 (GMR areal-density/1997 IBM history — soften or cite).
+  - **LOW · fact** — L1025 (air breakdown 3 MV/m → `jackson-1999`), L277 (mica ε_r≈6.7 — Griffiths lists muscovite ~5.4; cite + note or lower).
 - **HIGH · pedagogy** — L116–164: polarization `P` formal tier (`P = n⟨p⟩`, C/m²) lives **only in a `<Term>` popover** — a reader who never hovers jumps from the atom-dipole intuition straight to the operational `E_inside = E_applied/ε_r`. Surface the formal statement as narrative prose before L164.
 - **MED · pedagogy** — L64–99: permittivity ε and permeability µ formal definitions (`D = εE`, `B = µH`, F/m, H/m) confined to `<Term>` popovers.
 - All narrative `<Formula>` blocks have complete "where" paragraphs; no demo-framing violations. **Prose: clean.**
