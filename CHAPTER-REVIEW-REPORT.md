@@ -85,3 +85,47 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - **MED · pedagogy** — L98: `|B|` glossary not in canonical "where B is … (in tesla)" form; unit is in a separate sentence. **Prose: clean.**
 
 ---
+
+## Batch 2 — Chapters 7–12
+
+### Ch.7 — Induction
+- **Fact-check:** _pending (running)_
+- **HIGH · pedagogy** — L88–122: **EMF intuition tier missing** — chapter goes from general historical narrative straight to the flux surface integral (L99) and formal Faraday's law (L122). EMF's only plain-words gloss is a `<Term>` popover. Add a non-mathematical EMF picture before L99.
+- **HIGH · pedagogy** — L270: `Φ(t) = NBA cos(ωt)` has **no "where" paragraph**; the glossary at L274 is attached to the *next* formula (L272). Duplicate the symbol definitions onto L270 or merge the two `<Formula>` blocks.
+- **MED · pedagogy** — L99: magnetic flux Φ intuition lives only in the FAQ (L672), far from the formal definition.
+- **MED · pedagogy** — L372: `V₂/V₁ = N₂/N₁` has no own "where" (symbols defined on the preceding formula); add a one-line back-reference.
+- **HIGH · pedagogy** — L299–305: pure demo-framing before `RotatingCoilFlux3DDemo` (Fig. 7.5) → move into `caption`. **Prose: clean.**
+
+### Ch.8 — Where the energy actually flows (Poynting capstone)
+- **Fact-check:** _pending (running)_
+- Three-tier order clean; all 9 narrative `<Formula>` blocks have complete "where" paragraphs.
+- **HIGH · pedagogy** — L319–323: "The 'P_surf/P_VI = 1.000' readout… is the entire chapter compressed into one number" — pure UI framing after `PoyntingInflowDemo` → `caption`.
+- **MED · pedagogy** — L325–333: mixed UI/physics before `PoyntingCoax3DDemo`; move the opening UI sentence to `caption`, keep the coax cross-product physics. **Prose: clean.**
+
+### Ch.9 — Electromagnetic waves
+- **Fact-check:** _pending (running)_
+- **HIGH · pedagogy** — L170: **wave-equation intuition tier missing** — derived purely algebraically (Poynting → curls → PDE); `SpeedOfLightDemo` (L202) lands only after the full derivation. Add a one-sentence analogy and/or move the demo earlier.
+- **MED · pedagogy** — L207/L323: operational forms `v = c/n`, `λ = c/f` appear as inline math inside prose, not as a distinct operational tier.
+- **MED · pedagogy** — L458–467: final sentence is UI framing for `WireToAntennaTransition3DDemo` → `caption`. Formula glossaries clean. **Prose: clean.**
+
+### Ch.10 — Maxwell's synthesis
+- **Fact-check:** _pending (running)_
+- **MED · pedagogy** — L409–412: displacement-current **intuition tier missing** from prose (the conceptual gloss lives only in a `<Term>` popover). Add an analogy sentence before L410. (The four equations are recaps of prior-chapter quantities — Rule A doesn't bind.)
+- **LOW · pedagogy** — L499–501: `∇×E`, `∇×B` "where" paragraph defines the curl operator but omits its SI units (V/m², T/m²).
+- **HIGH · pedagogy** — L141–152: pure demo-framing before `MaxwellEquations3DDemo` → `caption`. **Prose: clean.**
+
+### Ch.11 — Relativity and EM
+- **Fact-check:** _pending (running)_
+- **HIGH · pedagogy** — L302–310: the **E/B frame-mixing transformation equations** the `EBTransformDemo` visualises never appear in narrative prose at any tier (only inline `<M>` tensor contraction, no "where", no intuition). Add them as a `<Formula>` block + "where" + a one-sentence intuition.
+- **MED · pedagogy** — L193: Lorentz factor γ defined only inside a `<Term>` popover + a TryIt hint; no narrative intuition/formal/operational tier, yet TryIt 11.1 asks the reader to compute γ. Add a short three-tier block before L154.
+- Only narrative `<Formula>` (L167) has a complete "where"; demo-framing clean. **Prose: clean.**
+
+### Ch.12 — Circuits, AC, and impedance
+- **Fact-check:** _pending (running)_
+- **HIGH · pedagogy** — L639–675: **impedance intuition tier absent** — jumps from the Steinmetz note to `V = IZ` and the per-component Z formulas; the `<Term>` popover holds the operational form `Z = R + jX`, not an intuition.
+- **HIGH · pedagogy** — L800–814: **RMS intuition tier missing** — introduced only via a `<Term>` popover (`V_rms = V_p/√2`); leads with time-averaging math.
+- **MED · pedagogy** — L703: reactance intuition collapsed into its `<Term>` definition.
+- **HIGH · pedagogy** — L122–124: KCL `ΣI_in = ΣI_out` has **no "where"** — `I_in`/`I_out` never given units (A). L146–148: KVL `ΣV_loop = 0` likewise.
+- **MED · pedagogy** — L1030–1033: Thévenin formula no "where" for `V_th` (V) / `R_th` (Ω). L1042–1051: split the UI-framing clause before `SuperpositionDemo` into `caption`. **Prose: clean.**
+
+---
