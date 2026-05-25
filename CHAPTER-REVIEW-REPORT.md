@@ -17,14 +17,22 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 ## Batch 1 — Chapters 1–6
 
 ### Ch.1 — Charge and field
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~35 claims audited, 33 resolve; no blockers; all `<Cite>` tags resolve. Two warnings:
+  - **MED · fact** — L204: "a tiny fraction of the roughly 10²³ **free** electrons already in the rubber." Rubber is an insulator — it has essentially **zero free electrons**. Term is physically wrong and unsourced; total electron count is nearer 10²⁴. Fix: change to "total/bound electrons", correct to ~10²⁴, or drop the number (the qualitative point stands without it).
+  - **LOW · fact** — L1021–1022 (FAQ): "100-watt bulb… draws on the order of 1 amp" — at 120 V a 100 W bulb draws 0.83 A, so 1 C passes in ~1.2 s, not 1 s (~20% off). Soften to "≈0.8 A at 120 V."
 - **MED · pedagogy** — L358–376: electric-field **intuition tier bleeds into the formal intro**. The sentence "The symbol is E⃗, and its definition is direct:" should open the formal tier; split the paragraph there so the intuition stays formula-free.
 - **HIGH · pedagogy** — L533–538: demo-framing paragraph before `ParallelPlateUniformFieldDemo` (Fig. 1.7) opens "Drag the separation slider." — pure UI instruction, and the physics sentence duplicates L527–528. Move into the demo's `caption`.
 - **MED · pedagogy** — L477–494: mixed UI/physics paragraph after `EquipotentialsDemo` (Fig. 1.5); move the "teal dotted contours in the demo above" sentence to `caption`, keep the perpendicularity physics in prose.
 - Formula glossaries all clean (coulomb-force, electric-field-def, point, parallel-plate). **Prose: clean.**
 
 ### Ch.2 — Voltage and current
-- **Fact-check:** _pending (running)_
+- **Fact-check:** 22 claims audited, 18 verify; **3 unsourced-claim BLOCKERs + 3 arithmetic warnings.** No cite misalignments.
+  - **HIGH · fact** — FAQ ~L841: cell-voltage table (1.5 V alkaline, 2.0 V lead-acid, 3.7 V Li-ion; "9 V = six 1.5 V cells") carries **no `<Cite>`** and no battery source exists in the registry. Fix: add `linden-reddy-2011` (*Linden's Handbook of Batteries*, 4e, McGraw-Hill 2011) to `sources.ts` + chapter array, or soften and drop the cross-chemistry table.
+  - **HIGH · fact** — ~L300 & FAQ ~L1044: "Franklin … **1747**" stated twice, uncited; no Franklin source in registry. Soften to "mid-eighteenth century" or add Franklin 1751 *Experiments and Observations on Electricity*.
+  - **HIGH · fact** — FAQ ~L1047: "J. J. Thomson identified the electron in **1897**" — attribution + year uncited; no Thomson source. Soften or add Thomson 1897 "Cathode Rays," *Phil. Mag.* 44.
+  - **MED · fact** — ~L435: "**thirteen hours** to traverse one metre" inconsistent with the chapter's own 2.9×10⁻⁵ m/s drift (→ 9.6 h). 13 h belongs to a different wire scenario (0.02 mm/s). Pick one scenario.
+  - **MED · fact** — ~L434: "garden snail moves roughly **fifty times faster**" — actual ratio ≈ 442× (snail ≈0.013 m/s vs 2.9×10⁻⁵ m/s). Change to "hundreds of times faster."
+  - **LOW · fact** — ~L514: "**thirteen orders of magnitude**" — the L538 ratio is ~6.7×10¹² ≈ 10¹². Soften to "twelve to thirteen."
 - **HIGH · pedagogy** — L538: formula `v_signal/v_drift ≈ 2×10⁸/3×10⁻⁵ ≈ 10¹³` has **no following "where" paragraph**; `v_signal`/`v_drift` never get SI units there.
 - **MED · pedagogy** — L253–292: current's three tiers aren't structurally separated — operational `1 A = 1 C/s` bleeds into the intuition block; formal `I = dQ/dt` arrives with no h3 separator.
 - **MED · pedagogy** — L467–476: closing sentence "…is what the next demo lets you watch" is pure UI framing; move into `CursorEFieldOnWireDemo`'s `caption` (keep the E=0-inside-conductor physics in prose).
