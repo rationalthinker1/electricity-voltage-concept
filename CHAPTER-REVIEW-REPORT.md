@@ -135,7 +135,11 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - **HIGH · pedagogy** — L141–152: pure demo-framing before `MaxwellEquations3DDemo` → `caption`. **Prose: clean.**
 
 ### Ch.11 — Relativity and EM
-- **Fact-check:** _pending (running)_
+- **Fact-check:** 40+ claims audited, 36 verify; **no citation problems** (all 10 `<Cite>` IDs resolve and back their claims); **3 HIGH arithmetic errors + 1 inconsistency**, all in Case 11.2 / the GPS summary.
+  - **HIGH · fact** — L572 (Case 11.2): `γ−1 ≈ 2.7×10⁻²⁵` should be **2.7×10⁻²⁷** (two orders off).
+  - **HIGH · fact** — L575–576: net charge density `λ' ≈ −5×10⁻²⁵ C/m` should be **~2.4×10⁻²² C/m** (three orders off).
+  - **HIGH · fact** — L600–601: electron deficit "~3×10⁻⁶ per metre" should be **~1.5×10⁻³ per metre** (three orders off). All three share a root cause — undercounted powers of 10 when squaring `v_d/c ≈ 7×10⁻¹⁴`.
+  - **MED · fact** — L504 vs L432/L517/L535: GPS net offset "38.6 µs/day" (summary) is the outlier; the chapter's self-consistent arithmetic gives **38.5 µs/day**. Standardize.
 - **HIGH · pedagogy** — L302–310: the **E/B frame-mixing transformation equations** the `EBTransformDemo` visualises never appear in narrative prose at any tier (only inline `<M>` tensor contraction, no "where", no intuition). Add them as a `<Formula>` block + "where" + a one-sentence intuition.
 - **MED · pedagogy** — L193: Lorentz factor γ defined only inside a `<Term>` popover + a TryIt hint; no narrative intuition/formal/operational tier, yet TryIt 11.1 asks the reader to compute γ. Add a short three-tier block before L154.
 - Only narrative `<Formula>` (L167) has a complete "where"; demo-framing clean. **Prose: clean.**
