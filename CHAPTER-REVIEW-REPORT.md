@@ -189,7 +189,11 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - **MED · pedagogy** — L306 (`V_bi`) and L923 (`g_m`/`V_T`): intuition tier missing and "where" units deferred to later paragraphs. **Prose: clean.**
 
 ### Ch.15 — Fourier and harmonic analysis
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~55 claims audited; **2 arithmetic errors + 3 misaligned cites + 2 unsourced.** Gibbs/series/RMS/crest-factor arithmetic all verified.
+  - **HIGH · fact (arithmetic)** — L719 & L1053: FFT speedup for N=65 536 stated "1638×" — correct is `N²/(N log₂N) = 4096×`. Fix **both**.
+  - **MED · fact (arithmetic)** — L887: oscilloscope op-count pair (~10¹⁸ naive / ~10⁷ FFT) inconsistent for one buffer. Fix to ~10¹⁴ naive / ~2×10⁸ FFT.
+  - **MED · fact (misaligned cite)** — L769/L797: MP3 MDCT/codec architecture cited to `oppenheim-willsky-1997` (covers transfer functions, not MDCT/psychoacoustics). Soften. L549/L606–609: IEEE 519 voltage-class limits cited to `horowitz-hill-2015`; soften to "a few percent."
+  - **LOW · fact** — L1068–1069: "Winograd (1976)" should be **1978** (*Math. Comp.* 32). L695–699 (Gauss 1805/Pallas) → add `cooley-tukey-1965`. L785–786 (MP3 masking ~150 Hz/~50 ms) uncited — soften.
 - **HIGH · pedagogy** — L105–113: Fourier-series **intuition tier collapsed** (the vivid hook examples sit two sections earlier; "The series formula" section opens straight into the formula, with only a `<Term>` popover gloss). **Operational tier missing entirely** (no "how an engineer computes/looks these up — FFT, spectrum analyser, tables").
 - **HIGH · pedagogy** — L113 (`f(t) = a₀/2 + Σ[…]`) and L151–152 (the `a_n`/`b_n` projection integrals) have **no "where"** paragraphs — `a₀`, `a_n`, `b_n` and their units never listed.
 - **MED · pedagogy** — L627–638: DFT intuition tier missing (opens with a `<Term>` popover then the complex-exponential formula). Several more partial/missing glossaries: L400, L417 (RMS), L478 (transfer-function superposition), L592 (THD), L638 (DFT) lack units/where.
