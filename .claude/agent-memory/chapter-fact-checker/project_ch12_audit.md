@@ -30,7 +30,10 @@ No <Cite>. These are specific quantitative claims. No registry source currently 
 ## MEDS
 
 ### MED-1: AM antenna coil "around 250 µH, 30–365 pF" (lines 1213-1215) — no <Cite>
-These are specific component specs. irwin-circuit-analysis-2015 is not a radio engineering reference. Recommend soften to "typical coil inductances and variable capacitor ranges for the AM band."
+These are specific component specs. irwin-circuit-analysis-2015 is not a radio engineering reference.
+Also note: with L=250 µH, the range 30–365 pF covers ~527 kHz to ~1838 kHz, which overruns the
+US AM band (535–1705 kHz) by ~9% on each end. The values are illustrative but not exact for the
+band edges. Recommend soften to "typical coil inductances and variable capacitor ranges for the AM band."
 
 ## All arithmetic otherwise correct:
 - λ = c/f at 60 Hz = 5000 km ✓

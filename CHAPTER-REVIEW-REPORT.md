@@ -127,7 +127,12 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - Only narrative `<Formula>` (L167) has a complete "where"; demo-framing clean. **Prose: clean.**
 
 ### Ch.12 — Circuits, AC, and impedance
-- **Fact-check:** _pending (running)_
+- **Fact-check:** 39 claims audited, 35 verify; **4 blockers (1 a real arithmetic error) + 1 warning.**
+  - **HIGH · fact** — L1348 (FAQ): "33% extra I²R losses" at pf=0.7 is **wrong** — current scales 1/0.7=1.43×, losses ×(1.43)²=2.04 → **~100% extra**, not 33%. Fix to "roughly double the I²R losses." (`grainger-power-systems-2003` cite stays.)
+  - **HIGH · fact** — L642: "Charles Steinmetz at General Electric in the 1890s" uncited — `steinmetz-1893` **is in the registry but missing from `chapter.sources[]`**. Add the key + `<Cite>`.
+  - **HIGH · fact** — L1164–1165 (Case 12.1) & L1373–1374 (FAQ): Westinghouse 60 Hz / AEG 50 Hz history uncited; no grid-frequency source in registry. Soften (drop AEG specifics) or add a real history source (e.g. Hughes, *Networks of Power*, 1983 — verify first).
+  - **HIGH · fact** — L619 & L1400–1401: crystal-oscillator Q≈10⁶ and cesium Q≈10¹⁰ uncited. Soften ("Q in the millions") or cite a verifiable source.
+  - **MED · fact** — L1213–1215: AM radio coil/cap spec (250 µH, 30–365 pF) overruns the band edges by ~9% and is uncited. Soften to ranges without specific numbers.
 - **HIGH · pedagogy** — L639–675: **impedance intuition tier absent** — jumps from the Steinmetz note to `V = IZ` and the per-component Z formulas; the `<Term>` popover holds the operational form `Z = R + jX`, not an intuition.
 - **HIGH · pedagogy** — L800–814: **RMS intuition tier missing** — introduced only via a `<Term>` popover (`V_rms = V_p/√2`); leads with time-averaging math.
 - **MED · pedagogy** — L703: reactance intuition collapsed into its `<Term>` definition.
