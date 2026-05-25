@@ -185,7 +185,8 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - **Prose: clean.**
 
 ### Ch.16 — Filters, op-amps, and transmission lines
-- **Fact-check:** _pending (running)_
+- **Fact-check: CLEAN.** ~65 claims audited, all resolve; no blockers, no misaligned cites, all arithmetic verified. Notably clean citation hygiene.
+  - **LOW · fact** — L138: "Bode … Bell Labs (1940s)" attribution sits inside a `<Term>` def where the `oppenheim-willsky-1997` cite can't naturally follow (attribution is correct). L618–619: "Philip Smith … 1939" — backed by `pozar-2011` on the same paragraph. No action required.
 - **HIGH · pedagogy** — L57–96: transfer-function / cutoff-frequency **intuition tier missing** — derives `H(jω)` and `ω_c = 1/RC` straight off; `ω_c` glossed only in a `<Term>` popover; `RCFilterBodeDemo` (L153) lands after the formal formulas.
 - **HIGH · pedagogy** — L494–513: characteristic impedance `Z₀` **intuition tier missing** — the `<Term>` popover holds the formula `Z₀ = √(L′/C′)`; no plain-words picture precedes it.
 - **HIGH · pedagogy** — L364 & L371: inverting/non-inverting op-amp gain formulas have **no "where"** paragraphs (`V_out`, `R_f`, `R_in`, `R_g` undefined with units).
