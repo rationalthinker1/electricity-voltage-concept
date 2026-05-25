@@ -46,7 +46,13 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - **MED · pedagogy** — L173–180 (after Fig. 3.2) and L230–234 (after Fig. 3.4): demo-narrating paragraphs, candidates for `caption`. **Prose: clean** (short circuit / short-circuit noun-vs-adjective defensible).
 
 ### Ch.4 — How a resistor works
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~45 claims audited, 39 verify; **3 unsourced blockers + 1 cite-misalignment + 3 warnings.**
+  - **HIGH · fact** — L389: NTC "resistance drops by a factor of two for every ~25 °C" is uncited **and wrong** — with the chapter's own B≈3950 K the ratio is 2.1–2.8× per 25 °C. Fix wording to "factor of 2–3 per 25 °C, → ~2× at higher temps" and cite `steinhart-hart-1968`.
+  - **HIGH · fact** — L993–998 (FAQ): Pt100 range "−200 to +650 °C" uncited and **understates** the IEC 60751 standard (−200 to +850 °C). Correct + cite `horowitz-hill-2015`.
+  - **HIGH · fact** — L683–684 (Case 4.2): CPU throttle "~95 °C" / shutdown "~105 °C" uncited specific thresholds. Soften (values vary by processor) or cite a datasheet.
+  - **HIGH · fact (misaligned cite)** — L147, 378, 609, 884: `kanthal` is cited for **manganin** (Cu-Mn-Ni) composition/history/shunt use, but the Kanthal datasheet covers only NiCr heating wire. Re-aim these four to `horowitz-hill-2015`; keep `kanthal` only for the nichrome resistivity value.
+  - **MED · fact** — L389 (W1, same as above): the stated sensitivity contradicts the chapter's own B constant.
+  - **LOW · fact** — L667 (Case 4.2): NTC R₁₀₀ stated 680 Ω vs ~698 Ω from chapter's B (within part variation). L722 (Case 4.3): visible-photon "1.8–3.1 eV" — true band ~1.77–3.26 eV; soften to "~2–3 eV."
 - **MED · pedagogy** — L354: Matthiessen's rule `ρ(T) = ρ_residual + ρ_phonon(T)` jumps straight to the formula with no non-mathematical intuition sentence first. (`R = ρL/A` correctly deferred to Ch.3 by cross-reference — not a violation.)
 - Formula glossaries all clean; demo-framing clean. **Prose: clean.**
 
