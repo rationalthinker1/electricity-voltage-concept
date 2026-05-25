@@ -215,7 +215,10 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - All narrative `<Formula>` blocks have complete "where" paragraphs; no demo-framing violations. **Prose: clean.**
 
 ### Ch.18 — Optics from EM
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~65 claims audited, 59 resolve; **no misaligned cites**, all Snell/Fresnel/Brewster/fiber/grating arithmetic verified. 6 flagged:
+  - **MED · fact** — 4 uncited historical attributions: L639 (Einstein 1917 stimulated emission), L287–290 (Newton *Opticks* 1704), L460 (Newton soap-bubble colours 1670s), L395 (Malus 1809). Soften and lean on the in-scope `hecht-2017` cite, or add registry entries.
+  - **MED · fact** — L481: fiber acceptance half-angle "~10°" inconsistent with the stated indices (n_core 1.4682, n_clad 1.4628 → NA 0.126 → **7.2°**). Fix to "~7°."
+  - **LOW · fact** — L549–551: double-slit fringe spacing stated "~5 mm" but λL/d = **5.5 mm**. L767: coated reflectance "~1.4%" vs chapter's own formula 1.26%.
 - **HIGH · pedagogy** — L81–86: refractive index `n` — **both intuition and formal tiers absent** from prose (`n = √εᵣ` only in a `<Term>` popover); chapter jumps to the boundary-condition formula at L89. Add an intuition paragraph + a `<Formula>n = c/v = √εᵣ</Formula>` with a "where".
 - **HIGH · pedagogy** — L89–92: boundary-condition formula has **no "where"** — `D` (C/m²), `µ` (H/m), and the ∥/⊥ convention all first appear here undefined.
 - **MED · pedagogy** — L370–377: Brewster's angle `θ_B = arctan(n₂/n₁)` only inline `<M>` + `<Term>`; no three-tier structure.
