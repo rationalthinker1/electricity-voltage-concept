@@ -103,13 +103,23 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - **HIGH · pedagogy** — L299–305: pure demo-framing before `RotatingCoilFlux3DDemo` (Fig. 7.5) → move into `caption`. **Prose: clean.**
 
 ### Ch.8 — Where the energy actually flows (Poynting capstone)
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~35 claims audited; **2 HIGH + several MED/LOW.** All 12 cite keys resolve.
+  - **HIGH · fact** — L1091 (FAQ): plane-wave Poynting magnitude given as `cε₀E²` — should be `½cε₀E₀²` (peak) or note `E` is rms. **Off by 2×.**
+  - **HIGH · fact** — L74, L88: drift velocity quoted as "0.03 mm/s" but Ch.2 (and `libretexts-conduction`) give **0.02 mm/s** (2.9×10⁻⁵ m/s). Ch.8 misquotes its own earlier chapter by 50%; fix both to 0.02 mm/s.
+  - **MED · fact** — L438, L957: "Morris and Styer" — the source `morris-styer-2012` lists only Styer (Oberlin notes); no co-author Morris. Change prose to "Styer."
+  - **MED · fact** — L736: "Annual global energy demand (2024) ~6×10²⁰ J" uncited (no IEA/BP source in registry). Add a source or drop the number.
+  - **LOW · fact** — L729–734: Earth-intercepted-power spec cited to `codata-2018`, but it's a derived quantity CODATA doesn't carry. Drop the cite or mark "(derived)."
 - Three-tier order clean; all 9 narrative `<Formula>` blocks have complete "where" paragraphs.
 - **HIGH · pedagogy** — L319–323: "The 'P_surf/P_VI = 1.000' readout… is the entire chapter compressed into one number" — pure UI framing after `PoyntingInflowDemo` → `caption`.
 - **MED · pedagogy** — L325–333: mixed UI/physics before `PoyntingCoax3DDemo`; move the opening UI sentence to `caption`, keep the coax cross-product physics. **Prose: clean.**
 
 ### Ch.9 — Electromagnetic waves
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~45 claims audited, all arithmetic correct; **3 blockers + 2 warnings.** All `<Cite>` IDs resolve.
+  - **HIGH · fact (misaligned cite)** — L599: Apollo Earth–Moon signal-delay sentence cited to `hertz-1888` (a Karlsruhe radio-wave paper — nothing on lunar latency). Drop the cite (`codata-2018` two lines up suffices).
+  - **HIGH · fact (misaligned cite)** — L862 (FAQ): "Maxwell wrote down displacement current in **1861**" cited to `maxwell-1865` (the synthesis paper). Displacement current is from the 1861 "On Physical Lines of Force." Soften to "early 1860s" so the 1865 cite fits.
+  - **HIGH · fact** — L1042 (FAQ): CMB "about 2.7 K" uncited. Append `codata-2018` or soften to "a few kelvin."
+  - **MED · fact** — L567/L757/L778: IKAROS sail area **internally inconsistent** — "20 m × 20 m" (=400 m²) at L757 contradicts "~200 m²" at L567/L778 (Tsuda 2013: ~196 m², 20 m is the diagonal span). Fix the spec row.
+  - **LOW · fact** — L824: X-ray "five orders of magnitude shorter" overstated; true ≈ 4–5 (soft end ~3.7). Soften to "four to five."
 - **HIGH · pedagogy** — L170: **wave-equation intuition tier missing** — derived purely algebraically (Poynting → curls → PDE); `SpeedOfLightDemo` (L202) lands only after the full derivation. Add a one-sentence analogy and/or move the demo earlier.
 - **MED · pedagogy** — L207/L323: operational forms `v = c/n`, `λ = c/f` appear as inline math inside prose, not as a distinct operational tier.
 - **MED · pedagogy** — L458–467: final sentence is UI framing for `WireToAntennaTransition3DDemo` → `caption`. Formula glossaries clean. **Prose: clean.**
