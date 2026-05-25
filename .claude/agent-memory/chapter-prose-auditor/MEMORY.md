@@ -1,0 +1,1 @@
+- [Filename pattern](project_filename_pattern.md) — chapter files use full conjunction in slug: "Ch24RectifiersAndInverters.tsx", not "Ch24RectifiersInverters.tsx"

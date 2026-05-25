@@ -172,9 +172,9 @@ export function FlybackConverterDemo({ figure }: Props) {
         font: '10px "JetBrains Mono", monospace',
         baseline: 'middle',
       });
-      ctx.fillStyle = onPhase ? withAlpha(colors.accent, 0.95) : 'rgba(255,255,255,0.10)';
+      ctx.fillStyle = onPhase ? withAlpha(colors.accent, 0.95) : withAlpha(colors.textMuted, 0.35);
       drawArrowDown(ctx, pX - 18, coreTop + 30, 14);
-      ctx.fillStyle = !onPhase ? withAlpha(colors.teal, 0.95) : 'rgba(255,255,255,0.10)';
+      ctx.fillStyle = !onPhase ? withAlpha(colors.teal, 0.95) : withAlpha(colors.textMuted, 0.35);
       drawArrowUp(ctx, sX + 18, coreBot - 30, 14);
       drawLabel(ctx, {
         text: onPhase ? 'ON  —  storing energy in L_p' : 'OFF  —  dumping into C_out',

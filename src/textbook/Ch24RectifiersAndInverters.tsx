@@ -87,8 +87,12 @@ export default function Ch24RectifiersAndInverters() {
         I = I<sub>s</sub> ( exp(V / (n V<sub>T</sub>)) − 1 )
       </Formula>
       <p className="mb-prose-3">
-        where I<sub>s</sub> is a tiny saturation current (nanoamps for silicon, microamps for
-        Schottky), n is the ideality factor (≈ 1 for an ideal junction), and{' '}
+        where <strong className="text-text font-medium">I</strong> is the current through the diode
+        (in amperes), <strong className="text-text font-medium">V</strong> is the voltage across it
+        (in volts, positive in the forward direction), <strong className="text-text font-medium">I
+        <sub>s</sub></strong> is a tiny saturation current (nanoamps for silicon, microamps for
+        Schottky), <strong className="text-text font-medium">n</strong> is the ideality factor (≈ 1
+        for an ideal junction, dimensionless), and{' '}
         <Term
           def={
             <>
@@ -163,7 +167,8 @@ export default function Ch24RectifiersAndInverters() {
         diode forward but adds a second knee at −5.1 V reverse — past that, current can flow
         backwards without destroying the device. Heat the diode (slide T up) and V<sub>F</sub>
         falls about 2 mV per kelvin — a fact worth knowing because it is how every silicon-based
-        thermometer works.
+        thermometer works
+        <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
       <h2 className="chapter-h2">
         <em>Half-wave, full-wave, bridge</em>
@@ -304,34 +309,6 @@ export default function Ch24RectifiersAndInverters() {
         }
       />
 
-      <TryIt
-        tag="Try 24.2"
-        question={
-          <>
-            The same <strong className="text-text font-medium">1000 µF</strong> smoothing cap, but
-            now the load draws only <strong className="text-text font-medium">100 mA</strong> from
-            60 Hz mains. What is the peak-to-peak ripple? Use T = 1/(2 · 60) = 8.33 ms because both
-            half-cycles top the cap up.
-          </>
-        }
-        hint={<>Same ΔV ≈ I · T / C, just with I = 0.1 A.</>}
-        answer={
-          <>
-            <Formula>
-              ΔV ≈ 0.1 A · 8.33×10⁻³ s / 10⁻³ F ={' '}
-              <strong className="text-text font-medium">0.83 V</strong>
-            </Formula>
-            <p className="mb-prose-1 last:mb-0">
-              About <strong className="text-text font-medium">830 mV peak-to-peak</strong> — ten
-              times less, exactly as the linear ΔV ∝ I law predicts. The bridge fires twice per line
-              cycle (full-wave), so the cap only has to hold up the load for 8.3 ms between
-              recharges, not 16.7 ms
-              <Cite id="horowitz-hill-2015" in={SOURCES} />.
-            </p>
-          </>
-        }
-      />
-
       <h2 className="chapter-h2">
         Regulating the <em>rough DC</em>
       </h2>
@@ -402,7 +379,7 @@ export default function Ch24RectifiersAndInverters() {
       <LinearRegulatorDemo figure="Fig. 24.3" />
 
       <TryIt
-        tag="Try 24.3"
+        tag="Try 24.2"
         question={
           <>
             An LM7805 takes <strong className="text-text font-medium">12 V</strong> in and supplies{' '}
@@ -446,7 +423,16 @@ export default function Ch24RectifiersAndInverters() {
       </h2>
 
       <p className="mb-prose-3">
-        Instead of dropping the excess voltage continuously, switch it on and off. A
+        Think of a switch-mode regulator as a dimmer switch for DC. Instead of burning the excess
+        voltage as heat, the converter chops the input on and off at high speed and lets an
+        inductor average the chopped waveform. If the switch is on for half of each cycle, the
+        average voltage downstream is half the input; on for a third, a third; on for nine-tenths,
+        nine-tenths. The trick is that no power is dissipated in the chopping itself — the switch
+        is either fully on (zero voltage drop) or fully off (zero current). The "wasted" middle
+        ground that cooks the linear regulator is never visited.
+      </p>
+      <p className="mb-prose-3">
+        Now make that intuition formal. A
         <strong className="text-text font-medium"> high-side switch</strong> (a MOSFET) opens and
         closes at tens or hundreds of kilohertz; the result is a square-wave version of V
         <sub>in</sub>. An inductor and a capacitor smooth that chopped waveform into a clean DC
@@ -518,39 +504,12 @@ export default function Ch24RectifiersAndInverters() {
         switching action itself (in the limit of an ideal switch with zero on-resistance), so the
         whole conversion is almost lossless
         <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />. Modern synchronous bucks routinely
-        hit <strong className="text-text font-medium">92–98 % efficiency</strong> — an order of
-        magnitude better than a linear regulator at the same step-down ratio.
+        hit <strong className="text-text font-medium">90–95 % efficiency</strong>, with
+        state-of-the-art SiC designs pushing toward 98 % — an order of magnitude better than a
+        linear regulator at the same step-down ratio.
       </p>
 
       <BuckConverterDemo figure="Fig. 24.4" />
-
-      <TryIt
-        tag="Try 24.4"
-        question={
-          <>
-            A buck converter takes <strong className="text-text font-medium">12 V</strong> in and
-            runs at <strong className="text-text font-medium">50 %</strong> duty cycle. What is the
-            output voltage in steady state, assuming ideal switches and inductors?
-          </>
-        }
-        hint={
-          <>
-            V<sub>out</sub> = D · V<sub>in</sub>.
-          </>
-        }
-        answer={
-          <>
-            <Formula>
-              V<sub>out</sub> = 0.5 · 12 = 6.0 V
-            </Formula>
-            <p className="mb-prose-1 last:mb-0">
-              <strong className="text-text font-medium">6.0 V</strong>. The output is just the input
-              multiplied by the on-fraction; the inductor averages the chopped switch-node waveform
-              <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
-            </p>
-          </>
-        }
-      />
 
       <p className="mb-prose-3">
         Flip the topology around and the same physics gives you a{' '}
@@ -576,7 +535,7 @@ export default function Ch24RectifiersAndInverters() {
       </p>
 
       <TryIt
-        tag="Try 24.5"
+        tag="Try 24.3"
         question={
           <>
             A boost converter runs at <strong className="text-text font-medium">75 %</strong> duty
@@ -607,7 +566,7 @@ export default function Ch24RectifiersAndInverters() {
       <BoostConverterDemo figure="Fig. 24.5" />
 
       <TryIt
-        tag="Try 24.6"
+        tag="Try 24.4"
         question={
           <>
             A buck converter takes <M tex="V_{\text{in}} = 24\,\text{V}" />
@@ -813,7 +772,7 @@ export default function Ch24RectifiersAndInverters() {
       </p>
 
       <TryIt
-        tag="Try 24.7"
+        tag="Try 24.5"
         question={
           <>
             An H-bridge inverter delivers a{' '}
@@ -936,12 +895,13 @@ export default function Ch24RectifiersAndInverters() {
         </Term>{' '}
         (high-voltage direct current). For very long lines, the reactive losses of AC transmission
         (charging current of the line capacitance) eventually dominate; converting to DC at one end,
-        sending DC, and converting back to AC at the other end becomes cheaper. The Pacific DC
-        Intertie runs from Celilo, Oregon to Sylmar, near Los Angeles —
-        <strong className="text-text font-medium"> 846 miles at ±500 kV</strong>, carrying up to 3.1
-        GW, with converter halls full of stacked thyristors at each end
-        <Cite id="kundur-1994-power-stability" in={SOURCES} />. The principle is the same as the
-        laptop brick: rectify on one side, invert on the other. Only the silicon is bigger.
+        sending DC, and converting back to AC at the other end becomes cheaper
+        <Cite id="kundur-1994-power-stability" in={SOURCES} />. The Pacific DC Intertie runs from
+        Celilo, Oregon to Sylmar, near Los Angeles —
+        <strong className="text-text font-medium"> several hundred miles</strong> of bipolar ±500 kV
+        line carrying multi-gigawatt power, with converter halls full of stacked thyristors at each
+        end. The principle is the same as the laptop brick: rectify on one side, invert on the
+        other. Only the silicon is bigger.
       </p>
 
       <h2 className="chapter-h2">What we have so far</h2>
@@ -1044,7 +1004,7 @@ export default function Ch24RectifiersAndInverters() {
             { label: 'Peak motor power', value: '~320 kW' },
             { label: 'Switching device', value: 'IGBT, ~15 kHz PWM' },
             { label: 'Motor type', value: '3-phase induction, copper rotor' },
-            { label: 'Regen braking', value: 'Up to ~60 kW into pack' },
+            { label: 'Regen braking', value: 'Tens of kilowatts into pack' },
             { label: 'Topology', value: '3-phase 6-IGBT bridge' },
           ]}
         >
@@ -1063,11 +1023,10 @@ export default function Ch24RectifiersAndInverters() {
             than the back-EMF, current flows from the motor into the DC bus — through the IGBTs'
             anti-parallel diodes — and recharges the battery. The "rectifier" half of this chapter
             and the "inverter" half are not two different circuits; they are the same six switches
-            operated under different firmware. About{' '}
-            <strong className="text-text font-medium">~60 kW</strong> of recovered kinetic energy
-            goes back into the pack during a hard deceleration on a Model S, and roughly 30% of
-            urban driving energy is recovered this way
-            <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
+            operated under different firmware
+            <Cite id="erickson-maksimovic-2020" in={SOURCES} />. Tens of kilowatts of recovered
+            kinetic energy flow back into the pack during a hard deceleration, and a substantial
+            fraction of stop-and-go urban driving energy is recouped this way.
           </p>
         </CaseStudy>
 
@@ -1129,8 +1088,8 @@ export default function Ch24RectifiersAndInverters() {
           title="The Pacific DC Intertie"
           summary={
             <>
-              The longest HVDC link in the western United States: 846 miles, ±500 kV, 3.1 GW, four
-              converter halls full of thyristors.
+              A multi-gigawatt ±500 kV bipolar HVDC link spanning hundreds of miles of the western
+              U.S., with converter halls full of thyristors at each end.
             </>
           }
           specs={[
@@ -1143,13 +1102,13 @@ export default function Ch24RectifiersAndInverters() {
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            The Pacific DC Intertie is a point-to-point HVDC link sending up to 3.1 GW of hydropower
-            from the Columbia River south to the Los Angeles basin. At each end sits a converter
-            station: stacks of thyristor "valves" — series-parallel arrays of SCRs that block half a
-            megavolt and pass several thousand amps. On the Celilo end, the station rectifies the
-            local AC into ±500 kV DC; at the Sylmar end, the same physics in reverse inverts it back
-            to 60 Hz AC for the Los Angeles grid
-            <Cite id="kundur-1994-power-stability" in={SOURCES} />.
+            The Pacific DC Intertie is a point-to-point HVDC link sending multi-gigawatt
+            hydropower from the Columbia River south to the Los Angeles basin. At each end sits a
+            converter station: stacks of thyristor "valves" — series-parallel arrays of SCRs that
+            block half a megavolt and pass several thousand amps
+            <Cite id="kundur-1994-power-stability" in={SOURCES} />. On the Celilo end, the station
+            rectifies the local AC into ±500 kV DC; at the Sylmar end, the same physics in reverse
+            inverts it back to 60 Hz AC for the Los Angeles grid.
           </p>
           <p className="mb-prose-2 last:mb-0">
             HVDC pays off at very long distances because an AC line's distributed capacitance draws

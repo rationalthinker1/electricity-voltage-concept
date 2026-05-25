@@ -204,7 +204,12 @@ export function LinearRegulatorDemo({ figure }: Props) {
       // Dynamic overlay: animated heat wiggle + P_diss readout in the regulator.
       const heatFrac = Math.min(1, Pdiss / Math.max(Pin, 0.01));
       const wig = Math.sin(t * 5) * 3;
-      ctx.fillStyle = `rgba(255, ${107 - heatFrac * 80}, ${42 - heatFrac * 30}, ${0.4 + heatFrac * 0.5})`;
+      // Hue shifts amber → pink as heatFrac rises; alpha rises with it too.
+      const heatColors = getCanvasColors();
+      ctx.fillStyle = withAlpha(
+        heatFrac > 0.6 ? heatColors.pink : heatColors.accent,
+        0.4 + heatFrac * 0.5,
+      );
       drawLabel(ctx, {
         text: `P_diss = ${Pdiss.toFixed(2)} W`,
         x: xReg + regW / 2,

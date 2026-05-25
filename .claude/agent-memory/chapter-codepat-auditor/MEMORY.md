@@ -1,0 +1,1 @@
+- [Ch24 audit findings](project_ch24_audit.md) — rgba hardcodes in LinearRegulator and FlybackConverter draw loops; all EquationStrips present with live substitution
