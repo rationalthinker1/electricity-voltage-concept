@@ -57,7 +57,14 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - Formula glossaries all clean; demo-framing clean. **Prose: clean.**
 
 ### Ch.5 — Capacitors
-- **Fact-check:** _pending (running)_
+- **Fact-check:** 35+ claims audited, all arithmetic verifies; **7 HIGH + 2 warnings** (mostly unsourced case-study specs + a cite misalignment).
+  - **HIGH · fact (misaligned cite)** — L57, L747: `feynman-II-2` (vector-calculus chapter) used to back "energy lives in the field" — should be `feynman-II-27` ("Field Energy and Field Momentum"), already in registry + chapter sources. Swap both.
+  - **HIGH · fact** — L785–786: water εᵣ≈80 / ceramics >1000 unsourced. Add `moulson-herbert-2003` (already in `sources.ts`) to the chapter array + cite.
+  - **HIGH · fact** — L672–682 (Case 5.3 supercap), L708–715 (Case 5.4 flash), L628 (Case 5.2 baseline pF): spec lines uncited. Attach `horowitz-hill-2015` (or a proper EDLC/datasheet source) per line.
+  - **HIGH · fact** — L699: supercap "~10× lower energy density than Li-ion" uncited **and contradicts** the chapter's own FAQ (L847–848: 250 vs 10 Wh/kg = 25×). Fix to ~25× and cite `linden-reddy-2011`.
+  - **HIGH · fact (source-fit)** — L576–610: defibrillator clinical specs (150–360 J / ~2 kV) backed by `horowitz-hill-2015` (a bench-electronics text). Soften to "typical clinical values" or find a medical-device source.
+  - **MED · fact** — L507 & `sources.ts:1167`: von Kleist "October 1745" — literature (Heilbron) dates the letter to Nov 4, 1745. Use "late/autumn 1745."
+  - **LOW · fact** — L608: defibrillator "τ = RC ≈ 7 ms" — with R=50 Ω, C=150 µF, τ=7.5 ms. Round up.
 - Three-tier order (Intuition/Formal/Operational/Special-case h3s) present and correct.
 - **MED · pedagogy** — L193: `C = ε₀A/d` "where" paragraph omits explicit SI units for `A` (m²), `d` (m), and `ε₀` (F/m, which only appears later at L267).
 - **MED · pedagogy** — L209: `C = ε₀ε_rA/d` defers to "other symbols unchanged," inheriting the L193 unit gap.
