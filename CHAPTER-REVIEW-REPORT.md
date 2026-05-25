@@ -178,7 +178,10 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 
 ### Ch.15 — Fourier and harmonic analysis
 - **Fact-check:** _pending (running)_
-- **Pedagogy:** _pending (running)_
+- **HIGH · pedagogy** — L105–113: Fourier-series **intuition tier collapsed** (the vivid hook examples sit two sections earlier; "The series formula" section opens straight into the formula, with only a `<Term>` popover gloss). **Operational tier missing entirely** (no "how an engineer computes/looks these up — FFT, spectrum analyser, tables").
+- **HIGH · pedagogy** — L113 (`f(t) = a₀/2 + Σ[…]`) and L151–152 (the `a_n`/`b_n` projection integrals) have **no "where"** paragraphs — `a₀`, `a_n`, `b_n` and their units never listed.
+- **MED · pedagogy** — L627–638: DFT intuition tier missing (opens with a `<Term>` popover then the complex-exponential formula). Several more partial/missing glossaries: L400, L417 (RMS), L478 (transfer-function superposition), L592 (THD), L638 (DFT) lack units/where.
+- **MED · pedagogy** — L515–518: caption-style summary after `SquareThroughLPFDemo` → move into its `caption`.
 - **Prose: clean.**
 
 ### Ch.16 — Filters, op-amps, and transmission lines
