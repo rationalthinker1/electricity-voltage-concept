@@ -19,7 +19,7 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 | 1 | 1–6 | ✅ done | ✅ done | ✅ done |
 | 2 | 7–12 | ✅ done | ✅ done | ✅ done |
 | 3 | 13–18 | ✅ done | ✅ done | ✅ done |
-| 4 | 19–24 | ❌ **session limit — re-run** | ✅ done (Ch.23 detail thin) | ✅ done |
+| 4 | 19–24 | ✅ done | ✅ done | ✅ done |
 | 5 | 25–30 | ⬜ not started | ⬜ | ⬜ |
 | 6 | 31–36 | ⬜ not started | ⬜ | ⬜ |
 | 7 | 37–42 | ⬜ not started | ⬜ | ⬜ |
@@ -262,7 +262,13 @@ being resumed.
 ## Batch 4 — Chapters 19–24
 
 ### Ch.19 — Antennas and radiation
-- **Fact-check:** _NOT RUN — session limit hit (resets 7pm UTC). Re-run for this chapter._
+- **Fact-check:** ~55 claims audited; **3 HIGH arithmetic errors + 2 misaligned cites.** No unsourced claims.
+  - **HIGH · fact (arithmetic)** — L~543 (TryIt 19.4): −148 dBm converted to "1.6×10⁻¹⁹ W" — correct is **1.6×10⁻¹⁸ W** (10× slip); the follow-on "one photon per ms" then needs recomputing (~290k/s).
+  - **HIGH · fact (arithmetic)** — L~741 (Case 19.1): −165 dBm → "3×10⁻¹⁹ W" should be **~3×10⁻²⁰ W** (10× the other way).
+  - **HIGH · fact (arithmetic)** — L~579: Fraunhofer distance for a 70-m dish at 8.4 GHz stated "≈2.7 km" — `2D²/λ` = **≈274 km** (100× slip).
+  - **MED · fact (misaligned cite)** — L1063–1065: atmospheric n and coax velocity factor cited to `friis-1946` (only the link-budget formula). Re-cite to `griffiths-2017`/`horowitz-hill-2015` or soften.
+  - **MED · fact (misaligned cite)** — L763–765: FCC EIRP limits cited to `balanis-2016` (antenna theory text). Re-point to `ieee-80211` (already in sources) or "per FCC Part 15."
+  - **LOW · fact** — L~1047: short-dipole R_rad 0.0086 vs 0.0088 Ω (benign).
 - **HIGH · pedagogy** — antenna gain/directivity has **no intuition tier** (first appears at L267 as "~2.15 dBi"; the gain-vs-directivity distinction is deferred to the FAQ and never gets a narrative tier). Add a "flashlight vs. bare bulb" picture.
 - **HIGH · pedagogy** — L228–236: radiation resistance `R_rad` lives **only in a `<Term>` popover**; the expression is inline math, not a `<Formula>` + "where". Give it all three tiers.
 - **HIGH · pedagogy** — L173–179: pure demo-framing before `DipoleRadiation3DDemo` → `caption`.
@@ -270,26 +276,40 @@ being resumed.
 - **LOW · prose** — **broken-hyphen artefacts**: L76 `"non- relativistic"` → `non-relativistic`; L265 `"short- dipole"` → `short-dipole`.
 
 ### Ch.20 — Motors
-- **Fact-check:** _NOT RUN — session limit hit (resets 7pm UTC). Re-run for this chapter._
+- **Fact-check:** ~45 claims audited, 42 resolve, all worked examples correct; **1 factual error + 2 source issues.**
+  - **HIGH · fact (wrong)** — L1034–1042: "Early EVs (GM EV1, 1996; Toyota RAV4 EV, 1997) actually did use DC motors" — **both used AC motors** (EV1: 3-phase induction; RAV4 EV: AC synchronous). Remove/replace the examples.
+  - **HIGH · fact** — L1065: NdFeB "irreversibly demagnetise above ~150 °C" uncited and grade-dependent → cite `krishnan-2010-bldc` or soften.
+  - **MED · fact (misaligned cite)** — L503–506: synchronous-clock "few seconds per year" cited to `grainger-power-systems-2003` (an I²R-losses text). Soften the quantifier.
 - **HIGH · pedagogy** — L55–104: torque has **no intuition tier** (the `<Term>` gloss is a hover popover; prose goes straight to `force-on-wire` then `τ = NIABsinθ`). Add a wrench/steering-wheel picture before L75.
 - **MED · pedagogy** — L163–202: back-EMF — both gloss and `E = NBAω` live only inside the `<Term>` popover; narrative jumps to the operational `E_back = k_e ω`.
 - **LOW · pedagogy** — L350–399: synchronous speed `n_s = 120f/p` (L369) lands before the rotating-field intuition (L386–399); reverse the order. L370–376: `ω_s = 4πf/p` introduced without naming it or its unit (rad/s). **Prose: clean.**
 
 ### Ch.21 — Generators and the grid
-- **Fact-check:** _NOT RUN — session limit hit (resets 7pm UTC). Re-run for this chapter._
+- **Fact-check:** ~55 claims audited, 47 resolve, all TryIt arithmetic correct; **1 arithmetic error + uncited case specs + 2 misaligned cites.**
+  - **HIGH · fact (arithmetic)** — L654: "Four generators spanning **seven orders of magnitude**… 700 MW … to 2 MW" — 700/2 = 350× ≈ **2.5 orders**, not seven. Fix to "nearly three orders of magnitude."
+  - **HIGH · fact** — Cases 21.x: Three Gorges (L665–702: 22.5 GW, 80 poles, 95–112 TWh/yr, 20 kV, 80 m head), Hoover (L714–747: 2.08 GW uprate, 1.34 GW 1936, 0.85–0.90 efficiency), data-center diesel (L823–829), and governor droop "~5%" (L527) all uncited — `fitzgerald-kingsley-umans-2014` covers machine theory, not installation specifics. Soften or source.
+  - **MED · fact (misaligned cite)** — L702 (Three Gorges 20 kV) and L851 (data-center demand-response) cited to `grainger-power-systems-2003` (power-flow text). Soften.
+  - **LOW · fact** — L575: grid inertia "H 4–6 s" understates Kundur's 5–10 s. **Note:** `grainger-power-systems-2003` registry year mismatch (says 2003, year field 1994) — cross-cutting, pre-existing.
 - **HIGH · pedagogy** — L56–76: generated EMF has **no intuition tier** — the analogy carries inline math, the `<Term>` popover holds the formal `−dΦ/dt`, and `faraday-law` fires at L76; `RotatingCoilGeneratorDemo` (L122) that could supply the intuition lands *after* both the formal and operational formulas. Move the demo earlier or add a non-math analogy.
 - **MED · pedagogy** — L71: Faraday's law defined only in a `<Term>` popover.
 - All five narrative `<Formula>` blocks have complete "where" paragraphs; no demo-framing violations.
 - **LOW · prose** — broken-hyphen artefact: L494 `"simple- cycle"` → `simple-cycle`.
 
 ### Ch.22 — Magnetically coupled circuits
-- **Fact-check:** _NOT RUN — session limit hit (resets 7pm UTC). Re-run for this chapter._
+- **Fact-check:** ~35 claims audited, 32 resolve, all TryIt arithmetic correct; **2 misaligned cites + 1 unsourced formula.**
+  - **MED · fact (misaligned cite)** — L1258: quasi-static / antenna-pair transition cited to `maxwell-1873` (the mesh-current method); should be `maxwell-1865` (already cited two sentences earlier). Drop the 1873 cite.
+  - **MED · fact** — L113 (Term "henry"): "Henry … a few months **ahead** of Faraday" contradicts the chapter's own `henry-1832` note ("simultaneously"); Henry actually published ~8 months after Faraday's 1831 presentation. Soften to "independently, simultaneously."
+  - **MED · fact** — L769 & L904: the `k²Q₁Q₂` figure of merit is uncited. Add Kurs et al. 2007 (*Science* 317) or soften to qualitative.
 - **HIGH · pedagogy** — coupling coefficient `k` has **no operational tier** — intuition (flux-leakage picture, L295–312) and formal (`k = M/√(L₁L₂)`, L314) are present, but the compute-with-it form `M = k√(L₁L₂)` only appears inside TryIt 22.1 (exempt). Add an operational paragraph between L317 and L319.
 - **MED · pedagogy** — L230: `M₁₂ = M₂₁ ≡ M` has no proper "where" — `M₁₂`/`M₂₁` never named as mutual inductances in henries. Mutual inductance M's intuition tier is buried in the chapter-opening Qi hook rather than anchored to its h2 (correct ordering otherwise).
 - No demo-framing violations. **Prose: clean.**
 
 ### Ch.23 — Transformers
-- **Fact-check:** _re-running (Batch-4 relaunch)._
+- **Fact-check:** 37+ claims audited, zero arithmetic errors; **1 date error + 3 uncited specs + 1 inconsistency.**
+  - **HIGH · fact (wrong)** — `chapters.ts:837` (Ch.23 blurb): "Stanley turned it into a working power-grid component in **1885**" — prose, the `stanley-1886` registry entry, and history all say **1886** (Great Barrington). Fix the blurb.
+  - **HIGH · fact** — uncited spec rows: Case 23.1 service life (L893 → `mclyman-2004`/`grainger`), Case 23.2 mass (L937–941 → `mclyman-2004`, already cited in adjacent prose), Case 23.3 cooling + mass (L996, L998 → `grainger`/`fitzgerald`).
+  - **MED · fact** — L262 ("99–99.5%") vs L768 ("95–99.5%") efficiency ranges inconsistent; reconcile/qualify.
+  - **LOW · fact** — L817–820: "five grams instead of six hundred" uses the 30 W unit's 5 g for a 100 W transformer; qualify to 30 W or scale up.
 - **HIGH · pedagogy** — L62–151: turns ratio (`Vs/Vp = Ns/Np`) **intuition tier missing** — the section opens with an already-numerical pole-pig hook, then goes straight to the Faraday-law derivation (L101); `TurnsRatioDemo` (L151) lands after three `<Formula>` blocks. Add a formula-free "count the turns, scale the voltage — like gears" picture before L101.
 - **MED · pedagogy** — L458–480: impedance-transformation intuition lives **only in a `<Term>` popover** (which states the formula, not a picture). Add a "10:1 step-down makes the load look 100× heavier" analogy before L480.
 - **MED · pedagogy** — L811–821: `V = 4.44·f·N·B·A` is used in TryIt 23.6 but never presented as a narrative `<Formula>` + "where" first.
@@ -298,7 +318,13 @@ being resumed.
 - **LOW · prose** — broken-hyphen artefacts: L1213 `"low- impedance"` → `low-impedance`; L1271 `"open- circuit"` → `open-circuit`.
 
 ### Ch.24 — Rectifiers and inverters
-- **Fact-check:** _NOT RUN — session limit hit (resets 7pm UTC). Re-run for this chapter._
+- **Fact-check:** 20 claims audited, 17 resolve, all TryIt arithmetic exact; **3 unsourced/misaligned blockers + 2 warnings.**
+  - **HIGH · fact** — L165: V_F temp-coefficient "~2 mV/K" uncited → add `horowitz-hill-2015`.
+  - **HIGH · fact** — L1002: "IEC 61000-3-2 … above 75 W" uncited (standard not in registry) → soften or add the standard.
+  - **HIGH · fact** — L872: "IEEE 1547-2018" referenced but `ieee-1547-2018` not in `chapter.sources[]` (it's in the registry) → add the key + `<Cite>`.
+  - **HIGH · fact (misaligned cite)** — L1043–1070 (Case 24.2): Tesla Model S specs + "~30% urban regen" cited to `erickson-maksimovic-2020` (a fundamentals text, not Tesla data) → soften specs, drop the 30% figure.
+  - **MED · fact (misaligned cite)** — L1027–1028: "1965 … 5 kg, 50% efficiency" counterfactual cited to `horowitz-hill-2015` → soften, drop specific numbers.
+  - **LOW · fact** — Case 24.4: 846 mi = 1362 km (shown 1361). L1267: HVDC breakeven cited to `kundur-1994` (stability text) → soften.
 - **HIGH · pedagogy** — L243–265: ripple is introduced **only inside a `<Term>` popover** (formula `ΔV ≈ I/(2fC)` in the `def` prop); no narrative intuition/formal/operational tier.
 - **HIGH · pedagogy** — L488–498: duty cycle `D = t_on/T_sw` appears **only in a `<Term>` popover**; never a narrative paragraph.
 - **HIGH · pedagogy** — L86: Shockley diode `<Formula>` "where" defines `I_s`, `n`, `V_T` but **not `I` (A) or `V` (V)** — the equation's two primary symbols.
