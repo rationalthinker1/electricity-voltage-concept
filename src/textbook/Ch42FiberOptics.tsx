@@ -176,7 +176,7 @@ export default function Ch42FiberOptics() {
         </Term>
         . In multimode fiber it's typically a few ns per km, capping data rates at ~10 Gb/s over
         short reaches. Single-mode fiber sidesteps the problem by making the core small enough that
-        only one transverse mode propagates at all.
+        only one transverse mode propagates at all <Cite id="agrawal-2010" in={SOURCES} />.
       </p>
 
       <TryIt
@@ -445,7 +445,8 @@ export default function Ch42FiberOptics() {
           fiber. Comes from the wavelength-dependence of the refractive index <M tex="n(\lambda)" />
           : a laser pulse with some spectral width Δλ has its different wavelength components arrive
           at slightly different times. Quantified by the dispersion coefficient <M tex="D" /> in
-          ps/nm·km. For standard SMF, D ≈ +17 ps/nm·km at 1550 nm.
+          ps/nm·km. For standard SMF, D ≈ +17 ps/nm·km at 1550 nm{' '}
+          <Cite id="agrawal-2010" in={SOURCES} />.
         </li>
       </ul>
       <p className="mb-prose-3">
@@ -500,12 +501,11 @@ export default function Ch42FiberOptics() {
         <strong className="text-text font-medium">9.6 Tb/s</strong> per fiber. A typical submarine
         cable contains 8–24 fibers, so a single cable carries{' '}
         <strong className="text-text font-medium">~100 Tb/s to ~250 Tb/s</strong>. Modern
-        record-setting links push to{' '}
-        <strong className="text-text font-medium">~25 Tb/s per fiber pair</strong> using
-        probabilistic-shaping coherent modulation in a single span
-        <Cite id="agrawal-2010" in={SOURCES} />. That number doubles roughly every 4 years — the
-        optical analogue of Moore's law, set by digital signal processing in the coherent
-        transponders rather than by the fiber itself.
+        record-setting links push capacity higher still using probabilistic-shaping coherent
+        modulation
+        <Cite id="agrawal-2010" in={SOURCES} />. Per-fiber capacity has climbed steadily for decades
+        — an optical analogue of Moore's law, set increasingly by the digital signal processing in
+        the coherent transponders rather than by the fiber itself.
       </p>
 
       <CaseStudies intro="Where this physics shows up in working systems.">
@@ -527,8 +527,8 @@ export default function Ch42FiberOptics() {
             G.654.C "cutoff-shifted" fiber rather than standard G.652 to push the cutoff wavelength
             below 1530 nm and minimise nonlinear penalties at the high launch powers needed for
             trans-Atlantic spans. The fiber loss is about{' '}
-            <strong className="text-text font-medium">0.155 dB/km</strong> — only ~10% above the
-            Rayleigh-scattering theoretical limit
+            <strong className="text-text font-medium">0.15 dB/km</strong> for this class of
+            ultra-low-loss fiber — within roughly 10% of the Rayleigh-scattering theoretical limit
             <Cite id="agrawal-2010" in={SOURCES} />. EDFAs sit roughly every 90 km along the route,
             powered by a high-voltage DC line co-running with the optical fibers inside the same
             armoured cable, fed from shore-side converter stations at either end.
