@@ -123,6 +123,10 @@ export default function Ch12CircuitsAndAC() {
         Σ I<sub>in</sub> = Σ I<sub>out</sub>
       </Formula>
       <p className="mb-prose-3">
+        where each <M tex="I" /> is a branch current at the node (in amperes), with currents flowing
+        into the node summed on the left and currents flowing out summed on the right.
+      </p>
+      <p className="mb-prose-3">
         <strong className="text-text font-medium">
           <Term
             def={
@@ -146,6 +150,10 @@ export default function Ch12CircuitsAndAC() {
       <Formula>
         Σ V<sub>loop</sub> = 0
       </Formula>
+      <p className="mb-prose-3">
+        where each <M tex="V" /> is a voltage rise or drop around one closed loop (in volts), signed
+        consistently with the direction of traversal so that the algebraic sum closes to zero.
+      </p>
       <p className="mb-prose-3">
         Together they generate exactly enough equations to determine every branch current. For a
         network with <M>N</M> nodes and <M>B</M> branches, KCL gives you <M>N − 1</M> independent

@@ -370,6 +370,12 @@ export default function Ch16FiltersOpAmpsTLines() {
       </p>
       <Formula tex="V_{out} = \left(1 + \dfrac{R_f}{R_g}\right) \cdot V_{in}" />
       <p className="mb-prose-3">
+        In both expressions <M tex="V_{in}" /> and <M tex="V_{out}" /> are the input and output
+        voltages (in volts) and <M tex="R_f" />, <M tex="R_{in}" />, <M tex="R_g" /> are the
+        resistor values (in ohms); the closed-loop gain is the dimensionless ratio set entirely by
+        that resistor pair.
+      </p>
+      <p className="mb-prose-3">
         A <strong className="text-text font-medium">voltage follower</strong> is the special case R
         <sub>f</sub> = 0, R<sub>g</sub> = ∞ — gain 1, but with the op-amp's enormous input impedance
         and tiny output impedance, so it can drive a heavy load from a source that can barely
