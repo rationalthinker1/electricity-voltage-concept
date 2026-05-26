@@ -110,8 +110,8 @@ export default function Ch22MagneticallyCoupledCircuits() {
               <strong className="text-text font-medium">henry</strong> — SI unit of inductance.{' '}
               <M tex="1\,\text{H}=1\,\text{V}\cdot\text{s}/\text{A}" />. A one-henry coil produces a
               one-volt back-EMF when its current changes at one ampere per second. Named after
-              Joseph Henry, who discovered self-induction in 1832 a few months ahead of Faraday's
-              separate work on mutual induction.
+              Joseph Henry, who discovered self-induction independently, around the same time as
+              Faraday's separate work on mutual induction.
             </>
           }
         >
@@ -765,9 +765,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
         by wrapping both coils on a shared iron or ferrite core — and the awkward{' '}
         <M tex="(\omega M)^2/Z_2" /> reflected-impedance form collapses to the clean{' '}
         <M tex="(N_1/N_2)^2Z_L" /> "turns-ratio" relation. The second is wireless power: live with k
-        well below 1, but compensate with high-Q resonant tuning on both sides so the effective
-        coupling-times-quality product <M tex="k^2Q_1Q_2" /> is large and the link still delivers
-        useful power. The third is loose-coupled signal transfer (current probes, RFID, signal
+        well below 1, but compensate with high-Q resonant tuning on both sides so the standard
+        resonant figure of merit — the coupling-times-quality product <M tex="k^2Q_1Q_2" /> — stays
+        large and the link still delivers useful power. The third is loose-coupled signal transfer (current probes, RFID, signal
         isolation transformers) where the magnitude of M is not the figure of merit — its{' '}
         <em className="text-text italic">linearity</em> and bandwidth are. We follow door 1 in the
         next chapter.
@@ -900,8 +900,8 @@ export default function Ch22MagneticallyCoupledCircuits() {
             A passive RFID tag has no battery; everything it does — receive an interrogation, run
             its tiny logic block, modulate a reply — is powered by the magnetic field the reader
             puts up. The link is a loosely coupled coil pair, which sounds hopeless until you
-            realise both coils are tuned to resonance. The effective coupling that matters for power
-            transfer includes the product <M tex="k^2Q_1Q_2" />, so a very small raw k can still
+            realise both coils are tuned to resonance. The standard figure of merit for power
+            transfer is the product <M tex="k^2Q_1Q_2" />, so a very small raw k can still
             provide enough rectified power for a low-power tag when the coils are close and aligned.
           </p>
           <p className="mb-prose-2 last:mb-0">
@@ -1255,7 +1255,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
             near-field links. Only when the coil pair starts to approach a wavelength in size do the
             displacement-current terms of Chapter 9 (Maxwell's correction to Ampère) become
             important, and the device transitions from "coupled inductor" to "antenna pair"
-            <Cite id="maxwell-1873" in={SOURCES} />. Most of practical coupled-circuit engineering
+            <Cite id="maxwell-1865" in={SOURCES} />. Most of practical coupled-circuit engineering
             lives comfortably in the quasi-static regime.
           </p>
         </FAQItem>

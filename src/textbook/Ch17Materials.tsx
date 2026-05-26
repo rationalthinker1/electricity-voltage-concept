@@ -843,10 +843,9 @@ export default function Ch17Materials() {
             <Cite id="kittel-2005" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            By 1997, IBM had engineered GMR-based "spin valves" into the read head of every new hard
-            drive on the market. The areal density of magnetic storage went from a few hundred
-            megabits per square inch in the early 1990s to tens of gigabits per square inch by the
-            mid-2000s, and the new sensor was a major reason. The ferromagnetic domain physics of
+            Within a few years, IBM had engineered GMR-based "spin valves" into the read heads of
+            new hard drives. The areal density of magnetic storage then climbed by roughly two
+            orders of magnitude over the following decade, and the new sensor was a major reason. The ferromagnetic domain physics of
             §"Ferromagnets and the hysteresis loop" wasn't a curiosity any more; it was reading
             every email you sent for a decade.
           </p>
@@ -1045,14 +1044,16 @@ export default function Ch17Materials() {
 
         <FAQItem q="Why is iron magnetic but copper isn't?">
           <p>
-            Both have unpaired d-orbital electrons — iron has 4 unpaired 3d electrons, while a
-            copper atom has just one. But the deciding factor is the{' '}
+            Iron has unpaired 3d electrons — four per atom — so each atom carries a sizable magnetic
+            moment. Copper's 3d shell is completely filled (3d¹⁰), leaving only a lone 4s conduction
+            electron and no localized d-moment to speak of. The deciding factor for iron is the{' '}
             <em className="text-text italic">exchange interaction</em>, a quantum-mechanical effect
-            that lowers energy when neighboring spins are aligned. In iron the exchange coupling is
-            strong enough to dominate thermal noise up to 1043 K (the Curie temperature). In copper
-            it isn't — copper is a paramagnet at most, and a very weak one at that
-            <Cite id="kittel-2005" in={SOURCES} />. Same one-line answer in three words: exchange is
-            stronger.
+            that lowers energy when neighboring spins are aligned: in iron the exchange coupling is
+            strong enough to dominate thermal noise up to 1043 K (the Curie temperature). Copper has
+            no such atomic moments to line up — bulk copper is in fact weakly{' '}
+            <em className="text-text italic">diamagnetic</em>
+            <Cite id="kittel-2005" in={SOURCES} />. The one-line answer: iron has the unpaired spins
+            and the exchange coupling to align them; copper has neither.
           </p>
         </FAQItem>
 
@@ -1166,7 +1167,7 @@ export default function Ch17Materials() {
             a normal metal. We mentioned this briefly in Ch. 3; the materials-side relevance is that
             a superconductor is also a perfect diamagnet (the Meissner effect): inside, χ
             <sub>m</sub> = −1 exactly, and external <M tex="B" />
-            is expelled completely.
+            is expelled completely <Cite id="kittel-2005" in={SOURCES} />.
           </p>
         </FAQItem>
 
@@ -1189,7 +1190,7 @@ export default function Ch17Materials() {
             <M tex="kT" />, so only a few protons per million end up net-aligned with the field.
             Doubling B doubles the signal; tripling B nearly triples it. Clinical MRI runs at 1.5 to
             3 T (compared to Earth's field of ∼50 µT) precisely because that's where the SNR becomes
-            workable in reasonable scan times.
+            workable in reasonable scan times <Cite id="kittel-2005" in={SOURCES} />.
           </p>
         </FAQItem>
 

@@ -73,7 +73,7 @@ export default function Ch19Antennas() {
         That radiation carries energy. By Poynting (Chapter 8), the time-averaged outward flux from
         an accelerating charge is <M tex="\langle S\rangle = \tfrac{1}{2}\varepsilon_0 c |E|^{2}" />
         . Integrate over a sphere far from the source and you get the total radiated power, which
-        (for a non- relativistic charge) is the Larmor formula:
+        (for a non-relativistic charge) is the Larmor formula:
       </p>
       <Formula>
         P<sub>rad</sub> = (q² a²) / (6π ε₀ c³)
@@ -171,10 +171,9 @@ export default function Ch19Antennas() {
         <Cite id="kraus-marhefka-2002" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        Drag the figure below to orbit the camera. The exponent slider lets you sharpen the pattern
-        beyond the short-dipole's sin²θ: n=2 is the canonical short-electric dipole, while
-        increasing n shrinks the half-power beamwidth — what happens, qualitatively, when you stack
-        more elements or move to a longer end-fire antenna
+        The radiation pattern can be sharpened beyond the short dipole's sin²θ: n = 2 is the
+        canonical short-electric dipole, and raising the exponent narrows the half-power beamwidth —
+        qualitatively what happens when you stack more elements or move to a longer end-fire antenna
         <Cite id="balanis-2016" in={SOURCES} />.
       </p>
 
@@ -262,8 +261,10 @@ export default function Ch19Antennas() {
         should you ever build one — would resonate at 300 THz, well into the infrared. (Nano-
         antennas at exactly this scale are an active area of research.) At resonance, the current
         distribution along the wire is approximately sinusoidal with a maximum at the feedpoint
-        (centre) and zeros at the ends. The radiation pattern is similar to the short- dipole sin²θ
-        but slightly sharper — and the on-axis gain works out to
+        (centre) and zeros at the ends. The radiation pattern is similar to the short-dipole sin²θ
+        but slightly sharper — and the on-axis gain (how sharply the antenna concentrates power in
+        its best direction, compared to a hypothetical isotropic radiator that sprays equally
+        everywhere — a flashlight beam versus a bare bulb of the same wattage) works out to
         <strong className="text-text font-medium"> ~2.15 dBi</strong>, the canonical reference
         number every antenna engineer memorises
         <Cite id="balanis-2016" in={SOURCES} />.
@@ -540,10 +541,9 @@ export default function Ch19Antennas() {
               <strong className="text-text font-medium">−148 dBm</strong>
             </Formula>
             <p className="mb-prose-1 last:mb-0">
-              That's about <strong className="text-text font-medium">1.6 × 10⁻¹⁹ W</strong>, roughly
-              one photon per millisecond at X-band. The DSN's cryogenically-cooled low-noise
-              amplifiers and long-integration receivers can pull a bit stream out of that, but
-              barely
+              That's about <strong className="text-text font-medium">1.6 × 10⁻¹⁸ W</strong>. The
+              DSN's cryogenically-cooled low-noise amplifiers and long-integration receivers can
+              pull a bit stream out of that, but barely
               <Cite id="friis-1946" in={SOURCES} />
               <Cite id="balanis-2016" in={SOURCES} />.
             </p>
@@ -576,9 +576,9 @@ export default function Ch19Antennas() {
         For large aperture antennas (a parabolic dish, a phased array), there's an additional
         "Fraunhofer / Fresnel" distance set by the antenna's physical size:{' '}
         <M tex="r_{\text{far}} \approx 2D^{2}/\lambda" />, where D is the largest aperture
-        dimension. For a 70-m DSN dish at 8.4 GHz this works out to ≈ 2.7 km — meaning the
+        dimension. For a 70-m DSN dish at 8.4 GHz this works out to ≈ 274 km — meaning the
         diffraction pattern over which the dish's gain pattern is properly defined doesn't start
-        until you're several kilometres downstream of the antenna. For nearby satellites or
+        until you're hundreds of kilometres downstream of the antenna. For nearby satellites or
         aircraft, the antenna is effectively in its own near field
         <Cite id="balanis-2016" in={SOURCES} />.
       </p>
@@ -738,7 +738,7 @@ export default function Ch19Antennas() {
             path loss at 8.4 GHz is around 318 dB. After spacecraft antenna gain (+30 dBi) and
             Earth-station gain (+73 dBi) and the various pointing/atmospheric/cable losses, the
             received signal is on the order of{' '}
-            <strong className="text-text font-medium">−165 dBm</strong>, or 3 × 10⁻¹⁹ W. The
+            <strong className="text-text font-medium">−165 dBm</strong>, or ~3 × 10⁻²⁰ W. The
             cryogenic HEMT LNA front end on the DSN dish has a noise temperature of ~15 K, and a 160
             bit/s downlink can be received with bit-error rate &lt;10⁻⁵ via long-baseline
             forward-error-correction codes
@@ -758,12 +758,7 @@ export default function Ch19Antennas() {
             },
             {
               label: 'Transmit power',
-              value: (
-                <>
-                  FCC limit 100 mW in 2.4 GHz; 1 W EIRP in 5 GHz UNII-3{' '}
-                  <Cite id="balanis-2016" in={SOURCES} />
-                </>
-              ),
+              value: <>FCC Part 15 limit 100 mW in 2.4 GHz; 1 W EIRP in 5 GHz UNII-3</>,
             },
             {
               label: 'Antenna style',
@@ -1062,7 +1057,7 @@ export default function Ch19Antennas() {
             index is slightly above 1 (n ≈ 1.0003 at sea level), reducing the propagation speed by
             ~0.03%, negligible for most uses. In an optical fibre or coaxial cable, signals travel
             at c/n where n is the dielectric's index — typically ~0.66 c in coax (PE dielectric)
-            <Cite id="friis-1946" in={SOURCES} />. GPS depends on millisecond-level propagation-time
+            <Cite id="griffiths-2017" in={SOURCES} />. GPS depends on millisecond-level propagation-time
             accuracy to compute positions to metres, and the atmospheric corrections to "exactly c"
             are part of the receiver's job.
           </p>

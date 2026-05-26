@@ -146,7 +146,8 @@ export default function Ch4HowAResistorWorks() {
         alloy) has a usefully low temperature coefficient
         <Cite id="kanthal" in={SOURCES} />; manganin (Cu-Mn-Ni) is engineered to have{' '}
         <em className="text-text italic">almost zero</em> TCR over a wide range, which makes it the
-        standard alloy for precision current shunts and resistance standards.
+        standard alloy for precision current shunts and resistance standards{' '}
+        <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
       <BuildAResistorDemo figure="Fig. 4.1" />
@@ -375,19 +376,20 @@ export default function Ch4HowAResistorWorks() {
         <em className="text-text italic">inrush</em>. Alloy films (nichrome, manganin) are
         engineered for nearly zero TCR — manganin's was the original reason for its existence as the
         alloy of the bench-standard resistor box
-        <Cite id="kanthal" in={SOURCES} />.
+        <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         Carbon-film resistors go the other way: TCR is small and slightly{' '}
         <em className="text-text italic">negative</em> (≈ −200 to −500 ppm/K). And at the extreme
         end of the spectrum sit thermistors and PTC polyswitches, engineered to have{' '}
         <em className="text-text italic">large</em> TCRs on purpose. A
-        <Term def="Negative-temperature-coefficient thermistor: a semiconducting metal-oxide bead whose resistance drops sharply (factor of ~2 per 25 °C) as temperature rises. The standard temperature sensor in CPU sockets, battery packs, and thermostats.">
+        <Term def="Negative-temperature-coefficient thermistor: a semiconducting metal-oxide bead whose resistance drops sharply (roughly a factor of 2–3 per 25 °C) as temperature rises. The standard temperature sensor in CPU sockets, battery packs, and thermostats.">
           negative-temperature-coefficient (NTC)
         </Term>{' '}
         thermistor uses a semiconducting metal oxide whose carrier population grows exponentially
-        with temperature — the resistance drops by a factor of two for every ~25 °C rise in the
-        practical range. The Steinhart–Hart relation gives the engineering form
+        with temperature — the resistance drops by roughly a factor of two to three for every
+        ~25 °C rise, the ratio easing toward 2× higher in the working range. The Steinhart–Hart
+        relation gives the engineering form
         <Cite id="steinhart-hart-1968" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="\dfrac{1}{T} = A + B \ln R + C (\ln R)^3" />
@@ -606,7 +608,7 @@ export default function Ch4HowAResistorWorks() {
               label: 'Material',
               value: (
                 <>
-                  manganin or Cu-Mn-Sn metal strip <Cite id="kanthal" in={SOURCES} />
+                  manganin or Cu-Mn-Sn metal strip <Cite id="horowitz-hill-2015" in={SOURCES} />
                 </>
               ),
             },
@@ -680,9 +682,10 @@ export default function Ch4HowAResistorWorks() {
           <p className="mb-prose-2 last:mb-0">
             Mechanically the thermistor sits in a voltage-divider with a 10 kΩ fixed resistor across
             a stable 3.3 V rail; the divider's midpoint feeds an ADC channel that the BIOS samples a
-            few times per second. When the reading crosses the throttle threshold (~95 °C on a
-            typical desktop CPU) the firmware drops the multiplier; at ~105 °C it shuts the system
-            down. The same circuit, with different fixed values, runs the fans in your power supply,
+            few times per second. When the reading crosses the throttle threshold (the exact value
+            varies by processor generation) the firmware drops the multiplier; a little higher, it
+            shuts the system down. The same circuit, with different fixed values, runs the fans in
+            your power supply,
             the temperature-compensated bias in your old guitar amp, and the over-temperature
             lockout in lithium-ion battery packs
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
@@ -719,8 +722,8 @@ export default function Ch4HowAResistorWorks() {
             needed, just a comparator with hysteresis to prevent flickering at the threshold.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            CdS itself works because the photon energy in visible light (1.8–3.1 eV) is greater than
-            the CdS bandgap (~2.4 eV), so each absorbed photon promotes one valence electron into
+            CdS itself works because visible-light photons (≈1.8–3.3 eV) span the CdS bandgap
+            (~2.4 eV); every photon above that threshold promotes one valence electron into
             the conduction band, increasing the free-carrier density and lowering ρ. Practical CdS
             cells have been phased out in the EU under the RoHS directive since 2006 because of
             cadmium toxicity; modern dusk-to-dawn switches use a small silicon photodiode and an
@@ -881,9 +884,9 @@ export default function Ch4HowAResistorWorks() {
             as a reference. Manganin is an engineered alloy (≈86% Cu, 12% Mn, 2% Ni) tuned so its
             TCR is approximately zero around 20 °C; the alloy was developed in the 1880s
             specifically for resistance standards and bridge work
-            <Cite id="kanthal" in={SOURCES} />. Nichrome similarly has TCR ~10× smaller than copper,
-            which is one reason it's the alloy of choice for wirewound resistors as well as heating
-            elements.
+            <Cite id="horowitz-hill-2015" in={SOURCES} />. Nichrome similarly has TCR ~10× smaller
+            than copper <Cite id="kanthal" in={SOURCES} />, which is one reason it's the alloy of
+            choice for wirewound resistors as well as heating elements.
           </p>
         </FAQItem>
 
@@ -991,7 +994,8 @@ export default function Ch4HowAResistorWorks() {
             (resistance-temperature detector) is a pure-metal element — typically platinum,
             sometimes nickel — whose resistance climbs nearly linearly with T at a TCR of ~3850
             ppm/°C (for the standard Pt100, R = 100 Ω at 0 °C). Excellent linearity, wide
-            temperature range (−200 to +650 °C), low sensitivity. A{' '}
+            temperature range (−200 to +850 °C), low sensitivity{' '}
+            <Cite id="horowitz-hill-2015" in={SOURCES} />. A{' '}
             <em className="text-text italic">thermistor</em> is a semiconductor metal-oxide bead
             with much steeper, distinctly non-linear behaviour — typically 4–5% per kelvin negative
             for NTC types — over a narrower range. Use an RTD when you need accuracy and range; use

@@ -491,7 +491,7 @@ export default function Ch21Generators() {
       <p className="mb-prose-3">
         Above baseload sit the <em className="text-text italic">mid-merit</em> and{' '}
         <em className="text-text italic">peaking</em> generators — combined-cycle gas plants,
-        simple- cycle gas turbines, hydroelectric units with reservoir capacity. These can ramp up
+        simple-cycle gas turbines, hydroelectric units with reservoir capacity. These can ramp up
         and down on minute-to-hour timescales, and they're dispatched to follow the load curve as it
         swings from the night-time minimum to the morning and evening peaks. Above the peakers sits{' '}
         <em className="text-text italic">spinning reserve</em>: an allocation sized against the
@@ -524,7 +524,7 @@ export default function Ch21Generators() {
         generation, all synchronous machines on the bus slow down imperceptibly — they're
         decelerated by the extra electrical torque on their stators. The grid frequency dips a few
         millihertz.{' '}
-        <Term def="Generators automatically reduce output when frequency rises and increase output when frequency falls, with a slope (typically ~5%) set by their governors. The grid-wide cumulative governor response is what stabilises frequency in the first second after a load change.">
+        <Term def="Generators automatically reduce output when frequency rises and increase output when frequency falls, with a slope (typically a few percent) set by their governors. The grid-wide cumulative governor response is what stabilises frequency in the first second after a load change.">
           Governor droop
         </Term>{' '}
         at every generator senses the frequency drop and opens its fuel/water/steam valve a notch,
@@ -651,8 +651,8 @@ export default function Ch21Generators() {
       <CaseStudies
         intro={
           <>
-            Four generators spanning seven orders of magnitude in output, from a 700 MW dam unit to
-            a 2 MW backup diesel.
+            Four generators spanning nearly three orders of magnitude in output, from a 700 MW dam
+            unit to a 2 MW backup diesel.
           </>
         }
       >
@@ -698,9 +698,9 @@ export default function Ch21Generators() {
             becomes too large for forced-air cooling to handle within a reasonable physical
             envelope. Insulated hollow copper conductors carry both the AC current and the cooling
             water; the design isolates the cooling-water loop electrically from the high-voltage
-            stator winding through long sections of insulating hose. Output is at the generator
-            terminals at typically 20 kV, then stepped up by adjacent transformer banks to 500 kV
-            for transmission across China's UHV grid
+            stator winding through long sections of insulating hose. Output emerges at the generator
+            terminals at a few tens of kilovolts, then is stepped up by adjacent transformer banks to
+            transmission voltage for the long haul across China's UHV grid
             <Cite id="grainger-power-systems-2003" in={SOURCES} />.
           </p>
         </CaseStudy>
@@ -849,8 +849,7 @@ export default function Ch21Generators() {
             closes the utility breaker, opens the generator breaker, and lets the generator wind
             down. The grid is the primary; the generator is a fall-back. Some facilities also run
             the generator periodically as part of a demand-response program, exporting power to the
-            grid during peak hours
-            <Cite id="grainger-power-systems-2003" in={SOURCES} />.
+            grid during peak hours.
           </p>
         </CaseStudy>
       </CaseStudies>

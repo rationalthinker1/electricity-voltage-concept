@@ -155,6 +155,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'codata-2018',
       'usb-pd-r3',
       'catania-2015',
+      'linden-reddy-2011',
     ],
     punchline:
       'Voltage is energy per coulomb, current is charge per second, and the signal that lights the bulb travels in the field — not in the slow drift of the electrons themselves.',
@@ -253,10 +254,11 @@ export const CHAPTERS: ChapterEntry[] = [
       'volta-1782',
       'griffiths-2017',
       'jackson-1999',
-      'feynman-II-2',
       'feynman-II-27',
       'horowitz-hill-2015',
       'codata-2018',
+      'moulson-herbert-2003',
+      'linden-reddy-2011',
     ],
     punchline:
       'Two plates and a gap store energy in the electric field between them — voltage rises linearly with charge, energy quadratically, and the dielectric multiplies both.',
@@ -498,6 +500,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'ansi-c84-1-2020',
       'erickson-maksimovic-2020',
       'keysight-34465a-datasheet',
+      'steinmetz-1893',
     ],
     punchline:
       'Kirchhoff’s two laws, plus complex impedance, collapse the entire EM field around a working circuit into a tractable algebra of nodes and loops.',
@@ -528,6 +531,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'irwin-circuit-analysis-2015',
       'horowitz-hill-2015',
       'hayt-kemmerly-durbin-2018',
+      'ho-ruehli-brennan-1975',
     ],
     punchline:
       'Any linear network reduces to a small system of linear equations — mesh, nodal, Thévenin, Norton, Y-Δ, and max-power are the standard tools for writing them.',
@@ -801,7 +805,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'henry-1832',
       'faraday-1832',
       'maxwell-1865',
-      'maxwell-1873',
       'griffiths-2017',
       'jackson-1999',
       'feynman-II-17',
@@ -830,7 +833,7 @@ export const CHAPTERS: ChapterEntry[] = [
     title: 'Transformers',
     subtitle: 'Two coils, one core, a different voltage on the other side.',
     blurb:
-      'Wrap two coils around the same iron ring and a changing current in one drives a proportional voltage in the other. Faraday discovered the principle in 1831; Stanley turned it into a working power-grid component in 1885; and from that moment, electricity could be sent across continents. Step up to 500 kV for transmission, step down to 240 V for your wall, step down again to 5 V for your phone — all the same physics.',
+      'Wrap two coils around the same iron ring and a changing current in one drives a proportional voltage in the other. Faraday discovered the principle in 1831; Stanley turned it into a working power-grid component in 1886; and from that moment, electricity could be sent across continents. Step up to 500 kV for transmission, step down to 240 V for your wall, step down again to 5 V for your phone — all the same physics.',
     relatedLabs: ['faraday', 'inductance'],
     sources: [
       'faraday-1832',
@@ -874,6 +877,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'erickson-maksimovic-2020',
       'horowitz-hill-2015',
       'kundur-1994-power-stability',
+      'ieee-1547-2018',
       'codata-2018',
     ],
     punchline:
@@ -960,7 +964,13 @@ export const CHAPTERS: ChapterEntry[] = [
     blurb:
       'The last mile of the power grid: how three-phase transmission steps down through a distribution transformer on a pole or pad to the single-phase 240 V split that enters most North American homes, why neutral is bonded to ground at the service entrance, and what the rotating disk or LCD on your meter is actually measuring.',
     relatedLabs: ['ohms-law', 'joule'],
-    sources: ['ansi-c84-1-2020', 'nec-2023', 'ieee-std-3001-2-2017', 'grainger-power-systems-2003'],
+    sources: [
+      'ansi-c84-1-2020',
+      'nec-2023',
+      'ieee-std-3001-2-2017',
+      'grainger-power-systems-2003',
+      'ansi-c12-1-2014',
+    ],
     punchline:
       'The three-phase grid steps down through one final transformer on a pole or pad into a 240 V split-phase service that lands at your meter base — that is the first piece of electricity you actually own.',
     objectives: [
@@ -1069,6 +1079,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'ul-2231',
       'iec-62196',
       'codata-2018',
+      'crc-resistivity',
       'grainger-power-systems-2003',
     ],
     punchline:
@@ -1236,7 +1247,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'ul-498',
       'nfpa-70e-2024',
       'nema-wd-6',
-      'grainger-power-systems-2003',
       'codata-2018',
     ],
     punchline:
@@ -1260,7 +1270,7 @@ export const CHAPTERS: ChapterEntry[] = [
     blurb:
       "The retrofit market has its own ecology. Lutron Caséta (proprietary 434 MHz, works without a neutral via the bleeder). Z-Wave (sub-GHz mesh). Zigbee (2.4 GHz mesh). Matter over Thread (the new convergence). And the structural NEC 404.2(C) requirement of a neutral in every switch box that finally caught up with smart switches. Three-way smart pairs, dimmable-LED phase choice (leading vs trailing), and what 'companion' vs 'add-on' means.",
     relatedLabs: ['ohms-law', 'inductance'],
-    sources: ['nec-2023', 'lutron-dimmer-app-note', 'ul-498', 'horowitz-hill-2015', 'codata-2018'],
+    sources: ['nec-2023', 'lutron-dimmer-app-note', 'ul-498', 'horowitz-hill-2015'],
     punchline:
       'A smart switch is a radio plus a triac plus a 30 mW microcontroller — and the most interesting design trade is how it stays powered when the load is off.',
     objectives: [
@@ -1330,10 +1340,10 @@ export const CHAPTERS: ChapterEntry[] = [
       'sae-j1772',
       'iec-62196',
       'ul-2231',
-      'sedra-smith-2014',
       'erickson-maksimovic-2020',
-      'horowitz-hill-2015',
       'codata-2018',
+      'linden-reddy-2011',
+      'yoshino-1985',
     ],
     punchline:
       'An EV is a battery on wheels with seven power-electronics stages between the cell and the road — and every one of those stages has appeared in a previous chapter of this textbook.',

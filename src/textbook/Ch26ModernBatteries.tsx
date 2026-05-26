@@ -46,9 +46,17 @@ export default function Ch26ModernBatteries() {
       <p className="mb-prose-3">
         Three radically different working systems, all heirs to Volta's pile. This chapter is a tour
         through the actual chemistries powering modern life: lead-acid (Planté 1859), nickel-based
-        cells, the Whittingham– Goodenough–Yoshino lithium-ion revolution (Nobel 2019), and the
+        cells, the Whittingham–Goodenough–Yoshino lithium-ion revolution (Nobel 2019), and the
         non-battery cousins — supercapacitors and fuel cells — that share the same two-electrode
         architecture but lean differently on the trade-offs of energy, power, and refuelling.
+      </p>
+      <p className="mb-prose-3">
+        One number recurs throughout, so meet it now: <em className="text-text italic">energy
+        density</em> — more precisely <em className="text-text italic">specific energy</em>, the
+        energy a cell stores per kilogram of its own mass, measured in watt-hours per kilogram
+        (Wh/kg). It is the single figure that decides whether a chemistry goes in a phone, a car, or
+        a grid-scale shed, and the stubborn gap between the best battery (a few hundred Wh/kg) and
+        liquid fuel (thousands) is the whole reason range anxiety exists.
       </p>
 
       <h2 className="chapter-h2">Beyond Volta: the first rechargeable cell</h2>
@@ -117,7 +125,8 @@ export default function Ch26ModernBatteries() {
         <Cite id="bard-faulkner-2001" in={SOURCES} />. Energy density is poor (~35 Wh/kg) because
         the lead is heavy and the active material in each plate has limited utilization, but
         specific power is excellent: a properly built lead-acid cell can deliver hundreds of amps
-        for the few-second cranking job, then sit on a trickle charge for years.
+        for the few-second cranking job, then sit on a trickle charge for years{' '}
+        <Cite id="linden-reddy-2011" in={SOURCES} />.
       </p>
 
       <TryIt
@@ -201,7 +210,7 @@ export default function Ch26ModernBatteries() {
         electrolyte. Neither host dissolves; the chemistry simply moves ions across the gap without
         destroying either lattice. That is why Li-ion can survive 500–2000 cycles, in contrast to
         most precursor chemistries that begin to fade after 100–300
-        <Cite id="bard-faulkner-2001" in={SOURCES} />. The half-reactions are unusual-looking, since
+        <Cite id="linden-reddy-2011" in={SOURCES} />. The half-reactions are unusual-looking, since
         neither electrode species is &quot;oxidized&quot; or &quot;reduced&quot; in the usual sense
         — the ion-host system accepts or releases electrons as the Li⁺ goes in or out, balancing
         charge:
@@ -239,7 +248,7 @@ export default function Ch26ModernBatteries() {
               Gasoline holds ~12 000 Wh/kg of chemical energy, of which only ~3000 Wh/kg comes out
               as useful work through an internal-combustion engine. Li-ion has closed about an order
               of magnitude of the battery-vs-fuel gap since Sony's 1991 launch
-              <Cite id="bard-faulkner-2001" in={SOURCES} />.
+              <Cite id="linden-reddy-2011" in={SOURCES} />.
             </p>
           </>
         }
@@ -263,7 +272,8 @@ export default function Ch26ModernBatteries() {
         <li>
           <strong className="text-text font-medium">LFP</strong> (LiFePO<sub>4</sub>, ~3.2 V) —
           phosphate framework instead of layered oxide, much more thermally stable, longer cycle
-          life (2000+ cycles), lower energy density. Goodenough et al. 1996. Now the dominant
+          life (2000+ cycles), lower energy density. Padhi & Goodenough, 1997{' '}
+          <Cite id="linden-reddy-2011" in={SOURCES} />. Now the dominant
           chemistry for grid-scale storage and many EVs.
         </li>
         <li>
@@ -344,7 +354,7 @@ export default function Ch26ModernBatteries() {
         doesn't store as much energy per kilogram as a chemical reaction does. Supercapacitors are
         the right device for short, high-power bursts: regenerative braking on a city bus,
         ride-through on a UPS, smoothing the load on the photovoltaic input to a grid-tied inverter
-        <Cite id="bard-faulkner-2001" in={SOURCES} />. They complement batteries; they don't replace
+        <Cite id="linden-reddy-2011" in={SOURCES} />. They complement batteries; they don't replace
         them.
       </p>
 
@@ -660,7 +670,7 @@ export default function Ch26ModernBatteries() {
             99% of automotive lead is reclaimed and re-used), and handles the brief 400 A cranking
             pulse easily. The application doesn't need energy density; it needs specific power,
             robustness, and cheapness. Lead-acid wins on all three
-            <Cite id="bard-faulkner-2001" in={SOURCES} />. When the application is energy density
+            <Cite id="linden-reddy-2011" in={SOURCES} />. When the application is energy density
             (range), Li-ion wins.
           </p>
         </FAQItem>
@@ -810,7 +820,7 @@ export default function Ch26ModernBatteries() {
             installation by enlarging the tanks without changing the cell. Energy density is poor
             (~20 Wh/kg including the electrolyte), so flow batteries don't go in cars; they're built
             for grid-scale storage where footprint is cheap and cycle life (~10 000+ cycles) matters
-            <Cite id="bard-faulkner-2001" in={SOURCES} />.
+            <Cite id="linden-reddy-2011" in={SOURCES} />.
           </p>
         </FAQItem>
 
@@ -856,7 +866,7 @@ export default function Ch26ModernBatteries() {
             storage often runs much lower. The C-rate framing is convenient because it scales: a
             property quoted at 1C is the same fraction of capacity per hour whether the cell is 1 Ah
             or 1000 Ah
-            <Cite id="bard-faulkner-2001" in={SOURCES} />.
+            <Cite id="linden-reddy-2011" in={SOURCES} />.
           </p>
         </FAQItem>
 
@@ -877,8 +887,8 @@ export default function Ch26ModernBatteries() {
         <FAQItem q="If a fuel cell's only emission is water, why isn't it the universal future of energy?">
           <p>
             Because the &quot;water-only&quot; emission profile depends entirely on where the
-            hydrogen came from. Today, about 95% of industrial hydrogen is produced from fossil
-            fuels — predominantly steam-methane reforming (CH₄ + 2H₂O → CO₂ + 4H₂), with coal
+            hydrogen came from. Today the large majority of industrial hydrogen is produced from
+            fossil fuels — predominantly steam-methane reforming (CH₄ + 2H₂O → CO₂ + 4H₂), with coal
             gasification next — which emits CO₂ at a rate roughly comparable to burning the methane
             directly. A &quot;hydrogen economy&quot; built on this kind of H₂ would be no greener
             than a gas-powered grid. Green hydrogen, produced by electrolysing water using renewable

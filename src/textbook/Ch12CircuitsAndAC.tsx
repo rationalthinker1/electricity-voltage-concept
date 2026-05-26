@@ -123,6 +123,10 @@ export default function Ch12CircuitsAndAC() {
         Σ I<sub>in</sub> = Σ I<sub>out</sub>
       </Formula>
       <p className="mb-prose-3">
+        where each <M tex="I" /> is a branch current at the node (in amperes), with currents flowing
+        into the node summed on the left and currents flowing out summed on the right.
+      </p>
+      <p className="mb-prose-3">
         <strong className="text-text font-medium">
           <Term
             def={
@@ -146,6 +150,10 @@ export default function Ch12CircuitsAndAC() {
       <Formula>
         Σ V<sub>loop</sub> = 0
       </Formula>
+      <p className="mb-prose-3">
+        where each <M tex="V" /> is a voltage rise or drop around one closed loop (in volts), signed
+        consistently with the direction of traversal so that the algebraic sum closes to zero.
+      </p>
       <p className="mb-prose-3">
         Together they generate exactly enough equations to determine every branch current. For a
         network with <M>N</M> nodes and <M>B</M> branches, KCL gives you <M>N − 1</M> independent
@@ -637,9 +645,19 @@ export default function Ch12CircuitsAndAC() {
       </h2>
 
       <p className="mb-prose-3">
+        The intuition: impedance is resistance for alternating current — how hard a component pushes
+        back on an AC current — but with one extra fact baked in. A resistor pushes back in step
+        with the current; a capacitor or inductor pushes back <em className="text-text italic">out
+        of step</em>, leading or lagging by a quarter cycle. Impedance is the single number that
+        captures both at once: how big the opposition is, and how much it shifts the timing. That is
+        why it has to be a complex number rather than a plain ohms value.
+      </p>
+
+      <p className="mb-prose-3">
         Beautiful as the previous section is, you do not want to solve a second-order ODE every time
         you analyze a circuit. The 19th-century engineer's response — formalized by Charles
-        Steinmetz at General Electric in the 1890s — was to recast everything in the complex plane.
+        Steinmetz at General Electric in the 1890s <Cite id="steinmetz-1893" in={SOURCES} /> — was
+        to recast everything in the complex plane.
       </p>
       <p className="mb-prose-3">
         Represent each sinusoid V(t) = V₀ cos(ωt + φ) by the complex{' '}
@@ -779,6 +797,15 @@ export default function Ch12CircuitsAndAC() {
       <h2 className="chapter-h2">
         AC <em>power</em> — and why the grid is three-phase
       </h2>
+
+      <p className="mb-prose-3">
+        First, the number everyone quotes. An AC line voltage swings from its positive peak to its
+        negative peak and through zero a hundred times a second, so "the voltage" needs a single
+        fair summary. The root-mean-square (RMS) value is that summary: the steady DC voltage that
+        would dissipate the same average heating power in a resistor. For a sine wave it comes out
+        to the peak divided by √2 — which is exactly why a nominal 120 V outlet actually peaks at
+        about 170 V. Power calculations use RMS so that AC and DC numbers mean the same thing.
+      </p>
 
       <p className="mb-prose-3">
         Multiply V(t) = V<sub>p</sub> cos(ωt) by I(t) = I<sub>p</sub> cos(ωt − φ) and average over a
@@ -1044,9 +1071,9 @@ export default function Ch12CircuitsAndAC() {
         <strong className="text-text font-medium"> superposition</strong>: in any network whose
         components obey linear constitutive equations, the response to several independent sources
         is the algebraic sum of the responses to each source acting alone (with the others zeroed).
-        The demo below lets you watch superposition do its thing in a bridge of three resistors and
-        two sources — turn each source on or off, and the branch currents in the live case are
-        always the exact sum of the per-source contributions
+        The principle is easiest to trust on a concrete case: in a bridge of three resistors driven
+        by two sources, the branch currents with both sources live are always the exact sum of the
+        per-source contributions
         <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
       </p>
 
@@ -1161,8 +1188,8 @@ export default function Ch12CircuitsAndAC() {
             <Cite id="grainger-power-systems-2003" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            The 60-Hz choice itself is mid-1890s path-dependence. Westinghouse standardised on 60 Hz
-            in the United States; AEG had already picked 50 Hz in Germany; both work, both are now
+            The 60-Hz choice itself is late-19th-century path-dependence. North America standardised
+            on 60 Hz; Europe converged on 50 Hz; both work, both are now
             locked in by a continent's worth of installed equipment. Aircraft electrical systems,
             where transformer mass matters more than line losses, use 400 Hz instead — the
             transformer core volume scales roughly as <M tex="1/f" /> for a given power handling
@@ -1210,9 +1237,9 @@ export default function Ch12CircuitsAndAC() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             That Q comes directly from the formula in this chapter: <M>Q = (1/R)√(L/C)</M>. With a
-            typical antenna-coil inductance of around 250 µH and the variable capacitor swept from
-            roughly 30 pF to 365 pF to cover the band, choosing a coil with an effective series
-            resistance in the few-ohm range lands Q comfortably above 100
+            typical antenna-coil inductance of a few hundred microhenries and a variable capacitor
+            ranging over tens to a few hundred picofarads to cover the band, choosing a coil with an
+            effective series resistance in the few-ohm range lands Q comfortably above 100
             <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />. FM receivers do the same trick
             three orders of magnitude up: at 100 MHz the inductances shrink to tens of nanohenries
             and the capacitors to tens of picofarads, but the mathematics is identical.
@@ -1345,8 +1372,8 @@ export default function Ch12CircuitsAndAC() {
             Because the utility's transmission losses scale with the square of the current it has to
             push, regardless of whether that current does real work at the customer end. A factory
             drawing 700 kW of real power at cos(φ) = 0.7 actually demands 1000 kVA from the grid,
-            with 33% extra I²R losses in the transmission lines compared to a unity-power-factor
-            customer. The utility passes that cost back as a "power factor penalty" on the bill,
+            with roughly double the I²R losses in the transmission lines compared to a
+            unity-power-factor customer. The utility passes that cost back as a "power factor penalty" on the bill,
             which incentivizes the customer to install correction capacitors and bring cos(φ) back
             near 1<Cite id="grainger-power-systems-2003" in={SOURCES} />.
           </p>
@@ -1370,8 +1397,8 @@ export default function Ch12CircuitsAndAC() {
             Historical accident, locked in by mid-20th-century infrastructure. Higher frequencies
             mean smaller, cheaper transformers (since transformer core size scales as 1/f for a
             given power), but they also mean higher inductive losses on long transmission lines.
-            Tesla and Westinghouse settled on 60 Hz in the U.S. in the 1890s; AEG in Germany chose
-            50 Hz a few years earlier. Both work fine; both became the basis for incompatible
+            North America settled on 60 Hz in the late 19th century; Europe settled on 50 Hz. Both
+            work fine; both became the basis for incompatible
             regional grids that no one is going to unify now. Aircraft electronics, where weight
             matters most, run on 400 Hz for exactly that transformer-shrinkage reason.
           </p>
@@ -1397,9 +1424,9 @@ export default function Ch12CircuitsAndAC() {
             Energy storage divided by energy dissipation per radian. Specifically, Q = 2π × (energy
             stored in the tank) / (energy dissipated per cycle). For a series RLC, this evaluates to
             Q = ω₀L/R = (1/R)√(L/C). A high-Q resonator can ring for Q/π cycles before losing 1/e of
-            its energy. Crystal oscillators reach Q ≈ 10⁶; an atomic clock's cesium transition has
-            effective Q ≈ 10¹⁰
-            <Cite id="horowitz-hill-2015" in={SOURCES} />. The numerical sharpness of the resonance
+            its energy. Crystal oscillators reach Q ≈ 10⁶
+            <Cite id="horowitz-hill-2015" in={SOURCES} />; an atomic clock's cesium transition is
+            higher still by orders of magnitude. The numerical sharpness of the resonance
             peak in the demo is set by exactly this ratio.
           </p>
         </FAQItem>

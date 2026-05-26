@@ -235,6 +235,15 @@ export default function Ch25Batteries() {
       <h2 className="chapter-h2">Standard electrode potentials</h2>
 
       <p className="mb-prose-3">
+        Before the table of numbers, the idea: every half-reaction has an appetite for electrons.
+        The standard electrode potential is the scoreboard that ranks those appetites — a single
+        voltage saying how strongly each chemistry pulls electrons toward itself, every couple
+        scored against one common opponent. Underneath, it is purely energetic: that voltage is the
+        reaction's free-energy change expressed per electron transferred, which is exactly why
+        stacking two couples with a big gap between them yields a big cell voltage.
+      </p>
+
+      <p className="mb-prose-3">
         Every half-reaction has an intrinsic "reaction tendency" that you can measure. By
         convention, chemists assign each reduction half-reaction a number called its{' '}
         <Term def="The voltage of a half-reaction measured against the standard hydrogen electrode (SHE = 0.00 V), with all species at 1 M concentration, 1 atm, 298 K. Tabulated for every common couple — the universal lookup table for battery chemistry.">
@@ -425,7 +434,7 @@ export default function Ch25Batteries() {
         physical contact resistance at the terminals
         <Cite id="bard-faulkner-2001" in={SOURCES} />. A fresh AA alkaline cell has R_int around
         100–300 mΩ; a car starter battery is a few milliohms (so it can deliver 400 A at 12 V); a
-        small coin cell can be tens of ohms.
+        small coin cell can be tens of ohms <Cite id="linden-reddy-2011" in={SOURCES} />.
       </p>
 
       <CellDischargeDemo figure="Fig. 25.5" />
@@ -453,7 +462,7 @@ export default function Ch25Batteries() {
         enough to make a wire warm. For a car starter battery (V_OC ≈ 12.6 V, R_int ≈ 4 mΩ), it's
         about 3000 A — enough to weld through a dropped wrench. The chemistry sets the voltage; the
         geometry and the kinetics set the current
-        <Cite id="bard-faulkner-2001" in={SOURCES} />.
+        <Cite id="linden-reddy-2011" in={SOURCES} />.
       </p>
 
       <TryIt
@@ -550,14 +559,14 @@ export default function Ch25Batteries() {
             to warm the casing but not enough to start a fire. The high R_int is why 9 V batteries
             are happy in low-current circuits (smoke detectors, small radios) but useless for
             anything that wants amps
-            <Cite id="bard-faulkner-2001" in={SOURCES} />.
+            <Cite id="linden-reddy-2011" in={SOURCES} />.
           </p>
         </CaseStudy>
 
         <CaseStudy
           tag="Case 25.2"
           title="AA alkaline cell (Zn / MnO₂)"
-          summary="The workhorse single cell. 1.5 V open, ~2500 mAh capacity, 23 g mass. Powers most remote controls and toys on Earth."
+          summary="The workhorse single cell. ~1.55 V fresh (1.5 V nominal), ~2500 mAh capacity, 23 g mass. Powers most remote controls and toys on Earth."
           specs={[
             { label: 'Open-circuit voltage', value: <>~1.55 V (fresh)</> },
             {
@@ -585,8 +594,8 @@ export default function Ch25Batteries() {
             swapped for what optimizes mass production: a zinc-powder anode (high surface area for
             low R_int), a manganese-dioxide cathode mixed with graphite for conductivity, and a
             potassium-hydroxide electrolyte gelled with starch so it can't leak out of the can. The
-            chemistry was patented by Lewis Urry in 1957 at Eveready and has been the de-facto
-            standard for primary cells ever since.
+            chemistry was developed in the 1950s at Eveready and has been the de-facto
+            standard for primary cells ever since <Cite id="linden-reddy-2011" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
             The Nernst equation explains the voltage curve. A "fresh" cell reads 1.55–1.65 V
@@ -804,7 +813,7 @@ export default function Ch25Batteries() {
             after engine inefficiency. Batteries close the gap somewhat at vehicle-system level
             (electric drivetrains are ~3× more efficient than internal combustion), but the
             underlying energy-density gap is enormous and physical, not just engineering
-            <Cite id="bard-faulkner-2001" in={SOURCES} />.
+            <Cite id="linden-reddy-2011" in={SOURCES} />.
           </p>
         </FAQItem>
 

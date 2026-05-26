@@ -550,7 +550,7 @@ export default function Ch39HouseOutdoorWet() {
         runs 40 to 50 A continuous on 240 V, which sets the branch-circuit ampacity at the NEC's
         125% continuous-load adjustment from Ch.29 and Ch.31
         <Cite id="nec-2023" in={SOURCES} />. A 50 A breaker on 6 AWG copper (NEC Table 310.16 at
-        75°C termination, 55 A ampacity) is the canonical configuration. The connection is four-wire
+        75°C termination, 65 A ampacity) is the canonical configuration. The connection is four-wire
         — L1, L2, neutral, ground — because the tub's control electronics, pump capacitors, and any
         light run from 120 V derived between either hot and neutral, even though the heater itself
         sits across the full 240 V. (Some pure-heater tubs without 120 V loads can be wired
@@ -637,8 +637,9 @@ export default function Ch39HouseOutdoorWet() {
               <strong className="text-text font-medium">control pilot</strong> — the 1 kHz
               square-wave signal on the J1772 connector's pilot pin, modulated by the EVSE's duty
               cycle to advertise the maximum current the supply can deliver. SAE J1772 specifies the
-              encoding: 6% = 6 A, 50% = 30 A, with two breakpoints; the vehicle reads the duty cycle
-              and limits its onboard charger accordingly.
+              encoding: over the 10–85% range the advertised current is duty% × 0.6 A, so 10% ≡ 6 A
+              (the minimum) and 50% ≡ 30 A; the vehicle reads the duty cycle and limits its onboard
+              charger accordingly.
             </>
           }
         >
@@ -914,7 +915,7 @@ export default function Ch39HouseOutdoorWet() {
         additions in an unfinished basement, AFCI/GFCI breaker requirements that did not exist at
         the original install). The economics of the electrification arc — EVSE plus heat pump plus
         induction plus heat-pump water heater — typically justify the upgrade against the
-        alternative of constant load-shedding management, but the labour is licensed- electrician
+        alternative of constant load-shedding management, but the labour is licensed-electrician
         and utility-coordinated work, not a weekend project.
       </p>
       <p className="mb-prose-3">
@@ -1110,8 +1111,9 @@ export default function Ch39HouseOutdoorWet() {
             load side, and NEC 625.22 accepts the listed EVSE's internal protection in lieu of an
             upstream GFCI for hardwired installations
             <Cite id="nec-2023" in={SOURCES} />
-            <Cite id="ul-2231" in={SOURCES} />. The hardwired unit delivers 11.5 kW (240 × 48 × 0.92
-            ≈ 10.6 kW into the onboard charger), about 20% more than the plug-in 40 A unit's 8.8 kW.
+            <Cite id="ul-2231" in={SOURCES} />. The hardwired unit draws 11.5 kW of AC (240 × 48)
+            and delivers ≈10.6 kW into the onboard charger after ~92% efficiency, about 20% more
+            than the plug-in 40 A unit's 8.8 kW.
             For a 75 kWh EV the difference is roughly 30 minutes per 0–80% charge cycle. Cost is
             comparable to option A.
           </p>
@@ -1305,7 +1307,7 @@ export default function Ch39HouseOutdoorWet() {
             the equipment manufacturer's recommendations and the listing standard (UL 943B for
             higher-threshold class A devices). The 20 mA threshold inside an EVSE per UL 2231 is in
             the same category: it protects the vehicle-supply path against fault but is not the
-            personnel- protection device
+            personnel-protection device
             <Cite id="ul-2231" in={SOURCES} />.
           </p>
         </FAQItem>

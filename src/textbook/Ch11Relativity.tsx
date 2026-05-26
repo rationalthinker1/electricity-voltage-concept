@@ -501,7 +501,7 @@ export default function Ch11Relativity() {
           summary={
             <em className="text-text italic">
               Special relativity slows them. General relativity speeds them up more. The net offset
-              is 38.6 microseconds a day, and the engineers compensated for it on the ground.
+              is 38.5 microseconds a day, and the engineers compensated for it on the ground.
             </em>
           }
           specs={[
@@ -560,7 +560,7 @@ export default function Ch11Relativity() {
           title="The wire-and-test-charge, with actual numbers"
           summary={
             <em className="text-text italic">
-              Restating §3's derivation with copper, a 1 A current, and γ−1 ≈ 10⁻²⁵. The wire really
+              Restating §3's derivation with copper, a 1 A current, and γ−1 ≈ 10⁻²⁷. The wire really
               does look charged from a moving frame; it's just that the per-electron correction is
               ridiculously small.
             </em>
@@ -569,11 +569,11 @@ export default function Ch11Relativity() {
             { label: 'Wire', value: '12-gauge copper, A ≈ 3.31 mm²' },
             { label: 'Current', value: 'I = 1 A (steady)' },
             { label: 'Drift velocity in lab frame', value: 'v_d ≈ 2.2 × 10⁻⁵ m/s' },
-            { label: 'Lorentz factor', value: 'γ ≈ 1 + (v_d/c)²/2 ≈ 1 + 2.7×10⁻²⁵' },
+            { label: 'Lorentz factor', value: 'γ ≈ 1 + (v_d/c)²/2 ≈ 1 + 2.7×10⁻²⁷' },
             { label: 'Free-electron density n', value: '8.50 × 10²⁸ m⁻³ (copper)' },
             {
               label: "Net frame-induced λ' (test v = v_d)",
-              value: '~−n e v_d² A / c² ≈ −5 × 10⁻²⁵ C/m per metre of wire',
+              value: '~ n e v_d² A / c² ≈ 2.4 × 10⁻²² C/m per metre of wire',
             },
           ]}
         >
@@ -584,7 +584,7 @@ export default function Ch11Relativity() {
             the drift velocity is about{' '}
             <strong className="text-text font-medium">2.2 × 10⁻⁵ m/s</strong> — slower than a snail
             <Cite id="purcell-morin-2013" in={SOURCES} />. The Lorentz factor of that drift is
-            <M> γ − 1 ≈ ½(v_d/c)² ≈ 2.7 × 10⁻²⁵</M>. Stupendously close to one.
+            <M> γ − 1 ≈ ½(v_d/c)² ≈ 2.7 × 10⁻²⁷</M>. Stupendously close to one.
           </p>
           <p className="mb-prose-2 last:mb-0">
             Boost to a frame co-moving with the electrons at <M>v_d</M>. The positive lattice now
@@ -592,13 +592,13 @@ export default function Ch11Relativity() {
             density rises by <M>γ</M>. The electrons, now at rest, see their own density drop by
             exactly the inverse factor. The two effects don't cancel — they leave a residual linear
             charge density of order <M>n e v_d² A / c²</M>, which works out to about
-            <strong className="text-text font-medium"> 5 × 10⁻²⁵ C per metre</strong> of wire
+            <strong className="text-text font-medium"> 2.4 × 10⁻²² C per metre</strong> of wire
             <Cite id="purcell-morin-2013" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
             That number is ludicrous on a per-metre basis — an electron carries
             <M> e ≈ 1.6 × 10⁻¹⁹ C</M>, so we are talking about a deficit of
-            <M> ~3 × 10⁻⁶</M> electrons per metre. And yet, multiplied by the
+            <M> ~1.5 × 10⁻³</M> electrons per metre. And yet, multiplied by the
             <M> n A ≈ 2.8 × 10²³</M> conduction electrons per metre, the
             <em className="text-text italic"> charge imbalance per electron</em> is of order γ − 1,
             and the bookkeeping is exact: the Coulomb force in the boosted frame from this tiny
