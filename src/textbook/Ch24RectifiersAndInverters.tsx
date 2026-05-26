@@ -167,8 +167,7 @@ export default function Ch24RectifiersAndInverters() {
         diode forward but adds a second knee at −5.1 V reverse — past that, current can flow
         backwards without destroying the device. Heat the diode (slide T up) and V<sub>F</sub>
         falls about 2 mV per kelvin — a fact worth knowing because it is how every silicon-based
-        thermometer works
-        <Cite id="horowitz-hill-2015" in={SOURCES} />.
+        thermometer works <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
       <h2 className="chapter-h2">
         <em>Half-wave, full-wave, bridge</em>
@@ -259,7 +258,11 @@ export default function Ch24RectifiersAndInverters() {
         >
           smoothing capacitor
         </Term>
-        . Each peak of the rectified waveform charges the cap up to V<sub>p</sub> − 2 V<sub>F</sub>;
+        . Picture that capacitor as a small reservoir: each rectified peak tops it up, and between
+        peaks the load drains it a little, so the output sags and refills in a slow sawtooth. That
+        residual sawtooth riding on the DC <em className="text-text italic">is</em> the ripple — and
+        the bigger the reservoir relative to the draw, the smaller the sag. Each peak of the
+        rectified waveform charges the cap up to V<sub>p</sub> − 2 V<sub>F</sub>;
         between peaks, the cap discharges into the load through R<sub>load</sub>. If R
         <sub>load</sub> · C is much longer than half a line cycle, the output sags only slightly
         between peaks — the ripple voltage is{' '}
@@ -828,7 +831,8 @@ export default function Ch24RectifiersAndInverters() {
         power; somewhere in between you do both
         <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />. Modern grid-tie inverters can be
         commanded to mix the two, supporting grid voltage during sags or absorbing it during
-        over-voltage events — the "smart inverter" functionality required by IEEE 1547-2018.
+        over-voltage events — the "smart inverter" functionality required by IEEE 1547-2018{' '}
+        <Cite id="ieee-1547-2018" in={SOURCES} />.
       </p>
 
       <GridTieInverterDemo figure="Fig. 24.9" />
@@ -959,7 +963,7 @@ export default function Ch24RectifiersAndInverters() {
                   <strong className="text-text font-medium">power-factor correction (PFC)</strong> —
                   a pre-regulator that forces the input current of an AC-DC supply to track the
                   input voltage sinusoidally, presenting a near-resistive load to the line. Required
-                  by IEC 61000-3-2 for supplies above 75 W.
+                  by international harmonic-current standards for higher-power supplies.
                 </>
               }
             >
@@ -983,9 +987,9 @@ export default function Ch24RectifiersAndInverters() {
           <p className="mb-prose-2 last:mb-0">
             The same brick contains four diode rectifiers, two switching converters, a transformer,
             two microcontrollers, an opto-isolator straddling the safety barrier, and ten or more
-            ceramic capacitors carefully rated to survive line surges. Sixty years of silicon
-            evolution let it weigh two hundred grams; in 1965 it would have weighed five kilos and
-            run at 50% efficiency
+            ceramic capacitors carefully rated to survive line surges. Decades of silicon
+            evolution let it weigh a couple hundred grams; in the transformer-and-linear-regulator
+            era it would have been far heavier and far less efficient
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
           </p>
         </CaseStudy>
@@ -1023,10 +1027,11 @@ export default function Ch24RectifiersAndInverters() {
             than the back-EMF, current flows from the motor into the DC bus — through the IGBTs'
             anti-parallel diodes — and recharges the battery. The "rectifier" half of this chapter
             and the "inverter" half are not two different circuits; they are the same six switches
-            operated under different firmware
-            <Cite id="erickson-maksimovic-2020" in={SOURCES} />. Tens of kilowatts of recovered
-            kinetic energy flow back into the pack during a hard deceleration, and a substantial
-            fraction of stop-and-go urban driving energy is recouped this way.
+            operated under different firmware. A hard deceleration can push on the order of{' '}
+            <strong className="text-text font-medium">tens of kilowatts</strong> of recovered kinetic
+            energy back into the pack, reclaiming a meaningful fraction of urban-driving energy that
+            a friction brake would otherwise turn into heat
+            <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />.
           </p>
         </CaseStudy>
 
@@ -1093,7 +1098,7 @@ export default function Ch24RectifiersAndInverters() {
             </>
           }
           specs={[
-            { label: 'Length', value: '846 miles (1361 km)' },
+            { label: 'Length', value: '846 miles (1362 km)' },
             { label: 'DC voltage', value: '±500 kV bipolar' },
             { label: 'Capacity', value: '3,100 MW (post-upgrade)' },
             { label: 'Converter technology', value: 'Line-commutated thyristor valves' },
@@ -1170,7 +1175,8 @@ export default function Ch24RectifiersAndInverters() {
             that current is large, but it is heavily distorted, and the apparent power (V × I) is
             well above the real power. PFC is a pre-regulator (usually a boost converter) that
             forces the input current to track the line voltage sinusoidally, making the supply look
-            like a near-resistive load. Above 75 W, IEC 61000-3-2 requires it; below, it's optional
+            like a near-resistive load. For higher-power supplies, international harmonic-current
+            standards require it; for small ones it's optional
             <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1222,7 +1228,8 @@ export default function Ch24RectifiersAndInverters() {
             charging current independent of the load. Past a few hundred kilometres, that charging
             current is comparable to the line's thermal rating; you can't deliver any real power
             because the conductors are already full of reactive current. A DC line has no charging
-            current. Above ~600 km overhead or ~50 km submarine, HVDC becomes the cheaper option
+            current, so beyond a few hundred kilometres overhead — or a few tens of kilometres
+            submarine — HVDC becomes the cheaper option
             <Cite id="kundur-1994-power-stability" in={SOURCES} />. The price you pay is the
             converter station at each end — a substantial building full of thyristor or IGBT valves.
           </p>

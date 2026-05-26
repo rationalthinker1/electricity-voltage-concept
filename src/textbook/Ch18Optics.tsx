@@ -77,6 +77,13 @@ export default function Ch18Optics() {
         front face perpendicular to <M tex="x" />. The wave hits the boundary.
       </p>
       <p className="mb-prose-3">
+        Before the formula, the idea: the refractive index <M tex="n" /> simply measures how much a
+        medium slows light. <M tex="n = 1.5" /> means light crawls through the glass at two-thirds
+        its vacuum speed; <M tex="n = 2.4" /> (diamond) means it slows to under half. That slowing
+        is the whole origin of refraction — when one edge of a wavefront enters the slow medium
+        before the other, the wave pivots — and of why a prism fans white light into colours.
+      </p>
+      <p className="mb-prose-3">
         Inside the glass the same equations still apply, but with ε₀ → ε₀ε<sub>r</sub>. The phase
         speed is no longer <M tex="c" /> but <M tex="c/n" />, where{' '}
         <M tex="n = \sqrt{\varepsilon_r}" /> is the{' '}
@@ -146,9 +153,9 @@ export default function Ch18Optics() {
         follows directly from matching the tangential component of <M tex="k" /> across the
         boundary: the in-plane wavevector is preserved, so any out-of-plane component the reflected
         or refracted ray might acquire is forced to be zero
-        <Cite id="griffiths-2017" in={SOURCES} />. Drag the next demo around to see the planarity in
-        3D, then tilt the camera until you're looking edge-on at the plane and the canonical 2D
-        refraction triangle pops back out.
+        <Cite id="griffiths-2017" in={SOURCES} />. That planarity is easiest to believe in three
+        dimensions, where viewing the incident and refracted rays edge-on collapses them back to the
+        familiar 2D refraction triangle.
       </p>
 
       <SnellLaw3DDemo figure="Fig. 18.2" />
@@ -284,10 +291,10 @@ export default function Ch18Optics() {
       <p className="mb-prose-3">
         Crown glass has A ≈ 1.504, B ≈ 0.00420 µm², giving n ≈ 1.513 at 700 nm (red) and n ≈ 1.528
         at 420 nm (violet) — a spread of about 1%. Small, but it's enough that a triangular prism,
-        refracting at both faces, fans visible sunlight out into a clean spectrum. Newton was the
-        first to publish a careful study of the phenomenon in his
-        <em className="text-text italic"> Opticks</em> of 1704, though Marci and others had noted it
-        earlier.
+        refracting at both faces, fans visible sunlight out into a clean spectrum. Newton published
+        the definitive early study of the phenomenon in his
+        <em className="text-text italic"> Opticks</em>, though Marci and others had noted it
+        earlier <Cite id="hecht-2017" in={SOURCES} />.
       </p>
 
       <DispersionDemo figure="Fig. 18.4" />
@@ -395,8 +402,9 @@ export default function Ch18Optics() {
         first and you get Étienne-Louis Malus's 1809 law: light of intensity I<sub>0</sub> linearly
         polarised at angle θ<sub>1</sub>
         passes through an analyser oriented at θ<sub>2</sub> with intensity{' '}
-        <M tex="I = I_0 \cos^2(\theta_2 - \theta_1)" />. Cross the two axes (90° apart) and the
-        field has no component along the analyser — nothing gets through. Add a
+        <M tex="I = I_0 \cos^2(\theta_2 - \theta_1)" /> <Cite id="hecht-2017" in={SOURCES} />. Cross
+        the two axes (90° apart) and the field has no component along the analyser — nothing gets
+        through. Add a
         <Term def="A birefringent plate whose thickness is chosen so that the two orthogonal polarisation components emerge with a 90° relative phase shift. Converts linear polarisation at ±45° to its axes into circular polarisation, and vice versa.">
           quarter-wave plate
         </Term>{' '}
@@ -457,8 +465,9 @@ export default function Ch18Optics() {
         inverts — so the constructive maxima fall at the half-integer formula. As the bubble drains,
         t decreases; the wavelength that constructively interferes sweeps from red through green to
         blue to UV, finally going dark when t &lt; 100 nm. That last "black" film is two
-        soap-molecule layers thick. Newton observed and catalogued these colours in the 1670s; they
-        were the strongest early evidence that light had a wave nature.
+        soap-molecule layers thick. Newton observed and catalogued these colours; they
+        were among the strongest early evidence that light had a wave nature{' '}
+        <Cite id="hecht-2017" in={SOURCES} />.
       </p>
 
       <ThinFilmDemo figure="Fig. 18.7" />
@@ -478,7 +487,7 @@ export default function Ch18Optics() {
           optical fiber
         </Term>{' '}
         work. A silica core of n ≈ 1.4682 is clad in a slightly lower-index sheath of n ≈ 1.4628.
-        Any ray that enters the core within about 10° of its axis hits the wall above the critical
+        Any ray that enters the core within about 7° of its axis hits the wall above the critical
         angle and zigzags down the entire length, kept inside by repeated TIR. Single-mode fibers
         run telecom traffic at 1550 nm with attenuation of only about{' '}
         <strong className="text-text font-medium">0.2 dB/km</strong> — six orders of magnitude
@@ -547,7 +556,7 @@ export default function Ch18Optics() {
         , where <M tex="y_m" />
         is the lateral position of the mth fringe on the screen (in metres) and <M tex="L" /> is the
         slit-to-screen distance (in metres). Fringe spacing <M tex="\Delta y = \lambda L / d" />.
-        For 550-nm light, slits 50 µm apart and a screen 500 mm away, the fringes are about 5 mm
+        For 550-nm light, slits 50 µm apart and a screen 500 mm away, the fringes are about 5.5 mm
         apart and easily visible by eye. The same physics underlies every diffraction-pattern
         measurement, every grating spectrometer, every laser-speckle experiment, and every
         interferometric measurement that takes 100 nm of mechanical motion seriously
@@ -640,7 +649,7 @@ export default function Ch18Optics() {
         addition to spontaneous emission and absorption, a third process: a photon of the right
         frequency could trigger an excited atom to drop down and emit a{' '}
         <em className="text-text italic">second</em> photon of identical wavelength, direction,
-        phase, and polarisation. This is{' '}
+        phase, and polarisation <Cite id="hecht-2017" in={SOURCES} />. This is{' '}
         <Term def="The process in which an incoming photon induces an excited atom to emit a second photon of identical wavelength, direction, phase, and polarisation. Einstein predicted it in 1917; lasers are macroscopic amplifiers built on it.">
           stimulated emission
         </Term>

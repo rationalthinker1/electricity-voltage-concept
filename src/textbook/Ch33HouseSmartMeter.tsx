@@ -261,8 +261,8 @@ export default function Ch33HouseSmartMeter() {
         of power — that is, energy
         <Cite id="grainger-power-systems-2003" in={SOURCES} />. A geared mechanical register on the
         front face of the meter converts disk revolutions to kilowatt-hours through a fixed gear
-        ratio: typical mechanical meters spin at one revolution per 7.2 watt-hours, so 500
-        revolutions is exactly one kilowatt-hour.
+        ratio: a typical residential meter constant is one revolution per 2 watt-hours (Kh = 2), so
+        500 revolutions is exactly one kilowatt-hour.
       </p>
       <p className="mb-prose-3">
         The induction-disk meter has no microcontroller, no ADC, no firmware to update, and no radio
@@ -737,8 +737,8 @@ export default function Ch33HouseSmartMeter() {
               A credit of 30 cents — the homeowner exported 2 kWh more than they imported on net.
               Under net metering, that credit rolls forward against future imports. Under the NEM
               3.0 export rate of about $0.05/kWh and an import rate of $0.27/kWh evening peak, the
-              same day's flow yields −0.10 × $0.05 + 0.08 × $0.27 ≈ a 1.7{' '}
-              <em className="text-text italic">cent</em> charge instead — the structural change that
+              same day's flow yields 8 × $0.27 − 10 × $0.05 ≈ a $1.66{' '}
+              <em className="text-text italic">charge</em> instead — the structural change that
               drove the controversy around California's 2023 reform
               <Cite id="ansi-c12-1-2014" in={SOURCES} />.
             </p>
@@ -955,7 +955,7 @@ export default function Ch33HouseSmartMeter() {
               label: 'PF penalty (before correction)',
               value: (
                 <>
-                  $5/kVAR × ~143 kVAR-over-threshold ≈ $715/month{' '}
+                  $5/kVAR × ~145 kVAR-over-threshold ≈ $725/month{' '}
                   <Cite id="grainger-power-systems-2003" in={SOURCES} />
                 </>
               ),
@@ -979,12 +979,12 @@ export default function Ch33HouseSmartMeter() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             Before correction, the factory's PF of 0.78 means the 800 kW real load is drawing
-            800/0.78 ≈ 1025 kVA of apparent power, or about 626 kVAR of reactive current sloshing
+            800/0.78 ≈ 1025 kVA of apparent power, or about 641 kVAR of reactive current sloshing
             back and forth between the motor windings and the utility's wires. The utility's penalty
             applies to kVAR above the threshold corresponding to PF = 0.85: at 800 kW real, that
-            threshold is about 800·tan(acos 0.85) ≈ 495 kVAR. So the over-threshold reactive draw is
-            about 626 − 495 ≈ 131 kVAR, and at $5/kVAR/month the penalty is ~$655/month — a year's
-            worth is approaching $8,000
+            threshold is about 800·tan(acos 0.85) ≈ 496 kVAR. So the over-threshold reactive draw is
+            about 641 − 496 ≈ 145 kVAR, and at $5/kVAR/month the penalty is ~$725/month — a year's
+            worth is approaching $8,700
             <Cite id="grainger-power-systems-2003" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">

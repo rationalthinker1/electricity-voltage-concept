@@ -575,17 +575,15 @@ export default function Ch38HouseSmartRetrofits() {
         is conducting, in radians, running from α = π for fully-on down to α = 0 for fully-off):
       </p>
 
-      <Formula tex="V_{\text{rms}} = V_{\text{peak}} \times \sqrt{\dfrac{\alpha}{\pi} - \dfrac{\sin(2\alpha)}{2\pi}}" />
+      <Formula tex="V_{\text{rms}} = V_{\text{rms,line}} \times \sqrt{\dfrac{\alpha}{\pi} - \dfrac{\sin(2\alpha)}{2\pi}}" />
       <p className="mb-prose-3">
         where <M tex="V_{\text{rms}}" /> is the RMS voltage delivered to the load (in volts),{' '}
-        <M tex="V_{\text{peak}}" /> is the line peak voltage (in volts; 170 V on a 120 V North
-        American line, since V_peak = √2 × V_rms_line), and <M tex="\alpha" /> is the conduction
-        angle in radians, measured from the gate-on point to the next zero-crossing. The half-power
-        point, α = π/2, evaluates the bracket as 1/2 − sin(π)/(2π) = 1/2 − 0 = 0.5, giving V_rms =
-        170 × √0.5 ≈ 120 V × √0.5 ≈ 85 V. (For very deep dimming, α → 0 and V_rms → 0 as √α; for
-        fully-on, α = π and V_rms = V_peak/√2 = V_rms_line.) The fundamental physical constants in
-        these expressions — π, √2 — carry no measurement uncertainty
-        <Cite id="codata-2018" in={SOURCES} />.
+        <M tex="V_{\text{rms,line}}" /> is the line RMS voltage (in volts; 120 V on a standard North
+        American line), and <M tex="\alpha" /> is the conduction angle in radians, measured from the
+        gate-on point to the next zero-crossing. The half-power point, α = π/2, evaluates the bracket
+        as 1/2 − sin(π)/(2π) = 1/2 − 0 = 0.5, giving V_rms = 120 × √0.5 ≈ 85 V. (For very deep
+        dimming, α → 0 and V_rms → 0 as √α; for fully-on, α = π and the bracket is 1, so V_rms =
+        V_rms,line = 120 V.)
       </p>
 
       <TryIt

@@ -419,7 +419,7 @@ export default function Ch32HouseSafety() {
         <Cite id="iec-60479-2018" in={SOURCES} />: a hand-to-hand R<sub>body</sub>
         runs from about 1 kΩ (wet, large-area, with broken skin) to over 100 kΩ (dry, fingertip
         touch, intact callused skin). At 120 V wet that is 120 mA — squarely lethal — and at 120 V
-        dry it is 1 mA — barely perceptible. The two-decade variation in R is the variation between
+        dry it is about 1.2 mA — barely perceptible. The two-decade variation in R is the variation between
         "shock" and "death."
       </p>
       <p className="mb-prose-3">
@@ -572,8 +572,9 @@ export default function Ch32HouseSafety() {
         broadband spectral noise of an arc, while rejecting the legitimate switching noise of
         dimmers, vacuum-cleaner brushes, compact-fluorescent ballasts, and laser-printer fusers. The
         classifier is the entire engineering challenge — the trip mechanism itself is a conventional
-        solid-state release — and the listing standard (UL 1699) defines a long set of test
-        waveforms that the device must trip on and a longer set of nuisance waveforms it must not
+        solid-state release — and the listing standard (UL 1699, referenced by NEC Article 210.12)
+        defines a long set of test waveforms that the device must trip on and a longer set of
+        nuisance waveforms it must not
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
 
@@ -586,9 +587,8 @@ export default function Ch32HouseSafety() {
             measured drop of <strong className="text-text font-medium">40 V</strong>, with the arc
             conducting for half of each AC half-cycle (<M tex="\\delta = 0.5" />
             ). What is the time-averaged power dissipated in the arc, and is that enough to ignite
-            cellulose insulation, whose autoignition threshold is roughly{' '}
-            <M tex="50\,\text{W/cm}^{2}" /> of contact area for paper-like materials at piloted
-            ignition?
+            cellulose insulation, whose piloted-ignition threshold is roughly{' '}
+            <M tex="1\\text{–}2\,\text{W/cm}^{2}" /> of contact area for paper-like materials?
           </>
         }
         hint={
@@ -608,7 +608,8 @@ export default function Ch32HouseSafety() {
             </p>
             <Formula tex="P_{\\text{arc}}/A \\approx 160\\ \\text{W}/0.05\\ \\text{cm}^2 = 3{,}200\\ \\text{W/cm}^2" />
             <p className="mb-prose-1 last:mb-0">
-              — roughly sixty times the piloted-ignition threshold for paper-like cellulose. Answer:{' '}
+              — more than a thousand times the piloted-ignition threshold for paper-like cellulose.
+              Answer:{' '}
               <strong className="text-text font-medium">
                 160 W total, far above ignition threshold
               </strong>
@@ -777,8 +778,8 @@ export default function Ch32HouseSafety() {
           working distance
         </Term>
         , the same energy units used in food chemistry (1 cal = 4.184 J). For a low-voltage
-        three-phase arc in an enclosed panel the simplified Ralph Lee model — the original 1982
-        calculation — approximates the radiative energy at distance d as
+        three-phase arc in an enclosed panel the simplified Ralph Lee model described in NFPA 70E
+        Annex D approximates the radiative energy at distance d as
       </p>
       <Formula tex="E_{\\text{arc}} \\approx \\dfrac{V \\times I_{\\text{bolted}} \\times t_{\\text{clear}}}{4\\pi d^2}" />
       <p className="mb-prose-3">
@@ -1051,10 +1052,9 @@ export default function Ch32HouseSafety() {
             <Cite id="osha-1910-269" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            The technique is used routinely on lines up to 765 kV. Workers have measured the leakage
-            current through their conductive suits to the line during transitions — capacitive
-            coupling during the approach, before the bonding strap is connected — at a few hundred
-            microamperes, well inside IEC zone AC-1
+            The technique is used routinely on lines up to 765 kV. The capacitive coupling current
+            through a worker's conductive suit during the approach — before the bonding strap is
+            connected — stays well inside IEC zone AC-1
             <Cite id="iec-60479-2018" in={SOURCES} />. The instant the strap is on, even that
             disappears.
           </p>

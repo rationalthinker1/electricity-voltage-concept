@@ -363,7 +363,7 @@ export default function Ch34HousePlugToChip() {
               About <strong className="text-text font-medium">17 V peak</strong> on the secondary
               winding. The downstream rectifier drops a Schottky diode's V<sub>F</sub> ≈ 0.3 V,
               leaving roughly 16.7 V on the output capacitor — close enough to 20 V that the
-              flyback's feedback loop will push the primary duty cycle up by 20 % to lift the
+              flyback's feedback loop will push the primary duty cycle up by roughly 18 % to lift the
               secondary the rest of the way
               <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
             </p>
@@ -428,7 +428,8 @@ export default function Ch34HousePlugToChip() {
         η<sub>charger</sub> = V<sub>s</sub> · I<sub>s</sub> / (V<sub>in</sub> · I<sub>in</sub>)
       </Formula>
       <p className="mb-prose-3">
-        where <M tex="V_s, I_s" />
+        where <M tex="\eta_{\text{charger}}" /> is the end-to-end efficiency (dimensionless, a
+        fraction between 0 and 1), <M tex="V_s, I_s" />
         are the output voltage and current delivered at the USB-C cable (in volts and amperes; for a
         100 W charger, 20 V and 5 A), and <M tex="V_{\text{in}}, I_{\text{in}}" />
         are the line input voltage and current drawn from the wall (in volts and amperes). Modern{' '}
@@ -694,7 +695,7 @@ export default function Ch34HousePlugToChip() {
         . Heavier workload, higher clock, higher voltage; idle workload, lower clock, lower voltage.
         Dynamic power scales as <M tex="V^{2}f" />, so a 10 % voltage drop saves roughly 20 % of
         dynamic power at the same frequency
-        <Cite id="sedra-smith-2014" in={SOURCES} />
+        <Cite id="erickson-maksimovic-2020" in={SOURCES} />
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -845,7 +846,7 @@ export default function Ch34HousePlugToChip() {
             brief transient bursts. Each of these rails is delivered by a board-level synchronous
             buck converter running at 1 to 3 MHz, with the very last drop into the chip's analog and
             mixed-signal islands handled by on-die LDOs for noise rejection
-            <Cite id="sedra-smith-2014" in={SOURCES} />.
+            <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
             The dynamic side of the story is more interesting than the static topology. The firmware
@@ -1055,7 +1056,7 @@ export default function Ch34HousePlugToChip() {
             clock, low voltage. Heavy compile: high clock, high voltage. Dynamic power scales as
             V²f, so dropping V from 1.0 V to 0.8 V at the same frequency saves ~36 % of dynamic
             power. The on-die VRM is rearchitecting itself in real time as the workload changes
-            <Cite id="sedra-smith-2014" in={SOURCES} />.
+            <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
           </p>
         </FAQItem>
 

@@ -62,6 +62,14 @@ export default function Ch23Transformers() {
       <h2 className="chapter-h2">Two coils, one core</h2>
 
       <p className="mb-prose-3">
+        The whole device reduces to one idea you can hold without any math: count the turns, scale
+        the voltage. Two coils share the same magnetic flux through a common core, so each turn sees
+        the same induced voltage; a coil with twice as many turns simply adds up twice the voltage.
+        Like a pair of gears meshing — the tooth counts set the ratio — the turn counts set how the
+        voltage steps up or down. Everything below is that sentence made precise.
+      </p>
+
+      <p className="mb-prose-3">
         Wind a coil of <M tex="N_p" />
         turns around one leg of a ring-shaped iron core, and a second coil of <M tex="N_s" />
         turns around another leg of the same ring. Drive the first coil — the{' '}
@@ -665,10 +673,10 @@ export default function Ch23Transformers() {
       <CoreLossesDemo figure="Fig. 23.6" />
 
       <p className="mb-prose-3">
-        With the four loss mechanisms named, here is a designer's view of how the knobs interact.
-        The build-it demo below holds a target output (V, I, f) fixed and lets you trade primary
-        turns, core area, peak flux density, and winding copper diameter against each other. Watch
-        how the dominant loss flips from copper to core (and back) as you sweep frequency.
+        With the four loss mechanisms named, the designer's real task is that they trade against one
+        another: for a fixed target output, primary turns, core area, peak flux density, and winding
+        copper diameter cannot all be optimised at once, and the dominant loss flips from copper to
+        core as the operating frequency rises.
       </p>
 
       <TransformerDesignerDemo figure="Fig. 23.7" />
@@ -765,7 +773,7 @@ export default function Ch23Transformers() {
       </p>
       <p className="mb-prose-3">
         All four effects together drag practical transformer efficiency down from the ideal 100 % to
-        typical values of 95–99.5 % for large units and 85–97 % for smaller ones
+        typical values of 97–99.5 % for large units and 85–97 % for smaller ones
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />. Charles Proteus Steinmetz
         introduced the use of complex-number (phasor) analysis to AC circuits in 1893, specifically
         to make the equivalent-circuit description of a real transformer tractable instead of
@@ -816,8 +824,8 @@ export default function Ch23Transformers() {
         count, and the peak flux density fixed and the required core cross-section <M tex="A" />{' '}
         falls inversely with frequency. Run a 100 W transformer at 60 Hz and it needs roughly 120
         cm³ of silicon steel. Run the same 100 W transformer at 100 kHz and the equivalent ferrite
-        core is about 1700 times smaller — a few cubic centimetres, weighing five grams instead of
-        six hundred
+        core is about 1700 times smaller in cross-section — weighing tens of grams instead of the
+        better part of a kilogram
         <Cite id="mclyman-2004" in={SOURCES} />.
       </p>
 
@@ -890,7 +898,15 @@ export default function Ch23Transformers() {
                 </>
               ),
             },
-            { label: 'Service life', value: <>30–40 years; mineral-oil cooling and insulation</> },
+            {
+              label: 'Service life',
+              value: (
+                <>
+                  30–40 years; mineral-oil cooling and insulation{' '}
+                  <Cite id="grainger-power-systems-2003" in={SOURCES} />
+                </>
+              ),
+            },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
@@ -938,7 +954,8 @@ export default function Ch23Transformers() {
               value: (
                 <>
                   ~5 g for a 30 W unit; <strong className="text-text font-medium">1000×</strong>{' '}
-                  lighter than a linear 60 Hz equivalent
+                  lighter than a linear 60 Hz equivalent{' '}
+                  <Cite id="mclyman-2004" in={SOURCES} />
                 </>
               ),
             },
@@ -993,7 +1010,12 @@ export default function Ch23Transformers() {
             },
             {
               label: 'Cooling',
-              value: <>ONAN/ONAF — oil natural / oil forced with radiators and fans</>,
+              value: (
+                <>
+                  ONAN/ONAF — oil natural / oil forced with radiators and fans{' '}
+                  <Cite id="grainger-power-systems-2003" in={SOURCES} />
+                </>
+              ),
             },
             { label: 'Mass', value: <>40–100 tonnes; non-trivial to truck in</> },
           ]}
@@ -1210,7 +1232,7 @@ export default function Ch23Transformers() {
           <p>
             A current transformer (CT) is a transformer whose primary is the existing power
             conductor — typically a single pass of the busbar through the core — and whose secondary
-            is a many-turn winding feeding a low- impedance measurement load (often an ammeter or
+            is a many-turn winding feeding a low-impedance measurement load (often an ammeter or
             protection relay). The turns ratio is large (~ 1:1000), so a 1000 A primary current
             produces a clean 1 A secondary that's safely meterable. CTs and the more usual
             voltage-transformer (VT) instruments together let utility metering and protection
@@ -1268,7 +1290,7 @@ export default function Ch23Transformers() {
             secondary are tuned to the same resonant frequency (kHz to MHz, much higher than line
             frequency), and energy transfer happens via the magnetic-field coupling between them,
             amplified by the secondary's high Q. The turns ratio is large (1:100 to 1:1000), and the
-            secondary develops hundreds of kilovolts as an open- circuit display arc. No iron core;
+            secondary develops hundreds of kilovolts as an open-circuit display arc. No iron core;
             the magnetic coupling is much weaker than in a power transformer, but the resonance buys
             back the coupling efficiency. The same architecture, less the spark, is the basis of
             every wireless-charging system in commercial use today

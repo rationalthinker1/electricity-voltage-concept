@@ -142,8 +142,8 @@ export default function Ch36HouseTroubleshooting() {
         is the general-purpose instrument: AC and DC volts, AC and DC current (small, through
         internal shunts), resistance, continuity, capacitance, frequency, sometimes temperature. A
         typical residential DMM presents a 10 MΩ input impedance on its volts ranges; bench
-        instruments like the Keysight 34465A reach 10 GΩ on the low-volts ranges to minimise circuit
-        loading
+        instruments like the Keysight 34465A reach 1 GΩ or more on the low-volts ranges to minimise
+        circuit loading
         <Cite id="keysight-34465a-datasheet" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -302,8 +302,9 @@ export default function Ch36HouseTroubleshooting() {
       </p>
 
       <Pullout>
-        A DMM tells you what its input impedance lets through. A two-pole probe tells you what 5
-        milliamps would do. Use the second one to make decisions.
+        A DMM tells you what its input impedance lets through. A two-pole probe tells you what its
+        low-impedance load — tens of milliamps' worth — would do. Use the second one to make
+        decisions.
       </Pullout>
 
       <TryIt
@@ -326,9 +327,10 @@ export default function Ch36HouseTroubleshooting() {
               Yes — the receptacle is dead. The 62 V reading was phantom voltage from capacitive
               coupling to the other branch's hot wire in the shared box. The high-impedance DMM
               input let microamperes of displacement current charge its input stage up to most of
-              line voltage. Switching to low-Z mode dropped a 3 kΩ shunt across the input; the same
-              microamperes now develop only 3 kΩ × 2 µA ≈ 6 mV across the load, and the meter rounds
-              to 0.4 V.{' '}
+              line voltage. Switching to low-Z mode dropped a 3 kΩ shunt across the input; that
+              shunt bleeds off the tiny coupling current, collapsing the reading to a fraction of a
+              volt — the 0.4 V you see. A genuinely live conductor would still drive near-full line
+              voltage through the same shunt.{' '}
               <strong className="text-text font-medium">The 0.4 V is the real reading.</strong>
             </p>
             <p className="mb-prose-1 last:mb-0">
@@ -945,11 +947,11 @@ export default function Ch36HouseTroubleshooting() {
                 </>
               ),
             },
-            { label: 'Recovery', value: <>turn off; $480/yr saved at $0.18/kWh</> },
+            { label: 'Recovery', value: <>turn off; ~$1,300/yr saved at $0.18/kWh</> },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            The homeowner's monthly bill had been creeping up by about $30 for three months running,
+            The homeowner's monthly bill had been creeping up by about $110 for three months running,
             with no change in occupancy or visible appliance use. Daytime current on the main was
             reasonable; the mystery was the nighttime baseline. A clamp meter on the L1 service
             conductor at 2 a.m. read
@@ -971,7 +973,7 @@ export default function Ch36HouseTroubleshooting() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             Switch the towel warmer off; the baseline drops to 2.0 A. The clamp-meter walk-down took
-            ten minutes; the savings at $0.18/kWh come to roughly $480 over the next year. Parasitic
+            ten minutes; the savings at $0.18/kWh come to roughly $1,300 over the next year. Parasitic
             loads are everywhere — heated mirrors, electric kettles left in the "warm" mode,
             aquarium heaters, garage de-humidifiers — and a clamp meter finds them faster than any
             other instrument in the toolbox.

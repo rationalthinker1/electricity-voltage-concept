@@ -103,10 +103,10 @@ export default function Ch42FiberOptics() {
         <M tex="n_2" />
         is the index of the lighter medium beyond. For a typical single-mode fiber with{' '}
         <M tex="n_{\text{core}} = 1.448" /> and <M tex="n_{\text{clad}} = 1.444" />, that critical
-        angle (from the normal) is about <strong className="text-text font-medium">85.2°</strong>.
+        angle (from the normal) is about <strong className="text-text font-medium">85.7°</strong>.
         Equivalently, the ray's angle measured{' '}
         <em className="text-text italic">from the fiber axis</em> must stay below{' '}
-        <strong className="text-text font-medium">4.8°</strong>. Steeper than that and the light
+        <strong className="text-text font-medium">4.3°</strong>. Steeper than that and the light
         leaks out of the cladding within a few millimetres; shallower and it bounces along the core
         forever.
       </p>
@@ -114,10 +114,9 @@ export default function Ch42FiberOptics() {
       <FiberOpticDemo figure="Fig. 42.1" />
 
       <p className="mb-prose-3">
-        Drag the angle slider in the demo. Below the critical angle, the ray zig-zags down the fiber
-        by total internal reflection; above it, the ray refracts into the cladding and is lost
-        within microseconds. The whole modern telecom industry rests on staying on the right side of
-        that threshold.
+        It comes down to a single threshold: below the critical angle a ray zig-zags down the fiber
+        by total internal reflection; above it, the ray refracts into the cladding and is lost. The
+        whole modern telecom industry rests on staying on the right side of that line.
       </p>
 
       <Pullout>
@@ -137,7 +136,7 @@ export default function Ch42FiberOptics() {
               <strong className="text-text font-medium">numerical aperture</strong> NA — the sine of
               the maximum half-angle of the entry cone in air. Determined by the index step between
               core and cladding: NA = √(n_core² − n_clad²). A single-mode fiber typically has NA ≈
-              0.14, accepting rays within ±8° of the axis.
+              0.11, accepting rays within about ±6° of the axis.
             </>
           }
         >
@@ -152,7 +151,7 @@ export default function Ch42FiberOptics() {
         <M tex="n_{\text{clad}}" /> are the refractive indices of the core and the surrounding
         cladding. The half-angle of the acceptance cone in air is then{' '}
         <M tex="\theta_{\max} = \arcsin(NA)" />. Standard single-mode fiber has{' '}
-        <M tex="NA \approx 0.14" /> (8° half-angle); multimode fiber pumps the index difference up
+        <M tex="NA \approx 0.11" /> (about a 6° half-angle); multimode fiber pumps the index difference up
         to <M tex="NA \approx 0.20" /> (12° half-angle) to make alignment with cheap LED or VCSEL
         sources easier
         <Cite id="saleh-teich-2007" in={SOURCES} />.
@@ -176,7 +175,7 @@ export default function Ch42FiberOptics() {
         </Term>
         . In multimode fiber it's typically a few ns per km, capping data rates at ~10 Gb/s over
         short reaches. Single-mode fiber sidesteps the problem by making the core small enough that
-        only one transverse mode propagates at all.
+        only one transverse mode propagates at all <Cite id="agrawal-2010" in={SOURCES} />.
       </p>
 
       <TryIt
@@ -228,12 +227,12 @@ export default function Ch42FiberOptics() {
         the lowest-order LP₀₁ mode propagates when <M tex="V < 2.405" /> (the first zero of the
         Bessel function <M tex="J_0" />
         ). Standard single-mode fiber (ITU-T G.652) has a core radius of about 4.1 μm and an NA of
-        0.14
+        about 0.11
         <Cite id="itu-t-g652" in={SOURCES} />. At <M tex="\lambda = 1310\ \text{nm}" />,{' '}
-        <M tex="V = 2\pi(4.1\times 10^{-6})(0.14)/(1.31\times 10^{-6}) \approx 2.75" /> — just into
-        the multimode regime, but at 1550 nm V drops to 2.32 and the fiber is solidly single-mode.
-        The 1310 nm cutoff is deliberate: it makes the same physical fiber usable at both standard
-        telecom windows.
+        <M tex="V = 2\pi(4.1\times 10^{-6})(0.11)/(1.31\times 10^{-6}) \approx 2.16" /> — just below
+        the 2.405 cutoff, so only the LP₀₁ mode propagates; at 1550 nm V drops further to ~1.8. The
+        fiber stays single-mode across both standard telecom windows, which is exactly the design
+        intent — the cutoff wavelength sits just below the 1310 nm window.
       </p>
 
       <TryIt
@@ -312,7 +311,7 @@ export default function Ch42FiberOptics() {
         from metal-ion contamination at the parts-per-million level
         <Cite id="kao-hockham-1966" in={SOURCES} />. Strip the iron, copper, and hydroxyl down to
         parts per billion, he said, and silica should reach below 20 dB/km — the threshold that
-        makes long-haul telecom economical. Four years later, Maurer, Keck, and Schultz at Corning
+        makes long-haul telecom economical. Four years later, Kapron, Keck, and Maurer at Corning
         demonstrated exactly that
         <Cite id="kapron-keck-maurer-1970" in={SOURCES} />. Kao got the 2009 Nobel Prize.
       </p>
@@ -445,7 +444,8 @@ export default function Ch42FiberOptics() {
           fiber. Comes from the wavelength-dependence of the refractive index <M tex="n(\lambda)" />
           : a laser pulse with some spectral width Δλ has its different wavelength components arrive
           at slightly different times. Quantified by the dispersion coefficient <M tex="D" /> in
-          ps/nm·km. For standard SMF, D ≈ +17 ps/nm·km at 1550 nm.
+          ps/nm·km. For standard SMF, D ≈ +17 ps/nm·km at 1550 nm{' '}
+          <Cite id="agrawal-2010" in={SOURCES} />.
         </li>
       </ul>
       <p className="mb-prose-3">
@@ -453,8 +453,9 @@ export default function Ch42FiberOptics() {
         <M tex="\Delta t = D \cdot \Delta\lambda \cdot L" />, where <M tex="\Delta t" /> is the
         pulse-spread in picoseconds, <M tex="D" /> the dispersion coefficient (ps/nm·km),{' '}
         <M tex="\Delta\lambda" /> the spectral width of the source (nm), and <M tex="L" /> the fiber
-        length (km). For coherent 100 G QPSK at 28 GBaud over 1000 km of standard SMF, raw chromatic
-        dispersion would smear pulses by ~30 ps — comparable to the symbol period itself — so
+        length (km). For coherent 100 G QPSK at 28 GBaud over 1000 km of standard SMF
+        (D ≈ 17 ps/nm·km, source width ≈ 0.22 nm), raw chromatic dispersion would smear pulses by
+        Δt ≈ 17 × 0.22 × 1000 ≈ 3700 ps — roughly a hundred times the ~36 ps symbol period — so
         coherent receivers compensate it digitally in DSP, after the photodetector.
       </p>
 
@@ -499,12 +500,11 @@ export default function Ch42FiberOptics() {
         <strong className="text-text font-medium">9.6 Tb/s</strong> per fiber. A typical submarine
         cable contains 8–24 fibers, so a single cable carries{' '}
         <strong className="text-text font-medium">~100 Tb/s to ~250 Tb/s</strong>. Modern
-        record-setting links push to{' '}
-        <strong className="text-text font-medium">~25 Tb/s per fiber pair</strong> using
-        probabilistic-shaping coherent modulation in a single span
-        <Cite id="agrawal-2010" in={SOURCES} />. That number doubles roughly every 4 years — the
-        optical analogue of Moore's law, set by digital signal processing in the coherent
-        transponders rather than by the fiber itself.
+        record-setting links push capacity higher still using probabilistic-shaping coherent
+        modulation
+        <Cite id="agrawal-2010" in={SOURCES} />. Per-fiber capacity has climbed steadily for decades
+        — an optical analogue of Moore's law, set increasingly by the digital signal processing in
+        the coherent transponders rather than by the fiber itself.
       </p>
 
       <CaseStudies intro="Where this physics shows up in working systems.">
@@ -526,8 +526,8 @@ export default function Ch42FiberOptics() {
             G.654.C "cutoff-shifted" fiber rather than standard G.652 to push the cutoff wavelength
             below 1530 nm and minimise nonlinear penalties at the high launch powers needed for
             trans-Atlantic spans. The fiber loss is about{' '}
-            <strong className="text-text font-medium">0.155 dB/km</strong> — only ~10% above the
-            Rayleigh-scattering theoretical limit
+            <strong className="text-text font-medium">0.15 dB/km</strong> for this class of
+            ultra-low-loss fiber — within roughly 10% of the Rayleigh-scattering theoretical limit
             <Cite id="agrawal-2010" in={SOURCES} />. EDFAs sit roughly every 90 km along the route,
             powered by a high-voltage DC line co-running with the optical fibers inside the same
             armoured cable, fed from shore-side converter stations at either end.

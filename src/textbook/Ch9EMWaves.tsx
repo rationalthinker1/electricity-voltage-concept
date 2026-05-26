@@ -593,10 +593,8 @@ export default function Ch9EMWaves() {
             <Formula>Δt = (3.84×10⁸) / (2.998×10⁸) ≈ 1.28 s</Formula>
             <p className="mb-prose-1 last:mb-0">
               About <strong className="text-text font-medium">1.28 seconds</strong> one-way, ~2.6 s
-              round-trip. The audible delay between Mission Control and the Apollo astronauts in
-              1969 was exactly this: a wave equation, integrated across vacuum, at one specific
-              speed
-              <Cite id="hertz-1888" in={SOURCES} />.
+              round-trip. The audible delay between Mission Control and the Apollo astronauts was
+              exactly this: a wave equation, integrated across vacuum, at one specific speed.
             </p>
           </>
         }
@@ -754,7 +752,7 @@ export default function Ch9EMWaves() {
           }
           specs={[
             { label: 'Launch', value: '21 May 2010, H-IIA F17, Tanegashima' },
-            { label: 'Sail size', value: '20 m × 20 m polyimide film' },
+            { label: 'Sail size', value: '~14 m × 14 m polyimide film (~20 m diagonal, ~196 m²)' },
             { label: 'Sail thickness', value: '~7.5 μm' },
             { label: 'Demonstrated acceleration at ~1 AU', value: '~1.12 mm/s per day' },
             { label: 'Solar constant at 1 AU', value: '1360.8 W/m²' },
@@ -821,8 +819,8 @@ export default function Ch9EMWaves() {
             European hospitals were taking diagnostic radiographs.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            We now know: same wave equation as visible light, wavelength roughly five orders of
-            magnitude shorter (10⁻¹¹–10⁻¹⁰ m),{' '}
+            We now know: same wave equation as visible light, wavelength roughly four to five orders
+            of magnitude shorter (10⁻¹¹–10⁻¹⁰ m),{' '}
             <Term
               def={
                 <>
@@ -859,8 +857,8 @@ export default function Ch9EMWaves() {
       <FAQ intro="Loose threads on EM waves — the questions that surface after the first pass through Maxwell's prediction.">
         <FAQItem q="Why is the speed of light specifically 1/√(ε₀μ₀)? Was that planned, or did it fall out?">
           <p>
-            It fell out. Maxwell wrote down displacement current in 1861 because Ampère's original
-            law was inconsistent with charge conservation in time-varying situations
+            It fell out. Maxwell wrote down displacement current in the early 1860s because Ampère's
+            original law was inconsistent with charge conservation in time-varying situations
             <Cite id="maxwell-1865" in={SOURCES} />. He had no intention of predicting waves; he was
             patching a bookkeeping problem. Once the patched equations were combined, a wave
             equation simply popped out, with the speed <M>1/√(μ₀ ε₀)</M> sitting in the coefficient.
@@ -1038,8 +1036,8 @@ export default function Ch9EMWaves() {
             has to fail. The modern resolution is two-part: the universe is expanding (so light from
             very distant stars is redshifted to longer, lower-energy wavelengths) and finite in age
             (so light from beyond a horizon distance hasn't reached us yet). The visible sky picks
-            up the cosmic microwave background — the redshifted glow of the early universe — at
-            about 2.7 K, which is radiation but in the microwave band, not optical. The bookkeeping
+            up the cosmic microwave background — the redshifted glow of the early universe — at just
+            a few kelvin, which is radiation but in the microwave band, not optical. The bookkeeping
             survives.
           </p>
         </FAQItem>

@@ -83,6 +83,15 @@ export default function Ch3ResistanceAndPower() {
       </h2>
 
       <p className="mb-prose-3">
+        Start with the picture, before any equation. Resistance is electrical friction: a measure of
+        how hard a material fights the passage of charge through it. Put the same voltage across a
+        high-resistance path and only a trickle of current flows; across a low-resistance path, a
+        torrent. It is the electrical cousin of forcing water through a pipe — a wide, smooth pipe
+        passes a lot for little push, a narrow rough one passes little for a lot. The rest of this
+        section turns that intuition into a number that depends only on the material and its shape.
+      </p>
+
+      <p className="mb-prose-3">
         The microscopic{' '}
         <Term
           def={
@@ -325,7 +334,15 @@ export default function Ch3ResistanceAndPower() {
       <h2 className="chapter-h2">Where the heat comes from</h2>
 
       <p className="mb-prose-3">
-        Before chasing the heat into the lattice, do the bookkeeping. Power is the rate at which
+        The intuition first: power is not energy but the <em className="text-text italic">rate</em>{' '}
+        at which energy is delivered or dissipated — the difference between a candle and a blowtorch
+        burning the same fuel, one drawing it out over hours, the other all at once. In a resistor,
+        power is the rate at which electrical energy turns into heat. A 100 W bulb and a 1500 W
+        heater run on the same wall voltage; the heater simply converts energy fifteen times faster.
+      </p>
+
+      <p className="mb-prose-3">
+        Now the bookkeeping. Power is the rate at which
         work is done, <M tex="P = dW/dt" />. Chapter 2 established the two pieces this rests on:
         voltage is the work done per coulomb moved through a potential difference,{' '}
         <M tex="V = dW/dq" />, and current is the coulombs moved per second, <M tex="I = dq/dt" />.
@@ -572,8 +589,8 @@ export default function Ch3ResistanceAndPower() {
       <p className="mb-prose-3">
         Real circuits rarely live at one extreme. A mixed network already wants both rules at once —
         a trunk in series with a parallel block, a parallel pair feeding a series load, or several
-        branches running in parallel. The demo below lets you pick the topology and watch the
-        voltage drops and branch currents re-balance themselves.
+        branches running in parallel — and the only trick is to collapse it one nested block at a
+        time.
       </p>
 
       <SeriesParallelMixDemo figure="Fig. 3.10" />

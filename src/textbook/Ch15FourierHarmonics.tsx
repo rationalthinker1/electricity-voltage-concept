@@ -544,8 +544,7 @@ export default function Ch15FourierHarmonics() {
             <p className="mb-prose-1 last:mb-0">
               For a signal with only one harmonic above the fundamental, the THD is just the
               amplitude ratio. A real-world utility 3rd-harmonic injection of 30% would be enormous
-              and well outside the IEEE 519 limits, which cap individual harmonics on a public grid
-              below 5%
+              and far above the few-percent limits that public grids hold individual harmonics to
               <Cite id="horowitz-hill-2015" in={SOURCES} />.
             </p>
           </>
@@ -603,10 +602,10 @@ export default function Ch15FourierHarmonics() {
       <p className="mb-prose-3">
         with V<sub>n</sub> the RMS amplitude of the n-th harmonic and V<sub>1</sub> the RMS of the
         fundamental. Audio engineers quote it in percent; power engineers quote it in percent too,
-        but reference IEEE 519 (the standard governing utility-side harmonic limits): individual
-        harmonic voltages must stay below 3–5% of fundamental on a public bus, total under 5–8%,
-        depending on the voltage class
-        <Cite id="horowitz-hill-2015" in={SOURCES} />. The mitigation is either passive (tuned LC
+        but reference the IEEE standard governing utility-side harmonic limits, which holds both
+        individual harmonic voltages and total THD on a public bus to a few percent, depending on
+        the voltage class
+        <Cite id="grainger-power-systems-2003" in={SOURCES} />. The mitigation is either passive (tuned LC
         traps placed at the offending harmonic, on each side of an industrial drive) or active
         (power-factor-correction circuits that pre-distort the load current so the drawn waveform
         stays sinusoidal).
@@ -696,7 +695,7 @@ export default function Ch15FourierHarmonics() {
         Carl Friedrich Gauss apparently worked out an essentially equivalent algorithm by hand in
         1805, while computing the orbit of the asteroid Pallas, and left it unpublished in his
         notebooks; Cooley and Tukey re-invented it 160 years later and brought it into the silicon
-        era.
+        era <Cite id="cooley-tukey-1965" in={SOURCES} />.
       </p>
 
       <TryIt
@@ -716,7 +715,7 @@ export default function Ch15FourierHarmonics() {
             <Formula tex="\text{FFT: } N \cdot \log_2 N = 8 \cdot 3 = 24\ \text{multiplies}" />
             <p className="mb-prose-1 last:mb-0">
               A speed-up of <M tex="64/24 \approx 2.7\times" /> for N = 8. Modest. For N = 1024 the
-              ratio is 102×; for N = 65 536 it is 1638×
+              ratio is 102×; for N = 65 536 it is 4096×
               <Cite id="cooley-tukey-1965" in={SOURCES} />. The advantage compounds dramatically
               with N because the FFT is N log N while the naive is N² — a polynomial-of-degree-2
               versus a linearithmic curve.
@@ -763,12 +762,7 @@ export default function Ch15FourierHarmonics() {
           specs={[
             {
               label: 'Transform',
-              value: (
-                <>
-                  Modified Discrete Cosine Transform (MDCT) on 36-sample windows × 32 sub-bands{' '}
-                  <Cite id="oppenheim-willsky-1997" in={SOURCES} />
-                </>
-              ),
+              value: <>Modified Discrete Cosine Transform (MDCT) on short overlapping windows</>,
             },
             { label: 'Sample rate', value: <>44.1 kHz (CD) / 48 kHz (broadcast)</> },
             { label: 'Frame size', value: <>1152 samples per channel</> },
@@ -782,8 +776,9 @@ export default function Ch15FourierHarmonics() {
             MP3 (MPEG-1 Audio Layer III, 1993) works by Fourier-transforming each short window of
             audio into a frequency spectrum, then using a psychoacoustic model to decide which
             frequency components are masked by louder neighbours and can be quantised more coarsely
-            — or thrown away entirely. The ear cannot resolve a quiet tone within ~150 Hz of a loud
-            one; it cannot hear a sound at all for ~50 ms after a loud transient. Both observations
+            — or thrown away entirely. The ear cannot resolve a quiet tone within a few hundred
+            hertz of a loud one; it cannot hear a sound for a short time after a loud transient. Both
+            observations
             translate directly into &ldquo;reduce the bits assigned to those frequency bins in this
             frame.&rdquo; The frequency-domain representation is what makes the trick possible: in
             the time domain, the &ldquo;masked&rdquo; signal is inextricable from the masking one.
@@ -883,8 +878,8 @@ export default function Ch15FourierHarmonics() {
             power-supply ripple plot tells you which switching converter is misbehaving. A 60 Hz
             peak says your probe is picking up ground-loop hum. A peak at half the clock rate
             reveals metastability oscillation. None of this would be possible without an FFT running
-            on a small embedded processor inside the scope — running at 10⁹ samples per second, the
-            naive DFT would take ~10¹⁸ operations per buffer; with the FFT it takes ~10⁷, and
+            on a small embedded processor inside the scope — for a ~10⁷-sample buffer, the
+            naive DFT would take ~10¹⁴ operations; with the FFT it takes ~2×10⁸, and
             finishes in milliseconds
             <Cite id="cooley-tukey-1965" in={SOURCES} />.
           </p>
@@ -1051,7 +1046,7 @@ export default function Ch15FourierHarmonics() {
           <p>
             Because it shifted spectral analysis from off-line batch processing to real-time. The
             naive DFT is O(N²); the FFT is O(N log N). For N = 1024 the speed-up is 100×; for N = 65
-            536 it is 1638×; for N = 16 M (a typical radar buffer) it is over 600 000×
+            536 it is 4096×; for N = 16 M (a typical radar buffer) it is over 600 000×
             <Cite id="cooley-tukey-1965" in={SOURCES} />. None of MP3 encoding, JPEG compression,
             software-defined radio, real-time spectrum analysis, OFDM modulation (WiFi, 4G LTE, 5G
             NR), MRI reconstruction, X-ray CT reconstruction, or sonar beamforming would be
@@ -1066,7 +1061,7 @@ export default function Ch15FourierHarmonics() {
             complex frequency-domain amplitudes. The FFT is a family of{' '}
             <em className="text-text italic">algorithms</em> for computing that map quickly.
             Cooley-Tukey radix-2 is the most famous, but mixed-radix, prime-factor (Good-Thomas,
-            1958), Winograd (1976), and Bluestein's chirp-z (1968) are all FFTs. They all return the
+            1958), Winograd (1978), and Bluestein's chirp-z (1968) are all FFTs. They all return the
             same DFT; they just take different paths to get there. The choice depends on N's
             factorisation and on whether you want minimum multiplies or maximum cache locality
             <Cite id="oppenheim-willsky-1997" in={SOURCES} />.

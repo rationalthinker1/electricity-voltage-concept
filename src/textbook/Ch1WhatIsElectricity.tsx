@@ -200,9 +200,9 @@ export default function Ch1WhatIsElectricity() {
         The reason daily life is full of static and not constant electrocution is that ordinary
         matter is exquisitely charge-neutral. The fractional excess of free charge needed to make a
         noticeable force is tiny. Drag a balloon across your hair and you transfer perhaps a few
-        tens of nanocoulombs <Cite id="hyperphysics-emag" in={SOURCES} /> — a tiny fraction of the
-        roughly 10²³ free electrons already in the rubber. Almost nothing. Enough to fight gravity
-        for a few minutes.
+        tens of nanocoulombs <Cite id="hyperphysics-emag" in={SOURCES} /> — a vanishingly small
+        fraction of the electrons already present in the rubber. Almost nothing. Enough to fight
+        gravity for a few minutes.
       </p>
 
       <TryIt
@@ -372,7 +372,11 @@ export default function Ch1WhatIsElectricity() {
           field
         </Term>
         : a physical thing, defined at every point, that tells whatever charge happens to be there
-        what force to feel. The symbol is <M tex="\vec{E}" />, and its definition is direct:
+        what force to feel.
+      </p>
+      <p className="mb-prose-3">
+        Make that precise. The symbol is <M tex="\vec{E}" />, and its definition is direct — the
+        force per unit charge a small test charge would feel at that point:
       </p>
       <Formula size="lg" id="electric-field-def" />
       <p className="mb-prose-3">
@@ -475,7 +479,7 @@ export default function Ch1WhatIsElectricity() {
       <EquipotentialsDemo figure="Fig. 1.5" />
 
       <p className="mb-prose-3">
-        The teal dotted contours in the demo above are{' '}
+        Threading through that field is a second structure worth naming:{' '}
         <Term
           def={
             <>
@@ -531,19 +535,9 @@ export default function Ch1WhatIsElectricity() {
       <ParallelPlateUniformFieldDemo figure="Fig. 1.6" />
 
       <p className="mb-prose-3">
-        Drag the separation slider. The field arrows between the plates stay exactly the same
-        length. The uniform field of an idealised parallel-plate pair depends only on the surface
-        charge density σ — not on the gap. The voltage between the plates does change, because{' '}
-        <M tex="V = E\,d" /> grows linearly with d, and that is the lever Chapter 2 picks up to
-        define voltage operationally.
-      </p>
-
-      <ParallelPlateUniformFieldDemo figure="Fig. 1.7" />
-
-      <p className="mb-prose-3">
-        Drag the separation slider. The field arrows between the plates stay exactly the same
-        length. The uniform field of an idealised parallel-plate pair depends only on the surface
-        charge density σ — not on the gap. The voltage between the plates does change, because{' '}
+        The field arrows between the plates stay exactly the same length as the separation changes:
+        the uniform field of an idealised parallel-plate pair depends only on the surface charge
+        density σ — not on the gap. The voltage between the plates does change, because{' '}
         <M tex="V = E\,d" /> grows linearly with d, and that is the lever Chapter 2 picks up to
         define voltage operationally.
       </p>
@@ -619,7 +613,7 @@ export default function Ch1WhatIsElectricity() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <ConductorRedistributionDemo figure="Fig. 1.8" />
+      <ConductorRedistributionDemo figure="Fig. 1.7" />
 
       <p className="mb-prose-3">
         This is why a metal cage shields its interior from electric fields (a Faraday cage), why
@@ -1018,8 +1012,8 @@ export default function Ch1WhatIsElectricity() {
 
         <FAQItem q="What does 1 coulomb actually look like in everyday terms?">
           <p>
-            Roughly the charge that flows through a 100-watt incandescent bulb in about a second,
-            since a typical household bulb draws on the order of 1 amp. As a static charge it is
+            Roughly the charge that flows through a 100-watt incandescent bulb in a little over a
+            second, since at 120 V such a bulb draws about 0.8 A. As a static charge it is
             enormous: two 1-C charges separated by 1 meter would repel each other with{' '}
             <strong className="text-text font-medium">~9×10⁹ N</strong>, more than the weight of a
             fully loaded aircraft carrier. That is why static-electricity demonstrations use

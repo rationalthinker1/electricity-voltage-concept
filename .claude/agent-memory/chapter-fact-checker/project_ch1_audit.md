@@ -1,24 +1,29 @@
 ---
 name: ch1-audit-findings
-description: Audit results for Ch1WhatIsElectricity.tsx — known open issues as of 2026-05-20
+description: Audit results for Ch1WhatIsElectricity.tsx — known open issues, updated 2026-05-25
 metadata:
   type: project
 ---
 
-Ch.1 audit completed 2026-05-20. 7 BLOCKER issues, 2 WARNING issues.
+Ch.1 re-audited 2026-05-25. Most prior BLOCKERs from 2026-05-20 are resolved.
 
-**Open BLOCKERs:**
-1. line 122 — "Franklin 1747" unsourced historical attribution. No key in registry for Franklin primary source. Recommend softening to "mid-18th century."
-2. line 721 — "roughly a gigajoule" derived calc has no `<Cite />`. Add `rakov-uman-2003`.
-3. lines 202-205 — "~10⁻⁸ coulombs" / "~10²³ electrons in a balloon" unsourced. Soften or add `hyperphysics-emag`.
-4. lines 1043-1045 — ~⅔c velocity claim cited to `codata-2018` (wrong source). Correct source is `libretexts-conduction` but it is NOT in Ch.1 sources array. Add to Ch.1 sources array in chapters.ts, or soften to qualitative statement.
-5. lines 996-997 — "nanocoulombs over the whole head" cited to `griffiths-2017` (which doesn't report this figure). Soften claim.
-6. line 106 — atom charge-neutrality cited to `feynman-II-2` (vector calculus chapter). Remove cite (textbook-trivial) or change to `griffiths-2017`.
-7. line 886 — EM Gauss's law cited to `gauss-1813` (math paper only). Change to `griffiths-2017`.
+**Resolved since previous audit:**
+- "roughly a gigajoule" (line 722) now reads "roughly half a gigajoule" — arithmetic fixed and cite added.
+- `libretexts-conduction` now in Ch.1 sources array — ⅔c claim is properly sourced.
+- Franklin attribution now says "18th century" (no year) — unsourced year removed.
+- k described as "9×10⁹" in FAQ (not "10¹⁰") — fixed.
 
-**Open WARNINGs:**
-1. lines 720-722 — "roughly a gigajoule" is ~2× too high given the prose's own stated voltage of "a hundred million volts." At 10⁸ V × 5 C = 5×10⁸ J ≈ 0.5 GJ. Should read "roughly half a gigajoule" or "hundreds of megajoules."
-2. line 998 — k described as "around 10¹⁰"; should be "around 9×10⁹" for accuracy.
+**Remaining open BLOCKERs (2026-05-25):**
+1. line 204 — "roughly 10²³ free electrons already in the rubber" — rubber is an INSULATOR with zero free electrons. Should be "total electrons" not "free electrons." Also unsourced (the cite on line 203 applies to the nanocoulombs figure, not to this number). Remedy: change to "total electrons" or "bound electrons" and note it's an illustration; or drop the number.
 
-**Why:** First full audit of Ch.1; issues logged for fix tracking.
-**How to apply:** When Ch.1 is re-audited, check these specific lines to confirm they have been resolved.
+**Remaining WARNINGs (2026-05-25):**
+1. line 1021-1022 — "roughly the charge that flows through a 100-watt incandescent bulb in about a second, since a typical household bulb draws on the order of 1 amp." At 120 V, 100 W => 0.83 A (not 1 A). The claim is off by ~20% and is unsourced. Low priority (illustrative, no cite needed) but the 1-amp figure is slightly misleading.
+
+**Clean:**
+- All `<Cite>` keys resolve to both registry and chapter sources array (lint: clean).
+- Lightning energy arithmetic: 5 C × 10⁸ V = 0.5 GJ = "half a gigajoule" — now correct.
+- Cavendish bound, WFH 1971 bound, k value, e value, ε₀ value all verified correct.
+- TryIt 1.1, 1.2, 1.3, 1.4 arithmetic verified correct.
+
+**Why:** Second audit pass. Most prior fixes confirmed. One factual error persists (free vs bound electrons).
+**How to apply:** On next Ch.1 audit, focus on line 204 "free electrons" terminology.

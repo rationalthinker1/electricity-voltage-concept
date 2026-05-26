@@ -161,7 +161,7 @@ export default function Ch35HouseReplacingFixtures() {
         tables this between roughly 1 kΩ (hand-to-hand, wet skin) and tens of kΩ (dry skin,
         rubber-soled shoes)
         <Cite id="iec-60479-2018" in={SOURCES} />. The let-go threshold — the largest current you
-        can shake off — is about 10 mA for an adult man and 5–6 mA for an adult woman; above that,
+        can shake off — is about 10 mA for an adult man and 6–7 mA for an adult woman; above that,
         the muscle spasm clamps the hand onto the conductor
         <Cite id="iec-60479-2018" in={SOURCES} />. At 120 V across a 12 kΩ body that is exactly 10
         mA. The verification ritual exists because the failure mode it prevents is the one in which
@@ -869,8 +869,9 @@ export default function Ch35HouseReplacingFixtures() {
         trip threshold is 4–6 mA of imbalance between hot and neutral currents, set by the same
         Dalziel-curve reasoning Ch.28 walked through for GFCI breakers and backed in NEC 210.8 for
         the receptacle case
-        <Cite id="nec-2023" in={SOURCES} />. UL 498 (and the GFCI specific UL 943, referenced in)
-        covers the temperature-rise, dielectric, and endurance cycling
+        <Cite id="nec-2023" in={SOURCES} />. UL 498 covers the temperature-rise, dielectric, and
+        endurance-cycling tests the receptacle must pass (the GFCI-specific electronics fall under
+        the separate UL 943 standard)
         <Cite id="ul-498" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -918,8 +919,8 @@ export default function Ch35HouseReplacingFixtures() {
         that the installer believed were GFCI-protected are not. Modern GFCIs ship with a cardboard
         sticker over the LOAD terminals labelled "Do not remove until LOAD is wired" precisely to
         prevent this reversal, and most modern models include an internal end-of-life feature that
-        refuses to RESET if wired backward
-        <Cite id="ul-498" in={SOURCES} />.
+        refuses to RESET if wired backward — an auto-monitoring requirement of the UL 943 GFCI
+        standard.
       </p>
       <p className="mb-prose-3">
         The TEST button creates a deliberate small residual current — typically by routing a few mA
@@ -997,7 +998,7 @@ export default function Ch35HouseReplacingFixtures() {
               label: 'Continuous load',
               value: (
                 <>
-                  1 500 W space heater, ≈12.5 A at 120 V <Cite id="codata-2018" in={SOURCES} />
+                  1 500 W space heater, ≈12.5 A at 120 V
                 </>
               ),
             },
@@ -1044,8 +1045,7 @@ export default function Ch35HouseReplacingFixtures() {
             backstabs as the feed-through path. For the first winter the homeowner plugs a 1 500 W
             space heater into one of the front slots and runs it for hours at a time; about 12.5 A
             flows through the device's internal brass bus from the backstab on one side to the
-            front-face contact and back out through the backstab on the other side
-            <Cite id="codata-2018" in={SOURCES} />.
+            front-face contact and back out through the backstab on the other side.
           </p>
           <p className="mb-prose-2 last:mb-0">
             UL 498 lists the device for 15 A continuous at a small temperature rise, but the listing
@@ -1190,7 +1190,7 @@ export default function Ch35HouseReplacingFixtures() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             The box is screwed to a single ceiling joist with two drywall screws. Six months of
-            vibration at 70 rpm — six million cycles, give or take — work the screws loose; the
+            vibration at 70 rpm — many millions of cycles — work the screws loose; the
             drywall around the screw shanks compresses; the box sags; one weekend in June the fan
             pulls the box and a circle of drywall down onto the bed. No injuries. NEC 314.27(C) is
             the clause that prevents this: a fan support box must be specifically listed for fan

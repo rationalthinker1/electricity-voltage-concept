@@ -576,17 +576,14 @@ export default function Ch30HouseSwitchesReceptacles() {
       <p className="mb-prose-3">
         It is much easier to <em className="text-text italic">see</em> the three-way wiring than to
         read about it, and easier still to misroute a wire yourself once and learn what goes wrong
-        than to memorise the diagram. The demo below exposes the ten terminals of a minimal
-        three-way circuit — power-hot, power-neutral, the common and two travellers of each switch,
-        and the bulb's hot and neutral screws — and lets you connect them with click-to-wire. Your
-        job is to produce the canonical 3-way topology: hot into the first switch's common,
-        traveller-to-traveller between the two switches, second switch's common out to the bulb,
-        neutral from the source straight to the bulb. Five wires total.
+        than to memorise the diagram. The canonical topology is just five wires: hot into the first
+        switch's common, traveller-to-traveller between the two switches, the second switch's common
+        out to the bulb, and neutral from the source straight to the bulb.
       </p>
       <p className="mb-prose-3">
         Once the wiring is right, the bulb lights when both switches point at the same traveller;
-        flipping either one toggles the lamp. The two common beginner mistakes are flagged in red as
-        you make them. The first is wiring both of switch 1's travellers to the{' '}
+        flipping either one toggles the lamp. Two beginner mistakes account for most failures. The
+        first is wiring both of switch 1's travellers to the{' '}
         <em className="text-text italic">same</em> screw on switch 2 — that collapses the SPDT into
         a single-pole switch and the second switch loses its half of the XOR. The second is routing
         the neutral through one of the switches — switches interrupt only the hot, and a neutral
@@ -878,7 +875,7 @@ export default function Ch30HouseSwitchesReceptacles() {
           <>
             A 14-50 receptacle is being installed for a level-2 EV charger. The dedicated branch
             breaker is rated
-            <strong className="text-text font-medium"> 50 A</strong>. NEC 625.41 treats EV charging
+            <strong className="text-text font-medium"> 50 A</strong>. NEC 625.42 treats EV charging
             as a continuous load, so the charger is permitted to draw at most 80 % of the breaker
             rating in steady state. What is the maximum continuous current the EVSE may pull, and
             what continuous power does that imply at the nominal 240 V?

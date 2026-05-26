@@ -93,7 +93,7 @@ export default function Ch31HouseBigLoads() {
         amperes), and <M tex="R_{\text{wire}}" /> is the total round-trip resistance of the
         conductor (in ohms; for residential copper at warm operating temperature, on the order of a
         few tens of milliohms over a typical 25 m run
-        <Cite id="codata-2018" in={SOURCES} />
+        <Cite id="crc-resistivity" in={SOURCES} />
         ). Substitute I = P/V into the loss expression and the loss scales as the square of the load
         power divided by the square of the supply voltage:
       </p>
