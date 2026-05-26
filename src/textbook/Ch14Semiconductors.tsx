@@ -569,6 +569,10 @@ export default function Ch14Semiconductors() {
       </p>
       <Formula tex="I_C = \beta \cdot I_B" />
       <p className="mb-prose-3">
+        where <M tex="I_C" /> is the collector current and <M tex="I_B" /> the base current (both in
+        amperes), and <M tex="\beta" /> is the current gain (dimensionless, typically 50–300).
+      </p>
+      <p className="mb-prose-3">
         The asymmetry between the two currents is geometric, not mysterious. The emitter injects,
         say, a hundred million electrons per second into the base. Those electrons must cross a base
         region only about a micron thick — much thinner than their typical recombination distance —
@@ -760,6 +764,12 @@ export default function Ch14Semiconductors() {
         (V<sub>DS</sub> &lt; V<sub>GS</sub> − V<sub>T</sub>):
       </p>
       <Formula tex="I_D = k_n\, \left[ (V_{GS} - V_T)\, V_{DS} - V_{DS}^2/2 \right]" />
+      <p className="mb-prose-3">
+        where <M tex="I_D" /> is the drain current (in amperes), <M tex="V_{GS}" /> and{' '}
+        <M tex="V_{DS}" /> are the gate-source and drain-source voltages (in volts), <M tex="V_T" />
+        is the threshold voltage (in volts), and <M tex="k_n" /> is the transconductance parameter
+        (in A/V²) built up factor by factor just below.
+      </p>
       <p className="mb-prose-3">
         Unpack the formula one factor at a time. The gate-oxide capacitance per unit area is C
         <sub>ox</sub>; the voltage above threshold is <M tex="(V_{GS} - V_T)" />; so the sheet

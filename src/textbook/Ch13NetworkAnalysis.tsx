@@ -531,6 +531,12 @@ export default function Ch13NetworkAnalysis() {
         I<sub>N</sub> = V<sub>Th</sub> / R<sub>Th</sub>, R<sub>N</sub> = R<sub>Th</sub>
       </Formula>
       <p className="mb-prose-3">
+        where <M tex="I_N" /> is the Norton (short-circuit) current source (in amperes),{' '}
+        <M tex="V_{Th}" /> and <M tex="R_{Th}" /> are the Thévenin open-circuit voltage (volts) and
+        equivalent resistance (ohms) of the same two-terminal network, and <M tex="R_N" /> is the
+        Norton equivalent resistance (ohms) — identical to <M tex="R_{Th}" />.
+      </p>
+      <p className="mb-prose-3">
         The picture behind the algebra: plot the terminal voltage <M tex="V" />
         against the terminal current <M tex="I" /> drawn from a linear two-terminal network. Because
         every internal element is linear, the <M tex="V - I" /> relation at the terminals must be a

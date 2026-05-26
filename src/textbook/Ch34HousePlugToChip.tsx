@@ -428,7 +428,8 @@ export default function Ch34HousePlugToChip() {
         η<sub>charger</sub> = V<sub>s</sub> · I<sub>s</sub> / (V<sub>in</sub> · I<sub>in</sub>)
       </Formula>
       <p className="mb-prose-3">
-        where <M tex="V_s, I_s" />
+        where <M tex="\eta_{\text{charger}}" /> is the end-to-end efficiency (dimensionless, a
+        fraction between 0 and 1), <M tex="V_s, I_s" />
         are the output voltage and current delivered at the USB-C cable (in volts and amperes; for a
         100 W charger, 20 V and 5 A), and <M tex="V_{\text{in}}, I_{\text{in}}" />
         are the line input voltage and current drawn from the wall (in volts and amperes). Modern{' '}
