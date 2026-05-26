@@ -40,16 +40,20 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
   ho-ruehli, moulson-herbert, yoshino, ansi-c12-1, ieee-1547, crc-resistivity),
   orphaned-key cleanup, and soften-unsourced of genuinely unsupported claims.
 - **Prose — COMPLETE.** All broken-hyphen artefacts fixed (Ch.19/21/23/39/41).
-- **Pedagogy — substantially done.** Missing "where" paragraphs added (Ch.2, 6,
-  12, 13, 14, 16, 34). Intuition tiers added (Ch.1, Ch.3 resistance+power, Ch.12
-  impedance+RMS, Ch.18 refractive index, Ch.19 gain, Ch.20 torque, Ch.23 turns
-  ratio, Ch.24 ripple, Ch.25 electrode potential, Ch.26 energy density). Ch.1
-  duplicate-demo removed + figure renumber.
-  **Remaining (documented, not yet applied):** a handful of intuition tiers
-  (Ch.6 B-field order, Ch.7/Ch.21 EMF, Ch.9 wave equation, Ch.11 E/B transform
-  + γ, Ch.14 Shockley, Ch.16 Z₀, Ch.42 attenuation formal tier) and the
-  demo-framing → `caption` relocations (each a two-file edit). These are
-  editorial enhancements, not error fixes.
+- **Pedagogy — COMPLETE.** Missing "where" paragraphs added (Ch.2, 6, 12, 13,
+  14, 16, 34). Intuition tiers added where sections opened cold on a formula
+  (Ch.1, Ch.3 resistance+power, Ch.12 impedance+RMS, Ch.18 refractive index,
+  Ch.19 gain, Ch.20 torque, Ch.23 turns ratio, Ch.24 ripple, Ch.25 electrode
+  potential, Ch.26 energy density). All HIGH and the clear MED demo-framing →
+  `caption` relocations applied (Ch.1, 3, 5, 7, 8, 10, 12, 13, 14, 16, 18, 19,
+  23, 28, 30, 42): standalone "drag to orbit / pick a mode / click-to-wire"
+  UI prose trimmed where the demo caption already carried it, physics kept in
+  the chapter. Ch.1 duplicate-demo removed + figure renumber.
+  On verification, several agent-flagged intuition/where gaps were found to be
+  **already covered** (Ch.7 EMF experimental hook, Ch.9 wave-equation leapfrog,
+  Ch.11 γ via the train experiment, Ch.14 Shockley symbol unpacking, Ch.16 Z₀
+  and transfer-function intros, Ch.17 polarization formal def, Ch.19 Larmor
+  operational P=½R_rad I²) and were correctly left untouched.
 
 ---
 
