@@ -645,6 +645,15 @@ export default function Ch12CircuitsAndAC() {
       </h2>
 
       <p className="mb-prose-3">
+        The intuition: impedance is resistance for alternating current — how hard a component pushes
+        back on an AC current — but with one extra fact baked in. A resistor pushes back in step
+        with the current; a capacitor or inductor pushes back <em className="text-text italic">out
+        of step</em>, leading or lagging by a quarter cycle. Impedance is the single number that
+        captures both at once: how big the opposition is, and how much it shifts the timing. That is
+        why it has to be a complex number rather than a plain ohms value.
+      </p>
+
+      <p className="mb-prose-3">
         Beautiful as the previous section is, you do not want to solve a second-order ODE every time
         you analyze a circuit. The 19th-century engineer's response — formalized by Charles
         Steinmetz at General Electric in the 1890s <Cite id="steinmetz-1893" in={SOURCES} /> — was
@@ -788,6 +797,15 @@ export default function Ch12CircuitsAndAC() {
       <h2 className="chapter-h2">
         AC <em>power</em> — and why the grid is three-phase
       </h2>
+
+      <p className="mb-prose-3">
+        First, the number everyone quotes. An AC line voltage swings from its positive peak to its
+        negative peak and through zero a hundred times a second, so "the voltage" needs a single
+        fair summary. The root-mean-square (RMS) value is that summary: the steady DC voltage that
+        would dissipate the same average heating power in a resistor. For a sine wave it comes out
+        to the peak divided by √2 — which is exactly why a nominal 120 V outlet actually peaks at
+        about 170 V. Power calculations use RMS so that AC and DC numbers mean the same thing.
+      </p>
 
       <p className="mb-prose-3">
         Multiply V(t) = V<sub>p</sub> cos(ωt) by I(t) = I<sub>p</sub> cos(ωt − φ) and average over a
