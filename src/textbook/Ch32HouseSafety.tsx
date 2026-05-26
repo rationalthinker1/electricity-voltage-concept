@@ -419,7 +419,7 @@ export default function Ch32HouseSafety() {
         <Cite id="iec-60479-2018" in={SOURCES} />: a hand-to-hand R<sub>body</sub>
         runs from about 1 kΩ (wet, large-area, with broken skin) to over 100 kΩ (dry, fingertip
         touch, intact callused skin). At 120 V wet that is 120 mA — squarely lethal — and at 120 V
-        dry it is 1 mA — barely perceptible. The two-decade variation in R is the variation between
+        dry it is about 1.2 mA — barely perceptible. The two-decade variation in R is the variation between
         "shock" and "death."
       </p>
       <p className="mb-prose-3">
@@ -586,9 +586,8 @@ export default function Ch32HouseSafety() {
             measured drop of <strong className="text-text font-medium">40 V</strong>, with the arc
             conducting for half of each AC half-cycle (<M tex="\\delta = 0.5" />
             ). What is the time-averaged power dissipated in the arc, and is that enough to ignite
-            cellulose insulation, whose autoignition threshold is roughly{' '}
-            <M tex="50\,\text{W/cm}^{2}" /> of contact area for paper-like materials at piloted
-            ignition?
+            cellulose insulation, whose piloted-ignition threshold is roughly{' '}
+            <M tex="1\\text{–}2\,\text{W/cm}^{2}" /> of contact area for paper-like materials?
           </>
         }
         hint={
@@ -608,7 +607,8 @@ export default function Ch32HouseSafety() {
             </p>
             <Formula tex="P_{\\text{arc}}/A \\approx 160\\ \\text{W}/0.05\\ \\text{cm}^2 = 3{,}200\\ \\text{W/cm}^2" />
             <p className="mb-prose-1 last:mb-0">
-              — roughly sixty times the piloted-ignition threshold for paper-like cellulose. Answer:{' '}
+              — more than a thousand times the piloted-ignition threshold for paper-like cellulose.
+              Answer:{' '}
               <strong className="text-text font-medium">
                 160 W total, far above ignition threshold
               </strong>

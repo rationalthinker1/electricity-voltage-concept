@@ -1073,6 +1073,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'ul-2231',
       'iec-62196',
       'codata-2018',
+      'crc-resistivity',
       'grainger-power-systems-2003',
     ],
     punchline:

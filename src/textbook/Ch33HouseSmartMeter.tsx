@@ -737,8 +737,8 @@ export default function Ch33HouseSmartMeter() {
               A credit of 30 cents — the homeowner exported 2 kWh more than they imported on net.
               Under net metering, that credit rolls forward against future imports. Under the NEM
               3.0 export rate of about $0.05/kWh and an import rate of $0.27/kWh evening peak, the
-              same day's flow yields −0.10 × $0.05 + 0.08 × $0.27 ≈ a 1.7{' '}
-              <em className="text-text italic">cent</em> charge instead — the structural change that
+              same day's flow yields 8 × $0.27 − 10 × $0.05 ≈ a $1.66{' '}
+              <em className="text-text italic">charge</em> instead — the structural change that
               drove the controversy around California's 2023 reform
               <Cite id="ansi-c12-1-2014" in={SOURCES} />.
             </p>

@@ -142,8 +142,8 @@ export default function Ch36HouseTroubleshooting() {
         is the general-purpose instrument: AC and DC volts, AC and DC current (small, through
         internal shunts), resistance, continuity, capacitance, frequency, sometimes temperature. A
         typical residential DMM presents a 10 MΩ input impedance on its volts ranges; bench
-        instruments like the Keysight 34465A reach 10 GΩ on the low-volts ranges to minimise circuit
-        loading
+        instruments like the Keysight 34465A reach 1 GΩ or more on the low-volts ranges to minimise
+        circuit loading
         <Cite id="keysight-34465a-datasheet" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
