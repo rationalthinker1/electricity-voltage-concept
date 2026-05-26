@@ -479,7 +479,7 @@ export default function Ch1WhatIsElectricity() {
       <EquipotentialsDemo figure="Fig. 1.5" />
 
       <p className="mb-prose-3">
-        The teal dotted contours are{' '}
+        Threading through that field is a second structure worth naming:{' '}
         <Term
           def={
             <>

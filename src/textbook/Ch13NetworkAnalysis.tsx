@@ -781,8 +781,8 @@ export default function Ch13NetworkAnalysis() {
       <p className="mb-prose-3">
         Or the other way around, Δ → Y, with the dual mapping R<sub>a</sub> = R<sub>AB</sub>R
         <sub>CA</sub> / (R<sub>AB</sub> + R<sub>BC</sub> + R<sub>CA</sub>), and cyclic permutations
-        <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />. The algebra is unilluminating; the
-        demo below confirms the equivalence numerically.
+        <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />. The algebra is unilluminating, but the
+        equivalence is exact: the two networks are indistinguishable from their three terminals.
       </p>
 
       <YDeltaTransformDemo figure="Fig. 13.5" />
