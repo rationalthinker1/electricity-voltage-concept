@@ -955,7 +955,7 @@ export default function Ch33HouseSmartMeter() {
               label: 'PF penalty (before correction)',
               value: (
                 <>
-                  $5/kVAR × ~143 kVAR-over-threshold ≈ $715/month{' '}
+                  $5/kVAR × ~145 kVAR-over-threshold ≈ $725/month{' '}
                   <Cite id="grainger-power-systems-2003" in={SOURCES} />
                 </>
               ),
@@ -979,12 +979,12 @@ export default function Ch33HouseSmartMeter() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             Before correction, the factory's PF of 0.78 means the 800 kW real load is drawing
-            800/0.78 ≈ 1025 kVA of apparent power, or about 626 kVAR of reactive current sloshing
+            800/0.78 ≈ 1025 kVA of apparent power, or about 641 kVAR of reactive current sloshing
             back and forth between the motor windings and the utility's wires. The utility's penalty
             applies to kVAR above the threshold corresponding to PF = 0.85: at 800 kW real, that
-            threshold is about 800·tan(acos 0.85) ≈ 495 kVAR. So the over-threshold reactive draw is
-            about 626 − 495 ≈ 131 kVAR, and at $5/kVAR/month the penalty is ~$655/month — a year's
-            worth is approaching $8,000
+            threshold is about 800·tan(acos 0.85) ≈ 496 kVAR. So the over-threshold reactive draw is
+            about 641 − 496 ≈ 145 kVAR, and at $5/kVAR/month the penalty is ~$725/month — a year's
+            worth is approaching $8,700
             <Cite id="grainger-power-systems-2003" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
