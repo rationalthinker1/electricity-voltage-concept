@@ -28,21 +28,28 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 
 ### Fixes applied (running)
 
-- **Factual / anti-hallucination:** every **wrong-fact and arithmetic error**
-  found in Ch.1–42 has been fixed and pushed — including Ch.6 magnetar ratio
-  (10⁶ off), Ch.11 Case 11.2 (powers-of-ten), Ch.12 power-factor (33→100%),
-  Ch.15 FFT (1638→4096), Ch.17 copper physics, Ch.19 three arithmetic errors,
-  Ch.20 GM-EV1 AC/DC, Ch.21 orders-of-magnitude, Ch.23 Stanley 1886, Ch.26 LFP
-  1997, Ch.27 NEC 705, Ch.28 GFCI/AFCI years + transformer sizing, Ch.30
-  625.42, Ch.31 codata, Ch.32 cellulose, Ch.33 disk-meter + NEM, Ch.36
-  Keysight, Ch.37 demand coefficient, Ch.39 ampacity/J1772, Ch.40 transformer
-  ratio, Ch.42 Kapron/NA/dispersion, etc. Misaligned-cite swaps and
-  in-registry source wiring done for Ch.1–24; **the Batch 5–7 cite-alignment
-  swaps and soften-unsourced items are partially applied (wrong-facts first).**
-- **Prose:** all broken-hyphen artefacts fixed (Ch.19/21/23/39/41).
-- **Pedagogy:** Ch.1 applied; the rest (intuition-tier rewrites, demo-framing →
-  caption moves, missing "where" paragraphs) are the **largest remaining
-  editorial batch** and are being worked through chapter by chapter.
+- **Factual / anti-hallucination — COMPLETE.** Every wrong-fact, arithmetic,
+  and wrong-physics error found in Ch.1–42 is fixed and pushed (Ch.6 magnetar
+  ratio, Ch.11 Case 11.2, Ch.12 power-factor, Ch.15 FFT, Ch.17 copper physics,
+  Ch.19 three arithmetic errors, Ch.20 GM-EV1, Ch.21 orders-of-magnitude,
+  Ch.23 Stanley, Ch.26 LFP, Ch.27 NEC 705, Ch.28 GFCI/AFCI/sizing, Ch.30
+  625.42, Ch.31–42, …). Two agent findings were verified and **rejected** as
+  incorrect (Ch.8 drift velocity; Ch.37 NEC 334.23→320.23 is a real cross-ref).
+- **Cite-alignment + source-wiring — COMPLETE** across all 42 chapters:
+  misaligned-cite swaps, in-registry key wiring (linden-reddy, steinmetz,
+  ho-ruehli, moulson-herbert, yoshino, ansi-c12-1, ieee-1547, crc-resistivity),
+  orphaned-key cleanup, and soften-unsourced of genuinely unsupported claims.
+- **Prose — COMPLETE.** All broken-hyphen artefacts fixed (Ch.19/21/23/39/41).
+- **Pedagogy — substantially done.** Missing "where" paragraphs added (Ch.2, 6,
+  12, 13, 14, 16, 34). Intuition tiers added (Ch.1, Ch.3 resistance+power, Ch.12
+  impedance+RMS, Ch.18 refractive index, Ch.19 gain, Ch.20 torque, Ch.23 turns
+  ratio, Ch.24 ripple, Ch.25 electrode potential, Ch.26 energy density). Ch.1
+  duplicate-demo removed + figure renumber.
+  **Remaining (documented, not yet applied):** a handful of intuition tiers
+  (Ch.6 B-field order, Ch.7/Ch.21 EMF, Ch.9 wave equation, Ch.11 E/B transform
+  + γ, Ch.14 Shockley, Ch.16 Z₀, Ch.42 attenuation formal tier) and the
+  demo-framing → `caption` relocations (each a two-file edit). These are
+  editorial enhancements, not error fixes.
 
 ---
 
