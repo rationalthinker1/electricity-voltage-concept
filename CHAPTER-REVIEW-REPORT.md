@@ -332,3 +332,40 @@ being resumed.
 - **LOW · pedagogy** — L160–167 (after `DiodeCharacteristicDemo`) and L270–274 (after `BridgeRectifierDemo`): post-demo UI-framing captions that escaped their demos → move into `caption`. **Prose: clean.**
 
 ---
+
+## Batch 5 — Chapters 25–30
+
+### Ch.25 — How a battery works
+- **Fact-check:** _pending (running)_
+- **HIGH · pedagogy** — L235–252: standard electrode potential `E°` skips both intuition and formal tiers — goes straight to the operational tabulation (`E°(Cu²⁺/Cu)=+0.34 V`, etc.). Add a "leaderboard of electron-eagerness" analogy and a formal `E° = −ΔG°/nF` before L252.
+- **MED · pedagogy** — L252: `E°` values have no "where" (V vs SHE). L342: `Q = [Zn²⁺]/[Cu²⁺]` doesn't gloss the bracket = molar-concentration (mol/L) notation.
+- Demo-framing clean. **Prose: clean.**
+
+### Ch.26 — Modern batteries
+- **Fact-check:** _pending (running)_
+- **HIGH · pedagogy** — energy density / specific energy is the chapter's headline metric from L117 (~35/250/165 Wh/kg) but is **never introduced as a quantity** — no intuition, no `ρ_E = E/m`, no units before first use. Add a three-tier intro at/before L117.
+- **MED · pedagogy** — C-rate appears only in the FAQ `<Term>` popover (L845–861); no intuition/formal tier in the narrative.
+- All narrative `<Formula>` "where" paragraphs clean; demo-framing clean. **Prose: clean.**
+
+### Ch.27 — The grid arrives at the house (applied track)
+- **Fact-check:** _pending (running)_
+- Applied-track: no three-tier violation (re-applies earlier quantities); no embedded demos.
+- **LOW · pedagogy** — L191–192: `I = P/V` "where" says "same symbols, same meaning" without restating SI units; add a one-line unit restatement. **Prose: clean.**
+
+### Ch.28 — The house panel (applied track)
+- **Fact-check:** _pending (running)_
+- **MED · pedagogy** — L504: arc-flash `E_arc ≈ V·I_fault·t_clear` has no "where" paragraph after it (symbols only in preceding prose). Add one (J / V / A / s).
+- **MED · pedagogy** — L270–277: pure demo-framing before `PanelBus3DDemo` → move into its `caption`. **Prose: clean.**
+
+### Ch.29 — House branch circuits (applied track)
+- **Fact-check:** _pending (running)_
+- **MED · pedagogy** — L76–106: ampacity has intuition + formal tiers but **no operational tier** — physics + NEC tables, but no concise "max continuous current (A) a conductor may carry" statement. Add one after L106.
+- Formula glossaries + demo-framing clean. **Prose: clean.**
+
+### Ch.30 — House switches and receptacles (applied track)
+- **Fact-check:** _pending (running)_
+- Applied-track: no three-tier violation; all narrative `<Formula>` "where" paragraphs clean.
+- **HIGH · pedagogy** — L576–584: pure demo-framing (click-to-wire instructions) before `ThreeWaySwitchBuilderDemo` → move into its `caption`.
+- **MED · pedagogy** — L586–595: mixed UI/physics; keep the SPDT-collapse + neutral-hazard physics, move the "flagged in red" UI observations to the caption. **Prose: clean.**
+
+---
