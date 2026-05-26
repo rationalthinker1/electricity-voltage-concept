@@ -356,7 +356,12 @@ being resumed.
 - All narrative `<Formula>` "where" paragraphs clean; demo-framing clean. **Prose: clean.**
 
 ### Ch.27 — The grid arrives at the house (applied track)
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~60 claims audited, 52 resolve, all arithmetic correct (12.47/√3=7.20 kV, turns ratios, voltage drops); **misaligned cites + an internal inconsistency.**
+  - **HIGH · fact (misaligned cite)** — L1206: "NEC Article 702 **and 705**" for standby-generator transfer switches — 705 governs grid-tied interconnection, not standby. Remove "and 705" or split the scope.
+  - **HIGH · fact (misaligned cite)** — L503–505: residential retail rates ($0.10–0.40/kWh) cited to `ieee-std-3001-2-2017` (a sizing methodology) → soften/drop. L1268: meter accuracy class cited to IEEE 3001.2 → should be `ansi-c12-1-2014` (in registry, **not** in chapter sources — add it).
+  - **HIGH · fact (inconsistency)** — L333–334 vs L855: Case 27.1 (a 200 A service) specs "#2 AWG" triplex, but the prose assigns #2 AWG to **100 A** and #1/0+ to 200 A. Fix the case spec to the 200 A gauge.
+  - **MED · fact** — L174–179 & L1076–1079 (Edison 1882) and L205–227 (Stanley/Westinghouse 1890s) uncited (ANSI C84.1 backs the voltage standard, not the history) → soften. L1176: oil dielectric "30 kV/mm" overstates typical (~10–15); soften. L442: "before ~2005 … Ferraris meters" year unsupported by a 1994 text → soften.
+  - **LOW · fact** — L961 vs L988: recloser timing "1–2 s" vs "one second"; align.
 - Applied-track: no three-tier violation (re-applies earlier quantities); no embedded demos.
 - **LOW · pedagogy** — L191–192: `I = P/V` "where" says "same symbols, same meaning" without restating SI units; add a one-line unit restatement. **Prose: clean.**
 
