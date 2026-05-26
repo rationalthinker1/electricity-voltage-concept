@@ -336,7 +336,11 @@ being resumed.
 ## Batch 5 — Chapters 25–30
 
 ### Ch.25 — How a battery works
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~35 claims audited, 31 resolve, all arithmetic correct (Daniell E°=1.10 V, Nernst slopes, etc.); **uncited claims + misaligned cites.**
+  - **HIGH · fact** — L588–589: "Lewis Urry … 1957 … Eveready" attribution uncited → soften to "developed in the 1950s at Eveready" + `linden-reddy-2011`.
+  - **HIGH · fact** — L426–429 & L802–803: AA/car/coin-cell R_int values and Li-ion/gasoline energy densities uncited → cite `linden-reddy-2011` (in chapter); soften the gasoline figure if unsourced.
+  - **MED · fact (misaligned cite)** — L452–456 & L553: commercial R_int / short-circuit-current claims cited to `bard-faulkner-2001` (fundamentals) → `linden-reddy-2011`.
+  - **LOW · fact** — L561 vs L563: Case 25.2 "1.5 V open" (summary) vs "~1.55 V fresh" (spec); standardize.
 - **HIGH · pedagogy** — L235–252: standard electrode potential `E°` skips both intuition and formal tiers — goes straight to the operational tabulation (`E°(Cu²⁺/Cu)=+0.34 V`, etc.). Add a "leaderboard of electron-eagerness" analogy and a formal `E° = −ΔG°/nF` before L252.
 - **MED · pedagogy** — L252: `E°` values have no "where" (V vs SHE). L342: `Q = [Zn²⁺]/[Cu²⁺]` doesn't gloss the bracket = molar-concentration (mol/L) notation.
 - Demo-framing clean. **Prose: clean.**
@@ -366,7 +370,11 @@ being resumed.
 - **MED · pedagogy** — L270–277: pure demo-framing before `PanelBus3DDemo` → move into its `caption`. **Prose: clean.**
 
 ### Ch.29 — House branch circuits (applied track)
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~80 claims audited, 74 resolve, all arithmetic correct; **3 misaligned cites + 2 uncited values.**
+  - **HIGH · fact (misaligned cite)** — L1184–1185: AFCI detection principle cited to `nfpa-70e-2024` (workplace arc-flash PPE) → should be `nec-2023` (Art. 210.12).
+  - **MED · fact (misaligned cite)** — L245–246: NM-B "replaced … in 1984" cited to `nec-2023` (current edition, can't date a 1984 change) → drop the year. L496–499: aluminium cost/handling claim cited to a CPSC fire-safety advisory → soften.
+  - **MED · fact** — L511–514: Al/brass CTE values (23/19 ppm/K) uncited → add `crc-resistivity` (in registry) or soften. L578–581: kitchen-appliance wattages uncited → soften to "typical 1000–1500 W."
+  - **LOW · fact** — L1162: TR-receptacle "since 2008" year unsupported by the cited NEC-2023; drop the year.
 - **MED · pedagogy** — L76–106: ampacity has intuition + formal tiers but **no operational tier** — physics + NEC tables, but no concise "max continuous current (A) a conductor may carry" statement. Add one after L106.
 - Formula glossaries + demo-framing clean. **Prose: clean.**
 
