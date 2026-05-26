@@ -319,8 +319,8 @@ export default function Ch14Semiconductors() {
       </p>
       <p className="mb-prose-3">
         Plug in numbers. For typical silicon doping (N<sub>A</sub> = N<sub>D</sub> = 5×10¹⁵ cm⁻³, n
-        <sub>i</sub> = 10¹⁰ cm⁻³ at 300 K), the ratio is 5×10¹¹. With V<sub>T</sub> ≈ 25.85 mV and{' '}
-        <M tex="\ln(5\times10^{11}) \approx 27.0" />, V<sub>bi</sub> ≈ 0.70 V. That number — the
+        <sub>i</sub> = 10¹⁰ cm⁻³ at 300 K), the ratio is 2.5×10¹¹. With V<sub>T</sub> ≈ 25.85 mV and{' '}
+        <M tex="\ln(2.5\times10^{11}) \approx 26.2" />, V<sub>bi</sub> ≈ 0.68 V. That number — the
         equilibrium voltage your crystal sets up <em className="text-text italic">by itself</em>,
         with no external bias — is also the height of the energy barrier any electron must climb to
         cross the junction. Forward bias reduces it; reverse bias raises it. For typical silicon
@@ -1154,25 +1154,17 @@ export default function Ch14Semiconductors() {
         <CaseStudy
           tag="Case 14.1"
           title="Apple A17 Pro — tens of billions of FinFETs on one die"
-          summary="TSMC N3 process node, tens of billions of transistors on ~103 mm², every one of them a FinFET-MOSFET descendant of Kahng-Atalla 1959."
+          summary="TSMC N3 process node, tens of billions of transistors on ~100 mm², every one of them a FinFET-MOSFET descendant of Kahng-Atalla 1959."
           specs={[
             {
               label: 'Process node',
-              value: (
-                <>
-                  TSMC N3 (3 nm class) <Cite id="razavi-2021" in={SOURCES} />
-                </>
-              ),
+              value: <>TSMC N3 (3 nm class)</>,
             },
             {
               label: 'Transistor count',
-              value: (
-                <>
-                  ≈ 19 × 10⁹ <Cite id="razavi-2021" in={SOURCES} />
-                </>
-              ),
+              value: <>tens of billions (~19 × 10⁹ reported)</>,
             },
-            { label: 'Die area', value: <>≈ 103 mm²</> },
+            { label: 'Die area', value: <>~100 mm²</> },
             { label: 'Density', value: <>~180 million transistors / mm²</> },
             {
               label: 'Architecture',
@@ -1218,7 +1210,7 @@ export default function Ch14Semiconductors() {
                 </>
               ),
             },
-            { label: 'Wavelength', value: <>~940 nm (near-infrared)</> },
+            { label: 'Wavelength', value: <>~870 nm (near-infrared)</> },
             { label: 'Forward voltage', value: <>~1.3 V at 20 mA</> },
             { label: 'Modulation', value: <>38 kHz carrier, ~600 µs symbol time (NEC protocol)</> },
           ]}
@@ -1354,13 +1346,13 @@ export default function Ch14Semiconductors() {
         <FAQItem q="Why is V_F about 0.7 V for silicon diodes specifically?">
           <p>
             Because of the shape of the Shockley exponential. The reverse-saturation current of a
-            silicon p-n junction at room temperature is ~10⁻⁹ A. To get a "normal" forward current
-            of a few mA, you need <M tex="\exp(qV/kT) \approx 10^6" /> — i.e.{' '}
-            <M tex="V \approx 6 \cdot V_T \cdot \ln(10) \approx 6 \cdot 0.0259 \cdot 2.30 \approx 0.36\ \text{V}" />
+            small silicon p-n junction at room temperature is ~10⁻¹⁴ A. To get a "normal" forward
+            current of about 1 mA, you need <M tex="\exp(qV/kT) \approx 10^{11}" /> — i.e.{' '}
+            <M tex="V \approx V_T \cdot \ln(10^{11}) \approx 0.0259 \cdot 25.3 \approx 0.65\ \text{V}" />
             ; doubling the desired current adds only one{' '}
             <M tex="V_T \cdot \ln(2) \approx 18\ \text{mV}" />. So the practical "knee" of a silicon
-            diode lands around 0.6–0.7 V for typical operating currents. Schottky diodes have I
-            <sub>s</sub> ~10⁻⁵ A and the same logic gives V<sub>F</sub> ≈ 0.3 V
+            diode lands around 0.6–0.7 V for typical operating currents. Schottky diodes have a much
+            larger I<sub>s</sub> (~10⁻⁸ A) and the same logic gives V<sub>F</sub> ≈ 0.3 V
             <Cite id="sedra-smith-2014" in={SOURCES} />.
           </p>
         </FAQItem>

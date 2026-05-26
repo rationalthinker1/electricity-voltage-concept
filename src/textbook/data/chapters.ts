@@ -531,6 +531,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'irwin-circuit-analysis-2015',
       'horowitz-hill-2015',
       'hayt-kemmerly-durbin-2018',
+      'ho-ruehli-brennan-1975',
     ],
     punchline:
       'Any linear network reduces to a small system of linear equations — mesh, nodal, Thévenin, Norton, Y-Δ, and max-power are the standard tools for writing them.',

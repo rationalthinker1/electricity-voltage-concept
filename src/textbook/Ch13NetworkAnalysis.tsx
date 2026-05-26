@@ -897,8 +897,8 @@ export default function Ch13NetworkAnalysis() {
       </p>
       <p className="mb-prose-3">
         — exactly a quarter of the short-circuit power the source could deliver into a wire (V
-        <sub>Th</sub>²/R<sub>S</sub>), and exactly half of the source's open-circuit energy budget.
-        The other half is dissipated inside R<sub>S</sub>
+        <sub>Th</sub>²/R<sub>S</sub>), and exactly half of the total power the source delivers at
+        that matched operating point. The other half is dissipated inside R<sub>S</sub>
         itself; the{' '}
         <Term
           def={
@@ -1060,12 +1060,19 @@ export default function Ch13NetworkAnalysis() {
             </>
           }
           specs={[
-            { label: 'Typical gauge resistance', value: '120 Ω, 350 Ω, 1000 Ω' },
+            {
+              label: 'Typical gauge resistance',
+              value: (
+                <>
+                  120 Ω, 350 Ω, 1000 Ω <Cite id="horowitz-hill-2015" in={SOURCES} />
+                </>
+              ),
+            },
             { label: 'Gauge factor (constantan)', value: '≈ 2.0' },
             { label: 'Strain range (full-scale)', value: '±2000 µε' },
             { label: 'ΔR / R at 1000 µε', value: '0.2 %' },
             { label: 'Bridge excitation', value: '5 – 10 V' },
-            { label: 'Output (full-bridge, 1000 µε)', value: '≈ 5 – 10 mV' },
+            { label: 'Output (full-bridge, 1000 µε)', value: '≈ 10 – 20 mV' },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
@@ -1105,11 +1112,18 @@ export default function Ch13NetworkAnalysis() {
             </>
           }
           specs={[
-            { label: 'SPICE first release', value: '1973 (UC Berkeley)' },
+            {
+              label: 'SPICE first release',
+              value: (
+                <>
+                  1973 (UC Berkeley) <Cite id="ho-ruehli-brennan-1975" in={SOURCES} />
+                </>
+              ),
+            },
             { label: 'Core algorithm', value: 'Modified Nodal Analysis (MNA)' },
             { label: 'System per timestep', value: 'A x = b' },
             { label: 'Typical IC simulation', value: '10⁴ – 10⁷ nodes' },
-            { label: 'Per-iteration cost', value: 'O(N^1.2) sparse LU' },
+            { label: 'Per-iteration cost', value: 'near-linear sparse LU' },
             { label: 'Time-domain integration', value: 'Trapezoidal / BDF' },
           ]}
         >
@@ -1161,9 +1175,10 @@ export default function Ch13NetworkAnalysis() {
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            A condenser microphone needs DC power to polarise its capsule and biased its internal
-            head-amp. The trick studio engineers settled on in the 1960s — codified as P48 in IEC
-            61938 — is to send the 48 V DC down both signal conductors of the balanced cable
+            A condenser microphone needs DC power to polarise its capsule and bias its internal
+            head-amp. The trick studio engineers settled on in the 1960s — codified later as the
+            "P48" phantom-power standard — is to send the 48 V DC down both signal conductors of the
+            balanced cable
             simultaneously, through a pair of carefully matched 6.81 kΩ feed resistors. The
             microphone draws its DC from the common mode (both conductors at +48 V relative to
             ground) and returns its audio signal as a differential voltage between the two
