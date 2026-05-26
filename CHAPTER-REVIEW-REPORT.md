@@ -397,7 +397,8 @@ being resumed.
 ## Batch 6 — Chapters 31–36 (applied track)
 
 ### Ch.31 — House big loads
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~40 claims audited, 38 resolve, **zero arithmetic errors**; only 2 misaligned `codata-2018` cites.
+  - **MED · fact (misaligned cite)** — L96: copper resistance cited to `codata-2018` (constants only) → `crc-resistivity` (add to chapter). L183: 60 Hz / 377 rad/s → drop cite or `ansi-c84-1-2020`.
 - **Pedagogy:** no major findings reported (applied-track; reuses established quantities). **Prose: clean.**
 
 ### Ch.32 — House safety / NEC
@@ -406,7 +407,30 @@ being resumed.
 - All narrative `<Formula>` "where" paragraphs clean; no embedded demos. **Prose: clean.**
 
 ### Ch.33 — The smart meter
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~45 claims audited; **3 HIGH arithmetic errors + a recurring cite misalignment.**
+  - **HIGH · fact (arithmetic)** — L264–265: "1 rev per 7.2 Wh, so 500 rev = 1 kWh" — 500×7.2 = 3.6 kWh. The classic residential meter constant is **Kh = 2 Wh/rev**; fix to "1 rev per 2 Wh."
+  - **HIGH · fact (arithmetic)** — L740–741 (TryIt 33.5): NEM result "≈ 1.7 **cent** charge" — 8×$0.27 − 10×$0.05 = **$1.66** (100× off).
+  - **HIGH · fact (arithmetic)** — Case 33.2 (L956–987): three inconsistent kVAR sets (626/495/131 vs 640.8/495.8/145 vs 143); pick one input set and recompute. L869: Case 33.1 "$215/month no-shift" needs ~70% peak share (implausible) — recompute or soften.
+  - **MED · fact (misaligned cite)** — ~8 utility-rate claims cited to `ansi-c12-1-2014` (a metering-accuracy standard, not tariffs) → soften to "typical."
+
+### Ch.34 — Plug to chip
+- **Fact-check:** ~40 claims audited, arithmetic correct (minor <2% rounding); **uncited specs + misaligned cites.**
+  - **HIGH · fact** — L809 ("1995 brick 600 g, 50–60%") and L931 ("100 W charger 400 g → 150 g") masses uncited → soften; Apple M3 die/transistor/20 A specs (L701–708) uncited → soften/drop.
+  - **HIGH · fact (misaligned cite)** — L697/L848/L1058: DVFS / VRM architecture cited to `sedra-smith-2014` → `erickson-maksimovic-2020`; L964: ANSI C84.1 132 V cited to erickson → soften.
+  - **MED · fact** — L366: "duty cycle up 20%" → ~18%. L744: 0.62 W → 0.61 W. L530–534: power-profiles Term omits 12 V (prose includes it).
+
+### Ch.35 — Replacing fixtures
+- **Fact-check:** ~45 claims audited, 40 resolve; **2 misaligned cites + 2 warnings + an internal inconsistency.**
+  - **HIGH · fact (misaligned cite)** — L1000 & L1048: `I = P/V` (12.5 A) cited to `codata-2018` (constants) → drop or `nec-2023`. L872–874/L922/L1311–1313: GFCI-electronics/UL 943 claims cited to `ul-498` (plugs/receptacles) → add `ul-943` or soften to NEC 210.8.
+  - **MED · fact (arithmetic)** — L1193: "six million cycles" for 70 rpm × 6 months = **~18 million**. Soften.
+  - **MED · fact** — L164: let-go "5–6 mA for a woman" → IEC 60479 gives ~6–7 mA; and standardize the GFCI threshold to "4–6 mA" (L1389 says 5 mA).
+
+### Ch.36 — Troubleshooting
+- **Fact-check:** ~45 claims audited, 40 resolve; **3 HIGH (1 source overstatement + 2 arithmetic/consistency) + a misaligned-cite cluster.**
+  - **HIGH · fact** — L145: Keysight 34465A "10 GΩ" overstates the source's **1 GΩ**. Fix.
+  - **HIGH · fact (arithmetic)** — L328–331 (Try 36.2): "3 kΩ × 2 µA ≈ 6 mV … rounds to 0.4 V" is self-contradictory; pick one and derive consistently.
+  - **HIGH · fact (inconsistency)** — Case 36.3 (L925–959): culprit "1000 W", symptom "$25–40/month", savings "$480/yr" can't all hold (1000 W ≈ $131/mo, $1577/yr). Reconcile to ~250–300 W or scale the dollars.
+  - **MED · fact** — L305–307 (Pullout): "5 milliamps" conflates the GFCI threshold with the two-pole probe's ~40 mA. **LOW** — L739: "4-ton" vs 4.2-ton; L84/124/193/577/694: 5 tool/procedure claims misaligned to `horowitz-hill-2015` → soften.
 - **Pedagogy: clean** — applied-track; kWh/kVAh/kVARh/peak-demand are engineering measurement categories (Term gloss → formula → where), all six narrative `<Formula>` "where" paragraphs pass. **Prose: clean.**
 
 ### Ch.34 — Plug to chip
