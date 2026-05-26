@@ -104,8 +104,8 @@ export default function Ch40HouseSurgeGrounding() {
       </p>
       <p className="mb-prose-3">
         Residential peak currents at the service entrance during direct or near-strikes typically
-        fall in the 3–20 kA range; IEEE C62.41's Category C (high-exposure service entrance) test
-        level is 10 kA for the 8/20 µs waveform
+        fall in the 3–20 kA range; IEEE C62.41's Category C2 (service-entrance) test
+        level is 10 kA for the 8/20 µs waveform (the highest-exposure C3 level reaches 20 kA)
         <Cite id="ieee-c62-41" in={SOURCES} />. The peak voltage on the line during such a pulse, on
         the wires before any SPD has clamped it, can climb to several kilovolts. NEC Article 285,
         which governs surge protective devices, codifies the assumption that the line voltage during
@@ -772,10 +772,10 @@ export default function Ch40HouseSurgeGrounding() {
         breaker being on is irrelevant. It is not. Through the still-closed main breaker, the
         generator's 240 V back-feeds out through the meter, up the service drop, into the utility's
         distribution transformer, and out the transformer's high-voltage primary at whatever step-up
-        ratio that transformer happens to use (typically 50:1, so 12 kV on a residential primary). A
-        lineman working on the "downed" line — having tested it dead with a hot-stick before
-        climbing — gets the 12 kV when the homeowner cranks the generator
-        <Cite id="nec-2023" in={SOURCES} />.
+        ratio that transformer happens to use (typically ~30:1, so about 7.2 kV on a residential
+        primary). A lineman working on the "downed" line — having tested it dead with a hot-stick
+        before climbing — gets that several-kilovolt jolt when the homeowner cranks the generator
+        <Cite id="ieee-c62-41" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         The interlock kit's mechanical plate solves this by physically preventing the main breaker
@@ -1067,11 +1067,11 @@ export default function Ch40HouseSurgeGrounding() {
             },
             {
               label: 'Service transformer step-up ratio',
-              value: <>~50:1 (residential pole-pig)</>,
+              value: <>~30:1 (residential pole-pig, 7.2 kV / 240 V)</>,
             },
             {
               label: 'Voltage on "downed" primary when generator runs',
-              value: <>~12 kV (240 V × 50)</>,
+              value: <>~7.2 kV (240 V × 30)</>,
             },
             {
               label: 'NEC 702 requirement',
@@ -1105,16 +1105,16 @@ export default function Ch40HouseSurgeGrounding() {
             circuit, up to the panel busbars, through the main breaker, out to the meter, and onto
             the supposedly de-energised utility service drop. From the service drop it travels up to
             the pole, into the secondary winding of the residential distribution transformer, and
-            induces a voltage on the primary at the transformer's step-up ratio. A typical 50:1
-            residential pole transformer puts about 12 kV on the primary when the secondary is at
-            240 V<Cite id="nec-2023" in={SOURCES} />.
+            induces a voltage on the primary at the transformer's step-up ratio. A typical ~30:1
+            residential pole transformer puts about 7.2 kV on the primary when the secondary is at
+            240 V<Cite id="ieee-c62-41" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
             A lineman a quarter-mile up the feeder, having tested the line dead with a hot-stick
             before climbing, grounds the line per NFPA 70E lockout-tagout discipline and begins his
             repair
             <Cite id="nfpa-70e-2024" in={SOURCES} />. If the customer's generator is started after
-            the test but before the grounding clamp is on, the 12 kV appears on a "dead" wire that
+            the test but before the grounding clamp is on, that ~7 kV appears on a "dead" wire that
             the lineman is in the process of touching. Linemen die from exactly this failure mode
             every few years in the United States; utility incident reports consistently identify
             customer-owned generators without transfer switches or interlocks as one of the most
