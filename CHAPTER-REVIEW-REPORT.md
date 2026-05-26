@@ -21,7 +21,7 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 | 3 | 13–18 | ✅ done | ✅ done | ✅ done |
 | 4 | 19–24 | ✅ done | ✅ done | ✅ done |
 | 5 | 25–30 | ✅ done | ✅ done | ✅ done |
-| 6 | 31–36 | ⬜ not started | ⬜ | ⬜ |
+| 6 | 31–36 | ✅ done | ✅ done | ✅ done |
 | 7 | 37–42 | ⬜ not started | ⬜ | ⬜ |
 
 **To resume after 7pm UTC:** re-run fact-check for Ch.19–24, fetch line-level
@@ -402,7 +402,10 @@ being resumed.
 - **Pedagogy:** no major findings reported (applied-track; reuses established quantities). **Prose: clean.**
 
 ### Ch.32 — House safety / NEC
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~35 claims audited, 30 resolve; **1 HIGH wrong value + cite-fit issues.** (Independently confirms Ch.28's GFCI-1975 / AFCI-1999 fixes.)
+  - **HIGH · fact (wrong)** — L589–590 (TryIt 32.4): cellulose piloted-ignition threshold "50 W/cm²" is ~25× too high (should be ~1–2 W/cm²; 50 W/cm² is total-engulfment) and the sentence also calls it "autoignition" (contradiction). The conclusion ("far above ignition") still holds; fix the threshold + the "sixty times" multiplier.
+  - **MED · fact (misaligned cite)** — L575–577 (UL 1699 waveforms cited to NEC), L1055–1058 (suit-leakage µA cited to IEC 60479), L780–783 (Ralph Lee 1982 model attributed via NFPA 70E only) → soften.
+  - **LOW · fact** — L421–422: "120 V dry → 1 mA" with 100 kΩ gives 1.2 mA.
 - **MED · pedagogy** — L380–383: body resistance jumps straight into `I_body = V_fault/R_body`; the intuition (skin resistance ~1 kΩ wet to >100 kΩ dry) sits *after* the formula in the "where" paragraph. Move the non-mathematical picture before L383.
 - All narrative `<Formula>` "where" paragraphs clean; no embedded demos. **Prose: clean.**
 

@@ -261,8 +261,8 @@ export default function Ch33HouseSmartMeter() {
         of power — that is, energy
         <Cite id="grainger-power-systems-2003" in={SOURCES} />. A geared mechanical register on the
         front face of the meter converts disk revolutions to kilowatt-hours through a fixed gear
-        ratio: typical mechanical meters spin at one revolution per 7.2 watt-hours, so 500
-        revolutions is exactly one kilowatt-hour.
+        ratio: a typical residential meter constant is one revolution per 2 watt-hours (Kh = 2), so
+        500 revolutions is exactly one kilowatt-hour.
       </p>
       <p className="mb-prose-3">
         The induction-disk meter has no microcontroller, no ADC, no firmware to update, and no radio
