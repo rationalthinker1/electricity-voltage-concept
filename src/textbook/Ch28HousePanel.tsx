@@ -314,8 +314,9 @@ export default function Ch28HousePanel() {
       </p>
       <p className="mb-prose-3">
         The magnetic element is a small solenoid wound around (or in series with) the same
-        conductor; at perhaps 8× rated current its field is strong enough to yank the latch open in
-        a fraction of a cycle — milliseconds, not seconds. This trip handles the dead-short case
+        conductor; at roughly 6–12× rated current (the UL 489 instantaneous-trip band) its field is
+        strong enough to yank the latch open in a fraction of a cycle — milliseconds, not seconds
+        <Cite id="ul-489" in={SOURCES} />. This trip handles the dead-short case
         where the conductor has bridged hot to neutral or hot to ground and the only thing limiting
         the current is the impedance of the wire itself. The{' '}
         <Term
@@ -345,9 +346,9 @@ export default function Ch28HousePanel() {
             <>
               <strong className="text-text font-medium">GFCI</strong> (ground-fault circuit
               interrupter) — a breaker that compares the current going out on hot with the current
-              returning on neutral and trips when the difference exceeds about 5 mA. Required since
-              NEC 1971 in bathrooms, then progressively in kitchens, garages, outdoors, and any wet
-              location.
+              returning on neutral and trips when the difference exceeds about 5 mA. First required
+              in NEC 1971 for outdoor and swimming-pool locations, extended to bathrooms in NEC
+              1975, then progressively to kitchens, garages, and any wet location.
             </>
           }
         >
@@ -415,8 +416,8 @@ export default function Ch28HousePanel() {
         fundamental, and the AFCI's firmware is trained to recognise that spectrum while rejecting
         the legitimate switching noise of a dimmer, a vacuum-cleaner brush, or a compact fluorescent
         ballast. UL 1699 is the listing standard for the device, and NEC has progressively widened
-        the AFCI requirement from bedrooms only (NEC 2002) to nearly all dwelling-unit rooms (NEC
-        2014 and after)
+        the AFCI requirement from bedroom circuits only (NEC 1999) to nearly all dwelling-unit rooms
+        (NEC 2014 and after)
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
 
@@ -1203,8 +1204,9 @@ export default function Ch28HousePanel() {
           <p>
             It is roughly the secondary voltage divided by the sum of the transformer's secondary
             impedance and the impedance of the service-drop conductors. A typical 25 kVA
-            single-phase pole-pig with about 2% impedance feeding a 200 A house through a short
-            service drop yields an available fault current of around 5–10 kA at the meter —
+            single-phase pole-pig with an impedance in the usual 1–5% range, feeding a 100 A house
+            through a short service drop, yields an available fault current of around 5–10 kA at the
+            meter —
             comfortably below the 22 kAIC of a residential main breaker and the 10 kAIC of a
             residential branch. Utilities will publish this number for any service on request, and
             for any commercial installation it must be calculated and stamped on the panel label

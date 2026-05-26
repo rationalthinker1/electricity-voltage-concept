@@ -878,7 +878,7 @@ export default function Ch30HouseSwitchesReceptacles() {
           <>
             A 14-50 receptacle is being installed for a level-2 EV charger. The dedicated branch
             breaker is rated
-            <strong className="text-text font-medium"> 50 A</strong>. NEC 625.41 treats EV charging
+            <strong className="text-text font-medium"> 50 A</strong>. NEC 625.42 treats EV charging
             as a continuous load, so the charger is permitted to draw at most 80 % of the breaker
             rating in steady state. What is the maximum continuous current the EVSE may pull, and
             what continuous power does that imply at the nominal 240 V?

@@ -852,7 +852,7 @@ export default function Ch27HouseGridArrives() {
               label: 'Service drop',
               value: (
                 <>
-                  ~50 m of #2 AWG aluminium triplex aerial cable <Cite id="nec-2023" in={SOURCES} />
+                  ~50 m of #2/0 AWG aluminium triplex aerial cable <Cite id="nec-2023" in={SOURCES} />
                 </>
               ),
             },
@@ -1203,7 +1203,8 @@ export default function Ch27HouseGridArrives() {
             sources — the utility service and the generator — and physically prevents both from
             feeding the panel simultaneously. The interlock matters because back-feeding utility
             lines from an unsynchronised generator can energise a "dead" service-drop wire that a
-            lineworker is repairing, with potentially fatal results. NEC Article 702 and 705 require
+            lineworker is repairing, with potentially fatal results. NEC Article 702 (optional
+            standby systems; Article 705 governs grid-tied interconnection) requires
             that any standby or interconnected generator be wired through a listed transfer switch
             (or an equivalent interlock kit on the main panel) so that the generator side cannot
             back-feed when the utility is the live source, and vice versa

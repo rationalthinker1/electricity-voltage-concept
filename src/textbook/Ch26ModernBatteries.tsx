@@ -263,7 +263,8 @@ export default function Ch26ModernBatteries() {
         <li>
           <strong className="text-text font-medium">LFP</strong> (LiFePO<sub>4</sub>, ~3.2 V) —
           phosphate framework instead of layered oxide, much more thermally stable, longer cycle
-          life (2000+ cycles), lower energy density. Goodenough et al. 1996. Now the dominant
+          life (2000+ cycles), lower energy density. Padhi & Goodenough, 1997{' '}
+          <Cite id="linden-reddy-2011" in={SOURCES} />. Now the dominant
           chemistry for grid-scale storage and many EVs.
         </li>
         <li>
