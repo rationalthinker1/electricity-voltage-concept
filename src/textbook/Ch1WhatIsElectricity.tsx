@@ -200,9 +200,9 @@ export default function Ch1WhatIsElectricity() {
         The reason daily life is full of static and not constant electrocution is that ordinary
         matter is exquisitely charge-neutral. The fractional excess of free charge needed to make a
         noticeable force is tiny. Drag a balloon across your hair and you transfer perhaps a few
-        tens of nanocoulombs <Cite id="hyperphysics-emag" in={SOURCES} /> — a tiny fraction of the
-        roughly 10²³ free electrons already in the rubber. Almost nothing. Enough to fight gravity
-        for a few minutes.
+        tens of nanocoulombs <Cite id="hyperphysics-emag" in={SOURCES} /> — a vanishingly small
+        fraction of the electrons already present in the rubber. Almost nothing. Enough to fight
+        gravity for a few minutes.
       </p>
 
       <TryIt
@@ -1018,8 +1018,8 @@ export default function Ch1WhatIsElectricity() {
 
         <FAQItem q="What does 1 coulomb actually look like in everyday terms?">
           <p>
-            Roughly the charge that flows through a 100-watt incandescent bulb in about a second,
-            since a typical household bulb draws on the order of 1 amp. As a static charge it is
+            Roughly the charge that flows through a 100-watt incandescent bulb in a little over a
+            second, since at 120 V such a bulb draws about 0.8 A. As a static charge it is
             enormous: two 1-C charges separated by 1 meter would repel each other with{' '}
             <strong className="text-text font-medium">~9×10⁹ N</strong>, more than the weight of a
             fully loaded aircraft carrier. That is why static-electricity demonstrations use

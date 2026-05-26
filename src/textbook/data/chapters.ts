@@ -155,6 +155,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'codata-2018',
       'usb-pd-r3',
       'catania-2015',
+      'linden-reddy-2011',
     ],
     punchline:
       'Voltage is energy per coulomb, current is charge per second, and the signal that lights the bulb travels in the field — not in the slow drift of the electrons themselves.',

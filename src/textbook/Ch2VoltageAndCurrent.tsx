@@ -297,8 +297,8 @@ export default function Ch2VoltageAndCurrent() {
         flow across that surface.
       </p>
       <p className="mb-prose-3">
-        Current has a direction. By the convention Benjamin Franklin set in 1747 — long before
-        anyone knew electrons existed — current points the direction{' '}
+        Current has a direction. By the convention Benjamin Franklin set in the mid-eighteenth
+        century — long before anyone knew electrons existed — current points the direction{' '}
         <em className="text-text italic">positive</em> charge would move. In an ordinary copper wire
         the actual carriers are electrons, which are negative, and they drift the opposite way from
         the{' '}
@@ -431,8 +431,8 @@ export default function Ch2VoltageAndCurrent() {
         <strong className="text-text font-medium">1 A</strong> — roughly what a small bedside lamp
         draws — has a drift velocity of about{' '}
         <strong className="text-text font-medium">0.02 mm/s</strong>{' '}
-        <Cite id="libretexts-conduction" in={SOURCES} />. A garden snail moves roughly fifty times
-        faster. To traverse a one-meter wire, a single electron needs about thirteen hours. For a
+        <Cite id="libretexts-conduction" in={SOURCES} />. A garden snail moves hundreds of times
+        faster. To traverse a one-meter wire, a single electron needs about fourteen hours. For a
         forty-foot extension cord at the same current, the better part of a week.
       </p>
 
@@ -511,8 +511,8 @@ export default function Ch2VoltageAndCurrent() {
 
       <p className="mb-prose-3">
         Inside a copper wire two completely different things can be said to "move," and they move at
-        speeds that differ by thirteen orders of magnitude. The electrons themselves drift at
-        millimeters per second. The{' '}
+        speeds that differ by nearly thirteen orders of magnitude. The electrons themselves drift at
+        fractions of a millimeter per second. The{' '}
         <em className="text-text italic">
           {' '}
           electromagnetic{' '}
@@ -839,7 +839,8 @@ export default function Ch2VoltageAndCurrent() {
           <p>
             Chemistry. Each electrochemical cell has a characteristic voltage set by the energy
             released per electron when its two half-reactions run: about 1.5 V for an alkaline
-            zinc–manganese-dioxide cell, 2.0 V for lead-acid, 3.7 V for lithium-ion. A 9 V battery
+            zinc–manganese-dioxide cell, 2.0 V for lead-acid, 3.7 V for lithium-ion{' '}
+            <Cite id="linden-reddy-2011" in={SOURCES} />. A 9 V battery
             is six 1.5 V alkaline cells stacked in series, summing to nine.{' '}
             <strong className="text-text font-medium">
               The number is fundamentally a count of joules per coulomb
@@ -1041,9 +1042,10 @@ export default function Ch2VoltageAndCurrent() {
 
         <FAQItem q="Why does conventional current point from + to − when actual electrons go the other way?">
           <p>
-            Historical accident. Benjamin Franklin chose the sign of charge in 1747, more than a
-            century before anyone knew electrons existed, and he guessed wrong about which carrier
-            was moving. By the time J. J. Thomson identified the electron in 1897 and pinned down
+            Historical accident. Benjamin Franklin chose the sign of charge in the mid-eighteenth
+            century, more than a century before anyone knew electrons existed, and he guessed wrong
+            about which carrier was moving. By the time J. J. Thomson identified the electron at the
+            close of the nineteenth century and pinned down
             its negative charge, every textbook, every circuit diagram, and every right-hand rule
             had baked the older convention in. Rather than rewrite all of electromagnetism,
             physicists kept "conventional current" pointing the way a positive charge would go and
