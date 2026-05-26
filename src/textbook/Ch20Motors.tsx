@@ -499,8 +499,8 @@ export default function Ch20Motors() {
       <p className="mb-prose-3">
         Synchronous motors are where you need precise speed: the spindle in a hard drive, the
         platter in a vinyl turntable, the rolling mill in a steel plant, the propeller shaft in an
-        icebreaker. A clock running on a synchronous motor keeps time to within a few seconds per
-        year, because grid operators schedule periodic frequency corrections to keep the accumulated
+        icebreaker. A clock running on a synchronous motor stays accurate over the long run, because
+        grid operators schedule periodic frequency corrections to keep the accumulated
         cycle count aligned with civil time
         <Cite id="grainger-power-systems-2003" in={SOURCES} />. The trade-off is that a synchronous
         motor doesn't start on its own — it has to be brought up to near-synchronous speed by some
@@ -1031,8 +1031,9 @@ export default function Ch20Motors() {
 
         <FAQItem q="Why do EVs use 3-phase AC motors instead of DC motors?">
           <p>
-            Early EVs (GM EV1, 1996; Toyota RAV4 EV, 1997) actually did use DC motors. Modern EVs
-            moved to 3-phase AC (PMSM or induction) for three reasons. First, they're brushless —
+            Many early and home-converted EVs used brushed DC motors — easy to control with a
+            simple chopper and forgiving of crude electronics. Modern EVs moved to 3-phase AC (PMSM
+            or induction) for three reasons. First, they're brushless —
             critical for the 100 000+ km lifetime requirement. Second, they integrate cleanly with
             the inverter architecture that the battery already needs anyway (a battery feeds a
             3-phase inverter that drives a 3-phase motor). Third, the field-oriented control scheme
@@ -1062,8 +1063,10 @@ export default function Ch20Motors() {
             They could — and that's what a PMSM is. The induction motor's rotor is deliberately
             passive: its currents are induced by the rotating stator field. The advantages are that
             you don't need any rare-earth content (no neodymium-iron-boron supply chain), the rotor
-            tolerates very high temperatures (PM motors can irreversibly demagnetise above ~150 °C),
-            and the construction is essentially indestructible (a single piece of cast aluminium
+            tolerates very high temperatures (PM motors can irreversibly demagnetise at elevated
+            temperatures — grade-dependent, often around 150 °C{' '}
+            <Cite id="krishnan-2010-bldc" in={SOURCES} />), and the construction is essentially
+            indestructible (a single piece of cast aluminium
             plus a stack of laminated steel). The disadvantage is slightly lower efficiency, because
             some of the energy that flows across the air gap is dissipated in <M tex="I^2 R" />{' '}
             losses in the rotor bars. For very large machines (over 100 kW) the efficiency gap is
