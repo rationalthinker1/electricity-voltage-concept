@@ -22,3 +22,7 @@
 
 - [Ch34 Plug-to-chip audit findings](ch34_audit_findings.md) — applied-track capstone; Rule A not applicable; η_charger symbol undefined in where-paragraph at L427 (MED); Rule C not applicable (no demos)
 - [Ch36 House Troubleshooting audit findings](ch36_audit_findings.md) — all three rules clean; numeric-substitution Formula after its symbolic form needs no second where-paragraph
+- [Ch38 Smart Retrofits audit findings](ch38_audit_findings.md) — applied-track; all three rules clean; P_bleeder and V_rms(α) are applied formulas, not new foundational quantities
+- [Ch39 Outdoor/Wet audit findings](ch39_audit_findings.md) — applied-track; all three rules clean; no demos; three narrative Formulas all have complete where-paragraphs
+- [Ch41 EV Powertrain audit findings](ch41_audit_findings.md) — capstone integration chapter; all three rules clean; no demos (Rule C N/A); integration-chapter back-reference pattern documented
+- [Ch42 Fiber Optics audit findings](ch42_audit_findings.md) — TIR/NA missing intuition tiers (Rule A MED); all Formula glossaries clean (Rule B); post-demo UI-framing paragraph at L116 (Rule C MED)

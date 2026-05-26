@@ -450,3 +450,35 @@ being resumed.
 - **Pedagogy: clean** — applied-track; the open-neutral voltage-divider, `I_leak`, and `t_trip` formulas all have complete "where" paragraphs; no demos. **Prose: clean.**
 
 ---
+
+## Batch 7 — Chapters 37–42
+
+### Ch.37 — Running a new circuit (applied track)
+- **Fact-check:** _pending (running)_
+- **Pedagogy: clean** — all six narrative `<Formula>` "where" paragraphs (220.82 demand, continuous-load, voltage-drop, box-fill) complete; no demos. **Prose: clean.**
+
+### Ch.38 — Smart retrofits (applied track)
+- **Fact-check:** _pending (running)_
+- **Pedagogy: clean** — `P_bleeder` and `V_rms(α)` "where" paragraphs complete; no demos. **Prose: clean.**
+
+### Ch.39 — Outdoor and wet locations (applied track)
+- **Fact-check:** _pending (running)_
+- **Pedagogy: clean** — no demos; no formula-glossary issues.
+- **LOW · prose** — broken-hyphen artefacts: L917 `"licensed- electrician"`; L1308 `"personnel- protection"`.
+
+### Ch.40 — Surge and grounding (applied track)
+- **Fact-check:** _pending (running)_
+- **Pedagogy: clean** — `V=L·dI/dt`, parallel-rod `R_GES`, and `V_let-through` "where" paragraphs all complete; no demos. **Prose: clean.**
+
+### Ch.41 — Electric-vehicle powertrain (capstone)
+- **Fact-check:** _pending (running)_
+- **MED · pedagogy** — L871: `F_climb = m·g·sin(θ)` "where" leaves `θ` units ambiguous ("radians or degrees") and doesn't state `sin(θ)` is dimensionless / `F_climb` in N. Tighten.
+- **NOTE (structural)** — all seven h2 sections are **demo-free**; as a non-applied-track capstone, CLAUDE.md §6 expects ≥1 demo per h2. (Content gap, not a fix in this pass.)
+- **LOW · prose** — L1037: `"vehicle- invariant"` broken-hyphen artefact.
+
+### Ch.42 — Fiber-optic communication link (capstone)
+- **Fact-check:** _pending (running)_
+- **Pedagogy:** _pending (running)_
+- **Prose: clean.**
+
+---
