@@ -1241,7 +1241,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'ul-498',
       'nfpa-70e-2024',
       'nema-wd-6',
-      'grainger-power-systems-2003',
       'codata-2018',
     ],
     punchline:

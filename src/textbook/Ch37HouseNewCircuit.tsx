@@ -84,7 +84,7 @@ export default function Ch37HouseNewCircuit() {
         dwelling (in volt-amperes, not watts; the difference matters for motors and electronics but
         not for resistive loads), then apply the 220.82 rule of thumb:
       </p>
-      <Formula tex="I_{\text{demand}} = \dfrac{3 \times W_{\text{first10k}}/1000 + 0.40 \times W_{\text{remainder}}/1000}{V}" />
+      <Formula tex="I_{\text{demand}} = \dfrac{1.00 \times W_{\text{first10k}}/1000 + 0.40 \times W_{\text{remainder}}/1000}{V}" />
       <p className="mb-prose-3">
         where <M tex="I_{\text{demand}}" /> is the calculated service demand current (in amperes
         RMS) that the panel needs to be able to carry, <M tex="W_{\text{first10k}}" /> is the first
@@ -105,8 +105,8 @@ export default function Ch37HouseNewCircuit() {
         </Term>{' '}
         — almost no household actually runs the dryer, the oven, the heat pump and the dishwasher
         all at full power simultaneously), and <M tex="V" />
-        is the service voltage (240 V for a standard split-phase residential service). The factor of
-        3 on the first chunk and 0.40 on the remainder are the two empirical numbers the NEC
+        is the service voltage (240 V for a standard split-phase residential service). Counting the
+        first 10 kVA at 100% and the remainder at 40% are the two empirical weightings the NEC
         committee chose to make the formula match observed peak loads on real residential services
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
@@ -572,7 +572,7 @@ export default function Ch37HouseNewCircuit() {
       </p>
       <p className="mb-prose-3">
         For the garage receptacle the box is a single 4-square steel device box rated for 21.0 cubic
-        inches, with a single 12-2 NM-B cable entering through an external clamp. Three insulated
+        inches, with a single 12-2 NM-B cable entering through an external clamp. Two insulated
         conductors (hot, neutral; the bare ground is counted separately as a single bundle), one
         receptacle on a yoke, one ground bundle:
       </p>
@@ -700,8 +700,9 @@ export default function Ch37HouseNewCircuit() {
             <>
               <strong className="text-text font-medium">approach boundary</strong> — the distance
               from energised parts inside which only qualified electrical workers may operate,
-              defined in NFPA 70E. The "Limited Approach Boundary" for 250 V residential service is
-              roughly 1.5 m; inside the "Restricted Approach Boundary" energised work requires
+              defined in NFPA 70E. The "Limited Approach Boundary" is set by NFPA 70E Table 130.4
+              (on the order of a metre for fixed circuit parts at this voltage, more for exposed
+              movable conductors); inside the "Restricted Approach Boundary" energised work requires
               explicit PPE and an energised-work permit.
             </>
           }
@@ -709,8 +710,8 @@ export default function Ch37HouseNewCircuit() {
           approach boundary
         </Term>{' '}
         and PPE expectations for working in a residential panel cover-off; for a 240 V service the
-        limited approach boundary is roughly 1.5 m, well outside any practical reach of the bus bars
-        themselves
+        limited approach boundary (NFPA 70E Table 130.4) is on the order of a metre, well outside
+        any practical reach of the bus bars themselves
         <Cite id="nfpa-70e-2024" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -990,7 +991,7 @@ export default function Ch37HouseNewCircuit() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             At the receptacle end the conductor enters a single-gang 21 in³ steel box. Box-fill
-            checks out at 11.25 in³ (three insulated conductors plus one ground bundle plus one
+            checks out at 11.25 in³ (two insulated conductors plus one ground bundle plus one
             receptacle yoke), well inside the 21 in³ capacity. The receptacle is side-screwed (not
             backstabbed) and torqued to the manufacturer's spec. The path is straightforward: the
             cable runs along a basement ceiling joist, threads up through a 3/4 inch hole drilled in
@@ -1142,7 +1143,7 @@ export default function Ch37HouseNewCircuit() {
             to trip the 60 A feeder breaker); they act as a reference-stabilising surge path,
             holding the workshop's local ground reference to within a few volts of the soil
             potential during lightning or utility transients
-            <Cite id="grainger-power-systems-2003" in={SOURCES} />.
+            <Cite id="nec-2023" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
             Energising follows the NFPA 70E sequence: arc-rated face shield, leather-over-rubber
@@ -1162,8 +1163,8 @@ export default function Ch37HouseNewCircuit() {
             Because the breaker exists to protect the conductor, and 12 AWG copper begins to
             overheat at sustained currents above roughly 25 A. NEC 240.4(D) caps the overcurrent
             device for 12 AWG at 20 A as a small-conductor rule: it is not the conductor's absolute
-            ampacity (which Table 310.16 puts at 25 A at 75 °C) but a deliberate buffer that keeps
-            the wire well below its insulation's failure point
+            ampacity (which Table 310.16 puts at 25 A in the 90 °C column, 20 A at 75 °C) but a
+            deliberate buffer that keeps the wire well below its insulation's failure point
             <Cite id="nec-2023" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1366,7 +1367,7 @@ export default function Ch37HouseNewCircuit() {
             <Cite id="nec-2023" in={SOURCES} />. The same multiplier is why every
             commercial-lighting load is sized at 1.25× and why EV chargers always get oversized
             breakers relative to their nameplate current
-            <Cite id="grainger-power-systems-2003" in={SOURCES} />.
+            <Cite id="nec-2023" in={SOURCES} />.
           </p>
         </FAQItem>
 
