@@ -572,8 +572,9 @@ export default function Ch32HouseSafety() {
         broadband spectral noise of an arc, while rejecting the legitimate switching noise of
         dimmers, vacuum-cleaner brushes, compact-fluorescent ballasts, and laser-printer fusers. The
         classifier is the entire engineering challenge — the trip mechanism itself is a conventional
-        solid-state release — and the listing standard (UL 1699) defines a long set of test
-        waveforms that the device must trip on and a longer set of nuisance waveforms it must not
+        solid-state release — and the listing standard (UL 1699, referenced by NEC Article 210.12)
+        defines a long set of test waveforms that the device must trip on and a longer set of
+        nuisance waveforms it must not
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
 
@@ -777,8 +778,8 @@ export default function Ch32HouseSafety() {
           working distance
         </Term>
         , the same energy units used in food chemistry (1 cal = 4.184 J). For a low-voltage
-        three-phase arc in an enclosed panel the simplified Ralph Lee model — the original 1982
-        calculation — approximates the radiative energy at distance d as
+        three-phase arc in an enclosed panel the simplified Ralph Lee model described in NFPA 70E
+        Annex D approximates the radiative energy at distance d as
       </p>
       <Formula tex="E_{\\text{arc}} \\approx \\dfrac{V \\times I_{\\text{bolted}} \\times t_{\\text{clear}}}{4\\pi d^2}" />
       <p className="mb-prose-3">
@@ -1051,10 +1052,9 @@ export default function Ch32HouseSafety() {
             <Cite id="osha-1910-269" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            The technique is used routinely on lines up to 765 kV. Workers have measured the leakage
-            current through their conductive suits to the line during transitions — capacitive
-            coupling during the approach, before the bonding strap is connected — at a few hundred
-            microamperes, well inside IEC zone AC-1
+            The technique is used routinely on lines up to 765 kV. The capacitive coupling current
+            through a worker's conductive suit during the approach — before the bonding strap is
+            connected — stays well inside IEC zone AC-1
             <Cite id="iec-60479-2018" in={SOURCES} />. The instant the strap is on, even that
             disappears.
           </p>
