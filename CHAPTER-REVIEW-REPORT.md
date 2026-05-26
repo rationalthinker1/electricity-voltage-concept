@@ -462,12 +462,18 @@ being resumed.
 - **Pedagogy: clean** — `P_bleeder` and `V_rms(α)` "where" paragraphs complete; no demos. **Prose: clean.**
 
 ### Ch.39 — Outdoor and wet locations (applied track)
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~55 claims audited; **3 HIGH numerical + 2 MED**; no cite-resolution failures.
+  - **HIGH · fact (wrong)** — L552: "6 AWG copper … 75 °C … 55 A ampacity" — NEC 310.16 gives 6 AWG Cu @75 °C = **65 A** (55 A is the 60 °C column). Fix to 65 A.
+  - **HIGH · fact (inconsistency)** — L1113–1114 (Case 39.2): "delivers 11.5 kW (240×48×0.92 ≈ 10.6 kW)" — 11.5 kW is gross input, 10.6 kW is the real output. Keep 10.6 kW.
+  - **HIGH · fact (wrong)** — L638 (Term "control pilot"): J1772 "6% = 6 A" — minimum 6 A is **10%** duty (I = 0.6×duty% over 10–85%). Fix to "10% ≡ 6 A."
+  - **MED · fact** — L1229–1240 (FAQ): IP44/IP67 definitions are IEC 60529 (not in registry) → soften to "roughly equivalent to IEC 60529 IP44/IP67." L207–215: "3 ft ≈ 1.5 m" conflation (3 ft = 0.9 m); separate the 0.9 m perimeter from the 1.5 m bonding zone.
 - **Pedagogy: clean** — no demos; no formula-glossary issues.
 - **LOW · prose** — broken-hyphen artefacts: L917 `"licensed- electrician"`; L1308 `"personnel- protection"`.
 
 ### Ch.40 — Surge and grounding (applied track)
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~45 claims audited, 43 resolve, **all arithmetic clean**; 1 HIGH wrong number + 1 MED.
+  - **HIGH · fact (wrong + misaligned cite)** — L775/778/1074/1108–1110: residential transformer back-feed "~50:1, so 12 kV" — standard residential is 7.2 kV primary / 240 V → **~30:1 → ~7.2 kV**; and the ratio is cited to `nec-2023` (which doesn't specify transformer ratios). Fix to 30:1 / ~7 kV and re-cite `ieee-c62-41` or drop.
+  - **MED · fact** — L107–108: IEEE C62.41 "Category C high-exposure = 10 kA" — 10 kA is **C2** (medium); high-exposure C3 = 20 kA. Relabel "C2 service-entrance, 10 kA."
 - **Pedagogy: clean** — `V=L·dI/dt`, parallel-rod `R_GES`, and `V_let-through` "where" paragraphs all complete; no demos. **Prose: clean.**
 
 ### Ch.41 — Electric-vehicle powertrain (capstone)
