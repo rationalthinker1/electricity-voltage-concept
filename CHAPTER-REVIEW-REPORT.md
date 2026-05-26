@@ -342,7 +342,11 @@ being resumed.
 - Demo-framing clean. **Prose: clean.**
 
 ### Ch.26 — Modern batteries
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~55 claims audited, 52 resolve, all arithmetic correct; **1 wrong year + misaligned cites.**
+  - **HIGH · fact (wrong)** — L266: "Goodenough et al. **1996**" for LFP — the Padhi/Goodenough paper is **1997** (*J. Electrochem. Soc.* 144); also uncited. Fix year + soften/cite.
+  - **HIGH · fact (misaligned cite)** — 7 product-spec claims (L117, L242, L204, L347, L663, L813, L859) cited to `bard-faulkner-2001` (fundamentals text); re-aim to `linden-reddy-2011` (**already in chapter sources**).
+  - **MED · fact (misaligned cite)** — L620 & L429–435: Toyota Mirai specs cited to `larminie-dicks-2003` (predates the car). Soften or drop the cite from the spec.
+  - **MED · fact** — L880 (FAQ): "~95% of industrial hydrogen from fossil fuels" uncited → soften.
 - **HIGH · pedagogy** — energy density / specific energy is the chapter's headline metric from L117 (~35/250/165 Wh/kg) but is **never introduced as a quantity** — no intuition, no `ρ_E = E/m`, no units before first use. Add a three-tier intro at/before L117.
 - **MED · pedagogy** — C-rate appears only in the FAQ `<Term>` popover (L845–861); no intuition/formal tier in the narrative.
 - All narrative `<Formula>` "where" paragraphs clean; demo-framing clean. **Prose: clean.**
@@ -353,7 +357,11 @@ being resumed.
 - **LOW · pedagogy** — L191–192: `I = P/V` "where" says "same symbols, same meaning" without restating SI units; add a one-line unit restatement. **Prose: clean.**
 
 ### Ch.28 — The house panel (applied track)
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~45 claims audited, all arithmetic correct, all cites resolve; **2 NEC-history errors + uncited values + a sizing mismatch.**
+  - **HIGH · fact (wrong)** — L349 (GFCI Term): "Required since NEC 1971 in bathrooms" — 1971 was outdoor/pools; **bathroom** GFCI came in NEC **1975**.
+  - **HIGH · fact (wrong)** — L418–419: AFCI "bedrooms only (NEC 2002)" — first required in NEC **1999** (§210-12). Fix to 1999.
+  - **HIGH · fact** — L1205–1208: 25 kVA transformer "feeding a 200 A house" is mismatched (25 kVA ≈ 100 A); the 5–10 kA fault math fits 100 A. Change "200 A" → "100 A". 2% impedance uncited → cite or soften to 1–5%.
+  - **HIGH · fact** — L317: magnetic-trip "8× rated current" uncited; UL 489 gives 6–12×. Soften + cite `ul-489`.
 - **MED · pedagogy** — L504: arc-flash `E_arc ≈ V·I_fault·t_clear` has no "where" paragraph after it (symbols only in preceding prose). Add one (J / V / A / s).
 - **MED · pedagogy** — L270–277: pure demo-framing before `PanelBus3DDemo` → move into its `caption`. **Prose: clean.**
 
