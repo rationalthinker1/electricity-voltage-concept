@@ -13,3 +13,12 @@
 
 - [Ch25 Batteries audit findings](ch25_audit_findings.md) — E° intuition tier missing; L252 and L342 missing where-paragraphs; chemical half-reaction Formulas with inline Terms are exempt from Rule B
 - [Ch26 Modern Batteries audit findings](ch26_audit_findings.md) — energy density intuition/formal tiers missing; C-rate FAQ-only; chemical Formulas exempt from Rule B; Rule C clean
+
+- [Ch31 Big Loads audit findings](ch31_audit_findings.md) — FLA intuition tier missing (MED); applied-track chapters still trigger Rule A for new named formulas; demand factor (prose-only, no formula) correctly exempt
+
+- [Ch32 House Safety audit findings](ch32_audit_findings.md) — body-resistance intuition tier missing (MED); all Formula glossaries clean; no demos so Rule C not applicable
+
+- [Ch35 Replacing fixtures audit findings](ch35_audit_findings.md) — applied-track chapter: Rule A not applicable; all Formula where-paragraphs clean; no demos so Rule C not applicable
+
+- [Ch34 Plug-to-chip audit findings](ch34_audit_findings.md) — applied-track capstone; Rule A not applicable; η_charger symbol undefined in where-paragraph at L427 (MED); Rule C not applicable (no demos)
+- [Ch36 House Troubleshooting audit findings](ch36_audit_findings.md) — all three rules clean; numeric-substitution Formula after its symbolic form needs no second where-paragraph

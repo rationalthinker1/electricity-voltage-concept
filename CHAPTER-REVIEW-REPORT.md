@@ -393,3 +393,33 @@ being resumed.
 - **MED · pedagogy** — L586–595: mixed UI/physics; keep the SPDT-collapse + neutral-hazard physics, move the "flagged in red" UI observations to the caption. **Prose: clean.**
 
 ---
+
+## Batch 6 — Chapters 31–36 (applied track)
+
+### Ch.31 — House big loads
+- **Fact-check:** _pending (running)_
+- **Pedagogy:** no major findings reported (applied-track; reuses established quantities). **Prose: clean.**
+
+### Ch.32 — House safety / NEC
+- **Fact-check:** _pending (running)_
+- **MED · pedagogy** — L380–383: body resistance jumps straight into `I_body = V_fault/R_body`; the intuition (skin resistance ~1 kΩ wet to >100 kΩ dry) sits *after* the formula in the "where" paragraph. Move the non-mathematical picture before L383.
+- All narrative `<Formula>` "where" paragraphs clean; no embedded demos. **Prose: clean.**
+
+### Ch.33 — The smart meter
+- **Fact-check:** _pending (running)_
+- **Pedagogy: clean** — applied-track; kWh/kVAh/kVARh/peak-demand are engineering measurement categories (Term gloss → formula → where), all six narrative `<Formula>` "where" paragraphs pass. **Prose: clean.**
+
+### Ch.34 — Plug to chip
+- **Fact-check:** _pending (running)_
+- **MED · pedagogy** — L427–428: `η_charger = V_s·I_s/(V_in·I_in)` "where" paragraph defines the four RHS symbols but never names `η_charger` itself (end-to-end efficiency, dimensionless). Add it.
+- All other narrative `<Formula>` "where" paragraphs clean; no demos. **Prose: clean.**
+
+### Ch.35 — Replacing fixtures
+- **Fact-check:** _pending (running)_
+- **Pedagogy:** no major findings reported (applied-track). **Prose: clean.**
+
+### Ch.36 — Troubleshooting
+- **Fact-check:** _pending (running)_
+- **Pedagogy: clean** — applied-track; the open-neutral voltage-divider, `I_leak`, and `t_trip` formulas all have complete "where" paragraphs; no demos. **Prose: clean.**
+
+---
