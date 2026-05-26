@@ -29,6 +29,18 @@ detail for Ch.23 pedagogy, then run all three auditors for Batches 5–7
 (Ch.25–42). Mechanical lint (`npm run lint:chapters`) was clean across all 42
 before this pass, so the semantic auditors are the only outstanding work.
 
+### Fixes applied
+
+All **factual / anti-hallucination** findings from Batches 1–3 (Ch.1–18, Ch.16
+was already clean) have been **fixed and pushed** — arithmetic errors,
+wrong-physics corrections, misaligned-cite swaps, source wiring, and softened
+unsourced claims. The broken-hyphen prose artefacts in Ch.19/21/23 are fixed.
+**Still open:** the pedagogy findings (intuition tiers buried in `<Term>`
+popovers, demo-framing prose that should move to captions, missing "where"
+paragraphs) are larger editorial rewrites and have **not** been applied yet —
+they await a go-ahead on scope. Batch 4 fact-checks + Batches 5–7 review are
+being resumed.
+
 ---
 
 ## Batch 1 — Chapters 1–6
@@ -277,8 +289,12 @@ before this pass, so the semantic auditors are the only outstanding work.
 - No demo-framing violations. **Prose: clean.**
 
 ### Ch.23 — Transformers
-- **Fact-check:** _NOT RUN — session limit hit (resets 7pm UTC). Re-run for this chapter._
-- **MED · pedagogy** — Term-popover-as-sole-tier pattern present (turns ratio / impedance transformation) — confirmed by the auditor as one of the Ch.17/21/23 cluster; line-level detail to be appended.
+- **Fact-check:** _re-running (Batch-4 relaunch)._
+- **HIGH · pedagogy** — L62–151: turns ratio (`Vs/Vp = Ns/Np`) **intuition tier missing** — the section opens with an already-numerical pole-pig hook, then goes straight to the Faraday-law derivation (L101); `TurnsRatioDemo` (L151) lands after three `<Formula>` blocks. Add a formula-free "count the turns, scale the voltage — like gears" picture before L101.
+- **MED · pedagogy** — L458–480: impedance-transformation intuition lives **only in a `<Term>` popover** (which states the formula, not a picture). Add a "10:1 step-down makes the load look 100× heavier" analogy before L480.
+- **MED · pedagogy** — L811–821: `V = 4.44·f·N·B·A` is used in TryIt 23.6 but never presented as a narrative `<Formula>` + "where" first.
+- **HIGH · pedagogy** — L667–672: pure demo-framing before `TransformerDesignerDemo` → move verbatim into its `caption`.
+- All other narrative `<Formula>` blocks pass the glossary rule. **Prose: clean** (broken-hyphen artefacts now fixed).
 - **LOW · prose** — broken-hyphen artefacts: L1213 `"low- impedance"` → `low-impedance`; L1271 `"open- circuit"` → `open-circuit`.
 
 ### Ch.24 — Rectifiers and inverters
