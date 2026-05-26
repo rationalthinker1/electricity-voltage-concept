@@ -235,6 +235,15 @@ export default function Ch25Batteries() {
       <h2 className="chapter-h2">Standard electrode potentials</h2>
 
       <p className="mb-prose-3">
+        Before the table of numbers, the idea: every half-reaction has an appetite for electrons.
+        The standard electrode potential is the scoreboard that ranks those appetites — a single
+        voltage saying how strongly each chemistry pulls electrons toward itself, every couple
+        scored against one common opponent. Underneath, it is purely energetic: that voltage is the
+        reaction's free-energy change expressed per electron transferred, which is exactly why
+        stacking two couples with a big gap between them yields a big cell voltage.
+      </p>
+
+      <p className="mb-prose-3">
         Every half-reaction has an intrinsic "reaction tendency" that you can measure. By
         convention, chemists assign each reduction half-reaction a number called its{' '}
         <Term def="The voltage of a half-reaction measured against the standard hydrogen electrode (SHE = 0.00 V), with all species at 1 M concentration, 1 atm, 298 K. Tabulated for every common couple — the universal lookup table for battery chemistry.">

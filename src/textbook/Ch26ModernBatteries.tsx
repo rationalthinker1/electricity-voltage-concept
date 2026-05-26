@@ -46,9 +46,17 @@ export default function Ch26ModernBatteries() {
       <p className="mb-prose-3">
         Three radically different working systems, all heirs to Volta's pile. This chapter is a tour
         through the actual chemistries powering modern life: lead-acid (Planté 1859), nickel-based
-        cells, the Whittingham– Goodenough–Yoshino lithium-ion revolution (Nobel 2019), and the
+        cells, the Whittingham–Goodenough–Yoshino lithium-ion revolution (Nobel 2019), and the
         non-battery cousins — supercapacitors and fuel cells — that share the same two-electrode
         architecture but lean differently on the trade-offs of energy, power, and refuelling.
+      </p>
+      <p className="mb-prose-3">
+        One number recurs throughout, so meet it now: <em className="text-text italic">energy
+        density</em> — more precisely <em className="text-text italic">specific energy</em>, the
+        energy a cell stores per kilogram of its own mass, measured in watt-hours per kilogram
+        (Wh/kg). It is the single figure that decides whether a chemistry goes in a phone, a car, or
+        a grid-scale shed, and the stubborn gap between the best battery (a few hundred Wh/kg) and
+        liquid fuel (thousands) is the whole reason range anxiety exists.
       </p>
 
       <h2 className="chapter-h2">Beyond Volta: the first rechargeable cell</h2>

@@ -55,6 +55,15 @@ export default function Ch20Motors() {
       <h2 className="chapter-h2">Force on a wire = torque on a coil</h2>
 
       <p className="mb-prose-3">
+        The quantity a motor exists to produce is torque — twist. Think of a wrench: the same push
+        applied farther from the bolt turns it harder, because torque is leverage, force acting at a
+        distance from an axis. A motor's whole trick is to take the magnetic force on its
+        current-carrying wires and arrange the geometry so that force becomes a steady twist on a
+        spinning shaft. Everything below is the machinery for turning "force on a wire" into "torque
+        on a coil."
+      </p>
+
+      <p className="mb-prose-3">
         The magnetism chapter wrote down the{' '}
         <Term
           def={
