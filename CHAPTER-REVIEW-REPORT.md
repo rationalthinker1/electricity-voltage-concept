@@ -22,24 +22,27 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 | 4 | 19–24 | ✅ done | ✅ done | ✅ done |
 | 5 | 25–30 | ✅ done | ✅ done | ✅ done |
 | 6 | 31–36 | ✅ done | ✅ done | ✅ done |
-| 7 | 37–42 | ⬜ not started | ⬜ | ⬜ |
+| 7 | 37–42 | ✅ done | ✅ done | ✅ done |
 
-**To resume after 7pm UTC:** re-run fact-check for Ch.19–24, fetch line-level
-detail for Ch.23 pedagogy, then run all three auditors for Batches 5–7
-(Ch.25–42). Mechanical lint (`npm run lint:chapters`) was clean across all 42
-before this pass, so the semantic auditors are the only outstanding work.
+**Audit complete: all 42 chapters reviewed (fact-check + pedagogy + prose).**
 
-### Fixes applied
+### Fixes applied (running)
 
-All **factual / anti-hallucination** findings from Batches 1–3 (Ch.1–18, Ch.16
-was already clean) have been **fixed and pushed** — arithmetic errors,
-wrong-physics corrections, misaligned-cite swaps, source wiring, and softened
-unsourced claims. The broken-hyphen prose artefacts in Ch.19/21/23 are fixed.
-**Still open:** the pedagogy findings (intuition tiers buried in `<Term>`
-popovers, demo-framing prose that should move to captions, missing "where"
-paragraphs) are larger editorial rewrites and have **not** been applied yet —
-they await a go-ahead on scope. Batch 4 fact-checks + Batches 5–7 review are
-being resumed.
+- **Factual / anti-hallucination:** every **wrong-fact and arithmetic error**
+  found in Ch.1–42 has been fixed and pushed — including Ch.6 magnetar ratio
+  (10⁶ off), Ch.11 Case 11.2 (powers-of-ten), Ch.12 power-factor (33→100%),
+  Ch.15 FFT (1638→4096), Ch.17 copper physics, Ch.19 three arithmetic errors,
+  Ch.20 GM-EV1 AC/DC, Ch.21 orders-of-magnitude, Ch.23 Stanley 1886, Ch.26 LFP
+  1997, Ch.27 NEC 705, Ch.28 GFCI/AFCI years + transformer sizing, Ch.30
+  625.42, Ch.31 codata, Ch.32 cellulose, Ch.33 disk-meter + NEM, Ch.36
+  Keysight, Ch.37 demand coefficient, Ch.39 ampacity/J1772, Ch.40 transformer
+  ratio, Ch.42 Kapron/NA/dispersion, etc. Misaligned-cite swaps and
+  in-registry source wiring done for Ch.1–24; **the Batch 5–7 cite-alignment
+  swaps and soften-unsourced items are partially applied (wrong-facts first).**
+- **Prose:** all broken-hyphen artefacts fixed (Ch.19/21/23/39/41).
+- **Pedagogy:** Ch.1 applied; the rest (intuition-tier rewrites, demo-framing →
+  caption moves, missing "where" paragraphs) are the **largest remaining
+  editorial batch** and are being worked through chapter by chapter.
 
 ---
 
@@ -415,18 +418,21 @@ being resumed.
   - **HIGH · fact (arithmetic)** — L740–741 (TryIt 33.5): NEM result "≈ 1.7 **cent** charge" — 8×$0.27 − 10×$0.05 = **$1.66** (100× off).
   - **HIGH · fact (arithmetic)** — Case 33.2 (L956–987): three inconsistent kVAR sets (626/495/131 vs 640.8/495.8/145 vs 143); pick one input set and recompute. L869: Case 33.1 "$215/month no-shift" needs ~70% peak share (implausible) — recompute or soften.
   - **MED · fact (misaligned cite)** — ~8 utility-rate claims cited to `ansi-c12-1-2014` (a metering-accuracy standard, not tariffs) → soften to "typical."
+- **Pedagogy: clean** — kWh/kVAh/kVARh/peak-demand are engineering measurement categories (Term gloss → formula → where); all six narrative `<Formula>` "where" paragraphs pass. **Prose: clean.**
 
 ### Ch.34 — Plug to chip
 - **Fact-check:** ~40 claims audited, arithmetic correct (minor <2% rounding); **uncited specs + misaligned cites.**
   - **HIGH · fact** — L809 ("1995 brick 600 g, 50–60%") and L931 ("100 W charger 400 g → 150 g") masses uncited → soften; Apple M3 die/transistor/20 A specs (L701–708) uncited → soften/drop.
   - **HIGH · fact (misaligned cite)** — L697/L848/L1058: DVFS / VRM architecture cited to `sedra-smith-2014` → `erickson-maksimovic-2020`; L964: ANSI C84.1 132 V cited to erickson → soften.
   - **MED · fact** — L366: "duty cycle up 20%" → ~18%. L744: 0.62 W → 0.61 W. L530–534: power-profiles Term omits 12 V (prose includes it).
+- **MED · pedagogy** — L427–428: `η_charger = V_s·I_s/(V_in·I_in)` "where" never names `η_charger` itself (end-to-end efficiency, dimensionless). Add it. **Prose: clean.**
 
 ### Ch.35 — Replacing fixtures
 - **Fact-check:** ~45 claims audited, 40 resolve; **2 misaligned cites + 2 warnings + an internal inconsistency.**
   - **HIGH · fact (misaligned cite)** — L1000 & L1048: `I = P/V` (12.5 A) cited to `codata-2018` (constants) → drop or `nec-2023`. L872–874/L922/L1311–1313: GFCI-electronics/UL 943 claims cited to `ul-498` (plugs/receptacles) → add `ul-943` or soften to NEC 210.8.
   - **MED · fact (arithmetic)** — L1193: "six million cycles" for 70 rpm × 6 months = **~18 million**. Soften.
-  - **MED · fact** — L164: let-go "5–6 mA for a woman" → IEC 60479 gives ~6–7 mA; and standardize the GFCI threshold to "4–6 mA" (L1389 says 5 mA).
+  - **MED · fact** — L164: let-go "5–6 mA for a woman" → IEC 60479 gives ~6–7 mA; standardize the GFCI threshold to "4–6 mA" (L1389 says 5 mA).
+- **Pedagogy:** no major findings (applied-track). **Prose: clean.**
 
 ### Ch.36 — Troubleshooting
 - **Fact-check:** ~45 claims audited, 40 resolve; **3 HIGH (1 source overstatement + 2 arithmetic/consistency) + a misaligned-cite cluster.**
@@ -434,20 +440,7 @@ being resumed.
   - **HIGH · fact (arithmetic)** — L328–331 (Try 36.2): "3 kΩ × 2 µA ≈ 6 mV … rounds to 0.4 V" is self-contradictory; pick one and derive consistently.
   - **HIGH · fact (inconsistency)** — Case 36.3 (L925–959): culprit "1000 W", symptom "$25–40/month", savings "$480/yr" can't all hold (1000 W ≈ $131/mo, $1577/yr). Reconcile to ~250–300 W or scale the dollars.
   - **MED · fact** — L305–307 (Pullout): "5 milliamps" conflates the GFCI threshold with the two-pole probe's ~40 mA. **LOW** — L739: "4-ton" vs 4.2-ton; L84/124/193/577/694: 5 tool/procedure claims misaligned to `horowitz-hill-2015` → soften.
-- **Pedagogy: clean** — applied-track; kWh/kVAh/kVARh/peak-demand are engineering measurement categories (Term gloss → formula → where), all six narrative `<Formula>` "where" paragraphs pass. **Prose: clean.**
-
-### Ch.34 — Plug to chip
-- **Fact-check:** _pending (running)_
-- **MED · pedagogy** — L427–428: `η_charger = V_s·I_s/(V_in·I_in)` "where" paragraph defines the four RHS symbols but never names `η_charger` itself (end-to-end efficiency, dimensionless). Add it.
-- All other narrative `<Formula>` "where" paragraphs clean; no demos. **Prose: clean.**
-
-### Ch.35 — Replacing fixtures
-- **Fact-check:** _pending (running)_
-- **Pedagogy:** no major findings reported (applied-track). **Prose: clean.**
-
-### Ch.36 — Troubleshooting
-- **Fact-check:** _pending (running)_
-- **Pedagogy: clean** — applied-track; the open-neutral voltage-divider, `I_leak`, and `t_trip` formulas all have complete "where" paragraphs; no demos. **Prose: clean.**
+- **Pedagogy: clean** — open-neutral divider, `I_leak`, `t_trip` "where" paragraphs all complete; no demos. **Prose: clean.**
 
 ---
 
@@ -464,8 +457,10 @@ being resumed.
 - **Pedagogy: clean** — all six narrative `<Formula>` "where" paragraphs (220.82 demand, continuous-load, voltage-drop, box-fill) complete; no demos. **Prose: clean.**
 
 ### Ch.38 — Smart retrofits (applied track)
-- **Fact-check:** _pending (running)_
-- **Pedagogy: clean** — `P_bleeder` and `V_rms(α)` "where" paragraphs complete; no demos. **Prose: clean.**
+- **Fact-check:** ~60 claims audited; **2 HIGH (phase-cut RMS) + several MED cite/soften.**
+  - **HIGH · fact (wrong)** — L578: phase-cut RMS formula uses `V_peak` (170 V) as the coefficient — at α=π it gives 170 V, but a fully-on 120 V line delivers 120 V rms. The coefficient must be `V_rms_line` (120 V), or add a `1/√2` factor. The corrective prose at L586 contradicts the displayed formula.
+  - **HIGH · fact (arithmetic)** — L584–585: "170 × √0.5 ≈ 120 × √0.5 ≈ 85 V" — 170×√0.5 = 120 V, not 85; only 120×√0.5 = 85 V. Fix the equivalence.
+  - **MED · fact** — L586–588: π/√2 "no measurement uncertainty" cited to `codata-2018` (math constants, not measured) → drop. L921–922: box thermal derating cited to `ul-498` → `nec-2023`. L984: 6–15 dB steel-box attenuation uncited → add `itu-r-p2040`. L458/862/900: Caséta "24 V signal" → "low-voltage signal." Plus MCU power / Z-Wave-S2-2017 / device-cap figures uncited → soften.
 
 ### Ch.39 — Outdoor and wet locations (applied track)
 - **Fact-check:** ~55 claims audited; **3 HIGH numerical + 2 MED**; no cite-resolution failures.
@@ -493,7 +488,11 @@ being resumed.
 - **LOW · prose** — L1037: `"vehicle- invariant"` broken-hyphen artefact.
 
 ### Ch.42 — Fiber-optic communication link (capstone)
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~35 claims audited; **3 HIGH numerical + 1 attribution error + misaligned cites.**
+  - **HIGH · fact (wrong)** — L315: "Maurer, Keck, and **Schultz** at Corning" — third author is **Kapron** (the cited `kapron-keck-maurer-1970` names him). Fix.
+  - **HIGH · fact (arithmetic)** — L456–458: 100G/1000 km dispersion "smear ~30 ps, comparable to the symbol period" — `17 ps/nm·km × 0.22 nm × 1000 km ≈ 3.7 ns` (~17,000 ps/nm accumulated), **far exceeding** the 35.7 ps symbol period. Rewrite.
+  - **HIGH · fact (inconsistency)** — L105/139/155/584: stated n_core 1.448 / n_clad 1.444 → NA = **0.108**, but the text asserts NA ≈ 0.14. Pick consistent indices (e.g. 1.4681/1.4629 → 0.12) or correct NA to 0.108. Also L105–109: critical angle 85.2°→**85.7°**, 4.8°→**4.3°**.
+  - **MED · fact** — L503–531: post-2015 records (25 Tb/s probabilistic shaping, MAREA 0.155 dB/km) cited to `agrawal-2010` → soften. B1–B6 (L177, 330, 441, 448, 602, 609): uncited specs → attach `agrawal-2010` (in array). L299 vs L592: 0.18–0.20 vs 0.15–0.17 dB/km (different fiber classes) — clarify.
 - **MED · pedagogy** — attenuation (L265–362): intuition + operational tiers present, but the **formal tier is missing** — no `<Formula>` for the dB-decay definition `P(z)=P₀·10^(−αz/10)` before α is used in the link budget. Add it between L303 and L362.
 - **HIGH · pedagogy** — L116–121: pure demo-framing ("Drag the angle slider…") after `FiberOpticDemo` → move into its `caption`.
 - NA three-tier order and all five other `<Formula>` "where" paragraphs clean; chapter has proper embedded demos. **Prose: clean.**
