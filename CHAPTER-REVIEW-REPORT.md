@@ -20,7 +20,7 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 | 2 | 7–12 | ✅ done | ✅ done | ✅ done |
 | 3 | 13–18 | ✅ done | ✅ done | ✅ done |
 | 4 | 19–24 | ✅ done | ✅ done | ✅ done |
-| 5 | 25–30 | ⬜ not started | ⬜ | ⬜ |
+| 5 | 25–30 | ✅ done | ✅ done | ✅ done |
 | 6 | 31–36 | ⬜ not started | ⬜ | ⬜ |
 | 7 | 37–42 | ⬜ not started | ⬜ | ⬜ |
 
@@ -384,7 +384,10 @@ being resumed.
 - Formula glossaries + demo-framing clean. **Prose: clean.**
 
 ### Ch.30 — House switches and receptacles (applied track)
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~45 claims audited, 42 resolve, all arithmetic correct (NEMA power table, dimmer RMS, 3-way truth table); **1 wrong NEC article + 2 uncited values.**
+  - **MED · fact (wrong)** — L881–882: "NEC **625.41**" for EV continuous-load sizing — should be **625.42** (625.41 is equipment ratings).
+  - **MED · fact** — L1215: GFCI "5 mA imbalance" uncited (UL 943, not in registry) → soften to "a few milliamperes." L303: "pre-1962 homes" grounding-mandate year uncited → soften.
+  - **LOW · fact** — L232–256: NEMA rating list cites `nema-wd-6` one paragraph up rather than inline (acceptable).
 - Applied-track: no three-tier violation; all narrative `<Formula>` "where" paragraphs clean.
 - **HIGH · pedagogy** — L576–584: pure demo-framing (click-to-wire instructions) before `ThreeWaySwitchBuilderDemo` → move into its `caption`.
 - **MED · pedagogy** — L586–595: mixed UI/physics; keep the SPDT-collapse + neutral-hazard physics, move the "flagged in red" UI observations to the caption. **Prose: clean.**
