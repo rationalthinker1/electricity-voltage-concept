@@ -254,7 +254,11 @@ export default function Ch24RectifiersAndInverters() {
         >
           smoothing capacitor
         </Term>
-        . Each peak of the rectified waveform charges the cap up to V<sub>p</sub> − 2 V<sub>F</sub>;
+        . Picture that capacitor as a small reservoir: each rectified peak tops it up, and between
+        peaks the load drains it a little, so the output sags and refills in a slow sawtooth. That
+        residual sawtooth riding on the DC <em className="text-text italic">is</em> the ripple — and
+        the bigger the reservoir relative to the draw, the smaller the sag. Each peak of the
+        rectified waveform charges the cap up to V<sub>p</sub> − 2 V<sub>F</sub>;
         between peaks, the cap discharges into the load through R<sub>load</sub>. If R
         <sub>load</sub> · C is much longer than half a line cycle, the output sags only slightly
         between peaks — the ripple voltage is{' '}

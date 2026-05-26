@@ -62,6 +62,14 @@ export default function Ch23Transformers() {
       <h2 className="chapter-h2">Two coils, one core</h2>
 
       <p className="mb-prose-3">
+        The whole device reduces to one idea you can hold without any math: count the turns, scale
+        the voltage. Two coils share the same magnetic flux through a common core, so each turn sees
+        the same induced voltage; a coil with twice as many turns simply adds up twice the voltage.
+        Like a pair of gears meshing — the tooth counts set the ratio — the turn counts set how the
+        voltage steps up or down. Everything below is that sentence made precise.
+      </p>
+
+      <p className="mb-prose-3">
         Wind a coil of <M tex="N_p" />
         turns around one leg of a ring-shaped iron core, and a second coil of <M tex="N_s" />
         turns around another leg of the same ring. Drive the first coil — the{' '}

@@ -77,6 +77,13 @@ export default function Ch18Optics() {
         front face perpendicular to <M tex="x" />. The wave hits the boundary.
       </p>
       <p className="mb-prose-3">
+        Before the formula, the idea: the refractive index <M tex="n" /> simply measures how much a
+        medium slows light. <M tex="n = 1.5" /> means light crawls through the glass at two-thirds
+        its vacuum speed; <M tex="n = 2.4" /> (diamond) means it slows to under half. That slowing
+        is the whole origin of refraction — when one edge of a wavefront enters the slow medium
+        before the other, the wave pivots — and of why a prism fans white light into colours.
+      </p>
+      <p className="mb-prose-3">
         Inside the glass the same equations still apply, but with ε₀ → ε₀ε<sub>r</sub>. The phase
         speed is no longer <M tex="c" /> but <M tex="c/n" />, where{' '}
         <M tex="n = \sqrt{\varepsilon_r}" /> is the{' '}
