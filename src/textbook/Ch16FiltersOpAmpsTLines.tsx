@@ -182,11 +182,10 @@ export default function Ch16FiltersOpAmpsTLines() {
 
       <p className="mb-prose-3">
         A working filter designer faces a concrete problem: pick R, L, C (or equivalently the
-        topology) to scrub the unwanted frequencies and pass the wanted ones. The build-it demo
-        below pins a 1 kHz audio tone and 50 / 60 Hz mains hum onto the same input, then asks you to
-        choose a topology and tune component values until the audio survives and the hum is gone.
-        Switch between RC low-pass, RC high-pass, RLC band-pass, and band-reject (notch); watch the
-        Bode plot, time-domain output, and residual-hum readout update live.
+        topology) to scrub the unwanted frequencies and pass the wanted ones. The canonical test
+        case is a wanted audio tone riding on unwanted mains hum on the same input — the filter's
+        whole job is to let one through and reject the other, and the choice of topology (low-pass,
+        high-pass, band-pass, or notch) is dictated by where the two sit in frequency.
       </p>
 
       <FilterDesignerDemo figure="Fig. 16.3" />

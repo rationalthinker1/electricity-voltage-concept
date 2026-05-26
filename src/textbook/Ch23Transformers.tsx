@@ -673,10 +673,10 @@ export default function Ch23Transformers() {
       <CoreLossesDemo figure="Fig. 23.6" />
 
       <p className="mb-prose-3">
-        With the four loss mechanisms named, here is a designer's view of how the knobs interact.
-        The build-it demo below holds a target output (V, I, f) fixed and lets you trade primary
-        turns, core area, peak flux density, and winding copper diameter against each other. Watch
-        how the dominant loss flips from copper to core (and back) as you sweep frequency.
+        With the four loss mechanisms named, the designer's real task is that they trade against one
+        another: for a fixed target output, primary turns, core area, peak flux density, and winding
+        copper diameter cannot all be optimised at once, and the dominant loss flips from copper to
+        core as the operating frequency rises.
       </p>
 
       <TransformerDesignerDemo figure="Fig. 23.7" />

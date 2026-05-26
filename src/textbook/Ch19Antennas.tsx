@@ -171,10 +171,9 @@ export default function Ch19Antennas() {
         <Cite id="kraus-marhefka-2002" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        Drag the figure below to orbit the camera. The exponent slider lets you sharpen the pattern
-        beyond the short-dipole's sin²θ: n=2 is the canonical short-electric dipole, while
-        increasing n shrinks the half-power beamwidth — what happens, qualitatively, when you stack
-        more elements or move to a longer end-fire antenna
+        The radiation pattern can be sharpened beyond the short dipole's sin²θ: n = 2 is the
+        canonical short-electric dipole, and raising the exponent narrows the half-power beamwidth —
+        qualitatively what happens when you stack more elements or move to a longer end-fire antenna
         <Cite id="balanis-2016" in={SOURCES} />.
       </p>
 

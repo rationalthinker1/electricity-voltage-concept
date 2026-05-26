@@ -317,17 +317,18 @@ export default function Ch8EnergyFlow() {
       </PredictThenObserve>
 
       <p className="mb-prose-3">
-        The "P_surf / P_VI = 1.000" readout in the demo above is the entire chapter compressed into
-        one number. Move any slider you like — the ratio doesn't budge. It can't. The integral and
-        the algebra are the same statement.
+        The equality <M tex="P_{\text{surf}} = P_{VI}" /> is the entire chapter compressed into one
+        number. Change anything you like about the wire's geometry or current and the ratio cannot
+        budge: the power computed from the surface flux of the Poynting vector and the power
+        computed from <M tex="V\!\cdot\!I" /> are the same statement.
       </p>
 
       <p className="mb-prose-3">
-        That demo collapses the geometry into a flat side-view, which is the right move for getting
-        the algebra to land but hides the cross product structure of <M id="poynting-vector" />.
-        Spin the next one — a coaxial cable in 3D. Pink radial <M tex="E" /> threads from the inner
-        conductor to the outer braid, teal circumferential <M tex="B" /> wraps the inner conductor,
-        and their cross product points <em className="text-text italic">along</em> the cable axis
+        That flat side-view is the right move for getting the algebra to land but hides the cross
+        product structure of <M id="poynting-vector" />. In a coaxial cable seen in 3D, pink radial{' '}
+        <M tex="E" /> threads from the inner conductor to the outer braid, teal circumferential{' '}
+        <M tex="B" /> wraps the inner conductor, and their cross product points{' '}
+        <em className="text-text italic">along</em> the cable axis
         <Cite id="pozar-2011" in={SOURCES} />. Every joule the source delivers to the load streams
         through the empty dielectric between the two conductors, not through the copper itself.
       </p>

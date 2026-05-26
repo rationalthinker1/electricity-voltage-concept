@@ -114,10 +114,9 @@ export default function Ch42FiberOptics() {
       <FiberOpticDemo figure="Fig. 42.1" />
 
       <p className="mb-prose-3">
-        Drag the angle slider in the demo. Below the critical angle, the ray zig-zags down the fiber
-        by total internal reflection; above it, the ray refracts into the cladding and is lost
-        within microseconds. The whole modern telecom industry rests on staying on the right side of
-        that threshold.
+        It comes down to a single threshold: below the critical angle a ray zig-zags down the fiber
+        by total internal reflection; above it, the ray refracts into the cladding and is lost. The
+        whole modern telecom industry rests on staying on the right side of that line.
       </p>
 
       <Pullout>

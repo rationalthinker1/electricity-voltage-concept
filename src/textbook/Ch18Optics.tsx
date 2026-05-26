@@ -153,9 +153,9 @@ export default function Ch18Optics() {
         follows directly from matching the tangential component of <M tex="k" /> across the
         boundary: the in-plane wavevector is preserved, so any out-of-plane component the reflected
         or refracted ray might acquire is forced to be zero
-        <Cite id="griffiths-2017" in={SOURCES} />. Drag the next demo around to see the planarity in
-        3D, then tilt the camera until you're looking edge-on at the plane and the canonical 2D
-        refraction triangle pops back out.
+        <Cite id="griffiths-2017" in={SOURCES} />. That planarity is easiest to believe in three
+        dimensions, where viewing the incident and refracted rays edge-on collapses them back to the
+        familiar 2D refraction triangle.
       </p>
 
       <SnellLaw3DDemo figure="Fig. 18.2" />
