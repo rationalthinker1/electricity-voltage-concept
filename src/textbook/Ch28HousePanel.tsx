@@ -268,12 +268,11 @@ export default function Ch28HousePanel() {
       />
 
       <p className="mb-prose-3">
-        The two-column / alternating-phase geometry is much easier to read in 3D than in prose. Drag
-        to orbit the cutaway below: L1 (pink) and L2 (blue) bus bars run the full height of the
-        enclosure, with alternating stabs poking out for each slot. The single-pole breakers each
-        take one stab — one phase. The 2-pole 240 V breaker straddles two adjacent stabs of opposite
-        phase. The neutral and ground bars sit at the bottom, joined by the main bonding jumper
-        exactly once.
+        The two-column / alternating-phase geometry is much easier to read in 3D than in prose. L1
+        (pink) and L2 (blue) bus bars run the full height of the enclosure, with alternating stabs
+        poking out for each slot. The single-pole breakers each take one stab — one phase. The
+        2-pole 240 V breaker straddles two adjacent stabs of opposite phase. The neutral and ground
+        bars sit at the bottom, joined by the main bonding jumper exactly once.
       </p>
 
       <PanelBus3DDemo figure="Fig. 28.1" />

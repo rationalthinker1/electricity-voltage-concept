@@ -1071,9 +1071,9 @@ export default function Ch12CircuitsAndAC() {
         <strong className="text-text font-medium"> superposition</strong>: in any network whose
         components obey linear constitutive equations, the response to several independent sources
         is the algebraic sum of the responses to each source acting alone (with the others zeroed).
-        The demo below lets you watch superposition do its thing in a bridge of three resistors and
-        two sources — turn each source on or off, and the branch currents in the live case are
-        always the exact sum of the per-source contributions
+        The principle is easiest to trust on a concrete case: in a bridge of three resistors driven
+        by two sources, the branch currents with both sources live are always the exact sum of the
+        per-source contributions
         <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
       </p>
 

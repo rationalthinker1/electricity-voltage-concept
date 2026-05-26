@@ -223,8 +223,8 @@ export default function Ch5Capacitors() {
         The 3D view above makes the underlying picture geometrical. The surface-charge density{' '}
         <M tex="\sigma = Q/A" /> sits on the inner faces of the two plates as equal and opposite
         sheets; between them, the field is the same everywhere — uniform in magnitude and direction
-        — with <M tex="E = \sigma/\varepsilon_0 = V/d" />. Toggle the Gauss pillbox to see the
-        operational statement of Gauss's law: a closed cylinder piercing one plate has its top cap
+        — with <M tex="E = \sigma/\varepsilon_0 = V/d" />. A Gauss pillbox makes the operational
+        statement of Gauss's law concrete: a closed cylinder piercing one plate has its top cap
         outside the conductor (where E = 0) and its bottom cap in the field-filled gap. The only
         nonzero contribution to <M tex="\oint \mathbf{D} \cdot d\mathbf{A}" /> comes from that
         bottom cap, and it equals exactly the charge <M tex="\sigma A" /> on the slice of plate the
