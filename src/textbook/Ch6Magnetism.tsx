@@ -476,8 +476,8 @@ export default function Ch6Magnetism() {
         <M tex="E" /> and <M tex="B" />, with their own equations. It took Einstein in 1905 to show
         that <M tex="E" /> and <M tex="B" /> transform into each other under a change of inertial
         frame
-        <Cite id="einstein-1905" in={SOURCES} />, and Minkowski in 1908 to write them as two faces
-        of one antisymmetric tensor. Maxwell's equations, properly written, were already
+        <Cite id="einstein-1905" in={SOURCES} />, and shortly after for Minkowski to write them as
+        two faces of one antisymmetric tensor. Maxwell's equations, properly written, were already
         relativistic — no modifications needed. They had been the whole time. Maxwell's
         electromagnetism was the first relativistic theory in physics. Nobody at the time noticed,
         because there was nothing else to compare it to
@@ -526,7 +526,8 @@ export default function Ch6Magnetism() {
             <M tex="\omega = \gamma B_0" />. A bigger <M tex="B_0" /> means a higher Larmor
             frequency, a larger population difference between spin states, and a stronger signal —
             which is why clinical scanners kept climbing from{' '}
-            <strong className="text-text font-medium">0.3 T</strong> in the early 1980s to today's{' '}
+            <strong className="text-text font-medium">fractions of a tesla</strong> in the early
+            clinical era to today's{' '}
             <strong className="text-text font-medium">1.5–3 T</strong>
             workhorses and the small but growing fleet of{' '}
             <strong className="text-text font-medium">7 T</strong> research machines.
@@ -593,7 +594,7 @@ export default function Ch6Magnetism() {
             millitesla of operating margin and dramatically improves the thermal conductivity of the
             cryogen
             <Cite id="bruning-lhc-2004" in={SOURCES} />. The whole
-            <strong className="text-text font-medium"> 27 km</strong> ring is the largest single
+            <strong className="text-text font-medium"> 26.7 km</strong> ring is the largest single
             piece of cryogenic equipment ever built.
           </p>
           <p className="mb-prose-2 last:mb-0">
@@ -631,7 +632,8 @@ export default function Ch6Magnetism() {
             <strong className="text-text font-medium">25–65 µT</strong>
             <Cite id="chulliat-wmm-2020" in={SOURCES} />. That is about{' '}
             <strong className="text-text font-medium">fifty thousand times</strong> weaker than a
-            clinical MRI, and about a hundred million times weaker than the surface of a magnetar.
+            clinical MRI, and on the order of a hundred trillion times weaker than the surface of a
+            magnetar.
             Yet it is enough to align every compass needle on the planet and to deflect the solar
             wind into the auroral ovals.
           </p>
@@ -658,7 +660,8 @@ export default function Ch6Magnetism() {
           title="A magnetar"
           summary={
             <em className="text-text italic">
-              The strongest magnets in the known universe, ten quadrillion times the Earth's field.
+              The strongest magnets in the known universe, a few quadrillion times the Earth's
+              field.
             </em>
           }
           specs={[
@@ -676,9 +679,8 @@ export default function Ch6Magnetism() {
             <strong className="text-text font-medium">10¹⁴–10¹⁵ G</strong>, or{' '}
             <strong className="text-text font-medium">10¹⁰–10¹¹ T</strong>
             <Cite id="duncan-thompson-1992" in={SOURCES} />. They named the objects{' '}
-            <em className="text-text italic">magnetars</em>. About thirty confirmed examples are
-            known in our galaxy
-            <Cite id="duncan-thompson-1992" in={SOURCES} />.
+            <em className="text-text italic">magnetars</em>. Dozens of confirmed examples are now
+            known in our galaxy.
           </p>
           <p className="mb-prose-2 last:mb-0">
             At these field strengths the energy density <M tex="B^{2}/(2\mu_0)" /> dominates over

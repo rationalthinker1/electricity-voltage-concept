@@ -254,10 +254,11 @@ export const CHAPTERS: ChapterEntry[] = [
       'volta-1782',
       'griffiths-2017',
       'jackson-1999',
-      'feynman-II-2',
       'feynman-II-27',
       'horowitz-hill-2015',
       'codata-2018',
+      'moulson-herbert-2003',
+      'linden-reddy-2011',
     ],
     punchline:
       'Two plates and a gap store energy in the electric field between them — voltage rises linearly with charge, energy quadratically, and the dielectric multiplies both.',

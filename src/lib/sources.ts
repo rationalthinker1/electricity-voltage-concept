@@ -1164,7 +1164,7 @@ export const SOURCES: Record<string, Source> = {
   'leyden-jar-1745': {
     id: 'leyden-jar-1745',
     title:
-      'The Leyden jar — independent discovery (E. G. von Kleist, October 1745; Pieter van Musschenbroek, 1746)',
+      'The Leyden jar — independent discovery (E. G. von Kleist, late 1745; Pieter van Musschenbroek, 1746)',
     author: 'E. G. von Kleist; Pieter van Musschenbroek',
     year: 1745,
     venue: 'Correspondence and demonstrations to the Royal Society',

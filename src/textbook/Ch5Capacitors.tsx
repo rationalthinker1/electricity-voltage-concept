@@ -54,7 +54,7 @@ export default function Ch5Capacitors() {
         scratch, one electron at a time, and watch three things happen in lockstep: the voltage
         rises linearly with charge; the energy stored climbs quadratically; and the energy itself
         lives not on the plates but in the field between them
-        <Cite id="feynman-II-2" in={SOURCES} />. Along the way we will pick up the formula{' '}
+        <Cite id="feynman-II-27" in={SOURCES} />. Along the way we will pick up the formula{' '}
         <M>Q = CV</M>, the geometry rule
         <M> C = ε₀A/d</M>, and the time constant <M>τ = RC</M>
         that governs every switch-on transient in every circuit ever built.
@@ -504,7 +504,7 @@ export default function Ch5Capacitors() {
         <Term def="The first practical capacitor (1745–1746). A glass jar lined inside and outside with metal foil, the glass acting as a dielectric between two effective 'plates.' Named after Leiden, where Pieter van Musschenbroek's painful version of it was famous.">
           Leyden jar
         </Term>{' '}
-        — was an accident. In October 1745, the German cleric Ewald Georg von Kleist tried to draw a
+        — was an accident. In late 1745, the German cleric Ewald Georg von Kleist tried to draw a
         spark from a nail driven into a small medicine bottle; the next year, independently, the
         Dutch professor Pieter van Musschenbroek and his student in Leiden held a glass jar of water
         connected to a charged friction generator and got a shock so violent that Musschenbroek
@@ -605,7 +605,7 @@ export default function Ch5Capacitors() {
             <Cite id="horowitz-hill-2015" in={SOURCES} />. Connect the terminals through the chest,
             whose transthoracic impedance is around{' '}
             <strong className="text-text font-medium">50 Ω</strong>, and the discharge time constant{' '}
-            <M tex="\tau = RC \approx 7\,\text{ms}" /> is short enough to deliver the energy in a
+            <M tex="\tau = RC \approx 7.5\,\text{ms}" /> is short enough to deliver the energy in a
             single biphasic pulse.
           </p>
           <p className="mb-prose-2 last:mb-0">
@@ -625,7 +625,14 @@ export default function Ch5Capacitors() {
           title="Capacitive touchscreens: counting picofarads with your fingertip"
           summary="The grid under the glass is thousands of tiny capacitors; your finger changes a few of them by a few pF."
           specs={[
-            { label: 'Per-cell baseline capacitance', value: <>~1–5 pF</> },
+            {
+              label: 'Per-cell baseline capacitance',
+              value: (
+                <>
+                  ~1–5 pF <Cite id="horowitz-hill-2015" in={SOURCES} />
+                </>
+              ),
+            },
             {
               label: 'Finger-induced change',
               value: (
@@ -670,7 +677,14 @@ export default function Ch5Capacitors() {
           title="Supercapacitors in regenerative braking"
           summary="Banks of thousand-farad cells absorb a bus's kinetic energy in seconds and dump it back in seconds."
           specs={[
-            { label: 'Per-cell capacitance', value: <>~1000–3000 F</> },
+            {
+              label: 'Per-cell capacitance',
+              value: (
+                <>
+                  ~1000–3000 F <Cite id="horowitz-hill-2015" in={SOURCES} />
+                </>
+              ),
+            },
             { label: 'Per-cell working voltage', value: <>~2.5–2.7 V</> },
             {
               label: 'Per-cell stored energy at 2.7 V (3000 F)',
@@ -696,7 +710,8 @@ export default function Ch5Capacitors() {
             traction bank needs hundreds of cells in series. The reward is power density: a
             supercapacitor can absorb a bus's full braking energy in seconds without overheating,
             then dump it back into the drive motor on the next acceleration. They are not a battery
-            replacement (energy density is ~10× lower than lithium-ion) but a complement — short
+            replacement (energy density is roughly 25× lower than lithium-ion{' '}
+            <Cite id="linden-reddy-2011" in={SOURCES} />) but a complement — short
             bursts, high cycle count, very low ESR.
           </p>
         </CaseStudy>
@@ -706,7 +721,14 @@ export default function Ch5Capacitors() {
           title="Camera flash: slow charge, fast dump"
           summary="A small electrolytic capacitor trickles up to a few hundred volts over seconds, then unloads in a millisecond."
           specs={[
-            { label: 'Typical flash cap', value: <>~100–200 µF, ~330 V electrolytic</> },
+            {
+              label: 'Typical flash cap',
+              value: (
+                <>
+                  ~100–200 µF, ~330 V electrolytic <Cite id="horowitz-hill-2015" in={SOURCES} />
+                </>
+              ),
+            },
             { label: 'Stored energy (150 µF at 330 V)', value: <>~8 J = ½·150e-6·330²</> },
             {
               label: 'Charge time from 3 V battery',
@@ -744,7 +766,7 @@ export default function Ch5Capacitors() {
             a configuration in which positive charge sits on one conductor and negative on another,
             with a field connecting them across the gap. The energy that this configuration
             represents lives in that field, not in the charges themselves
-            <Cite id="feynman-II-2" in={SOURCES} />. Saying "stored charge" is loose shorthand for
+            <Cite id="feynman-II-27" in={SOURCES} />. Saying "stored charge" is loose shorthand for
             "stored charge separation" — the latter is what costs work to assemble and yields work
             when undone.
           </p>
@@ -783,7 +805,7 @@ export default function Ch5Capacitors() {
             relative permittivity — for the same charge Q on the plates, which means V also drops by
             εᵣ, which means C = Q/V is multiplied by εᵣ
             <Cite id="jackson-1999" in={SOURCES} />. Water comes in around 80; some specialist
-            ceramics push past 1000.
+            ceramics push past 1000 <Cite id="moulson-herbert-2003" in={SOURCES} />.
           </p>
         </FAQItem>
 
