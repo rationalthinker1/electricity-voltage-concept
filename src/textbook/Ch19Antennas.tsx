@@ -263,7 +263,9 @@ export default function Ch19Antennas() {
         antennas at exactly this scale are an active area of research.) At resonance, the current
         distribution along the wire is approximately sinusoidal with a maximum at the feedpoint
         (centre) and zeros at the ends. The radiation pattern is similar to the short-dipole sin²θ
-        but slightly sharper — and the on-axis gain works out to
+        but slightly sharper — and the on-axis gain (how sharply the antenna concentrates power in
+        its best direction, compared to a hypothetical isotropic radiator that sprays equally
+        everywhere — a flashlight beam versus a bare bulb of the same wattage) works out to
         <strong className="text-text font-medium"> ~2.15 dBi</strong>, the canonical reference
         number every antenna engineer memorises
         <Cite id="balanis-2016" in={SOURCES} />.
