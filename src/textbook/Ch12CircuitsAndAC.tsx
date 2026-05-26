@@ -639,7 +639,8 @@ export default function Ch12CircuitsAndAC() {
       <p className="mb-prose-3">
         Beautiful as the previous section is, you do not want to solve a second-order ODE every time
         you analyze a circuit. The 19th-century engineer's response — formalized by Charles
-        Steinmetz at General Electric in the 1890s — was to recast everything in the complex plane.
+        Steinmetz at General Electric in the 1890s <Cite id="steinmetz-1893" in={SOURCES} /> — was
+        to recast everything in the complex plane.
       </p>
       <p className="mb-prose-3">
         Represent each sinusoid V(t) = V₀ cos(ωt + φ) by the complex{' '}
@@ -1161,8 +1162,8 @@ export default function Ch12CircuitsAndAC() {
             <Cite id="grainger-power-systems-2003" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            The 60-Hz choice itself is mid-1890s path-dependence. Westinghouse standardised on 60 Hz
-            in the United States; AEG had already picked 50 Hz in Germany; both work, both are now
+            The 60-Hz choice itself is late-19th-century path-dependence. North America standardised
+            on 60 Hz; Europe converged on 50 Hz; both work, both are now
             locked in by a continent's worth of installed equipment. Aircraft electrical systems,
             where transformer mass matters more than line losses, use 400 Hz instead — the
             transformer core volume scales roughly as <M tex="1/f" /> for a given power handling
@@ -1210,9 +1211,9 @@ export default function Ch12CircuitsAndAC() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             That Q comes directly from the formula in this chapter: <M>Q = (1/R)√(L/C)</M>. With a
-            typical antenna-coil inductance of around 250 µH and the variable capacitor swept from
-            roughly 30 pF to 365 pF to cover the band, choosing a coil with an effective series
-            resistance in the few-ohm range lands Q comfortably above 100
+            typical antenna-coil inductance of a few hundred microhenries and a variable capacitor
+            ranging over tens to a few hundred picofarads to cover the band, choosing a coil with an
+            effective series resistance in the few-ohm range lands Q comfortably above 100
             <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />. FM receivers do the same trick
             three orders of magnitude up: at 100 MHz the inductances shrink to tens of nanohenries
             and the capacitors to tens of picofarads, but the mathematics is identical.
@@ -1345,8 +1346,8 @@ export default function Ch12CircuitsAndAC() {
             Because the utility's transmission losses scale with the square of the current it has to
             push, regardless of whether that current does real work at the customer end. A factory
             drawing 700 kW of real power at cos(φ) = 0.7 actually demands 1000 kVA from the grid,
-            with 33% extra I²R losses in the transmission lines compared to a unity-power-factor
-            customer. The utility passes that cost back as a "power factor penalty" on the bill,
+            with roughly double the I²R losses in the transmission lines compared to a
+            unity-power-factor customer. The utility passes that cost back as a "power factor penalty" on the bill,
             which incentivizes the customer to install correction capacitors and bring cos(φ) back
             near 1<Cite id="grainger-power-systems-2003" in={SOURCES} />.
           </p>
@@ -1370,8 +1371,8 @@ export default function Ch12CircuitsAndAC() {
             Historical accident, locked in by mid-20th-century infrastructure. Higher frequencies
             mean smaller, cheaper transformers (since transformer core size scales as 1/f for a
             given power), but they also mean higher inductive losses on long transmission lines.
-            Tesla and Westinghouse settled on 60 Hz in the U.S. in the 1890s; AEG in Germany chose
-            50 Hz a few years earlier. Both work fine; both became the basis for incompatible
+            North America settled on 60 Hz in the late 19th century; Europe settled on 50 Hz. Both
+            work fine; both became the basis for incompatible
             regional grids that no one is going to unify now. Aircraft electronics, where weight
             matters most, run on 400 Hz for exactly that transformer-shrinkage reason.
           </p>
@@ -1397,9 +1398,9 @@ export default function Ch12CircuitsAndAC() {
             Energy storage divided by energy dissipation per radian. Specifically, Q = 2π × (energy
             stored in the tank) / (energy dissipated per cycle). For a series RLC, this evaluates to
             Q = ω₀L/R = (1/R)√(L/C). A high-Q resonator can ring for Q/π cycles before losing 1/e of
-            its energy. Crystal oscillators reach Q ≈ 10⁶; an atomic clock's cesium transition has
-            effective Q ≈ 10¹⁰
-            <Cite id="horowitz-hill-2015" in={SOURCES} />. The numerical sharpness of the resonance
+            its energy. Crystal oscillators reach Q ≈ 10⁶
+            <Cite id="horowitz-hill-2015" in={SOURCES} />; an atomic clock's cesium transition is
+            higher still by orders of magnitude. The numerical sharpness of the resonance
             peak in the demo is set by exactly this ratio.
           </p>
         </FAQItem>

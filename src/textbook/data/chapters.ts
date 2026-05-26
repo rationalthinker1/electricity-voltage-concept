@@ -500,6 +500,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'ansi-c84-1-2020',
       'erickson-maksimovic-2020',
       'keysight-34465a-datasheet',
+      'steinmetz-1893',
     ],
     punchline:
       'Kirchhoff’s two laws, plus complex impedance, collapse the entire EM field around a working circuit into a tractable algebra of nodes and loops.',
