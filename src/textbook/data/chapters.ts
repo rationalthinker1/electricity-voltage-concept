@@ -964,7 +964,13 @@ export const CHAPTERS: ChapterEntry[] = [
     blurb:
       'The last mile of the power grid: how three-phase transmission steps down through a distribution transformer on a pole or pad to the single-phase 240 V split that enters most North American homes, why neutral is bonded to ground at the service entrance, and what the rotating disk or LCD on your meter is actually measuring.',
     relatedLabs: ['ohms-law', 'joule'],
-    sources: ['ansi-c84-1-2020', 'nec-2023', 'ieee-std-3001-2-2017', 'grainger-power-systems-2003'],
+    sources: [
+      'ansi-c84-1-2020',
+      'nec-2023',
+      'ieee-std-3001-2-2017',
+      'grainger-power-systems-2003',
+      'ansi-c12-1-2014',
+    ],
     punchline:
       'The three-phase grid steps down through one final transformer on a pole or pad into a 240 V split-phase service that lands at your meter base — that is the first piece of electricity you actually own.',
     objectives: [

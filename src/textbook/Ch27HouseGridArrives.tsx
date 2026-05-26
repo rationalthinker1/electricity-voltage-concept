@@ -171,7 +171,7 @@ export default function Ch27HouseGridArrives() {
       </h2>
 
       <p className="mb-prose-3">
-        Edison's 1882 New York system delivered direct current at 110 V, and the choice of "around
+        Edison's early-1880s New York system delivered direct current at 110 V, and the choice of "around
         110" was set by the working voltage of the carbon-filament incandescent lamps he was selling
         at the time. A century of inertia later, the United States, Canada, and Mexico still call
         their nominal residential voltage either 120 V or 240 V — but the original 110 V choice was
@@ -439,7 +439,7 @@ export default function Ch27HouseGridArrives() {
       </h2>
 
       <p className="mb-prose-3">
-        Older revenue meters — and most meters installed before about 2005 — are{' '}
+        Older revenue meters — those installed before the smart-meter rollout of the 2000s–2010s — are{' '}
         <strong className="text-text font-medium">Ferraris induction meters</strong>: a rotating
         aluminium disc spinning between two electromagnets, one driven by the service voltage and
         one driven by the service current. The two fields produce a torque on the disc proportional
@@ -500,9 +500,8 @@ export default function Ch27HouseGridArrives() {
           kilowatt-hour
         </Term>
         : one kWh is 1,000 W delivered for one hour, equal to{' '}
-        <M tex="3.6 \times 10^{6}\,\text{J}" />. North-American residential rates run roughly
-        $0.10–$0.40 per kWh depending on jurisdiction and time of day
-        <Cite id="ieee-std-3001-2-2017" in={SOURCES} />.
+        <M tex="3.6 \times 10^{6}\,\text{J}" />. Residential rates vary widely by jurisdiction and
+        time of use, but typically fall in the range of tens of cents per kWh.
       </p>
       <p className="mb-prose-3">
         Modern{' '}
@@ -985,7 +984,7 @@ export default function Ch27HouseGridArrives() {
           <p className="mb-prose-2 last:mb-0">
             Reclosers along the feeder are the reason a tree branch hitting a wire usually causes a
             2-second blink rather than a sustained outage: the recloser senses a fault, opens its
-            breaker for one second to let the arc deionise, closes back in, and if the fault has
+            breaker for a second or two to let the arc deionise, closes back in, and if the fault has
             cleared the lights come back
             <Cite id="grainger-power-systems-2003" in={SOURCES} />. Three failed attempts and the
             feeder locks out — that's when the truck rolls.
@@ -1073,7 +1072,7 @@ export default function Ch27HouseGridArrives() {
       >
         <FAQItem q="Why is North-American residential service 240/120 V while Europe runs 230/400 V?">
           <p>
-            Edison's 1882 New York DC system delivered roughly 110 V — set by the working voltage of
+            Edison's early-1880s New York DC system delivered roughly 110 V — set by the working voltage of
             the carbon-filament bulbs of the era — and every subsequent piece of North-American
             hardware inherited the choice. By the time AC took over, "120 V to the wall, 240 V
             end-to-end on a centre-tapped secondary" was already baked in. Europe rebuilt later
@@ -1173,7 +1172,8 @@ export default function Ch27HouseGridArrives() {
             Mineral oil does two things at once: it insulates the high-voltage windings from each
             other and from the grounded tank, and it convects heat from the windings to the outer
             skin of the tank, where it radiates and convects to the ambient air. The oil's
-            electrical breakdown strength is roughly 30 kV per millimetre, far higher than air —
+            electrical breakdown strength is on the order of 10–30 kV per millimetre depending on
+            oil quality and electrode geometry, far higher than the ~3 kV/mm of air —
             which is why the windings can be spaced very tightly inside the tank and the whole
             package can be made small. There is no fan and no pump: thermosiphon convection does all
             the cooling, which is why pole-pigs can sit on a pole exposed to the weather for fifty
@@ -1267,8 +1267,7 @@ export default function Ch27HouseGridArrives() {
             millisecond and accumulates; the multiplier circuit is calibrated at the factory and the
             meter's firmware logs deviations from its self-test reference. Both architectures hit
             accuracy classes of 0.2–0.5 % over their service lifetimes
-            <Cite id="ieee-std-3001-2-2017" in={SOURCES} />
-            <Cite id="grainger-power-systems-2003" in={SOURCES} />.
+            <Cite id="ansi-c12-1-2014" in={SOURCES} />.
           </p>
         </FAQItem>
 
