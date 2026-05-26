@@ -454,7 +454,13 @@ being resumed.
 ## Batch 7 — Chapters 37–42
 
 ### Ch.37 — Running a new circuit (applied track)
-- **Fact-check:** _pending (running)_
+- **Fact-check:** ~55 claims audited; **5 HIGH errors + 3 cite issues** (the heaviest applied chapter). Voltage-drop/box-fill arithmetic all verified clean.
+  - **HIGH · fact (wrong)** — L87–111: the 220.82 demand formula shows `(3 × W_first10k/1000 + 0.40 × W_remainder/1000)/V` — the first 10 kVA takes **100% (factor 1)**, not 3 (the "3" is the 220.12 VA/ft² density, applied earlier). Fix the coefficient to 1.
+  - **HIGH · fact (wrong)** — L1165 (FAQ): "12 AWG … 25 A at 75 °C" — 75 °C column is **20 A** (25 A is 90 °C). Fix.
+  - **HIGH · fact (wrong)** — L703–713: NFPA 70E "limited approach boundary ~1.5 m" — for 50–600 V it's **3.05 m** (restricted is 1.07 m). 1.5 m matches neither.
+  - **HIGH · fact (wrong)** — L445: "NEC 334.23 … references 320.23" — 320.23 is for Type AC cable, not NM-B; drop the cross-ref.
+  - **HIGH · fact (wrong)** — L576 & L993: "Three insulated conductors" for 12-2 NM-B — it's **two** insulated + one bare ground (the box-fill math using factor 2 is right; the label is wrong).
+  - **MED · fact** — L1086 (Case 37.3): 6 AWG for 60 A needs the "75 °C terminations" caveat (60 °C column = 55 A). **MED (misaligned cite)** — L1145 & L1369: `grainger-power-systems-2003` for ground-rod surge path and the 125% rule → `nec-2023`. L360: GFCI 5 mA uncited → `nec-2023` or soften.
 - **Pedagogy: clean** — all six narrative `<Formula>` "where" paragraphs (220.82 demand, continuous-load, voltage-drop, box-fill) complete; no demos. **Prose: clean.**
 
 ### Ch.38 — Smart retrofits (applied track)
@@ -477,7 +483,11 @@ being resumed.
 - **Pedagogy: clean** — `V=L·dI/dt`, parallel-rod `R_GES`, and `V_let-through` "where" paragraphs all complete; no demos. **Prose: clean.**
 
 ### Ch.41 — Electric-vehicle powertrain (capstone)
-- **Fact-check:** _pending (running)_
+- **Fact-check:** 42 claims + 6 TryIt audited, **all arithmetic correct**; **~10 misaligned-cite blockers + a capacity inconsistency.**
+  - **HIGH · fact (misaligned cites)** — battery/EV claims pinned to the wrong texts: `horowitz-hill-2015` for cell-resistance/NMC-history/solid-state/aging (L1429, L184, L1473, L1524, L1437) → `linden-reddy-2011` (add to chapter sources) or `goodenough-1980`/`yoshino-1985`; `sedra-smith-2014` for BMS/DC-DC/SiC (L288, L398, L468) → `erickson-maksimovic-2020`; `codata-2018` for C_rr/C_d coefficients (L769, L900) → drop (engineering values).
+  - **HIGH · fact** — L270 (cell drift) and L1025 (DCFC ±0.5% OIML R 46) uncited → cite or soften.
+  - **MED · fact (inconsistency)** — L162 ("~4.5 Ah") vs L198 ("~4.8 Ah"); only 4.8 Ah gives the 76.3 kWh pack. Fix the Term to 4.8 Ah. L1171/L458: Tesla SiC "2017" cited to a 2020 text → soften. L1002: gasoline "33 MJ/L" → ~34.
+  - **NOTE (structural)** — capstone with **zero embedded demos** across all h2 (CLAUDE.md §6 expects ≥1/h2). Content gap.
 - **MED · pedagogy** — L871: `F_climb = m·g·sin(θ)` "where" leaves `θ` units ambiguous ("radians or degrees") and doesn't state `sin(θ)` is dimensionless / `F_climb` in N. Tighten.
 - **NOTE (structural)** — all seven h2 sections are **demo-free**; as a non-applied-track capstone, CLAUDE.md §6 expects ≥1 demo per h2. (Content gap, not a fix in this pass.)
 - **LOW · prose** — L1037: `"vehicle- invariant"` broken-hyphen artefact.
