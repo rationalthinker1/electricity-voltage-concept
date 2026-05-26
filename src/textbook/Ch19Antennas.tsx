@@ -73,7 +73,7 @@ export default function Ch19Antennas() {
         That radiation carries energy. By Poynting (Chapter 8), the time-averaged outward flux from
         an accelerating charge is <M tex="\langle S\rangle = \tfrac{1}{2}\varepsilon_0 c |E|^{2}" />
         . Integrate over a sphere far from the source and you get the total radiated power, which
-        (for a non- relativistic charge) is the Larmor formula:
+        (for a non-relativistic charge) is the Larmor formula:
       </p>
       <Formula>
         P<sub>rad</sub> = (q² a²) / (6π ε₀ c³)
@@ -262,7 +262,7 @@ export default function Ch19Antennas() {
         should you ever build one — would resonate at 300 THz, well into the infrared. (Nano-
         antennas at exactly this scale are an active area of research.) At resonance, the current
         distribution along the wire is approximately sinusoidal with a maximum at the feedpoint
-        (centre) and zeros at the ends. The radiation pattern is similar to the short- dipole sin²θ
+        (centre) and zeros at the ends. The radiation pattern is similar to the short-dipole sin²θ
         but slightly sharper — and the on-axis gain works out to
         <strong className="text-text font-medium"> ~2.15 dBi</strong>, the canonical reference
         number every antenna engineer memorises

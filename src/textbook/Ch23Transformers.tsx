@@ -1210,7 +1210,7 @@ export default function Ch23Transformers() {
           <p>
             A current transformer (CT) is a transformer whose primary is the existing power
             conductor — typically a single pass of the busbar through the core — and whose secondary
-            is a many-turn winding feeding a low- impedance measurement load (often an ammeter or
+            is a many-turn winding feeding a low-impedance measurement load (often an ammeter or
             protection relay). The turns ratio is large (~ 1:1000), so a 1000 A primary current
             produces a clean 1 A secondary that's safely meterable. CTs and the more usual
             voltage-transformer (VT) instruments together let utility metering and protection
@@ -1268,7 +1268,7 @@ export default function Ch23Transformers() {
             secondary are tuned to the same resonant frequency (kHz to MHz, much higher than line
             frequency), and energy transfer happens via the magnetic-field coupling between them,
             amplified by the secondary's high Q. The turns ratio is large (1:100 to 1:1000), and the
-            secondary develops hundreds of kilovolts as an open- circuit display arc. No iron core;
+            secondary develops hundreds of kilovolts as an open-circuit display arc. No iron core;
             the magnetic coupling is much weaker than in a power transformer, but the resonance buys
             back the coupling efficiency. The same architecture, less the spark, is the basis of
             every wireless-charging system in commercial use today

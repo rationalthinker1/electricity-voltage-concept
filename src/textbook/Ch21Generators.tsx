@@ -491,7 +491,7 @@ export default function Ch21Generators() {
       <p className="mb-prose-3">
         Above baseload sit the <em className="text-text italic">mid-merit</em> and{' '}
         <em className="text-text italic">peaking</em> generators — combined-cycle gas plants,
-        simple- cycle gas turbines, hydroelectric units with reservoir capacity. These can ramp up
+        simple-cycle gas turbines, hydroelectric units with reservoir capacity. These can ramp up
         and down on minute-to-hour timescales, and they're dispatched to follow the load curve as it
         swings from the night-time minimum to the morning and evening peaks. Above the peakers sits{' '}
         <em className="text-text italic">spinning reserve</em>: an allocation sized against the
