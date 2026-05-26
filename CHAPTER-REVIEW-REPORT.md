@@ -12,6 +12,23 @@ auditors per chapter:
 Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, must fix) ·
 **MED** (pedagogy/structure) · **LOW** (prose nits). Report only — no edits applied.
 
+### Run status (resumable)
+
+| Batch | Chapters | Fact-check | Pedagogy | Prose |
+|---|---|---|---|---|
+| 1 | 1–6 | ✅ done | ✅ done | ✅ done |
+| 2 | 7–12 | ✅ done | ✅ done | ✅ done |
+| 3 | 13–18 | ✅ done | ✅ done | ✅ done |
+| 4 | 19–24 | ❌ **session limit — re-run** | ✅ done (Ch.23 detail thin) | ✅ done |
+| 5 | 25–30 | ⬜ not started | ⬜ | ⬜ |
+| 6 | 31–36 | ⬜ not started | ⬜ | ⬜ |
+| 7 | 37–42 | ⬜ not started | ⬜ | ⬜ |
+
+**To resume after 7pm UTC:** re-run fact-check for Ch.19–24, fetch line-level
+detail for Ch.23 pedagogy, then run all three auditors for Batches 5–7
+(Ch.25–42). Mechanical lint (`npm run lint:chapters`) was clean across all 42
+before this pass, so the semantic auditors are the only outstanding work.
+
 ---
 
 ## Batch 1 — Chapters 1–6
@@ -227,5 +244,49 @@ Run in batches of 6 chapters. Severity: **HIGH** (factual/anti-hallucination, mu
 - **HIGH · pedagogy** — L89–92: boundary-condition formula has **no "where"** — `D` (C/m²), `µ` (H/m), and the ∥/⊥ convention all first appear here undefined.
 - **MED · pedagogy** — L370–377: Brewster's angle `θ_B = arctan(n₂/n₁)` only inline `<M>` + `<Term>`; no three-tier structure.
 - **HIGH · pedagogy** — L142–152: pure demo-framing before `SnellLaw3DDemo` → `caption`. **Prose: clean.**
+
+---
+
+## Batch 4 — Chapters 19–24
+
+### Ch.19 — Antennas and radiation
+- **Fact-check:** _NOT RUN — session limit hit (resets 7pm UTC). Re-run for this chapter._
+- **HIGH · pedagogy** — antenna gain/directivity has **no intuition tier** (first appears at L267 as "~2.15 dBi"; the gain-vs-directivity distinction is deferred to the FAQ and never gets a narrative tier). Add a "flashlight vs. bare bulb" picture.
+- **HIGH · pedagogy** — L228–236: radiation resistance `R_rad` lives **only in a `<Term>` popover**; the expression is inline math, not a `<Formula>` + "where". Give it all three tiers.
+- **HIGH · pedagogy** — L173–179: pure demo-framing before `DipoleRadiation3DDemo` → `caption`.
+- **MED · pedagogy** — L78–87 Larmor: operational tier (`P = ½R_rad I²`) missing; L494–497 Friis worked `<Formula>` in prose has no "where"; L507–517 split the 45°/90° examples into the demo caption.
+- **LOW · prose** — **broken-hyphen artefacts**: L76 `"non- relativistic"` → `non-relativistic`; L265 `"short- dipole"` → `short-dipole`.
+
+### Ch.20 — Motors
+- **Fact-check:** _NOT RUN — session limit hit (resets 7pm UTC). Re-run for this chapter._
+- **HIGH · pedagogy** — L55–104: torque has **no intuition tier** (the `<Term>` gloss is a hover popover; prose goes straight to `force-on-wire` then `τ = NIABsinθ`). Add a wrench/steering-wheel picture before L75.
+- **MED · pedagogy** — L163–202: back-EMF — both gloss and `E = NBAω` live only inside the `<Term>` popover; narrative jumps to the operational `E_back = k_e ω`.
+- **LOW · pedagogy** — L350–399: synchronous speed `n_s = 120f/p` (L369) lands before the rotating-field intuition (L386–399); reverse the order. L370–376: `ω_s = 4πf/p` introduced without naming it or its unit (rad/s). **Prose: clean.**
+
+### Ch.21 — Generators and the grid
+- **Fact-check:** _NOT RUN — session limit hit (resets 7pm UTC). Re-run for this chapter._
+- **HIGH · pedagogy** — L56–76: generated EMF has **no intuition tier** — the analogy carries inline math, the `<Term>` popover holds the formal `−dΦ/dt`, and `faraday-law` fires at L76; `RotatingCoilGeneratorDemo` (L122) that could supply the intuition lands *after* both the formal and operational formulas. Move the demo earlier or add a non-math analogy.
+- **MED · pedagogy** — L71: Faraday's law defined only in a `<Term>` popover.
+- All five narrative `<Formula>` blocks have complete "where" paragraphs; no demo-framing violations.
+- **LOW · prose** — broken-hyphen artefact: L494 `"simple- cycle"` → `simple-cycle`.
+
+### Ch.22 — Magnetically coupled circuits
+- **Fact-check:** _NOT RUN — session limit hit (resets 7pm UTC). Re-run for this chapter._
+- **HIGH · pedagogy** — coupling coefficient `k` has **no operational tier** — intuition (flux-leakage picture, L295–312) and formal (`k = M/√(L₁L₂)`, L314) are present, but the compute-with-it form `M = k√(L₁L₂)` only appears inside TryIt 22.1 (exempt). Add an operational paragraph between L317 and L319.
+- **MED · pedagogy** — L230: `M₁₂ = M₂₁ ≡ M` has no proper "where" — `M₁₂`/`M₂₁` never named as mutual inductances in henries. Mutual inductance M's intuition tier is buried in the chapter-opening Qi hook rather than anchored to its h2 (correct ordering otherwise).
+- No demo-framing violations. **Prose: clean.**
+
+### Ch.23 — Transformers
+- **Fact-check:** _NOT RUN — session limit hit (resets 7pm UTC). Re-run for this chapter._
+- **MED · pedagogy** — Term-popover-as-sole-tier pattern present (turns ratio / impedance transformation) — confirmed by the auditor as one of the Ch.17/21/23 cluster; line-level detail to be appended.
+- **LOW · prose** — broken-hyphen artefacts: L1213 `"low- impedance"` → `low-impedance`; L1271 `"open- circuit"` → `open-circuit`.
+
+### Ch.24 — Rectifiers and inverters
+- **Fact-check:** _NOT RUN — session limit hit (resets 7pm UTC). Re-run for this chapter._
+- **HIGH · pedagogy** — L243–265: ripple is introduced **only inside a `<Term>` popover** (formula `ΔV ≈ I/(2fC)` in the `def` prop); no narrative intuition/formal/operational tier.
+- **HIGH · pedagogy** — L488–498: duty cycle `D = t_on/T_sw` appears **only in a `<Term>` popover**; never a narrative paragraph.
+- **HIGH · pedagogy** — L86: Shockley diode `<Formula>` "where" defines `I_s`, `n`, `V_T` but **not `I` (A) or `V` (V)** — the equation's two primary symbols.
+- **MED · pedagogy** — L172–241: half-wave/centre-tap/bridge definitions carried entirely by three `<Term>` popovers; no formal-tier prose.
+- **LOW · pedagogy** — L160–167 (after `DiodeCharacteristicDemo`) and L270–274 (after `BridgeRectifierDemo`): post-demo UI-framing captions that escaped their demos → move into `caption`. **Prose: clean.**
 
 ---
