@@ -820,6 +820,12 @@ export default function Ch6Magnetism() {
             From <M tex="r = mv/(qB)" /> and <M tex="T = 2\pi r/v" />, the speed cancels:
           </p>
           <Formula size="lg" tex="f = \dfrac{q B}{2\pi m}" />
+          <p className="mb-prose-2">
+            where <M tex="f" /> is the cyclotron frequency (in hertz), <M tex="q" /> is the
+            particle's charge (in coulombs), <M tex="B" /> is the magnetic flux density (in tesla),
+            and <M tex="m" /> is the particle's mass (in kilograms). The orbital speed <M tex="v" />
+            has dropped out entirely.
+          </p>
           <p>
             Faster particles trace bigger circles in <em className="text-text italic">exactly</em>{' '}
             the same period <Cite id="feynman-II-13" in={SOURCES} />. That's the magic that made

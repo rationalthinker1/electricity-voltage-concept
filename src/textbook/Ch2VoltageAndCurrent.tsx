@@ -536,6 +536,14 @@ export default function Ch2VoltageAndCurrent() {
         you-thought-you-understood-this-but-you-didn't moment.
       </p>
       <Formula tex="v_{\text{signal}} / v_{\text{drift}} \approx 2\times 10^{8} / 3\times 10^{-5} \approx 10^{13}" />
+      <p className="mb-prose-3">
+        where <M tex="v_{\text{signal}}" /> is the propagation speed of the electromagnetic
+        disturbance along the wire (in m/s, here about two-thirds the speed of light) and{' '}
+        <M tex="v_{\text{drift}}" /> is the average drift speed of the conduction electrons
+        themselves (in m/s). The two differ by roughly thirteen orders of magnitude — the same
+        physical wire carrying one "speed" that is almost light and another that is slower than a
+        snail.
+      </p>
 
       <TwoSpeedsDemo figure="Fig. 2.6" />
 
