@@ -536,8 +536,9 @@ export default function Ch10Maxwell() {
         <M tex="\mu_0, \varepsilon_0" /> are the two vacuum constants introduced in §1. Maxwell
         plugged in the experimental values of μ₀ and ε₀ — the latter measured purely from
         electrostatics, the former from forces between current-carrying wires. He got 310,740,000
-        m/s by his 1865 numbers. Compared to Fizeau's 1849 toothed-wheel measurement of the speed of
-        light (315,000,000 m/s), the agreement was extraordinary for the era. Maxwell wrote, in{' '}
+        m/s by his 1865 numbers <Cite id="maxwell-1865" in={SOURCES} />. Compared to the
+        contemporary toothed-wheel measurements of the speed of light (also near 3×10⁸ m/s), the
+        agreement was extraordinary for the era. Maxwell wrote, in{' '}
         <em className="text-text italic">A Dynamical Theory of the Electromagnetic Field</em>, that
         the agreement "seems to show that light and magnetism are affections of the same substance,
         and that light is an electromagnetic disturbance"
@@ -604,7 +605,14 @@ export default function Ch10Maxwell() {
             </em>
           }
           specs={[
-            { label: 'Transmitter', value: 'Ruhmkorff coil + spark-gap dipole' },
+            {
+              label: 'Transmitter',
+              value: (
+                <>
+                  Ruhmkorff coil + spark-gap dipole <Cite id="hertz-1888" in={SOURCES} />
+                </>
+              ),
+            },
             { label: 'Wavelength range', value: 'roughly 0.6 to 6 m (estimated)' },
             { label: 'Frequency range', value: 'roughly 50–500 MHz (estimated)' },
             { label: 'Detector', value: 'Resonant copper loop with micrometer spark gap' },
@@ -657,7 +665,14 @@ export default function Ch10Maxwell() {
             </em>
           }
           specs={[
-            { label: 'Date', value: '12 December 1901' },
+            {
+              label: 'Date',
+              value: (
+                <>
+                  12 December 1901 <Cite id="hong-2001-wireless" in={SOURCES} />
+                </>
+              ),
+            },
             { label: 'Path', value: 'Poldhu, Cornwall → Signal Hill, Newfoundland' },
             { label: 'Great-circle distance', value: '~3500 km' },
             { label: 'Transmitter type', value: 'Spark-gap, capacitor-driven, ~20 kW input' },
@@ -706,7 +721,14 @@ export default function Ch10Maxwell() {
             </em>
           }
           specs={[
-            { label: 'L1 carrier frequency', value: '1575.42 MHz' },
+            {
+              label: 'L1 carrier frequency',
+              value: (
+                <>
+                  1575.42 MHz <Cite id="kaplan-hegarty-2017" in={SOURCES} />
+                </>
+              ),
+            },
             { label: 'L1 wavelength', value: '~19 cm' },
             { label: 'Constellation', value: '~24+ active satellites in 6 orbital planes' },
             { label: 'Orbital altitude', value: '~20,200 km (≈12 sidereal-hour orbit)' },
@@ -759,7 +781,14 @@ export default function Ch10Maxwell() {
             </em>
           }
           specs={[
-            { label: 'Frequency', value: '1420.406 MHz' },
+            {
+              label: 'Frequency',
+              value: (
+                <>
+                  1420.406 MHz <Cite id="ewen-purcell-1951" in={SOURCES} />
+                </>
+              ),
+            },
             { label: 'Wavelength', value: '21.106 cm' },
             { label: 'Transition', value: 'Hyperfine spin-flip of hydrogen 1s ground state' },
             { label: 'Predicted', value: 'H. C. van de Hulst, 1944' },
@@ -775,7 +804,7 @@ export default function Ch10Maxwell() {
             atoms with essentially no help from any laboratory. In the 1s ground state of H, the
             electron's spin can be parallel or antiparallel to the proton's; the parallel
             configuration sits approximately
-            <strong className="text-text font-medium"> 5.9 μeV</strong> higher. The forbidden
+            <strong className="text-text font-medium"> 5.87 μeV</strong> higher. The forbidden
             magnetic-dipole transition between them has a mean lifetime on the order of{' '}
             <strong className="text-text font-medium">10⁷ years</strong>, but the interstellar
             medium contains so many hydrogen atoms — on the order of <M>10⁶⁷</M> in the Milky Way
@@ -1026,8 +1055,9 @@ export default function Ch10Maxwell() {
             <M tex="F^{\mu\nu}" />
             to a quantum operator, treats the photon as the quantum of the field, and replaces
             classical charged sources with quantized matter fields (electrons, positrons). The
-            result is one of the most precisely-tested theories in all of science — the electron's
-            anomalous magnetic moment is predicted by QED to twelve decimal places of accuracy. In
+            result is one of the most precisely-tested theories in all of science — the QED
+            prediction for the electron's anomalous magnetic moment agrees with experiment to more
+            than ten significant figures. In
             the classical limit, where field quanta are numerous enough that you can ignore
             individual photons, QED reduces to Maxwell. So Maxwell's equations are the classical
             limit of QED, not its opposite
