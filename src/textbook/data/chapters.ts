@@ -1264,7 +1264,7 @@ export const CHAPTERS: ChapterEntry[] = [
     blurb:
       "The retrofit market has its own ecology. Lutron Caséta (proprietary 434 MHz, works without a neutral via the bleeder). Z-Wave (sub-GHz mesh). Zigbee (2.4 GHz mesh). Matter over Thread (the new convergence). And the structural NEC 404.2(C) requirement of a neutral in every switch box that finally caught up with smart switches. Three-way smart pairs, dimmable-LED phase choice (leading vs trailing), and what 'companion' vs 'add-on' means.",
     relatedLabs: ['ohms-law', 'inductance'],
-    sources: ['nec-2023', 'lutron-dimmer-app-note', 'ul-498', 'horowitz-hill-2015', 'codata-2018'],
+    sources: ['nec-2023', 'lutron-dimmer-app-note', 'ul-498', 'horowitz-hill-2015'],
     punchline:
       'A smart switch is a radio plus a triac plus a 30 mW microcontroller — and the most interesting design trade is how it stays powered when the load is off.',
     objectives: [
