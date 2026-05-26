@@ -1,30 +1,72 @@
 ---
 name: ch21-audit-findings
-description: Fact-check audit results for Ch21 Generators and the grid (slug: generators), logged 2026-05-21
+description: Ch.21 Generators fact-check findings — re-audited 2026-05-26 on the current file (fully rewritten since 2026-05-21 audit)
 metadata:
   type: project
 ---
 
-Audit of src/textbook/Ch21Generators.tsx against src/lib/sources.ts and chapters.ts sources array.
+Re-audited 2026-05-26. The file is completely different from the 2026-05-21 audit; all previous findings are superseded.
 
-**Chapter sources array** (7 keys): faraday-1832, feynman-II-17, griffiths-2017, grainger-power-systems-2003, fitzgerald-kingsley-umans-2014, kundur-1994-power-stability, codata-2018. All 7 keys exist in SOURCES registry.
+Lint: CLEAN (0 H-level mechanical issues from npm run lint:chapters -- --chapter 21).
 
-**BLOCKERs found: 7**
-1. Line 35-43 opening hook: Hoover Dam physical specs (35 km³ Lake Mead, 220m head, 17 generators, ~2 GW, 400km to LA) — no <Cite /> at all.
-2. Line 394-397 car alternator idle speed: prose says "1900 RPM alternator (2.5:1 pulley ratio)"; 750×2.5=1875, not 1900. Also states "300 Hz electrical at idle" but (1875/60)×6=187.5 Hz, not 300 Hz. Cited to fitzgerald-kingsley-umans-2014 but the numbers are wrong.
-3. Line 509 battery storage claim: "<0.1% of installed grid capacity globally" cited to kundur-1994-power-stability (published 1994) — this is a 2020s statistic; a 1994 book cannot back it.
-4. Lines 806-807 Case 17.3 wind turbine offshore spec: "8–15 MW for current off-shore designs" cited to fitzgerald-kingsley-umans-2014 (published 2014). 15 MW turbines are 2020+ designs the 2014 textbook cannot have covered.
-5. Line 782 Case 17.2 Hoover Dam spec: efficiency claims (synchronous-generator >0.97, water-to-wire ~0.90) are unsourced — the only case body cite is fitzgerald or grainger but neither specifically backs these efficiency numbers.
-6. Lines 1060-1065 pumped-hydro FAQ: round-trip efficiency "75–85%" and battery "~90–95%" cited to grainger-power-systems-2003. Grainger/Stevenson is a power systems analysis text, not a storage-technology reference; battery efficiency comparison in particular is outside its scope.
-7. Lines 985-995 out-of-phase breaker close FAQ: "roughly 20–50 times rated" transient current — specific numerical claim with no <Cite />.
+Chapter sources array (6 keys, all resolve): faraday-1832, feynman-II-17, griffiths-2017, grainger-power-systems-2003, fitzgerald-kingsley-umans-2014, kundur-1994-power-stability.
 
-**WARNINGs (arithmetic/number issues): 5**
-1. Line 394-397 (car alternator frequency): "idle ≈ 750 RPM crank → ~1900 RPM alternator" should be 750×2.5=1875. "300 Hz electrical at idle" is wrong: (1875/60)×6=187.5 Hz. "500 Hz at cruise" (2000×2.5=5000 RPM, (5000/60)×6=500 Hz) — cruise frequency is correct.
-2. Line 413 (3-phase bridge ripple): "peak-to-valley ~14% of average" — the actual peak-to-valley as % of V_avg_bridge is ~8%; peak-to-valley as % of V_peak is ~13.4%. The 14% figure is an approximation of the peak-to-valley relative to peak, not to average. Ambiguous but the stated denominator ("of average") makes the number wrong.
-3. Line 960 (FAQ inertia): "a 600 MW unit at 1800 RPM stores tens of megajoules in its spinning mass." The stored kinetic energy KE = H × MVA, where H is typically 4–9 s for a large steam turbine-generator. At H=5 s, KE = 5 × 600×10⁶ = 3 GJ = 3000 MJ. "Tens of megajoules" (10–99 MJ) understates the actual figure by roughly a factor of 100. Should read "gigajoules" or "a few gigajoules."
-4. Line 387-388 (scale claim): "Shrink the synchronous generator by four orders of magnitude." A 700 MW utility generator vs a 1–2 kW car alternator is ~350,000–700,000× reduction = ~5–6 orders of magnitude, not 4.
-5. All TryIt arithmetic verified correct: Try 17.1 (≈377 V), Try 17.2 (180 RPM), Try 17.3 (δ≈63°, P_max≈0.93 pu), Try 17.4 (750 Hz), Try 17.5 (−0.125 Hz/s), Try 17.6 (−0.375 Hz/s).
+**Why:** See findings below.
+**How to apply:** Route HIGH items to content author or cite-id-resolver.
 
-**Why:** See above for details. Key pattern: fitzgerald-kingsley-umans-2014 (2014 text) cited for state-of-the-art offshore wind specs that postdate publication; kundur-1994 cited for present-tense grid-storage statistics.
+## HIGH (BLOCKER)
 
-**How to apply:** Flag any cite that tries to use a pre-2015 textbook to back a "current" or "today" quantitative claim about renewable energy penetration, battery storage, or offshore wind ratings.
+H1 — "Seven orders of magnitude" arithmetic error (line 654)
+CaseStudies intro: "four generators spanning seven orders of magnitude, from a 700 MW dam unit to a 2 MW backup diesel." 700 MW / 2 MW = 350 = 10^2.54 — roughly 2.5 orders, not seven. Soften to "nearly three orders of magnitude."
+
+H2 — Three Gorges spec lines uncited (lines 665–683)
+- Installed capacity `22.5 GW (32 × 700 MW main units + 2 × 50 MW station-service)` — no Cite (arithmetic is correct)
+- `typically 80 poles per machine` — no Cite
+- `~95–112 TWh/year` annual generation — no Cite
+- `80 m hydraulic head` at Three Gorges (body, ~line 691) — no Cite
+- `fitzgerald-kingsley-umans-2014` does not cover Three Gorges installation specs; either soften or add a real source (Three Gorges Corp. TDR exists but must be verified before adding)
+
+H3 — Hoover Dam uprate history uncited (lines 714–715, 732–733)
+"~2.08 GW (after 1986–93 uprate); originally 1.34 GW (1936)" — specific historical figures with no Cite. `fitzgerald-kingsley-umans-2014` is not a dam-history reference. Soften to "roughly 2 GW after successive uprates."
+
+H4 — Hoover water-to-wire efficiency 0.85–0.90 uncited (line 747)
+"overall water-to-wire conversion typically around 0.85–0.90" — the paragraph-end Cite to fitzgerald covers generator efficiency, not system-level penstock+turbine+generator efficiency. Soften to "typically above 80%" or cite a hydraulics engineering reference.
+
+H5 — Governor droop "typically ~5%" inside Term def, no Cite (line 527)
+The Term def states "with a slope (typically ~5%) set by their governors" — specific quantitative claim with no Cite anywhere near it. The nearest `<Cite id="kundur-1994-power-stability">` is paragraphs later. Either add a Cite in the Term def or soften.
+
+H6 — Case 21.4 spec lines uncited (lines 823–829)
+- `4-pole 3-phase synchronous, ~1800 RPM at 60 Hz` spec row — no Cite
+- `typically 480 V line-to-line for data center bus` — no Cite
+- `~10 s from cold start` — no Cite
+- `typically 24–72 hours of run-time on-site` — no Cite
+The `grainger-power-systems-2003` Cite in the ATS paragraph is misaligned for demand-response dispatch practice; Grainger covers power-flow analysis, not data center operational practice.
+
+## MEDIUM
+
+M1 — H system inertia "4–6 s" possibly conservative (line 575)
+Kundur gives H for large steam/nuclear units typically 5–10 s; 4–6 s is the low end. The claim isn't wrong but may mislead. Soften to "on the order of a few to ~10 s."
+
+M2 — Three Gorges "typically 20 kV" output voltage cited to Grainger (line 702)
+Grainger doesn't cover Three Gorges specs. Soften to "a few tens of kilovolts."
+
+M3 — grainger-power-systems-2003 key has year mismatch (src/lib/sources.ts line 318)
+Key says 2003 but registry `year: 1994`. Pre-existing issue logged in Ch.3 audit.
+
+## LOW
+
+L1 — Hoover hydraulic head "~180 m" in spec row (line 727) — uncited but consistent with public Bureau of Reclamation data; low-severity.
+
+L2 — "Essentially every utility generator above ~150 MW is hydrogen-cooled" (line 1065–66) — fitzgerald cite present, but the 150 MW threshold is a specific claim fitzgerald may not state precisely. Verify page reference.
+
+## Arithmetic: ALL CLEAN
+Try 21.1: NBA×ω = 100×0.5×0.02×377 = 377 V ✓
+Try 21.3: sin δ = 0.8929, δ = 63.2° ✓; P_max = 0.933 pu ✓
+Try 21.4: n_alt = 7500 RPM, f = 750 Hz ✓
+Try 21.5: df/dt = −1/8 = −0.125 Hz/s ✓
+Try 21.6: df/dt = −0.05×60/(2×4) = −0.375 Hz/s ✓
+Three Gorges: 32×700 + 2×50 = 22,500 MW = 22.5 GW ✓
+Hoover: n_s = 120×60/40 = 180 RPM ✓
+3-phase FW bridge: peak-to-valley ~13.4%, ripple factor ~4% ✓
+
+Pattern note: `fitzgerald-kingsley-umans-2014` is stretched to cover Three Gorges specs, Hoover uprate history, and data center ATS details — none of which are in an electric machinery textbook. Same pattern as Ch.20 with Tesla Model S motor spec.

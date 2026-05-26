@@ -10,3 +10,6 @@
 - [Ch23 Transformers audit findings](ch23_audit_findings.md) — turns-ratio intuition tier missing; impedance transformation Term-popover trap; TransformerDesignerDemo UI-framing paragraph (Rule C)
 
 - [Ch20 Motors audit findings](ch20_audit_findings.md) — torque intuition tier missing (HIGH); back-EMF and synchronous speed in Term popovers only (MED/LOW); ω_s unit missing in n_s where-paragraph (LOW)
+
+- [Ch25 Batteries audit findings](ch25_audit_findings.md) — E° intuition tier missing; L252 and L342 missing where-paragraphs; chemical half-reaction Formulas with inline Terms are exempt from Rule B
+- [Ch26 Modern Batteries audit findings](ch26_audit_findings.md) — energy density intuition/formal tiers missing; C-rate FAQ-only; chemical Formulas exempt from Rule B; Rule C clean

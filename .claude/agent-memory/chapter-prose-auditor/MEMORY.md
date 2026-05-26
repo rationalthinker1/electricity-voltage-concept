@@ -5,3 +5,5 @@
 - [Ch21 audit result](project_ch21-audit.md) — single broken-hyphen artefact `simple- cycle` at L494; otherwise clean.
 
 - [Ch23 Transformers audit](project_ch23-audit.md) — two broken-hyphen artefacts (L1213, L1271); otherwise clean.
+- [Ch26 Modern Batteries audit](project_ch26-audit.md) — clean; suspended-hyphen "Volume- and shape-optimized" at L537 confirmed false positive.
+- [Ch27 House Grid Arrives audit](project_ch27-audit.md) — clean; "single- or split-phase" at L619 confirmed suspended-hyphen false positive.
