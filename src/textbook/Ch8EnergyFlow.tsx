@@ -71,7 +71,7 @@ export default function Ch8EnergyFlow() {
       </p>
       <p className="mb-prose-3">
         Look at it bluntly. In Chapter&nbsp;2 we calculated the drift speed of an electron in
-        12-gauge copper at modest current: about 0.03 mm/s. Yet the bulb turns on essentially the
+        copper at a modest current: about 0.03 mm/s. Yet the bulb turns on essentially the
         moment you flip the switch. If energy rode in on the backs of the drifting electrons, you
         would wait several hours after closing the circuit before the first energy-laden electrons
         made it from one end of the wire to the other. They don't carry the energy. Something else
@@ -434,7 +434,7 @@ export default function Ch8EnergyFlow() {
         thread through every point in the space surrounding the circuit, the net flux entering the
         resistive segment equals the power dissipated there, and the same flux{' '}
         <em className="text-text italic">leaves</em> the battery, which acts as a source of
-        field-energy. Morris and Styer have visualized the 2D version explicitly, plotting the
+        field-energy. Styer has visualized the 2D version explicitly, plotting the
         Poynting flow along equipotentials in a simple parallel-rail geometry
         <Cite id="morris-styer-2012" in={SOURCES} />.
       </p>
@@ -726,15 +726,14 @@ export default function Ch8EnergyFlow() {
               ),
             },
             {
-              label: "Earth's intercepted power",
+              label: "Earth's intercepted power (= S₀·πR², derived)",
               value: (
                 <>
-                  ~1.74 × 10¹⁷ W <Cite id="codata-2018" in={SOURCES} />
+                  ~1.74 × 10¹⁷ W <Cite id="kopp-lean-2011" in={SOURCES} />
                 </>
               ),
             },
-            { label: 'Annual global energy demand (2024)', value: '~6 × 10²⁰ J' },
-            { label: "Same as Earth's intercept for", value: '~1 hour' },
+            { label: "Earth intercepts humanity's annual energy use in", value: '~1 hour' },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
@@ -953,7 +952,7 @@ export default function Ch8EnergyFlow() {
             for a realistic circular circuit and showed that{' '}
             <M tex="\\oint \\vec{S}\\cdot d\\vec{A}" /> over any closed surface enclosing the
             resistor reproduces <M tex="VI" /> at every point in the parameter space
-            <Cite id="davis-kaplan-2011" in={SOURCES} />. Morris and Styer did the equivalent for a
+            <Cite id="davis-kaplan-2011" in={SOURCES} />. Styer did the equivalent for a
             2D rail geometry and showed the flow lines lie along equipotentials
             <Cite id="morris-styer-2012" in={SOURCES} />. The fields are measurable; their cross
             product follows.
@@ -1088,8 +1087,9 @@ export default function Ch8EnergyFlow() {
             which <M tex="E" />
             and <M tex="B" /> are mutually perpendicular and in phase, with{' '}
             <M id="poynting-vector" />
-            pointing in the direction of propagation and magnitude <M tex="c\\varepsilon_0 E^2" />{' '}
-            on time-average
+            pointing in the direction of propagation and magnitude{' '}
+            <M tex="\\tfrac{1}{2}c\\varepsilon_0 E_0^2" /> on time-average (with{' '}
+            <M tex="E_0" /> the peak field)
             <Cite id="jackson-1999" in={SOURCES} />. The energy flow around a DC wire and the energy
             flow in a sunbeam are the same vector field doing the same job — one is steady, the
             other oscillates, but Maxwell's equations don't distinguish them

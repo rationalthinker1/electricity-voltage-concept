@@ -215,7 +215,7 @@ export default function Ch7Induction() {
         <Term def="The induced current always flows in the direction that opposes the change in flux that produced it. Equivalent to the minus sign in Faraday's law and demanded by energy conservation: without it, induction would be a perpetual-motion machine.">
           Lenz's law
         </Term>{' '}
-        — articulated by Heinrich Lenz in 1834 and provably equivalent to it:{' '}
+        — articulated by Heinrich Lenz and provably equivalent to it:{' '}
         <strong className="text-text font-medium">
           the induced current always flows in the direction that opposes the change in flux that
           produced it
@@ -400,8 +400,8 @@ export default function Ch7Induction() {
             <p className="mb-prose-1 last:mb-0">
               A step-down by a factor of five. In the ideal lossless limit the current scales the
               opposite way: I₂/I₁ = N₁/N₂ = 5, so power V·I is preserved across the transformer
-              <Cite id="griffiths-2017" in={SOURCES} />. Real transformers achieve 95–99% efficiency
-              at their design point.
+              <Cite id="griffiths-2017" in={SOURCES} />. Real transformers come within a few percent
+              of this ideal at their design point.
             </p>
           </>
         }
@@ -505,7 +505,14 @@ export default function Ch7Induction() {
             { label: 'Grid frequency (North America)', value: '60 Hz' },
             { label: 'Grid frequency (Europe / most of Asia)', value: '50 Hz' },
             { label: 'Shaft angular rate at 60 Hz', value: '~377 rad/s (3600 rpm, 2-pole)' },
-            { label: 'Iron-core saturation field', value: '~1.5–2 T' },
+            {
+              label: 'Iron-core saturation field',
+              value: (
+                <>
+                  ~1.5–2 T <Cite id="griffiths-2017" in={SOURCES} />
+                </>
+              ),
+            },
             { label: 'Output of a large turbogenerator', value: '~1 GW class' },
             { label: 'Transmission voltages', value: '110–765 kV' },
           ]}
@@ -579,9 +586,8 @@ export default function Ch7Induction() {
             <Cite id="griffiths-2017" in={SOURCES} />. The system is consequently far less efficient
             than a wired link. Real-world end-to-end efficiency from wall outlet to phone battery is
             typically
-            <strong className="text-text font-medium"> 60–80%</strong>, versus{' '}
-            <strong className="text-text font-medium">≥ 95%</strong> for a USB-C cable
-            <Cite id="feynman-II-17" in={SOURCES} />. The "wasted" power becomes heat in the coils
+            <strong className="text-text font-medium"> 60–80%</strong>, versus a wired connection,
+            which loses almost nothing to conduction. The "wasted" power becomes heat in the coils
             and in nearby ferrous metal — which is why a coin or a paperclip on a Qi pad will warm
             up disconcertingly.
           </p>
@@ -723,10 +729,10 @@ export default function Ch7Induction() {
             <Cite id="feynman-II-17" in={SOURCES} />. The only moment a DC primary does anything is
             the instant you <em className="text-text italic">switch it on or off</em>, which is
             precisely the moment Faraday saw his galvanometer twitch in 1831
-            <Cite id="faraday-1832" in={SOURCES} />. Edison's DC grid couldn't be transformed up and
-            down for transmission for this exact reason; Tesla and Westinghouse won the AC argument
-            because AC has a non-zero dΦ/dt by construction
-            <Cite id="griffiths-2017" in={SOURCES} />.
+            <Cite id="faraday-1832" in={SOURCES} />. A DC distribution grid can't be transformed up
+            and down for transmission for this exact reason, which is one of the physical arguments
+            that pushed long-distance power transmission toward AC: AC has a non-zero dΦ/dt by
+            construction <Cite id="griffiths-2017" in={SOURCES} />.
           </p>
         </FAQItem>
 
@@ -785,8 +791,7 @@ export default function Ch7Induction() {
             coefficient drops well below 1 and a sizable fraction of the input power is wasted as
             resistive losses in the primary and as stray field warming nearby metal. A wall plug, by
             contrast, delivers energy through a conductor with negligible loss until you reach the
-            device. Typical Qi efficiency is 60–80% versus 95%+ for a cable
-            <Cite id="feynman-II-17" in={SOURCES} />.
+            device. Typical Qi efficiency is 60–80%, well below what a direct wired link delivers.
           </p>
         </FAQItem>
 
