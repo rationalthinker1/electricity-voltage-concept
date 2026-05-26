@@ -1340,10 +1340,10 @@ export const CHAPTERS: ChapterEntry[] = [
       'sae-j1772',
       'iec-62196',
       'ul-2231',
-      'sedra-smith-2014',
       'erickson-maksimovic-2020',
-      'horowitz-hill-2015',
       'codata-2018',
+      'linden-reddy-2011',
+      'yoshino-1985',
     ],
     punchline:
       'An EV is a battery on wheels with seven power-electronics stages between the cell and the road — and every one of those stages has appeared in a previous chapter of this textbook.',

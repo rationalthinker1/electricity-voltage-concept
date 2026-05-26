@@ -157,7 +157,7 @@ export default function Ch41EVPowertrain() {
             <>
               <strong className="text-text font-medium">21700 cells</strong> — a cylindrical Li-ion
               form factor 21 mm in diameter and 70 mm tall, introduced by Tesla and Panasonic in
-              2017 to replace the earlier 18650 (18 mm × 65 mm) format. About 4.5 Ah per cell at 3.6
+              2017 to replace the earlier 18650 (18 mm × 65 mm) format. About 4.8 Ah per cell at 3.6
               V nominal, ~17 Wh per cell.
             </>
           }
@@ -182,7 +182,7 @@ export default function Ch41EVPowertrain() {
         </Term>{' '}
         — lithium nickel-manganese-cobalt oxide on the cathode, graphite on the anode, the standard
         EV recipe developed through the 1990s and 2000s and discussed in depth in Ch.26
-        <Cite id="horowitz-hill-2015" in={SOURCES} />.
+        <Cite id="yoshino-1985" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         The pack-level energy budget is straightforward. Total energy stored is the product of cell
@@ -270,7 +270,7 @@ export default function Ch41EVPowertrain() {
         order of 10–50 mV over a few hundred cycles, and a few percent on capacity. The pack&rsquo;s
         usable energy is set by the <em className="text-text italic">weakest</em> cell — the one
         that hits the lower voltage cutoff first on discharge, or the upper voltage cutoff first on
-        charge. The job of the{' '}
+        charge <Cite id="linden-reddy-2011" in={SOURCES} />. The job of the{' '}
         <Term
           def={
             <>
@@ -285,7 +285,7 @@ export default function Ch41EVPowertrain() {
         </Term>{' '}
         is to monitor every cell in real time and arrange the charge/discharge currents so that no
         single cell goes outside its safe window
-        <Cite id="sedra-smith-2014" in={SOURCES} />.
+        <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         Inside a typical pack the BMS distributes the work. A central controller talks over CAN to
@@ -322,7 +322,7 @@ export default function Ch41EVPowertrain() {
         </Term>
         ; an active scheme would shuttle the extra charge between cells through a tiny DC-DC
         converter, but most production EVs settle for the simpler passive approach
-        <Cite id="horowitz-hill-2015" in={SOURCES} />.
+        <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         Pack-level current is measured by a{' '}
@@ -395,7 +395,7 @@ export default function Ch41EVPowertrain() {
         DC into a 100 kHz square wave on the primary of a small ferrite-core transformer. The
         secondary is rectified and filtered down to 14 V (the float voltage for a small lead-acid
         auxiliary battery) and supplies the car&rsquo;s 12 V loads
-        <Cite id="sedra-smith-2014" in={SOURCES} />.
+        <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         Galvanic isolation is mandatory here. A chassis ground fault on the 12 V side is a routine
@@ -455,7 +455,7 @@ export default function Ch41EVPowertrain() {
               MOSFETs. A wide-bandgap semiconductor switch that conducts less loss than a silicon
               IGBT at the same voltage class, switches faster (50–100 ns vs. 500 ns), and tolerates
               higher junction temperatures (200 °C vs. 150 °C). Tesla&rsquo;s Model 3 was the first
-              volume EV to ship SiC traction inverters in 2017.
+              volume EV to ship SiC traction inverters, around 2017–2018.
             </>
           }
         >
@@ -466,7 +466,7 @@ export default function Ch41EVPowertrain() {
         that an SiC inverter at the same kW rating is about a third the volume and runs three to
         four percentage points more efficient. Modern SiC traction inverters hit 98–99% peak
         efficiency; IGBT designs sit at 95–97%
-        <Cite id="sedra-smith-2014" in={SOURCES} />.
+        <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         Each half-bridge leg of the inverter is pulse-width-modulated at 8–20 kHz. The controller —
@@ -765,8 +765,7 @@ export default function Ch41EVPowertrain() {
         aerodynamics. Wheel torque divided by wheel radius is the tractive force the tire applies to
         the road; tractive force times vehicle speed is the instantaneous power leaving the
         drivetrain and entering the world as kinetic energy, heat in the tires, sound, and disturbed
-        air
-        <Cite id="codata-2018" in={SOURCES} />.
+        air.
       </p>
       <p className="mb-prose-3">
         There are four dominant resistive forces the wheels have to overcome. The first is{' '}
@@ -898,8 +897,7 @@ export default function Ch41EVPowertrain() {
         cruising flat at 110 km/h (30.6 m/s), F<sub>roll</sub> + F<sub>drag</sub> ≈ 160 + 290 ≈ 450
         N, and <M tex="P_{\text{wheel}} \approx 450 \times 30.6 \approx 13.8\ \text{kW}" />. That is
         the entire steady-state mechanical demand of an EV at freeway speed — comfortably less than
-        a hairdryer per wheel
-        <Cite id="codata-2018" in={SOURCES} />.
+        a hairdryer per wheel.
       </p>
 
       <TryIt
@@ -1001,7 +999,7 @@ export default function Ch41EVPowertrain() {
       <p className="mb-prose-3">
         <strong className="text-text font-medium">Litres / gallons.</strong> The gasoline analogy
         fails for a deeper reason: liquid fuel is sold by volume because the energy density per
-        litre is approximately constant (gasoline: ~33 MJ/L; diesel: ~36 MJ/L). The retailer doesn't
+        litre is approximately constant (gasoline: ~34 MJ/L; diesel: ~36 MJ/L). The retailer doesn't
         sell you joules because the conversion to litres is fixed by the chemistry. Battery
         chemistries don't share that consistency — a 21700 NMC cell holds ~17 Wh; a 21700 LFP cell
         holds ~13 Wh — so a "1 L equivalent" volume measure for charge would change with every
@@ -1024,8 +1022,8 @@ export default function Ch41EVPowertrain() {
         is the instantaneous DC bus voltage (volts), <M tex="I_{\text{dc}}(t)" />
         is the instantaneous DC bus current (amperes), and <M tex="T" /> is the session duration
         (seconds). The integration is done in real time by the charger's metering circuit —
-        typically certified to ±0.5% per accuracy class 0.5 of OIML R 46, the same class used for
-        residential utility meters.
+        typically certified to the same fraction-of-a-percent accuracy class used for residential
+        utility meters.
       </p>
       <p className="mb-prose-3">
         For AC charging on a Level 2 EVSE, the relevant integral is on the AC side (V<sub>rms</sub>
@@ -1170,7 +1168,8 @@ export default function Ch41EVPowertrain() {
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            The Model 3 was the first volume EV to ship silicon-carbide traction inverters, in 2017.
+            The Model 3 was among the first volume EVs to ship silicon-carbide traction inverters,
+            around 2017–2018.
             That single design choice — replacing IGBT silicon with SiC MOSFETs in the main inverter
             — pushed peak inverter efficiency from about 96% to about 98% across the operating
             envelope, which directly buys about 4% range at constant cruise. The 96-series-cell pack
@@ -1362,7 +1361,7 @@ export default function Ch41EVPowertrain() {
             2–4 percentage points of efficiency improvement across the operating envelope and a
             substantial reduction in heat-sink mass. At EV traction-inverter scale that translates
             directly into 3–5% more driving range from the same pack
-            <Cite id="sedra-smith-2014" in={SOURCES} />. The cost is silicon: SiC wafer prices are
+            <Cite id="erickson-maksimovic-2020" in={SOURCES} />. The cost is silicon: SiC wafer prices are
             higher than silicon and the material is harder to fabricate, but high-volume production
             through the 2020s has narrowed the cost gap to within 1.5× silicon, which the efficiency
             gain pays back over the first year of car use.
@@ -1406,7 +1405,7 @@ export default function Ch41EVPowertrain() {
             faster than the average cell&rsquo;s capacity does. Balancing — bleeding charge off high
             cells (passive) or shuttling it from high to low (active) — keeps the spread bounded and
             preserves capacity for the life of the pack
-            <Cite id="horowitz-hill-2015" in={SOURCES} />.
+            <Cite id="linden-reddy-2011" in={SOURCES} />.
           </p>
         </FAQItem>
 
@@ -1436,7 +1435,7 @@ export default function Ch41EVPowertrain() {
             C-rate in cold conditions to avoid lithium plating, so peak regen and peak DCFC rates
             both drop. A 20% range reduction in winter is typical; 40% in extreme cold with the
             heater running flat-out is not unusual
-            <Cite id="horowitz-hill-2015" in={SOURCES} />.
+            <Cite id="linden-reddy-2011" in={SOURCES} />.
           </p>
         </FAQItem>
 
@@ -1474,7 +1473,7 @@ export default function Ch41EVPowertrain() {
             lithium-metal anode promises about 2× the energy density of a current NMC
             liquid-electrolyte cell (~500 Wh/kg at the cell level vs. ~250 Wh/kg today) and a wider
             safe-operating temperature window
-            <Cite id="horowitz-hill-2015" in={SOURCES} />. The seven-stage chain stays the same —
+            <Cite id="linden-reddy-2011" in={SOURCES} />. The seven-stage chain stays the same —
             there is still a pack, a BMS, a contactor, a DC-DC, an inverter, a motor, a gearbox —
             but the pack shrinks by half for the same range, or the range doubles for the same pack
             volume. Solid-state cells also tolerate higher charge C-rates without plating, so DC
@@ -1523,7 +1522,7 @@ export default function Ch41EVPowertrain() {
             depth of discharge (a 100% cycle is roughly 4× as damaging as four 25% cycles to the
             same total energy) and by C-rate (DC fast charging is worse than Level-2 by about 10–20%
             on long-term capacity)
-            <Cite id="horowitz-hill-2015" in={SOURCES} />. For a typical commuter who
+            <Cite id="linden-reddy-2011" in={SOURCES} />. For a typical commuter who
             DC-fast-charges occasionally and stays in the 20–80% window, calendar aging dominates
             and the pack reaches its warranty 70% capacity threshold somewhere between year 8 and
             year 12.
