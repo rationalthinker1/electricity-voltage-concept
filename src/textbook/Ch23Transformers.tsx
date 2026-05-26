@@ -765,7 +765,7 @@ export default function Ch23Transformers() {
       </p>
       <p className="mb-prose-3">
         All four effects together drag practical transformer efficiency down from the ideal 100 % to
-        typical values of 95–99.5 % for large units and 85–97 % for smaller ones
+        typical values of 97–99.5 % for large units and 85–97 % for smaller ones
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />. Charles Proteus Steinmetz
         introduced the use of complex-number (phasor) analysis to AC circuits in 1893, specifically
         to make the equivalent-circuit description of a real transformer tractable instead of
@@ -816,8 +816,8 @@ export default function Ch23Transformers() {
         count, and the peak flux density fixed and the required core cross-section <M tex="A" />{' '}
         falls inversely with frequency. Run a 100 W transformer at 60 Hz and it needs roughly 120
         cm³ of silicon steel. Run the same 100 W transformer at 100 kHz and the equivalent ferrite
-        core is about 1700 times smaller — a few cubic centimetres, weighing five grams instead of
-        six hundred
+        core is about 1700 times smaller in cross-section — weighing tens of grams instead of the
+        better part of a kilogram
         <Cite id="mclyman-2004" in={SOURCES} />.
       </p>
 
@@ -890,7 +890,15 @@ export default function Ch23Transformers() {
                 </>
               ),
             },
-            { label: 'Service life', value: <>30–40 years; mineral-oil cooling and insulation</> },
+            {
+              label: 'Service life',
+              value: (
+                <>
+                  30–40 years; mineral-oil cooling and insulation{' '}
+                  <Cite id="grainger-power-systems-2003" in={SOURCES} />
+                </>
+              ),
+            },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
@@ -938,7 +946,8 @@ export default function Ch23Transformers() {
               value: (
                 <>
                   ~5 g for a 30 W unit; <strong className="text-text font-medium">1000×</strong>{' '}
-                  lighter than a linear 60 Hz equivalent
+                  lighter than a linear 60 Hz equivalent{' '}
+                  <Cite id="mclyman-2004" in={SOURCES} />
                 </>
               ),
             },
@@ -993,7 +1002,12 @@ export default function Ch23Transformers() {
             },
             {
               label: 'Cooling',
-              value: <>ONAN/ONAF — oil natural / oil forced with radiators and fans</>,
+              value: (
+                <>
+                  ONAN/ONAF — oil natural / oil forced with radiators and fans{' '}
+                  <Cite id="grainger-power-systems-2003" in={SOURCES} />
+                </>
+              ),
             },
             { label: 'Mass', value: <>40–100 tonnes; non-trivial to truck in</> },
           ]}

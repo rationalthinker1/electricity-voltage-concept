@@ -805,7 +805,6 @@ export const CHAPTERS: ChapterEntry[] = [
       'henry-1832',
       'faraday-1832',
       'maxwell-1865',
-      'maxwell-1873',
       'griffiths-2017',
       'jackson-1999',
       'feynman-II-17',
@@ -834,7 +833,7 @@ export const CHAPTERS: ChapterEntry[] = [
     title: 'Transformers',
     subtitle: 'Two coils, one core, a different voltage on the other side.',
     blurb:
-      'Wrap two coils around the same iron ring and a changing current in one drives a proportional voltage in the other. Faraday discovered the principle in 1831; Stanley turned it into a working power-grid component in 1885; and from that moment, electricity could be sent across continents. Step up to 500 kV for transmission, step down to 240 V for your wall, step down again to 5 V for your phone — all the same physics.',
+      'Wrap two coils around the same iron ring and a changing current in one drives a proportional voltage in the other. Faraday discovered the principle in 1831; Stanley turned it into a working power-grid component in 1886; and from that moment, electricity could be sent across continents. Step up to 500 kV for transmission, step down to 240 V for your wall, step down again to 5 V for your phone — all the same physics.',
     relatedLabs: ['faraday', 'inductance'],
     sources: [
       'faraday-1832',
@@ -878,6 +877,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'erickson-maksimovic-2020',
       'horowitz-hill-2015',
       'kundur-1994-power-stability',
+      'ieee-1547-2018',
       'codata-2018',
     ],
     punchline:
