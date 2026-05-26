@@ -242,7 +242,7 @@ export default function Ch29HouseBranchCircuits() {
         </Term>
         , all wrapped in a PVC outer jacket. The conductors inside are individually insulated in
         THHN-style PVC rated to 90 °C; the &ldquo;B&rdquo; in NM-B is the 90 °C internal rating that
-        replaced the older 60 °C NM cable in 1984
+        replaced the older 60 °C NM cable when the NEC revised its NM-cable insulation requirements
         <Cite id="nec-2023" in={SOURCES} />. Article 334 of the NEC covers it. NM-B is for dry,
         protected interior locations — inside stud bays, attics, joist spaces — and is the workhorse
         of residential framing.
@@ -495,8 +495,7 @@ export default function Ch29HouseBranchCircuits() {
         aluminium service-entrance conductors such as 4/0 aluminium, depending on the installation
         method and local utility practice. The reason is price and weight: aluminium gives the
         needed ampacity with less cost and easier handling than an equivalent copper service
-        conductor
-        <Cite id="nec-2017-aluminum" in={SOURCES} />.
+        conductor.
       </p>
       <p className="mb-prose-3">
         That sentence has a notorious asterisk. Between roughly{' '}
@@ -510,8 +509,8 @@ export default function Ch29HouseBranchCircuits() {
       <p className="mb-prose-3">
         Three things went wrong at once. Aluminium forms a hard, electrically insulating oxide skin
         the instant it sees air; copper does too, but copper oxide is conductive enough to live
-        with. Aluminium's coefficient of thermal expansion is about 23 ppm/K — almost double brass's
-        19 ppm/K — so a screw terminal heated and cooled through every load cycle worked itself
+        with. Aluminium's coefficient of thermal expansion is markedly larger than that of the brass
+        or steel it is clamped against — so a screw terminal heated and cooled through every load cycle worked itself
         looser over months and years. And aluminium <em className="text-text italic">creeps</em>:
         under sustained compressive load it deforms plastically and the joint slowly relaxes. The
         result was a connection that started tight, loosened over time, the oxide grew across the
@@ -1159,7 +1158,7 @@ export default function Ch29HouseBranchCircuits() {
 
         <FAQItem q="Why are tamper-resistant receptacles (TR) required in residential bedrooms?">
           <p>
-            NEC 406.12 has, since 2008, required tamper-resistant receptacles in essentially all
+            NEC 406.12 requires tamper-resistant receptacles in essentially all
             readily-accessible receptacles within dwelling units
             <Cite id="nec-2023" in={SOURCES} />. The mechanism is a pair of sprung shutters behind
             the face plate that open only when symmetric pressure is applied to both slots
@@ -1182,7 +1181,7 @@ export default function Ch29HouseBranchCircuits() {
             the high-frequency current signature of a parallel or series arc — a staple piercing a
             cable, a damaged extension cord — and trip before the arc ignites surrounding
             combustibles
-            <Cite id="nfpa-70e-2024" in={SOURCES} />. GFCI is about people; AFCI is about fires. The
+            <Cite id="nec-2023" in={SOURCES} />. GFCI is about people; AFCI is about fires. The
             two functions are sometimes combined in a dual-function (DFCI) breaker required by some
             recent NEC adoptions.
           </p>
