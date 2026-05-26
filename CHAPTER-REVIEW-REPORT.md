@@ -478,7 +478,8 @@ being resumed.
 
 ### Ch.42 — Fiber-optic communication link (capstone)
 - **Fact-check:** _pending (running)_
-- **Pedagogy:** _pending (running)_
-- **Prose: clean.**
+- **MED · pedagogy** — attenuation (L265–362): intuition + operational tiers present, but the **formal tier is missing** — no `<Formula>` for the dB-decay definition `P(z)=P₀·10^(−αz/10)` before α is used in the link budget. Add it between L303 and L362.
+- **HIGH · pedagogy** — L116–121: pure demo-framing ("Drag the angle slider…") after `FiberOpticDemo` → move into its `caption`.
+- NA three-tier order and all five other `<Formula>` "where" paragraphs clean; chapter has proper embedded demos. **Prose: clean.**
 
 ---

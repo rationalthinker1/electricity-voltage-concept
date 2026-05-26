@@ -872,8 +872,10 @@ export default function Ch41EVPowertrain() {
       <p className="mb-prose-3">
         where <M tex="F_{\text{climb}}" />
         is the climbing component of weight along the road surface in newtons, <M tex="m" /> and{' '}
-        <M tex="g" /> are as before, and <M tex="\theta" /> is the road grade angle (in radians or
-        degrees). On a 6% grade (θ ≈ 3.4°), sin θ ≈ 0.06, so a 2000 kg car has{' '}
+        <M tex="g" /> are as before, and <M tex="\theta" /> is the road grade angle, so that{' '}
+        <M tex="\sin\theta" /> is the dimensionless grade fraction (for small angles, sin θ ≈ the
+        grade percentage divided by 100) and <M tex="F_{\text{climb}}" /> comes out in newtons. On a
+        6% grade (θ ≈ 3.4°), sin θ ≈ 0.06, so a 2000 kg car has{' '}
         <M tex="F_{\text{climb}} \approx 1180\ \text{N}" /> — about seven times the rolling friction
         and four times the highway aero drag. Hills dominate flat-road physics quickly.
       </p>
@@ -1034,7 +1036,7 @@ export default function Ch41EVPowertrain() {
       </p>
 
       <p className="caption-1">
-        The takeaway: kWh wins because it is the chemistry-invariant, vehicle- invariant,
+        The takeaway: kWh wins because it is the chemistry-invariant, vehicle-invariant,
         driver-invariant unit of the actual conserved quantity changing hands. It is the same unit
         your utility uses on your home bill, which lets the EV slot into the same accounting
         framework as your refrigerator.

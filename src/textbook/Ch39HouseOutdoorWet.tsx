@@ -914,7 +914,7 @@ export default function Ch39HouseOutdoorWet() {
         additions in an unfinished basement, AFCI/GFCI breaker requirements that did not exist at
         the original install). The economics of the electrification arc — EVSE plus heat pump plus
         induction plus heat-pump water heater — typically justify the upgrade against the
-        alternative of constant load-shedding management, but the labour is licensed- electrician
+        alternative of constant load-shedding management, but the labour is licensed-electrician
         and utility-coordinated work, not a weekend project.
       </p>
       <p className="mb-prose-3">
@@ -1305,7 +1305,7 @@ export default function Ch39HouseOutdoorWet() {
             the equipment manufacturer's recommendations and the listing standard (UL 943B for
             higher-threshold class A devices). The 20 mA threshold inside an EVSE per UL 2231 is in
             the same category: it protects the vehicle-supply path against fault but is not the
-            personnel- protection device
+            personnel-protection device
             <Cite id="ul-2231" in={SOURCES} />.
           </p>
         </FAQItem>
