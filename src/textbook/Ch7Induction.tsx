@@ -297,10 +297,9 @@ export default function Ch7Induction() {
         cycle.
       </p>
       <p className="mb-prose-3">
-        The demo below is the same physics, rendered in 3D so the projection is literal: drag to
-        orbit, watch n̂ pivot relative to B, watch the translucent disc fill and fade as{' '}
-        <M tex="\cos\theta" /> swings from +1 to 0 to −1. The rolling plot underneath stacks Φ
-        <sub>B</sub>(t) on ε(t) with their phase offset visible at a glance
+        The same physics renders even more sharply in three dimensions, where the projection of the
+        loop's area onto the field is literal rather than implied, and the quarter-cycle phase
+        offset between flux and induced EMF can be read straight off a shared time axis
         <Cite id="feynman-II-17" in={SOURCES} />.
       </p>
 

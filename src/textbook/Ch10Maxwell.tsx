@@ -140,14 +140,12 @@ export default function Ch10Maxwell() {
 
       <p className="mb-prose-3">
         Before we treat each equation on its own, it's worth seeing all four sitting in the same
-        region of space at once. The demo below is a single rotating cubical box — the{' '}
-        <em className="text-text italic">same</em> box for all four laws — with four toggleable
-        facets: a point charge inside (Gauss for E), a bar magnet inside (Gauss for B, with every
+        region of space at once — the <em className="text-text italic">same</em> box for all four
+        laws: a point charge inside (Gauss for E), a bar magnet inside (Gauss for B, with every
         field line closing on itself), a wire loop with a ramping flux through it (Faraday), and a
         charging capacitor (Ampère–Maxwell, with the displacement-current term filling in for the
         missing conduction current in the gap)
-        <Cite id="maxwell-1865" in={SOURCES} />. Drag to orbit; pick a mode; watch the integral on
-        each side of the active equation match numerically as you change the source
+        <Cite id="maxwell-1865" in={SOURCES} />
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
 

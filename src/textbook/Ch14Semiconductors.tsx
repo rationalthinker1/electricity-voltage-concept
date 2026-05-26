@@ -728,11 +728,9 @@ export default function Ch14Semiconductors() {
       <MOSFETOperationDemo figure="Fig. 14.5" />
 
       <p className="mb-prose-3">
-        The 2D cross-section makes the I-V curves quantitative; the 3D rendering below makes the
-        geometry visceral. Drag to orbit the device, push V<sub>GS</sub>
-        past V<sub>T</sub>, and watch the inversion layer light up directly under the oxide as a
-        thin channel of electron dots connecting source to drain. Add a V<sub>DS</sub> and the same
-        dots stream toward the drain.
+        The 2D cross-section makes the I-V curves quantitative; the 3D rendering makes the geometry
+        visceral — the inversion layer is not an abstraction but a literal sheet of mobile electrons
+        forming under the oxide the moment the gate field is strong enough.
       </p>
 
       <MOSFET3DDemo figure="Fig. 14.6" />

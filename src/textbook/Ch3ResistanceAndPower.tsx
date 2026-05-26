@@ -589,8 +589,8 @@ export default function Ch3ResistanceAndPower() {
       <p className="mb-prose-3">
         Real circuits rarely live at one extreme. A mixed network already wants both rules at once —
         a trunk in series with a parallel block, a parallel pair feeding a series load, or several
-        branches running in parallel. The demo below lets you pick the topology and watch the
-        voltage drops and branch currents re-balance themselves.
+        branches running in parallel — and the only trick is to collapse it one nested block at a
+        time.
       </p>
 
       <SeriesParallelMixDemo figure="Fig. 3.10" />
