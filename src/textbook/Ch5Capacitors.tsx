@@ -6,7 +6,7 @@
  *   5.2 Plate geometry  (C = ε₀A/d)
  *   5.3 A parallel-plate capacitor in 3D (Gauss pillbox)
  *   5.4 Why each charge is harder than the last
- *   5.5 Energy in the gap  (u_E = ½ε₀E²)
+ *   5.6 Energy-density explorer  (V·d·A → u_E = ½ε₀E², with a u_E-vs-E parabola)
  *   5.6 RC charging curve
  *   5.7 Leyden jar replay  (historical flavour)
  *
@@ -23,7 +23,7 @@ import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { BuildACapacitorDemo } from './demos/BuildACapacitor';
 import { ChargingCurveDemo } from './demos/ChargingCurve';
-import { EnergyInTheGapDemo } from './demos/EnergyInTheGap';
+import { EnergyDensityExplorerDemo } from './demos/EnergyDensityExplorer';
 import { LeydenJarReplayDemo } from './demos/LeydenJarReplay';
 import { DielectricSlideDemo } from './demos/DielectricSlide';
 import { ParallelPlate3DDemo } from './demos/ParallelPlate3D';
@@ -378,7 +378,7 @@ export default function Ch5Capacitors() {
         <M tex="E" /> is the local electric-field magnitude (in V/m).
       </p>
 
-      <EnergyInTheGapDemo figure="Fig. 5.6" />
+      <EnergyDensityExplorerDemo figure="Fig. 5.6" />
 
       <p className="mb-prose-3">
         Multiply this density by the gap volume <M tex="A \cdot d" /> for an idealised

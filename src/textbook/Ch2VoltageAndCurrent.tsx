@@ -319,6 +319,27 @@ export default function Ch2VoltageAndCurrent() {
         noticing.
       </p>
       <p className="mb-prose-3">
+        Which particles actually do the moving depends on the medium. In a metal the carriers are
+        free electrons. In an{' '}
+        <Term
+          def={
+            <>
+              <strong className="text-text font-medium">electrolyte</strong> — a medium (salt water,
+              a battery's internal solution, living tissue) in which dissolved <em>ions</em>, rather
+              than free electrons, carry the current.
+            </>
+          }
+        >
+          electrolyte
+        </Term>{' '}
+        — salt water, a battery's internal chemistry, the body of an electric eel — the carriers are{' '}
+        <em className="text-text italic">ions</em>, positive and negative, drifting in opposite
+        directions and each adding to the same current. That is the deeper reason the definition
+        reads <M tex="I = dQ/dt" /> and not "electrons per second": current is the flow of{' '}
+        <em className="text-text italic">charge</em>, and the cross-section counts coulombs crossing
+        it regardless of what is carrying them.
+      </p>
+      <p className="mb-prose-3">
         With voltage and current in hand, you have the two quantities meters measure. You also have
         the setup for what is, on reflection, one of the strangest facts in classical physics — and
         the heart of this chapter. The electrons in a wire really do move when current flows. They
