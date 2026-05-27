@@ -26,6 +26,7 @@ import { TwoSpeedsDemo } from './demos/TwoSpeeds';
 import { VabWorkEnergyDemo } from './demos/VabWorkEnergy';
 import { VoltageAsHeightDemo } from './demos/VoltageAsHeight';
 import { VoltageDrivesFlowDemo } from './demos/VoltageDrivesFlow';
+import { VoltagePerChargeDemo } from './demos/VoltagePerCharge';
 import { getChapter } from './data/chapters';
 
 export default function Ch2VoltageAndCurrent() {
@@ -157,7 +158,19 @@ export default function Ch2VoltageAndCurrent() {
         way.
       </p>
 
-      <VoltageDrivesFlowDemo figure="Fig. 2.3" />
+      <p className="mb-prose-3">
+        There is one more lever on that picture, and it is the one that defines the word. The total
+        energy <M tex="W = qV_{ab}" /> depends on how big a charge you send across — but the{' '}
+        <em className="text-text italic">voltage</em> does not. Divide the energy by the charge and
+        you land on the same number no matter how large or small <M tex="q" /> is. That ratio —
+        joules per coulomb — is what <em className="text-text italic">voltage between two points</em>{' '}
+        actually names. It is a property of the two points and the field between them, not of the
+        charge you happen to probe with.
+      </p>
+
+      <VoltagePerChargeDemo figure="Fig. 2.3" />
+
+      <VoltageDrivesFlowDemo figure="Fig. 2.4" />
 
       <p className="mb-prose-3">
         That operational picture has a knob the reader can already turn. Hook a battery of voltage{' '}
@@ -476,7 +489,7 @@ export default function Ch2VoltageAndCurrent() {
           correctIds: ['d'],
         }}
       >
-        <DriftVelocityDemo figure="Fig. 2.4" />
+        <DriftVelocityDemo figure="Fig. 2.5" />
       </PredictThenObserve>
 
       <p className="mb-prose-3">
@@ -496,7 +509,7 @@ export default function Ch2VoltageAndCurrent() {
         rearranging — is what the next demo lets you watch.
       </p>
 
-      <CursorEFieldOnWireDemo figure="Fig. 2.5" />
+      <CursorEFieldOnWireDemo figure="Fig. 2.6" />
 
       <TryIt
         tag="Try 2.3"
@@ -566,7 +579,7 @@ export default function Ch2VoltageAndCurrent() {
         snail.
       </p>
 
-      <TwoSpeedsDemo figure="Fig. 2.6" />
+      <TwoSpeedsDemo figure="Fig. 2.7" />
 
       <TryIt
         tag="Try 2.4"
@@ -618,7 +631,7 @@ export default function Ch2VoltageAndCurrent() {
         visible light, smaller than a red blood cell.
       </p>
 
-      <ACElectronJitterDemo figure="Fig. 2.7" />
+      <ACElectronJitterDemo figure="Fig. 2.8" />
 
       <p className="mb-prose-3">
         The same electron you started with stays essentially in place. It does not journey anywhere.
@@ -664,7 +677,7 @@ export default function Ch2VoltageAndCurrent() {
           correctIds: ['a'],
         }}
       >
-        <SwitchAndBulbDemo figure="Fig. 2.8" />
+        <SwitchAndBulbDemo figure="Fig. 2.9" />
       </PredictThenObserve>
 
       <p className="mb-prose-3">
