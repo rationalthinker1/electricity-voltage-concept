@@ -19,6 +19,8 @@ export interface CanvasDragHandlers {
   onMove?: (x: number, y: number) => void;
   /** Called when the drag ends (mouse up or touch end). */
   onUp?: () => void;
+  /** Called on mouse move over the canvas when *not* dragging (hover). */
+  onHover?: (x: number, y: number) => void;
 }
 
 /**
@@ -48,9 +50,12 @@ export function attachCanvasDrag(
   }
 
   function onMouseMove(e: MouseEvent) {
-    if (!dragging) return;
     const [x, y] = getPoint(e);
-    handlers.onMove?.(x, y);
+    if (dragging) {
+      handlers.onMove?.(x, y);
+    } else {
+      handlers.onHover?.(x, y);
+    }
   }
 
   function onMouseUp() {
@@ -86,6 +91,7 @@ export function attachCanvasDrag(
   canvas.style.cursor = 'grab';
   canvas.style.touchAction = 'none';
   canvas.addEventListener('mousedown', onMouseDown);
+  canvas.addEventListener('mousemove', onMouseMove);
   window.addEventListener('mousemove', onMouseMove);
   window.addEventListener('mouseup', onMouseUp);
   canvas.addEventListener('touchstart', onTouchStart, { passive: false });
@@ -94,6 +100,7 @@ export function attachCanvasDrag(
 
   return () => {
     canvas.removeEventListener('mousedown', onMouseDown);
+    canvas.removeEventListener('mousemove', onMouseMove);
     window.removeEventListener('mousemove', onMouseMove);
     window.removeEventListener('mouseup', onMouseUp);
     canvas.removeEventListener('touchstart', onTouchStart);

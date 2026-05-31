@@ -34,13 +34,12 @@ import { Formula, M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS, sciTeX } from '@/lib/physics';
-import { drawArrow3D, drawWireframeBox } from '@/lib/canvas3d';
+import { drawArrow3D, drawWireframeBox, traceFieldLine } from '@/lib/canvas3d';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import {
   add,
   length,
-  normalize,
   project,
   scale,
   sub,
@@ -81,28 +80,6 @@ function dipoleB(p: Vec3, m: number): Vec3 {
   const term1 = scale(rhat, 3 * mdr);
   const term2 = mvec;
   return scale(sub(term1, term2), 1 / (r * r * r));
-}
-
-/** Trace a field line from `start`, integrating direction. `sign` flips
- *  the integration direction; `stop` is a predicate that ends the trace. */
-function traceLine(
-  start: Vec3,
-  fieldFn: (p: Vec3) => Vec3,
-  sign: number,
-  steps: number,
-  dt: number,
-  maxRadius: number,
-): Vec3[] {
-  const pts: Vec3[] = [start];
-  let p = start;
-  for (let i = 0; i < steps; i++) {
-    const dir = normalize(fieldFn(p));
-    if (dir.x === 0 && dir.y === 0 && dir.z === 0) break;
-    p = add(p, scale(dir, sign * dt));
-    pts.push(p);
-    if (length(p) > maxRadius) break;
-  }
-  return pts;
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -174,7 +151,12 @@ function drawGaussE(
         r0 * Math.sin(theta) * Math.sin(phi),
       );
       const dir = q >= 0 ? +1 : -1;
-      const line = traceLine(seed, (p) => pointChargeE(p, q), dir, 80, 0.05, BOX * 2.5);
+      const line = traceFieldLine(seed, (p) => pointChargeE(p, q), {
+        direction: dir,
+        steps: 80,
+        stepSize: 0.05,
+        maxRadius: BOX * 2.5,
+      });
       if (line.length > 1) {
         const pts2 = line.map((p) => project(p, cam, w, h));
         drawGlowPath(ctx, pts2, {
@@ -290,8 +272,18 @@ function drawGaussB(
       // magnet stem.
       const radius0 = 0.5 + i * 0.4;
       const seed = v3(radius0 * cphi, 0.05, radius0 * sphi);
-      const fwd = traceLine(seed, (p) => dipoleB(p, m), +1, 220, 0.04, BOX * 2.0);
-      const bwd = traceLine(seed, (p) => dipoleB(p, m), -1, 220, 0.04, BOX * 2.0);
+      const fwd = traceFieldLine(seed, (p) => dipoleB(p, m), {
+        direction: +1,
+        steps: 220,
+        stepSize: 0.04,
+        maxRadius: BOX * 2.0,
+      });
+      const bwd = traceFieldLine(seed, (p) => dipoleB(p, m), {
+        direction: -1,
+        steps: 220,
+        stepSize: 0.04,
+        maxRadius: BOX * 2.0,
+      });
       // Stitch: reverse backward, then forward.
       const loop = [...bwd.slice().reverse(), ...fwd];
       if (loop.length > 1) {

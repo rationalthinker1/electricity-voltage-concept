@@ -7,7 +7,7 @@
 
 import { drawGlowPath, drawHalo } from './canvasPrimitives';
 import { getCanvasColors, withAlpha } from './canvasTheme';
-import { project, projectedRadius, v3, type OrbitCamera, type Vec3 } from './projection3d';
+import { add, length, normalize, project, projectedRadius, scale, v3, type OrbitCamera, type Vec3 } from './projection3d';
 
 /* ───── Heightfield mesh ────────────────────────────────────────────── */
 
@@ -386,6 +386,53 @@ const UNIT_CUBE_EDGES: Array<[Vec3, Vec3]> = (() => {
   }
   return edges;
 })();
+
+/* ───── Field-line tracer ───────────────────────────────────────────── */
+
+export interface FieldLineOptions {
+  /** Integration direction: +1 follows the field, −1 walks against it. */
+  direction?: number;
+  /** Max integration steps. */
+  steps?: number;
+  /** Step size in world units. */
+  stepSize?: number;
+  /** Stop when the point is farther than this distance from the origin. */
+  maxRadius?: number;
+  /** Custom stop predicate. Return `true` to end the trace. */
+  stop?: (p: Vec3) => boolean;
+}
+
+/**
+ * Trace a field line by integrating along the direction of a vector field.
+ *
+ * Starting from `seed`, the field is sampled at each step, normalised to a
+ * unit direction, and the point is advanced by `direction * stepSize`.
+ * The trace ends when any limit (`steps`, `maxRadius`, `stop`) is reached
+ * or the field vanishes.
+ */
+export function traceFieldLine(
+  seed: Vec3,
+  fieldFn: (p: Vec3) => Vec3,
+  opts: FieldLineOptions = {},
+): Vec3[] {
+  const dir = opts.direction ?? 1;
+  const steps = opts.steps ?? 200;
+  const dt = opts.stepSize ?? 0.05;
+  const maxR = opts.maxRadius ?? Infinity;
+  const stop = opts.stop;
+
+  const pts: Vec3[] = [seed];
+  let p = seed;
+  for (let i = 0; i < steps; i++) {
+    const d = normalize(fieldFn(p));
+    if (d.x === 0 && d.y === 0 && d.z === 0) break;
+    p = add(p, scale(d, dir * dt));
+    pts.push(p);
+    if (length(p) > maxR) break;
+    if (stop?.(p)) break;
+  }
+  return pts;
+}
 
 /**
  * Draw a wireframe box centred at the origin with half-edge `halfExtent`.

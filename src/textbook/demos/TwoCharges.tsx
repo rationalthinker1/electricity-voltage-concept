@@ -5,8 +5,9 @@
  * anchors the introductory Coulomb calculation, but the simulator supports
  * multiple charges and computes the live net force on a selected target.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import {
   Demo,
   DemoControls,
@@ -16,12 +17,15 @@ import {
   MiniToggle,
 } from '@/components/Demo';
 import { M } from '@/components/Formula';
-import { LayeredCanvas, type LayeredCanvasInfo } from '@/components/LayeredCanvas';
 import { Num } from '@/components/Num';
+import { attachCanvasDrag } from '@/lib/canvasDrag';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow, drawCharge } from '@/lib/canvasPrimitives';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
+import { drawGridLines } from '@/lib/drawPlot';
 import { sciTeX } from '@/lib/physics';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure: string;
@@ -125,34 +129,36 @@ function forceContributionOnTarget(
   };
 }
 
-function useElectrostatics(charges: Charge[], targetId: string, dims: CanvasDims) {
-  return useMemo(() => {
-    const target = charges.find((charge) => charge.id === targetId) ?? charges[0];
-    if (!target) {
-      return {
-        target: undefined,
-        contributions: [] as ForceContribution[],
-        net: { x: 0, y: 0, magnitude: 0, angle: 0 },
-      };
-    }
-
-    const contributions = charges
-      .filter((charge) => charge.id !== target.id)
-      .map((source) => forceContributionOnTarget(target, source, dims));
-    const netX = contributions.reduce((sum, force) => sum + force.vector.x, 0);
-    const netY = contributions.reduce((sum, force) => sum + force.vector.y, 0);
-
+function computeElectrostatics(charges: Charge[], targetId: string, dims: CanvasDims) {
+  const target = charges.find((charge) => charge.id === targetId) ?? charges[0];
+  if (!target) {
     return {
-      target,
-      contributions,
-      net: {
-        x: netX,
-        y: netY,
-        magnitude: Math.hypot(netX, netY),
-        angle: Math.atan2(netY, netX),
-      },
+      target: undefined as Charge | undefined,
+      contributions: [] as ForceContribution[],
+      net: { x: 0, y: 0, magnitude: 0, angle: 0 },
     };
-  }, [charges, dims, targetId]);
+  }
+
+  const contributions = charges
+    .filter((charge) => charge.id !== target.id)
+    .map((source) => forceContributionOnTarget(target, source, dims));
+  const netX = contributions.reduce((sum, force) => sum + force.vector.x, 0);
+  const netY = contributions.reduce((sum, force) => sum + force.vector.y, 0);
+
+  return {
+    target,
+    contributions,
+    net: {
+      x: netX,
+      y: netY,
+      magnitude: Math.hypot(netX, netY),
+      angle: Math.atan2(netY, netX),
+    },
+  };
+}
+
+function useElectrostatics(charges: Charge[], targetId: string, dims: CanvasDims) {
+  return useMemo(() => computeElectrostatics(charges, targetId, dims), [charges, dims, targetId]);
 }
 
 function maxPixelStepToBounds(p: Vector2D, ux: number, uy: number, dims: CanvasDims) {
@@ -162,6 +168,42 @@ function maxPixelStepToBounds(p: Vector2D, ux: number, uy: number, dims: CanvasD
   if (uy > 0) limit = Math.min(limit, ((CHARGE_BOUNDS.maxY - p.y) * dims.h) / uy);
   if (uy < 0) limit = Math.min(limit, ((CHARGE_BOUNDS.minY - p.y) * dims.h) / uy);
   return Math.max(0, Number.isFinite(limit) ? limit : 0);
+}
+
+function computeAnimPaths(charges: Charge[], dims: CanvasDims) {
+  return charges.map((charge) => {
+    const forces = charges
+      .filter((source) => source.id !== charge.id)
+      .map((source) => forceContributionOnTarget(charge, source, dims));
+    const netX = forces.reduce((sum, force) => sum + force.vector.x, 0);
+    const netY = forces.reduce((sum, force) => sum + force.vector.y, 0);
+    const netMagnitude = Math.hypot(netX, netY);
+
+    if (netMagnitude < 1e-30) return { start: charge, end: charge };
+
+    const ux = netX / netMagnitude;
+    const uy = netY / netMagnitude;
+    const maxTravel = maxPixelStepToBounds(charge, ux, uy, dims);
+    const travelPx = Math.min(96, Math.max(34, maxTravel * 0.72));
+    return {
+      start: charge,
+      end: {
+        ...charge,
+        ...clampPoint({
+          x: charge.x + (ux * travelPx) / dims.w,
+          y: charge.y + (uy * travelPx) / dims.h,
+        }),
+      },
+    };
+  });
+}
+
+function hitCharge(mx: number, my: number, charges: Charge[], w: number, h: number): string | null {
+  for (const charge of [...charges].reverse()) {
+    if (!charge.isDraggable) continue;
+    if (Math.hypot(mx - charge.x * w, my - charge.y * h) < 28) return charge.id;
+  }
+  return null;
 }
 
 function formatForceLabel(forceN: number) {
@@ -200,78 +242,208 @@ function substitutionTex(contributions: ForceContribution[], netMagnitude: numbe
   return `\\begin{aligned}${lines.join('\\\\')}\\end{aligned}`;
 }
 
+interface AnimContext {
+  wasPlaying: boolean;
+  playStartSimTime: number;
+  paths: Array<{ start: Charge; end: Charge }> | null;
+}
+
 export function TwoChargesDemo({ figure }: Props) {
   const [charges, setCharges] = useState<Charge[]>(INITIAL_CHARGES);
   const [targetId, setTargetId] = useState('1');
   const [magNC, setMagNC] = useState(5);
-  const [dims, setDims] = useState({ w: 880, h: 260 });
+  const [dims, setDims] = useState<CanvasDims>({ w: 880, h: 260 });
   const [playing, setPlaying] = useState(false);
-  const drawRef = useRef<null | (() => void)>(null);
   const nextIdRef = useRef(3);
 
+  const stateRef = useSimState({ charges, magNC, playing, targetId });
   const electrostatics = useElectrostatics(charges, targetId, dims);
 
-  const stateRef = useRef({ charges, magNC, playing, targetId, electrostatics });
-  useEffect(() => {
-    stateRef.current = { charges, magNC, playing, targetId, electrostatics };
-    drawRef.current?.();
-  }, [charges, electrostatics, magNC, playing, targetId]);
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, simTime, ctx0: AnimContext) => {
+      const s = stateRef.current;
+      const canvasDims = { w, h };
 
-  useEffect(() => {
-    if (!playing) return;
+      // ── Animation ────────────────────────────────────────────────
+      let chargesToDraw = s.charges;
 
-    let raf = 0;
-    const startedAt = performance.now();
-    const motionMs = 2200;
-    const pauseMs = 450;
-    const cycleMs = motionMs + pauseMs;
-    const startCharges = stateRef.current.charges.map((charge) => ({ ...charge }));
-    const paths = startCharges.map((charge) => {
-      const forces = startCharges
-        .filter((source) => source.id !== charge.id)
-        .map((source) => forceContributionOnTarget(charge, source, dims));
-      const netX = forces.reduce((sum, force) => sum + force.vector.x, 0);
-      const netY = forces.reduce((sum, force) => sum + force.vector.y, 0);
-      const netMagnitude = Math.hypot(netX, netY);
+      if (s.playing) {
+        if (!ctx0.wasPlaying) {
+          ctx0.playStartSimTime = simTime;
+          ctx0.paths = computeAnimPaths(s.charges, canvasDims);
+        }
+        const motionS = 2.2;
+        const pauseS = 0.45;
+        const cycleS = motionS + pauseS;
+        const cycleT = (simTime - ctx0.playStartSimTime) % cycleS;
+        const rawT = Math.min(1, cycleT / motionS);
+        const t = 1 - Math.pow(1 - rawT, 3);
 
-      if (netMagnitude < 1e-30) return { start: charge, end: charge };
+        chargesToDraw = ctx0.paths!.map(({ start, end }) => ({
+          ...start,
+          x: start.x + (end.x - start.x) * t,
+          y: start.y + (end.y - start.y) * t,
+        }));
 
-      const ux = netX / netMagnitude;
-      const uy = netY / netMagnitude;
-      const maxTravel = maxPixelStepToBounds(charge, ux, uy, dims);
-      const travelPx = Math.min(96, Math.max(34, maxTravel * 0.72));
-      return {
-        start: charge,
-        end: {
-          ...charge,
-          ...clampPoint({
-            x: charge.x + (ux * travelPx) / dims.w,
-            y: charge.y + (uy * travelPx) / dims.h,
-          }),
+        stateRef.current.charges = chargesToDraw;
+        setCharges(chargesToDraw);
+      }
+      ctx0.wasPlaying = s.playing;
+
+      // ── Electrostatics for this frame ────────────────────────────
+      const es = computeElectrostatics(chargesToDraw, s.targetId, canvasDims);
+
+      // ── Draw ─────────────────────────────────────────────────────
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+
+      // Grid
+      const step = 40;
+      const xTicks = Array.from({ length: Math.floor(w / step) }, (_, i) => (i + 1) * step);
+      const yTicks = Array.from({ length: Math.floor(h / step) }, (_, i) => (i + 1) * step);
+      drawGridLines(
+        ctx,
+        { x: 0, y: 0, w, h },
+        xTicks,
+        yTicks,
+        { color: withAlpha(colors.text, 0.08), dash: [], lineWidth: 1, skipBoundary: false },
+      );
+
+      // Force arrows
+      if (es.target) {
+        const tx = es.target.x * w;
+        const ty = es.target.y * h;
+
+        for (const force of es.contributions) {
+          const arrowScale = Math.min(76, 18 + Math.log10(force.magnitude * 1e7 + 1) * 15);
+          const ux = force.vector.x / Math.max(1e-30, force.magnitude);
+          const uy = force.vector.y / Math.max(1e-30, force.magnitude);
+          drawArrow(
+            ctx,
+            { x: tx + ux * 18, y: ty + uy * 18 },
+            { x: tx + ux * arrowScale, y: ty + uy * arrowScale },
+            {
+              color: withAlpha(colors.teal, 0.72),
+              lineWidth: 1.5,
+            },
+          );
+        }
+
+        if (es.net.magnitude > 1e-30) {
+          const ux = es.net.x / es.net.magnitude;
+          const uy = es.net.y / es.net.magnitude;
+          const arrowScale = Math.min(96, 24 + Math.log10(es.net.magnitude * 1e7 + 1) * 18);
+          drawArrow(
+            ctx,
+            { x: tx + ux * 22, y: ty + uy * 22 },
+            { x: tx + ux * arrowScale, y: ty + uy * arrowScale },
+            {
+              color: withAlpha(colors.accent, 0.98),
+              lineWidth: 3,
+            },
+          );
+          drawLabel(ctx, {
+            x: tx + ux * (arrowScale + 12),
+            y: ty + uy * (arrowScale + 12),
+            text: formatForceLabel(es.net.magnitude),
+            color: colors.accent,
+            align: 'center',
+          });
+        }
+      }
+
+      // Charges
+      chargesToDraw.forEach((charge) => {
+        const isTarget = charge.id === s.targetId;
+        drawCharge(
+          ctx,
+          { x: charge.x * w, y: charge.y * h },
+          {
+            color: charge.q > 0 ? colors.pink : colors.blue,
+            label: chargeLabel(charge),
+            radius: isTarget ? 23 : 17,
+            sign: charge.q > 0 ? '+' : '−',
+            textColor: colors.bg,
+          },
+        );
+
+        if (isTarget) {
+          ctx.strokeStyle = colors.accent;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(charge.x * w, charge.y * h, 28, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      });
+
+      // Caption label
+      drawLabel(ctx, {
+        x: 12,
+        y: h - 14,
+        text: s.playing ? 'looping force trend from this layout' : 'drag charges; click one to target',
+        color: withAlpha(colors.textDim, 0.85),
+      });
+    },
+    [],
+    (info) => {
+      const { w, h, canvas } = info;
+      setDims({ w, h });
+
+      let dragId: string | null = null;
+
+      function setChargePosition(id: string, mx: number, my: number) {
+        setPlaying(false);
+        const clampedNext = clampPoint({ x: mx / w, y: my / h });
+        const otherCharges = stateRef.current.charges.filter((charge) => charge.id !== id);
+        const tooClose = otherCharges.some(
+          (charge) =>
+            Math.hypot(clampedNext.x * w - charge.x * w, clampedNext.y * h - charge.y * h) <
+            MIN_CHARGE_DISTANCE_PX,
+        );
+        if (tooClose) return;
+
+        const nextCharges = stateRef.current.charges.map((charge) =>
+          charge.id === id ? { ...charge, ...clampedNext } : charge,
+        );
+        stateRef.current.charges = nextCharges;
+        setCharges(nextCharges);
+      }
+
+      const cleanupDrag = attachCanvasDrag(canvas, {
+        onDown(mx, my) {
+          const hit = hitCharge(mx, my, stateRef.current.charges, w, h);
+          if (hit) {
+            dragId = hit;
+            setTargetId(hit);
+            setPlaying(false);
+            return true;
+          }
+          return false;
         },
+        onMove(mx, my) {
+          if (!dragId) return;
+          setChargePosition(dragId, mx, my);
+        },
+        onUp() {
+          dragId = null;
+        },
+        onHover(mx, my) {
+          const hit = hitCharge(mx, my, stateRef.current.charges, w, h);
+          canvas.style.cursor = hit ? 'grab' : 'default';
+        },
+      });
+
+      return {
+        context: {
+          wasPlaying: false,
+          playStartSimTime: 0,
+          paths: null,
+        } as AnimContext,
+        cleanup: cleanupDrag,
       };
-    });
-
-    function frame(now: number) {
-      const cycleT = (now - startedAt) % cycleMs;
-      const rawT = Math.min(1, cycleT / motionMs);
-      const t = 1 - Math.pow(1 - rawT, 3);
-      const nextCharges = paths.map(({ start, end }) => ({
-        ...start,
-        x: start.x + (end.x - start.x) * t,
-        y: start.y + (end.y - start.y) * t,
-      }));
-
-      stateRef.current.charges = nextCharges;
-      setCharges(nextCharges);
-      drawRef.current?.();
-
-      raf = requestAnimationFrame(frame);
-    }
-
-    raf = requestAnimationFrame(frame);
-    return () => cancelAnimationFrame(raf);
-  }, [dims, playing]);
+    },
+  );
 
   function updateMagnitudes(nextMagNC: number) {
     setMagNC(nextMagNC);
@@ -337,216 +509,6 @@ export function TwoChargesDemo({ figure }: Props) {
     setCharges(INITIAL_CHARGES.map((charge) => ({ ...charge, q: Math.sign(charge.q) * magNC * 1e-9 })));
   }
 
-  const setup = useCallback(
-    (info: LayeredCanvasInfo<'field'>) => {
-      const { contexts, w, h, canvas } = info;
-      const ctx = contexts.field;
-      setDims({ w, h });
-
-      let dragging: string | null = null;
-
-      function getPoint(e: MouseEvent | TouchEvent): [number, number] {
-        const rect = canvas.getBoundingClientRect();
-        const touch = 'touches' in e ? e.touches[0] : e;
-        if (!touch) return [0, 0];
-        return [touch.clientX - rect.left, touch.clientY - rect.top];
-      }
-
-      function setChargePosition(id: string, mx: number, my: number) {
-        setPlaying(false);
-        const clampedNext = clampPoint({ x: mx / w, y: my / h });
-        const otherCharges = stateRef.current.charges.filter((charge) => charge.id !== id);
-        const tooClose = otherCharges.some(
-          (charge) =>
-            Math.hypot(clampedNext.x * w - charge.x * w, clampedNext.y * h - charge.y * h) <
-            MIN_CHARGE_DISTANCE_PX,
-        );
-        if (tooClose) return;
-
-        const nextCharges = stateRef.current.charges.map((charge) =>
-          charge.id === id ? { ...charge, ...clampedNext } : charge,
-        );
-        stateRef.current.charges = nextCharges;
-        setCharges(nextCharges);
-        draw();
-      }
-
-      function hitCharge(mx: number, my: number): string | null {
-        const charges = [...stateRef.current.charges].reverse();
-        for (const charge of charges) {
-          if (!charge.isDraggable) continue;
-          if (Math.hypot(mx - charge.x * w, my - charge.y * h) < 28) return charge.id;
-        }
-        return null;
-      }
-
-      function drawGrid(colors: ReturnType<typeof getCanvasColors>) {
-        ctx.strokeStyle = withAlpha(colors.text, 0.08);
-        ctx.lineWidth = 1;
-        const step = 40;
-        for (let x = step; x < w; x += step) {
-          ctx.beginPath();
-          ctx.moveTo(x, 0);
-          ctx.lineTo(x, h);
-          ctx.stroke();
-        }
-        for (let y = step; y < h; y += step) {
-          ctx.beginPath();
-          ctx.moveTo(0, y);
-          ctx.lineTo(w, y);
-          ctx.stroke();
-        }
-      }
-
-      function draw() {
-        const s = stateRef.current;
-        const colors = getCanvasColors();
-        const target = s.electrostatics.target;
-        const contributions = s.electrostatics.contributions;
-        const net = s.electrostatics.net;
-
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        drawGrid(colors);
-
-        if (target) {
-          const tx = target.x * w;
-          const ty = target.y * h;
-
-          for (const force of contributions) {
-            const arrowScale = Math.min(76, 18 + Math.log10(force.magnitude * 1e7 + 1) * 15);
-            const ux = force.vector.x / Math.max(1e-30, force.magnitude);
-            const uy = force.vector.y / Math.max(1e-30, force.magnitude);
-            drawArrow(
-              ctx,
-              { x: tx + ux * 18, y: ty + uy * 18 },
-              { x: tx + ux * arrowScale, y: ty + uy * arrowScale },
-              {
-                color: withAlpha(colors.teal, 0.72),
-                lineWidth: 1.5,
-              },
-            );
-          }
-
-          if (net.magnitude > 1e-30) {
-            const ux = net.x / net.magnitude;
-            const uy = net.y / net.magnitude;
-            const arrowScale = Math.min(96, 24 + Math.log10(net.magnitude * 1e7 + 1) * 18);
-            drawArrow(
-              ctx,
-              { x: tx + ux * 22, y: ty + uy * 22 },
-              { x: tx + ux * arrowScale, y: ty + uy * arrowScale },
-              {
-                color: withAlpha(colors.accent, 0.98),
-                lineWidth: 3,
-              },
-            );
-            drawLabel(ctx, {
-              x: tx + ux * (arrowScale + 12),
-              y: ty + uy * (arrowScale + 12),
-              text: formatForceLabel(net.magnitude),
-              color: colors.accent,
-              align: 'center',
-            });
-          }
-        }
-
-        s.charges.forEach((charge) => {
-          const isTarget = charge.id === s.targetId;
-          drawCharge(
-            ctx,
-            { x: charge.x * w, y: charge.y * h },
-            {
-              color: charge.q > 0 ? colors.pink : colors.blue,
-              label: chargeLabel(charge),
-              radius: isTarget ? 23 : 17,
-              sign: charge.q > 0 ? '+' : '−',
-              textColor: colors.bg,
-            },
-          );
-
-          if (isTarget) {
-            ctx.strokeStyle = colors.accent;
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.arc(charge.x * w, charge.y * h, 28, 0, Math.PI * 2);
-            ctx.stroke();
-          }
-        });
-
-        drawLabel(ctx, {
-          x: 12,
-          y: h - 14,
-          text: s.playing ? 'looping force trend from this layout' : 'drag charges; click one to target',
-          color: withAlpha(colors.textDim, 0.85),
-        });
-      }
-
-      drawRef.current = draw;
-
-      function onMouseDown(e: MouseEvent) {
-        const [mx, my] = getPoint(e);
-        dragging = hitCharge(mx, my);
-        if (dragging) {
-          setTargetId(dragging);
-          canvas.style.cursor = 'grabbing';
-        }
-      }
-
-      function onMouseMove(e: MouseEvent) {
-        const [mx, my] = getPoint(e);
-        if (dragging) {
-          setChargePosition(dragging, mx, my);
-          return;
-        }
-        canvas.style.cursor = hitCharge(mx, my) ? 'grab' : 'default';
-      }
-
-      function onMouseUp() {
-        dragging = null;
-        canvas.style.cursor = 'default';
-      }
-
-      function onTouchStart(e: TouchEvent) {
-        e.preventDefault();
-        const [mx, my] = getPoint(e);
-        dragging = hitCharge(mx, my);
-        if (dragging) setTargetId(dragging);
-      }
-
-      function onTouchMove(e: TouchEvent) {
-        e.preventDefault();
-        if (!dragging) return;
-        const [mx, my] = getPoint(e);
-        setChargePosition(dragging, mx, my);
-      }
-
-      function onTouchEnd() {
-        dragging = null;
-      }
-
-      canvas.addEventListener('mousedown', onMouseDown);
-      canvas.addEventListener('mousemove', onMouseMove);
-      window.addEventListener('mouseup', onMouseUp);
-      canvas.addEventListener('touchstart', onTouchStart, { passive: false });
-      canvas.addEventListener('touchmove', onTouchMove, { passive: false });
-      canvas.addEventListener('touchend', onTouchEnd);
-
-      draw();
-
-      return () => {
-        if (drawRef.current === draw) drawRef.current = null;
-        canvas.removeEventListener('mousedown', onMouseDown);
-        canvas.removeEventListener('mousemove', onMouseMove);
-        window.removeEventListener('mouseup', onMouseUp);
-        canvas.removeEventListener('touchstart', onTouchStart);
-        canvas.removeEventListener('touchmove', onTouchMove);
-        canvas.removeEventListener('touchend', onTouchEnd);
-      };
-    },
-    [],
-  );
-
   const superpositionTex = forceSumTex(electrostatics.target, electrostatics.contributions);
   const liveSubstitutionTex = substitutionTex(
     electrostatics.contributions,
@@ -561,7 +523,7 @@ export function TwoChargesDemo({ figure }: Props) {
       caption="Drag charges around the grid. Click a charge to make it the target; teal arrows show each pairwise force on that target, and the thick amber arrow is their vector sum. The animation loops a one-way force trend from your current layout."
       deeperLab={{ slug: 'coulomb', label: 'See full lab' }}
     >
-      <LayeredCanvas height={300} layers={['field']} setup={setup} />
+      <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniToggle
           label={playing ? 'Pause' : 'Play'}
