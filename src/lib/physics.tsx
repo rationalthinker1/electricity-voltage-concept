@@ -64,6 +64,41 @@ export const MATERIALS: Record<string, Material> = {
 
 export type MaterialKey = keyof typeof MATERIALS;
 
+/* ─── Point-charge fields ─── */
+
+export interface PointChargeField2D {
+  /** E-field component along +x, V/m. */
+  ex: number;
+  /** E-field component along +y, V/m. */
+  ey: number;
+  /** Field magnitude |E|, V/m. */
+  mag: number;
+  /** Electric potential at this point, V. */
+  V: number;
+  /** Distance used (after clamping), m. */
+  r: number;
+}
+
+/**
+ * Electric field vector and potential of a point charge, evaluated at a 2D
+ * displacement (dx, dy) **in metres** from the charge. Consolidates the
+ * `k·Q/r²` radial-field / `k·Q/r` potential math that ~8 demos re-roll by hand.
+ *
+ * `rMin` clamps the distance so the field stays finite at/near the charge —
+ * pass the metre-equivalent of your on-screen minimum-radius guard. The
+ * returned components point away from a positive charge (toward, for negative).
+ */
+export function pointChargeField2D(
+  Q: number,
+  dx: number,
+  dy: number,
+  rMin = 0,
+): PointChargeField2D {
+  const r = Math.max(rMin, Math.hypot(dx, dy) || rMin);
+  const mag = (PHYS.k * Q) / (r * r); // signed by Q
+  return { ex: (mag * dx) / r, ey: (mag * dy) / r, mag, V: (PHYS.k * Q) / r, r };
+}
+
 /* ─── Formatters ─── */
 
 /** Scientific notation, HTML string version. Use for canvas / plaintext only;

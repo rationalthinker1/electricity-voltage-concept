@@ -974,6 +974,59 @@ interface HaloOptions {
   extent?: number;
 }
 
+interface HandleOptions {
+  /** Ring + label colour. Default theme accent. */
+  color?: string;
+  /** Outer radius of the ring, px. Default 7. */
+  radius?: number;
+  /** Ring line width, px. Default 2.5. */
+  lineWidth?: number;
+  /** Optional bold label drawn centred above the handle. */
+  label?: string;
+  /** Label colour. Defaults to `color`. */
+  labelColor?: string;
+  /** Label font size, px. Default 12. */
+  labelSize?: number;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ *  drawHandle — a draggable grab-point glyph.
+ *
+ *  A background-filled circle with a coloured ring, plus an optional bold
+ *  label centred above it. The bg fill makes the handle read as "on top of"
+ *  whatever it sits over (a path, a field, a plot), and gives a clear hit
+ *  target. Replaces the ~10-line fill+stroke+label closure that draggable
+ *  demos (endpoint markers, probes, knobs) re-roll inline.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+export function drawHandle(
+  ctx: CanvasRenderingContext2D,
+  center: CanvasPoint,
+  options: HandleOptions = {},
+): void {
+  const colors = getCanvasColors();
+  const color = options.color ?? colors.accent;
+  const radius = options.radius ?? 7;
+
+  ctx.save();
+  ctx.fillStyle = colors.bg;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = options.lineWidth ?? 2.5;
+  ctx.beginPath();
+  ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+
+  if (options.label) {
+    ctx.fillStyle = options.labelColor ?? color;
+    ctx.font = `bold ${options.labelSize ?? 12}px "JetBrains Mono", monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(options.label, center.x, center.y - radius - 4);
+  }
+  ctx.restore();
+}
+
 export function drawHalo(ctx: CanvasRenderingContext2D, opts: HaloOptions): void {
   const extent = opts.extent ?? 2.2;
   const alpha = opts.alpha ?? 0.2;

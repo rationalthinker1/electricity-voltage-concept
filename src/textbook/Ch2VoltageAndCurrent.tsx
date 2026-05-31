@@ -21,6 +21,7 @@ import { Pullout } from '@/components/Prose';
 import { ACElectronJitterDemo } from './demos/ACElectronJitter';
 import { CursorEFieldOnWireDemo } from './demos/CursorEFieldOnWire';
 import { DriftVelocityDemo } from './demos/DriftVelocity';
+import { LineIntegralVoltageDemo } from './demos/LineIntegralVoltage';
 import { SwitchAndBulbDemo } from './demos/SwitchAndBulb';
 import { TwoSpeedsDemo } from './demos/TwoSpeeds';
 import { VabWorkEnergyDemo } from './demos/VabWorkEnergy';
@@ -128,6 +129,20 @@ export default function Ch2VoltageAndCurrent() {
         talk about the voltage at a point at all. Drop that property (we will, in Chapter 7) and
         "voltage" stops meaning what you think it means
         <Cite id="griffiths-2017" in={SOURCES} />.
+      </p>
+
+      <LineIntegralVoltageDemo figure="Fig. 2.1b" />
+
+      <p className="mb-prose-3">
+        The integral sign hides a simple instruction: chop the path into pieces, multiply the
+        field's along-path component by each little step, and add. The amber rectangles above{' '}
+        <em className="text-text italic">are</em> that sum, and as you slide <M tex="N" /> upward
+        they fill in the smooth area exactly — the integral is nothing more mysterious than the
+        limit of that sum. The deeper lesson is the curved-detour toggle: bend the path however you
+        like between the same two endpoints and <M tex="V_{ab}" /> never budges. A field with that
+        property is called <em className="text-text italic">conservative</em>, and it is the whole
+        reason a single number — the potential at a point — can stand in for an integral you never
+        have to actually evaluate.
       </p>
 
       <h3 className="chapter-h3">Voltage as energy per unit charge</h3>
