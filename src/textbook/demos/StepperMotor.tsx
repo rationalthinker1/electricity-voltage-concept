@@ -141,12 +141,8 @@ export function StepperMotorDemo({ figure }: Props) {
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <button type="button" className="mini-toggle" onClick={() => setSteps((s) => s + 1)}>
-          step + 1
-        </button>
-        <button type="button" className="mini-toggle" onClick={() => setSteps(0)}>
-          reset
-        </button>
+        <MiniToggle label="step + 1" checked={false} onChange={() => setSteps((s) => s + 1)} />
+        <MiniToggle label="reset" checked={false} onChange={() => setSteps(0)} />
         <MiniToggle label={auto ? 'auto on' : 'auto off'} checked={auto} onChange={setAuto} />
         <MiniSlider
           label="auto rate"

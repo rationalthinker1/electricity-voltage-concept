@@ -74,6 +74,36 @@ export function invalidateCanvasColors() {
 }
 
 /**
+ * Parse a hex or rgb() colour string into numeric [r, g, b] components.
+ * Falls back to [128, 128, 128] for unrecognised formats.
+ */
+export function hexToRgb(hex: string): [number, number, number] {
+  if (hex.startsWith('#') && hex.length === 7) {
+    return [
+      parseInt(hex.slice(1, 3), 16),
+      parseInt(hex.slice(3, 5), 16),
+      parseInt(hex.slice(5, 7), 16),
+    ];
+  }
+  const m = hex.match(/rgba?\((\d+),(\d+),(\d+)/);
+  if (m) return [parseInt(m[1]!, 10), parseInt(m[2]!, 10), parseInt(m[3]!, 10)];
+  return [128, 128, 128];
+}
+
+/**
+ * Linearly interpolate between two CSS colour strings in RGB space.
+ * Both colours are parsed with `hexToRgb`; `t` in [0, 1].
+ */
+export function lerpColor(a: string, b: string, t: number): string {
+  const [r1, g1, bl1] = hexToRgb(a);
+  const [r2, g2, bl2] = hexToRgb(b);
+  const r = Math.round(r1 + (r2 - r1) * t);
+  const g = Math.round(g1 + (g2 - g1) * t);
+  const bl = Math.round(bl1 + (bl2 - bl1) * t);
+  return `rgb(${r},${g},${bl})`;
+}
+
+/**
  * Return `color` with its alpha channel replaced by `alpha`.
  * Accepts hex (#rrggbb / #rgb) or rgb()/rgba() strings; passes anything else
  * through untouched. Lets draw loops derive translucency from a theme token

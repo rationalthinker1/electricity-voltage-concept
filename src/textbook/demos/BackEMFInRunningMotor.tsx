@@ -14,7 +14,14 @@
 import { useMemo, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
 import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -243,14 +250,13 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
           value={<Num value={computed.rpm} digits={0} />}
           unit="rpm"
         />
-        <button
-          type="button"
-          className="mini-toggle"
-          onClick={() => setRestartTick((t) => t + 1)}
-          style={{ marginLeft: 'auto' }}
-        >
-          restart
-        </button>
+        <span style={{ marginLeft: 'auto' }}>
+          <MiniToggle
+            label="restart"
+            checked={false}
+            onChange={() => setRestartTick((t) => t + 1)}
+          />
+        </span>
       </DemoControls>
       <EquationStrip
         leftLabel="back-EMF"

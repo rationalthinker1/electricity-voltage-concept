@@ -30,7 +30,7 @@
 import { useCallback, useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniToggle } from '@/components/Demo';
 import { M } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, drawGlowPath, type CircuitElement } from '@/lib/canvasPrimitives';
@@ -646,9 +646,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
         <MiniReadout label="hot path" value={hotPath ? 'closed' : 'open'} />
         <MiniReadout label="neutral path" value={neutralPath ? 'closed' : 'open'} />
         <MiniReadout label="bulb" value={bulbLit ? 'lit' : 'dark'} />
-        <button type="button" className="mini-toggle" onClick={reset}>
-          Reset wiring
-        </button>
+        <MiniToggle label="Reset wiring" checked={false} onChange={reset} />
       </DemoControls>
       {mistakes.length > 0 && (
         <ul

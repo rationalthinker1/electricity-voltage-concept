@@ -157,16 +157,14 @@ export function LeadAcidCellDemo({ figure }: Props) {
           checked={mode === 'charge'}
           onChange={(v) => setMode(v ? 'charge' : 'idle')}
         />
-        <button
-          type="button"
-          className="mini-toggle"
-          onClick={() => {
+        <MiniToggle
+          label="Reset (full)"
+          checked={false}
+          onChange={() => {
             setSoc(1.0);
             setMode('idle');
           }}
-        >
-          Reset (full)
-        </button>
+        />
         <MiniReadout label="SOC" value={(soc * 100).toFixed(0) + ' %'} />
         <MiniReadout label="specific gravity" value={<Num value={SG} />} />
         <MiniReadout label="V_cell" value={<Num value={V_cell} />} unit="V" />

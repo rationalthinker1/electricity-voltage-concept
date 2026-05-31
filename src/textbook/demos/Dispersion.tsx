@@ -17,6 +17,7 @@ import { M } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure: string;
@@ -121,7 +122,7 @@ export function DispersionDemo({ figure }: Props) {
         if (!exit) continue;
 
         // Draw the inside-prism segment, faintly
-        drawSegment(ctx, entry.x, entry.y, exit.x, exit.y, fadedRgba(c.rgb, 0.55), 1.5);
+        drawSegment(ctx, entry.x, entry.y, exit.x, exit.y, withAlpha(c.rgb, 0.55), 1.5);
 
         // Snell at the right face: cos of internal incidence
         // cos of angle between innerDir and outward normal (rnx, rny)
@@ -223,13 +224,7 @@ function drawSegment(
   ctx.stroke();
 }
 
-function fadedRgba(hex: string, alpha: number): string {
-  // Quick hex → rgba conversion
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r},${g},${b},${alpha})`;
-}
+
 
 // Intersect ray (p, dir) with the segment from a→b. Returns the intersection point or null.
 function lineSegmentIntersect(

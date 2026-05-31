@@ -13,7 +13,7 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniToggle } from '@/components/Demo';
 import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
@@ -164,15 +164,12 @@ export function WiedemannFranzDemo({ figure }: Props) {
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>
         {METALS.map((mm) => (
-          <button
+          <MiniToggle
             key={mm.key}
-            type="button"
-            className={`mini-toggle${mm.key === metalKey ? 'on' : ''}`}
-            onClick={() => setMetalKey(mm.key)}
-            aria-pressed={mm.key === metalKey}
-          >
-            {mm.name}
-          </button>
+            label={mm.name}
+            checked={mm.key === metalKey}
+            onChange={() => setMetalKey(mm.key)}
+          />
         ))}
         <MiniReadout label="κ" value={m.kappa.toFixed(0)} unit="W/m·K" />
         <MiniReadout label="σ" value={<Num value={m.sigma} />} unit="S/m" />

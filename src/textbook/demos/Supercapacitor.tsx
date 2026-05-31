@@ -157,18 +157,16 @@ export function SupercapacitorDemo({ figure }: Props) {
           checked={mode === 'discharge'}
           onChange={(v) => setMode(v ? 'discharge' : 'idle')}
         />
-        <button
-          type="button"
-          className="mini-toggle"
-          onClick={() => {
+        <MiniToggle
+          label="Reset"
+          checked={false}
+          onChange={() => {
             setV(0);
             setMode('idle');
             traceRef.current = [];
             tRef.current = 0;
           }}
-        >
-          Reset
-        </button>
+        />
         <MiniSlider
           label="C"
           value={C}

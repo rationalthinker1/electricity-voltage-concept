@@ -208,17 +208,15 @@ export function CellDischargeDemo({ figure }: Props) {
           checked={running}
           onChange={setRunning}
         />
-        <button
-          type="button"
-          className="mini-toggle"
-          onClick={() => {
+        <MiniToggle
+          label="Reset"
+          checked={false}
+          onChange={() => {
             setSoc(1.0);
             setRunning(false);
             traceRef.current = [];
           }}
-        >
-          Reset
-        </button>
+        />
         <MiniSlider
           label="R_int"
           value={R_int}

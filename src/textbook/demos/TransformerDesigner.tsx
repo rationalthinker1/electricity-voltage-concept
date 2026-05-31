@@ -282,15 +282,12 @@ export function TransformerDesignerDemo({ figure }: Props) {
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
         {CORE_KEYS.map((k) => (
-          <button
+          <MiniToggle
             key={k}
-            type="button"
-            className={`mini-toggle${k === coreKey ? 'on' : ''}`}
-            onClick={() => setCoreKey(k)}
-            aria-pressed={k === coreKey}
-          >
-            {CORE_MATERIALS[k].name}
-          </button>
+            label={CORE_MATERIALS[k].name}
+            checked={k === coreKey}
+            onChange={() => setCoreKey(k)}
+          />
         ))}
         <MiniToggle
           label={shape === 'e-core' ? 'shape: E-core' : 'shape: toroid'}

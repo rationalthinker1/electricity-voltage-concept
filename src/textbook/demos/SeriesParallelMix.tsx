@@ -20,7 +20,14 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
 import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
@@ -293,15 +300,12 @@ export function SeriesParallelMixDemo({ figure }: Props) {
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         {TOPOLOGIES.map((tp) => (
-          <button
+          <MiniToggle
             key={tp.id}
-            type="button"
-            className={`mini-toggle${topology === tp.id ? 'on' : ''}`}
-            onClick={() => setTopology(tp.id)}
-            aria-pressed={topology === tp.id}
-          >
-            {tp.label}
-          </button>
+            label={tp.label}
+            checked={topology === tp.id}
+            onChange={() => setTopology(tp.id)}
+          />
         ))}
         <MiniSlider
           label="R₁"

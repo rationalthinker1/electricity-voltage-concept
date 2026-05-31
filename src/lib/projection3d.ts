@@ -130,6 +130,68 @@ export function depthSortIndices<T extends { anchor: Vec3 }>(
 }
 
 /**
+ * Convert a world-space radius to on-screen pixels through the orbit camera.
+ * Useful for drawing billboard spheres, dots, or any constant-world-size shape.
+ */
+export function projectedRadius(
+  worldRadius: number,
+  depth: number,
+  cam: OrbitCamera,
+  w: number,
+  h: number,
+): number {
+  const focal = Math.min(w, h) / 2 / Math.tan(cam.fov / 2);
+  return (worldRadius / Math.max(0.01, depth)) * focal;
+}
+
+/**
+ * Raycast from a screen pixel through the orbit camera to the horizontal plane
+ * y = `planeY`. Returns the world (x, z) intersection, or `null` if the ray is
+ * parallel to or pointing away from the plane.
+ *
+ * Use this to drag objects that live on a ground plane (y = constant) in 3D demos.
+ */
+export function intersectScreenWithGround(
+  sx: number,
+  sy: number,
+  cam: OrbitCamera,
+  w: number,
+  h: number,
+  planeY = 0,
+): { x: number; z: number } | null {
+  const focal = Math.min(w, h) / 2 / Math.tan(cam.fov / 2);
+  const dxCam = (sx - w / 2) / focal;
+  const dyCam = -(sy - h / 2) / focal;
+
+  const sinP = Math.sin(cam.pitch);
+  const cosP = Math.cos(cam.pitch);
+  const sinY = Math.sin(cam.yaw);
+  const cosY = Math.cos(cam.yaw);
+
+  // Direction in world space (camera → world transform of ray)
+  const dzPitch = -dyCam * sinP - cosP;
+  const dyWorld = dyCam * cosP - sinP;
+
+  // Ray must point toward the plane to hit it
+  if (dyWorld >= -0.001) return null;
+
+  const D = cam.distance;
+  const t = (planeY - D * sinP) / dyWorld;
+  if (t <= 0) return null;
+
+  const dirX = dxCam * cosY + dzPitch * sinY;
+  const dirZ = -dxCam * sinY + dzPitch * cosY;
+
+  const camX = D * cosP * sinY;
+  const camZ = D * cosP * cosY;
+
+  return {
+    x: camX + t * dirX,
+    z: camZ + t * dirZ,
+  };
+}
+
+/**
  * Attach drag-to-rotate handlers to a canvas. The caller owns the camera
  * ref (the demo's stateRef); this just mutates `cam.yaw` and `cam.pitch`
  * as the user drags. Returns a cleanup function that removes the listeners.

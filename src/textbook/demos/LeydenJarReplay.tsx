@@ -8,7 +8,7 @@
 import { useEffect, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls } from '@/components/Demo';
+import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -209,12 +209,8 @@ export function LeydenJarReplayDemo({ figure }: Props) {
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <button type="button" className="mini-toggle on" onClick={handleCharge}>
-          Crank the friction wheel
-        </button>
-        <button type="button" className="mini-toggle" onClick={handleDischarge}>
-          Discharge
-        </button>
+        <MiniToggle label="Crank the friction wheel" checked onChange={handleCharge} />
+        <MiniToggle label="Discharge" checked={false} onChange={handleDischarge} />
       </DemoControls>
     </Demo>
   );

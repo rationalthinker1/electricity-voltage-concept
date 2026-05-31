@@ -7,7 +7,7 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniToggle } from '@/components/Demo';
 import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
@@ -150,15 +150,12 @@ export function MaterialPickerDemo({ figure }: Props) {
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
         {CHOICES.map((k) => (
-          <button
+          <MiniToggle
             key={k}
-            type="button"
-            className={`mini-toggle${k === mat ? 'on' : ''}`}
-            onClick={() => setMat(k)}
-            aria-pressed={k === mat}
-          >
-            {MATERIALS[k]!.name.replace(' (filament)', '').replace(' (heater)', '')}
-          </button>
+            label={MATERIALS[k]!.name.replace(' (filament)', '').replace(' (heater)', '')}
+            checked={k === mat}
+            onChange={() => setMat(k)}
+          />
         ))}
         <MiniReadout label="Current" value={<Num value={I} />} unit="A" />
         <MiniReadout label="Power" value={<Num value={P} />} unit="W" />

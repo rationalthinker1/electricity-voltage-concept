@@ -24,6 +24,7 @@ import { DriftVelocityDemo } from './demos/DriftVelocity';
 import { SwitchAndBulbDemo } from './demos/SwitchAndBulb';
 import { TwoSpeedsDemo } from './demos/TwoSpeeds';
 import { VabWorkEnergyDemo } from './demos/VabWorkEnergy';
+import { ElectricalAltitudeDemo } from './demos/ElectricalAltitude';
 import { VoltageAsHeightDemo } from './demos/VoltageAsHeight';
 import { VoltageDrivesFlowDemo } from './demos/VoltageDrivesFlow';
 import { VoltagePerChargeDemo } from './demos/VoltagePerCharge';
@@ -70,8 +71,9 @@ export default function Ch2VoltageAndCurrent() {
         </Term>{' '}
         is like water pressure: a battery pushes electrons through a wire the way a pump pushes
         water through a pipe. The analogy is appealing and gets you about a third of the way before
-        it breaks down. The first thing to fix is the idea that voltage is a property of a single
-        point. It isn't.{' '}
+        it breaks down. Voltage is not a substance like water; it is a landscape of potential
+        energy. Current is the motion of charges falling down that landscape. The first thing to
+        fix is the idea that voltage is a property of a single point. It isn't.{' '}
         <strong className="text-text font-medium">
           Voltage is a property of a path between two points.
         </strong>{' '}
@@ -87,8 +89,17 @@ export default function Ch2VoltageAndCurrent() {
         which, in a wire full of fixed obstacles, almost immediately becomes heat. The battery is
         the climber lifting the ball back up. Voltage is the height it lifted to.
       </p>
+      <p className="mb-prose-3">
+        That is the safer mental model: not a pipe being pressurized from behind, but a topographic
+        map whose slopes already tell charges which way they would move. In a real circuit the
+        electromagnetic field lives in and around the conductors before any one electron has crossed
+        the room. Closing a switch changes the field pattern; it does not send a packet of voltage
+        chasing electrons down a tube.
+      </p>
 
       <VoltageAsHeightDemo figure="Fig. 2.1" />
+
+      <ElectricalAltitudeDemo figure="Fig. 2.1a" />
 
       <h3 className="chapter-h3">The formal definition: a line integral of the field</h3>
 
@@ -143,6 +154,65 @@ export default function Ch2VoltageAndCurrent() {
         coulomb of charge that flows out one terminal and back into the other
         <Cite id="feynman-II-2" in={SOURCES} />. It is also the same statement as the line integral
         — just integrated and divided through by the charge.
+      </p>
+
+      <h3 className="chapter-h3">Work-energy bridge from Chapter 1</h3>
+
+      <p className="mb-prose-3">
+        Chapter 1 gave the force law: a charge in an electric field feels{' '}
+        <M tex="\vec{F}=q\vec{E}" />. Chapter 2 is the same story after the force has acted over a
+        distance. Force times distance is work; work per charge is voltage. That is the bridge from
+        electrostatics to a hot lamp filament:
+      </p>
+
+      <figure className="my-xl">
+        <div className="border-border-1 bg-bg-card rounded-2 overflow-x-auto border">
+          <table className="font-3 text-3 text-text-dim w-full border-collapse">
+            <thead>
+              <tr className="bg-bg-elevated border-border-1 text-text border-b">
+                <th className="px-md py-sm tracking-3 text-2 text-left font-normal uppercase">
+                  Mechanical concept
+                </th>
+                <th className="px-md py-sm tracking-3 text-2 text-left font-normal uppercase">
+                  Electrical concept
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-border border-b">
+                <td className="px-md py-sm">Height (altitude)</td>
+                <td className="px-md py-sm">Voltage (potential)</td>
+              </tr>
+              <tr className="border-border border-b">
+                <td className="px-md py-sm">Mass</td>
+                <td className="px-md py-sm">
+                  Charge (<M tex="Q" />)
+                </td>
+              </tr>
+              <tr className="border-border border-b">
+                <td className="px-md py-sm">
+                  Work done by gravity (<M tex="mgh" />)
+                </td>
+                <td className="px-md py-sm">
+                  Work done by field (<M tex="QV" />)
+                </td>
+              </tr>
+              <tr className="border-border border-b-0">
+                <td className="px-md py-sm">Flow rate (m/s)</td>
+                <td className="px-md py-sm">
+                  Current (<M tex="I" />)
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </figure>
+
+      <p className="mb-prose-3">
+        The analogy should stop at energy bookkeeping. Water pressure is a useful crutch for some
+        circuit arithmetic, but voltage is not the stuff moving through the wire. It is the
+        potential-energy drop available to each coulomb as the field does work on charges already
+        present throughout the circuit.
       </p>
 
       <VabWorkEnergyDemo figure="Fig. 2.2" />
@@ -656,6 +726,15 @@ export default function Ch2VoltageAndCurrent() {
         field has reached every electron in the bulb's filament. (4) Those electrons, which were
         already there, begin to drift. (5) The drifting electrons collide with tungsten ions,
         dumping kinetic energy as heat. (6) The filament heats to ~2800 K and glows.
+      </p>
+      <p className="mb-prose-3">
+        Zoom into the first microsecond. The instant the switch contacts meet, the boundary
+        conditions of the circuit change, and an electromagnetic disturbance races along the wire at
+        a large fraction of <M tex="c" />. Surface charges redistribute as that disturbance passes,
+        establishing the voltage slope around the loop. Only then do the local conduction electrons
+        settle into their tiny drift, following the landscape the field has just laid out. The
+        circuit turns on because the field geometry updates fast, not because matter has rushed
+        from the battery to the bulb.
       </p>
 
       <PredictThenObserve

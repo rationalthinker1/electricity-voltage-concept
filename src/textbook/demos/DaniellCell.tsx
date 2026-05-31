@@ -223,9 +223,7 @@ export function DaniellCellDemo({ figure }: Props) {
         />
         <MiniReadout label="V_term" value={<Num value={V_term} />} unit="V" />
         <MiniReadout label="I" value={<Num value={I} />} unit="A" />
-        <button type="button" className="mini-toggle" onClick={() => setErosion(0)}>
-          Reset rods
-        </button>
+        <MiniToggle label="Reset rods" checked={false} onChange={() => setErosion(0)} />
       </DemoControls>
       <EquationStrip
         leftLabel="Loaded cell voltage"

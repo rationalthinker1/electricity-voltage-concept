@@ -137,10 +137,10 @@ export default function Ch1WhatIsElectricity() {
         spec={{
           kind: 'multiple-choice',
           options: [
-            { id: 'a', label: '9 µN (micronewtons)' },
-            { id: 'b', label: '9 mN (millinewtons)' },
-            { id: 'c', label: '9 N (newtons)' },
-            { id: 'd', label: '9 kN (kilonewtons)' },
+            { id: 'a', label: '9 µN (roughly the weight of a grain of sand)' },
+            { id: 'b', label: '9 mN (roughly the weight of a paperclip)' },
+            { id: 'c', label: '9 N (roughly the weight of a 1 kg bag of sugar)' },
+            { id: 'd', label: '9 kN (roughly the weight of a small car)' },
           ],
           correctIds: ['a'],
         }}
@@ -374,9 +374,13 @@ export default function Ch1WhatIsElectricity() {
         : a physical thing, defined at every point, that tells whatever charge happens to be there
         what force to feel.
       </p>
+
+      <FieldArrowsDemo figure="Fig. 1.3" />
+
       <p className="mb-prose-3">
-        Make that precise. The symbol is <M tex="\vec{E}" />, and its definition is direct — the
-        force per unit charge a small test charge would feel at that point:
+        Now make that precise. The arrows you just sampled are the electric field. The symbol is{' '}
+        <M tex="\vec{E}" />, and its definition is direct — the force per unit charge a small test
+        charge would feel at that point:
       </p>
       <Formula size="lg" id="electric-field-def" />
       <p className="mb-prose-3">
@@ -414,8 +418,6 @@ export default function Ch1WhatIsElectricity() {
         one, it talks only to the field at its own location
         <Cite id="feynman-II-2" in={SOURCES} />.
       </p>
-
-      <FieldArrowsDemo figure="Fig. 1.3" />
 
       <PointCharge3DDemo figure="Fig. 1.4" />
 

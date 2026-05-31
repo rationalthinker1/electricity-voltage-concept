@@ -9,7 +9,7 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls } from '@/components/Demo';
+import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -204,14 +204,12 @@ export function ChemistryComparisonDemo({ figure }: Props) {
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
         {METRICS.map((m) => (
-          <button
+          <MiniToggle
             key={m.key}
-            type="button"
-            className={`mini-toggle${metric === m.key ? 'on' : ''}`}
-            onClick={() => setMetric(m.key)}
-          >
-            {m.label}
-          </button>
+            label={m.label}
+            checked={metric === m.key}
+            onChange={() => setMetric(m.key)}
+          />
         ))}
       </DemoControls>
     </Demo>

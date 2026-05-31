@@ -33,7 +33,7 @@ import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { project, v3, type Vec3 } from '@/lib/projection3d';
+import { projectedRadius, project, v3, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -296,9 +296,7 @@ function drawChargeBall(
   signGlyph: '+' | '-',
 ) {
   const centre = project(v3(0, 0, 0), cam, W, H);
-  // Approximate on-screen radius via the focal length the projection uses.
-  const focal = Math.min(W, H) / 2 / Math.tan(cam.fov / 2);
-  const rPx = (CHARGE_RADIUS / Math.max(0.01, centre.depth)) * focal;
+  const rPx = projectedRadius(CHARGE_RADIUS, centre.depth, cam, W, H);
 
   // Glow halo: trace the silhouette circle as a polyline through
   // drawGlowPath so we get the bleed-then-saturate effect.

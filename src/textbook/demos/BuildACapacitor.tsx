@@ -17,7 +17,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
 import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
@@ -314,15 +321,9 @@ export function BuildACapacitorDemo({ figure }: Props) {
     >
       <AutoResizeCanvas height={340} setup={setup} />
       <DemoControls>
-        <button type="button" className="mini-toggle on" onClick={addPos}>
-          + to top
-        </button>
-        <button type="button" className="mini-toggle on" onClick={addNeg}>
-          − to top
-        </button>
-        <button type="button" className="mini-toggle" onClick={reset}>
-          Reset
-        </button>
+        <MiniToggle label="+ to top" checked onChange={addPos} />
+        <MiniToggle label="− to top" checked onChange={addNeg} />
+        <MiniToggle label="Reset" checked={false} onChange={reset} />
         <MiniSlider
           label="A"
           value={A_cm2}

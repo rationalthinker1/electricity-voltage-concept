@@ -35,6 +35,7 @@ import { MATERIALS, type MaterialKey, PHYS, sciTeX } from '@/lib/physics';
 import { project, v3, type OrbitCamera, type Point2D, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure: string;
@@ -571,28 +572,4 @@ function drawArrowhead(
 
 /* ─── colour helper ────────────────────────────────────────────────────── */
 
-function withAlpha(color: string, alpha: number): string {
-  if (color.startsWith('#')) {
-    let r: number;
-    let g: number;
-    let b: number;
-    if (color.length === 7) {
-      r = parseInt(color.slice(1, 3), 16);
-      g = parseInt(color.slice(3, 5), 16);
-      b = parseInt(color.slice(5, 7), 16);
-    } else if (color.length === 4) {
-      r = parseInt(color[1]! + color[1]!, 16);
-      g = parseInt(color[2]! + color[2]!, 16);
-      b = parseInt(color[3]! + color[3]!, 16);
-    } else {
-      return color;
-    }
-    return `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
-  }
-  const m = color.match(/rgba?\(([^)]+)\)/);
-  if (m) {
-    const parts = m[1]!.split(',').map((s) => s.trim());
-    return `rgba(${parts[0]},${parts[1]},${parts[2]},${alpha.toFixed(3)})`;
-  }
-  return color;
-}
+

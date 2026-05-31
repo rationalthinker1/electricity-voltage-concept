@@ -19,17 +19,10 @@ import { drawCharge } from '@/lib/canvasPrimitives';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from '@/lib/canvasLayout';
+import { hexToRgb } from '@/lib/canvasTheme';
 
 interface Props {
   figure: string;
-}
-
-function hexToRgb(hex: string) {
-  return {
-    r: parseInt(hex.slice(1, 3), 16),
-    g: parseInt(hex.slice(3, 5), 16),
-    b: parseInt(hex.slice(5, 7), 16),
-  };
 }
 
 export function OscillatingDipoleDemo({ figure }: Props) {
@@ -59,8 +52,8 @@ export function OscillatingDipoleDemo({ figure }: Props) {
       const img = ctx.createImageData(W, H);
       const data = img.data;
       const step = 2;
-      const pinkRGB = hexToRgb(colors.pink);
-      const blueRGB = hexToRgb(colors.blue);
+      const [pinkR, pinkG, pinkB] = hexToRgb(colors.pink);
+      const [blueR, blueG, blueB] = hexToRgb(colors.blue);
       for (let py = 0; py < H; py += step) {
         for (let px = 0; px < W; px += step) {
           const dx = px - cx;
@@ -74,9 +67,9 @@ export function OscillatingDipoleDemo({ figure }: Props) {
           const amp = (pat / Math.sqrt(r)) * Math.sin(k * r - om * t);
           // Map to colour: +amp → pink, −amp → blue, balanced background
           const v = Math.max(-1, Math.min(1, amp * 3.4));
-          const r8 = v > 0 ? pinkRGB.r : blueRGB.r;
-          const g8 = v > 0 ? pinkRGB.g : blueRGB.g;
-          const b8 = v > 0 ? pinkRGB.b : blueRGB.b;
+          const r8 = v > 0 ? pinkR : blueR;
+          const g8 = v > 0 ? pinkG : blueG;
+          const b8 = v > 0 ? pinkB : blueB;
           const alpha = Math.min(180, Math.abs(v) * 220);
           // Fill the step×step block
           for (let oy = 0; oy < step && py + oy < H; oy++) {

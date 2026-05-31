@@ -14,7 +14,14 @@
 import { useMemo, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
 import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -255,15 +262,12 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         {(['pmsm', 'induction', 'bldc', 'brushed'] as MotorType[]).map((m) => (
-          <button
+          <MiniToggle
             key={m}
-            type="button"
-            className={`mini-toggle${motorType === m ? 'on' : ''}`}
-            onClick={() => setMotorType(m)}
-            aria-pressed={motorType === m}
-          >
-            {MOTORS[m].name}
-          </button>
+            label={MOTORS[m].name}
+            checked={motorType === m}
+            onChange={() => setMotorType(m)}
+          />
         ))}
         <MiniSlider
           label="τ (pu)"
