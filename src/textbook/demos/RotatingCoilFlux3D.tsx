@@ -30,9 +30,10 @@ import {
 } from '@/components/Demo';
 import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { drawArrow3D } from '@/lib/canvas3d';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
+import { project, type Vec3 } from '@/lib/projection3d';
 import { useOrbitScene } from '@/lib/useOrbitScene';
 import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -102,43 +103,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
         return { x: p.x * cc - p.z * ss, y: p.y, z: p.x * ss + p.z * cc };
       }
 
-      function drawArrow3D(
-        from: Vec3,
-        to: Vec3,
-        color: string,
-        lineWidth: number,
-        cam: OrbitCamera,
-        cw: number,
-        ch: number,
-      ) {
-        const p0 = project(from, cam, cw, ch);
-        const p1 = project(to, cam, cw, ch);
-        if (p0.depth <= 0 || p1.depth <= 0) return;
-        ctx.strokeStyle = color;
-        ctx.fillStyle = color;
-        ctx.lineWidth = lineWidth;
-        ctx.beginPath();
-        ctx.moveTo(p0.x, p0.y);
-        ctx.lineTo(p1.x, p1.y);
-        ctx.stroke();
-        // Arrow head in 2D screen space.
-        const dx = p1.x - p0.x,
-          dy = p1.y - p0.y;
-        const len = Math.hypot(dx, dy);
-        if (len < 1e-3) return;
-        const ux = dx / len,
-          uy = dy / len;
-        const headLen = Math.min(8, len * 0.5);
-        const headW = headLen * 0.55;
-        const baseX = p1.x - ux * headLen;
-        const baseY = p1.y - uy * headLen;
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(baseX - uy * headW, baseY + ux * headW);
-        ctx.lineTo(baseX + uy * headW, baseY - ux * headW);
-        ctx.closePath();
-        ctx.fill();
-      }
+
 
       // ───── background ─────
       ctx.fillStyle = colors.bg;
@@ -187,7 +152,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
         // Fade with depth so far arrows recede.
         const fade = Math.max(0.12, Math.min(0.55, 1 - (ga.depthAvg - 3) * 0.12));
         const alpha = 0.18 + 0.4 * fade * Math.min(1, st.B);
-        drawArrow3D(ga.from, ga.to, withAlpha(colors.teal, alpha), 1, cam, w, sceneH);
+        drawArrow3D(ctx, ga.from, ga.to, cam, w, sceneH, withAlpha(colors.teal, alpha), { lineWidth: 1 });
       }
 
       // ───── 2. Translucent flux disc (the loop's face) ─────
@@ -251,7 +216,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
         const nHat: Vec3 = { x: Math.cos(theta), y: 0, z: Math.sin(theta) };
         const nFrom: Vec3 = { x: 0, y: 0, z: 0 };
         const nTo: Vec3 = { x: nHat.x * 1.05, y: 0, z: nHat.z * 1.05 };
-        drawArrow3D(nFrom, nTo, withAlpha(colors.text, 0.92), 2, cam, w, sceneH);
+        drawArrow3D(ctx, nFrom, nTo, cam, w, sceneH, withAlpha(colors.text, 0.92), { lineWidth: 2 });
         // n̂ label near the arrow tip.
         const labelP = project({ x: nHat.x * 1.18, y: 0.05, z: nHat.z * 1.18 }, cam, w, sceneH);
         if (labelP.depth > 0) {

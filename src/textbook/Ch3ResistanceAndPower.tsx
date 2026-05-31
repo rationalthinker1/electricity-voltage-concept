@@ -1,13 +1,9 @@
 /**
  * Chapter 3 — Resistance and power
  *
- * The macroscopic story of friction in a wire and the heat it produces.
- * Five embedded demos:
- *   3.1 Length vs. resistance — R linear in L
- *   3.2 Area vs. resistance — R inverse in A
- *   3.3 Material picker — σ ranges over orders of magnitude
- *   3.4 Joule heating — P = I²R, equilibrium T from Stefan–Boltzmann
- *   3.5 Series vs. parallel — R_series and R_parallel
+ * The macroscopic story of friction in a wire and the heat it produces, from
+ * Ohm's law through Joule heating, the temperature coefficient of resistance,
+ * and the superconducting limit, to series/parallel combination.
  *
  * Every numerical or historical claim cites a key from chapter.sources.
  */
@@ -26,6 +22,7 @@ import { LengthVsResistanceDemo } from './demos/LengthVsResistance';
 import { MaterialPickerDemo } from './demos/MaterialPicker';
 import { MicroscopicOhm3DDemo } from './demos/MicroscopicOhm3D';
 import { OhmsLawTwoViewsDemo } from './demos/OhmsLawTwoViews';
+import { RvsTemperatureDemo } from './demos/RvsTemperature';
 import { SeriesParallelMixDemo } from './demos/SeriesParallelMix';
 import { SeriesVsParallelDemo } from './demos/SeriesVsParallel';
 import { WireVoltageDropDemo } from './demos/WireVoltageDrop';
@@ -256,27 +253,31 @@ export default function Ch3ResistanceAndPower() {
         tag="Try 3.1"
         question={
           <>
-            What is the resistance of a <strong className="text-text font-medium">10 m</strong>{' '}
-            length of copper wire with a <strong className="text-text font-medium">2 mm²</strong>
-            cross-section, using σ<sub>Cu</sub> ≈ 5.96×10⁷ S/m?
+            You swap a length of copper wire for one that is{' '}
+            <strong className="text-text font-medium">twice as thick</strong> (twice the diameter)
+            and <strong className="text-text font-medium">twice as long</strong>. With no
+            calculator, what happens to its resistance?
           </>
         }
         hint={
           <>
-            <M tex="R = L/(\sigma A)" />. Convert mm² to m².
+            <M tex="R = \rho L/A" />: length multiplies <M tex="R" />, area divides it. For a round
+            wire, how does the cross-sectional area depend on the diameter?
           </>
         }
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              With <M tex="A = 2\times 10^{-6}\ \text{m}^{2}" /> and{' '}
-              <M tex="\sigma_{\text{Cu}} = 5.96\times 10^{7}\ \text{S/m}" />
-              <Cite id="crc-resistivity" in={SOURCES} />:
+              Take the two geometric factors one at a time. Doubling the length multiplies the
+              resistance by 2. Doubling the diameter multiplies the cross-sectional area{' '}
+              <M tex="A = \pi d^2/4" /> by <M tex="2^2 = 4" />, which divides the resistance by 4:
             </p>
-            <Formula tex="R = \dfrac{L}{\sigma A} = \dfrac{10}{(5.96\times 10^{7})(2\times 10^{-6})} \approx 0.0839\ \Omega" />
+            <Formula tex="\dfrac{R_{\text{new}}}{R_{\text{old}}} = \dfrac{L\text{-factor}}{A\text{-factor}} = \dfrac{2}{4} = \dfrac{1}{2}" />
             <p className="mb-prose-1 last:mb-0">
-              Answer: about <strong className="text-text font-medium">84 mΩ</strong> — a 10 A
-              current through this wire dissipates ~8 W.
+              Answer: the resistance is <strong className="text-text font-medium">halved</strong>.
+              Length and thickness pull in opposite directions — and because area grows as the{' '}
+              <em className="text-text italic">square</em> of the diameter, thickness wins by the
+              wider margin.
             </p>
           </>
         }
@@ -450,6 +451,31 @@ export default function Ch3ResistanceAndPower() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
+      <p className="mb-prose-3">
+        Those four forms are algebraically identical, but they set a notorious trap for intuition.
+        If resistance is "electrical friction," it feels like more resistance should always make more
+        heat. Yet hang a <M tex="10{,}000\ \Omega" /> resistor and a <M tex="1\ \Omega" /> resistor
+        each directly across the same 120 V outlet and the big one stays cold while the small one
+        bursts into flame. The reason is that here the <em className="text-text italic">voltage</em>{' '}
+        is what's pinned, so the form to read is <M tex="P = V^2/R" />: the <M tex="10{,}000\ \Omega" />{' '}
+        part dissipates about <M tex="1.4\ \text{W}" />, the <M tex="1\ \Omega" /> part about{' '}
+        <M tex="14{,}400\ \text{W}" />. Raising <M tex="R" /> across a fixed-voltage source collapses
+        the current as <M tex="I = V/R" />, and the power falls with it
+        <Cite id="griffiths-2017" in={SOURCES} />.
+      </p>
+      <p className="mb-prose-3">
+        Flip the constraint and the conclusion flips with it. When the same{' '}
+        <em className="text-text italic">current</em> is forced through a string of components —
+        anything wired in series — the form to read is <M tex="P = I^2 R" />, and now the{' '}
+        <em className="text-text italic">largest</em> resistance in the string dissipates the most.
+        So the useful question is never "is this resistance high or low" but "does this part sit in a
+        constant-voltage environment (wired in parallel across a source) or a constant-current one
+        (carrying the whole load in series)." A device hung across the mains alongside others is the
+        fixed-voltage case; a single conductor or a crimped joint carrying the full load current is
+        the fixed-current case. Confuse the two and you will predict a cool connection exactly where
+        the wire is quietly melting its own insulation.
+      </p>
+
       <JouleHeatingDemo figure="Fig. 3.8" />
 
       <p className="mb-prose-3">
@@ -533,6 +559,78 @@ export default function Ch3ResistanceAndPower() {
         }
       />
 
+      <h2 className="chapter-h2">When the wire heats up</h2>
+
+      <p className="mb-prose-3">
+        The last section ended with the lattice soaking up energy and warming. That warming is not a
+        passive side effect — it loops straight back into the resistance that produced it. A hotter
+        lattice vibrates with larger amplitude, so each ion presents a bigger target for a passing
+        electron to scatter off. The collisions come more often, the Drude time <M tex="\tau" />{' '}
+        between them shrinks, and since <M tex="\sigma = nq^2\tau/m" /> — with carrier density{' '}
+        <M tex="n" />, electron charge <M tex="q" /> and mass <M tex="m" /> — the conductivity drops
+        and the resistivity climbs. In a metal the carrier count <M tex="n" /> barely moves with
+        temperature (every atom donates its one conduction electron whether the wire is cold or hot),
+        so the whole temperature dependence rides on <M tex="\tau" />, and above the Debye temperature{' '}
+        <M tex="\rho" /> rises very nearly linearly with <M tex="T" />
+        <Cite id="matthiessen-1864" in={SOURCES} />
+        <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
+      </p>
+
+      <p className="mb-prose-3">
+        Engineers package that linear rise into a single material constant, the{' '}
+        <Term
+          def={
+            <>
+              <strong className="text-text font-medium">temperature coefficient of resistance</strong>{' '}
+              (α) — the fractional change in resistance per kelvin:{' '}
+              <M tex="R(T) \approx R_0[1 + \alpha(T - T_0)]" />. SI unit: K⁻¹. For copper near room
+              temperature, α ≈ 0.00393 /K.
+            </>
+          }
+        >
+          temperature coefficient of resistance
+        </Term>
+        :
+      </p>
+      <Formula size="lg" tex="R(T) = R_0\,[\,1 + \alpha\,(T - T_0)\,]" />
+      <p className="mb-prose-3">
+        where <M tex="R(T)" /> is the resistance at temperature <M tex="T" /> (in ohms),{' '}
+        <M tex="R_0" /> is the resistance at a reference temperature <M tex="T_0" /> (in ohms, usually
+        taken at 20 °C), <M tex="T" /> and <M tex="T_0" /> are temperatures (in kelvin or °C — only
+        their difference enters), and <M tex="\alpha" /> is the temperature coefficient of resistance
+        (in K⁻¹). For copper near room temperature{' '}
+        <M tex="\alpha \approx 0.00393\ \text{K}^{-1}" />
+        <Cite id="matthiessen-1864" in={SOURCES} />, so a winding that measures 20 mΩ cold sits
+        closer to 26 mΩ at 100 °C. Nichrome's <M tex="\alpha" /> is engineered almost to zero, which
+        is why a toaster element holds nearly the same resistance from cold to red heat.
+      </p>
+
+      <RvsTemperatureDemo figure="Fig. 3.9" />
+
+      <p className="mb-prose-3">
+        The curves above sort materials by how hard their resistance tracks temperature. The pure
+        metals — copper and tungsten — climb steadily, because hotter means more phonon scattering. A
+        semiconductor thermistor runs the opposite way entirely: heating it liberates exponentially
+        more carriers across the band gap, so its <M tex="n" /> rockets up and its resistance{' '}
+        <em className="text-text italic">falls</em> with temperature. Same{' '}
+        <M tex="\sigma = nq^2\tau/m" />, opposite slope — in metals only <M tex="\tau" /> moves, in
+        semiconductors <M tex="n" /> dominates.
+      </p>
+
+      <p className="mb-prose-3">
+        Push the temperature the other way and resistance falls. Cool a pure metal toward absolute
+        zero and the phonons freeze out, leaving only scattering off impurities and defects;
+        ultra-pure copper near 4 K can have a resistivity a thousand times below its room-temperature
+        value. A handful of materials go further and do something the linear law never anticipates.
+        Below a critical temperature the conduction electrons in a superconductor bind into Cooper
+        pairs that move through the lattice without exchanging energy with it — the scattering channel
+        closes, <M tex="\tau" /> effectively diverges, and the DC resistance drops not merely low but
+        to exactly zero <Cite id="onnes-1911" in={SOURCES} />
+        <Cite id="bcs-1957" in={SOURCES} />. With <M tex="R = 0" /> the entire <M tex="I^2 R" />{' '}
+        dissipation that warmed every other wire in this chapter simply vanishes: a superconducting
+        cable carries current without heating at all. Case 3.3 follows that limit to grid scale.
+      </p>
+
       <h2 className="chapter-h2">Series and parallel</h2>
 
       <p className="mb-prose-3">
@@ -584,7 +682,7 @@ export default function Ch3ResistanceAndPower() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <SeriesVsParallelDemo figure="Fig. 3.9" />
+      <SeriesVsParallelDemo figure="Fig. 3.10" />
 
       <p className="mb-prose-3">
         Real circuits rarely live at one extreme. A mixed network already wants both rules at once —
@@ -593,7 +691,7 @@ export default function Ch3ResistanceAndPower() {
         time.
       </p>
 
-      <SeriesParallelMixDemo figure="Fig. 3.10" />
+      <SeriesParallelMixDemo figure="Fig. 3.11" />
 
       <p className="mb-prose-3">
         These rules are not arbitrary topology axioms — they are the same geometric{' '}
@@ -930,21 +1028,8 @@ export default function Ch3ResistanceAndPower() {
             donates its one conduction electron whether the wire is cold or hot. Heating up just
             increases lattice vibrations (phonons), which scatter electrons more often, shortening
             the Drude time <M tex="\tau" /> and pushing <M tex="\rho" /> up roughly linearly with{' '}
-            <M tex="T" /> above the Debye temperature — a slope quantified by the metal's{' '}
-            <Term
-              def={
-                <>
-                  <strong className="text-text font-medium">
-                    temperature coefficient of resistance
-                  </strong>{' '}
-                  (α) — the fractional change in resistance per kelvin:{' '}
-                  <M tex="R(T) \approx R_0 [1 + \alpha(T - T_0)]" />. For copper near room
-                  temperature, α ≈ 0.00393 /K.
-                </>
-              }
-            >
-              temperature coefficient
-            </Term>
+            <M tex="T" /> above the Debye temperature — a slope quantified by the metal's temperature
+            coefficient of resistance
             <Cite id="matthiessen-1864" in={SOURCES} />
             <Cite id="ashcroft-mermin-1976" in={SOURCES} />. In a semiconductor, <M tex="n" />{' '}
             itself is temperature-activated: more heat liberates exponentially more carriers across

@@ -34,6 +34,7 @@ import { Formula, M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS, sciTeX } from '@/lib/physics';
+import { drawArrow3D, drawWireframeBox } from '@/lib/canvas3d';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import {
@@ -108,85 +109,7 @@ function traceLine(
 // Wireframe cube — the shared Maxwell box
 // ─────────────────────────────────────────────────────────────────────────
 
-const CUBE_EDGES: Array<[Vec3, Vec3]> = (() => {
-  const c: Vec3[] = [];
-  for (let xi = 0; xi < 2; xi++)
-    for (let yi = 0; yi < 2; yi++)
-      for (let zi = 0; zi < 2; zi++)
-        c.push(v3(xi === 0 ? -BOX : BOX, yi === 0 ? -BOX : BOX, zi === 0 ? -BOX : BOX));
-  const edges: Array<[Vec3, Vec3]> = [];
-  for (let i = 0; i < 8; i++) {
-    for (let j = i + 1; j < 8; j++) {
-      let diff = 0;
-      if (c[i]!.x !== c[j]!.x) diff++;
-      if (c[i]!.y !== c[j]!.y) diff++;
-      if (c[i]!.z !== c[j]!.z) diff++;
-      if (diff === 1) edges.push([c[i]!, c[j]!]);
-    }
-  }
-  return edges;
-})();
 
-function drawCube(ctx: CanvasRenderingContext2D, cam: OrbitCamera, w: number, h: number) {
-  for (const [a, b] of CUBE_EDGES) {
-    const pa = project(a, cam, w, h);
-    const pb = project(b, cam, w, h);
-    // Estimate "back" by sum-of-depths heuristic.
-    const back = pa.depth + pb.depth > 2 * cam.distance;
-    ctx.strokeStyle = back
-      ? withAlpha(getCanvasColors().textDim, 0.18)
-      : withAlpha(getCanvasColors().textDim, 0.5);
-    ctx.lineWidth = 1;
-    ctx.setLineDash(back ? [4, 4] : []);
-    ctx.beginPath();
-    ctx.moveTo(pa.x, pa.y);
-    ctx.lineTo(pb.x, pb.y);
-    ctx.stroke();
-  }
-  ctx.setLineDash([]);
-}
-
-// ─────────────────────────────────────────────────────────────────────────
-// 3D arrow primitive (line + screen-space arrowhead)
-// ─────────────────────────────────────────────────────────────────────────
-
-function drawArrow3D(
-  ctx: CanvasRenderingContext2D,
-  from: Vec3,
-  to: Vec3,
-  cam: OrbitCamera,
-  w: number,
-  h: number,
-  color: string,
-  lineWidth = 1.6,
-  headSize = 6,
-) {
-  const p1 = project(from, cam, w, h);
-  const p2 = project(to, cam, w, h);
-  if (p1.depth <= 0 || p2.depth <= 0) return;
-
-  ctx.strokeStyle = color;
-  ctx.lineWidth = lineWidth;
-  ctx.beginPath();
-  ctx.moveTo(p1.x, p1.y);
-  ctx.lineTo(p2.x, p2.y);
-  ctx.stroke();
-
-  const dx = p2.x - p1.x,
-    dy = p2.y - p1.y;
-  const len = Math.hypot(dx, dy);
-  if (len < 3) return;
-  const ux = dx / len,
-    uy = dy / len;
-  const half = headSize * 0.55;
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.moveTo(p2.x, p2.y);
-  ctx.lineTo(p2.x - ux * headSize - uy * half, p2.y - uy * headSize + ux * half);
-  ctx.lineTo(p2.x - ux * headSize + uy * half, p2.y - uy * headSize - ux * half);
-  ctx.closePath();
-  ctx.fill();
-}
 
 // ─────────────────────────────────────────────────────────────────────────
 // The four mode draw routines
@@ -289,7 +212,7 @@ function drawGaussE(
     const arrowLen = 0.45 * (q >= 0 ? 1 : -1) * Math.tanh(Math.abs(q) / 3);
     const from = c;
     const to = add(c, scale(n, arrowLen));
-    drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().accent, 0.95), 2.2, 9);
+    drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().accent, 0.95), { lineWidth: 2.2, headSize: 9 });
   }
 }
 
@@ -456,7 +379,7 @@ function drawFaraday(
   for (const [x, z] of positions) {
     const from = v3(x, (-arrowLen / 2) * Bdir, z);
     const to = v3(x, (arrowLen / 2) * Bdir, z);
-    drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().teal, 0.9), 1.8, 7);
+    drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().teal, 0.9), { lineWidth: 1.8, headSize: 7 });
   }
 
   // 3. Induced E circulation — a ring of arrows tangent to the loop.
@@ -470,7 +393,7 @@ function drawFaraday(
     const a1 = a0 + (Bdir > 0 ? -1 : +1) * ((2 * Math.PI) / N_E) * 0.5;
     const from = v3(R_E * Math.cos(a0), 0, R_E * Math.sin(a0));
     const to = v3(R_E * Math.cos(a1), 0, R_E * Math.sin(a1));
-    drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().pink, 0.95), 2.0, 8);
+    drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().pink, 0.95), { lineWidth: 2.0, headSize: 8 });
   }
 
   // 4. Tiny legend dot near the loop.
@@ -565,7 +488,7 @@ function drawAmpere(
       const dy = sign > 0 ? -0.18 : -0.18;
       const from = v3(0, yA, 0);
       const to = v3(0, yA + dy, 0);
-      drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().accent, 0.95), 2.0, 8);
+      drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().accent, 0.95), { lineWidth: 2.0, headSize: 8 });
     }
   }
 
@@ -587,7 +510,7 @@ function drawAmpere(
   for (const [x, z] of eGrid) {
     const from = v3(x, GAP_HALF * 0.6 * -Esign, z);
     const to = v3(x, GAP_HALF * 0.6 * -Esign + Esign * Elen, z);
-    drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().pink, 0.95), 1.8, 7);
+    drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().pink, 0.95), { lineWidth: 1.8, headSize: 7 });
   }
 
   // 5. B-curl rings around the gap. Two rings at different y inside the gap
@@ -608,7 +531,7 @@ function drawAmpere(
       const a1 = a0 + Bsign * ((2 * Math.PI) / N_RING) * 0.55;
       const from = v3(r * Math.cos(a0), y, r * Math.sin(a0));
       const to = v3(r * Math.cos(a1), y, r * Math.sin(a1));
-      drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().teal, teal), 1.8, 7);
+      drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().teal, teal), { lineWidth: 1.8, headSize: 7 });
     }
   }
 
@@ -692,7 +615,7 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
       ctx.fillRect(0, 0, w, h);
 
       // Shared wireframe cube.
-      drawCube(ctx, scene.cam, w, h);
+      drawWireframeBox(ctx, scene.cam, w, h, BOX);
 
       switch (s.mode) {
         case 'gauss-e':

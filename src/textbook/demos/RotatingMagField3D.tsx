@@ -42,8 +42,9 @@ import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { drawArrow3D } from '@/lib/canvas3d';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
+import { project, type Vec3 } from '@/lib/projection3d';
 import { useOrbitScene } from '@/lib/useOrbitScene';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -120,43 +121,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       const cam = camRef.current;
       const coilInfo = scene.coilInfo;
 
-      function drawArrow3D(
-        from: Vec3,
-        to: Vec3,
-        color: string,
-        lineWidth: number,
-        cam: OrbitCamera,
-        cw: number,
-        ch: number,
-        headScale = 1,
-      ) {
-        const p0 = project(from, cam, cw, ch);
-        const p1 = project(to, cam, cw, ch);
-        if (p0.depth <= 0 || p1.depth <= 0) return;
-        ctx.strokeStyle = color;
-        ctx.fillStyle = color;
-        ctx.lineWidth = lineWidth;
-        ctx.beginPath();
-        ctx.moveTo(p0.x, p0.y);
-        ctx.lineTo(p1.x, p1.y);
-        ctx.stroke();
-        const dx = p1.x - p0.x,
-          dy = p1.y - p0.y;
-        const len = Math.hypot(dx, dy);
-        if (len < 1e-3) return;
-        const ux = dx / len,
-          uy = dy / len;
-        const headLen = Math.min(10 * headScale, len * 0.5);
-        const headW = headLen * 0.55;
-        const baseX = p1.x - ux * headLen;
-        const baseY = p1.y - uy * headLen;
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(baseX - uy * headW, baseY + ux * headW);
-        ctx.lineTo(baseX + uy * headW, baseY - ux * headW);
-        ctx.closePath();
-        ctx.fill();
-      }
+
 
       // ω from electrical frequency. The visual rotation rate uses a slowdown
       // factor so the field is watchable even at 60 Hz.
@@ -372,7 +337,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
             y: 0,
             z: c.vec.z * FIELD_ARROW_SCALE * 0.9,
           };
-          drawArrow3D({ x: 0, y: 0, z: 0 }, to, withAlpha(c.color, 0.65), 1.5, cam, w, h, 0.85);
+          drawArrow3D(ctx, { x: 0, y: 0, z: 0 }, to, cam, w, h, withAlpha(c.color, 0.65), { lineWidth: 1.5, headScale: 0.85 });
         }
       }
 
@@ -444,7 +409,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
         y: 0,
         z: rotorLen * Math.sin(scene.theta),
       };
-      drawArrow3D({ x: 0, y: 0, z: 0 }, rotorTo, withAlpha(colors.text, 0.55), 2, cam, w, h, 0.7);
+      drawArrow3D(ctx, { x: 0, y: 0, z: 0 }, rotorTo, cam, w, h, withAlpha(colors.text, 0.55), { lineWidth: 2, headScale: 0.7 });
       // Tiny disc at the rotor's base.
       const baseP = project({ x: 0, y: 0, z: 0 }, cam, w, h);
       if (baseP.depth > 0) {

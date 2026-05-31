@@ -41,7 +41,7 @@ import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { depthSortIndices, project, v3, type Vec3 } from '@/lib/projection3d';
+import { depthSortIndices, project, randInBox, randUnit, v3, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -65,22 +65,6 @@ interface Dipole {
   pos: Vec3;
   // Unit vector — direction of the dipole moment (tail to head).
   dir: Vec3;
-}
-
-function randInUnitBlock(): Vec3 {
-  return v3(
-    (Math.random() * 2 - 1) * (BX - 0.15),
-    (Math.random() * 2 - 1) * (BY - 0.15),
-    (Math.random() * 2 - 1) * (BZ - 0.15),
-  );
-}
-
-function randUnit(): Vec3 {
-  // Uniform on the unit sphere via the inverse-CDF on cos θ.
-  const u = Math.random() * 2 - 1;
-  const phi = Math.random() * 2 * Math.PI;
-  const s = Math.sqrt(Math.max(0, 1 - u * u));
-  return v3(s * Math.cos(phi), s * Math.sin(phi), u);
 }
 
 function normalizeUnit(v: Vec3): Vec3 {
@@ -115,7 +99,7 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
   if (dipolesRef.current.length === 0) {
     const arr: Dipole[] = [];
     for (let i = 0; i < N_DIPOLES; i++) {
-      arr.push({ pos: randInUnitBlock(), dir: randUnit() });
+      arr.push({ pos: randInBox(BX - 0.15, BY - 0.15, BZ - 0.15), dir: randUnit() });
     }
     dipolesRef.current = arr;
   }

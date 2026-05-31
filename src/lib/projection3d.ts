@@ -84,6 +84,29 @@ export function normalize(a: Vec3): Vec3 {
 }
 
 /**
+ * Uniform random point on the unit sphere.
+ * Uses the inverse-CDF method on cos θ for uniformity.
+ */
+export function randUnit(): Vec3 {
+  const u = Math.random() * 2 - 1;
+  const phi = Math.random() * 2 * Math.PI;
+  const s = Math.sqrt(Math.max(0, 1 - u * u));
+  return v3(s * Math.cos(phi), s * Math.sin(phi), u);
+}
+
+/**
+ * Uniform random point inside an axis-aligned box centred on the origin.
+ * `hx`, `hy`, `hz` are the half-extents in each axis.
+ */
+export function randInBox(hx: number, hy: number, hz: number): Vec3 {
+  return v3(
+    (Math.random() * 2 - 1) * hx,
+    (Math.random() * 2 - 1) * hy,
+    (Math.random() * 2 - 1) * hz,
+  );
+}
+
+/**
  * Project a world-space 3D point onto canvas-space pixels through the orbit
  * camera. The returned `depth` is the camera-space z (smaller = closer to
  * the eye); use it to sort painter-algorithm-style or to skip points behind

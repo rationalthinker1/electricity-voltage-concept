@@ -36,6 +36,7 @@ import {
 import { M } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
+import { drawArrow3D } from '@/lib/canvas3d';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { project, v3, type Point2D, type Vec3 } from '@/lib/projection3d';
@@ -153,62 +154,7 @@ function projectPolyline(pts: Vec3[], cam: OrbitScene['cam'], W: number, H: numb
   return segs;
 }
 
-function drawArrow2D(
-  ctx: CanvasRenderingContext2D,
-  p1: Point2D,
-  p2: Point2D,
-  color: string,
-  lineWidth: number,
-  glow: boolean,
-) {
-  if (glow) {
-    drawGlowPath(ctx, [p1, p2], {
-      color,
-      lineWidth,
-      glowColor: color.replace(/[\d.]+\)$/, '0.30)'),
-      glowWidth: lineWidth + 5,
-    });
-  } else {
-    ctx.strokeStyle = color;
-    ctx.lineWidth = lineWidth;
-    ctx.beginPath();
-    ctx.moveTo(p1.x, p1.y);
-    ctx.lineTo(p2.x, p2.y);
-    ctx.stroke();
-  }
-  const dx = p2.x - p1.x,
-    dy = p2.y - p1.y;
-  const len = Math.hypot(dx, dy);
-  if (len < 3) return;
-  const ux = dx / len,
-    uy = dy / len;
-  const head = glow ? 8 : 6;
-  const half = glow ? 4 : 3;
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.moveTo(p2.x, p2.y);
-  ctx.lineTo(p2.x - ux * head - uy * half, p2.y - uy * head + ux * half);
-  ctx.lineTo(p2.x - ux * head + uy * half, p2.y - uy * head - ux * half);
-  ctx.closePath();
-  ctx.fill();
-}
 
-function drawArrow3D(
-  ctx: CanvasRenderingContext2D,
-  cam: OrbitScene['cam'],
-  W: number,
-  H: number,
-  from: Vec3,
-  to: Vec3,
-  color: string,
-  lineWidth: number,
-  glow: boolean,
-) {
-  const p1 = project(from, cam, W, H);
-  const p2 = project(to, cam, W, H);
-  if (p1.depth <= 0 || p2.depth <= 0) return;
-  drawArrow2D(ctx, p1, p2, color, lineWidth, glow);
-}
 
 // Draw one lamination plate: outer rectangle minus inner window, at fixed z.
 function drawLamination(
@@ -355,14 +301,13 @@ export function TransformerFlux3DDemo({ figure }: Props) {
           const to = v3(fp.x + (tx * arrowLen) / 2, fp.y + (ty * arrowLen) / 2, fp.z);
           drawArrow3D(
             ctx,
+            from,
+            to,
             cam,
             W,
             H,
-            from,
-            to,
             withAlpha(getCanvasColors().accent, alpha),
-            2.0,
-            true,
+            { lineWidth: 2.0, glow: true, glowColor: withAlpha(getCanvasColors().accent, 0.30) },
           );
         }
 

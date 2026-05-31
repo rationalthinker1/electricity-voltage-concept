@@ -5,8 +5,8 @@
  * heightfield meshes, ground-plane grids, and billboard spheres. No WebGL.
  */
 
-import { drawHalo } from './canvasPrimitives';
-import { withAlpha } from './canvasTheme';
+import { drawGlowPath, drawHalo } from './canvasPrimitives';
+import { getCanvasColors, withAlpha } from './canvasTheme';
 import { project, projectedRadius, v3, type OrbitCamera, type Vec3 } from './projection3d';
 
 /* ───── Heightfield mesh ────────────────────────────────────────────── */
@@ -280,4 +280,141 @@ export function drawProjectedSphere(
     ctx.textBaseline = 'middle';
     ctx.fillText(opts.label, p.x, p.y + 1);
   }
+}
+
+/* ───── 3D arrow ────────────────────────────────────────────────────── */
+
+export interface Arrow3DOptions {
+  lineWidth?: number;
+  /** Absolute head length in pixels. Default 6. */
+  headSize?: number;
+  /**
+   * If provided, the head length is computed dynamically as
+   * `min(10 * headScale, screenLength * 0.5)` instead of using `headSize`.
+   */
+  headScale?: number;
+  /** If true, draw the shaft with a glow halo via `drawGlowPath`. */
+  glow?: boolean;
+  /** Custom glow colour. Defaults to the arrow `color`. */
+  glowColor?: string;
+}
+
+/**
+ * Draw a 3D arrow from `from` to `to`, projected through the camera.
+ * The arrowhead is drawn in screen space so it always reads correctly.
+ */
+export function drawArrow3D(
+  ctx: CanvasRenderingContext2D,
+  from: Vec3,
+  to: Vec3,
+  cam: OrbitCamera,
+  w: number,
+  h: number,
+  color: string,
+  opts: Arrow3DOptions = {},
+) {
+  const p1 = project(from, cam, w, h);
+  const p2 = project(to, cam, w, h);
+  if (p1.depth <= 0 || p2.depth <= 0) return;
+
+  const lineWidth = opts.lineWidth ?? 1.6;
+  const dx = p2.x - p1.x;
+  const dy = p2.y - p1.y;
+  const len = Math.hypot(dx, dy);
+  if (len < 1e-3) return;
+
+  let headLen: number;
+  if (opts.headScale !== undefined) {
+    headLen = Math.min(10 * opts.headScale, len * 0.5);
+  } else {
+    headLen = opts.headSize ?? 6;
+  }
+  const half = headLen * 0.55;
+  const ux = dx / len;
+  const uy = dy / len;
+  const baseX = p2.x - ux * headLen;
+  const baseY = p2.y - uy * headLen;
+
+  if (opts.glow) {
+    drawGlowPath(
+      ctx,
+      [
+        { x: p1.x, y: p1.y },
+        { x: p2.x, y: p2.y },
+      ],
+      { color, lineWidth, glowColor: opts.glowColor ?? color, glowWidth: lineWidth + 6 },
+    );
+  } else {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
+    ctx.beginPath();
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(p2.x, p2.y);
+  ctx.lineTo(baseX - uy * half, baseY + ux * half);
+  ctx.lineTo(baseX + uy * half, baseY - ux * half);
+  ctx.closePath();
+  ctx.fill();
+}
+
+/* ───── Wireframe box ───────────────────────────────────────────────── */
+
+/**
+ * Cached edge list for a unit cube (corners at ±1 on each axis).
+ * Computed once at load time.
+ */
+const UNIT_CUBE_EDGES: Array<[Vec3, Vec3]> = (() => {
+  const c: Vec3[] = [];
+  for (let xi = 0; xi < 2; xi++)
+    for (let yi = 0; yi < 2; yi++)
+      for (let zi = 0; zi < 2; zi++)
+        c.push(v3(xi === 0 ? -1 : 1, yi === 0 ? -1 : 1, zi === 0 ? -1 : 1));
+  const edges: Array<[Vec3, Vec3]> = [];
+  for (let i = 0; i < 8; i++) {
+    for (let j = i + 1; j < 8; j++) {
+      let diff = 0;
+      if (c[i]!.x !== c[j]!.x) diff++;
+      if (c[i]!.y !== c[j]!.y) diff++;
+      if (c[i]!.z !== c[j]!.z) diff++;
+      if (diff === 1) edges.push([c[i]!, c[j]!]);
+    }
+  }
+  return edges;
+})();
+
+/**
+ * Draw a wireframe box centred at the origin with half-edge `halfExtent`.
+ * Edges whose average depth exceeds `cam.distance` are rendered faint and
+ * dashed (back lines); the rest are solid (front lines).
+ */
+export function drawWireframeBox(
+  ctx: CanvasRenderingContext2D,
+  cam: OrbitCamera,
+  w: number,
+  h: number,
+  halfExtent: number,
+  color?: string,
+): void {
+  const stroke = color ?? withAlpha(getCanvasColors().textDim, 0.5);
+  const backStroke = color
+    ? withAlpha(color, 0.35)
+    : withAlpha(getCanvasColors().textDim, 0.18);
+  for (const [a, b] of UNIT_CUBE_EDGES) {
+    const pa = project(v3(a.x * halfExtent, a.y * halfExtent, a.z * halfExtent), cam, w, h);
+    const pb = project(v3(b.x * halfExtent, b.y * halfExtent, b.z * halfExtent), cam, w, h);
+    const back = pa.depth + pb.depth > 2 * cam.distance;
+    ctx.strokeStyle = back ? backStroke : stroke;
+    ctx.lineWidth = 1;
+    ctx.setLineDash(back ? [4, 4] : []);
+    ctx.beginPath();
+    ctx.moveTo(pa.x, pa.y);
+    ctx.lineTo(pb.x, pb.y);
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
 }
