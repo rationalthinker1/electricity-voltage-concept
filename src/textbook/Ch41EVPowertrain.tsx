@@ -54,7 +54,7 @@ export default function Ch41EVPowertrain() {
         percent of a 75 kWh pack — about 35 kWh — has moved from a residential 240 V line into a
         chemical phase change in roughly 4400 lithium-ion cells.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Between the cell and the wall, there are seven distinct power-electronics stages. Each one
         was introduced in a previous chapter. An{' '}
         <Term
@@ -140,7 +140,7 @@ export default function Ch41EVPowertrain() {
         friction and aerodynamic drag. Seven stages, one electron starting in the wall and ending as
         the car&rsquo;s kinetic energy.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This chapter walks each stage in order. The physics of every one of them has already been
         developed earlier in the textbook — the goal here is to integrate. Where Ch.20 derived the
         back-EMF of a synchronous motor and Ch.24 derived the three-phase inverter waveform, this
@@ -149,7 +149,7 @@ export default function Ch41EVPowertrain() {
 
       <h2 className="chapter-h2">Stage 1 — The battery pack (Ch.25, Ch.26)</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A modern EV pack is a brick of cylindrical or pouch cells wired in a series-parallel grid.
         The Model 3 long-range pack uses{' '}
         <Term
@@ -184,12 +184,12 @@ export default function Ch41EVPowertrain() {
         EV recipe developed through the 1990s and 2000s and discussed in depth in Ch.26
         <Cite id="yoshino-1985" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The pack-level energy budget is straightforward. Total energy stored is the product of cell
         count, cell voltage, and cell capacity:
       </p>
       <Formula tex="E_{\text{pack}} = n_s \times n_p \times V_{\text{cell}} \times Q_{\text{cell}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="E_{\text{pack}}" />
         is the pack energy in watt-hours, <M tex="n_s" />
         is the number of cells in series (dimensionless), <M tex="n_p" />
@@ -201,7 +201,7 @@ export default function Ch41EVPowertrain() {
         of the state-of-charge window
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The energy density story tells you most of what you need to know about why EVs look the way
         they do. Modern 21700 cells run about 250 Wh/kg at the cell. After structural packaging —
         busbars, cooling plates, cell holders, fuses, contactors, BMS modules — pack-level density
@@ -209,7 +209,7 @@ export default function Ch41EVPowertrain() {
         structural: it sits in the floor of the vehicle, lowering the centre of gravity but adding
         half a tonne to the curb weight every EV designer has to plan around.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Peak power is set by the cells&rsquo;{' '}
         <Term
           def={
@@ -228,7 +228,7 @@ export default function Ch41EVPowertrain() {
         Peak pack power scales as:
       </p>
       <Formula tex="P_{\text{max}} = E_{\text{pack}} \times \text{(C-rate)}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{max}}" />
         is the peak deliverable pack power in watts, <M tex="E_{\text{pack}}" />
         is the pack energy in watt-hours, and{' '}
@@ -265,7 +265,7 @@ export default function Ch41EVPowertrain() {
 
       <h2 className="chapter-h2">Stage 2 — The BMS and the contactor</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The 4416 cells are not equal. Even cells from the same production lot drift apart on the
         order of 10–50 mV over a few hundred cycles, and a few percent on capacity. The pack&rsquo;s
         usable energy is set by the <em className="text-text italic">weakest</em> cell — the one
@@ -287,7 +287,7 @@ export default function Ch41EVPowertrain() {
         single cell goes outside its safe window
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Inside a typical pack the BMS distributes the work. A central controller talks over CAN to
         roughly a dozen{' '}
         <Term
@@ -324,7 +324,7 @@ export default function Ch41EVPowertrain() {
         converter, but most production EVs settle for the simpler passive approach
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Pack-level current is measured by a{' '}
         <Term
           def={
@@ -346,7 +346,7 @@ export default function Ch41EVPowertrain() {
         BMS fuses both estimates with a Kalman filter and reports a single SOC number to the
         dashboard.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Between the pack&rsquo;s positive terminal and the high-voltage bus sit two contactors (one
         positive, one negative) and a precharge resistor. At ignition, the BMS first closes the
         negative contactor and the precharge contactor, which is in series with a 100 Ω resistor.
@@ -355,7 +355,7 @@ export default function Ch41EVPowertrain() {
         opens the precharge path. Without the precharge resistor, the inrush current charging the
         bus capacitors would weld the contactor tips together within microseconds.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The contactors also handle the fault story. Overcurrent, overvoltage on any cell,
         undervoltage on any cell, over-temperature on any cell, ground fault between the
         high-voltage bus and the chassis — any of these trips the BMS, which opens both contactors
@@ -365,7 +365,7 @@ export default function Ch41EVPowertrain() {
 
       <h2 className="chapter-h2">Stage 3 — DC-DC for the 12 V rail</h2>
 
-      <p className="mb-prose-3">
+      <p>
         An EV still has a 12 V battery and a 12 V auxiliary rail. The headlights, the infotainment
         system, the BMS itself, the brake-by-wire, the traction-control ECU, the door locks, the
         dashboard, every CAN node in the car — all of it runs on 12 V. The reason is historical:
@@ -374,7 +374,7 @@ export default function Ch41EVPowertrain() {
         just adding a DC-DC converter
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The{' '}
         <Term
           def={
@@ -397,7 +397,7 @@ export default function Ch41EVPowertrain() {
         auxiliary battery) and supplies the car&rsquo;s 12 V loads
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Galvanic isolation is mandatory here. A chassis ground fault on the 12 V side is a routine
         event in any car — a wire chafing on a body panel, a corroded connector, an aftermarket
         accessory shorted to ground. In an ICE car nothing spectacular happens; the 12 V system
@@ -406,11 +406,11 @@ export default function Ch41EVPowertrain() {
         in the DC-DC converter breaks that path: the 12 V rail floats with respect to the
         high-voltage bus, and the chassis is only ever the 12 V system&rsquo;s reference.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Energy balance is simple. Input power equals output power divided by efficiency:
       </p>
       <Formula tex="P_{\text{HV}} = P_{\text{aux}} / \eta_{\text{DCDC}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{HV}}" />
         is the power drawn from the high-voltage bus in watts, <M tex="P_{\text{aux}}" />
         is the power delivered to the 12 V rail in watts, and <M tex="\eta_{\text{DCDC}}" />
@@ -424,7 +424,7 @@ export default function Ch41EVPowertrain() {
 
       <h2 className="chapter-h2">Stage 4 — The traction inverter</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Here is the big one. The{' '}
         <Term
           def={
@@ -446,7 +446,7 @@ export default function Ch41EVPowertrain() {
         Ch.24 for grid-scale solar inverters and AC drives; an EV inverter is the same circuit
         miniaturised, ruggedised, and tuned for the peculiar load that is a permanent-magnet motor.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Modern EV inverters increasingly use{' '}
         <Term
           def={
@@ -468,7 +468,7 @@ export default function Ch41EVPowertrain() {
         efficiency; IGBT designs sit at 95–97%
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Each half-bridge leg of the inverter is pulse-width-modulated at 8–20 kHz. The controller —
         a single high-performance microcontroller or FPGA — runs a closed current loop on each
         phase, sampling phase current with a Hall sensor or shunt and adjusting the duty cycle each
@@ -476,7 +476,7 @@ export default function Ch41EVPowertrain() {
         each phase at the motor&rsquo;s electrical frequency — typically 10 Hz at a creeping start
         and up to 500 Hz at highway speeds (8 poles × 0.5 of rotor RPS &rarr; large numbers fast).
       </p>
-      <p className="mb-prose-3">
+      <p>
         The control law that ties the inverter to the motor is{' '}
         <Term
           def={
@@ -499,7 +499,7 @@ export default function Ch41EVPowertrain() {
         to it. The simple form of the torque equation is:
       </p>
       <Formula tex="\tau_{\text{motor}} = \tfrac{3}{2} \times p \times \psi_{\text{PM}} \times i_q" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\tau_{\text{motor}}" />
         is the electromagnetic torque produced at the rotor in newton-metres, <M tex="p" /> is the
         number of pole pairs (dimensionless, typically 4 for a Tesla motor — so 8 magnetic poles
@@ -512,7 +512,7 @@ export default function Ch41EVPowertrain() {
         ; to zero the torque you zero i<sub>q</sub>. Cite Ch.20 for the synchronous-machine
         derivation.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Meanwhile i<sub>d</sub> — the flux-producing component — is held at zero in the normal
         operating region. The permanent magnets already supply the flux; injecting more current
         along that axis would just heat the stator without producing torque. Above a certain speed,
@@ -520,12 +520,12 @@ export default function Ch41EVPowertrain() {
         to suppress the magnet flux and let the motor spin faster than its natural no-load limit.
         That is field weakening, treated in §Stage 5.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Inverter efficiency is the ratio of mechanical-equivalent output power to DC-bus input
         power:
       </p>
       <Formula tex="\eta_{\text{inv}} = P_{\text{AC,out}} / P_{\text{DC,in}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\eta_{\text{inv}}" />
         is the dimensionless inverter efficiency, <M tex="P_{\text{AC,out}}" />
         is the real (in-phase) power delivered to the motor stator in watts, and{' '}
@@ -568,7 +568,7 @@ export default function Ch41EVPowertrain() {
 
       <h2 className="chapter-h2">Stage 5 — The traction motor (Ch.20)</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The motor itself is a three-phase synchronous machine with permanent magnets in the rotor.
         The stator is a conventional wound three-phase winding, identical in principle to the AC
         machines of Ch.20 and Ch.23. What sets the PMSM apart is the rotor: instead of a wound field
@@ -576,7 +576,7 @@ export default function Ch41EVPowertrain() {
         typically NdFeB grade — that provide a fixed flux
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The advantages are decisive for traction. No rotor current means no rotor copper losses,
         which means the only place the rotor dissipates heat is in its eddy losses and bearing
         friction. Torque density is high because the magnet flux is fixed without spending
@@ -586,7 +586,7 @@ export default function Ch41EVPowertrain() {
         Inducing motors avoid the magnets entirely (the rotor is a squirrel cage of aluminium bars)
         at the price of higher rotor losses and slightly lower torque density.
       </p>
-      <p className="mb-prose-3">
+      <p>
         As the rotor spins, the magnet flux linking the stator coils changes, and by Faraday&rsquo;s
         law (Ch.7) it induces an EMF in each stator phase. This{' '}
         <Term
@@ -605,7 +605,7 @@ export default function Ch41EVPowertrain() {
         is the central feature that determines what the motor can and cannot do at a given speed:
       </p>
       <Formula tex="V_{\text{BEMF}} = \psi_{\text{PM}} \times \omega_e" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{BEMF}}" />
         is the line-to-neutral peak back-EMF in volts, <M tex="\psi_{\text{PM}}" />
         is the permanent-magnet flux linkage in weber-turns (the same constant from the torque
@@ -616,7 +616,7 @@ export default function Ch41EVPowertrain() {
         <sub>BEMF</sub> climbs linearly with it
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         For the inverter to push current into the stator, the bus voltage has to be higher than the
         back-EMF. As long as <M tex="V_{\text{DC}}/\sqrt{3} > V_{\text{BEMF}}" /> (the inverter can
         synthesise a sinusoid whose peak exceeds the back-EMF peak), the controller can pump full i
@@ -636,7 +636,7 @@ export default function Ch41EVPowertrain() {
         </Term>{' '}
         — typically about 4000–6000 RPM for a passenger EV traction motor.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Above base speed, something clever has to happen. The bus voltage cannot grow, so the only
         way to push current through a winding whose back-EMF already equals the bus is to reduce the
         net flux that the stator sees. The inverter injects a negative i<sub>d</sub> — a stator
@@ -662,7 +662,7 @@ export default function Ch41EVPowertrain() {
         the constant-torque region below base speed
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Tesla, uniquely among major EV makers, ships both PMSMs and{' '}
         <Term
           def={
@@ -722,7 +722,7 @@ export default function Ch41EVPowertrain() {
 
       <h2 className="chapter-h2">Stage 6 — The gearbox</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Coming off the motor shaft, the next element is a{' '}
         <Term
           def={
@@ -742,7 +742,7 @@ export default function Ch41EVPowertrain() {
         speed at the wheel is motor speed divided by 9. There is no clutch, no torque converter, no
         shift; the gearbox is the simplest mechanical element in the whole drivetrain.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The reason an EV does not need a multi-speed gearbox traces directly to the motor&rsquo;s
         torque-speed curve. Below base speed the motor delivers constant torque (limited by current,
         hence by inverter and cell C-rate); above base speed it delivers constant power (limited by
@@ -752,7 +752,7 @@ export default function Ch41EVPowertrain() {
         produces useful torque in a narrow 2000–4500 RPM band; everything outside that band requires
         gear-ratio gymnastics to keep the engine on song.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Gear-mesh efficiency is high — about 98% for a well-designed single-stage helical reduction
         — and that is the only number to remember here. The other 2% becomes oil heating in the
         gearcase and a tiny contribution to the cabin whine you can hear under hard acceleration.
@@ -760,14 +760,14 @@ export default function Ch41EVPowertrain() {
 
       <h2 className="chapter-h2">Stage 7 — The road</h2>
 
-      <p className="mb-prose-3">
+      <p>
         At the wheel, the mechanical chain ends and the physics changes to mechanics and
         aerodynamics. Wheel torque divided by wheel radius is the tractive force the tire applies to
         the road; tractive force times vehicle speed is the instantaneous power leaving the
         drivetrain and entering the world as kinetic energy, heat in the tires, sound, and disturbed
         air.
       </p>
-      <p className="mb-prose-3">
+      <p>
         There are four dominant resistive forces the wheels have to overcome. The first is{' '}
         <Term
           def={
@@ -789,7 +789,7 @@ export default function Ch41EVPowertrain() {
         of speed:
       </p>
       <Formula tex="F_{\text{roll}} = m \times g \times C_{rr}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="F_{\text{roll}}" />
         is the rolling-resistance force in newtons, <M tex="m" /> is the vehicle mass in kilograms,{' '}
         <M tex="g = 9.81\,\text{m/s}^{2}" /> is gravitational acceleration, and <M tex="C_{rr}" />
@@ -811,7 +811,7 @@ export default function Ch41EVPowertrain() {
         <M tex="F_{\text{roll}} \approx 2000 \times 9.81 \times 0.008 \approx 160\ \text{N}" />—
         constant whether the car is creeping or cruising.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The second is{' '}
         <Term
           def={
@@ -828,7 +828,7 @@ export default function Ch41EVPowertrain() {
         from pushing the car through air:
       </p>
       <Formula tex="F_{\text{drag}} = \tfrac{1}{2} \times \rho_{\text{air}} \times C_d \times A \times v^2" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="F_{\text{drag}}" />
         is the drag force in newtons, <M tex="\rho_{\text{air}}" />
         is air density (about 1.225 kg/m³ at sea level and 15 °C), <M tex="C_d" />
@@ -866,9 +866,9 @@ export default function Ch41EVPowertrain() {
         . The drag scales as v², so doubling the speed quadruples the drag force and cubes the power
         required to overcome it.
       </p>
-      <p className="mb-prose-3">The third is the climbing force on a grade:</p>
+      <p>The third is the climbing force on a grade:</p>
       <Formula tex="F_{\text{climb}} = m \times g \times \sin(\theta)" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="F_{\text{climb}}" />
         is the climbing component of weight along the road surface in newtons, <M tex="m" /> and{' '}
         <M tex="g" /> are as before, and <M tex="\theta" /> is the road grade angle, so that{' '}
@@ -878,9 +878,9 @@ export default function Ch41EVPowertrain() {
         <M tex="F_{\text{climb}} \approx 1180\ \text{N}" /> — about seven times the rolling friction
         and four times the highway aero drag. Hills dominate flat-road physics quickly.
       </p>
-      <p className="mb-prose-3">The fourth is inertia during acceleration:</p>
+      <p>The fourth is inertia during acceleration:</p>
       <Formula tex="F_a = m \times a" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="F_a" />
         is the inertial force in newtons, <M tex="m" /> is vehicle mass in kilograms, and{' '}
         <M tex="a" /> is instantaneous acceleration in m/s². A 0.5g launch on a 2000 kg car needs{' '}
@@ -888,9 +888,9 @@ export default function Ch41EVPowertrain() {
         aero drag. That is why peak-acceleration current is the sizing constraint on every component
         upstream of the wheels, not steady-state cruise.
       </p>
-      <p className="mb-prose-3">Total instantaneous wheel power is the sum times the speed:</p>
+      <p>Total instantaneous wheel power is the sum times the speed:</p>
       <Formula tex="P_{\text{wheel}} = (F_{\text{roll}} + F_{\text{drag}} + F_{\text{climb}} + F_a) \times v" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{wheel}}" />
         is mechanical power delivered at the contact patch in watts, the four F terms are the
         resistive forces in newtons, and <M tex="v" /> is vehicle speed in m/s. For a Model 3
@@ -938,7 +938,7 @@ export default function Ch41EVPowertrain() {
         Why charging is billed in kWh, not litres, not amps, not minutes
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The single most-confused unit in the EV world is the kilowatt-hour. Drivers used to gasoline
         ask: "Why doesn't the charger sell me a litre of charge, or a kilometre, or an amp?" The
         answer is that <em className="text-text italic">energy</em> is the conserved quantity that
@@ -949,7 +949,7 @@ export default function Ch41EVPowertrain() {
 
       <h3 className="chapter-h3">Energy is conserved; nothing else is</h3>
 
-      <p className="mb-prose-3">
+      <p>
         Watts measure the <em className="text-text italic">rate</em> at which energy moves. Joules
         and watt-hours measure the <em className="text-text italic">total</em> amount. Both are
         valid; engineers prefer the joule for physics derivations and the watt-hour for billing
@@ -959,7 +959,7 @@ export default function Ch41EVPowertrain() {
         kWh per 100 km, a typical home uses 30 kWh per day.
       </p>
       <Formula tex="1\ \text{kWh} = 3.6 \times 10^{6}\ \text{J} = 3.6\ \text{MJ}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\text{kWh}" /> is one kilowatt-hour (a kilowatt held for an hour),{' '}
         <M tex="\text{J}" /> is one joule (one watt-second), and the factor{' '}
         <M tex="3.6 \times 10^{6}" /> comes from 1000 W × 3600 s. The unit is large enough that
@@ -969,19 +969,19 @@ export default function Ch41EVPowertrain() {
 
       <h3 className="chapter-h3">Why the other candidates lose</h3>
 
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Volts.</strong> Volts measure potential
         difference, not energy. A battery that reads 350 V tells you nothing about how far you can
         drive — a full pack and an empty pack both read approximately 350 V open-circuit because the
         OCV-vs-SOC curve is mostly flat through the middle 80% of state of charge.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Amps.</strong> Amps measure flow rate, not the
         total flow. "I drew 100 A at the wall" answers a different question — selling amps alone
         would let an unscrupulous charger run you at 100 A × 100 V instead of 100 A × 240 V and
         deliver less than half the energy for the same amperage.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Time.</strong> Selling charging by the minute is
         what some third-party DCFC operators do, and it has a perverse incentive: the network is
         happiest if your car charges slowly, since each minute pays the same. A Porsche Taycan that
@@ -989,14 +989,14 @@ export default function Ch41EVPowertrain() {
         operators have moved to per-kWh pricing precisely because per-minute pricing punishes cars
         with faster charge acceptance.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Distance.</strong> "Sell me 200 km of range"
         sounds intuitive but runs into the fundamental problem that range depends on the car, the
         driver, the weather, and the terrain. A kWh into a 75 kWh Model 3 returns ~5.5 km at flat
         110 km/h; that same kWh into a 200 kWh Hummer EV returns ~3 km. The utility cannot sell what
         depends on what the customer does with it after the cable disconnects.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Litres / gallons.</strong> The gasoline analogy
         fails for a deeper reason: liquid fuel is sold by volume because the energy density per
         litre is approximately constant (gasoline: ~34 MJ/L; diesel: ~36 MJ/L). The retailer doesn't
@@ -1008,14 +1008,14 @@ export default function Ch41EVPowertrain() {
 
       <h3 className="chapter-h3">What charging-station displays actually measure</h3>
 
-      <p className="mb-prose-3">
+      <p>
         A DC-fast charger samples DC bus voltage and DC bus current many times per second,
         multiplies them to get instantaneous power in watts, integrates that over the session in
         seconds to produce delivered energy in joules, and divides by 3.6 × 10⁶ to display
         kilowatt-hours. The session accumulates the integral
       </p>
       <Formula tex="E_{\text{delivered}} = \int_0^T V_{\text{dc}}(t) \times I_{\text{dc}}(t)\, dt" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="E_{\text{delivered}}" />
         is the energy that flowed across the coupler during the session (in joules; divide by
         3.6×10⁶ for kWh), <M tex="V_{\text{dc}}(t)" />
@@ -1025,7 +1025,7 @@ export default function Ch41EVPowertrain() {
         typically certified to the same fraction-of-a-percent accuracy class used for residential
         utility meters.
       </p>
-      <p className="mb-prose-3">
+      <p>
         For AC charging on a Level 2 EVSE, the relevant integral is on the AC side (V<sub>rms</sub>
         (t) × I<sub>rms</sub>(t) × cos φ(t)), but the on-board charger's losses mean only ~88-92% of
         that integral makes it to the pack. Some networks bill you for what flowed through the meter
@@ -1042,13 +1042,13 @@ export default function Ch41EVPowertrain() {
 
       <h2 className="chapter-h2">Range and the back-of-envelope</h2>
 
-      <p className="mb-prose-3">
+      <p>
         With the seven stages in hand, you can do the entire range calculation on a napkin.
         Steady-state highway range is pack energy times drivetrain efficiency divided by wheel power
         demand:
       </p>
       <Formula tex="t_{\text{cruise}} = E_{\text{pack}} \times \eta_{\text{drive}} / P_{\text{wheel}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="t_{\text{cruise}}" />
         is the cruise time at constant speed in hours, <M tex="E_{\text{pack}}" />
         is pack energy in kWh, <M tex="\eta_{\text{drive}}" />
@@ -1059,7 +1059,7 @@ export default function Ch41EVPowertrain() {
         7:
       </p>
       <Formula tex="t_{\text{cruise}} = 75 \times 0.88 / 13.8 \approx 4.8\ \text{h} \to 530\ \text{km at 110 km/h}" />
-      <p className="mb-prose-3">
+      <p>
         That is the entire range calculation. Tesla&rsquo;s EPA-rated 530–560 km on the Long Range
         trim, and the equivalent WLTP number of about 600 km, are within 10% of this
         back-of-envelope estimate. The remaining 10% goes to accessory loads (cabin heating in
@@ -1068,7 +1068,7 @@ export default function Ch41EVPowertrain() {
         perfectly), and battery aging over the life of the car
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The same back-of-envelope tells you the charging time. A Level-2 EVSE delivering 11.5 kW at
         92% onboard-charger efficiency delivers 10.6 kW of actual chemical energy into the pack. To
         add 60% of a 75 kWh pack — 45 kWh — takes <M tex="45/10.6 \approx 4.2\ \text{hours}" />. A

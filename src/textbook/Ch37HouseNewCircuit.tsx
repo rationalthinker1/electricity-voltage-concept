@@ -45,7 +45,7 @@ export default function Ch37HouseNewCircuit() {
         within a metre of where the vac actually gets used. One breaker. One conductor pair. One
         outlet. Nothing else on it.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That is the job this chapter walks through. It is the single most common piece of
         after-hours residential work a licensed electrician does, and it is also the smallest job
         that touches almost every section of the dwelling-unit chapter of the NEC. There are twelve
@@ -62,7 +62,7 @@ export default function Ch37HouseNewCircuit() {
 
       <h2 className="chapter-h2">Step 0: confirm the panel has headroom</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Before anything is ordered or drilled, the first question is whether the existing service
         can carry the new load at all. The NEC's{' '}
         <Term
@@ -85,7 +85,7 @@ export default function Ch37HouseNewCircuit() {
         not for resistive loads), then apply the 220.82 rule of thumb:
       </p>
       <Formula tex="I_{\text{demand}} = \dfrac{1.00 \times W_{\text{first10k}}/1000 + 0.40 \times W_{\text{remainder}}/1000}{V}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="I_{\text{demand}}" /> is the calculated service demand current (in amperes
         RMS) that the panel needs to be able to carry, <M tex="W_{\text{first10k}}" /> is the first
         10 000 VA of summed connected load (taken at 100%), <M tex="W_{\text{remainder}}" /> is
@@ -110,7 +110,7 @@ export default function Ch37HouseNewCircuit() {
         committee chose to make the formula match observed peak loads on real residential services
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Run it once for the existing house and once with the new load included. A 200 A panel
         running ~120 A demand has plenty of room for a new 16 A continuous circuit; a 100 A panel
         running 85 A demand does not, and the new circuit either has to wait for a service upgrade
@@ -172,7 +172,7 @@ export default function Ch37HouseNewCircuit() {
 
       <h2 className="chapter-h2">Step 1: pick the device, the device picks the wire</h2>
 
-      <p className="mb-prose-3">
+      <p>
         With the panel cleared as having headroom, the chain of choices begins at the load and works
         backward to the panel. The shop vac is a 1500 W nominal motor load on 120 V. The owner has
         decided on a single{' '}
@@ -209,7 +209,7 @@ export default function Ch37HouseNewCircuit() {
         nameplate current itself, not the 125% continuous multiplier
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That is not always true. A 50 A EV charger, by contrast, is by NEC definition a continuous
         load — a vehicle will pull near-rated current for the full duration of a charging session,
         often four to eight hours straight. Same for an electric tankless water heater, a
@@ -217,7 +217,7 @@ export default function Ch37HouseNewCircuit() {
         that for continuous loads the branch-circuit conductor be sized to:
       </p>
       <Formula tex="I_{\text{conductor}} \geq 1.25 \times I_{\text{continuous}} + 1.0 \times I_{\text{noncontinuous}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="I_{\text{conductor}}" /> is the minimum allowable conductor ampacity (in
         amperes), <M tex="I_{\text{continuous}}" />
         is the portion of the branch's load that is continuous (in amperes), and{' '}
@@ -241,7 +241,7 @@ export default function Ch37HouseNewCircuit() {
         ambient temperature and panel-internal heating start to matter
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         With the load identified and the continuous-load question settled, the conductor is picked
         next. For a 20 A residential branch at the standard 60 °C termination column of NEC Table
         310.16, the answer is <strong className="text-text font-medium">12 AWG copper</strong>: a
@@ -251,7 +251,7 @@ export default function Ch37HouseNewCircuit() {
         and cannot legally feed a 20 A circuit; 10 AWG is rated for 30 A and would be wasted unless
         voltage drop demanded the upsize.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Voltage drop is the second physics question. The{' '}
         <Term
           def={
@@ -273,7 +273,7 @@ export default function Ch37HouseNewCircuit() {
         <Cite id="nec-2023" in={SOURCES} />. The arithmetic is straightforward:
       </p>
       <Formula tex="V_{\text{drop}} = 2 \times I \times R_{\text{per\_ft}} \times L_{\text{oneway}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{drop}}" /> is the total round-trip voltage drop seen by the load (in
         volts), <M tex="I" /> is the operating current (in amperes), <M tex="R_{\text{per\_ft}}" />{' '}
         is the conductor's resistance per foot (in ohms per foot; the table value for 12 AWG copper
@@ -327,7 +327,7 @@ export default function Ch37HouseNewCircuit() {
 
       <h2 className="chapter-h2">Step 2: pick the breaker</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Here is the subtle inversion that surprises most first-time DIY installers. The breaker is
         not picked to match the load; it is picked to match the{' '}
         <em className="text-text italic">wire</em>. NEC 240.4 ties the maximum overcurrent device
@@ -338,7 +338,7 @@ export default function Ch37HouseNewCircuit() {
         draws less than the breaker rating; the breaker's job is to interrupt the current before the
         wire itself overheats and ignites the surrounding lumber.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The Ch.28 picture is the right one to hold: the breaker is a thermal-magnetic protective
         device whose time-current curve is calibrated so that any current above its rating will trip
         it before the wire it protects gets hot enough to break down its insulation. A 12 AWG
@@ -348,7 +348,7 @@ export default function Ch37HouseNewCircuit() {
         and the failure mode is a structure fire.
       </p>
       <Pullout>The breaker doesn't protect the load. It protects the wire.</Pullout>
-      <p className="mb-prose-3">
+      <p>
         For the garage receptacle there is one more layer. NEC 210.8 has progressively expanded the
         list of locations where{' '}
         <Term
@@ -398,7 +398,7 @@ export default function Ch37HouseNewCircuit() {
         (AFCI + GFCI in one body), available in every major panel family
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The breaker also has to match the panel manufacturer. As Ch.28 explained, a Square D QO
         breaker physically does not seat on an Eaton BR bus and vice versa — the stab geometries are
         listed for use only with the manufacturer's own load centre under UL 489, with a small
@@ -408,14 +408,14 @@ export default function Ch37HouseNewCircuit() {
 
       <h2 className="chapter-h2">Step 3: pick a path</h2>
 
-      <p className="mb-prose-3">
+      <p>
         With the device, the wire, and the breaker selected, the next question is purely mechanical:
         how does the cable get from the panel to the new receptacle? The answer depends on what the
         building is made of — open framing in a basement ceiling is a different problem from
         finished drywall on the upper floor — but the rules all live in NEC 300.4 and the chapters
         of Article 334 that govern non-metallic-sheathed (NM) cable.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Drilling through studs is the most common interior path. NEC 300.4(A) is precise: the hole
         must be centred in the stud, or far enough from each face that there is at least 1.25 inches
         of wood between the cable and the nearest stud face. If the hole is closer than that, a
@@ -437,7 +437,7 @@ export default function Ch37HouseNewCircuit() {
         from reaching the cable
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Notches in the front edge of a stud — useful when a hole is impossible because of a steel
         plate already in place — are allowed only with a steel plate covering the notch. Running
         cable parallel to a stud face is allowed if the cable is set back at least 1.25 inches from
@@ -446,7 +446,7 @@ export default function Ch37HouseNewCircuit() {
         protected by a running board within 6 feet of the attic access
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Drilling order matters in practice. The path planner walks from receptacle to panel marking
         each hole, drills from the receptacle end backward, fishes the cable as a single continuous
         run, and reserves the panel-end knockout for the very last step. Cable splices inside the
@@ -457,11 +457,11 @@ export default function Ch37HouseNewCircuit() {
 
       <h2 className="chapter-h2">Step 4: pick the cable</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Three cable types dominate residential interior work, and the choice between them is
         regional, occupancy-driven, and partly cosmetic.
       </p>
-      <p className="mb-prose-3">
+      <p>
         {' '}
         <Term
           def={
@@ -485,7 +485,7 @@ export default function Ch37HouseNewCircuit() {
         physical damage
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         {' '}
         <Term
           def={
@@ -506,7 +506,7 @@ export default function Ch37HouseNewCircuit() {
         additional bonding path. MC terminates with manufacturer-specific antishort bushings — the
         cable cannot legally enter a box without one.
       </p>
-      <p className="mb-prose-3">
+      <p>
         {' '}
         <Term
           def={
@@ -525,7 +525,7 @@ export default function Ch37HouseNewCircuit() {
         conductors after the install without opening any drywall. NEC Article 358 governs bending
         radii, support spacing, and conductor fill within the conduit.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Once the cable type is chosen, NEC 334.30 (for NM) and NEC 314.17 (for box entry) take over.
         The cable's outer jacket has to extend at least 1/4 inch into the box, and the individual
         conductors must extend a minimum of 6 inches free of the box opening so there is enough
@@ -537,7 +537,7 @@ export default function Ch37HouseNewCircuit() {
 
       <h2 className="chapter-h2">Step 5: pick the boxes</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Every connection has to live in a box; every box has to be large enough to hold its contents
         without crushing the conductors. NEC 314.16 is the rule and its arithmetic is exact. The{' '}
         <Term
@@ -557,7 +557,7 @@ export default function Ch37HouseNewCircuit() {
         from Table 314.16(B), and totals the result:
       </p>
       <Formula tex="V_{\text{box}} \geq \sum(n_{\text{cond}} \times v_{\text{cond}}) + V_{\text{devices}} + V_{\text{grounds}} + V_{\text{clamps}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{box}}" /> is the labelled internal volume of the box (in cubic
         inches), <M tex="n_{\text{cond}}" /> is the number of insulated current-carrying conductors
         entering and remaining in the box (in count), <M tex="v_{\text{cond}}" /> is the volume
@@ -570,20 +570,20 @@ export default function Ch37HouseNewCircuit() {
         only external clamps)
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         For the garage receptacle the box is a single 4-square steel device box rated for 21.0 cubic
         inches, with a single 12-2 NM-B cable entering through an external clamp. Two insulated
         conductors (hot, neutral; the bare ground is counted separately as a single bundle), one
         receptacle on a yoke, one ground bundle:
       </p>
       <Formula tex="V_{\text{required}} = (2 \times 2.25) + (2 \times 2.25) + (1 \times 2.25) = 11.25\ \text{in}^3" />
-      <p className="mb-prose-3">
+      <p>
         That fits inside the 21 in³ box with margin. If the same box were a feed-through point with
         two cables (one in, one out, daisy-chained), there would be four insulated conductors (two
         hot, two neutral) plus the grounds:
       </p>
       <Formula tex="V_{\text{required}} = (4 \times 2.25) + (2 \times 2.25) + (1 \times 2.25) = 15.75\ \text{in}^3" />
-      <p className="mb-prose-3">
+      <p>
         Still inside 21 in³. The point of the calculation is not that small boxes fail dramatically
         — they fail quietly, by making the conductors hard to dress and the wirenuts hard to seat
         properly. An overfilled box is where backstabbed receptacles, half-twisted splices, and
@@ -626,11 +626,11 @@ export default function Ch37HouseNewCircuit() {
 
       <h2 className="chapter-h2">Step 6: make up the connections</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The cable is pulled, the boxes are mounted, the conductors are inside their respective
         boxes. Now the splices. Three rules govern every connection.
       </p>
-      <p className="mb-prose-3">
+      <p>
         First, strip exactly the right length of insulation off each conductor — about 3/4 inch for
         a screw terminal and roughly 5/8 inch for a wirenut splice. Strip too little and the bare
         copper does not seat past the screw threads; strip too much and there is exposed copper
@@ -638,7 +638,7 @@ export default function Ch37HouseNewCircuit() {
         the device
         <Cite id="ul-498" in={SOURCES} />. The strip length is what the listing actually tests for.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Second, side-screw the receptacle. Every NEMA 5-20R receptacle has two ways to attach a
         conductor: a screw terminal on the side of the device, where the bare end wraps clockwise
         three-quarters around the screw and the screw is torqued to spec; and a{' '}
@@ -660,7 +660,7 @@ export default function Ch37HouseNewCircuit() {
         case load tend to avoid the backstab entirely
         <Cite id="ul-498" in={SOURCES} />. Side-screw is the long-life connection.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Third, pigtail. If the receptacle is in the middle of a daisy chain — one cable in from the
         panel, one cable out to the next receptacle — the temptation is to use the device's own pair
         of screws as the splice point (line cable on one pair, load cable on the other pair, the
@@ -686,12 +686,12 @@ export default function Ch37HouseNewCircuit() {
 
       <h2 className="chapter-h2">Step 7: land at the panel</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The cable is fished, the receptacle is wired, the box is dressed. The last operation is the
         panel landing — the most dangerous step of the job and the one with the strictest sequencing
         rules.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Kill the main. The two ungrounded service conductors entering the top of the panel are
         upstream of the main breaker and remain live even with the main off — but the bus bars and
         every branch breaker go dead the instant the main handle flips down. NFPA 70E sets the{' '}
@@ -714,7 +714,7 @@ export default function Ch37HouseNewCircuit() {
         any practical reach of the bus bars themselves
         <Cite id="nfpa-70e-2024" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Remove the{' '}
         <Term
           def={
@@ -747,7 +747,7 @@ export default function Ch37HouseNewCircuit() {
         inches of free conductor inside the enclosure
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Land the hot on the breaker's load-side screw. Land the neutral on the{' '}
         <Term
           def={
@@ -782,7 +782,7 @@ export default function Ch37HouseNewCircuit() {
         only)
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         At a main panel, the neutral bar and ground bar are connected by the main bonding jumper —
         the green-painted screw or strap that NEC 250 requires at the service entrance and nowhere
         else (Ch.28). So in practice the electrician at the main panel just lands each conductor on
@@ -804,7 +804,7 @@ export default function Ch37HouseNewCircuit() {
         white and the cable's ground is bare; if they are reversed at the panel even briefly under
         load, the bare wire energises every metal box on the circuit at line voltage.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Replace the dead-front. Tighten its retaining screws. Re-energise the main. With the new
         breaker still in the OFF position, clamp a meter on the new branch's hot conductor inside
         the panel and switch the breaker on; the clamp should read a few milliamperes of leakage and

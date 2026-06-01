@@ -52,7 +52,7 @@ export default function Ch18Optics() {
         of one fact: light is the electromagnetic wave from Chapter 9, and a slab of glass is a
         region where the wave equation has a different speed.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This chapter doesn't introduce new physics. The physics has all been there since Maxwell's
         1865 paper
         <Cite id="maxwell-1865" in={SOURCES} />. What changes when light hits matter is the local{' '}
@@ -69,21 +69,21 @@ export default function Ch18Optics() {
 
       <h2 className="chapter-h2">The wave hits a wall</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Consider a plane EM wave travelling in vacuum, polarised so that <M tex="E" />
         oscillates in the <M tex="y" />
         -direction while <M tex="B" /> oscillates in <M tex="z" />
         and the whole package propagates in <M tex="x" />. Now place a flat slab of glass with its
         front face perpendicular to <M tex="x" />. The wave hits the boundary.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Before the formula, the idea: the refractive index <M tex="n" /> simply measures how much a
         medium slows light. <M tex="n = 1.5" /> means light crawls through the glass at two-thirds
         its vacuum speed; <M tex="n = 2.4" /> (diamond) means it slows to under half. That slowing
         is the whole origin of refraction — when one edge of a wavefront enters the slow medium
         before the other, the wave pivots — and of why a prism fans white light into colours.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Inside the glass the same equations still apply, but with ε₀ → ε₀ε<sub>r</sub>. The phase
         speed is no longer <M tex="c" /> but <M tex="c/n" />, where{' '}
         <M tex="n = \sqrt{\varepsilon_r}" /> is the{' '}
@@ -97,7 +97,7 @@ export default function Ch18Optics() {
         E<sub>∥</sub> continuous, &nbsp;&nbsp; B<sub>∥</sub>/μ continuous, &nbsp;&nbsp; D
         <sub>⊥</sub> continuous, &nbsp;&nbsp; B<sub>⊥</sub> continuous
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         These come straight from Gauss's laws for <M tex="E" /> and <M tex="B" /> and the
         Ampère/Faraday line-integral theorems applied to a thin pillbox / loop straddling the
         boundary
@@ -113,7 +113,7 @@ export default function Ch18Optics() {
 
       <h2 className="chapter-h2">Snell's law from continuity</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Continuity of the tangential <M tex="k" /> across an interface means{' '}
         <M tex="k_i \sin\theta_i = k_t \sin\theta_t" />
         . Each <M tex="k" /> is ω/v = ωn/c in its respective medium. ω is the same on both sides
@@ -124,7 +124,7 @@ export default function Ch18Optics() {
       <Formula>
         n<sub>1</sub> sin θ<sub>1</sub> = n<sub>2</sub> sin θ<sub>2</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="n_1" />
         and <M tex="n_2" />
         are the dimensionless refractive indices of the two media, and <M tex="\theta_1" />
@@ -132,7 +132,7 @@ export default function Ch18Optics() {
         are the angles (in radians or degrees) that the incident and refracted rays make with the
         normal to the interface.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That is Willebrord Snell's 1621 rule, in our notation. A ray entering a denser medium (n
         <sub>2</sub> &gt; n<sub>1</sub>) bends <em className="text-text italic">toward</em> the
         normal; exiting back into a rarer medium it bends away. If you push the angle far enough
@@ -146,7 +146,7 @@ export default function Ch18Optics() {
 
       <SnellsLawDemo figure="Fig. 18.1" />
 
-      <p className="mb-prose-3">
+      <p>
         The 2D picture is the standard textbook diagram, but it hides a structural fact worth
         seeing: all four rays — incident, reflected, refracted, and the surface normal — lie in a
         single plane, called the <em className="text-text italic">plane of incidence</em>. That
@@ -185,7 +185,7 @@ export default function Ch18Optics() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         Frequency stays the same across an interface;{' '}
         <em className="text-text italic">wavelength</em> changes by a factor of 1/n. A 500-nm green
         photon in vacuum becomes a 500/1.5 ≈ 333-nm wave inside crown glass — same energy ℏω,
@@ -195,7 +195,7 @@ export default function Ch18Optics() {
 
       <h2 className="chapter-h2">Lenses and image formation</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Curve the interface and Snell's law starts doing real work. A{' '}
         <Term def="A piece of transparent material with two refracting surfaces shaped so that parallel rays from one direction converge to (convex) or diverge from (concave) a common focal point. Characterised by a focal length f.">
           lens
@@ -215,7 +215,7 @@ export default function Ch18Optics() {
       <Formula>
         1/f = 1/d<sub>o</sub> + 1/d<sub>i</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="f" /> is the focal length of the lens (in metres, positive for converging
         lenses), <M tex="d_o" />
         is the object distance from the lens (in metres, positive on the incoming side), and{' '}
@@ -223,7 +223,7 @@ export default function Ch18Optics() {
         is the image distance from the lens (in metres, positive on the outgoing side for a real
         image).
       </p>
-      <p className="mb-prose-3">
+      <p>
         with magnification <M tex="m = -d_i/d_o" />
         (a dimensionless ratio; negative values indicate an inverted image). A converging lens with
         the object placed beyond f forms a real, inverted image; placed inside f, a virtual,
@@ -271,7 +271,7 @@ export default function Ch18Optics() {
 
       <h2 className="chapter-h2">Why a prism splits white light</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The refractive index n is not a constant. It depends on frequency: n = n(λ). For ordinary
         transparent dielectrics in the visible, n decreases mildly with increasing wavelength —
         violet bends more than red. Empirically,{' '}
@@ -282,13 +282,13 @@ export default function Ch18Optics() {
         <Cite id="hecht-2017" in={SOURCES} />:
       </p>
       <Formula>n(λ) ≈ A + B/λ² + C/λ⁴ + …</Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="n(\lambda)" /> is the dimensionless refractive index at vacuum wavelength{' '}
         <M tex="\lambda" /> (in µm by convention for the fitted constants), and <M tex="A" />,{' '}
         <M tex="B" />, <M tex="C" />, … are empirical material-specific constants (A dimensionless;
         B in µm²; C in µm⁴; etc.).
       </p>
-      <p className="mb-prose-3">
+      <p>
         Crown glass has A ≈ 1.504, B ≈ 0.00420 µm², giving n ≈ 1.513 at 700 nm (red) and n ≈ 1.528
         at 420 nm (violet) — a spread of about 1%. Small, but it's enough that a triangular prism,
         refracting at both faces, fans visible sunlight out into a clean spectrum. Newton published
@@ -299,7 +299,7 @@ export default function Ch18Optics() {
 
       <DispersionDemo figure="Fig. 18.4" />
 
-      <p className="mb-prose-3">
+      <p>
         The microscopic reason n depends on frequency is straightforward classical mechanics: an
         atom's bound electron behaves like a damped harmonic oscillator with a natural resonant
         frequency in the ultraviolet. When you drive it with an optical-frequency field below
@@ -340,7 +340,7 @@ export default function Ch18Optics() {
 
       <h2 className="chapter-h2">Brewster, Malus, and the polarisation of reflected light</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Solve the boundary conditions in detail for the two independent polarisations — electric
         field perpendicular to the plane of incidence ("s") and parallel to it ("p") — and you get
         the{' '}
@@ -357,7 +357,7 @@ export default function Ch18Optics() {
         r<sub>p</sub> = (n<sub>2</sub> cos θ<sub>1</sub> − n<sub>1</sub> cos θ<sub>2</sub>) / (n
         <sub>2</sub> cos θ<sub>1</sub> + n<sub>1</sub> cos θ<sub>2</sub>)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="r_s" />
         and <M tex="r_p" />
         are the dimensionless amplitude reflection coefficients for the s- and p-polarisations (the
@@ -368,7 +368,7 @@ export default function Ch18Optics() {
         , <M tex="\theta_2" />
         are the incidence and refraction angles measured from the surface normal.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Reflectance is R = |r|² (the dimensionless fraction of incident intensity that reflects). At
         normal incidence (θ<sub>1</sub> = 0), s and p degenerate to the same value{' '}
         <M tex="R = \left(\frac{n-1}{n+1}\right)^{2}" /> — about{' '}
@@ -386,7 +386,7 @@ export default function Ch18Optics() {
 
       <BrewsterAngleDemo figure="Fig. 18.5" />
 
-      <p className="mb-prose-3">
+      <p>
         At Brewster's angle the reflected ray is completely <M tex="s" />
         -polarised: an unpolarised beam (sun, light bulb, sky) splits into a fully-polarised
         reflection and a partially polarised transmission. This is why{' '}
@@ -397,7 +397,7 @@ export default function Ch18Optics() {
         polarisers to deepen blue skies.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Place a second polariser (the <em className="text-text italic">analyser</em>) behind the
         first and you get Étienne-Louis Malus's 1809 law: light of intensity I<sub>0</sub> linearly
         polarised at angle θ<sub>1</sub>
@@ -439,7 +439,7 @@ export default function Ch18Optics() {
 
       <h2 className="chapter-h2">Thin films and total internal reflection</h2>
 
-      <p className="mb-prose-3">
+      <p>
         At an interface, part of the wave reflects and part transmits. Stack two interfaces close
         together — a thin film between two media — and the two reflected waves{' '}
         <em className="text-text italic">interfere</em>. For normal incidence on a film of thickness{' '}
@@ -454,13 +454,13 @@ export default function Ch18Optics() {
       <Formula>
         2 n t = m λ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (zero or two inverting reflections)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="n" /> is the dimensionless refractive index of the film, <M tex="t" /> is the
         film thickness (in metres), <M tex="\lambda" /> is the vacuum wavelength of the light (in
         metres), and <M tex="m" /> is a non-negative integer labelling the interference order (m =
         0, 1, 2, …).
       </p>
-      <p className="mb-prose-3">
+      <p>
         A soap bubble is mostly water (n ≈ 1.33) with air on both sides — only the top reflection
         inverts — so the constructive maxima fall at the half-integer formula. As the bubble drains,
         t decreases; the wavelength that constructively interferes sweeps from red through green to
@@ -472,7 +472,7 @@ export default function Ch18Optics() {
 
       <ThinFilmDemo figure="Fig. 18.7" />
 
-      <p className="mb-prose-3">
+      <p>
         The other consequence of Snell's law worth pulling out:{' '}
         <em className="text-text italic">total internal reflection</em>. When n<sub>1</sub> &gt; n
         <sub>2</sub> and θ<sub>1</sub> &gt; θ<sub>c</sub>, Snell's law would demand sin θ
@@ -481,7 +481,7 @@ export default function Ch18Optics() {
         other side that penetrates ~λ deep and carries no time-averaged Poynting flux — important
         for optical microscopy, but to first order, the boundary is silvered.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This is what lets an{' '}
         <Term def="A long thin cylinder of glass (the core) clad in slightly lower-index glass (the cladding). Light entering within the core's acceptance cone is trapped by total internal reflection at every wall encounter and travels long distances with minimal loss.">
           optical fiber
@@ -529,7 +529,7 @@ export default function Ch18Optics() {
 
       <h2 className="chapter-h2">Young's experiment: the wave-nature proof</h2>
 
-      <p className="mb-prose-3">
+      <p>
         By the late 1700s the dominant theory of light was Newton's corpuscular one. Thomas Young
         was a polymath physician with an unusual command of acoustics and tides, and he had a sound
         theorist's intuition for interference. In 1801–04 he showed the Royal Society a simple but
@@ -539,19 +539,19 @@ export default function Ch18Optics() {
         half-integer
         <Cite id="young-1804" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         For slit separation <M tex="d" /> and screen distance <M tex="L \gg d" />, the path-length
         difference to a point at lateral position y on the screen is approximately d·sin θ ≈ d·y/L.
         Constructive interference happens at:
       </p>
       <Formula>sin θ = m λ / d, &nbsp; m = 0, ±1, ±2, …</Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\theta" /> is the angle from the central axis to a bright fringe (in radians),{' '}
         <M tex="m" /> is the integer order of the fringe (m = 0 is the central maximum, ±1 the first
         order, etc.), <M tex="\lambda" /> is the light's vacuum wavelength (in metres), and{' '}
         <M tex="d" /> is the slit separation (in metres).
       </p>
-      <p className="mb-prose-3">
+      <p>
         and on the screen the bright fringes sit at <M tex="y_m \approx m\lambda L / d" />
         , where <M tex="y_m" />
         is the lateral position of the mth fringe on the screen (in metres) and <M tex="L" /> is the
@@ -590,7 +590,7 @@ export default function Ch18Optics() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         Take Young's two slits and multiply them: N equally-spaced slits with spacing d. Each pair
         contributes its own two-beam interference, and the N partial-amplitudes sum to the N-slit
         pattern <M tex="|\sin(N\beta)/(N\sin\beta)|^{2}" /> where β = π d sinθ / λ. The principal
@@ -644,7 +644,7 @@ export default function Ch18Optics() {
 
       <h2 className="chapter-h2">Lasers: stimulated emission, coherence, and an external mirror</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Einstein, in 1917, derived a balance argument for atoms and photons that required, in
         addition to spontaneous emission and absorption, a third process: a photon of the right
         frequency could trigger an excited atom to drop down and emit a{' '}
@@ -657,7 +657,7 @@ export default function Ch18Optics() {
         population — pump atoms into the excited state faster than they decay — and stimulated
         emission can dominate, leading to coherent amplification.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Theodore Maiman built the first working laser at Hughes Research Labs in May 1960. The
         device was a ruby rod (Cr³⁺ ions in Al₂O₃) about 1 cm across, end-faces silvered to act as a
         Fabry–Pérot cavity, pumped by a coiled xenon flashlamp. The output was a pulse of 694.3-nm
@@ -669,7 +669,7 @@ export default function Ch18Optics() {
 
       <LaserCavityDemo figure="Fig. 18.11" />
 
-      <p className="mb-prose-3">
+      <p>
         Three ingredients are needed for any laser: (1) a{' '}
         <Term def="The amplifying material in a laser — a collection of atoms, ions, or molecules that can be excited to a metastable upper state and then triggered into stimulated emission by a passing photon of the lasing wavelength.">
           gain medium
@@ -685,7 +685,7 @@ export default function Ch18Optics() {
         phase memory) and spatial (a clean Gaussian wavefront)
         <Cite id="hecht-2017" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The downstream consequences are enormous. CD and Blu-ray drives, fiber-optic telecom, FTIR
         spectroscopy, laser cutting and welding, eye surgery, LIDAR, gravitational-wave
         interferometers, atomic-clock spectroscopy — none of them would work without coherent light
@@ -695,7 +695,7 @@ export default function Ch18Optics() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Light is the Chapter-9 plane wave. A slab of matter is a region where the EM wave equation
         runs slower by a factor of <M tex="n" />. Boundary conditions on <M tex="E" /> and{' '}
         <M tex="B" /> hand you Snell's law in one line, Fresnel's reflection formulae in ten,

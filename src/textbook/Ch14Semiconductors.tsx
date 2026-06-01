@@ -56,7 +56,7 @@ export default function Ch14Semiconductors() {
         them on a chip; today, a single 3-nanometre fabrication step lays down a transistor whose
         gate is twelve atoms wide.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This chapter is about the physics that turns a passive lump of crystal into the active
         device that makes that scaling possible. The story arrives in three pieces: the doped
         semiconductor (a piece of silicon that conducts only because of the deliberate impurity in
@@ -69,7 +69,7 @@ export default function Ch14Semiconductors() {
 
       <h2 className="chapter-h2">From conductor to semiconductor</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Chapter 4 split the world into conductors (a lot of mobile electrons) and insulators (almost
         none). Between them sits a class of materials in which the number of mobile electrons
         depends, sharply, on temperature and on the deliberate impurity content of the crystal. The
@@ -88,7 +88,7 @@ export default function Ch14Semiconductors() {
         </Term>
         .
       </p>
-      <p className="mb-prose-3">
+      <p>
         A single silicon atom has four valence electrons in discrete orbital levels. Bring 10²³ of
         them together in a crystal and the Pauli exclusion principle forces those levels to broaden
         into continuous <em className="text-text italic">bands</em> of allowed energy, separated by
@@ -135,7 +135,7 @@ export default function Ch14Semiconductors() {
 
       <BandStructureDemo figure="Fig. 14.1" />
 
-      <p className="mb-prose-3">
+      <p>
         For silicon, E<sub>g</sub> = 1.12 eV. For germanium, 0.67 eV. For gallium arsenide, 1.42 eV.
         For diamond, 5.5 eV. At room temperature <M tex="kT \approx 0.026\ \text{eV}" />: small
         compared to any of these gaps, but not negligibly so for silicon. The probability that a
@@ -149,7 +149,7 @@ export default function Ch14Semiconductors() {
         K. Pure silicon is, accordingly, a poor conductor — many orders of magnitude worse than
         copper, many orders of magnitude better than glass.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The exponential is the whole point. Suppose the gap were half as large — 0.56 eV instead of
         1.12. The carrier density would not double; it would rise by a factor of{' '}
         <M tex="\exp(0.28/0.026) \approx 50{,}000" />. The same factor explains why a 30 °C summer
@@ -161,7 +161,7 @@ export default function Ch14Semiconductors() {
         crystal floods with carriers (a metal-like situation, in the limit). Make it large and the
         crystal is empty.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The factor of 2 in <M tex="\exp(-E_g/2kT)" /> — rather than the bare{' '}
         <M tex="\exp(-E_g/kT)" /> — comes from the fact that the Fermi level sits roughly in the
         middle of the gap in an intrinsic semiconductor, so a typical valence electron only has to
@@ -200,7 +200,7 @@ export default function Ch14Semiconductors() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         The trick that makes silicon technologically useful is{' '}
         <Term
           def={
@@ -233,7 +233,7 @@ export default function Ch14Semiconductors() {
         </Term>
         .
       </p>
-      <p className="mb-prose-3">
+      <p>
         Substitute boron (Group III — three valence electrons) instead, and the missing electron
         leaves a vacancy in the valence band: a <em className="text-text italic">hole</em>, which
         behaves as a positively-charged mobile carrier. Doping with boron makes the silicon{' '}
@@ -252,14 +252,14 @@ export default function Ch14Semiconductors() {
         <Cite id="streetman-banerjee-2015" in={SOURCES} />.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Pure silicon is a poor conductor; what makes silicon useful is the tiny amount of something
         else you put in it.
       </p>
 
       <h2 className="chapter-h2">The p-n junction</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Take a piece of n-type silicon and a piece of p-type silicon and bring them into atomic
         contact along a single plane. Electrons on the n-side find themselves next to a region with
         very few electrons, so they diffuse across the boundary; holes on the p-side do the mirror
@@ -287,7 +287,7 @@ export default function Ch14Semiconductors() {
 
       <PNJunctionFormationDemo figure="Fig. 14.2" />
 
-      <p className="mb-prose-3">
+      <p>
         At equilibrium, the voltage across the depletion region is the{' '}
         <Term
           def={
@@ -304,7 +304,7 @@ export default function Ch14Semiconductors() {
         V<sub>bi</sub>, set by the doping levels through
       </p>
       <Formula tex="V_{bi} = (kT/q)\, \ln\!\left( \dfrac{N_A N_D}{n_i^2} \right)" />
-      <p className="mb-prose-3">
+      <p>
         The formula reads like a thermodynamic statement, because that is exactly what it is. On the
         n-side the electron density is N<sub>D</sub>; on the p-side it is <M tex="n_i^2/N_A" />
         (mass-action). The ratio of those two — the "concentration gradient" electrons would like to
@@ -317,7 +317,7 @@ export default function Ch14Semiconductors() {
         <M tex="V_T \cdot \ln(\text{concentration ratio})" />
         <Cite id="streetman-banerjee-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Plug in numbers. For typical silicon doping (N<sub>A</sub> = N<sub>D</sub> = 5×10¹⁵ cm⁻³, n
         <sub>i</sub> = 10¹⁰ cm⁻³ at 300 K), the ratio is 2.5×10¹¹. With V<sub>T</sub> ≈ 25.85 mV and{' '}
         <M tex="\ln(2.5\times10^{11}) \approx 26.2" />, V<sub>bi</sub> ≈ 0.68 V. That number — the
@@ -327,7 +327,7 @@ export default function Ch14Semiconductors() {
         doping V<sub>bi</sub> is ~0.7 V — the same ~0.7 V you measure as the forward drop, because
         to push current you have to flatten almost the entire built-in barrier.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Apply an external voltage in the <em className="text-text italic">forward</em> direction
         (p-side positive) and you reduce the net field across the depletion region; carriers can now
         diffuse across in large numbers and current flows. Apply it in the{' '}
@@ -336,7 +336,7 @@ export default function Ch14Semiconductors() {
         flows is the tiny saturation current from thermally-generated minority carriers — nanoamps
         for a silicon junction at room temperature.
       </p>
-      <p className="mb-prose-3">
+      <p>
         William Shockley wrote the closed-form I-V relation in 1949
         <Cite id="shockley-1949" in={SOURCES} /> — the{' '}
         <Term
@@ -353,7 +353,7 @@ export default function Ch14Semiconductors() {
         :
       </p>
       <Formula tex="I = I_s\, \left( \exp(qV / nkT) - 1 \right)" />
-      <p className="mb-prose-3">
+      <p>
         Stare at the shape of the formula until it stops looking like algebra. Forward bias lowers
         the energy hill that electrons on the n-side have to climb to reach the p-side, from{' '}
         <M tex="qV_{bi}" /> down to <M tex="q(V_{bi} - V)" />. The number of electrons with enough
@@ -363,7 +363,7 @@ export default function Ch14Semiconductors() {
         is what the same exponential gives at V = 0 — the tiny thermal back-flow of minority
         carriers across the junction in either direction.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The "−1" is a bookkeeping demand of equilibrium. At V = 0, the forward Boltzmann flux and
         the reverse minority-carrier flux must be equal and opposite — no net current can flow
         across a junction at thermal equilibrium. The forward term is{' '}
@@ -373,7 +373,7 @@ export default function Ch14Semiconductors() {
         current, the maximum reverse current the device can supply by sweeping out
         spontaneously-generated minority carriers.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The{' '}
         <Term
           def={
@@ -393,7 +393,7 @@ export default function Ch14Semiconductors() {
         physics changes meaningfully. Every "60 mV per decade" rule of thumb in this chapter comes
         from <M tex="V_T \cdot \ln(10) \approx 60\ \text{mV}" />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Here I<sub>s</sub> is the reverse-saturation current (~10⁻⁹ A for silicon, ~10⁻⁵ A for
         Schottky), n is an ideality factor (≈1 for an ideal junction, 1.5–2 for a real diode at low
         current), q is the elementary charge, k is Boltzmann's constant, and T is absolute
@@ -403,7 +403,7 @@ export default function Ch14Semiconductors() {
         "a silicon diode drops 0.7 V"
         <Cite id="sedra-smith-2014" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The much-quoted "0.7 V" is therefore not a fundamental constant of silicon, but a
         consequence of two engineering choices: typical operating currents in the milliamp range,
         and a typical I<sub>s</sub> in the femto- to nanoamp range. With{' '}
@@ -413,7 +413,7 @@ export default function Ch14Semiconductors() {
         equation, different operating point.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Every junction in a circuit is doing the same thing: counting how many electrons in a
         Boltzmann tail have enough energy to climb a barrier.
       </p>
@@ -445,7 +445,7 @@ export default function Ch14Semiconductors() {
 
       <h2 className="chapter-h2">Diodes — and their many flavours</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A p-n junction is already a diode: a two-terminal device that conducts in one direction and
         blocks in the other. But "diode" is a family, not a single part. The doping profile, the
         materials, and even the geometry (a metal-semiconductor contact rather than a p-n junction)
@@ -454,7 +454,7 @@ export default function Ch14Semiconductors() {
 
       <DiodeCharacteristicDemo figure="Fig. 14.3" />
 
-      <p className="mb-prose-3">
+      <p>
         A <em className="text-text italic">standard silicon p-n diode</em> like the 1N4148 has V
         <sub>F</sub> ≈ 0.7 V and a peak inverse voltage of 100 V; perfectly suited to
         mains-frequency rectification and small-signal switching. A{' '}
@@ -478,7 +478,7 @@ export default function Ch14Semiconductors() {
         loss matters
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <em className="text-text italic">
           <Term
@@ -522,7 +522,7 @@ export default function Ch14Semiconductors() {
 
       <h2 className="chapter-h2">The bipolar junction transistor</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Stack two p-n junctions back-to-back, sharing a thin middle layer, and you have a
         three-terminal device with a wildly nonlinear input-output relation. In an{' '}
         <em className="text-text italic">npn</em>
@@ -568,11 +568,11 @@ export default function Ch14Semiconductors() {
         <sub>B</sub> controls a much larger collector current
       </p>
       <Formula tex="I_C = \beta \cdot I_B" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="I_C" /> is the collector current and <M tex="I_B" /> the base current (both in
         amperes), and <M tex="\beta" /> is the current gain (dimensionless, typically 50–300).
       </p>
-      <p className="mb-prose-3">
+      <p>
         The asymmetry between the two currents is geometric, not mysterious. The emitter injects,
         say, a hundred million electrons per second into the base. Those electrons must cross a base
         region only about a micron thick — much thinner than their typical recombination distance —
@@ -584,7 +584,7 @@ export default function Ch14Semiconductors() {
         with) and β rises
         <Cite id="streetman-banerjee-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         β is therefore a number that emerges from a manufacturing process, not a physical constant.
         Two devices off the same wafer can differ by 50%; β rises with temperature (more carriers
         diffuse before recombining) and falls at very low or very high I<sub>C</sub>. A good
@@ -594,7 +594,7 @@ export default function Ch14Semiconductors() {
         routinely hits β = 300
         <Cite id="razavi-2021" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         with the{' '}
         <Term
           def={
@@ -617,7 +617,7 @@ export default function Ch14Semiconductors() {
 
       <BJTCharacteristicDemo figure="Fig. 14.4" />
 
-      <p className="mb-prose-3">
+      <p>
         The output characteristic — I<sub>C</sub> as a function of V<sub>CE</sub> at fixed I
         <sub>B</sub> — breaks into three regions. Below V<sub>CE</sub> ≈ 0.2 V the device is in{' '}
         <em className="text-text italic">saturation</em>: the collector junction is no longer
@@ -642,7 +642,7 @@ export default function Ch14Semiconductors() {
         base width and increasing β. A clean small-signal BJT has an Early voltage V<sub>A</sub> ≈
         50 V<Cite id="sedra-smith-2014" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         There are three ways to wire the device into a circuit.{' '}
         <Term
           def={
@@ -691,7 +691,7 @@ export default function Ch14Semiconductors() {
 
       <h2 className="chapter-h2">The field-effect transistor</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The BJT works by injecting carriers across a forward-biased junction. The{' '}
         <Term
           def={
@@ -727,7 +727,7 @@ export default function Ch14Semiconductors() {
 
       <MOSFETOperationDemo figure="Fig. 14.5" />
 
-      <p className="mb-prose-3">
+      <p>
         The 2D cross-section makes the I-V curves quantitative; the 3D rendering makes the geometry
         visceral — the inversion layer is not an abstraction but a literal sheet of mobile electrons
         forming under the oxide the moment the gate field is strong enough.
@@ -735,7 +735,7 @@ export default function Ch14Semiconductors() {
 
       <MOSFET3DDemo figure="Fig. 14.6" />
 
-      <p className="mb-prose-3">
+      <p>
         In an n-channel enhancement MOSFET the substrate is p-type, with two heavily-doped n-type
         regions (the source and the drain) separated by a few hundred nanometres. The gate is a slab
         of metal (or, since the 1970s, doped polysilicon) sitting on top of a 2–10 nm layer of SiO
@@ -756,19 +756,19 @@ export default function Ch14Semiconductors() {
         invert the surface into a thin n-type channel; source and drain are now connected by a
         conducting path. Apply V<sub>DS</sub> and electrons flow.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The square-law model captures the device behaviour in two regimes
         <Cite id="sedra-smith-2014" in={SOURCES} />. In <em className="text-text italic">triode</em>{' '}
         (V<sub>DS</sub> &lt; V<sub>GS</sub> − V<sub>T</sub>):
       </p>
       <Formula tex="I_D = k_n\, \left[ (V_{GS} - V_T)\, V_{DS} - V_{DS}^2/2 \right]" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="I_D" /> is the drain current (in amperes), <M tex="V_{GS}" /> and{' '}
         <M tex="V_{DS}" /> are the gate-source and drain-source voltages (in volts), <M tex="V_T" />
         is the threshold voltage (in volts), and <M tex="k_n" /> is the transconductance parameter
         (in A/V²) built up factor by factor just below.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Unpack the formula one factor at a time. The gate-oxide capacitance per unit area is C
         <sub>ox</sub>; the voltage above threshold is <M tex="(V_{GS} - V_T)" />; so the sheet
         charge density of mobile carriers in the inversion layer is{' '}
@@ -782,7 +782,7 @@ export default function Ch14Semiconductors() {
         being squeezed thinner toward the drain end as V<sub>DS</sub> rises — the charge density
         isn't uniform, it tapers.
       </p>
-      <p className="mb-prose-3">
+      <p>
         which is approximately linear in V<sub>DS</sub> for small V<sub>DS</sub> — a
         voltage-controlled resistor. In <em className="text-text italic">saturation</em> (V
         <sub>DS</sub> &gt; V<sub>GS</sub> − V<sub>T</sub>), the channel{' '}
@@ -802,7 +802,7 @@ export default function Ch14Semiconductors() {
         at the drain end and the current becomes independent of V<sub>DS</sub>:
       </p>
       <Formula tex="I_D = (k_n/2)(V_{GS} - V_T)^2" />
-      <p className="mb-prose-3">
+      <p>
         Why a square law? Picture two things multiplying. The inversion-layer charge density is
         proportional to the overdrive <M tex="V_{OV} = V_{GS} - V_T" /> (more gate voltage above
         threshold piles up more electrons). The average longitudinal field that moves them along the
@@ -814,12 +814,12 @@ export default function Ch14Semiconductors() {
         channel tapering from full thickness at the source to zero at the drain
         <Cite id="sedra-smith-2014" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         with <M tex="k_n = \mu_n C_{ox} W/L" /> the transconductance parameter. For a small-signal
         n-MOSFET, k<sub>n</sub> is in the milliamp-per-volt-squared range; for a power MOSFET,
         several amps per volt squared.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Below threshold, V<sub>OV</sub> is negative, the square law would give a nonsensical answer,
         and the right description is the subthreshold-diffusion regime (touched on in the FAQ). The
         threshold itself is the precise voltage at which the surface flips from p-type to inverted
@@ -828,7 +828,7 @@ export default function Ch14Semiconductors() {
         channel. Above V<sub>T</sub>, the channel exists and the square law starts
         <Cite id="streetman-banerjee-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <Term
           def={
             <>
@@ -867,7 +867,7 @@ export default function Ch14Semiconductors() {
         <Cite id="razavi-2021" in={SOURCES} />.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         The MOSFET is a parallel-plate capacitor with a current of mobile charge underneath,
         controlled by the voltage across the plates.
       </p>
@@ -898,7 +898,7 @@ export default function Ch14Semiconductors() {
 
       <h2 className="chapter-h2">Small-signal model and load lines</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Real amplifiers operate around a fixed DC bias point — the{' '}
         <Term
           def={
@@ -929,7 +929,7 @@ export default function Ch14Semiconductors() {
         g<sub>m</sub>, which is the slope of the I<sub>C</sub>-V<sub>BE</sub> curve at the Q-point:
       </p>
       <Formula tex="g_m = \dfrac{\partial I_C}{\partial V_{BE}} = \dfrac{I_C}{V_T}" />
-      <p className="mb-prose-3">
+      <p>
         Differentiate the Shockley equation and the result almost writes itself. I<sub>C</sub> is
         proportional to <M tex="\exp(V_{BE}/V_T)" />, so dI/dV brings down a factor of{' '}
         <M tex="1/V_T" />
@@ -941,7 +941,7 @@ export default function Ch14Semiconductors() {
         <em className="text-text italic">not</em> on β, not on geometry, not on process
         <Cite id="razavi-2021" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_T = kT/q \approx 25.85\ \text{mV}" /> at room temperature
         <Cite id="codata-2018" in={SOURCES} />. For an MOSFET in saturation,{' '}
         <M tex="g_m = k_n (V_{GS} - V_T) = \sqrt{2 k_n I_D}" />. The{' '}
@@ -963,7 +963,7 @@ export default function Ch14Semiconductors() {
         <sub>o</sub>, plus an input resistance <M tex="r_\pi = \beta/g_m" />
         <Cite id="razavi-2021" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The MOSFET expression <M tex="g_m = k_n \cdot V_{OV} = \sqrt{2 k_n I_D}" />
         tells a different story. Differentiate the square law:{' '}
         <M tex="dI_D/dV_{GS} = k_n(V_{GS} - V_T)" />. For the{' '}
@@ -975,7 +975,7 @@ export default function Ch14Semiconductors() {
         designers spend a lot of effort recovering it — wide channels (large W/L), short-channel
         process nodes (small L) — to make MOSFET amplifiers competitive with bipolar ones.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The other half of the picture is the{' '}
         <Term
           def={
@@ -994,7 +994,7 @@ export default function Ch14Semiconductors() {
         gives
       </p>
       <Formula tex="V_{CE} = V_{CC} - I_C \cdot R_C" />
-      <p className="mb-prose-3">
+      <p>
         That is Kirchhoff's voltage law applied to a single loop — nothing more. The supply V
         <sub>CC</sub> is fixed; whatever current flows through R<sub>C</sub> drops some voltage
         across it; whatever is left appears across the transistor as V<sub>CE</sub>. Solve for I
@@ -1005,7 +1005,7 @@ export default function Ch14Semiconductors() {
         <em className="text-text italic">possibly</em> occupy lies on this line, regardless of what
         the transistor is doing.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The transistor, separately, has its own family of I-V curves: one curve per value of I
         <sub>B</sub>, all of them nearly flat in the active region. The actual operating point — the
         one place where both constraints can be satisfied at once — is the intersection. Slide I
@@ -1014,7 +1014,7 @@ export default function Ch14Semiconductors() {
         sliding-along-the-load-line motion <em className="text-text italic">is</em> the amplified
         signal, and the geometry tells you everything about the swing.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Plotted on the I<sub>C</sub>-V<sub>CE</sub> plane, that line runs from{' '}
         <M tex="(V_{CC}, 0)" />
         to <M tex="(0, V_{CC}/R_C)" />. The Q-point is where the load line crosses the transistor's
@@ -1024,7 +1024,7 @@ export default function Ch14Semiconductors() {
 
       <LoadLineAnalysisDemo figure="Fig. 14.7" />
 
-      <p className="mb-prose-3">
+      <p>
         Two graphical observations follow. (1) The maximum swing is constrained at one end by V
         <sub>CE</sub> = V<sub>CE(sat)</sub> ≈ 0.2 V (the transistor saturates) and at the other end
         by V<sub>CE</sub> = V<sub>CC</sub> (the transistor cuts off). For symmetrical swing, Q is
@@ -1034,7 +1034,7 @@ export default function Ch14Semiconductors() {
         product:
       </p>
       <Formula tex="A_v = \dfrac{\Delta V_{CE}}{\Delta v_{be}} = -g_m \cdot R_C" />
-      <p className="mb-prose-3">
+      <p>
         Read it as a chain rule. A small input wiggle Δv<sub>be</sub> changes the collector current
         by <M tex="\Delta I_C = g_m \cdot \Delta v_{be}" /> (the device's transconductance, doing
         its one job). That current wiggle, forced through R<sub>C</sub> by Ohm's law, produces a
@@ -1044,7 +1044,7 @@ export default function Ch14Semiconductors() {
         <M tex="dV_{out}/dV_{in} = -g_m \cdot R_C" />. The transistor converts voltage to current;
         the resistor converts current back to voltage; their product is the voltage gain.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The product also reveals where amplification gets its leverage. Substitute{' '}
         <M tex="g_m = I_C/V_T" />
         and the gain becomes <M tex="A_v = -(I_C \cdot R_C)/V_T" />.
@@ -1058,7 +1058,7 @@ export default function Ch14Semiconductors() {
 
       <h2 className="chapter-h2">The common-emitter amplifier</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Bringing it together: a single BJT, a base bias network, a collector resistor, an emitter
         resistor for stability, and an input coupling cap to block DC give you a working{' '}
         <em className="text-text italic">common-emitter amplifier</em>. The bias divider R
@@ -1072,13 +1072,13 @@ export default function Ch14Semiconductors() {
 
       <CommonEmitterAmpDemo figure="Fig. 14.8" />
 
-      <p className="mb-prose-3">
+      <p>
         Real numbers. Take I<sub>C</sub> = 1 mA (a reasonable Q-point for a small-signal stage), V
         <sub>T</sub> = 25.85 mV. Then g<sub>m</sub> = 1 mA / 25.85 mV ≈ 38.7 mS. With R<sub>C</sub>{' '}
         = 10 kΩ:
       </p>
       <Formula tex="A_v = -g_m R_C = -(0.0387\ \text{S})(10000\ \Omega) \approx -387" />
-      <p className="mb-prose-3">
+      <p>
         The energy ledger is worth pausing on, because it is the source of every working amplifier
         in the world. The 1 mA bias current flowing from the V<sub>CC</sub> rail through R
         <sub>C</sub>
@@ -1097,7 +1097,7 @@ export default function Ch14Semiconductors() {
         decides how much of it gets through.
       </Pullout>
 
-      <p className="mb-prose-3">
+      <p>
         A factor of 387 — call it 51 dB — from one transistor and one resistor. In practice the gain
         is lower because R<sub>E</sub> is rarely fully bypassed, and the collector resistance r
         <sub>o</sub> sits in parallel with R<sub>C</sub>; a careful design ends up around ×100 to
@@ -1134,7 +1134,7 @@ export default function Ch14Semiconductors() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A semiconductor is a crystal whose conductivity sits between metal and insulator, set by a
         bandgap small enough to permit a useful population of thermally-excited or
         deliberately-doped carriers. Doping splits silicon into n-type and p-type pieces; joining
@@ -1147,7 +1147,7 @@ export default function Ch14Semiconductors() {
         Q-point. A common-emitter stage with I<sub>C</sub> = 1 mA and R<sub>C</sub> = 10 kΩ delivers
         a voltage gain of about −400.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The next two chapters cash that in. Ch.15 picks up the frequency domain we need to make
         sense of any time-varying signal; Ch.16 builds the op-amp — a packaged stack of transistors
         with so much gain that, inside a negative-feedback loop, every gain block becomes a

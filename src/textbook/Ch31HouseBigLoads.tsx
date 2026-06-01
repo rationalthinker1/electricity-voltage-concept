@@ -44,7 +44,7 @@ export default function Ch31HouseBigLoads() {
         ground. Step outside, peek behind the EV charger bolted to the garage wall, and depending on
         the model it might be three wires (no neutral) or four.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Every one of these is a 240 V appliance taking advantage of the same fact about the service
         transformer's centre-tapped secondary that Chapter 27 made concrete: the two hots arriving
         at the panel are 180° out of phase, so the voltage{' '}
@@ -58,7 +58,7 @@ export default function Ch31HouseBigLoads() {
 
       <h2 className="chapter-h2">Why 240 V at all</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Chapter 27 derived the split-phase secondary and Chapter 29 sized 14, 12, and 10 AWG branch
         wiring for thermal limits. The remaining piece is the economics that justified two voltages
         in the first place: for any fixed load power, doubling the supply voltage halves the current
@@ -66,7 +66,7 @@ export default function Ch31HouseBigLoads() {
         that have appeared in every chapter since Chapter 3 — combined here in a single argument.
       </p>
       <Formula size="lg" id="power-vi" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P" /> is the real power delivered to a resistive load (in watts),{' '}
         <M tex="V" /> is the RMS supply voltage at the appliance terminals (in volts), and{' '}
         <M tex="I" /> is the RMS current through the load (in amperes). The same power can be moved
@@ -74,7 +74,7 @@ export default function Ch31HouseBigLoads() {
         required to deliver a given power:
       </p>
       <Formula tex="I = \\dfrac{P}{V}" />
-      <p className="mb-prose-3">
+      <p>
         with all three symbols defined as above. A{' '}
         <strong className="text-text font-medium">5 000 W</strong> resistive dryer on 120 V draws
         41.7 A; the same dryer on 240 V draws 20.8 A. The breaker, the receptacle, and the wire are
@@ -82,12 +82,12 @@ export default function Ch31HouseBigLoads() {
         component cost downstream of the panel
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The wire-loss case is stronger still. The power dissipated as heat in the supply wires of a
         branch circuit is, by Ohm's law applied to the wire itself:
       </p>
       <Formula tex="P_{\\text{loss}} = I^2 \\times R_{\\text{wire}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{loss}}" /> is the resistive heat dissipated along the round-trip
         length of the branch wire (in watts), <M tex="I" /> is the current through the wire (in
         amperes), and <M tex="R_{\text{wire}}" /> is the total round-trip resistance of the
@@ -98,7 +98,7 @@ export default function Ch31HouseBigLoads() {
         power divided by the square of the supply voltage:
       </p>
       <Formula tex="P_{\\text{loss}} = \\left(\\dfrac{P}{V}\\right)^2 \\times R_{\\text{wire}} = \\dfrac{P^2 R_{\\text{wire}}}{V^2}" />
-      <p className="mb-prose-3">
+      <p>
         where the symbols have their previous meanings. Doubling V at fixed P quarters the wire
         loss. A 5 000 W resistive dryer over 25 m of 8 AWG copper (round-trip ≈ 100 mΩ) loses about
         174 W on 120 V; on 240 V it loses about 43 W. That four-to-one ratio of wire loss is the
@@ -147,7 +147,7 @@ export default function Ch31HouseBigLoads() {
 
       <h2 className="chapter-h2">L1 and L2 — same source, opposite phase</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The two hot conductors arriving at the main panel are not two separate phases. They are the
         two ends of one centre-tapped secondary winding inside the pole-pig transformer, and they
         oscillate in lockstep about the grounded centre tap (Chapter 27). The instantaneous voltage
@@ -159,7 +159,7 @@ export default function Ch31HouseBigLoads() {
         two equal and opposite sinusoids:
       </p>
       <Formula tex="V_{LL}(t) = V_{L1}(t) - V_{L2}(t) = V_{\\text{peak}} \\cos(\\omega t) - V_{\\text{peak}} \\cos(\\omega t + \\pi) = 2\\, V_{\\text{peak}} \\cos(\\omega t)" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{LL}(t)" /> is the instantaneous{' '}
         <Term
           def={
@@ -185,7 +185,7 @@ export default function Ch31HouseBigLoads() {
         cancels and the envelope is <M tex="2\\, V_{\\text{peak}} \\approx 340\\ \\text{V peak}" />,
         or 240 V RMS.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Compare to a North-American three-phase commercial 208Y/120 V service, where L1, L2, and L3
         are 120° apart on the unit circle rather than 180°. The line-to-line voltage there is the
         magnitude of the vector difference of two unit-magnitude phasors separated by 120°, which is{' '}
@@ -199,7 +199,7 @@ export default function Ch31HouseBigLoads() {
         topologies
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The practical upshot inside a residential panel: a two-pole breaker spans two adjacent
         vertical slots, the bus stamping puts L1 on one slot and L2 on the adjacent one (Ch.28's
         alternating-phase bus), and the breaker automatically grabs one of each. Pull the breaker
@@ -210,7 +210,7 @@ export default function Ch31HouseBigLoads() {
 
       <h2 className="chapter-h2">Pure 240 V loads (no neutral)</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A resistive heating element does not care about which hot is which. Connect it between L1
         and L2 and it sees 240 V RMS continuously — twice the voltage of either hot to neutral, with
         no zero crossings of the line-to-line waveform any different from a single 240 V phase.
@@ -233,7 +233,7 @@ export default function Ch31HouseBigLoads() {
         configuration: two ungrounded conductors plus the equipment-grounding conductor, no neutral
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The classic examples are residential and well-understood. An electric baseboard heater is a
         long thin resistive coil running the length of the unit; it pulls perhaps 1 500 to 2 500 W
         at 240 V on a 15 A or 20 A breaker. A tankless water heater is several large resistive coils
@@ -260,7 +260,7 @@ export default function Ch31HouseBigLoads() {
         : three prongs, the two flat blades for L1 and L2 plus a round ground pin, no neutral blade
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The wire that feeds a three-wire 240 V appliance is two-conductor cable plus a ground — that
         is, what the trade calls <em className="text-text italic">12-2 with ground</em> or{' '}
         <em className="text-text italic">10-2 with ground</em> Romex
@@ -274,7 +274,7 @@ export default function Ch31HouseBigLoads() {
 
       <h2 className="chapter-h2">120/240 V split loads (with neutral)</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Most modern major appliances are not pure-resistive. They have a heating element that lives
         between L1 and L2 at 240 V, and they also have a control board, a tumble motor, an LED
         display, an internal blower, an electronic ignitor, or some combination of these — and all
@@ -297,7 +297,7 @@ export default function Ch31HouseBigLoads() {
         configuration
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         An electric clothes dryer is the canonical example. The heating element is a coiled nichrome
         resistor roughly 11 Ω that pulls about 22 A on 240 V (≈ 5.3 kW of heating). The drum-tumble
         motor is a 1/4 HP capacitor-start induction motor running from L1 to neutral at 120 V,
@@ -321,7 +321,7 @@ export default function Ch31HouseBigLoads() {
         </Term>
         : two flat hot blades, one L-shaped neutral, one round ground.
       </p>
-      <p className="mb-prose-3">
+      <p>
         An electric range is the same architecture scaled up. The bake and broil elements are 240 V
         resistive coils pulling tens of amps; the surface burners (in a non-induction range) are 240
         V coils with infinite-switch controllers. The oven light, clock, electronic ignitor on a
@@ -342,7 +342,7 @@ export default function Ch31HouseBigLoads() {
         on a 50 A double-pole breaker
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Older homes — built before 1996 in most jurisdictions — used a three-wire 120/240 V
         receptacle for dryers and ranges: L1, L2, and a single grounded conductor that doubled as
         both neutral and equipment ground. The receptacle was a{' '}
@@ -417,7 +417,7 @@ export default function Ch31HouseBigLoads() {
 
       <h2 className="chapter-h2">The heat pump</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The biggest mechanical load in most new houses is no longer the dryer or the range — it is
         the heat pump. A 3-tonne residential air-source heat pump (one tonne ≈ 3.5 kW of heating
         capacity) pulls roughly
@@ -430,12 +430,12 @@ export default function Ch31HouseBigLoads() {
         its own neutral and ground
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two terms govern the breaker sizing of any motor-driven appliance, and they are what
         distinguish a heat-pump circuit from a resistive load:
       </p>
       <Formula tex="\\text{FLA} = \\dfrac{P_{\\text{rated}}}{V_{\\text{supply}}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\text{FLA}" /> is the{' '}
         <Term
           def={
@@ -457,7 +457,7 @@ export default function Ch31HouseBigLoads() {
         <M tex="\\text{FLA} \\approx 5{,}000/240 \\approx 21\\ \\text{A}" />
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         But induction motors do not start at their running current. When power is first applied and
         the rotor is stationary, the motor's impedance is much lower than at running speed (because
         the slip is 1 — the rotor is fully out of sync with the rotating stator field), and the
@@ -465,7 +465,7 @@ export default function Ch31HouseBigLoads() {
         come up to speed:
       </p>
       <Formula tex="\\text{LRA} = (5\\ \\text{to}\\ 7) \\times \\text{FLA}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\text{LRA}" /> is the{' '}
         <Term
           def={
@@ -487,7 +487,7 @@ export default function Ch31HouseBigLoads() {
         typically 100 to 150 A — five to seven times the running 21 A — for half a second to two
         seconds.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A standard thermal-magnetic breaker rated 25 A or 30 A would trip every time the compressor
         started, because its magnetic element would see the 100 A inrush and yank the latch open
         before the rotor came up to speed. NEC Article 440 (HVAC equipment) handles this by
@@ -514,7 +514,7 @@ export default function Ch31HouseBigLoads() {
         against a true overload. The 5 kW heat pump above (FLA 21 A) would run on a 40 A HACR-rated
         2-pole breaker — not the 25 A breaker you would size by FLA × 1.25 alone.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Modulating inverter heat pumps (the dominant architecture in new installations since around
         2015) avoid most of this problem by running the compressor through a variable-frequency
         drive that soft-starts the motor from zero speed. The inverter ramps the stator frequency
@@ -568,7 +568,7 @@ export default function Ch31HouseBigLoads() {
 
       <h2 className="chapter-h2">EV charging — level 1, level 2, level 3</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Electric-vehicle charging is the residential big-load story of the last decade, and it is
         the one place where the engineering of the receptacle on the wall has been redesigned
         essentially from scratch rather than inherited from a 1950s dryer outlet. The industry
@@ -580,7 +580,7 @@ export default function Ch31HouseBigLoads() {
 
       <h3 className="chapter-h3">Level 1: 120 V from a standard outlet</h3>
 
-      <p className="mb-prose-3">
+      <p>
         The slowest tier and the universal fallback. A{' '}
         <Term
           def={
@@ -609,7 +609,7 @@ export default function Ch31HouseBigLoads() {
 
       <h3 className="chapter-h3">Level 2: 240 V dedicated branch</h3>
 
-      <p className="mb-prose-3">
+      <p>
         The standard residential installation. A{' '}
         <Term
           def={
@@ -634,7 +634,7 @@ export default function Ch31HouseBigLoads() {
         overnight
         <Cite id="sae-j1772" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The connector is the{' '}
         <Term
           def={
@@ -660,7 +660,7 @@ export default function Ch31HouseBigLoads() {
         sees a live conductor presented to open air — the contactor closes only when the plug is
         seated and the handshake has succeeded.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Safety on the EVSE side is double-belted. The EVSE includes its own internal ground-fault
         protection beyond whatever GFCI breaker is upstream — the relevant standard is{' '}
         <Term
@@ -687,12 +687,12 @@ export default function Ch31HouseBigLoads() {
         jurisdiction's adoption cycle
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The energy that ends up in the battery on a level-2 charge is the supply power times the
         efficiency of the on-board charger inside the car:
       </p>
       <Formula tex="P_{\\text{charge}} = V \\times I \\times \\eta" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{charge}}" /> is the DC power delivered to the battery pack (in
         watts), <M tex="V" /> is the AC supply voltage at the EVSE terminals (in volts; 240 V on
         level 2), <M tex="I" /> is the RMS AC current the EVSE delivers (in amperes; up to 48 A
@@ -709,7 +709,7 @@ export default function Ch31HouseBigLoads() {
 
       <h3 className="chapter-h3">Level 3: DC fast charging</h3>
 
-      <p className="mb-prose-3">
+      <p>
         The level-3 tier is not residential and is mentioned here only because the receptacle and
         the connector on the car are different from level 2 — the architecture is fundamentally
         different.{' '}
@@ -765,7 +765,7 @@ export default function Ch31HouseBigLoads() {
         most major North-American manufacturers for 2025-and-later vehicles
         <Cite id="iec-62196" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         DC fast chargers are commercial installations: a three-phase utility service feeds a
         dedicated transformer, then a high-power AC-to-DC rectifier sized for 50 to 350 kW
         continuous, then the DC connector to the car. The footprint is the size of a small
@@ -819,7 +819,7 @@ export default function Ch31HouseBigLoads() {
 
       <h2 className="chapter-h2">Demand-load calculations and panel sizing</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Add a new heat pump or a new EV charger to an existing house and the question is whether the
         existing service can absorb the new load or whether the whole service entrance needs an
         upgrade. NEC's answer is the{' '}
@@ -855,7 +855,7 @@ export default function Ch31HouseBigLoads() {
         simultaneously), and compares the result to the service rating
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two methods exist for an existing dwelling. NEC 220.83 (the "existing-dwelling method") is
         the most commonly used: sum the dwelling's general lighting and receptacle load at{' '}
         <strong className="text-text font-medium">3 VA per square foot</strong>, add small-appliance
@@ -870,7 +870,7 @@ export default function Ch31HouseBigLoads() {
         supply voltage to give the demand current in amperes, which is then compared to the service
         ampacity.
       </p>
-      <p className="mb-prose-3">
+      <p>
         For a typical 200 A service the math usually works out generously: a 200 A panel at 240 V
         supports 48 kVA of demand, and a fully-loaded 2 000 sq ft dwelling with a heat pump and an
         EV charger lands somewhere around 30 to 40 kVA on the demand calculation — comfortably under
@@ -938,7 +938,7 @@ export default function Ch31HouseBigLoads() {
 
       <h2 className="chapter-h2">Putting it together</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The chapter's argument in three sentences. Every appliance in the house that pulls more than
         a couple of kilowatts wants the 240 V side of the panel, because doubling the supply voltage
         halves the supply current and quarters the wire loss. The supply for those appliances comes
@@ -949,7 +949,7 @@ export default function Ch31HouseBigLoads() {
         demand-load calculation of NEC Article 220 telling you at the design stage whether the math
         works.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Next chapter turns from the big-load side of the panel to the safety side: GFCIs, AFCIs,
         arc-flash energy, the Dalziel current-through-heart curves, and the millisecond timing that
         distinguishes a startled jolt from cardiac arrest. The physics that protected the wire

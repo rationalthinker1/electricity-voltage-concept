@@ -41,7 +41,7 @@ export default function Ch7Induction() {
         symmetry was between electricity and magnetism, a static magnet did not feed a static loop
         any current at all.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Then in August 1831, while connecting one of those electromagnets to its battery, he caught
         the needle twitching. Not while the current flowed steadily, but at the{' '}
         <em className="text-text italic">moment of connection</em>, and again at the moment of
@@ -61,7 +61,7 @@ export default function Ch7Induction() {
         Faraday's <em>discovery</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The setup that finally worked was a thick iron ring with two coils of insulated copper wire
         wound on opposite sides of it. One coil — the <em className="text-text italic">primary</em>{' '}
         — was connected to a bank of voltaic cells through a switch. The other — the{' '}
@@ -73,7 +73,7 @@ export default function Ch7Induction() {
         In between — when the primary current was steady — the secondary did nothing
         <Cite id="faraday-1832" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Faraday concluded, correctly, that what the secondary was responding to was not the magnetic
         field but its
         <em className="text-text italic"> rate of change</em>. He spent the next year confirming
@@ -88,7 +88,7 @@ export default function Ch7Induction() {
         The <em>law</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Faraday's insight took its modern compact form a generation later, in Maxwell's hands.
         Define the{' '}
         <Term def="The surface integral of B over a bounded surface: Φ_B = ∫∫ B · dA. For a flat loop in a uniform field, Φ = BA cos θ. SI unit is the weber (Wb = T·m²).">
@@ -97,7 +97,7 @@ export default function Ch7Induction() {
         through a surface bounded by the loop:
       </p>
       <Formula size="lg" tex="\Phi_B = \iint \vec{B} \cdot d\vec{A}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\Phi_B" />
         is the magnetic flux through the loop (in webers, Wb = T·m² = V·s), <M tex="B" /> is the
         magnetic field (a vector, in teslas) at each point of the surface, and{' '}
@@ -120,7 +120,7 @@ export default function Ch7Induction() {
         <Cite id="feynman-II-17" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="\text{EMF} = -\dfrac{d\Phi_B}{dt}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\text{EMF}" /> is the electromotive force around the loop (in volts — the line
         integral <M tex="\oint E \cdot d\ell" /> of the induced electric field, equivalently the
         work per unit charge a free charge would gain in one trip around the loop),{' '}
@@ -130,7 +130,7 @@ export default function Ch7Induction() {
         whose own flux opposes the change in Φ<sub>B</sub> that produced it
         <Cite id="feynman-II-17" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three things deserve to be said out loud about this equation. First, the surface in the flux
         integral is
         <em className="text-text italic"> any</em> surface bounded by the loop — flat, curved,
@@ -142,7 +142,7 @@ export default function Ch7Induction() {
         <M tex="N \cdot d\Phi/dt" />. That's why coils have lots of turns. Third, the minus sign is
         doing real work — we'll come back to it.
       </p>
-      <p className="mb-prose-3">
+      <p>
         In differential form, the same statement reads{' '}
         <M tex="\nabla \times E = -\partial B/\partial t" />. A magnetic field that changes in time
         produces an electric field that <em className="text-text italic">curls</em>. Crucially, this
@@ -155,7 +155,7 @@ export default function Ch7Induction() {
         Move a <em>magnet</em>, get a voltage
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Before unpacking the minus sign or the geometry, just play with it. The cleanest live
         demonstration is the one Faraday himself used: shove a bar magnet through a coil and watch a
         current come out.
@@ -189,7 +189,7 @@ export default function Ch7Induction() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         Two things you can read off the demo immediately. First, holding the magnet still leaves the
         lamp dark. A permanent magnet is sitting right inside the coil delivering a perfectly real
         magnetic field, and the loop does absolutely nothing with it. Second, the faster you move
@@ -197,7 +197,7 @@ export default function Ch7Induction() {
         not with <M tex="\Phi" /> itself. Drag the turn count up and the lamp gets brighter again,
         because every turn sees the same dΦ/dt and they add in series.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The lamp also <em className="text-text italic">changes color</em> when you reverse the
         magnet's direction. That is the minus sign in <M tex="\text{EMF} = -d\Phi/dt" /> made
         visible: flip the sign of dΦ/dt, flip the sign of the EMF, flip the direction the current
@@ -208,7 +208,7 @@ export default function Ch7Induction() {
         The minus sign — <em>Lenz's law</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         It is tempting to read the minus sign as a bookkeeping detail, an artifact of how someone
         defined "positive" around the loop. It is not. It encodes a hard constraint from energy
         conservation —{' '}
@@ -222,7 +222,7 @@ export default function Ch7Induction() {
         </strong>
         <Cite id="feynman-II-17" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Push a magnet's north pole toward a loop and the flux through the loop (in the direction of
         the magnet's field) increases. The induced current organises itself to create its own
         magnetic field <em className="text-text italic">opposing</em> that increase — i.e., pointing
@@ -231,7 +231,7 @@ export default function Ch7Induction() {
         <em className="text-text italic">do work</em> to push the magnet in. That work, against the
         repulsive force, is exactly the electrical energy dumped into the loop's resistance.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Pull the magnet away and the flux through the loop drops. The induced current reverses, now
         creating a field that <em className="text-text italic">maintains</em> the dying flux — a
         south pole facing the magnet's north. North attracts south. You have to do work to pull the
@@ -247,7 +247,7 @@ export default function Ch7Induction() {
         Magnetism never <em className="text-text italic">moves</em>; only the flux does. Move the
         flux and electricity falls out — paid for in mechanical work, every joule.
       </Pullout>
-      <p className="mb-prose-3">
+      <p>
         If the sign were the other way — if the induced current attracted the approaching magnet
         instead of repelling it — the magnet would accelerate as it approached, accelerate again as
         you tried to pull it back, and along the way deliver electrical energy to the loop for free.
@@ -260,7 +260,7 @@ export default function Ch7Induction() {
         Spinning a coil = generating <em>AC</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The historically pivotal application of induction was not anything Faraday explicitly built.
         It was the realisation that you can run his discovery in reverse: instead of moving a magnet
         to generate a current, you can spin a coil in a fixed field and let the geometry do the
@@ -268,9 +268,9 @@ export default function Ch7Induction() {
         <M tex="\omega" /> in a uniform field <M tex="B" /> is
       </p>
       <Formula size="lg" tex="\Phi(t) = N B A \cos(\omega t)" />
-      <p className="mb-prose-3">and Faraday's law immediately gives</p>
+      <p>and Faraday's law immediately gives</p>
       <Formula size="lg" tex="\text{EMF}(t) = -\dfrac{d\Phi}{dt} = N B A \omega \sin(\omega t)" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="N" /> is the number of turns in the coil, <M tex="B" /> the uniform magnetic
         field (in teslas), <M tex="A" /> the area of one turn (in m²), <M tex="\omega" /> the
         angular rate of rotation (in rad/s), and <M tex="t" /> the time (in seconds); the result is
@@ -285,7 +285,7 @@ export default function Ch7Induction() {
 
       <RotatingCoilDemo figure="Fig. 7.4" />
 
-      <p className="mb-prose-3">
+      <p>
         The oscilloscope above tells you <em className="text-text italic">what</em> comes out the
         terminals; it does not, by itself, tell you
         <em className="text-text italic"> why</em> a constant rotation has to produce a sinusoid.
@@ -296,7 +296,7 @@ export default function Ch7Induction() {
         cosine, and the EMF — the negative time derivative — traces a sine shifted by a quarter
         cycle.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The same physics renders even more sharply in three dimensions, where the projection of the
         loop's area onto the field is literal rather than implied, and the quarter-cycle phase
         offset between flux and induced EMF can be read straight off a shared time axis
@@ -336,7 +336,7 @@ export default function Ch7Induction() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         Every wall socket on Earth is the far end of a wire connected, eventually, to a coil
         somewhere upstream that is spinning past stator windings inside a steel-and-copper drum the
         size of a building. The shaft is being turned by a steam turbine (coal, gas, nuclear), a
@@ -351,7 +351,7 @@ export default function Ch7Induction() {
         Transformers and the long-distance <em>grid</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Faraday's law has a second consequence that is just as load-bearing for modern
         infrastructure: the{' '}
         <Term def="Two coils linked by a shared magnetic core. The same dΦ/dt threads both, so V₂/V₁ = N₂/N₁ and (lossless limit) I₂/I₁ = N₁/N₂. Step up, step down, or isolate — the device that makes long-distance AC transmission practical.">
@@ -361,7 +361,7 @@ export default function Ch7Induction() {
         both of them. Apply Faraday's law to each:
       </p>
       <Formula size="lg" tex="V_1 = N_1 \dfrac{d\Phi}{dt} \qquad V_2 = N_2 \dfrac{d\Phi}{dt}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_1" /> and <M tex="V_2" /> are the (open-circuit) terminal voltages on the
         primary and secondary (in volts), <M tex="N_1" /> and <M tex="N_2" /> are the corresponding
         turn counts, and <M tex="d\Phi/dt" /> is the time rate of change of the shared core flux
@@ -369,7 +369,7 @@ export default function Ch7Induction() {
         transformer relation:
       </p>
       <Formula size="lg" tex="\dfrac{V_2}{V_1} = \dfrac{N_2}{N_1}" />
-      <p className="mb-prose-3">
+      <p>
         Whatever AC voltage you put on the primary, you get back an AC voltage on the secondary
         scaled by the turns ratio. Step up: more turns on the secondary than the primary. Step down:
         fewer
@@ -406,7 +406,7 @@ export default function Ch7Induction() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         The reason this matters at planetary scale is the <M tex="I^{2}R" /> loss in transmission
         lines. The power delivered down a wire is <M tex="P = V \cdot I" />, but the heat dissipated
         along the way is <M tex="I^{2} \cdot R_{\text{line}}" />. If you can carry the same power at
@@ -417,7 +417,7 @@ export default function Ch7Induction() {
         exists because transformers exist, and transformers exist because the same flux through two
         coils gives two voltages in proportion to their turn counts.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The same physics shows up inside a single coil. A current through a loop sets up its own
         flux, and if that current changes, Faraday's law produces a back-EMF in the same loop — this
         is{' '}
@@ -470,7 +470,7 @@ export default function Ch7Induction() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         Faraday's discovery had one more thing inside it that he didn't see, and that Maxwell did.
         If a changing <M tex="B" /> produces a curling <M tex="E" /> in empty space, then by
         symmetry — once you add the <em className="text-text italic">displacement current</em> term

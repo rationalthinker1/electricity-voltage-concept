@@ -44,7 +44,7 @@ export default function Ch8EnergyFlow() {
         <em className="text-text italic">Where, exactly, does that energy go?</em> What path does it
         take from one to the other?
       </p>
-      <p className="mb-prose-3">
+      <p>
         The obvious answer — that it travels through the copper, carried by the moving electrons —
         turns out to be wrong in a way that takes some staring at to accept. The energy never enters
         the wire. It travels through the empty space
@@ -61,7 +61,7 @@ export default function Ch8EnergyFlow() {
         The question almost <em>nobody</em> asks
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Most of physics education waves at this question and walks past. "Current carries energy
         from the battery to the bulb." That sentence sounds fine, the way "the sun comes up in the
         east" sounds fine — true enough at the bookkeeping level, false underneath. Current is a
@@ -69,7 +69,7 @@ export default function Ch8EnergyFlow() {
         happen to share a name in everyday speech ("electricity") but they are different physical
         things, and in this case they don't even travel along the same path.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Look at it bluntly. In Chapter&nbsp;2 we calculated the drift speed of an electron in
         copper at a modest current: about 0.03 mm/s. Yet the bulb turns on essentially the
         moment you flip the switch. If energy rode in on the backs of the drifting electrons, you
@@ -82,7 +82,7 @@ export default function Ch8EnergyFlow() {
 
       <BatteryBulbFieldsDemo figure="Fig. 8.1" />
 
-      <p className="mb-prose-3">
+      <p>
         Three physical fields are present in the picture above, and the demo lets you toggle each
         one on and off. The yellow dots are the conduction electrons, drifting along the copper at
         roughly <M tex="{\sim}3\times 10^{-5}\,\text{m/s}" /> (≈0.03 mm/s). The teal circles are the
@@ -100,7 +100,7 @@ export default function Ch8EnergyFlow() {
 
       <WhereDoesEnergyFlowDemo figure="Fig. 8.2" />
 
-      <p className="mb-prose-3">
+      <p>
         The contrast in the demo above is a cartoon, but the cartoon is the entire chapter in
         miniature. The "old picture" on the left is what most people carry around in their head. The
         "real picture" on the right is what the math actually gives you. The rest of this chapter is
@@ -111,11 +111,11 @@ export default function Ch8EnergyFlow() {
         Two fields are <em>present</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Inside a current-carrying resistive wire there are two electromagnetic fields, both demanded
         by the equations we've already met. Look at them one at a time.
       </p>
-      <p className="mb-prose-3">
+      <p>
         First, an electric field along the wire's axis. It has to be there: from Chapter&nbsp;3,
         microscopic Ohm's law says <M tex="J = \sigma E" />, so a steady current density implies a
         non-zero <M tex="E" /> inside the conductor. In a uniform wire of length <M tex="L" />
@@ -125,7 +125,7 @@ export default function Ch8EnergyFlow() {
         <Cite id="feynman-II-27" in={SOURCES} />:
       </p>
       <Formula tex="E = V / L" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="E" /> is the magnitude of the axial electric field inside the wire (in V/m,
         pointing along the wire's axis in the direction of conventional current), <M tex="V" /> is
         the voltage drop across the wire's ends (in volts), and <M tex="L" /> is the wire's length
@@ -138,14 +138,14 @@ export default function Ch8EnergyFlow() {
 
       <EAxialFieldDemo figure="Fig. 8.3" />
 
-      <p className="mb-prose-3">
+      <p>
         Second, a magnetic field circling the wire. From Chapter&nbsp;6, Ampère's law tells you that
         any line integral of <M tex="B \cdot d\ell" /> around a closed loop equals μ<sub>0</sub>{' '}
         times the enclosed current. Wrap that loop around the wire at radius <M tex="a" /> and you
         get
       </p>
       <Formula tex="B = \\dfrac{\\mu_0\\, I}{2\\pi a}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="B" /> is the magnitude of the magnetic field at the wire's surface (in
         teslas), <M tex="I" /> is the current through the wire (in amperes), <M tex="a" /> is the
         wire's radius (in meters), and <M tex="\mu_0 = 4\pi\times 10^{-7}\,\text{T·m/A}" /> is the
@@ -157,7 +157,7 @@ export default function Ch8EnergyFlow() {
 
       <BCirculationDemo figure="Fig. 8.4" />
 
-      <p className="mb-prose-3">
+      <p>
         Two fields, perpendicular to each other, present everywhere along a current-carrying wire.
         That perpendicularity is about to do an enormous amount of work.
       </p>
@@ -166,7 +166,7 @@ export default function Ch8EnergyFlow() {
         Cross product → <em>radial</em> inflow
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Maxwell, in the same 1865 paper that gave the world his complete equations, identified a
         quantity that bookkept where electromagnetic energy lives and how it moves
         <Cite id="maxwell-1865" in={SOURCES} />. The full derivation was tidied up nineteen years
@@ -188,7 +188,7 @@ export default function Ch8EnergyFlow() {
         :
       </p>
       <Formula size="lg" id="poynting-vector" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="S" /> (a vector) is the local electromagnetic energy-flux density at a point
         in space, <M tex="E" /> is the local electric field (in V/m), <M tex="B" /> is the local
         magnetic field (in teslas), <M tex="\mu_0 = 4\pi\times 10^{-7}\,\text{T·m/A}" />
@@ -200,7 +200,7 @@ export default function Ch8EnergyFlow() {
         defined at every point in space where electric and magnetic fields are both present
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Now turn the right-hand rule on the situation we built in the last section. <M tex="E" />{' '}
         points along the wire's axis; <M tex="B" /> circles the wire. Their cross product points{' '}
         <Term
@@ -218,11 +218,11 @@ export default function Ch8EnergyFlow() {
         It comes from the surrounding space — from <em className="text-text italic">everywhere</em>{' '}
         in the surrounding space — and gets absorbed at the surface.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This is the picture Feynman puts in the bluntest possible terms in Volume II of the Lectures
         <Cite id="feynman-II-27" in={SOURCES} />:
       </p>
-      <p className="mb-prose-3">
+      <p>
         "Since the wire has resistance, there is an electric field along it, driving the current…
         the <M tex="E" /> and <M tex="B" /> are at right angles; therefore there is a Poynting
         vector directed radially inward…{' '}
@@ -233,12 +233,12 @@ export default function Ch8EnergyFlow() {
         The integral that <em>closes</em> the loop
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         It's one thing to wave at the radial direction; it's another to count the joules. Do the
         algebra. At the wire's surface,
       </p>
       <Formula tex="|S|_{\\text{surf}} = \\dfrac{E B}{\\mu_0} = \\dfrac{V I}{2\\pi a L}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="|S|_{\text{surf}}" /> is the magnitude of the Poynting vector at the wire's
         surface (in W/m²), <M tex="E" /> is the axial electric field inside the wire (in V/m),{' '}
         <M tex="B" /> is the magnetic field at the surface (in T), <M tex="\mu_0" /> is the vacuum
@@ -261,7 +261,7 @@ export default function Ch8EnergyFlow() {
         </Term>
       </p>
       <Formula tex="\\oint \\vec{S}\\cdot d\\vec{A} = |S|_{\\text{surf}} \\cdot 2\\pi a L = V I" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="S" /> is the Poynting vector (in W/m²), <M tex="d\vec{A}" /> is the
         infinitesimal area element vector (in m²), <M tex="|S|_{\text{surf}}" /> is its magnitude at
         the wire's surface (in W/m²), <M tex="2\pi a L" />
@@ -269,7 +269,7 @@ export default function Ch8EnergyFlow() {
         is the voltage drop (in V), and <M tex="I" /> is the current (in A), so <M tex="VI" /> is
         the dissipated power (in W).
       </p>
-      <p className="mb-prose-3">
+      <p>
         Exactly <M tex="VI" />. The{' '}
         <Term
           def={
@@ -316,14 +316,14 @@ export default function Ch8EnergyFlow() {
         <PoyntingInflowDemo figure="Fig. 8.5" />
       </PredictThenObserve>
 
-      <p className="mb-prose-3">
+      <p>
         The equality <M tex="P_{\text{surf}} = P_{VI}" /> is the entire chapter compressed into one
         number. Change anything you like about the wire's geometry or current and the ratio cannot
         budge: the power computed from the surface flux of the Poynting vector and the power
         computed from <M tex="V\!\cdot\!I" /> are the same statement.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         That flat side-view is the right move for getting the algebra to land but hides the cross
         product structure of <M id="poynting-vector" />. In a coaxial cable seen in 3D, pink radial{' '}
         <M tex="E" /> threads from the inner conductor to the outer braid, teal circumferential{' '}
@@ -332,7 +332,7 @@ export default function Ch8EnergyFlow() {
         <Cite id="pozar-2011" in={SOURCES} />. Every joule the source delivers to the load streams
         through the empty dielectric between the two conductors, not through the copper itself.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The same surface-integral identity holds, with the surface now a cross-sectional disk of the
         dielectric: <M tex="\\oint \\vec{S}\\cdot d\\vec{A} = V I" /> exactly
         <Cite id="poynting-1884" in={SOURCES} />
@@ -419,13 +419,13 @@ export default function Ch8EnergyFlow() {
         Davis &amp; Kaplan and the <em>real</em> circuit
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The setup we just walked through is a 2D toy: an infinitely long, perfectly straight wire of
         uniform resistivity. Real circuits are curvier than that. They loop. They have batteries
         with internal structure. They have wires of different thicknesses and resistances. Does the
         picture survive contact with a realistic geometry, or is it an artifact of idealization?
       </p>
-      <p className="mb-prose-3">
+      <p>
         Basil Davis and Lev Kaplan answered the question carefully in 2011
         <Cite id="davis-kaplan-2011" in={SOURCES} />. They computed the full three-dimensional
         Poynting field around a circular loop containing a battery and a resistive arc, evaluating{' '}
@@ -439,7 +439,7 @@ export default function Ch8EnergyFlow() {
         Poynting flow along equipotentials in a simple parallel-rail geometry
         <Cite id="morris-styer-2012" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The picture is robust. With conductors only at the boundaries, the energy lives in the field
         that fills the rest of space, and the wire is just where the field gives it up.
       </p>
@@ -448,11 +448,11 @@ export default function Ch8EnergyFlow() {
         The <em>superconductor</em> limit
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         One last sanity check, and it's a beautiful one. Push the conductivity to infinity. What
         happens?
       </p>
-      <p className="mb-prose-3">
+      <p>
         From microscopic Ohm's law, <M tex="E = J/\sigma" />. As σ → ∞ at fixed current density, the
         axial field inside the conductor must go to zero. (You cannot sustain a non-zero{' '}
         <M tex="E" /> in a perfect{' '}
@@ -478,7 +478,7 @@ export default function Ch8EnergyFlow() {
 
       <SuperconductorLimitDemo figure="Fig. 8.7" />
 
-      <p className="mb-prose-3">
+      <p>
         Resistance, then, is what couples the field to the lattice. It is the mechanism by which the
         surrounding electromagnetic energy actually finds its way into the metal as heat. Without
         resistance, the field is a perfectly good guide — the wire constrains where the current
@@ -604,7 +604,7 @@ export default function Ch8EnergyFlow() {
         What the textbook was <em>for</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Look back at where we started. Chapter&nbsp;1 opened with a balloon stuck to a wall and
         asked what charge actually is. We built up a field that fills space (Ch.&nbsp;1), figured
         out the language of potential and current (Ch.&nbsp;2), the atomic-scale choreography of
@@ -613,14 +613,14 @@ export default function Ch8EnergyFlow() {
         stage the wire kept showing up, and at every stage we were tempted to think of the wire as
         the protagonist — the thing energy was traveling through.
       </p>
-      <p className="mb-prose-3">
+      <p>
         It wasn't. The field was. The wire was the boundary condition that told the field what shape
         to take, and a place for the field to deposit its energy when there was friction to absorb
         it. Everything else — voltage, current, resistance, induction — is bookkeeping for the
         field's behavior in the space around the conductor. The conductor was never the protagonist.
         The space outside it was.
       </p>
-      <p className="mb-prose-3">That is what electricity actually is.</p>
+      <p>That is what electricity actually is.</p>
 
       <CaseStudies
         intro={

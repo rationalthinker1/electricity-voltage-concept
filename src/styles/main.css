@@ -547,6 +547,19 @@ p {
     @apply font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem];
   }
 
+  /* Chapter narrative paragraph rhythm. ChapterShell wraps the chapter
+     body in .chapter-prose; every top-level narrative <p> is a direct
+     child and gets the loose prose spacing by default — so chapters
+     write bare <p>…</p> instead of repeating className="mb-prose-3" on
+     each one. The :not([class]) guard scopes this to bare paragraphs,
+     so .chapter-intro (drop-cap) and any <p className="…"> override opt
+     out and keep full control of their own spacing. Nested <p> inside
+     Demo / FAQ / CaseStudy / TryIt are not direct children of the
+     wrapper, so the child combinator leaves them untouched. */
+  .chapter-prose > p:not([class]) {
+    @apply mb-prose-3;
+  }
+
   /* Legacy display-equation block (<p className="math">). Used by
      MathBlock in Prose.tsx for plain-text math; <Formula> is the
      preferred path. Class name kept so parent contexts (CaseStudy,

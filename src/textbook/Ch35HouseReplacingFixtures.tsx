@@ -43,7 +43,7 @@ export default function Ch35HouseReplacingFixtures() {
         paint failure; it is a thermal-degradation pattern left by a joint inside the wall that has
         been quietly running hot for half a year.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This is the most common home electrical repair in North America, and it is also the most
         commonly botched. Three failure modes account for almost all of them. The first is not
         verifying the circuit is actually dead before the screw comes loose — the breaker labelled
@@ -73,7 +73,7 @@ export default function Ch35HouseReplacingFixtures() {
 
       <h2 className="chapter-h2">Verify dead. Then verify dead again.</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The single most-skipped step in residential DIY is the second half of a two-step
         verification ritual that every working electrician performs without thinking, because the
         cost of skipping it is paid in milliamps through the chest. NFPA 70E, the workplace
@@ -83,7 +83,7 @@ export default function Ch35HouseReplacingFixtures() {
         and after the measurement on a known live source
         <Cite id="nfpa-70e-2024" in={SOURCES} />. Three steps, not one, and the order matters.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Step one: identify the breaker. With the device still in place and energised, a{' '}
         <Term
           def={
@@ -102,7 +102,7 @@ export default function Ch35HouseReplacingFixtures() {
         directory claims controls this room, return, and confirm the NCVT goes dark. The NCVT is
         doing one job here: confirming the right breaker.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Step two: remove the cover plate and unscrew the device from the box, but do not yet
         disconnect any wires. Pull the device gently forward on its existing terminations so the
         brass and silver screws are visible. Now take a{' '}
@@ -137,7 +137,7 @@ export default function Ch35HouseReplacingFixtures() {
         coupled in from a parallel cable. If the probe stays dark, repeat the test between hot and
         neutral, hot and ground, and neutral and ground; all three pairs should read zero.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Step three: confirm the tester itself works. On the way to the next live receptacle, put the
         two-pole probe across a known hot pair and watch it light up. If it does not, the tester has
         died sometime in the last few minutes and the dead reading on the work was meaningless. This
@@ -146,12 +146,12 @@ export default function Ch35HouseReplacingFixtures() {
         about to put 5 mA through your chest
         <Cite id="nfpa-70e-2024" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Why all this for a 120 V residential circuit? Because the relevant current is the one that
         flows through the body, which is the residual voltage divided by the body's resistance:
       </p>
       <Formula tex="I_{\text{body}} = V_{\text{residual}} / R_{\text{body}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="I_{\text{body}}" />
         is the current that flows through the human standing on the circuit (in amperes),{' '}
         <M tex="V_{\text{residual}}" />
@@ -211,7 +211,7 @@ export default function Ch35HouseReplacingFixtures() {
 
       <h2 className="chapter-h2">The anatomy of a duplex receptacle, inside the box</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Chapter 30 introduced the duplex receptacle from the front: two parallel slots, a ground
         hole, a brass stamping bridging the hots, a silver stamping bridging the neutrals, a green
         stamping tying the ground hole to the mounting strap. Inside the wall box the same device
@@ -235,7 +235,7 @@ export default function Ch35HouseReplacingFixtures() {
         always-on-top outlet, or as a split-feed receptacle with one half on each phase of a
         multi-wire branch circuit.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two ways to land a wire on the terminal screw: a{' '}
         <Term
           def={
@@ -258,7 +258,7 @@ export default function Ch35HouseReplacingFixtures() {
         contact-resistance, and dielectric-withstand performance under cycling
         <Cite id="ul-498" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The NEMA pattern number stamped on the back of the device is worth knowing. A{' '}
         <Term
           def={
@@ -279,7 +279,7 @@ export default function Ch35HouseReplacingFixtures() {
         appliance plug from a 15 A one
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         NEC 406.4(D) governs the replacement case specifically: a receptacle being replaced must be
         of the same type unless the box now contains a grounding means it did not before, in which
         case the new device must be a grounding type, and if the box still lacks a grounding means
@@ -290,7 +290,7 @@ export default function Ch35HouseReplacingFixtures() {
         (by tripping on residual current to ground) while honestly admitting the equipment ground is
         not present.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two more letters often stamped on a modern device:{' '}
         <Term
           def={
@@ -326,7 +326,7 @@ export default function Ch35HouseReplacingFixtures() {
 
       <h2 className="chapter-h2">Why backstabs fail</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Push-in backstab terminations exist because they are fast at the factory and almost-fast at
         the rough-in: strip the wire 5/8 of an inch, jam it into the hole, done. The mechanical
         contact is a tiny piece of leaf-spring brass inside the device that flexes against the
@@ -335,7 +335,7 @@ export default function Ch35HouseReplacingFixtures() {
         <Cite id="ul-498" in={SOURCES} />. Brand-new, the joint works. The problem is what happens
         after a few hundred heat cycles of real residential use.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Every plug-in event runs current through the joint; current heats the joint; the brass
         leaf-spring expands; the joint cools; the spring contracts. Over hundreds of cycles the
         spring loses some of its preload — the elastic modulus of yellow brass is not perfectly
@@ -345,7 +345,7 @@ export default function Ch35HouseReplacingFixtures() {
         the joint at any given current is the runaway:
       </p>
       <Formula tex="P_{\text{joint}} = I^2 R_{\text{contact}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{joint}}" />
         is the power dissipated in the metal-to-metal contact (in watts), <M tex="I" /> is the load
         current passing through the joint (in amperes RMS), and <M tex="R_{\text{contact}}" />
@@ -357,7 +357,7 @@ export default function Ch35HouseReplacingFixtures() {
         backstab whose contact resistance has degraded to 0.05 Ω:
       </p>
       <Formula tex="P_{\text{joint}} = (12)^2 \times 0.05 = 7.2\ \text{W}" />
-      <p className="mb-prose-3">
+      <p>
         Seven watts dissipated in a volume of perhaps a third of a cubic inch, surrounded by
         plastic, with no airflow. The local temperature rises, the brass softens further, the
         contact pressure drops further, the resistance rises further. This is a classic
@@ -365,7 +365,7 @@ export default function Ch35HouseReplacingFixtures() {
         device that smells like burning fish (typical), or an arc-fault inside the wall (worst case,
         which is why NEC has added AFCI requirements to every habitable room — Ch.28).
       </p>
-      <p className="mb-prose-3">
+      <p>
         The fix is mechanical, not subtle.{' '}
         <em className="text-text italic">Never use backstabs on daisy-chained outlets.</em> Instead,
         cut a{' '}
@@ -446,12 +446,12 @@ export default function Ch35HouseReplacingFixtures() {
 
       <h2 className="chapter-h2">Switch leg vs hot leg: diagnosing what is actually in the box</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Open a switch box and what you find depends on which side of the loop the switch sits on and
         what era the house was wired in. Three common arrangements account for almost every
         residential single-pole switch.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The first is the simple{' '}
         <Term
           def={
@@ -484,7 +484,7 @@ export default function Ch35HouseReplacingFixtures() {
         the box unbroken. The reader sees two cables in the box, both with hot, neutral, and ground;
         flipping the switch opens the hot leg of the second cable.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The second is the same arrangement but with the switch at the end of the run: a single 14-2
         cable enters the box and there is no second cable. Both wires of the cable go to the two
         switch terminals, and the fixture sees power only when the switch closes the circuit between
@@ -493,7 +493,7 @@ export default function Ch35HouseReplacingFixtures() {
         <Cite id="nec-2023" in={SOURCES} /> — but in pre-2011 wiring it is common, and it is the
         configuration that makes a smart-switch retrofit hard.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The third is the classic{' '}
         <Term
           def={
@@ -519,7 +519,7 @@ export default function Ch35HouseReplacingFixtures() {
         draw their standby power
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The diagnostic for telling the three apart, with the device removed: turn the breaker
         briefly back on, keeping fingers off all bare conductors, and probe between the cap-wrapped
         pairs with a two-pole probe. If one cap shows 120 V to ground steady, that is the unswitched
@@ -586,7 +586,7 @@ export default function Ch35HouseReplacingFixtures() {
         Replacing a single-pole switch, a three-way, and a smart dimmer
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The simplest replacement is a single-pole switch. After the verify-dead ritual, unscrew the
         device, note which screw landed which colour, transfer the conductors one at a time to the
         new device, and screw it back in. The two brass screws on a single-pole switch are
@@ -596,7 +596,7 @@ export default function Ch35HouseReplacingFixtures() {
         bonded to the box itself by a separate pigtail from the wire-nut bundle (see the next
         section).
       </p>
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <Term
           def={
@@ -646,7 +646,7 @@ export default function Ch35HouseReplacingFixtures() {
         devices. Flipping either switch toggles which traveller is connected to its common, and the
         lamp is on whenever the same traveller is selected at both ends.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The replacement trick: identify the common before unscrewing. On a working three-way the
         common is the screw that is always on one specific conductor — if you measure between any
         pair of brass screws at the old device with power on and the lamp off, the dark-screw
@@ -657,7 +657,7 @@ export default function Ch35HouseReplacingFixtures() {
         either of the two brass screws. Get the common wrong and the switch pair will appear to work
         in one direction but invert the action of the other switch.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <Term
           def={
@@ -679,7 +679,7 @@ export default function Ch35HouseReplacingFixtures() {
         switch — hot to LINE, switch leg to LOAD, ground to ground — with the extra neutral
         pigtailed from the box's neutral splice to the dimmer's neutral lead.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two configuration choices that distinguish a working dimmer from a flickering one. The first
         is dimming mode:{' '}
         <Term
@@ -721,7 +721,7 @@ export default function Ch35HouseReplacingFixtures() {
 
       <h2 className="chapter-h2">Replacing a fixture: paddle fan, recessed can, pendant</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The wiring side of replacing a ceiling fixture is the same as replacing a receptacle —
         verify dead, transfer hot to the black fixture lead, neutral to the white fixture lead,
         ground to the green or bare fixture lead, wire-nut each splice — but the mechanical side is
@@ -742,14 +742,14 @@ export default function Ch35HouseReplacingFixtures() {
         stamped or moulded on the box itself, and NEC Article 314.27 is the section that governs it
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A standard plastic round ceiling box — the kind that comes in a builder's bag — is listed
         for a 30 lb static fixture, no fan
         <Cite id="nec-2023" in={SOURCES} />. That is enough for any ordinary surface-mount lamp,
         most recessed cans (which carry their own housing weight on the joist hangers, not on the
         box), and a modest pendant. Anything heavier or anything that moves needs a different box.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <Term
           def={
@@ -773,14 +773,14 @@ export default function Ch35HouseReplacingFixtures() {
         moving slightly off the axis of the box — fan-rated boxes are commonly tested to 50 lb
         dynamic at 70 rpm.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A heavy pendant chandelier — anything above 30 lb static — needs a box listed for that
         weight, or it needs to be hung from an independent support (a threaded rod into a joist or a
         backing plate) with the box serving only as the wiring chamber. NEC 314.27(A)(2) addresses
         the dead-weight case; the manufacturer's marking on the box tells you the listed limit
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Mechanical fitting parts a DIYer will encounter: the{' '}
         <Term
           def={
@@ -861,7 +861,7 @@ export default function Ch35HouseReplacingFixtures() {
 
       <h2 className="chapter-h2">GFCI replacement and the LINE vs LOAD terminals</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A GFCI receptacle is mechanically a duplex receptacle with extra electronics inside: a small
         differential current transformer wrapped around the hot and neutral conductors, a sense
         amplifier, a TRIP solenoid that opens the internal contacts on command, a TEST button that
@@ -874,7 +874,7 @@ export default function Ch35HouseReplacingFixtures() {
         the separate UL 943 standard)
         <Cite id="ul-498" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The wiring difference from a standard duplex is the pair of terminal sets. A GFCI receptacle
         has two pairs of brass-plus-silver screws, labelled on the back:{' '}
         <Term
@@ -909,7 +909,7 @@ export default function Ch35HouseReplacingFixtures() {
         monitored, and every milliamp returning through the front-face neutral or LOAD neutral is
         monitored. Anything that does not return is residual current and triggers the trip.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Get LINE and LOAD reversed and two things go wrong. First, the differential sensor sits on
         the wrong side of the front-face slots, which means the receptacle's own outlets will trip
         on normal plugged-in loads (any legitimate load on the front face appears as residual
@@ -922,7 +922,7 @@ export default function Ch35HouseReplacingFixtures() {
         refuses to RESET if wired backward — an auto-monitoring requirement of the UL 943 GFCI
         standard.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The TEST button creates a deliberate small residual current — typically by routing a few mA
         from the downstream hot through a calibrated resistor to the upstream neutral, around the
         differential sensor — and watches for the trip to fire. RESET re-closes the internal

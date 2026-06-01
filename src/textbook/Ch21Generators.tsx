@@ -43,7 +43,7 @@ export default function Ch21Generators() {
         synchronous AC motor), reversed: instead of consuming current to make torque, you supply
         torque to make current. Run a motor backwards and you have a generator.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Michael Faraday discovered this in 1831 by sliding a bar magnet through a coil of wire and
         watching a galvanometer needle twitch
         <Cite id="faraday-1832" in={SOURCES} />. From that experiment descends the entire global
@@ -55,7 +55,7 @@ export default function Ch21Generators() {
 
       <h2 className="chapter-h2">Run a motor backwards</h2>
 
-      <p className="mb-prose-3">
+      <p>
         We left the motors chapter with the synchronous motor: a rotor with its own field, locked to
         a rotating stator field, spinning at exactly <M tex="n_s = 120\, f / p" />. The rotor's
         field induces a sinusoidal flux through each stator coil, but a moment of thought reveals
@@ -66,7 +66,7 @@ export default function Ch21Generators() {
         produces voltage on its stator leads instead of consuming voltage from them
         <Cite id="feynman-II-17" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The bedrock physics is{' '}
         <Term def="A time-changing magnetic flux through a closed loop induces an EMF around that loop equal to −dΦ/dt. The minus sign — Lenz's law — ensures that the induced current opposes the change that created it. Source of all electric power generation.">
           Faraday's law of induction
@@ -74,13 +74,13 @@ export default function Ch21Generators() {
         :
       </p>
       <Formula size="lg" id="faraday-law" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\mathcal{E}" /> is the EMF induced around the closed loop (in volts),{' '}
         <M tex="\Phi" /> is the magnetic flux through the loop (in webers, equivalently T·m²), and{' '}
         <M tex="t" /> is time (in seconds). The minus sign — Lenz's law — gives the direction: the
         induced current opposes the change in flux.
       </p>
-      <p className="mb-prose-3">
+      <p>
         For a coil of <M tex="N" /> turns linking flux <M tex="\Phi" />, the EMF is{' '}
         <M tex="-N\, d\Phi/dt" />. The minus sign — Lenz's law — says the induced current flows in
         the direction that opposes the change in flux that created it. In a generator, that
@@ -92,7 +92,7 @@ export default function Ch21Generators() {
 
       <h2 className="chapter-h2">The simple alternator</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Take a single rectangular coil of <M tex="N" /> turns and area <M tex="A" />. Rotate it in a
         uniform magnetic field of magnitude <M tex="B" /> at angular speed <M tex="\omega" />. The
         flux through the coil at angle <M tex="\theta = \omega t" /> is{' '}
@@ -100,14 +100,14 @@ export default function Ch21Generators() {
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula tex="\varepsilon(t) = -N \cdot d\Phi/dt = N B A \omega \sin(\omega t)" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\mathcal{E}(t)" /> is the instantaneous EMF at the coil's terminals (in
         volts), <M tex="N" /> is the number of turns in the coil (dimensionless integer),{' '}
         <M tex="B" /> is the uniform magnetic field magnitude (in tesla), <M tex="A" /> is the area
         enclosed by one turn (in m²), <M tex="\omega = 2\pi f" /> is the angular speed of rotation
         (in rad/s), and <M tex="t" /> is time (in seconds).
       </p>
-      <p className="mb-prose-3">
+      <p>
         A clean sinusoid. Peak amplitude is <M tex="NBA\omega" />; frequency is{' '}
         <M tex="\omega / 2\pi" />. Scale up <M tex="N" />,
         <M tex="B" />, <M tex="A" />, or <M tex="\omega" /> and the output voltage goes up linearly
@@ -121,7 +121,7 @@ export default function Ch21Generators() {
 
       <RotatingCoilGeneratorDemo figure="Fig. 21.1" />
 
-      <p className="mb-prose-3">
+      <p>
         Connect a resistive load across the coil's leads and current flows:{' '}
         <M tex="I = \varepsilon/R" />. Now the current-carrying coil sits in the same field{' '}
         <M tex="B" />, so the wire experiences <M id="force-on-wire" />: a force on each long side,
@@ -169,7 +169,7 @@ export default function Ch21Generators() {
 
       <h2 className="chapter-h2">The 3-phase synchronous generator — workhorse of the grid</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Now scale up. Instead of one stator coil, wind three coils 120° apart around the bore. Each
         coil sees the same rotating rotor flux, but offset by 120° of mechanical (or electrical)
         angle from its neighbours. The three terminal voltages are three sinusoids 120° apart in
@@ -180,7 +180,7 @@ export default function Ch21Generators() {
 
       <SynchronousGeneratorDemo figure="Fig. 21.2" />
 
-      <p className="mb-prose-3">
+      <p>
         This is the{' '}
         <Term def="A generator in which the rotor produces a steady magnetic field (from DC excitation or permanent magnets) and the stator carries the AC output. Rotor and stator field rotate at exactly the same speed — they're 'in synchronism.' The dominant topology for utility generation.">
           synchronous generator
@@ -192,13 +192,13 @@ export default function Ch21Generators() {
         rigidly tied to the rotor's mechanical rotation speed:
       </p>
       <Formula tex="f = (n \cdot p) / 120 \quad (n\ \text{in RPM},\ p = \text{pole count})" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="f" /> is the electrical output frequency (in Hz), <M tex="n" /> is the rotor's
         mechanical rotation speed (in revolutions per minute), and <M tex="p" /> is the machine's
         total pole count (a dimensionless even integer). This is the inverse of the
         synchronous-speed formula from the motors chapter.
       </p>
-      <p className="mb-prose-3">
+      <p>
         At 3600 RPM with 2 poles, <M tex="f = 60\ \text{Hz}" /> — the North American grid frequency.
         At 3000 RPM with 2 poles, <M tex="f = 50\ \text{Hz}" /> — Europe, Asia, Africa. A nuclear or
         large coal turbine, geared so that its turbine wheel runs at exactly synchronous speed,
@@ -206,7 +206,7 @@ export default function Ch21Generators() {
         regulated that precisely
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Capacities range over four orders of magnitude in the same basic topology. A pole-mounted
         diesel genset for a construction trailer might be 30 kW. A gas-turbine peaker, 50 MW. A coal
         or gas combined-cycle unit, 500 MW to 1 GW. A large nuclear unit, 1.0–1.6 GW. The
@@ -245,7 +245,7 @@ export default function Ch21Generators() {
 
       <h2 className="chapter-h2">Excitation, the power angle, and pull-out</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A synchronous generator has two control knobs and one mechanical input. The mechanical input
         is whatever the prime mover is delivering — water through a turbine, steam through a blade
         row, the rotational torque of a diesel engine. The two electrical knobs are the rotor's{' '}
@@ -255,14 +255,14 @@ export default function Ch21Generators() {
         the rotor's flux axis ahead of the grid voltage phasor
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         At no load, <M tex="|E_f|" /> is just the open-circuit terminal voltage: more field current
         produces more flux, more flux produces more EMF, full stop. Connect that generator to a
         stiff grid and the story changes. The grid clamps the terminal voltage at{' '}
         <M tex="|V_{\text{grid}}|" />; the real power transferred is
       </p>
       <Formula tex="P = \dfrac{|V_{\text{grid}}| \cdot |E_f|}{X_s} \cdot \sin\delta" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P" /> is the real (active) power delivered to the grid (in watts, or in
         per-unit on the machine's MVA base), <M tex="|V_{\text{grid}}|" />
         is the magnitude of the grid voltage phasor at the terminals (in volts, or per-unit),{' '}
@@ -273,14 +273,14 @@ export default function Ch21Generators() {
         <M tex="\delta" /> is the load angle — the steady-state phase lead of the rotor flux ahead
         of the grid voltage phasor (in radians).
       </p>
-      <p className="mb-prose-3">The reactive power at the terminal is</p>
+      <p>The reactive power at the terminal is</p>
       <Formula tex="Q = \dfrac{|V_{\text{grid}}| \cdot |E_f|}{X_s} \cdot \cos\delta - \dfrac{|V_{\text{grid}}|^2}{X_s}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="Q" /> is the reactive power delivered by the generator (in VAR, or per-unit;
         positive means the machine sources VARs to the grid), and the remaining symbols carry the
         same meanings as in the real-power equation above.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Increase mechanical input and the rotor pulls ahead of the grid — <M tex="\delta" /> grows
         until <M tex="P" /> matches. Increase field current and <M tex="Q" /> grows: an over-excited
         generator supplies reactive power to the grid (acts like a capacitor); under-excited, it
@@ -291,7 +291,7 @@ export default function Ch21Generators() {
 
       <ExcitationControlDemo figure="Fig. 21.3" />
 
-      <p className="mb-prose-3">
+      <p>
         The power-angle relation <M tex="P \propto \sin\delta" /> has a sharp limit built into it.
         Real power peaks at <M tex="\delta = 90°" /> at a value{' '}
         <M tex="P_{\max} = |V \cdot E_f|/X_s" />, and past that point the rotor cannot transmit any
@@ -348,7 +348,7 @@ export default function Ch21Generators() {
 
       <h2 className="chapter-h2">The alternator under your car hood</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Shrink the synchronous generator by five or six orders of magnitude and you get the
         alternator on every internal-combustion engine. The rotor is a{' '}
         <Term def="A multi-pole rotor with interlocking 'claws' from each end, formed from pressed steel and energised by a single DC field coil in the centre. Cheap to mass-produce; standard in automotive alternators.">
@@ -361,7 +361,7 @@ export default function Ch21Generators() {
         ~2000 RPM, highway cruise near ~5000 RPM. With 6 pole-pairs that lands the electrical
         frequency in the low hundreds of Hz at idle, several hundred Hz at cruise.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three-phase AC at hundreds of Hz isn't useful to a car, which runs all its electrical loads
         off a 14 V DC bus. So the alternator's three phases feed a{' '}
         <em className="text-text italic">three-phase full-wave bridge</em> — six diodes — that
@@ -371,7 +371,7 @@ export default function Ch21Generators() {
 
       <AlternatorDemo figure="Fig. 21.5" />
 
-      <p className="mb-prose-3">
+      <p>
         The rectified output is the <em className="text-text italic">maximum</em> of the three
         phases' rectified envelopes at each instant — six humps per electrical cycle. Ripple is
         naturally small (peak-to-valley ~13 % of peak; ripple factor ~4 % of the DC average for a
@@ -415,7 +415,7 @@ export default function Ch21Generators() {
 
       <h2 className="chapter-h2">Synchronising to the grid</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A generator can't just be plugged into a live grid. The grid is a stiff bus held at exactly
         60.000 Hz by ten thousand other generators all spinning in lock-step; any new generator
         joining the party must already be turning at the right speed, with its phase aligned, before
@@ -423,7 +423,7 @@ export default function Ch21Generators() {
         will flow through its windings and possibly destroy them
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three things must match within tight tolerances at the instant of breaker close (typical
         utility practice, with exact windows set per machine)
         <Cite id="grainger-power-systems-2003" in={SOURCES} />:
@@ -442,7 +442,7 @@ export default function Ch21Generators() {
           terminal voltages must match.
         </li>
       </ul>
-      <p className="mb-prose-3">
+      <p>
         Larger machines also try to match the phase rotation (A-B-C vs A-C-B). Get all four right
         and the breaker closes silently with essentially no transient. Get one of them seriously
         wrong and the windings see a fault-level circulating current — at large machines this can
@@ -451,7 +451,7 @@ export default function Ch21Generators() {
 
       <GridSyncDemo figure="Fig. 21.6" />
 
-      <p className="mb-prose-3">
+      <p>
         Manual synchronisation traditionally uses a{' '}
         <Term def="A small lamp wired across the breaker contacts; its brightness shows the instantaneous voltage difference between the incoming generator and the live bus. Brightens at out-of-phase, goes dark at in-phase. Industrial sync panels still use modern versions of this.">
           synchroscope
@@ -468,7 +468,7 @@ export default function Ch21Generators() {
 
       <h2 className="chapter-h2">Load following: the grid as a real-time market</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Once a generator is on the bus, it has to do its share of the load. And here the grid's
         defining property becomes the controlling constraint:{' '}
         <em className="text-text italic">
@@ -480,7 +480,7 @@ export default function Ch21Generators() {
         microsecond at which a kitchen toaster engages somewhere
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The way that's done is to operate the grid as a layered dispatch stack. At the bottom,{' '}
         <em className="text-text italic">baseload</em>
         generators (nuclear, large coal units) run flat at near-rated output around the clock. Their
@@ -488,7 +488,7 @@ export default function Ch21Generators() {
         a 1 GW nuclear unit up and down on demand), and their startup time is hours. They cover the
         minimum demand the grid sees in the 24-hour cycle.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Above baseload sit the <em className="text-text italic">mid-merit</em> and{' '}
         <em className="text-text italic">peaking</em> generators — combined-cycle gas plants,
         simple-cycle gas turbines, hydroelectric units with reservoir capacity. These can ramp up
@@ -503,7 +503,7 @@ export default function Ch21Generators() {
 
       <LoadFollowingDemo figure="Fig. 21.7" />
 
-      <p className="mb-prose-3">
+      <p>
         Renewables don't fit cleanly into this stack. Wind and solar are dispatched first whenever
         they're available (their marginal fuel cost is zero) but their availability isn't under the
         operator's control — it follows weather, not load. As renewables grow as a fraction of
@@ -519,7 +519,7 @@ export default function Ch21Generators() {
         Every time you flip a switch, ten thousand turbines drift by a fraction of a millihertz.
       </Pullout>
 
-      <p className="mb-prose-3">
+      <p>
         That's literally how the grid balances load and generation in real time. When demand exceeds
         generation, all synchronous machines on the bus slow down imperceptibly — they're
         decelerated by the extra electrical torque on their stators. The grid frequency dips a few
@@ -565,7 +565,7 @@ export default function Ch21Generators() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         How fast that initial frequency excursion proceeds depends entirely on how much rotational
         kinetic energy is actually spinning on the grid. The aggregate dynamics are captured by the{' '}
         <em className="text-text italic">swing equation</em>:{' '}
@@ -580,7 +580,7 @@ export default function Ch21Generators() {
 
       <InertialResponseDemo figure="Fig. 21.8" />
 
-      <p className="mb-prose-3">
+      <p>
         This is the live debate of the 2020s. As coal retires and inverter-based wind, solar, and
         battery storage replace it, the grid loses inertia.{' '}
         <Term def="Algorithms in grid-following or grid-forming inverters that emulate the kinetic-energy release of a spinning rotor by injecting power in proportion to df/dt. Lets battery storage and renewables contribute to inertial response without literal rotating mass.">
@@ -630,7 +630,7 @@ export default function Ch21Generators() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Faraday's <M tex="\mathcal{E} = -d\Phi/dt" /> says that a moving magnet in a coil makes
         voltage. Wrap that into the rotational geometry of the motors chapter, drive the rotor
         mechanically instead of electrically, and you get a generator — the inverse of every machine
@@ -643,7 +643,7 @@ export default function Ch21Generators() {
         generation exceeds load, they speed up. Ten thousand machines scattered across a continent,
         all spinning at exactly the same electrical rate, indefinitely.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Next chapter: the chemistry of the battery, which sits across the grid as a buffer (and
         across your phone as the whole power supply).
       </p>

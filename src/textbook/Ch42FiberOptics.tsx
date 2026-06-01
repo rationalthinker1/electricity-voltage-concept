@@ -33,7 +33,7 @@ export default function Ch42FiberOptics() {
         load of millions of households at once, and it does it by trapping infrared light through
         one trick of geometry: the angle the light strikes the glass wall is too shallow to escape.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This chapter walks the physics from that one trick —{' '}
         <Term
           def={
@@ -55,7 +55,7 @@ export default function Ch42FiberOptics() {
       </p>
 
       <h2 className="chapter-h2">The one trick: total internal reflection</h2>
-      <p className="mb-prose-3">
+      <p>
         Light slows down when it enters glass. The ratio between the speed of light in vacuum and
         the speed in the medium is the medium's{' '}
         <Term
@@ -74,7 +74,7 @@ export default function Ch42FiberOptics() {
         <Cite id="hecht-2017" in={SOURCES} />:
       </p>
       <Formula size="lg" id="snells-law" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="n_1" /> and <M tex="n_2" /> are the refractive indices of the two media,{' '}
         <M tex="\theta_1" /> is the angle of the incoming ray to the surface normal (in radians or
         degrees), and <M tex="\theta_2" /> is the angle of the refracted ray on the other side. When
@@ -97,7 +97,7 @@ export default function Ch42FiberOptics() {
         <Cite id="born-wolf-1999" in={SOURCES} />:
       </p>
       <Formula tex="\sin\theta_c = n_2 / n_1" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\theta_c" /> is the critical angle measured from the surface normal,{' '}
         <M tex="n_1" /> is the refractive index of the denser medium the light is travelling in, and{' '}
         <M tex="n_2" />
@@ -113,7 +113,7 @@ export default function Ch42FiberOptics() {
 
       <FiberOpticDemo figure="Fig. 42.1" />
 
-      <p className="mb-prose-3">
+      <p>
         It comes down to a single threshold: below the critical angle a ray zig-zags down the fiber
         by total internal reflection; above it, the ray refracts into the cladding and is lost. The
         whole modern telecom industry rests on staying on the right side of that line.
@@ -126,7 +126,7 @@ export default function Ch42FiberOptics() {
       </Pullout>
 
       <h2 className="chapter-h2">Numerical aperture and the acceptance cone</h2>
-      <p className="mb-prose-3">
+      <p>
         A fiber doesn't accept light from every angle. Only rays entering the front face within a
         narrow cone get bent enough at the air–core interface to subsequently satisfy the TIR
         condition at the core–cladding wall. That cone's half-angle is the fiber's{' '}
@@ -146,7 +146,7 @@ export default function Ch42FiberOptics() {
         <Cite id="agrawal-2010" in={SOURCES} />:
       </p>
       <Formula tex="NA = \sqrt{n_{\text{core}}^2 - n_{\text{clad}}^2}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="NA" /> is dimensionless, <M tex="n_{\text{core}}" /> and{' '}
         <M tex="n_{\text{clad}}" /> are the refractive indices of the core and the surrounding
         cladding. The half-angle of the acceptance cone in air is then{' '}
@@ -156,7 +156,7 @@ export default function Ch42FiberOptics() {
         sources easier
         <Cite id="saleh-teich-2007" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The tradeoff is severe. A larger NA admits more rays — easier coupling — but those extra
         rays travel at different angles to the axis, so they cover different path lengths to the
         receiver. A ray bouncing at the maximum NA-allowed angle traverses a longer zig-zag than a
@@ -203,7 +203,7 @@ export default function Ch42FiberOptics() {
       />
 
       <h2 className="chapter-h2">Single-mode versus multimode: the V parameter</h2>
-      <p className="mb-prose-3">
+      <p>
         How small does the core need to be to admit only one transverse mode? The cutoff is governed
         by a single dimensionless number, the{' '}
         <Term
@@ -221,7 +221,7 @@ export default function Ch42FiberOptics() {
         <Cite id="saleh-teich-2007" in={SOURCES} />:
       </p>
       <Formula tex="V = (2\pi a / \lambda) \cdot NA" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="a" /> is the core radius (metres), <M tex="\lambda" /> the free-space
         wavelength (metres), and <M tex="NA" /> the numerical aperture. For a step-index fiber, only
         the lowest-order LP₀₁ mode propagates when <M tex="V < 2.405" /> (the first zero of the
@@ -262,7 +262,7 @@ export default function Ch42FiberOptics() {
       />
 
       <h2 className="chapter-h2">Loss: why 1550 nm won</h2>
-      <p className="mb-prose-3">
+      <p>
         The other dimension of the problem is attenuation. A real fiber doesn't carry light
         losslessly — it has{' '}
         <Term
@@ -303,7 +303,7 @@ export default function Ch42FiberOptics() {
 
       <FiberAttenuationDemo figure="Fig. 42.2" />
 
-      <p className="mb-prose-3">
+      <p>
         The story before 1979 was very different. Bulk silica in 1960 had attenuation of about{' '}
         <strong className="text-text font-medium">1000 dB/km</strong> — roughly a doubling every 3
         metres — and was useless for communication. In 1966, Charles Kao at Standard
@@ -317,7 +317,7 @@ export default function Ch42FiberOptics() {
       </p>
 
       <h3 className="chapter-h3">The two standard windows</h3>
-      <p className="mb-prose-3">
+      <p>
         Two operating wavelengths dominate practical deployments
         <Cite id="agrawal-2010" in={SOURCES} />:
       </p>
@@ -342,7 +342,7 @@ export default function Ch42FiberOptics() {
       </ul>
 
       <h2 className="chapter-h2">The link budget</h2>
-      <p className="mb-prose-3">
+      <p>
         Once you know the launch power, the fiber loss per kilometre, and the receiver sensitivity,
         the reach of a fiber link reduces to one subtraction. Powers in fiber optics are quoted in{' '}
         <Term
@@ -359,7 +359,7 @@ export default function Ch42FiberOptics() {
         precisely so that this subtraction is the natural arithmetic:
       </p>
       <Formula tex="P_{\text{rx}} = P_{\text{tx}} - L_{\text{connectors}} - \alpha \cdot L" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{rx}}" /> is the power arriving at the receiver (dBm),{' '}
         <M tex="P_{\text{tx}}" /> is the power launched by the transmitter (dBm),{' '}
         <M tex="L_{\text{connectors}}" /> is the total connector + splice loss in the link (dB),{' '}
@@ -413,7 +413,7 @@ export default function Ch42FiberOptics() {
       />
 
       <h2 className="chapter-h2">Dispersion: the bandwidth limit</h2>
-      <p className="mb-prose-3">
+      <p>
         Loss caps the <em className="text-text italic">reach</em> of a link;{' '}
         <Term
           def={
@@ -448,7 +448,7 @@ export default function Ch42FiberOptics() {
           <Cite id="agrawal-2010" in={SOURCES} />.
         </li>
       </ul>
-      <p className="mb-prose-3">
+      <p>
         The pulse broadening from chromatic dispersion is{' '}
         <M tex="\Delta t = D \cdot \Delta\lambda \cdot L" />, where <M tex="\Delta t" /> is the
         pulse-spread in picoseconds, <M tex="D" /> the dispersion coefficient (ps/nm·km),{' '}
@@ -460,7 +460,7 @@ export default function Ch42FiberOptics() {
       </p>
 
       <h2 className="chapter-h2">WDM, EDFAs, and the petabit pipe</h2>
-      <p className="mb-prose-3">
+      <p>
         A single 100 G channel running at 1550 nm uses about 50 GHz of optical bandwidth. The C-band
         (1530–1565 nm) is about 4 THz wide — enough room for{' '}
         <strong className="text-text font-medium">80–96 channels</strong> on the ITU-T G.694.1 grid
@@ -495,7 +495,7 @@ export default function Ch42FiberOptics() {
         every 80 km lifts the whole comb back to launch power without ever converting to electronics
         <Cite id="desurvire-1987" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Multiply: 96 channels × 100 Gb/s ={' '}
         <strong className="text-text font-medium">9.6 Tb/s</strong> per fiber. A typical submarine
         cable contains 8–24 fibers, so a single cable carries{' '}

@@ -41,7 +41,7 @@ export default function Ch34HousePlugToChip() {
         converters and on-die regulators to the 0.8 V rail that powers the M3's core
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This is the textbook integrating itself on a single device. Every other chapter has
         introduced one piece of the chain — the diode (Ch.14), the MOSFET (Ch.14), the transformer
         (Ch.23), the bulk capacitor (Ch.5), the buck converter (Ch.24), the rectifier (Ch.24), the
@@ -55,7 +55,7 @@ export default function Ch34HousePlugToChip() {
         Stage 1: AC mains to a <em>bridge-rectified pulse train</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The first thing inside the charger is a{' '}
         <Term
           def={
@@ -77,7 +77,7 @@ export default function Ch34HousePlugToChip() {
         gets flipped right-side-up; both halves now drive the load in the same direction
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         On the time-domain output, the bridge produces a sequence of positive half-sinusoid humps at{' '}
         <strong className="text-text font-medium">twice</strong> the line frequency — 120 Hz from a
         60 Hz mains, 100 Hz from a 50 Hz mains. The peak of each hump is not 120 V but the peak of
@@ -86,7 +86,7 @@ export default function Ch34HousePlugToChip() {
       <Formula>
         V<sub>peak</sub> = √2 · V<sub>rms</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{peak}}" />
         is the instantaneous peak voltage of the rectified pulse train (in volts), and{' '}
         <M tex="V_{\text{rms}}" />
@@ -98,7 +98,7 @@ export default function Ch34HousePlugToChip() {
         European mains, V<sub>peak</sub> ≈ 325 V. Every component on the DC side of the bridge has
         to be rated to survive that peak, not the RMS.
       </p>
-      <p className="mb-prose-3">
+      <p>
         At this stage the output is correctly polarised but utterly unfit for a digital load: the
         voltage swings from 0 V to 170 V and back twice every line cycle. Stage 2 fixes that.
       </p>
@@ -107,7 +107,7 @@ export default function Ch34HousePlugToChip() {
         Stage 2: Pulse train to <em>bulk DC</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Strap a big capacitor across the bridge's output terminals and the picture changes. The
         capacitor charges to the peak of each hump on the way up and then holds the voltage near the
         peak while the next hump climbs back. The argument is exactly the RC discharge from Ch.5 and
@@ -132,7 +132,7 @@ export default function Ch34HousePlugToChip() {
       <Formula>
         ΔV<sub>ripple</sub> ≈ I<sub>load</sub> / (2 · f<sub>line</sub> · C)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\Delta V_{\text{ripple}}" />
         is the peak-to-peak ripple voltage left on top of the DC bus (in volts),{' '}
         <M tex="I_{\text{load}}" />
@@ -143,7 +143,7 @@ export default function Ch34HousePlugToChip() {
         the cap only has to hold up the load for half a cycle between recharges
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         For a 30 W laptop being charged through a flyback-side draw of roughly 0.2 A on the 170 V
         bus, a 220 µF bulk cap gives ΔV<sub>ripple</sub> ≈ 0.2 / (2 · 60 · 220×10⁻⁶) ≈ 7.6 V — small
         enough on top of a 170 V baseline that the downstream stage barely notices. (Push the load
@@ -189,7 +189,7 @@ export default function Ch34HousePlugToChip() {
         Stage 3: <em>Chopping</em> the bulk DC at 100 kHz
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Now comes the move that made modern chargers small. The flat 170 V bus from stage 2 is
         chopped on and off by a high-side{' '}
         <Term
@@ -225,7 +225,7 @@ export default function Ch34HousePlugToChip() {
         electrical, and it justifies the entire architecture of every modern AC-DC supply
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The next stage, stage 4, is a transformer. The volume of magnetic core a transformer needs
         to handle a given power scales as <M tex="1/f" /> for the operating frequency. Run the
         transformer at 60 Hz — the mains frequency — and you need a brick-sized lump of laminated
@@ -240,7 +240,7 @@ export default function Ch34HousePlugToChip() {
       <Formula>
         P<sub>avg</sub> = (1/2) · L<sub>p</sub> · I<sub>peak</sub>² · f<sub>switching</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{avg}}" />
         is the average power transferred through the flyback transformer (in watts), <M tex="L_p" />
         is the primary-side inductance of the transformer (in henries; typically 0.5 to 2 mH for a
@@ -251,7 +251,7 @@ export default function Ch34HousePlugToChip() {
         inductance, <M>(1/2) L I²</M>, delivered once per switching cycle
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Plug in numbers: L<sub>p</sub> = 1 mH, I<sub>peak</sub> = 2 A, f<sub>switching</sub> = 100
         kHz, and P<sub>avg</sub> = 0.5 · 10⁻³ · 4 · 10⁵ = 200 W maximum. A 30 W charger uses roughly
         15 % of this headroom; an 100 W laptop brick uses half of it. The engineering art is
@@ -264,7 +264,7 @@ export default function Ch34HousePlugToChip() {
         Stage 4: <em>Transformer step-down</em> with galvanic isolation
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Stage 4 is where the chopped primary current crosses over to the safe side of the charger.
         The flyback transformer — two coils wound on the same ferrite core, sharing no electrical
         connection — is the topic of Ch.22 (mutual inductance and the dot convention) and Ch.23 (the
@@ -274,13 +274,13 @@ export default function Ch34HousePlugToChip() {
         through the secondary winding
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The voltage and current ratios are the ideal-transformer pair from Ch.23, restated:
       </p>
       <Formula>
         V<sub>s</sub> = V<sub>p</sub> · (N<sub>s</sub> / N<sub>p</sub>)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_p" />
         is the primary-side voltage (here, the bulk-bus voltage chopped against ground; in volts),{' '}
         <M tex="V_s" />
@@ -293,7 +293,7 @@ export default function Ch34HousePlugToChip() {
       <Formula>
         I<sub>s</sub> = I<sub>p</sub> · (N<sub>p</sub> / N<sub>s</sub>)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="I_p" />
         is the primary winding current (in amperes), <M tex="I_s" />
         is the secondary winding current (in amperes), and the turns counts are as defined above.
@@ -302,14 +302,14 @@ export default function Ch34HousePlugToChip() {
         (ideal case)
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         For a 170 V bulk bus and a desired 20 V output, a turns ratio of N<sub>p</sub>/N<sub>s</sub>{' '}
         ≈ 8 puts the secondary peak at roughly 21 V — close enough that the downstream feedback loop
         can pull it to exactly 20 V by trimming the duty cycle. The current ratio runs the other
         way: 1 A out on the secondary means 0.125 A in on the primary. The numbers are nicely
         matched to the diode and MOSFET ratings.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The second job of the transformer is more important than the voltage step-down:{' '}
         <Term
           def={
@@ -381,7 +381,7 @@ export default function Ch34HousePlugToChip() {
         Stage 5: Secondary AC to a <em>20 V DC bus</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The secondary winding hands off a sequence of high-current, low-voltage pulses at the
         switching frequency. Stage 5 turns those pulses into clean 20 V DC at the charger's USB-C
         cable. The pieces are the same two from stages 1 and 2 — a rectifier and a smoothing
@@ -389,7 +389,7 @@ export default function Ch34HousePlugToChip() {
         to 100 kHz
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         First, the rectifier. A standard silicon p-n diode (Ch.14) drops about 0.7 V and has a
         reverse-recovery tail of tens of nanoseconds — long enough to be a substantial fraction of a
         10 µs switching cycle and to waste real energy on every transition. The fix is the{' '}
@@ -412,7 +412,7 @@ export default function Ch34HousePlugToChip() {
         <Cite id="horowitz-hill-2015" in={SOURCES} />. On a 20 V output the 0.3 V Schottky drop
         costs 1.5 % efficiency; a 0.7 V silicon drop would cost 3.5 %.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Second, the output capacitor — typically a few hundred microfarads of low-ESR polymer or
         ceramic — smooths the rectified pulses into flat DC. Because the rectifier fires at 100 kHz
         rather than 120 Hz, the ripple equation from stage 2 says the required capacitance for a
@@ -420,14 +420,14 @@ export default function Ch34HousePlugToChip() {
         that wanted a 220 µF electrolytic on the bulk side needs less than 0.3 µF on the output
         side. That collapse is the second part of why modern chargers are small.
       </p>
-      <p className="mb-prose-3">
+      <p>
         End-to-end charger efficiency is the ratio of the useful output power to the line input
         power:
       </p>
       <Formula>
         η<sub>charger</sub> = V<sub>s</sub> · I<sub>s</sub> / (V<sub>in</sub> · I<sub>in</sub>)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\eta_{\text{charger}}" /> is the end-to-end efficiency (dimensionless, a
         fraction between 0 and 1), <M tex="V_s, I_s" />
         are the output voltage and current delivered at the USB-C cable (in volts and amperes; for a
@@ -491,7 +491,7 @@ export default function Ch34HousePlugToChip() {
         Stage 6: <em>USB-PD negotiation</em> on the cable
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Stage 6 is not a power conversion at all. It is a digital negotiation. Between the charger
         and the laptop runs a USB-C cable with twenty-four conductors, two of which — the{' '}
         <Term
@@ -539,7 +539,7 @@ export default function Ch34HousePlugToChip() {
         it can deliver; the two sides settle on one and the charger's secondary-side regulator
         slides to that voltage.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The standard profiles below 100 W are 5 V, 9 V, 12 V, 15 V, and 20 V, each at currents up to
         5 A. The extended-power-range (EPR) profiles add 28 V, 36 V, and 48 V — and at 48 V × 5 A =
         240 W the protocol reaches its current upper bound
@@ -551,7 +551,7 @@ export default function Ch34HousePlugToChip() {
         <Cite id="usb-pd-r3" in={SOURCES} />
         .)
       </p>
-      <p className="mb-prose-3">
+      <p>
         The practical consequence: by the time the laptop pulls real current through the cable, the
         charger's output has slewed from its default 5 V up to the negotiated 20 V, and the laptop's
         input-side circuitry knows exactly what to expect. Without USB-PD, the charger would either
@@ -598,7 +598,7 @@ export default function Ch34HousePlugToChip() {
         Stage 7: <em>20 V to the chip rails</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Stage 7 is the longest and most layered. The 20 V DC that arrived through the USB-C cable
         has to be walked down to a sequence of progressively lower voltages: 5 V for the USB
         peripherals and the Wi-Fi radio; 3.3 V for the SSD and the legacy logic islands; 1.8 V for
@@ -622,7 +622,7 @@ export default function Ch34HousePlugToChip() {
       <Formula>
         V<sub>out</sub> = D · V<sub>in</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{out}}" />
         is the regulated output rail (in volts), <M tex="V_{\text{in}}" />
         is the buck's input voltage (in volts; for the first stage of stage 7, V<sub>in</sub> = 20
@@ -646,7 +646,7 @@ export default function Ch34HousePlugToChip() {
         practice, the conversion is broken into two stages (20 V → 5 V → 0.8 V) so neither buck has
         to switch with extreme precision.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The very last drop, from the buck's nominal 1.1 V down to the CPU core's actual 0.8 V, is
         usually handled by an on-die{' '}
         <Term
@@ -698,7 +698,7 @@ export default function Ch34HousePlugToChip() {
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The M3 die — about <strong className="text-text font-medium">146 mm²</strong> of TSMC 3 nm
         silicon — carries around{' '}
         <strong className="text-text font-medium">twenty-five billion transistors</strong>,
@@ -751,7 +751,7 @@ export default function Ch34HousePlugToChip() {
       />
 
       <h2 className="chapter-h2">What we have built</h2>
-      <p className="mb-prose-3">
+      <p>
         Seven stages, six intermediate voltages, and every component you can name from this
         textbook. Stage 1 is four diodes from Ch.14 in the rectifier topology of Ch.24. Stage 2 is
         the capacitor of Ch.5 used as the RC smoother of Ch.12 and the bulk reservoir of Ch.24.
@@ -766,7 +766,7 @@ export default function Ch34HousePlugToChip() {
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />
         <Cite id="sedra-smith-2014" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That is the textbook. Twenty-six chapters of physics and seven chapters of applied practice
         fold themselves up into a cable between a wall socket and a laptop. Every equation you
         learned from charge and field through Maxwell through impedance through rectifiers is doing

@@ -49,7 +49,7 @@ export default function Ch5Capacitors() {
         the bus that the engineer hopes one day will replace your morning coffee with regenerative
         braking.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This chapter is about why the capacitor works the way it does. We will build one up from
         scratch, one electron at a time, and watch three things happen in lockstep: the voltage
         rises linearly with charge; the energy stored climbs quadratically; and the energy itself
@@ -62,7 +62,7 @@ export default function Ch5Capacitors() {
 
       <h2 className="chapter-h2">The simplest device in all of electronics</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Two plates. A gap between them. Push positive charge onto one plate by any means at hand — a
         battery, a friction wheel, a chemistry textbook — and the other plate immediately rearranges
         its free electrons so that an equal and opposite charge migrates to its facing surface
@@ -74,7 +74,7 @@ export default function Ch5Capacitors() {
         </Term>{' '}
         represents stored energy. That's it. That's a capacitor.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Most of the capacitors in your life are wound, stacked, or printed versions of this same
         idea. A modern ceramic chip capacitor is a sandwich of dozens of metallised layers laminated
         together; an{' '}
@@ -88,14 +88,14 @@ export default function Ch5Capacitors() {
 
       <h2 className="chapter-h2">Building one charge at a time</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Start with two neutral plates, separated by a small gap of vacuum. Take exactly one electron
         from the bottom plate and move it to the top plate. Now the top plate carries one unit of
         negative charge, the bottom one unit of positive, and a faint field exists in the gap. The
         work you did was essentially zero — you were starting from a flat potential landscape, and
         the first electron didn't have to push against anything to get across.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Move a second electron from bottom to top. <em className="text-text italic">This</em> one
         costs work. The field set up by the first electron points from the bottom plate (now
         slightly positive) to the top plate (now slightly negative), and the second electron, which
@@ -107,7 +107,7 @@ export default function Ch5Capacitors() {
 
       <BuildACapacitorDemo figure="Fig. 5.1" />
 
-      <p className="mb-prose-3">
+      <p>
         That linear growth in the cost-per-charge is the whole story of the capacitor in one
         sentence. The voltage between the plates — the work per coulomb required to move test charge
         from one to the other — grows in lockstep with the amount of charge already there. Double
@@ -118,7 +118,7 @@ export default function Ch5Capacitors() {
 
       <h2 className="chapter-h2">V = Q / C: a linear relationship</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Alessandro Volta gave the device its first proper definition in 1782, in a paper to the
         Royal Society. He observed that the charge a body could hold was proportional to the
         potential difference applied to it, and called the constant of proportionality the body's{' '}
@@ -131,7 +131,7 @@ export default function Ch5Capacitors() {
       </p>
 
       <h3 className="chapter-h3">Intuition: how much charge fits per volt</h3>
-      <p className="mb-prose-3">
+      <p>
         Before any equation, the picture: capacitance is the size of the bucket. Push a volt across
         the gap and some amount of charge piles up on the plates. Push two volts and twice as much
         fits. The capacitor's <em className="text-text italic">capacity</em> is how steeply that
@@ -143,7 +143,7 @@ export default function Ch5Capacitors() {
       </p>
 
       <h3 className="chapter-h3">Formal: charge divided by potential</h3>
-      <p className="mb-prose-3">
+      <p>
         At the field-theoretic level, capacitance is defined as the ratio of the charge on a
         conductor to the resulting potential difference between it and a chosen reference (the other
         plate, or infinity). The potential itself is the line integral of the electric field across
@@ -153,7 +153,7 @@ export default function Ch5Capacitors() {
         size="lg"
         tex="C \;\equiv\; \dfrac{Q}{V}, \qquad V \;=\; -\!\!\int_{-}^{+}\!\! \mathbf{E}\cdot d\boldsymbol{\ell}"
       />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="Q" /> is the magnitude of the charge stored on one conductor (in coulombs),{' '}
         <M tex="V" /> is the resulting potential difference (in volts), <M tex="E" /> is the
         electric field in the gap (in V/m), and the integral runs from the negative to the positive
@@ -164,11 +164,11 @@ export default function Ch5Capacitors() {
       </p>
 
       <h3 className="chapter-h3">Operational: Q = CV</h3>
-      <p className="mb-prose-3">
+      <p>
         For working with circuits the form you reach for is the rearrangement
       </p>
       <Formula size="lg" tex="Q = CV" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="Q" /> is the magnitude of charge on each plate (in coulombs; the two plates
         carry +Q and −Q), <M tex="V" /> is the voltage across the gap (in volts), and <M tex="C" />{' '}
         is the capacitance — measured in{' '}
@@ -179,7 +179,7 @@ export default function Ch5Capacitors() {
       </p>
 
       <h3 className="chapter-h3">Special case: parallel-plate geometry</h3>
-      <p className="mb-prose-3">
+      <p>
         For an idealised pair of{' '}
         <Term def="The textbook capacitor geometry: two flat conductors of area A separated by a thin gap d, with C = ε₀εᵣA/d. The basis for almost every capacitance calculation.">
           parallel-plate
@@ -191,7 +191,7 @@ export default function Ch5Capacitors() {
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="C = \dfrac{\varepsilon_0 A}{d}" />
-      <p className="mb-prose-3">
+      <p>
         Capacitance is geometry. More area, more capacity. Less gap, more capacity. (And no
         surprise: a wider plate has more room to spread charge thinly; a smaller gap means a given
         charge separation produces a smaller voltage.) Slide a non-conducting material — a{' '}
@@ -207,7 +207,7 @@ export default function Ch5Capacitors() {
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
       <Formula size="lg" tex="C = \dfrac{\varepsilon_0 \varepsilon_r A}{d}" />
-      <p className="mb-prose-3">
+      <p>
         Same geometry rule, now with the dielectric factor folded in: εᵣ is the relative
         permittivity of the material in the gap (dimensionless; vacuum recovers εᵣ = 1 and the
         previous form). The other symbols are unchanged.
@@ -219,7 +219,7 @@ export default function Ch5Capacitors() {
 
       <ParallelPlate3DDemo figure="Fig. 5.4" />
 
-      <p className="mb-prose-3">
+      <p>
         The 3D view above makes the underlying picture geometrical. The surface-charge density{' '}
         <M tex="\sigma = Q/A" /> sits on the inner faces of the two plates as equal and opposite
         sheets; between them, the field is the same everywhere — uniform in magnitude and direction
@@ -263,7 +263,7 @@ export default function Ch5Capacitors() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         The constant <M tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" />
         <Cite id="codata-2018" in={SOURCES} /> is so small that real-world capacitors live in the
         picofarad-to-millifarad range. Two metal plates of 1 cm² area held 1 mm apart in vacuum give{' '}
@@ -278,7 +278,7 @@ export default function Ch5Capacitors() {
         Why the work to add the N<sup>th</sup> charge is q·V(N−1)
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Imagine the capacitor at some intermediate state, with charge <M tex="q" /> already on its
         plates and voltage <M tex="v = q/C" /> across them. To move one more coulomb's worth of
         charge — a tiny <M tex="dq" /> — from the negative plate to the positive plate, you have to
@@ -287,7 +287,7 @@ export default function Ch5Capacitors() {
         <M tex="\delta q \cdot v" />, which is to say <M tex="\delta q \cdot q / C" /> —
         proportional to how full the cap already is.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A worked example. Suppose you have a 10 µF capacitor that already carries 100 µC of charge,
         so V = Q/C = 10 V. Adding another 1 nC costs about{' '}
         <strong className="text-text font-medium">10⁻⁸ J</strong>. Adding 1 nC to a completely empty
@@ -328,7 +328,7 @@ export default function Ch5Capacitors() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         This is also why the capacitor is the cleanest physical model of the
         running-out-of-easy-wins phenomenon — the more you've put in, the harder the next addition.
         It is the single-line summary of why charging takes work, why discharging gives the work
@@ -337,7 +337,7 @@ export default function Ch5Capacitors() {
 
       <h2 className="chapter-h2">Where the energy goes</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Sum the work from empty to full charge: integrate <M tex="v(q)\cdot dq" /> from 0 to Q, with
         v = q/C.
       </p>
@@ -345,7 +345,7 @@ export default function Ch5Capacitors() {
         size="lg"
         tex="U = \int_0^Q \dfrac{q}{C}\, dq = \dfrac{Q^2}{2C} = \tfrac{1}{2} C V^2"
       />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="U" /> is the total energy stored in the capacitor (in joules), <M tex="Q" />{' '}
         is the final charge on each plate (in coulombs), <M tex="V = Q/C" /> is the final voltage
         across it (in volts), <M tex="C" /> is the capacitance (in farads), and the dummy variable{' '}
@@ -357,7 +357,7 @@ export default function Ch5Capacitors() {
         (final V). The first electron crossed when V was zero; the last electron crossed when V was
         at its maximum; on average the cost per charge was V/2.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Now the more interesting question: <em className="text-text italic">where</em> is that
         energy? Not on the plates themselves — the plates are still perfect equilibrium conductors
         with the same total charge they always had (zero, net). The energy is in the gap, in the
@@ -368,7 +368,7 @@ export default function Ch5Capacitors() {
       <Formula>
         u<sub>E</sub> = ½ ε₀ ε<sub>r</sub> E²
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="u_E" />
         is the electric-field energy per unit volume (in J/m³),{' '}
         <M tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" /> is the vacuum
@@ -380,7 +380,7 @@ export default function Ch5Capacitors() {
 
       <EnergyDensityExplorerDemo figure="Fig. 5.6" />
 
-      <p className="mb-prose-3">
+      <p>
         Multiply this density by the gap volume <M tex="A \cdot d" /> for an idealised
         parallel-plate cap and you recover exactly <M tex="\tfrac{1}{2}CV^2" />. The two answers —
         the integrated work and the field-volume integral — are the same number, computed two
@@ -428,7 +428,7 @@ export default function Ch5Capacitors() {
 
       <h2 className="chapter-h2">Charging through a resistor — the RC curve</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Connect a capacitor in series with a resistor R to a battery of voltage V₀, and close the
         switch. The result is the canonical{' '}
         <Term def="A capacitor and resistor in series, the simplest first-order linear circuit. Its time response is governed by the time constant τ = RC.">
@@ -441,7 +441,7 @@ export default function Ch5Capacitors() {
         <Cite id="horowitz-hill-2015" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="V_C(t) = V_0 \left(1 - e^{-t/RC}\right)" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_C(t)" />
         is the voltage across the capacitor as a function of time (in volts), <M tex="V_0" />
         is the (constant) source/battery voltage (in volts), <M tex="t" /> is time elapsed since the
@@ -479,7 +479,7 @@ export default function Ch5Capacitors() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         The product <M tex="\tau = RC" /> is the{' '}
         <Term def="τ = RC. The characteristic time for an RC circuit to respond — V_C reaches (1 − 1/e) ≈ 63% of its final value in one τ, and 99.3% by 5τ.">
           time constant
@@ -490,7 +490,7 @@ export default function Ch5Capacitors() {
         linear filter, and the small-signal time response of every analog-electronics building
         block.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Practical aside: τ doesn't care whether R or C is the "big" one — it depends only on their
         product. A 1 MΩ resistor with a 1 µF cap and a 1 kΩ resistor with a 1 mF cap both have τ = 1
         second. The shape of the curve is invariant; only the timescale changes. That timescale is
@@ -499,7 +499,7 @@ export default function Ch5Capacitors() {
 
       <h2 className="chapter-h2">From Leyden jars to your phone</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The first capacitor — a{' '}
         <Term def="The first practical capacitor (1745–1746). A glass jar lined inside and outside with metal foil, the glass acting as a dielectric between two effective 'plates.' Named after Leiden, where Pieter van Musschenbroek's painful version of it was famous.">
           Leyden jar
@@ -517,7 +517,7 @@ export default function Ch5Capacitors() {
 
       <LeydenJarReplayDemo figure="Fig. 5.8" />
 
-      <p className="mb-prose-3">
+      <p>
         Volta named the property in 1782
         <Cite id="volta-1782" in={SOURCES} />. A century of refinement turned the leaky glass jar
         into the wax-paper capacitors of the radio era, then the polyester and ceramic capacitors of
@@ -535,7 +535,7 @@ export default function Ch5Capacitors() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A capacitor is two conductors separated by an insulator. Push charge onto one and induce an
         equal and opposite charge on the other; the gap fills with a uniform field. The voltage
         rises linearly with the charge; the energy stored rises quadratically. That energy is not on
@@ -547,7 +547,7 @@ export default function Ch5Capacitors() {
         </M>
         .
       </p>
-      <p className="mb-prose-3">
+      <p>
         Next chapter: the rotational half of the story. Currents — moving charges — make magnetic
         fields, and the magnetic field will turn out to be electricity viewed from a moving frame.
         The plates and the gap will reappear later when we ask where the energy actually{' '}

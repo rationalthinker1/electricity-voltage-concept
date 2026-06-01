@@ -72,7 +72,7 @@ export default function Ch27HouseGridArrives() {
         single cable that arcs across the street, droops gently under its own weight, and terminates
         at the eave of a house.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That barrel is the last piece of utility hardware between the grid and you. The three wires
         leaving it are a{' '}
         <strong className="text-text font-medium">240 V split-phase service</strong>: two hot legs
@@ -88,7 +88,7 @@ export default function Ch27HouseGridArrives() {
         The <em>pole-pig</em>: 7,200 V down to 240 V
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The barrel on the pole is a{' '}
         <Term
           def={
@@ -129,7 +129,7 @@ export default function Ch27HouseGridArrives() {
         : a third wire is brought out at the electrical midpoint of the coil, and that wire becomes
         the neutral of the customer's service.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Geometry does the work. The two ends of the secondary winding are wound in the same sense
         around the core, so the voltages at the two ends — measured against the centre tap — are{' '}
         <em className="text-text italic">equal in magnitude</em> but
@@ -141,7 +141,7 @@ export default function Ch27HouseGridArrives() {
         grounded midpoint
         <Cite id="ansi-c84-1-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The transformer itself is just a Chapter-23 transformer with k near 1 and a turns ratio
         chosen to land the secondary at the right voltage. The primary-to-half-secondary ratio is
         roughly <M tex="7200/120 = 60:1" />, and the full-secondary ratio is{' '}
@@ -158,7 +158,7 @@ export default function Ch27HouseGridArrives() {
         Everything between the pole-pig and your meter belongs to the utility. Everything between
         the meter and your laptop is on you.
       </Pullout>
-      <p className="mb-prose-3">
+      <p>
         The deeper physics of how the iron core, the flux linkage, and the turns ratio actually work
         is the whole of Chapter 23 — the pole-pig is a single transformer with coupling near 1 and
         the cleanest possible split-phase wiring on its secondary. The rest of this chapter takes
@@ -170,7 +170,7 @@ export default function Ch27HouseGridArrives() {
         Why split-<em>phase</em>, not just single-phase?
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Edison's early-1880s New York system delivered direct current at 110 V, and the choice of "around
         110" was set by the working voltage of the carbon-filament incandescent lamps he was selling
         at the time. A century of inertia later, the United States, Canada, and Mexico still call
@@ -182,14 +182,14 @@ export default function Ch27HouseGridArrives() {
         voltage are tied by the same identity every engineering student learns in the second week:
       </p>
       <Formula size="lg" id="power-vi" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P" /> is the real power delivered to the load (in watts), <M tex="V" /> is the
         RMS voltage across the load (in volts), and <M tex="I" /> is the RMS current through it (in
         amperes), for a purely resistive load. Rearrange to read off the current required to deliver
         a given power at a given voltage:
       </p>
       <Formula tex="I = \\dfrac{P}{V}" />
-      <p className="mb-prose-3">
+      <p>
         same symbols, same meaning. The implication is direct:{' '}
         <em className="text-text italic">
           double the voltage and you halve the current required to deliver the same power
@@ -201,7 +201,7 @@ export default function Ch27HouseGridArrives() {
         justifies the existence of 240 V at all: every appliance that pulls a few kilowatts wants
         the higher voltage so its supply wire can stay sane in gauge.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Stanley and Westinghouse — pushing AC against Edison's DC in the 1890s — settled on the
         compromise that survived: pull <em className="text-text italic">both</em> voltages out of
         the same transformer secondary. The two ends of the centre-tapped winding give 240 V for big
@@ -266,7 +266,7 @@ export default function Ch27HouseGridArrives() {
         The service drop and the <em>weatherhead</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         From the bottom of the pole-pig, three conductors leave together and arc across the street:
         two insulated hot legs and one bare neutral. They are usually bundled as{' '}
         <Term
@@ -303,7 +303,7 @@ export default function Ch27HouseGridArrives() {
         if it comes overhead, or a "service lateral" if it runs underground
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Where the cable lands on the house is the demarcation point in both senses — physical and
         legal. A goose-neck of conduit, called the{' '}
         <Term
@@ -326,7 +326,7 @@ export default function Ch27HouseGridArrives() {
         meter base
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Aluminium has supplanted copper in service-drop conductors over the last several decades for
         cost and weight reasons. Aluminium's higher resistivity (about 1.6× copper's) is compensated
         by using a larger gauge — typically{' '}
@@ -367,7 +367,7 @@ export default function Ch27HouseGridArrives() {
         The meter <em>base</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The three service-drop wires enter the back of a square or rectangular metal enclosure
         mounted on the outside wall of the house: the{' '}
         <Term
@@ -391,7 +391,7 @@ export default function Ch27HouseGridArrives() {
         <Cite id="nec-2023" in={SOURCES} />. The neutral does not go through the jaws — it passes
         through on its own lug at the side or bottom of the socket, uninterrupted.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The standard residential single-phase 240/120 V meter format is{' '}
         <Term
           def={
@@ -411,7 +411,7 @@ export default function Ch27HouseGridArrives() {
         a meter in 60 seconds without touching a single screw on the homeowner's panel
         <Cite id="ieee-std-3001-2-2017" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A metal ring — the{' '}
         <Term
           def={
@@ -438,7 +438,7 @@ export default function Ch27HouseGridArrives() {
         What the meter actually <em>measures</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Older revenue meters — those installed before the smart-meter rollout of the 2000s–2010s — are{' '}
         <strong className="text-text font-medium">Ferraris induction meters</strong>: a rotating
         aluminium disc spinning between two electromagnets, one driven by the service voltage and
@@ -450,7 +450,7 @@ export default function Ch27HouseGridArrives() {
         any moment is proportional to <M tex="V \\cdot I" /> integrated through the meter's
         measuring fields; the cumulative count is the integral.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Modern meters use the same physics differently. Voltage is sensed through a high-impedance
         divider, current through{' '}
         <Term
@@ -472,7 +472,7 @@ export default function Ch27HouseGridArrives() {
         current; energy is power integrated through time:
       </p>
       <Formula tex="W = \\int P\\, dt = \\int V(t)\\, I(t)\\, dt" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="W" /> is the accumulated energy delivered to the customer (in joules — or, the
         utility's unit of choice, kilowatt-hours), <M tex="P" /> is the instantaneous real power (in
         watts, W = V · A), <M tex="V(t)" /> and <M tex="I(t)" /> are the instantaneous service
@@ -480,12 +480,12 @@ export default function Ch27HouseGridArrives() {
         <M tex="t" /> is time (in seconds). The integral runs from the moment the meter was
         installed (or last read).
       </p>
-      <p className="mb-prose-3">
+      <p>
         For the special case of a constant load — a 1,500 W heater on a steady 120 V supply, say —
         the integral collapses to a product:
       </p>
       <Formula tex="W = P \\times t" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="W" />, <M tex="P" />, and <M tex="t" /> mean the same things as above. The
         practical unit is the{' '}
         <Term
@@ -503,7 +503,7 @@ export default function Ch27HouseGridArrives() {
         <M tex="3.6 \times 10^{6}\,\text{J}" />. Residential rates vary widely by jurisdiction and
         time of use, but typically fall in the range of tens of cents per kWh.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Modern{' '}
         <Term
           def={
@@ -607,7 +607,7 @@ export default function Ch27HouseGridArrives() {
         Neutral, ground, and the <em>bonding</em> jumper
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Inside the service-entrance equipment — typically at the main breaker of the service panel,
         sometimes at a separate service-entrance disconnect — two wires that have been kept
         carefully apart everywhere else in the house are bolted together. Those two wires are{' '}
@@ -656,7 +656,7 @@ export default function Ch27HouseGridArrives() {
         at the service entrance, and never again
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Why bond at all? Because the neutral coming down from the pole has to be tied to local earth
         somewhere, or nothing in the house has a meaningful zero reference and there is no path for
         fault current to return to the transformer through the soil. Bonding ties the service
@@ -669,7 +669,7 @@ export default function Ch27HouseGridArrives() {
         milliseconds
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Why bond <em className="text-text italic">only once</em>? Because if neutral and ground are
         tied together at multiple points downstream of the main, normal load current — which is
         supposed to return entirely on the neutral — instead splits and runs partly on the ground
@@ -685,7 +685,7 @@ export default function Ch27HouseGridArrives() {
         What if the neutral <em>opens</em>?
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The split-phase architecture has one Achilles' heel, and homeowners discover it the hard way
         every winter when a corroded service-entrance lug or a wind-snapped triplex strand finally
         lets go. With the two hots intact but the{' '}
@@ -696,19 +696,19 @@ export default function Ch27HouseGridArrives() {
         acting as one leg of a voltage divider
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Let Z₁ be the total impedance of every load on the L1 leg (lumped together — bulbs,
         electronics, a partly running fridge) and Z₂ the same on the L2 leg. With neutral open, the
         two legs are in series across the full 240 V supply, and each leg's load acts as one arm of
         a voltage divider. The voltages individually seen by L1 and L2 are then:
       </p>
       <Formula tex="V_{L1} = 240 \\cdot \\dfrac{Z_1}{Z_1 + Z_2}, \\quad V_{L2} = 240 \\cdot \\dfrac{Z_2}{Z_1 + Z_2}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{L1}" /> and <M tex="V_{L2}" /> are the voltages across the L1-leg and
         L2-leg loads respectively (in volts), and <M tex="Z_1" /> and <M tex="Z_2" /> are the total
         load impedances on each leg (in ohms), lumped at their parallel equivalent.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The two add to 240 V as required, but they need not split evenly. If one leg is heavily
         loaded (low Z) and the other lightly loaded (high Z), nearly all 240 V appears across the
         lightly loaded leg — and every device on that leg sees double its rated voltage.
@@ -718,7 +718,7 @@ export default function Ch27HouseGridArrives() {
         to be safely zero
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Modern{' '}
         <Term
           def={
@@ -782,7 +782,7 @@ export default function Ch27HouseGridArrives() {
         What we have so <em>far</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         A single phase of the medium-voltage distribution feeder drops down through a pole-pig
         transformer, which delivers a 240 V centre-tapped secondary as a three-wire split-phase
         service. Triplex aerial cable arcs across to the house, enters a weatherhead, and runs down
@@ -795,7 +795,7 @@ export default function Ch27HouseGridArrives() {
         the code is designed to forbid. Every household electrical safety rule that follows in the
         next several chapters is in some sense a corollary of the geometry we have just walked.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Chapter 28 picks up where the meter base ends: behind the wall it backs into sits the main
         service panel, and inside that panel two bus bars, a neutral bar, a ground bar, and a stack
         of breakers encode every downstream safety rule the building will ever rely on. We follow

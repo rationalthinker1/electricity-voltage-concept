@@ -55,7 +55,7 @@ export default function Ch11Relativity() {
         </em>{' '}
         A slogan, no derivation. Now we redeem it.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The argument is built around one thought experiment — a wire carrying a steady current with
         a small test charge sitting next to it. We will compute what happens in two frames, get the
         same physical answer both ways, and watch the label on the force change from "magnetic" to
@@ -67,14 +67,14 @@ export default function Ch11Relativity() {
         A promise from <em>Chapter 6</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The setup. A long straight wire carrying a steady current <M tex="I" />. Far enough from the
         ends that you can treat it as infinite. The wire is{' '}
         <strong className="text-text font-medium">electrically neutral</strong> — the lattice of
         positive ions and the drifting electrons have equal linear charge densities in the wire's
         rest frame, so the net charge per unit length is zero.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Place a small positive test charge <M tex="q" /> next to it, also at rest in the lab. What
         force does it feel? Run through the chapter-6 catalog. The wire is neutral, so <M tex="E" />{' '}
         from the wire is zero — no electric force. The wire makes a magnetic field <M tex="B" />{' '}
@@ -85,7 +85,7 @@ export default function Ch11Relativity() {
 
       <WireFromRestDemo figure="Fig. 11.1" />
 
-      <p className="mb-prose-3">
+      <p>
         So far so good. Now imagine the test charge had a small velocity along the wire — same
         direction as the current, say. Now <M>v × B</M> is nonzero and the test charge experiences a
         magnetic force pulling it toward the wire (or pushing it away — depends on sign conventions;
@@ -93,7 +93,7 @@ export default function Ch11Relativity() {
         with
         <M> d</M> the distance to the wire.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Here is the question that should make you pause. The wire was electrically neutral. Where in
         space did this force come from? "It came from B" is not a satisfying answer — B is just
         bookkeeping for a force. What is the <em className="text-text italic">mechanism</em>?
@@ -105,13 +105,13 @@ export default function Ch11Relativity() {
         The same wire, viewed from a moving <em>train</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Special relativity says: don't live with it. Same physical situation, but switch reference
         frames. Get on a small train moving along the wire at exactly the test charge's velocity. In
         your new frame the test charge is at rest. The wire is moving — that is, the ions and the
         electrons in it are both moving — but with different velocities than they had in the lab.
       </p>
-      <p className="mb-prose-3">
+      <p>
         In the lab frame the ions were stationary and the electrons drifted rightward at <M>v_d</M>{' '}
         (the drift velocity). On the train (moving rightward at <M>v_test</M>, the boost speed), the
         ions appear to drift leftward at
@@ -136,7 +136,7 @@ export default function Ch11Relativity() {
         <Cite id="einstein-1905" in={SOURCES} />
         <Cite id="purcell-morin-2013" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two different contractions, same number of ions per ion-rest-frame meter and electrons per
         electron-rest-frame meter, give different linear charge densities of the two species in this
         new frame.{' '}
@@ -155,7 +155,7 @@ export default function Ch11Relativity() {
         The numbers work out <em>exactly</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         This isn't a hand-wave. Purcell &amp; Morin's textbook works through the algebra in
         Chapter&nbsp;5–6 and the result lands on the nose{' '}
         <Cite id="purcell-morin-2013" in={SOURCES} />. The two contraction factors produce a net
@@ -163,11 +163,11 @@ export default function Ch11Relativity() {
         electric force from an infinite charged line, equals — term for term — the magnetic Lorentz
         force the lab frame predicted from the Biot–Savart formula.
       </p>
-      <p className="mb-prose-3">The key identity reads</p>
+      <p>The key identity reads</p>
       <Formula>
         F<sub>magnetic</sub> (lab) = F<sub>electric</sub> (boosted){' '}
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="F_{\text{magnetic}}(\text{lab})" />
         is the magnetic Lorentz force the test charge feels in the wire's rest frame (in newtons,
         given by <M tex="qv \times B" /> with <M tex="B" /> from Biot–Savart) and{' '}
@@ -184,7 +184,7 @@ export default function Ch11Relativity() {
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
       <Pullout>Magnetism is not a separate force. It is the geometry of moving charge.</Pullout>
-      <p className="mb-prose-3">
+      <p>
         The drift velocity in copper is tens of microns to a millimeter per second depending on
         current and gauge — vastly less than c — so the{' '}
         <Term
@@ -238,14 +238,14 @@ export default function Ch11Relativity() {
         E and B <em>together</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Once you accept that "electric" and "magnetic" are frame-dependent labels on a single
         underlying object, the next step writes itself. There is one object. Its components are six
         numbers (the three components of E plus the three components of B), arranged in a specific
         way, and a Lorentz boost mixes those six numbers among themselves the way an ordinary
         rotation mixes the three components of a vector.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The clean way to write it is as a 4×4 antisymmetric matrix, the{' '}
         <Term
           def={
@@ -309,7 +309,7 @@ export default function Ch11Relativity() {
 
       <EBTransformDemo figure="Fig. 11.3" />
 
-      <p className="mb-prose-3">
+      <p>
         The tensor is not just a notational trick. Two{' '}
         <Term
           def={
@@ -344,7 +344,7 @@ export default function Ch11Relativity() {
         What this <em>means</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Classical electrodynamics is the consequence of two ingredients.{' '}
         <strong className="text-text font-medium">(1)</strong> Coulomb's law for charges at rest.{' '}
         <strong className="text-text font-medium">(2)</strong> Special relativity. You do not need
@@ -355,7 +355,7 @@ export default function Ch11Relativity() {
         <Cite id="einstein-1905" in={SOURCES} />
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Maxwell didn't know that. Nobody did. There was nothing else to compare his theory to:
         Newtonian mechanics was Galilean-invariant, optics was a mess, the ether hadn't yet been
         falsified. It took until 1905 for Einstein to walk into the Bern patent office, notice that
@@ -367,7 +367,7 @@ export default function Ch11Relativity() {
         observable
         <Cite id="einstein-1905" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Resolving that asymmetry is what produced special relativity. The whole architecture —{' '}
         <Term
           def={

@@ -52,7 +52,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         <Cite id="henry-1832" in={SOURCES} />
         <Cite id="faraday-1832" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Chapter 7 dealt with a single coil and the back-EMF it produces against its own changing
         current — that's self-inductance L, one of the three passive components you can hold in your
         hand. The grown-up version of induction is two coils, side by side, with neither one
@@ -71,7 +71,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         Self-inductance, from the right <em>angle</em>
       </h3>
 
-      <p className="mb-prose-3">
+      <p>
         A quick refresher, framed so the rest of the chapter slots cleanly on top of it. Take a coil
         of <M tex="N" /> turns. Push a current <M tex="I" /> through it. The current produces a
         magnetic field; that field, threaded back through each turn of the same coil, yields a total{' '}
@@ -94,12 +94,12 @@ export default function Ch22MagneticallyCoupledCircuits() {
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula>L = λ / I = N Φ / I</Formula>
-      <p className="mb-prose-3">
+      <p>
         Here <M tex="L" /> is the self-inductance in henries, <M tex="\lambda" />
         is flux linkage in webers or volt-seconds, <M tex="I" /> is the coil current, <M tex="N" />{' '}
         is the turn count, and <M tex="\Phi" /> is the magnetic flux through one turn.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three things to notice about this definition. First, L is{' '}
         <em className="text-text italic">purely geometric</em>: every term involving I has divided
         out of the ratio, leaving only the coil's size, shape, and winding density. Second, L has
@@ -121,19 +121,19 @@ export default function Ch22MagneticallyCoupledCircuits() {
         <M tex="\tfrac{1}{2}LI^{2}" /> — quadratic in I, because doubling I doubles every field line
         everywhere and the energy density scales as B², not B.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Differentiate the linkage with respect to time, and Faraday's law (Ch.7) returns the induced
         EMF
         <Cite id="faraday-1832" in={SOURCES} />
         <Cite id="feynman-II-17" in={SOURCES} />:
       </p>
       <Formula>ε = − dλ/dt = − L dI/dt</Formula>
-      <p className="mb-prose-3">
+      <p>
         Here <M tex="\varepsilon" /> is the induced EMF, <M tex="d\lambda/dt" />
         is the time rate of change of flux linkage, and the last equality assumes <M tex="L" /> is
         constant while the current changes.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Why the minus sign? Because the universe doesn't like flux changing. If you connect the
         coil's induced EMF through a resistor, the current it drives sets up its{' '}
         <em className="text-text italic">own</em> flux pointing the opposite way — the system has
@@ -158,7 +158,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         Mutual inductance: when a <em>second</em> coil enters the picture
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Place a second coil near the first. Coil 1 still carries some current <M tex="I_1" />; the
         field it produces fills the surrounding space. Some of that field threads coil 2 — call this
         share the{' '}
@@ -191,18 +191,18 @@ export default function Ch22MagneticallyCoupledCircuits() {
         practical coil pair
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Coil 2 has N₂ turns. Each turn sees Φ₂₁; the total flux linkage in coil 2 produced by I₁ is
         therefore N₂ Φ₂₁. The same linearity argument that gave us self-inductance gives us the
         analogous proportionality constant for the cross-coupling — divide by I₁ and define
       </p>
       <Formula>M = N₂ Φ₂₁ / I₁</Formula>
-      <p className="mb-prose-3">
+      <p>
         Here <M tex="M" /> is mutual inductance in henries, <M tex="N_2" /> is the number of turns
         on coil 2, <M tex="\Phi_{21}" /> is the flux from coil 1 that links one turn of coil 2, and{' '}
         <M tex="I_1" /> is the current producing that flux.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three intuitive things fall out immediately. First, like L, the{' '}
         <Term
           def={
@@ -228,11 +228,11 @@ export default function Ch22MagneticallyCoupledCircuits() {
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
       <Formula>M₁₂ = M₂₁ ≡ M</Formula>
-      <p className="mb-prose-3">
+      <p>
         The subscripts only say which coil was driven and which coil was measured. Reciprocity lets
         us replace both directional values with one shared <M tex="M" />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The symmetry is not obvious from the definition. It comes from energy conservation: the
         total magnetic energy stored in the joint field — computed as the volume integral of
         B²/(2µ₀) — can be expanded in two equivalent ways, one starting with "build up I₁ first,
@@ -244,17 +244,17 @@ export default function Ch22MagneticallyCoupledCircuits() {
 
       <MutualInductanceTwoCoilsDemo figure="Fig. 22.1" />
 
-      <p className="mb-prose-3">
+      <p>
         From outside the magnetics, the operational definition is simpler still: drive a known
         dI₁/dt in coil 1, measure the open-circuit voltage on coil 2, and the ratio is M:
       </p>
       <Formula>v₂(t) = M dI₁/dt &nbsp;(open-circuit on coil 2)</Formula>
-      <p className="mb-prose-3">
+      <p>
         In this measurement, <M tex="v_2(t)" /> is the open-circuit secondary voltage and{' '}
         <M tex="dI_1/dt" /> is the primary current slope. The faster coil 1 current changes, the
         larger the induced voltage on coil 2.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That equation is the entire physical reason the demo at the top of the chapter works. A Qi
         charger drives an alternating current in its primary over the standard's low-hundreds of
         kilohertz operating band; the phone's nearby secondary sees a voltage <M tex="M\,dI_1/dt" />{' '}
@@ -292,7 +292,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         The coupling <em>coefficient</em> k
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Not every line of flux that coil 1 produces reaches coil 2. Some escape out the sides of
         coil 1 and return through the air without ever touching the second coil; some thread coil 2
         but then "leak" back out before completing the circuit; some never made it through the first
@@ -312,26 +312,26 @@ export default function Ch22MagneticallyCoupledCircuits() {
         <M tex="k" /> — defined so that M sits as a fraction of its largest possible value:
       </p>
       <Formula>k = M / √(L₁ L₂)</Formula>
-      <p className="mb-prose-3">
+      <p>
         Here <M tex="k" /> has no units: it is mutual inductance normalized by the largest value
         allowed by the two self-inductances, <M tex="\sqrt{L_1L_2}" />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two questions immediately deserve an answer. Why the geometric mean{' '}
         <M tex="\sqrt{L_1L_2}" /> in the denominator? And why is <M tex="0\leq k\leq 1" /> a hard
         bound?
       </p>
-      <p className="mb-prose-3">
+      <p>
         Both come from energy. The total magnetic energy stored when both coils carry currents (with
         sign chosen so the mutual term is positive) is
       </p>
       <Formula>W = ½ L₁ I₁² + ½ L₂ I₂² + M I₁ I₂</Formula>
-      <p className="mb-prose-3">
+      <p>
         Here <M tex="W" /> is stored magnetic energy, the two quadratic terms are the self-field
         energies, and <M tex="M I_1 I_2" /> is the shared-field cross term for the aiding sign
         choice.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That energy must be non-negative for <em className="text-text italic">any</em> choice of I₁
         and I₂, because magnetic energy is the volume integral of B²/2µ₀ and B² ≥ 0 everywhere.
         Treat the right-hand side as a quadratic form in <M tex="(I_1,I_2)" /> and demand it stays
@@ -340,7 +340,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         <Cite id="griffiths-2017" in={SOURCES} />
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The{' '}
         <Term
           def={
@@ -402,7 +402,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         Two-coil circuit <em>equations</em>
       </h3>
 
-      <p className="mb-prose-3">
+      <p>
         Now both coils are alive, both carrying currents I₁(t) and I₂(t) that can vary independently
         in time. What voltage appears across each coil's terminals? Each coil sees two sources of
         changing flux at once: its own current's contribution (the self-inductance term) and the
@@ -414,12 +414,12 @@ export default function Ch22MagneticallyCoupledCircuits() {
       </p>
       <Formula>v₁ = L₁ dI₁/dt ± M dI₂/dt</Formula>
       <Formula>v₂ = L₂ dI₂/dt ± M dI₁/dt</Formula>
-      <p className="mb-prose-3">
+      <p>
         Here <M tex="v_1" /> and <M tex="v_2" /> are terminal voltages, the <M tex="L\,dI/dt" />{' '}
         terms are each coil's self-induced voltage, and the <M tex="M\,dI/dt" /> terms are the
         voltages induced by the other coil.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The ± is doing real work. Each coil sees its own self-term (always positive in this sign
         convention) plus a mutual term whose sign depends on how the coils are wound relative to
         each other. If the two windings encircle the shared flux in the{' '}
@@ -431,7 +431,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         coil 1's self-flux; mutual term takes the minus sign
         <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The sign of M is not a physical degree of freedom — M is defined by convention as a positive
         number. What flips is the sign of the{' '}
         <em className="text-text italic">mutual contribution</em> in each coil's KVL equation. To
@@ -443,7 +443,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         The dot <em>convention</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Mark one terminal of each coil with a small filled dot. The{' '}
         <Term
           def={
@@ -473,7 +473,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
           mutual term is <M tex="-M\,dI/dt" />.
         </li>
       </ul>
-      <p className="mb-prose-3">
+      <p>
         Intuitively, the dot tells you which way the coil is wound. Two coils wound the same way
         (think: both clockwise as seen from above) and carrying currents in the same direction
         produce magnetic fields in the same direction — the fluxes add. Two coils wound oppositely
@@ -485,7 +485,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
 
       <DotConventionDemo figure="Fig. 22.3" />
 
-      <p className="mb-prose-3">
+      <p>
         Practical wiring note: in a real transformer or coupled-inductor part, the{' '}
         <Term
           def={
@@ -512,7 +512,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         Series and parallel <em>coupled</em> coils
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Connect the two coils in series. Now the same current <M tex="I" /> flows through both — so{' '}
         <M tex="I_1=I_2=I" />. Stack the two coil equations together and you get the equivalent
         inductance:
@@ -523,12 +523,12 @@ export default function Ch22MagneticallyCoupledCircuits() {
       <Formula>
         L<sub>eq</sub> = L₁ + L₂ − 2M &nbsp;(series opposing)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         <M tex="L_{\text{eq}}" /> is the inductance measured at the outside terminals. The plus sign
         applies when the two mutual voltages aid the self voltages; the minus sign applies when
         reversing one winding makes them oppose.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Where does the factor of 2 come from? It's the same place the cross-term in (a + b)² comes
         from. The energy stored in the joint field is ½ L<sub>eq</sub> I², and that has to equal the
         sum of self-energies plus the mutual cross-energy:
@@ -536,12 +536,12 @@ export default function Ch22MagneticallyCoupledCircuits() {
       <Formula>
         ½ L<sub>eq</sub> I² = ½ L₁ I² + ½ L₂ I² + M I·I
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         This is the same energy equation as before, now with one shared series current. The mutual
         term becomes <M tex="MI^{2}" /> for the aiding connection and changes sign for the opposing
         connection.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Cancel the common I² and the L₁ + L₂ + 2M form just falls out. The "2" comes from coil 1
         doing work on coil 2's flux <em className="text-text italic">and</em> coil 2 doing work on
         coil 1's flux — same energy, counted twice over because both contributions are physically
@@ -549,7 +549,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         the minus version
         <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This pair of formulas has a working-engineer bonus:{' '}
         <strong className="text-text font-medium">they let you measure M directly</strong>. Wire the
         two coils in series, measure L<sub>aid</sub> with an LCR meter; reverse one coil's leads,
@@ -559,12 +559,12 @@ export default function Ch22MagneticallyCoupledCircuits() {
       <Formula>
         M = ( L<sub>aid</sub> − L<sub>opp</sub> ) / 4
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         <M tex="L_{\text{aid}}" /> and <M tex="L_{\text{opp}}" /> are the two LCR meter readings.
         Their difference is <M tex="4M" />, so one subtraction and one division isolate the mutual
         inductance.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two measurements, one subtraction, no flux integral. It's the standard bench technique, and
         it's the cleanest way to characterise an unknown coupled-inductor part.
       </p>
@@ -608,7 +608,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         Reflected impedance and the T-<em>equivalent</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Now wire it up like a transformer: AC source on the primary at angular frequency ω,
         secondary closed by a load impedance Z<sub>L</sub>. Working entirely in the phasor
         (frequency-domain) picture from Ch.12, the two coil equations become
@@ -617,12 +617,12 @@ export default function Ch22MagneticallyCoupledCircuits() {
       <Formula>
         V₂ = jωL₂ I₂ + jωM I₁ = − Z<sub>L</sub> I₂
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         Here <M tex="V_1,V_2" /> and <M tex="I_1,I_2" /> are phasors, <M tex="j=\sqrt{-1}" />,{' '}
         <M tex="\omega" /> is angular frequency, and <M tex="Z_L" /> is the load connected across
         the secondary.
       </p>
-      <p className="mb-prose-3">
+      <p>
         (The second equation's last form uses the passive-sign convention on the load: V₂ across the
         secondary drives a current −I₂ through Z<sub>L</sub>.) Solve the second equation for I₂ in
         terms of I₁:
@@ -630,12 +630,12 @@ export default function Ch22MagneticallyCoupledCircuits() {
       <Formula>
         I₂ = − jωM I₁ / ( jωL₂ + Z<sub>L</sub> )
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         The denominator is the secondary loop's total impedance, while the numerator is the voltage
         that primary current induces into that loop. The minus sign is the passive load convention
         showing the secondary current direction opposed to the induced terminal voltage.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Substitute back into the first equation and divide by I₁. What survives is the{' '}
         <Term
           def={
@@ -655,12 +655,12 @@ export default function Ch22MagneticallyCoupledCircuits() {
       <Formula>
         Z<sub>in</sub> = V₁ / I₁ = jωL₁ + (ωM)² / ( jωL₂ + Z<sub>L</sub> )
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         <M tex="Z_{\text{in}}" /> is the impedance seen by the source. The denominator{' '}
         <M tex="j\omega L_2+Z_L" /> is often abbreviated as the secondary impedance <M tex="Z_2" />,
         so the reflected part is <M tex="(\omega M)^2/Z_2" />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two pieces, both physical. The first piece, <M tex="j\omega L_1" />, is the primary's own
         self-inductance — what the source would see if the secondary were open-circuit (no I₂ to
         oppose). The second piece, <M tex="(\omega M)^{2}/Z_2" />, is what the secondary's load
@@ -673,7 +673,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         as well as Z<sub>L</sub> on its way around the secondary loop
         <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The shape of this equation explains a tonne of practical behaviour. Short the secondary (
         <M tex="Z_L\to 0" />
         ): the denominator shrinks toward <M tex="j\omega L_2" />, the reflected piece grows large,
@@ -723,7 +723,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         There's a second tool worth knowing: any two coupled coils can be redrawn as three{' '}
         <em className="text-text italic">uncoupled</em>
         inductors arranged in a "T" shape — L₁ − M on the left arm, L₂ − M on the right arm, and M
@@ -735,7 +735,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         variables (L₁, L₂, M, plus the two port voltages) collapse to three uncoupled inductors and
         the same KVL/KCL you've been writing since Chapter 12.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The T-equivalent has one practical wrinkle: one of the arm inductances (L₁ − M or L₂ − M)
         can come out
         <em className="text-text italic"> negative</em> if k is large enough. That's fine on paper —
@@ -749,7 +749,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         What we have so <em>far</em>
       </h3>
 
-      <p className="mb-prose-3">
+      <p>
         Self-inductance L is one coil reacting to its own current. Mutual inductance M is one coil
         reacting to another coil's current — same units, same equation, different role. The fraction
         of one coil's flux that actually links the other is the coupling coefficient{' '}
@@ -760,7 +760,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         the secondary looks like a reflected impedance <M tex="(\omega M)^2/Z_2" /> in series with
         the primary's own <M tex="j\omega L_1" />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three doors open from here. The first is Chapter 23, transformers, where we send k toward 1
         by wrapping both coils on a shared iron or ferrite core — and the awkward{' '}
         <M tex="(\omega M)^2/Z_2" /> reflected-impedance form collapses to the clean{' '}

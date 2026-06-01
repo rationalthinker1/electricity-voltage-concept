@@ -41,7 +41,7 @@ export default function Ch28HousePanel() {
         switch that turns the whole house off. Out the bottom of every other breaker, a hot wire
         fans into the building.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three rules govern the whole geometry, and they are worth stating up front because every
         subsequent paragraph of this chapter is just a consequence of one of them.{' '}
         <strong className="text-text font-medium">
@@ -63,7 +63,7 @@ export default function Ch28HousePanel() {
 
       <h2 className="chapter-h2">Anatomy of the panel</h2>
 
-      <p className="mb-prose-3">
+      <p>
         At the top of the enclosure, two heavy aluminium or copper conductors come in from the meter
         base — these are the two ungrounded service conductors, usually called L1 and L2, each at
         120 V relative to the neutral and 180° out of phase with each other (Ch.27). They bolt to
@@ -87,7 +87,7 @@ export default function Ch28HousePanel() {
         terminals near the top, the first landing on the neutral bar, the second on the ground bar
         (or, equivalently, on a stud welded to the inside of the steel can).
       </p>
-      <p className="mb-prose-3">
+      <p>
         Below the main, the load side of the disconnect feeds the two{' '}
         <Term
           def={
@@ -107,7 +107,7 @@ export default function Ch28HousePanel() {
         one of those stabs, makes contact, and gives you a screw terminal on its load side to attach
         the branch-circuit hot wire.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Along each side wall sits a long terminal strip: the{' '}
         <Term
           def={
@@ -154,7 +154,7 @@ export default function Ch28HousePanel() {
         <Cite id="nec-2023" in={SOURCES} />. From that single bonding point onward, neutral and
         ground are kept rigorously separate throughout the rest of the building.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Finally, the door of the panel has — or is supposed to have — a printed{' '}
         <Term
           def={
@@ -179,7 +179,7 @@ export default function Ch28HousePanel() {
         The bus bars and why phases <em>alternate</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Look at a panel from the front with the cover off. The slot stampings on the deadfront — the
         metal cover with the breaker windows — read 1, 3, 5, 7… down the left column and 2, 4, 6, 8…
         down the right, but the important pattern is the one stamped on the bus itself: L1, L2, L1,
@@ -192,7 +192,7 @@ export default function Ch28HousePanel() {
         along its length
         <Cite id="square-d-qo-datasheet" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Now consider a 240 V breaker — a{' '}
         <Term
           def={
@@ -214,7 +214,7 @@ export default function Ch28HousePanel() {
         of the two phase voltages,
       </p>
       <Formula tex="\\tilde V_{LL}=\\tilde V_{L1}-\\tilde V_{L2}=120\\angle0^\\circ-120\\angle180^\\circ=240\\ \\text{V}_{\\text{rms}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\tilde V_{LL}" />
         is the line-to-line voltage phasor between the two ungrounded bus bars,{' '}
         <M tex="\tilde V_{L1}" />
@@ -225,7 +225,7 @@ export default function Ch28HousePanel() {
         <M tex="+170 - (-170) \approx 340\ \text{V}_{\text{peak}}" />, whose RMS value is 240 V
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This is why every two-pole 240 V load in the house — the electric range, the dryer, the heat
         pump, the EV charger — slots into the panel without any neutral required for the high-power
         half of the appliance. The two hots already give it 240 V between them. A neutral is added
@@ -267,7 +267,7 @@ export default function Ch28HousePanel() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         The two-column / alternating-phase geometry is much easier to read in 3D than in prose. L1
         (pink) and L2 (blue) bus bars run the full height of the enclosure, with alternating stabs
         poking out for each slot. The single-pole breakers each take one stab — one phase. The
@@ -279,7 +279,7 @@ export default function Ch28HousePanel() {
 
       <h2 className="chapter-h2">The three breaker species: standard, GFCI, AFCI</h2>
 
-      <p className="mb-prose-3">
+      <p>
         From the outside every breaker looks the same — a black plastic case, a single or double
         switch handle, a current rating stamped on the front. The internals are where they diverge.
         UL 489 is the listing standard that defines what counts as a breaker in North America and
@@ -290,7 +290,7 @@ export default function Ch28HousePanel() {
 
       <h3 className="chapter-h3">Standard thermal-magnetic</h3>
 
-      <p className="mb-prose-3">
+      <p>
         The everyday 15 A or 20 A branch breaker is a{' '}
         <Term
           def={
@@ -311,7 +311,7 @@ export default function Ch28HousePanel() {
         legitimately exceed nameplate, and a breaker that nuisance-tripped every time a refrigerator
         started would be uselessly conservative.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The magnetic element is a small solenoid wound around (or in series with) the same
         conductor; at roughly 6–12× rated current (the UL 489 instantaneous-trip band) its field is
         strong enough to yank the latch open in a fraction of a cycle — milliseconds, not seconds
@@ -338,7 +338,7 @@ export default function Ch28HousePanel() {
 
       <h3 className="chapter-h3">GFCI</h3>
 
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <Term
           def={
@@ -363,7 +363,7 @@ export default function Ch28HousePanel() {
         circuit opens the breaker. The condition that triggers the trip is just
       </p>
       <Formula tex="I_{\\text{residual}} = |I_{\\text{hot}} - I_{\\text{neutral}}| > 5\\ \\text{mA}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="I_{\text{hot}}" />
         is the current leaving the panel on the ungrounded conductor (in amperes),{' '}
         <M tex="I_{\text{neutral}}" />
@@ -393,7 +393,7 @@ export default function Ch28HousePanel() {
 
       <h3 className="chapter-h3">AFCI</h3>
 
-      <p className="mb-prose-3">
+      <p>
         An{' '}
         <Term
           def={
@@ -460,7 +460,7 @@ export default function Ch28HousePanel() {
         The interrupting rating: what happens when there's a dead short
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         A 20 A breaker is not just rated for the 20 A it lets through under normal load. It is also
         rated for the much larger current it has to safely{' '}
         <em className="text-text italic">interrupt</em> when something goes catastrophically wrong
@@ -482,7 +482,7 @@ export default function Ch28HousePanel() {
         the main service disconnect is usually 22 kAIC or 25 kAIC depending on the manufacturer
         <Cite id="ul-489" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Why so high? Because the utility transformer outside the building has a very low source
         impedance, and a bolted short circuit at the panel — hot bus bar shorted directly to neutral
         bar through zero impedance — can pull tens of kilo-amperes for the few milliseconds it takes
@@ -502,7 +502,7 @@ export default function Ch28HousePanel() {
         , which to a good approximation is just
       </p>
       <Formula tex="E_{\\text{arc}} \\approx V \\times I_{\\text{fault}} \\times t_{\\text{clear}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="E_{\text{arc}}" />
         is the energy released in the fault arc (in joules), <M tex="V" /> is the system voltage
         across the arc (in volts; 120 V for a single hot-to-neutral fault, 240 V for a hot-to-hot
@@ -514,7 +514,7 @@ export default function Ch28HousePanel() {
         <M tex="t_{\text{clear}} = 50\,\text{ms}" />:
       </p>
       <Formula tex="E_{\\text{arc}} \\approx 120 \\times 10{,}000 \\times 0.050 = 60{,}000\\ \\text{J} = 60\\ \\text{kJ}" />
-      <p className="mb-prose-3">
+      <p>
         Sixty kilojoules dumped into a few cubic centimetres of air in a fraction of a second can
         vaporise metal, eject molten copper, and ignite nearby material. Real arc-flash incident
         energy is calculated with dedicated methods, not this simple <M tex="VIt" /> product, but
@@ -613,13 +613,13 @@ export default function Ch28HousePanel() {
 
       <h2 className="chapter-h2">Bonding and grounding</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Up to here, neutral and ground have been two different bars that happen to be tied together
         by one strap. Why two bars at all, if they share a connection? Why not a single bar that
         does both jobs? The answer is the most important rule in the NEC and the entire reason the
         panel is laid out the way it is.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The{' '}
         <Term
           def={
@@ -653,7 +653,7 @@ export default function Ch28HousePanel() {
         detail of this system
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Now imagine what happens during a fault. Say a frayed hot wire inside a metal-cased toaster
         touches the chassis. The chassis is connected by the third (green or bare) prong of the cord
         back to the ground bar of the panel. At the panel, the ground bar is bonded to the neutral
@@ -669,7 +669,7 @@ export default function Ch28HousePanel() {
         through any person
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The grounding-electrode connection to dirt is not what trips the breaker. The NEC permits a
         single rod only when its resistance to earth is 25 Ω or less; otherwise a second electrode
         is installed, which is still far too much impedance to clear a branch-circuit fault by
@@ -688,7 +688,7 @@ export default function Ch28HousePanel() {
 
       <h2 className="chapter-h2">Sub-panels and the no-bond rule</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Add a{' '}
         <Term
           def={
@@ -713,7 +713,7 @@ export default function Ch28HousePanel() {
         <Cite id="nec-2023" in={SOURCES} />. The sub's neutral bar floats relative to its can; only
         the ground bar is bonded to the enclosure.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Why? Imagine the alternative. If neutral and ground were bonded at both the main and the
         sub, the return current from every branch circuit on the sub would split between two
         parallel paths back to the main: the dedicated neutral feeder conductor, and the
@@ -728,7 +728,7 @@ export default function Ch28HousePanel() {
         unless something is broken — would quietly fail
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Floating the sub-panel's neutral keeps every milliamp of return current on the conductor it
         was assigned to, and reserves the ground conductor for the rare day when a hot wire touches
         a chassis. That is the entire reason for the no-bond rule at every sub-panel, and the reason

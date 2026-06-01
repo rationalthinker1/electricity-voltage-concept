@@ -43,7 +43,7 @@ export default function Ch39HouseOutdoorWet() {
         are connected to <em className="text-text italic">each other</em>, and only to each other,
         forming a single conductive island around the pool.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The reason this looks like sloppy redundancy and is not has nothing to do with shorting the
         pool to ground in case of a fault. It has everything to do with Ch.32's threshold ladder. If
         a sealed underwater light's gasket fails next summer and the 12 V secondary (or, in older
@@ -57,7 +57,7 @@ export default function Ch39HouseOutdoorWet() {
         <Cite id="iec-60479-2018" in={SOURCES} />. The bonded grid is Ch.32's equipotential
         principle taken literally and applied to one cubic metre of wet skin.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Outdoors, in pools, on hot tubs, and at the end of an EV charging cord, the NEC stops
         trusting humans entirely. The rules in NEC Articles 406, 411, 590, 625, and 680 — and the
         listing standards UL 2231 for EVSE personnel protection and IEC 62196 / SAE J1772 for the
@@ -71,7 +71,7 @@ export default function Ch39HouseOutdoorWet() {
 
       <h2 className="chapter-h2">WR and TR receptacles, and the in-use cover</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A receptacle mounted on the exterior wall of a house lives in a fundamentally different
         environment from one in a bedroom. Direct sun cycles the face plate's surface temperature
         from −20°C in January to +60°C in July; ultraviolet flux degrades the plastic; horizontal
@@ -81,7 +81,7 @@ export default function Ch39HouseOutdoorWet() {
         device with two extra letters stamped on the face: <em className="text-text italic">WR</em>{' '}
         and <em className="text-text italic">TR</em>.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <Term
           def={
@@ -118,7 +118,7 @@ export default function Ch39HouseOutdoorWet() {
         and 250 V receptacle in a dwelling unit be tamper-resistant unless specifically exempted
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Above the receptacle the second decision is the{' '}
         <Term
           def={
@@ -145,7 +145,7 @@ export default function Ch39HouseOutdoorWet() {
         from weather is wet; anywhere subject to moderate moisture but protected from direct rain is
         damp.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The numbers behind the rule are blunt. A receptacle without an in-use cover, left propped
         open with a cord in service through a thunderstorm, can ingest enough water across the face
         to track between hot and neutral through the contaminated surface film. At 120 V across a
@@ -195,7 +195,7 @@ export default function Ch39HouseOutdoorWet() {
 
       <h2 className="chapter-h2">The 1.5 m equipotential bonding grid</h2>
 
-      <p className="mb-prose-3">
+      <p>
         NEC Article 680 governs swimming pools, spas, hot tubs, fountains, and similar
         installations, and its single most important provision is 680.26 — the equipotential bonding
         requirement. The article defines a{' '}
@@ -218,7 +218,7 @@ export default function Ch39HouseOutdoorWet() {
         together with a continuous No. 8 AWG solid copper conductor
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The bonded set, per NEC 680.26(B), is comprehensive: the pool's reinforcing steel (rebar in
         cast concrete, the bonded wire mesh of a vinyl-liner pool); metal forming shells of
         underwater luminaires; perimeter handrails, ladders, and diving-board mounts; metal fittings
@@ -242,7 +242,7 @@ export default function Ch39HouseOutdoorWet() {
         covers) within reach of a person standing in or at the edge of the pool
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The argument behind the rule is exactly the argument from Ch.32. Consider what happens when
         a faulted component — a pump motor whose winding has shorted to its housing, or a pool light
         whose niche has filled with water — energises the water at some potential V<sub>fault</sub>{' '}
@@ -265,7 +265,7 @@ export default function Ch39HouseOutdoorWet() {
         fraction of V<sub>fault</sub>. The current through the swimmer is then
       </p>
       <Formula tex="I_{\text{body}} = (V_{\text{water}} - V_{\text{ladder}}) / R_{\text{body}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="I_{\text{body}}" />
         is the current through the swimmer (in amperes), <M tex="V_{\text{water}}" />
         is the potential the fault has imposed on the pool water (in volts),{' '}
@@ -293,7 +293,7 @@ export default function Ch39HouseOutdoorWet() {
         is zero regardless of how large V<sub>fault</sub> is. Without the bond, even a 50 V fault is
         fatal.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The same calculation appears in a more familiar context as the soil{' '}
         <Term
           def={
@@ -310,7 +310,7 @@ export default function Ch39HouseOutdoorWet() {
         formula for someone walking near a faulted ground rod or downed conductor:
       </p>
       <Formula tex="V_{\text{step}} = E \times \Delta d_{\text{step}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{step}}" />
         is the voltage difference across the gait between the two feet (in volts), <M tex="E" /> is
         the local potential gradient in the soil surface around the fault (in volts per metre), and{' '}
@@ -324,7 +324,7 @@ export default function Ch39HouseOutdoorWet() {
         E to zero inside the volume the swimmer can occupy. No gradient, no step potential, no
         current.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two construction details worth noting. The bond is #8{' '}
         <em className="text-text italic">solid</em> copper, not stranded — solid wire resists
         pull-out from the brass split-bolts and grounding lugs used at each fitting, and resists
@@ -378,7 +378,7 @@ export default function Ch39HouseOutdoorWet() {
 
       <h2 className="chapter-h2">NEC 210.8 — GFCI required where</h2>
 
-      <p className="mb-prose-3">
+      <p>
         NEC Article 210.8 is the comprehensive list of locations where the 125 V receptacles must be{' '}
         <Term
           def={
@@ -402,7 +402,7 @@ export default function Ch39HouseOutdoorWet() {
         fountains under NEC Article 680 cross-references
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Each entry on the list is a threat model. The bathroom is wet hands plus a grounded plumbing
         fixture within reach. The kitchen is wet hands plus a grounded metal sink and metal-cased
         appliances. The garage adds damp concrete and a hand-held power tool. The outdoor receptacle
@@ -414,7 +414,7 @@ export default function Ch39HouseOutdoorWet() {
         operating point inside zone AC-1 regardless
         <Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The threshold itself — 5 mA imbalance, ~25 ms clearing — was derived in Ch.32 by locating
         that point on the IEC 60479-1 chart and reading off zone AC-1
         <Cite id="iec-60479-2018" in={SOURCES} />. Worth restating for this chapter's context: a
@@ -425,7 +425,7 @@ export default function Ch39HouseOutdoorWet() {
         by cumulative leakage; in a kitchen, the location away from the sink does the same. The
         threshold does not care where you are.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two practical points. First, NEC 210.8(F) (added in 2020 and tightened in 2023) extends GFCI
         protection beyond receptacles to certain outdoor outlets serving hardwired equipment —
         air-conditioning condensers, heat-pump outdoor units, irrigation controllers — recognising
@@ -441,7 +441,7 @@ export default function Ch39HouseOutdoorWet() {
 
       <h2 className="chapter-h2">Low-voltage landscape lighting</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Path lights, deck-step lights, pond-edge accents, and tree uplights in residential
         landscapes almost never run at 120 V. They run on a 12 V or 24 V secondary fed from a
         transformer mounted on an exterior wall beside a 120 V supply receptacle. The transformer is
@@ -464,7 +464,7 @@ export default function Ch39HouseOutdoorWet() {
         non-hazardous
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The reason this works as a safety strategy is the same reason a 9 V battery on your tongue
         tingles and a 120 V outlet does not. Body current is V / R<sub>body</sub>, and at 12 V
         across the worst-case wet-skin resistance of about 1 kΩ the current is 12 mA — perceptible
@@ -476,7 +476,7 @@ export default function Ch39HouseOutdoorWet() {
         available to drive current through a human, while the same total power is still delivered
         through proportionally higher cable current.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The wiring rules are correspondingly relaxed. NEC 411 allows the 12 V cable to be
         direct-buried at 6 inches rather than the 24 inches required for 120 V residential branch
         circuits, provided the cable is listed for direct burial (typically a{' '}
@@ -499,7 +499,7 @@ export default function Ch39HouseOutdoorWet() {
         everything Article 210.8 requires for any outdoor receptacle. The relaxations apply only on
         the secondary side.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two pitfalls. First, NEC 411.4(A) prohibits installing the 12 V luminaires within 3 m (10
         ft) of the inside wall of a pool or fountain unless they are listed for direct submersion
         and bonded into the 680.26 grid — the low-voltage relaxation does not paper over the
@@ -513,14 +513,14 @@ export default function Ch39HouseOutdoorWet() {
 
       <h2 className="chapter-h2">Hot tubs and spas: NEC 680 Part IV</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A residential hot tub is electrically a small pool. NEC 680 Part IV (Articles 680.40–680.43)
         applies all the same 1.5 m equipotential bonding logic — metal cabinet, motor housing,
         gas-fitting metal, perimeter rebar in the slab if any — and layers on three additional rules
         that reflect the geometry of a tub rather than a pool: a within-sight disconnect, a 50 A 240
         V branch circuit, and a four-wire connection method.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The{' '}
         <Term
           def={
@@ -545,7 +545,7 @@ export default function Ch39HouseOutdoorWet() {
         serve as the load-side GFCI device — there are listed GFCI-equipped spa disconnects that
         combine both functions in one box.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The current draw of a typical residential hot tub — heater, two pumps, sometimes a blower —
         runs 40 to 50 A continuous on 240 V, which sets the branch-circuit ampacity at the NEC's
         125% continuous-load adjustment from Ch.29 and Ch.31
@@ -557,7 +557,7 @@ export default function Ch39HouseOutdoorWet() {
         three-wire, no neutral, but the modern microcontroller-based control board is universal and
         the four-wire configuration is standard.)
       </p>
-      <p className="mb-prose-3">
+      <p>
         And critically: hot tubs are <em className="text-text italic">hardwired</em>, not
         cord-and-plug-connected, with the wiring entering the tub's equipment compartment through a
         listed liquid-tight conduit (LFNC or LFMC) and terminating on the manufacturer's terminal
@@ -607,7 +607,7 @@ export default function Ch39HouseOutdoorWet() {
 
       <h2 className="chapter-h2">EV chargers: Level 2 in detail</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Ch.31 introduced the three charging levels and the J1772 / CCS / NACS coupler ecosystem.
         This section digs into the installation-grade decisions a homeowner makes when adding a
         Level 2{' '}
@@ -626,7 +626,7 @@ export default function Ch39HouseOutdoorWet() {
         to a garage or carport: hardwired versus plug-in, dedicated breaker size, four-wire versus
         three-wire, and the layered ground-fault protection peculiar to UL 2231 EVSEs.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A Level 2 EVSE is fundamentally a smart contactor. It does not transform voltage or rectify
         to DC (the actual charger is inside the vehicle's high-voltage battery system). It does
         three things: it switches L1 and L2 onto the cable when the vehicle requests power; it
@@ -669,12 +669,12 @@ export default function Ch39HouseOutdoorWet() {
         standard level
         <Cite id="iec-62196" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Power delivered to the vehicle's onboard charger is the standard split-phase product from
         Ch.31, modified by the small efficiency of the EVSE's contactor and pilot circuitry:
       </p>
       <Formula tex="P_{\text{charge}} = V \times I \times \eta" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{charge}}" />
         is the AC power delivered to the vehicle's onboard charger (in watts), <M tex="V" /> is the
         line-to-line supply voltage at the EVSE (in volts, nominally 240 V on a North-American
@@ -700,7 +700,7 @@ export default function Ch39HouseOutdoorWet() {
         which then loses another 5–10% converting to DC before reaching the battery cells
         <Cite id="sae-j1772" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The branch-circuit sizing follows Ch.31's 125% continuous-load rule. The NEC defines EV
         charging as a continuous load by default
         <Cite id="nec-2023" in={SOURCES} />, so a 40 A EVSE requires a 50 A branch circuit (40 ×
@@ -709,7 +709,7 @@ export default function Ch39HouseOutdoorWet() {
         90°C terminations with a 60 A breaker — both fed from a dedicated double-pole position in
         the panel.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The{' '}
         <Term
           def={
@@ -762,7 +762,7 @@ export default function Ch39HouseOutdoorWet() {
         means of disconnection in sight of the EVSE for units over 60 A or over 150 V to ground
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The fourth wire is, again, about 120 V control loads. An EVSE with a Wi-Fi radio, a colour
         LCD, and a contactor coil rated for 120 V will draw a small standby current from
         L1-to-neutral; that EVSE is a four-wire (L1, L2, N, G) connection. An EVSE whose internal
@@ -770,7 +770,7 @@ export default function Ch39HouseOutdoorWet() {
         three-wire (L1, L2, G with no neutral); the manufacturer's installation instructions state
         which configuration the model requires.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Layered on top of all of this is the EVSE's own internal ground-fault detector, listed under{' '}
         <Term
           def={
@@ -888,7 +888,7 @@ export default function Ch39HouseOutdoorWet() {
 
       <h2 className="chapter-h2">The 200-to-225 A service upgrade</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The cumulative effect of electrification — adding a Level 2 EVSE, a heat pump, an induction
         range, a heat-pump water heater, sometimes a hot tub or a workshop — is that the existing
         100 A or 125 A panel that sufficed for a gas-heated 1970s house runs out of dedicated
@@ -896,7 +896,7 @@ export default function Ch39HouseOutdoorWet() {
         space. The remedy is a service upgrade to 200 A or 225 A, and it is the cleanest dividing
         line between owner-permitted DIY and electrician-required work in the residential code.
       </p>
-      <p className="mb-prose-3">
+      <p>
         NEC 230.42 sets the service-conductor ampacity for the calculated load per Article 220's
         demand calculation
         <Cite id="nec-2023" in={SOURCES} />. An all-electric house with an EVSE, heat pump, range,
@@ -908,7 +908,7 @@ export default function Ch39HouseOutdoorWet() {
         A main breaker panel, sometimes a new mast and weatherhead if the existing mast is
         undersized, and re-termination of every branch circuit on new breakers in the new panel.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Costs in 2024–2026 dollars run $4 000–$8 000 for a residential service upgrade depending on
         whether the utility's drop conductors also need upsizing, whether the mast and meter base
         are replaced, and whether the panel relocation triggers any other code work (smoke detector
@@ -918,7 +918,7 @@ export default function Ch39HouseOutdoorWet() {
         alternative of constant load-shedding management, but the labour is licensed-electrician
         and utility-coordinated work, not a weekend project.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A partial alternative for a borderline case is an{' '}
         <Term
           def={

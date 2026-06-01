@@ -40,7 +40,7 @@ export default function Ch12CircuitsAndAC() {
         relativistically-disguised pile of charge. All of that is true. None of it is how a working
         electrical engineer actually thinks about a circuit.
       </p>
-      <p className="mb-prose-3">
+      <p>
         When you sit down at a bench and probe an oscilloscope, you are not solving Maxwell's
         equations. You are pushing currents through wires and components, summing voltage drops
         around loops, and tracking which way the electrons happen to be moving this microsecond. The
@@ -52,14 +52,14 @@ export default function Ch12CircuitsAndAC() {
         From <em>fields</em> to schematics
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Picture a 1-metre wire connecting a 9-V battery to a small bulb. Chapter 8 tells you a
         careful story: energy emanates from the battery as an electromagnetic disturbance, flows
         through the empty space surrounding the wire, gets absorbed at the filament where the field
         encounters resistance. Every claim is correct. Every claim is also unnecessary if you only
         want to know how bright the bulb is.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The shortcut is the <strong className="text-text font-medium">lumped-element model</strong>.
         We declare each component to be a perfect, dimensionless object: a resistor is just an R; a
         capacitor is just a C; a wire is a zero-resistance ideal connection
@@ -68,7 +68,7 @@ export default function Ch12CircuitsAndAC() {
         extent at all. The whole circuit is a graph with components on edges and node-voltages at
         vertices.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This works when the wavelength of any signal in the circuit is much larger than the circuit
         itself. At 60 Hz, λ = c/f ≈ 5,000 km. Your washing machine is 1 m across. The ratio is
         comfortable: 5×10⁶. So a 60 Hz appliance is an exquisitely "lumped" object — every point in
@@ -82,7 +82,7 @@ export default function Ch12CircuitsAndAC() {
         The schematic is not a different physics from Chapters 1–6. It is the limit those chapters
         take when wavelengths are huge compared to the wires.
       </Pullout>
-      <p className="mb-prose-3">
+      <p>
         Inside that limit, the entire apparatus of Maxwell collapses to a handful of operational
         rules. Charge conservation becomes a rule at every node. Energy conservation becomes a rule
         around every loop. The wave equation becomes a second-order ODE in time. Resonance,
@@ -94,12 +94,12 @@ export default function Ch12CircuitsAndAC() {
         Kirchhoff's <em>two laws</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Gustav Kirchhoff, then a 21-year-old student at Königsberg, published the two laws in 1845
         <Cite id="kirchhoff-1845" in={SOURCES} />. They are, between them, sufficient to solve any
         DC network of resistors and sources.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">
           <Term
             def={
@@ -122,11 +122,11 @@ export default function Ch12CircuitsAndAC() {
       <Formula>
         Σ I<sub>in</sub> = Σ I<sub>out</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where each <M tex="I" /> is a branch current at the node (in amperes), with currents flowing
         into the node summed on the left and currents flowing out summed on the right.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">
           <Term
             def={
@@ -150,11 +150,11 @@ export default function Ch12CircuitsAndAC() {
       <Formula>
         Σ V<sub>loop</sub> = 0
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where each <M tex="V" /> is a voltage rise or drop around one closed loop (in volts), signed
         consistently with the direction of traversal so that the algebraic sum closes to zero.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Together they generate exactly enough equations to determine every branch current. For a
         network with <M>N</M> nodes and <M>B</M> branches, KCL gives you <M>N − 1</M> independent
         equations and KVL gives you <M>B − N + 1</M> — a total of <M>B</M>, which is exactly the
@@ -164,7 +164,7 @@ export default function Ch12CircuitsAndAC() {
 
       <KirchhoffsLawsDemo figure="Fig. 12.1" />
 
-      <p className="mb-prose-3">
+      <p>
         Crank the sliders and the equations stay balanced to numerical precision. The deeper
         observation is that KCL and KVL are not extra physics — they are{' '}
         <em className="text-text italic">consequences</em> of Maxwell's equations in the lumped
@@ -177,7 +177,7 @@ export default function Ch12CircuitsAndAC() {
         Voltage <em>dividers</em> and loading
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The simplest non-trivial circuit is two resistors in series across a voltage source, with
         the output tapped off the junction between them. KVL applied to the loop and Ohm's law
         applied to each leg give one line of algebra:
@@ -185,13 +185,13 @@ export default function Ch12CircuitsAndAC() {
       <Formula>
         V<sub>out</sub> = V<sub>in</sub> · R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{in}}" /> is the source voltage applied across the series pair (in
         volts), <M tex="V_{\text{out}}" /> is the voltage across the lower resistor (in volts), and{' '}
         <M tex="R_1" /> and <M tex="R_2" /> are the upper and lower resistor values (in ohms). The
         output is the supply scaled by the ratio of the lower leg to the total series resistance.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This <strong className="text-text font-medium">voltage divider</strong> is the most-used
         three-component circuit on Earth. It sets the bias on every transistor in every analog
         stage, it generates references for ADCs, it scales sensor signals to fit into a
@@ -201,7 +201,7 @@ export default function Ch12CircuitsAndAC() {
 
       <VoltageDividerDemo figure="Fig. 12.2" />
 
-      <p className="mb-prose-3">
+      <p>
         Pure-divider behaviour holds only when nothing is connected to the output. The moment you
         attach a real load — an ADC input, an amplifier stage, an instrument probe — the lower leg
         becomes R<sub>2</sub> ∥ R<sub>L</sub>, and the output sags. The standard failure mode: a
@@ -258,14 +258,14 @@ export default function Ch12CircuitsAndAC() {
         What the <em>multimeter</em> actually reads
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Every claim in the previous section is something a multimeter on a bench can check. A
         digital multimeter has two probes — a red one wired to its (+) input and a black one wired
         to its (−) input — and a rotary switch that picks a mode. The display shows one number. What
         that number means depends entirely on which mode is selected; the same probe positions can
         give wildly different readings under V_DC, V_AC, I_DC, or Ω.
       </p>
-      <p className="mb-prose-3">
+      <p>
         In <strong className="text-text font-medium">V_DC</strong> mode, the meter measures the
         time-averaged potential difference between its probe tips. Internally the input is buffered
         by a high-impedance amplifier (1 GΩ on a modern bench DMM
@@ -274,7 +274,7 @@ export default function Ch12CircuitsAndAC() {
         displayed value is exactly V<sub>red</sub> − V<sub>black</sub>, which is why a "negative"
         reading just means you swapped the probes.
       </p>
-      <p className="mb-prose-3">
+      <p>
         In <strong className="text-text font-medium">V_AC</strong> mode, the same input stage is
         followed by a true-RMS detector that computes the square-root of the time-average of the
         squared signal over a window of many line periods
@@ -283,7 +283,7 @@ export default function Ch12CircuitsAndAC() {
         answer for the bench network here — it's a DC circuit, so V_AC on any pair of probes is
         identically zero at steady state.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">I_DC</strong> mode is fundamentally different: the
         meter inserts a low-resistance shunt in <em className="text-text italic">series</em> with
         the current path and measures the voltage across that shunt
@@ -293,7 +293,7 @@ export default function Ch12CircuitsAndAC() {
         slightly and show the steady-state current through whichever wire segment your probes
         straddle.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Ω</strong> mode disconnects the live circuit
         entirely. The meter forces a small known current through the probes and measures the
         resulting voltage. For that to make sense, the device under test must be unpowered — which
@@ -304,7 +304,7 @@ export default function Ch12CircuitsAndAC() {
 
       <MultimeterProbeDemo figure="Fig. 12.3" />
 
-      <p className="mb-prose-3">
+      <p>
         Try V_DC with red on TP1 and black on GND: you get the 8.66 V drop across the bottom
         two-resistor stack, exactly as KVL predicts. Move the red probe to TP4 and the reading snaps
         to 0 V — the right-hand branch carries no DC current, so every test point past the capacitor
@@ -317,39 +317,39 @@ export default function Ch12CircuitsAndAC() {
         The <em>RC</em> time constant
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Add a capacitor to the mix and the circuit acquires memory. A capacitor stores charge in
         proportion to the voltage across it: Q = CV. To change the voltage across a cap, you must
         move charge onto its plates, and that takes time if the charge has to come through a
         resistor.
       </p>
-      <p className="mb-prose-3">
+      <p>
         For a battery V₀, a resistor R, and a capacitor C in series, Kirchhoff's voltage law gives
       </p>
       <Formula>
         V<sub>0</sub> = I R + Q/C
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_0" /> is the battery EMF (in volts), <M tex="I" /> is the (time-varying)
         loop current (in amperes), <M tex="R" /> is the series resistance (in ohms), <M tex="Q" />{' '}
         is the charge on the capacitor (in coulombs), and <M tex="C" /> is the capacitance (in
         farads). The two RHS terms are the voltage drop across the resistor and the voltage across
         the capacitor at the same instant.
       </p>
-      <p className="mb-prose-3">
+      <p>
         and since <M tex="I = dQ/dt" />, you get a first-order linear ODE whose solution is the
         canonical exponential approach:
       </p>
       <Formula>
         V<sub>C</sub>(t) = V<sub>0</sub> ( 1 − e<sup>−t/τ</sup> ), τ = R C
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_C(t)" /> is the capacitor voltage at time <M tex="t" /> (both in SI: volts
         and seconds), <M tex="V_0" /> is the supply EMF (in volts) — also the final voltage the cap
         asymptotically reaches — and <M tex="\tau = RC" /> is the circuit's time constant (in
         seconds), the product of resistance (ohms) and capacitance (farads).
       </p>
-      <p className="mb-prose-3">
+      <p>
         After one time constant, the cap reaches <M tex="1 - 1/e \approx 63\%" /> of the final
         voltage; after three, about 95%; after five, you've effectively arrived. Discharging through
         R follows the mirror curve, decaying as{' '}
@@ -382,7 +382,7 @@ export default function Ch12CircuitsAndAC() {
         <RCTransientDemo figure="Fig. 12.4" />
       </PredictThenObserve>
 
-      <p className="mb-prose-3">
+      <p>
         Try R = 1 kΩ and C = 220 µF: τ = 0.22 s — visibly slow on the demo plot. Drop C to 10 µF and
         τ collapses to 10 ms; raise R to 10 kΩ and you're back at 100 ms. The product RC, in
         seconds, is the only thing that matters
@@ -427,19 +427,19 @@ export default function Ch12CircuitsAndAC() {
         <em>LC</em> oscillation — the electrical pendulum
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Replace the resistor with an inductor and the circuit's character changes completely. A
         capacitor stores energy in its electric field (½ CV² = Q²/(2C)). An inductor stores energy
         in its magnetic field (½ LI²). With both present and no resistance, the two stores hand
         energy back and forth indefinitely — the electrical analog of a mass on a spring.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Kirchhoff's voltage law plus <M tex="Q = CV" /> plus <M tex="V_L = L\, dI/dt" /> gives
       </p>
       <Formula>
         L (d<sup>2</sup>Q/dt<sup>2</sup>) + Q/C = 0
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="L" /> is the inductance (in henries), <M tex="C" /> is the capacitance (in
         farads), and <M tex="Q(t)" /> is the charge on the capacitor plates (in coulombs) as a
         function of time. The first term is the voltage across the inductor (
@@ -447,17 +447,17 @@ export default function Ch12CircuitsAndAC() {
         ); the second is the voltage across the capacitor. KVL says they sum to zero around the
         loop.
       </p>
-      <p className="mb-prose-3">which is the harmonic-oscillator equation with angular frequency</p>
+      <p>which is the harmonic-oscillator equation with angular frequency</p>
       <Formula>
         ω<sub>0</sub> = 1 / √(L C), f<sub>0</sub> = 1 / (2π √(L C))
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\omega_0" /> is the resonant angular frequency (in radians per second),{' '}
         <M tex="f_0" /> is the corresponding ordinary frequency (in hertz, i.e., cycles per second),{' '}
         <M tex="L" /> is the inductance (in henries), and <M tex="C" /> is the capacitance (in
         farads). Larger L or C means a slower oscillation.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Identical structure to a pendulum, a vibrating string, or a quantum harmonic oscillator. L
         plays the role of mass (inertia of current), 1/C plays the role of spring stiffness
         (restoring force per unit displacement). The energy alternates between the two stores; the
@@ -487,7 +487,7 @@ export default function Ch12CircuitsAndAC() {
         <LCOscillationDemo figure="Fig. 12.5" />
       </PredictThenObserve>
 
-      <p className="mb-prose-3">
+      <p>
         With L = 10 mH and C = 100 µF, f₀ ≈ 159 Hz. Scale C down to 100 pF and f₀ jumps to about 160
         kHz — AM radio territory. The same equation, six orders of magnitude apart in frequency.
       </p>
@@ -521,7 +521,7 @@ export default function Ch12CircuitsAndAC() {
         <em>RLC</em> and resonance
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Now add back the resistor and drive the network with a sinusoidal source V(t) = V₀ cos(ωt).
         Two new effects appear at once: the oscillation becomes{' '}
         <strong className="text-text font-medium">damped</strong> (R dissipates energy on every
@@ -543,20 +543,20 @@ export default function Ch12CircuitsAndAC() {
         </strong>
         .
       </p>
-      <p className="mb-prose-3">
+      <p>
         The steady-state current amplitude as a function of driving frequency is
       </p>
       <Formula>
         |I(ω)| = V<sub>0</sub> / √(R<sup>2</sup> + (ωL − 1/ωC)<sup>2</sup>)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="|I(\omega)|" /> is the steady-state current amplitude (in amperes) at driving
         angular frequency <M tex="\omega" /> (in radians per second), <M tex="V_0" /> is the source
         peak voltage (in volts), <M tex="R" /> is the series resistance (in ohms), <M tex="L" /> is
         the inductance (in henries), and <M tex="C" /> is the capacitance (in farads). The bracketed
         term <M tex="(\omega L - 1/\omega C)" /> is the net reactance, also in ohms.
       </p>
-      <p className="mb-prose-3">
+      <p>
         which peaks when <M tex="\omega L = 1/(\omega C)" /> — that is, at exactly{' '}
         <M tex="\omega = \omega_0 = 1/\sqrt{LC}" />. The sharpness of the peak is the{' '}
         <strong className="text-text font-medium">
@@ -578,7 +578,7 @@ export default function Ch12CircuitsAndAC() {
       <Formula>
         Q = ω<sub>0</sub> L / R = (1/R) √(L/C)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="Q" /> is the dimensionless quality factor, <M tex="\omega_0 = 1/\sqrt{LC}" />{' '}
         is the resonant angular frequency (in radians per second), <M tex="L" /> is the inductance
         (in henries), <M tex="C" /> is the capacitance (in farads), and <M tex="R" /> is the series
@@ -632,7 +632,7 @@ export default function Ch12CircuitsAndAC() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         A high-Q circuit (small R) responds to a narrow band of frequencies around f₀ and rejects
         everything else. This is why every analog radio is built around exactly this physics: a
         tunable RLC tank picks one carrier frequency out of a continuum of broadcast signals and
@@ -644,7 +644,7 @@ export default function Ch12CircuitsAndAC() {
         <em>Impedance</em> — AC's complex resistance
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The intuition: impedance is resistance for alternating current — how hard a component pushes
         back on an AC current — but with one extra fact baked in. A resistor pushes back in step
         with the current; a capacitor or inductor pushes back <em className="text-text italic">out
@@ -653,13 +653,13 @@ export default function Ch12CircuitsAndAC() {
         why it has to be a complex number rather than a plain ohms value.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Beautiful as the previous section is, you do not want to solve a second-order ODE every time
         you analyze a circuit. The 19th-century engineer's response — formalized by Charles
         Steinmetz at General Electric in the 1890s <Cite id="steinmetz-1893" in={SOURCES} /> — was
         to recast everything in the complex plane.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Represent each sinusoid V(t) = V₀ cos(ωt + φ) by the complex{' '}
         <Term
           def={
@@ -699,7 +699,7 @@ export default function Ch12CircuitsAndAC() {
       <Formula>
         Z<sub>C</sub> = 1 / (jωC) = −j / (ωC)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="Z_R" />
         , <M tex="Z_L" />
         , and <M tex="Z_C" />
@@ -710,7 +710,7 @@ export default function Ch12CircuitsAndAC() {
         number; multiplication by <M tex="j" />
         represents a +90° phase rotation in the complex plane.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Resistors are real. Inductors are positive-imaginary: voltage{' '}
         <em className="text-text italic">leads</em> current by 90°, because V<sub>L</sub> = L dI/dt
         and the derivative of a cosine is a negative sine (rotated +90° in the complex plane).
@@ -734,9 +734,9 @@ export default function Ch12CircuitsAndAC() {
         grows with frequency; <M tex="|X_C| = 1/(\omega C)" />
         shrinks.
       </p>
-      <p className="mb-prose-3">Series impedances add. The full series RLC has impedance</p>
+      <p>Series impedances add. The full series RLC has impedance</p>
       <Formula>Z(ω) = R + j ( ωL − 1/ωC )</Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="Z(\omega)" /> is the total complex series impedance (in ohms) at angular
         frequency <M tex="\omega" /> (in radians per second), <M tex="R" /> is the resistance (in
         ohms, the real part — dissipative), <M tex="L" /> is the inductance (in henries),{' '}
@@ -749,7 +749,7 @@ export default function Ch12CircuitsAndAC() {
 
       <ImpedanceDemo figure="Fig. 12.7" />
 
-      <p className="mb-prose-3">
+      <p>
         Slide <M tex="\omega" />. At low frequencies, <M tex="1/(\omega C)" />
         dominates and <M tex="Z" /> lives in the lower half-plane (the circuit looks capacitive —
         current leads). At high frequencies, <M tex="\omega L" /> dominates and <M tex="Z" /> swings
@@ -798,7 +798,7 @@ export default function Ch12CircuitsAndAC() {
         AC <em>power</em> — and why the grid is three-phase
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         First, the number everyone quotes. An AC line voltage swings from its positive peak to its
         negative peak and through zero a hundred times a second, so "the voltage" needs a single
         fair summary. The root-mean-square (RMS) value is that summary: the steady DC voltage that
@@ -807,14 +807,14 @@ export default function Ch12CircuitsAndAC() {
         about 170 V. Power calculations use RMS so that AC and DC numbers mean the same thing.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Multiply V(t) = V<sub>p</sub> cos(ωt) by I(t) = I<sub>p</sub> cos(ωt − φ) and average over a
         cycle. The instantaneous power oscillates wildly, but the time-average comes out to:
       </p>
       <Formula>
         ⟨P⟩ = V<sub>rms</sub> I<sub>rms</sub> cos(φ)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\langle P \rangle" /> is the average real power delivered to the load (in
         watts), <M tex="V_{\text{rms}}" />
         and <M tex="I_{\text{rms}}" />
@@ -822,7 +822,7 @@ export default function Ch12CircuitsAndAC() {
         is the phase angle (in radians) by which the current lags or leads the voltage.{' '}
         <M tex="\cos(\varphi)" /> is the dimensionless power factor.
       </p>
-      <p className="mb-prose-3">
+      <p>
         with{' '}
         <Term
           def={
@@ -859,7 +859,7 @@ export default function Ch12CircuitsAndAC() {
         — the load draws current, but on average no energy actually transfers; energy sloshes in and
         out each half-cycle.
       </p>
-      <p className="mb-prose-3">Engineers split the three quantities apart:</p>
+      <p>Engineers split the three quantities apart:</p>
       <ul>
         <li>
           <strong className="text-text font-medium">
@@ -915,7 +915,7 @@ export default function Ch12CircuitsAndAC() {
           what the wires actually carry.
         </li>
       </ul>
-      <p className="mb-prose-3">
+      <p>
         A motor with cos(φ) = 0.7 doing 700 W of real work draws 1000 VA from the line — and the
         utility has to size its conductors and transformers for the apparent power, not the real
         power. That is why industrial customers are billed for both, and why factories install
@@ -926,7 +926,7 @@ export default function Ch12CircuitsAndAC() {
 
       <PowerFactorDemo figure="Fig. 12.8" />
 
-      <p className="mb-prose-3">
+      <p>
         The shaded area under p(t) — the energy actually delivered each cycle — is exactly the
         dashed mean line times the period. When φ = 0 (pure resistor), p(t) ≥ 0 everywhere; every
         microjoule that flows out from the source ends up dissipated in R. When φ = 90° (pure
@@ -999,7 +999,7 @@ export default function Ch12CircuitsAndAC() {
           </>
         }
       />
-      <p className="mb-prose-3">
+      <p>
         The grid itself goes a step further:{' '}
         <Term
           def={
@@ -1022,7 +1022,7 @@ export default function Ch12CircuitsAndAC() {
 
       <ThreePhaseDemo figure="Fig. 12.9" />
 
-      <p className="mb-prose-3">
+      <p>
         Almost every high-power industrial appliance in the world runs on three-phase. The
         transmission grid is universally three-phase. Your house, in most countries, takes one leg
         (or split-phase 240/120) off a local three-phase distribution transformer. The physics is
@@ -1035,7 +1035,7 @@ export default function Ch12CircuitsAndAC() {
         <em>Thévenin</em> and Norton equivalents
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The single most useful trick in circuit analysis: any linear two-terminal network — no
         matter how many sources and resistors it contains — reduces to a{' '}
         <strong className="text-text font-medium">
@@ -1045,7 +1045,7 @@ export default function Ch12CircuitsAndAC() {
         <Cite id="horowitz-hill-2015" in={SOURCES} />
         <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         To find <M tex="V_{\text{th}}" />, leave the network's two terminals open and measure (or
         compute) the voltage that appears between them — that{' '}
         <em className="text-text italic">open-circuit voltage</em> is <M tex="V_{\text{th}}" />. To
@@ -1058,7 +1058,7 @@ export default function Ch12CircuitsAndAC() {
         V<sub>th</sub> = V<sub>open-circuit</sub>, R<sub>th</sub> = R
         <sub>looking-in (sources zeroed)</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         Equivalently, a current source <M tex="I_n = V_{\text{th}}/R_{\text{th}}" />
         in parallel with the same R<sub>th</sub> produces identical terminal behaviour — that is the
         Norton form. Source-transformation is just the algebraic statement that the two are
@@ -1066,7 +1066,7 @@ export default function Ch12CircuitsAndAC() {
         outside, from a real current source with the same internal resistance.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         The proof that any linear two-terminal network has such an equivalent rests on
         <strong className="text-text font-medium"> superposition</strong>: in any network whose
         components obey linear constitutive equations, the response to several independent sources
@@ -1081,7 +1081,7 @@ export default function Ch12CircuitsAndAC() {
 
       <TheveninEquivalentDemo figure="Fig. 12.11" />
 
-      <p className="mb-prose-3">
+      <p>
         Why is this useful? Because the moment a network is reduced to (V<sub>th</sub>, R
         <sub>th</sub>), connecting a load R<sub>L</sub> is a one-line calculation: I<sub>load</sub>{' '}
         = V<sub>th</sub>/(R<sub>th</sub>+R<sub>L</sub>), V<sub>load</sub> = V<sub>th</sub>·R
@@ -1130,7 +1130,7 @@ export default function Ch12CircuitsAndAC() {
       />
 
       <h2 className="chapter-h2">What we have so far</h2>
-      <p className="mb-prose-3">
+      <p>
         At wavelengths much larger than the circuit, Maxwell's equations compress to Kirchhoff's two
         laws plus three constitutive relations: <M tex="V = IR" /> for resistors,{' '}
         <M tex="V = (1/C) \int I\, dt" /> for capacitors, <M tex="V = L\, dI/dt" /> for inductors.

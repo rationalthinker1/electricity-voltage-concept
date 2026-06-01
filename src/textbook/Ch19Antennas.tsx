@@ -47,7 +47,7 @@ export default function Ch19Antennas() {
         the electromagnetic field, the same field that Chapter 9 made into a plane wave, propagating
         outward at c and carrying away energy, momentum, and information.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This chapter is about how to design that wire — how to choose its length, its shape, its
         feedpoint, its supporting structure — so it radiates the way you want, and how to compute
         what gets to the other end. Everything in modern wireless, from Wi-Fi to GPS to the 70-metre
@@ -59,7 +59,7 @@ export default function Ch19Antennas() {
 
       <h2 className="chapter-h2">A wire that talks</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Chapter 7 covered induction: change the current in a coil, and the magnetic field everywhere
         around it changes too. What we glossed over there was that the change
         <em className="text-text italic"> propagates</em>. Maxwell's displacement-current correction
@@ -69,7 +69,7 @@ export default function Ch19Antennas() {
         <Cite id="griffiths-2017" in={SOURCES} />
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That radiation carries energy. By Poynting (Chapter 8), the time-averaged outward flux from
         an accelerating charge is <M tex="\langle S\rangle = \tfrac{1}{2}\varepsilon_0 c |E|^{2}" />
         . Integrate over a sphere far from the source and you get the total radiated power, which
@@ -78,14 +78,14 @@ export default function Ch19Antennas() {
       <Formula>
         P<sub>rad</sub> = (q² a²) / (6π ε₀ c³)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{rad}}" />
         is the total time-averaged radiated power (in watts), <M tex="q" /> is the charge (in
         coulombs), <M tex="a" /> is the magnitude of the charge's acceleration (in m/s²),{' '}
         <M tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" /> is the permittivity of
         free space, and <M tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three features of that formula are worth pausing on. The <M tex="a^2" /> says everything: a
         charge moving at constant velocity does not radiate (uniform translation is just a Lorentz
         boost of a Coulomb field), but the moment it accelerates, the field has to "kink" to
@@ -102,7 +102,7 @@ export default function Ch19Antennas() {
         current-carrying wire does not radiate, but a single shaken charge — or, equivalently, an
         oscillating dipole — eventually fills space with measurable energy density.
       </p>
-      <p className="mb-prose-3">
+      <p>
         An{' '}
         <Term def="A piece of conducting material designed to radiate (transmit) or capture (receive) electromagnetic waves at a particular range of frequencies. The receiving and transmitting properties are tied by reciprocity — the same physical structure works either way.">
           antenna
@@ -119,7 +119,7 @@ export default function Ch19Antennas() {
 
       <h2 className="chapter-h2">The dipole pattern</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Solve Maxwell's equations for an infinitesimal vertical dipole of length L and peak current
         I₀ oscillating at frequency ω. In the{' '}
         <Term def="The region r >> λ/(2π) where the radial 1/r³ near-zone terms are negligible and the field is locally a transverse plane wave with magnitude ∝ 1/r. All radiative properties (gain, beamwidth, directivity, etc.) are defined here.">
@@ -133,7 +133,7 @@ export default function Ch19Antennas() {
       <Formula>
         E(r, θ) ∝ (I<sub>0</sub> L ω / c) · sin θ · cos(kr − ωt) / r
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="E(r,\theta)" /> is the magnitude of the radiated electric field (in V/m) at
         radial distance <M tex="r" /> (in metres) and polar angle <M tex="\theta" /> measured from
         the dipole axis (in radians), <M tex="I_0" />
@@ -142,14 +142,14 @@ export default function Ch19Antennas() {
         <M tex="k = \omega/c" /> is the free-space wavenumber (in m⁻¹), and{' '}
         <M tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two important features of that formula. (1) The 1/r dependence — far enough away, the field
         falls off as one over the distance, and intensity ∝ |E|² falls off as 1/r². This is the
         inverse-square law for radiation. (2) The sin θ angular dependence, with θ measured from the
         dipole axis. Squared, this gives the intensity pattern:
       </p>
       <Formula>|E|² ∝ sin²θ</Formula>
-      <p className="mb-prose-3">
+      <p>
         Strongest perpendicular to the dipole axis (θ = 90°), zero along the axis (θ = 0 or π). In
         3D, the radiated power has the shape of a fat donut centred on the dipole, with the wire
         piercing the donut's hole. That sin²θ factor — once you've seen it — turns up in every
@@ -160,7 +160,7 @@ export default function Ch19Antennas() {
 
       <DipoleRadiationPatternDemo figure="Fig. 19.1" />
 
-      <p className="mb-prose-3">
+      <p>
         That polar plot is a slice through the dipole. The full radiation pattern lives in 3D — and
         because the geometry is rotationally symmetric about the wire, you get the 2D lobe by
         spinning it once around the axis. The result is a torus: a fat donut, with the antenna
@@ -170,7 +170,7 @@ export default function Ch19Antennas() {
         <Cite id="balanis-2016" in={SOURCES} />
         <Cite id="kraus-marhefka-2002" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The radiation pattern can be sharpened beyond the short dipole's sin²θ: n = 2 is the
         canonical short-electric dipole, and raising the exponent narrows the half-power beamwidth —
         qualitatively what happens when you stack more elements or move to a longer end-fire antenna
@@ -204,14 +204,14 @@ export default function Ch19Antennas() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         The total power radiated comes from integrating the Poynting flux over a large sphere. For a
         short dipole of length L ≪ λ carrying peak current I₀:
       </p>
       <Formula>
         P<sub>rad</sub> = (π η<sub>0</sub> / 3) · (L/λ)² · I<sub>0</sub>²
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{rad}}" />
         is the total time-averaged radiated power (in watts), <M tex="\eta_0" /> is the impedance of
         free space (in ohms; defined below), <M tex="L" /> is the dipole's physical length (in
@@ -219,7 +219,7 @@ export default function Ch19Antennas() {
         <M tex="I_0" />
         is the peak current at the feedpoint (in amperes).
       </p>
-      <p className="mb-prose-3">
+      <p>
         with <M tex="\eta_0 = \sqrt{\mu_0/\varepsilon_0} \approx 377\,\Omega" /> the{' '}
         <Term def="η₀ = √(μ₀/ε₀) ≈ 377 Ω. The ratio |E|/|H| in a plane EM wave travelling in vacuum, with units of impedance. Sets the link between radiation pressure, Poynting flux, and antenna impedances.">
           impedance of free space
@@ -237,7 +237,7 @@ export default function Ch19Antennas() {
 
       <h2 className="chapter-h2">The half-wave dipole</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A "short" dipole (L ≪ λ) has tiny radiation resistance: an L/λ = 0.05 dipole has only R
         <sub>rad</sub> ≈ 2 Ω, miserable for impedance-matching. Push L up to λ/2 and the radiation
         resistance climbs to a useful <strong className="text-text font-medium">~73 Ω</strong> at
@@ -249,14 +249,14 @@ export default function Ch19Antennas() {
       <Formula>
         f<sub>0</sub> = c / (2 L)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="f_0" />
         is the fundamental resonant frequency of the dipole (in Hz),{' '}
         <M tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light, and{' '}
         <M tex="L" /> is the total physical length of the dipole wire (in metres) — half a
         wavelength at resonance.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A 1.5-m dipole resonates at 100 MHz; a 50-mm dipole resonates at 3 GHz; a 0.5-µm dipole —
         should you ever build one — would resonate at 300 THz, well into the infrared. (Nano-
         antennas at exactly this scale are an active area of research.) At resonance, the current
@@ -298,7 +298,7 @@ export default function Ch19Antennas() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         Off resonance the impedance climbs rapidly: at 0.7 f₀ or 1.3 f₀ it's already several hundred
         ohms reactive, mostly capacitive below resonance and inductive above. That's why antennas
         are <em className="text-text italic">narrow-band</em> devices in their natural form — a
@@ -309,7 +309,7 @@ export default function Ch19Antennas() {
 
       <h2 className="chapter-h2">Arrays and Yagis: multiplying patterns</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Put two driven dipoles next to each other, fed in phase and a distance d apart, and the
         field pattern at any far observation angle is the sum of the two dipole fields. The
         magnitudes are roughly equal, but the path-length difference between the two introduces a
@@ -324,7 +324,7 @@ export default function Ch19Antennas() {
       <Formula>
         F<sub>total</sub>(θ, φ) = F<sub>element</sub>(θ, φ) × F<sub>array</sub>(θ, φ)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="F_{\text{total}}(\theta,\phi)" />
         is the dimensionless total radiation pattern of the array at polar angle <M tex="\theta" />{' '}
         and azimuthal angle <M tex="\phi" /> (both in radians), <M tex="F_{\text{element}}" />
@@ -332,7 +332,7 @@ export default function Ch19Antennas() {
         is the array factor — the geometric interference pattern that the array of N elements would
         produce if every element were an isotropic point source.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Pattern multiplication is the entire game of{' '}
         <Term def="An array of multiple antenna elements arranged in a geometric pattern, fed with controlled relative phases and amplitudes, so that constructive interference produces a directional beam. Phased arrays use electronic phase shifters to steer the beam without moving mechanical parts.">
           phased-array antenna
@@ -341,7 +341,7 @@ export default function Ch19Antennas() {
         the array factor focuses the radiation into a tight beam pointing where you want — without
         moving any mechanical parts.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The simplest non-trivial real array is the Yagi-Uda, invented in 1928 by Hidetsugu Yagi and
         Shintaro Uda at Tohoku University
         <Cite id="yagi-1928" in={SOURCES} />. One driven element (a half-wave dipole), one
@@ -357,7 +357,7 @@ export default function Ch19Antennas() {
 
       <Pullout>Antenna engineering is the art of multiplying patterns.</Pullout>
 
-      <p className="mb-prose-3">
+      <p>
         Adding directors sharpens the forward lobe and raises the on-axis gain by roughly 1 dB per
         director, with diminishing returns past about ten. A ten-element Yagi for the FM broadcast
         band achieves ~13 dBi forward gain, beamwidth ~30°, and 20+ dB front-to-back ratio — quite
@@ -367,7 +367,7 @@ export default function Ch19Antennas() {
         <Cite id="kraus-marhefka-2002" in={SOURCES} />.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Pull the parasitic elements off the Yagi and replace them with a row of{' '}
         <em className="text-text italic">actively driven</em>
         elements, each fed through its own phase shifter, and you have a{' '}
@@ -380,14 +380,14 @@ export default function Ch19Antennas() {
       <Formula>
         sin θ<sub>steer</sub> = (Δφ · λ) / (2π d)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\theta_{\text{steer}}" />
         is the angle the main beam makes with broadside (in radians), <M tex="\Delta\phi" /> is the
         progressive phase shift applied between adjacent elements (in radians), <M tex="\lambda" />
         is the free-space wavelength (in metres), and <M tex="d" /> is the spacing between adjacent
         elements (in metres).
       </p>
-      <p className="mb-prose-3">
+      <p>
         No moving parts: change Δφ electronically and the beam swings. With d = λ/2 the array can
         steer the full ±90° hemisphere. Push d much above λ/2 and unwanted "grating lobes" appear on
         the other side of broadside — uninvited copies of the main beam at angles where the
@@ -453,7 +453,7 @@ export default function Ch19Antennas() {
 
       <h2 className="chapter-h2">The Friis equation</h2>
 
-      <p className="mb-prose-3">
+      <p>
         At the receiver end of a wireless link, the question is:{' '}
         <em className="text-text italic">how much power arrives?</em>
         For two antennas separated by a distance d ≫ λ in free space (no reflections, no
@@ -468,7 +468,7 @@ export default function Ch19Antennas() {
       <Formula>
         P<sub>r</sub> = P<sub>t</sub> · G<sub>t</sub> · G<sub>r</sub> · (λ / 4πd)²
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_r" />
         is the power delivered to the matched receive antenna (in watts), <M tex="P_t" />
         is the transmitted power (in watts), <M tex="G_t" />
@@ -477,7 +477,7 @@ export default function Ch19Antennas() {
         in dBi), <M tex="\lambda" /> is the operating wavelength (in metres), and <M tex="d" /> is
         the line-of-sight distance between the antennas (in metres).
       </p>
-      <p className="mb-prose-3">
+      <p>
         The (λ/4πd)² factor is the <em className="text-text italic">free-space path loss</em> — the
         fraction of radiated power that an isotropic receiver of effective area λ²/(4π) would
         intercept at distance d. Every doubling of d adds{' '}
@@ -488,7 +488,7 @@ export default function Ch19Antennas() {
 
       <FriisLinkBudgetDemo figure="Fig. 19.6" />
 
-      <p className="mb-prose-3">
+      <p>
         Plug in some numbers for a typical home Wi-Fi link: P<sub>t</sub> = 100 mW = +20 dBm, G
         <sub>t</sub> = G<sub>r</sub> = +5 dBi, f = 5 GHz so λ = 6 cm, d = 10 m. Compute:
       </p>
@@ -496,7 +496,7 @@ export default function Ch19Antennas() {
         P<sub>r</sub> = 0.1 W · 3.16 · 3.16 · (0.06 / (4π · 10))² ≈{' '}
         <strong className="text-text font-medium">2.3 × 10⁻⁷ W</strong>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         About 230 nanowatts — equivalent to −36 dBm. Sensitivity of a commodity Wi-Fi receiver is
         about −90 dBm at the lowest MCS, so we have 54 dB of fade margin. Plenty for a clean link;
         some of that vanishes through walls and multipath, but the math is roughly right. The same
@@ -505,7 +505,7 @@ export default function Ch19Antennas() {
         <Cite id="friis-1946" in={SOURCES} />.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Friis assumes the polarisations at the two ends are matched. If they aren't, multiply by a
         <Term def="The factor cos²α by which received power drops when transmitter and receiver linear polarisations are misaligned by angle α. The antenna analogue of Malus's law in optics — a dipole only couples to the E-field component along its axis.">
           polarisation-loss factor
@@ -553,7 +553,7 @@ export default function Ch19Antennas() {
 
       <h2 className="chapter-h2">Near field vs far field</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Friis assumes <M tex="d \gg \lambda" />. Closer to an antenna than that, the simple 1/r
         far-field picture doesn't apply. The radiation field of any oscillating source has three
         components: a 1/r³ "near zone" piece that looks essentially like a quasi-static dipole, a
@@ -563,7 +563,7 @@ export default function Ch19Antennas() {
         <Cite id="balanis-2016" in={SOURCES} />
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The boundary between these regions is at <M tex="r \approx \lambda/(2\pi)" />. Inside that
         radius, the field structure is dominated by the reactive near-zone terms. Outside, the
         radiation zone takes over and the field looks locally like a plane EM wave with |E|/|H| =
@@ -572,7 +572,7 @@ export default function Ch19Antennas() {
 
       <NearFarFieldTransitionDemo figure="Fig. 19.8" />
 
-      <p className="mb-prose-3">
+      <p>
         For large aperture antennas (a parabolic dish, a phased array), there's an additional
         "Fraunhofer / Fresnel" distance set by the antenna's physical size:{' '}
         <M tex="r_{\text{far}} \approx 2D^{2}/\lambda" />, where D is the largest aperture
@@ -610,7 +610,7 @@ export default function Ch19Antennas() {
 
       <h2 className="chapter-h2">Patch antennas and the printed-circuit radiator</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <Term def="A flat rectangular metal patch on a dielectric substrate over a ground plane, fed from below. Resonates as a half-wave standing wave inside the dielectric: L ≈ λ/(2√εᵣ). Radiation is broadside, gain ~6 dBi.">
           microstrip patch antenna
@@ -625,7 +625,7 @@ export default function Ch19Antennas() {
       <Formula>
         L ≈ λ / (2 √ε<sub>r</sub>) &nbsp;⇔&nbsp; f<sub>0</sub> ≈ c / (2 L √ε<sub>r</sub>)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="L" /> is the physical length of the patch in the resonant direction (in
         metres), <M tex="\lambda = c/f_0" />
         is the free-space wavelength at the resonant frequency (in metres), <M tex="f_0" />
@@ -634,7 +634,7 @@ export default function Ch19Antennas() {
         <M tex="\varepsilon_r" />
         is the dimensionless relative permittivity of the dielectric substrate beneath the patch.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The radiation pattern is broadside (perpendicular to the patch plane), with typical gain
         around <strong className="text-text font-medium">6 dBi</strong> and a half-power beamwidth
         around 80°. The ground plane sits underneath like a mirror, so essentially nothing radiates
@@ -680,7 +680,7 @@ export default function Ch19Antennas() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Push a sinusoidal current onto a wire and the wire radiates. A short electric dipole has the
         canonical sin²θ pattern, with strength perpendicular to its axis and a null along it. Cut
         the wire to a half wavelength and feed it in the centre, and the input impedance becomes

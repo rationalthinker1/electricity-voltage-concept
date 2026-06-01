@@ -43,7 +43,7 @@ export default function Ch25Batteries() {
         of hydrogen and oxygen
         <Cite id="volta-1800-pile" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Friction generators and Leyden jars (Chapter 5) had already given Europe its electric circus
         tricks, but Volta's pile was different: it produced sustained current, not a one-time
         discharge. Within months experimentalists across the continent were splitting water, plating
@@ -56,7 +56,7 @@ export default function Ch25Batteries() {
 
       <h2 className="chapter-h2">Volta's pile, 1800</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The pile is the simplest battery anyone ever built. Take a disc of zinc, lay a piece of
         cardboard or felt soaked in salt water (the{' '}
         <Term def="The ion-conducting medium between the two electrodes. It must conduct ions (to complete the internal circuit) but not electrons (or the cell would short itself). Brine in Volta's pile; sulphuric acid in lead-acid; an organic carbonate solution in Li-ion.">
@@ -76,7 +76,7 @@ export default function Ch25Batteries() {
 
       <VoltaicPileDemo figure="Fig. 25.1" />
 
-      <p className="mb-prose-3">
+      <p>
         What was new was not the spark — friction generators had been giving people shocks for a
         century — but the <em className="text-text italic">persistence</em>. The pile didn't have to
         be re-cranked between every shot. Whatever was happening inside it kept replenishing the
@@ -118,7 +118,7 @@ export default function Ch25Batteries() {
 
       <h2 className="chapter-h2">The half-reaction story</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Volta's contact theory was wrong: the voltage doesn't come from the metals touching each
         other, it comes from the metals touching the electrolyte. At each metal–electrolyte
         interface, a chemical reaction tries to run, and the reaction either deposits electrons on
@@ -127,7 +127,7 @@ export default function Ch25Batteries() {
         electrodes sit at different potentials, and a battery exists
         <Cite id="bard-faulkner-2001" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">For Volta's Zn / brine / Cu cell the two reactions are:</p>
+      <p>For Volta's Zn / brine / Cu cell the two reactions are:</p>
       <Formula>
         Zn → Zn²⁺ + 2e⁻ (at the zinc surface;{' '}
         <Term def="The electrode where oxidation happens — the metal gives up electrons. In a galvanic (battery) cell, this is the negative terminal. In an electrolytic cell, this is the positive terminal.">
@@ -142,7 +142,7 @@ export default function Ch25Batteries() {
         </Term>
         )
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         The zinc dissolves; it gives up its electrons to the wire and its Zn²⁺ cation to the brine.
         The electrons travel through the external wire (this is the current) and arrive at the
         copper electrode, where they reduce H⁺ ions coming out of the brine into bubbles of hydrogen
@@ -151,7 +151,7 @@ export default function Ch25Batteries() {
         electrolyte to reduce
         <Cite id="bard-faulkner-2001" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The voltage that appears between the two electrodes is set entirely by the energy released
         per electron in going through the combined reaction. Different metal-electrolyte pairs
         release different amounts and sit at different voltages. We will tabulate them in a moment.
@@ -167,7 +167,7 @@ export default function Ch25Batteries() {
 
       <h2 className="chapter-h2">The Daniell cell</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Volta's pile worked but was messy. The brine evaporated. The hydrogen bubbles at the copper
         surface formed an insulating film that raised internal resistance — a problem called{' '}
         <Term def="The build-up of a non-conducting layer (often hydrogen bubbles) at an electrode surface, raising internal resistance and dropping cell voltage. Plagued early voltaic cells until Daniell separated the two half-reactions.">
@@ -178,7 +178,7 @@ export default function Ch25Batteries() {
         two half-reactions into their own compartments
         <Cite id="daniell-1836" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Daniell's idea: put the zinc anode in a solution of zinc sulphate (ZnSO₄), put a copper
         cathode in a solution of copper sulphate (CuSO₄), and connect the two solutions with a
         porous separator that lets sulphate ions through but resists bulk mixing. The reactions at
@@ -186,7 +186,7 @@ export default function Ch25Batteries() {
       </p>
       <Formula>Zn → Zn²⁺ + 2e⁻ (anode)</Formula>
       <Formula>Cu²⁺ + 2e⁻ → Cu (cathode)</Formula>
-      <p className="mb-prose-3">
+      <p>
         No more hydrogen bubbles. Instead, copper plates out as a solid metal onto the cathode while
         the anode zinc dissolves. The cell holds a remarkably stable{' '}
         <M tex="\approx 1.10\,\text{V}" /> across the terminals for as long as either rod has
@@ -196,7 +196,7 @@ export default function Ch25Batteries() {
 
       <DaniellCellDemo figure="Fig. 25.2" />
 
-      <p className="mb-prose-3">
+      <p>
         Notice what just happened. The Volta pile was a single integrated mess; the Daniell cell is
         a<em className="text-text italic"> two-compartment</em> design where each electrode sits in
         its own electrolyte and only ions cross between them. That separation is the architecture of
@@ -234,7 +234,7 @@ export default function Ch25Batteries() {
 
       <h2 className="chapter-h2">Standard electrode potentials</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Before the table of numbers, the idea: every half-reaction has an appetite for electrons.
         The standard electrode potential is the scoreboard that ranks those appetites — a single
         voltage saying how strongly each chemistry pulls electrons toward itself, every couple
@@ -243,7 +243,7 @@ export default function Ch25Batteries() {
         stacking two couples with a big gap between them yields a big cell voltage.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Every half-reaction has an intrinsic "reaction tendency" that you can measure. By
         convention, chemists assign each reduction half-reaction a number called its{' '}
         <Term def="The voltage of a half-reaction measured against the standard hydrogen electrode (SHE = 0.00 V), with all species at 1 M concentration, 1 atm, 298 K. Tabulated for every common couple — the universal lookup table for battery chemistry.">
@@ -257,9 +257,9 @@ export default function Ch25Batteries() {
         Anything with a positive E° relative to SHE is a stronger oxidizer than H⁺; anything
         negative is a stronger reducer than H₂.
       </p>
-      <p className="mb-prose-3">For our Cu/Zn cell:</p>
+      <p>For our Cu/Zn cell:</p>
       <Formula>E°(Cu²⁺/Cu) = +0.34 V, E°(Zn²⁺/Zn) = −0.76 V</Formula>
-      <p className="mb-prose-3">
+      <p>
         The cell voltage is the difference:{' '}
         <M tex="E^\circ_{\text{cell}} = E^\circ(\text{cathode}) - E^\circ(\text{anode})" />. For
         Daniell: <M tex="E^\circ_{\text{cell}} = +0.34 - (-0.76) = +1.10\,\text{V}" />, exactly what
@@ -272,7 +272,7 @@ export default function Ch25Batteries() {
 
       <HalfCellPotentialsDemo figure="Fig. 25.3" />
 
-      <p className="mb-prose-3">
+      <p>
         At the extremes: lithium metal has the most negative E° of any element in the periodic table
         (Li⁺ + e⁻ → Li sits at <M tex="-3.04\,\text{V}" />
         ), making it the strongest practical reducing agent. Fluorine sits at{' '}
@@ -311,7 +311,7 @@ export default function Ch25Batteries() {
 
       <h2 className="chapter-h2">The Nernst equation</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Standard electrode potentials assume "standard conditions" — every dissolved species at 1
         mol/L concentration, every gas at 1 atm, temperature at 298 K. Real batteries don't operate
         at standard conditions. The concentrations of the active ions change as the cell discharges
@@ -321,7 +321,7 @@ export default function Ch25Batteries() {
         <Cite id="nernst-1889" in={SOURCES} />:
       </p>
       <Formula>V = V° − (RT / nF) · ln Q</Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V" /> is the open-circuit cell voltage at the actual operating conditions (in
         volts), <M tex="V^\circ" /> is the standard cell potential at 1 M concentrations, 1 atm, 298
         K (in volts), <M tex="R" /> is the universal gas constant 8.314 J/(mol·K), <M tex="T" /> is
@@ -335,7 +335,7 @@ export default function Ch25Batteries() {
         measurement
         <Cite id="codata-2018" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The log is not arbitrary. The chemical potential of a dilute species scales as{' '}
         <M tex="kT \ln c" /> — a direct consequence of the Boltzmann factor governing how molecules
         populate energy levels at temperature T. Halve a reactant's concentration and its free
@@ -347,9 +347,9 @@ export default function Ch25Batteries() {
         electrons transferred per reaction event, <M tex="F" /> coulombs per mole of electrons
         <Cite id="nernst-1889" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">For the Daniell cell, the reaction quotient simplifies to:</p>
+      <p>For the Daniell cell, the reaction quotient simplifies to:</p>
       <Formula>Q = [Zn²⁺] / [Cu²⁺]</Formula>
-      <p className="mb-prose-3">
+      <p>
         At T = 298 K and n = 2, the prefactor RT/nF works out to about{' '}
         <strong className="text-text font-medium">12.8 mV</strong> per natural-log unit of Q, or{' '}
         <strong className="text-text font-medium">29.6 mV</strong> per factor of 10 change in
@@ -361,7 +361,7 @@ export default function Ch25Batteries() {
 
       <NernstEquationDemo figure="Fig. 25.4" />
 
-      <p className="mb-prose-3">
+      <p>
         Walther Nernst published this equation in 1889; it earned him the 1920 Nobel Prize in
         Chemistry. It is the single most useful equation in practical electrochemistry. The Nernst
         equation tells you why a fresh alkaline cell reads ~1.55 V open-circuit while a "dead" one
@@ -402,7 +402,7 @@ export default function Ch25Batteries() {
 
       <h2 className="chapter-h2">Internal resistance and the discharge curve</h2>
 
-      <p className="mb-prose-3">
+      <p>
         No real battery is an ideal voltage source. Connect a load and the voltage at the terminals
         drops below the open-circuit value. The drop is the{' '}
         <Term def="The IR drop inside a battery that subtracts from the open-circuit voltage when current flows. Combines the bulk electrolyte resistance, the electrode kinetic overpotential, and the contact resistance at the terminals. Rises as the cell ages or discharges.">
@@ -414,7 +414,7 @@ export default function Ch25Batteries() {
       <Formula>
         V<sub>term</sub> = V<sub>OC</sub> · R<sub>L</sub> / (R<sub>int</sub> + R<sub>L</sub>)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{term}}" />
         is the loaded terminal voltage at the battery's posts (in volts), <M tex="V_{\text{OC}}" />
         is the open-circuit (no-load) voltage set by the cell chemistry (in volts),{' '}
@@ -423,7 +423,7 @@ export default function Ch25Batteries() {
         is the external load resistance (in ohms). The expression is just a voltage divider between{' '}
         <M tex="R_{\text{int}}" /> and <M tex="R_{L}" />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         R_int comes from three places: the bulk resistance of the electrolyte (limited ion
         mobility), the kinetic{' '}
         <Term def="The 'extra' voltage you need to apply beyond E° to make a reaction run at a useful rate. Governed by the Butler–Volmer equation; falls logarithmically with current density. The reason a fuel cell at open-circuit reads 1.0 V instead of the thermodynamic 1.23 V.">
@@ -439,7 +439,7 @@ export default function Ch25Batteries() {
 
       <CellDischargeDemo figure="Fig. 25.5" />
 
-      <p className="mb-prose-3">
+      <p>
         As the cell discharges, two things happen at once. The{' '}
         <Term def="The fraction of the battery's full charge remaining, usually expressed as 0–100% or 0–1. Read indirectly from terminal voltage (with corrections for load), coulomb-counting (integrate current), or impedance spectroscopy.">
           state of charge (SOC)
@@ -456,7 +456,7 @@ export default function Ch25Batteries() {
         — flat-ish plateau, then a sharp knee at end of life
         <Cite id="bard-faulkner-2001" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Internal resistance is also what limits how much current you can draw. At short-circuit, I =
         V_OC / R_int. For a 9 V transistor battery (V_OC ≈ 9 V, R_int ≈ 35 Ω), that's about 0.25 A —
         enough to make a wire warm. For a car starter battery (V_OC ≈ 12.6 V, R_int ≈ 4 mΩ), it's
@@ -497,7 +497,7 @@ export default function Ch25Batteries() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Inside any battery: two electrodes, an electrolyte that conducts ions but not electrons, and
         two half-reactions whose energy difference shows up as a voltage between the terminals.
         Standard reduction potentials, tabulated against the hydrogen electrode, predict that
@@ -507,7 +507,7 @@ export default function Ch25Batteries() {
         limits the maximum current. The Daniell cell from 1836 is the canonical pattern; every
         modern chemistry is a variation on it.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Next chapter: the modern chemistries themselves. Planté's lead-acid (still in every gasoline
         car), Whittingham–Goodenough–Yoshino's lithium-ion (in your phone, your laptop, and
         increasingly your car), supercapacitors, flow cells, and fuel cells. Same Daniell

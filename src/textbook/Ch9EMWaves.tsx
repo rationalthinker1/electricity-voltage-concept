@@ -45,7 +45,7 @@ export default function Ch9EMWaves() {
         The field still carries energy. The flow just has nowhere to land — so it keeps going,
         outward, forever, at one specific speed.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That is a wave. Maxwell predicted it in 1865, from the four equations he'd just finished
         collecting
         <Cite id="maxwell-1865" in={SOURCES} />. Heinrich Hertz produced and detected it in his
@@ -71,7 +71,7 @@ export default function Ch9EMWaves() {
         Strip the <em>wire</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Ch.8's punchline was that energy travels through the space around a conductor as{' '}
         <M tex="\vec{S} = (1/\mu_0)\,\vec{E}\times\vec{B}" />, the Poynting vector, and lands
         wherever there's a resistive medium to absorb it. The flow is a property of the field, not
@@ -79,14 +79,14 @@ export default function Ch9EMWaves() {
         exists in vacuum — no copper, no battery, no resistor, just <M tex="E" /> and <M tex="B" />{' '}
         at some point in space — what's the flow doing?
       </p>
-      <p className="mb-prose-3">
+      <p>
         It's still doing what Poynting's expression says
         <Cite id="poynting-1884" in={SOURCES} />. <M tex="S" /> is a property of <M tex="E" /> and{' '}
         <M tex="B" /> alone, not of the medium they live in. The energy density of the field, also
         written down by Poynting and Maxwell, is
       </p>
       <Formula tex="u = \\tfrac{1}{2} \\varepsilon_0 |\\vec{E}|^2 + \\dfrac{1}{2\\mu_0} |\\vec{B}|^2" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="u" /> is the local electromagnetic energy density (in J/m³), <M tex="|E|" />{' '}
         is the magnitude of the electric field at that point (in V/m), <M tex="|B|" /> is the
         magnitude of the magnetic field (in teslas), and{' '}
@@ -138,25 +138,25 @@ export default function Ch9EMWaves() {
         Maxwell's 1865 <em>prediction</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Chapter&nbsp;10 will collect Maxwell's four equations cleanly on one page. For now we only
         need two of them, and the trick that links them. Faraday's law says a changing magnetic
         field produces an electric field that curls around it:
       </p>
       <Formula size="lg" id="maxwell-faraday" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\nabla\times E" /> is the curl of the electric field (a vector measuring how E
         loops around each point, in V/m²), and <M tex="\partial B/\partial t" /> is the rate of
         change of the magnetic field at a fixed point in space (in T/s). The minus sign is the
         Lenz-law bookkeeping from Ch. 7.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Ampère's law, with Maxwell's displacement-current correction, says the converse — a changing
         electric field produces a magnetic field that curls around it
         <Cite id="maxwell-1865" in={SOURCES} />:
       </p>
       <Formula tex="\\nabla\\times\\vec{B} = \\mu_0\\varepsilon_0\\dfrac{\\partial \\vec{E}}{\\partial t}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\nabla\times B" /> is the curl of the magnetic field (in T/m),{' '}
         <M tex="\partial E/\partial t" /> is the rate of change of the electric field at a fixed
         point (in V/(m·s)), and <M tex="\mu_0\varepsilon_0 = 1/c^{2}" /> is the product of the
@@ -168,7 +168,7 @@ export default function Ch9EMWaves() {
         <Cite id="jackson-1999" in={SOURCES} />:
       </p>
       <Formula tex="\\nabla^2 \\vec{E} = \\mu_0\\varepsilon_0\\dfrac{\\partial^2 \\vec{E}}{\\partial t^2}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\nabla^{2}E" /> is the vector Laplacian of the electric field (the sum of
         second spatial derivatives, with units of V/m³), <M tex="\partial^{2}E/\partial t^{2}" /> is
         the second time derivative of E at a fixed point (in V/(m·s²)), and the coefficient{' '}
@@ -201,7 +201,7 @@ export default function Ch9EMWaves() {
 
       <SpeedOfLightDemo figure="Fig. 9.1" />
 
-      <p className="mb-prose-3">
+      <p>
         Drop a relative permittivity εᵣ and a relative permeability μᵣ into the same calculation —
         that is, put the wave inside a material — and the speed becomes{' '}
         <M tex="v = 1/\\sqrt{\\varepsilon_r \\mu_r \\varepsilon_0 \\mu_0} = c/\\sqrt{\\varepsilon_r \\mu_r}" />
@@ -258,13 +258,13 @@ export default function Ch9EMWaves() {
         What the wave <em>looks like</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The plane-wave solution to ∇²E = (1/c²) ∂²E/∂t² is the simplest possible thing: a sinusoidal
         disturbance travelling in one direction. Write it in coordinates, with the wave moving in{' '}
         <M tex="+x" />:
       </p>
       <Formula tex="\\vec{E}(x, t) = E_0 \\sin(k x - \\omega t)\\,\\hat{y}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="E_0" /> is the peak electric-field amplitude (in V/m), <M tex="k" /> is the
         wavenumber (in rad/m), <M tex="\omega" /> is the angular frequency (in rad/s), and the
         wave's phase speed is <M tex="v = \omega/k" />. Plug this into Maxwell's equations and three
@@ -287,7 +287,7 @@ export default function Ch9EMWaves() {
         their amplitudes is fixed:
       </p>
       <Formula tex="|\\vec{B}| = |\\vec{E}| / c" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="|B|" /> is the magnitude of the magnetic field (in teslas), <M tex="|E|" /> is
         the magnitude of the electric field (in V/m), and{' '}
         <M tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light in vacuum. The
@@ -297,7 +297,7 @@ export default function Ch9EMWaves() {
 
       <PlaneWaveDemo figure="Fig. 9.2" />
 
-      <p className="mb-prose-3">
+      <p>
         <Term
           def={
             <>
@@ -360,7 +360,7 @@ export default function Ch9EMWaves() {
         <em>Polarization</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Once you know <M tex="E" /> is transverse to the propagation direction, the next question is
         which transverse direction it points. That direction is the wave's{' '}
         <Term
@@ -386,7 +386,7 @@ export default function Ch9EMWaves() {
       <PolarizationDemo figure="Fig. 9.3" />
       <PolarizationMalusLawDemo figure="Fig. 9.4" />
 
-      <p className="mb-prose-3">
+      <p>
         Polarization is what 3D glasses, polarized sunglasses, and LCD displays manipulate. A
         polarized sunglass lens is a sheet of molecules aligned along one axis that absorbs the{' '}
         <M tex="E" />
@@ -404,7 +404,7 @@ export default function Ch9EMWaves() {
         <em>Radiation</em>: where waves come from
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         A static charge does not radiate — its field is the static Coulomb field, dropping off as
         1/r², no waves. A steady current does not radiate either — its magnetic field is the static
         Biot–Savart field, also static, also no waves. What it takes to send out an electromagnetic
@@ -412,7 +412,7 @@ export default function Ch9EMWaves() {
         emits a wave; if it accelerates back and forth periodically, it emits a periodic wave
         <Cite id="feynman-II-21" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The simplest radiating source is the{' '}
         <Term
           def={
@@ -431,7 +431,7 @@ export default function Ch9EMWaves() {
         a clean angular pattern:
       </p>
       <Formula tex="I(\\theta) \\propto \\sin^2\\theta / r^2" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="I(\theta)" /> is the time-averaged radiated intensity (in W/m²),{' '}
         <M tex="\theta" /> is the polar angle measured from the dipole's axis (so θ = 0 along the
         antenna, θ = π/2 in the equatorial plane), and <M tex="r" /> is the distance from the dipole
@@ -446,7 +446,7 @@ export default function Ch9EMWaves() {
 
       <OscillatingDipoleDemo figure="Fig. 9.5" />
 
-      <p className="mb-prose-3">
+      <p>
         This is what Hertz built and confirmed in 1887. A spark-gap oscillator drove a short antenna
         at radio frequencies; a resonant loop a few metres away detected the radiated wave by its
         own induced spark. Hertz measured wavelengths from standing-wave patterns between parallel
@@ -455,7 +455,7 @@ export default function Ch9EMWaves() {
         <Cite id="hertz-1888" in={SOURCES} />. The technology that runs on this discovery,
         two-and-a-half generations later, fills your pockets.
       </p>
-      <p className="mb-prose-3">
+      <p>
         One more move is worth making before we leave the radiation story. We have so far treated
         "circuit" and "antenna" as separate categories — wires for circuits, antennas for radio.
         They are not. They are two ends of the same axis. A piece of wire of length <M tex="L" />{' '}
@@ -465,13 +465,13 @@ export default function Ch9EMWaves() {
         holds the wire at a constant 1 m and slides the frequency upward so you can watch the same
         conductor cross that boundary in real time.
       </p>
-      <p className="mb-prose-3">
+      <p>
         At low <M tex="f" /> the wire has effectively the same voltage at every point — a single
         circuit node, no far field. Climb past <M>f = c/(2L)</M> and a standing-wave current pattern
         sets up along the wire; the canonical centre-fed pattern factor
       </p>
       <Formula>F(θ) = ( cos(kL cosθ / 2) − cos(kL/2) ) / sinθ</Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="F(\theta)" /> is the normalized radiation pattern (dimensionless),{' '}
         <M tex="k" /> is the wavenumber (in rad/m), <M tex="L" /> is the total wire length (in m),
         and <M tex="\theta" /> is the polar angle measured from the wire axis (in rad). The
@@ -488,12 +488,12 @@ export default function Ch9EMWaves() {
         Energy and <em>momentum</em> in a wave
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The Poynting expression from Ch.8 still applies, with <M tex="E" /> and <M tex="B" /> now
         the oscillating wave fields. For a plane wave with <M>|B| = |E|/c</M>:
       </p>
       <Formula>|S| = (1/μ₀) |E × B| = (1/μ₀) E² / c = ε₀ c E²</Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="|S|" /> is the magnitude of the Poynting vector (in W/m²),{' '}
         <M tex="\mu_0 = 4\pi\times 10^{-7}\,\text{T·m/A}" /> is the vacuum permeability,{' '}
         <M tex="E" /> is the electric-field amplitude (in V/m), <M tex="B" /> is the magnetic-field
@@ -503,7 +503,7 @@ export default function Ch9EMWaves() {
         instantaneous flux oscillates at twice the wave frequency; the time-averaged intensity is
       </p>
       <Formula>⟨I⟩ = ½ ε₀ c E₀²</Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\langle I\rangle" /> is the time-averaged intensity (in W/m²),{' '}
         <M tex="\varepsilon_0 = 8.854\times 10^{-12}\,\text{F/m}" /> is the vacuum permittivity,{' '}
         <M tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light in vacuum, and{' '}
@@ -513,7 +513,7 @@ export default function Ch9EMWaves() {
         <Cite id="kopp-lean-2011" in={SOURCES} /> — the solar constant, the quantity every
         solar-panel calculation starts from.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Maxwell's theory makes a second, sharper prediction: the wave carries not just energy but
         <strong className="text-text font-medium"> momentum</strong>, in the ratio <M>p = U/c</M>
         <Cite id="jackson-1999" in={SOURCES} />. A wave depositing energy on an absorbing surface
@@ -533,7 +533,7 @@ export default function Ch9EMWaves() {
         :
       </p>
       <Formula>P = I / c (absorbing surface)</Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P" /> is the radiation pressure on the surface (in pascals, N/m²),{' '}
         <M tex="I" /> is the time-averaged intensity of the incident wave (in W/m²), and{' '}
         <M tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light
@@ -604,7 +604,7 @@ export default function Ch9EMWaves() {
         The <em>spectrum</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         One wave equation, one speed, one structure: all of it is the same physics, distinguished
         only by wavelength. The electromagnetic{' '}
         <Term
@@ -626,7 +626,7 @@ export default function Ch9EMWaves() {
         the underlying object is identical
         <Cite id="feynman-II-21" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That identity is the most important lesson of this chapter. Light is not a different kind of
         thing from radio. Your eye and a Wi-Fi antenna are the same kind of detector tuned to
         different λ. The field that lights the room is the field that carries your phone signal is

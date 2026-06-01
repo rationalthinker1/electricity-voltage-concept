@@ -61,7 +61,7 @@ export default function Ch29HouseBranchCircuits() {
         wire dissipates roughly <M tex="I^2 R \\approx 41\\ \\text{W}" /> along its length — spread
         out, it warms the cable a few degrees above the wood around it. Fine.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Now plug a <em className="text-text italic">second</em> 1200 W heater into one of the other
         receptacles on the same circuit. Total current climbs to about{' '}
         <strong className="text-text font-medium">20 A</strong>. The 15 A breaker is now in its
@@ -75,7 +75,7 @@ export default function Ch29HouseBranchCircuits() {
 
       <h2 className="chapter-h2">Ampacity: how much current a wire can carry</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Copper has a finite resistivity. Push current through it and you dissipate{' '}
         <M tex="I^{2}R" /> as heat along the whole length. The thermal limit on a branch-circuit
         wire is usually not melting copper — copper melts at 1085 °C — it is the{' '}
@@ -86,13 +86,13 @@ export default function Ch29HouseBranchCircuits() {
         <Cite id="nec-2023" in={SOURCES} />. The <em className="text-text italic">weakest</em> rated
         thermal point in the whole chain sets the budget.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The thermodynamic balance for a wire in still air is roughly: heat generated per unit length
         equals heat carried away from the surface per unit length. The generation side is what Ch.3
         already gave us:
       </p>
       <Formula tex="P/L = \\dfrac{I^2 \\rho}{A}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P/L" /> is the power dissipated per metre of wire (in W/m), <M tex="I" /> is
         the current through the conductor (in amperes), <M tex="\rho" /> is the resistivity of
         copper (≈ 1.68×10⁻⁸ Ω·m at 20 °C)
@@ -104,7 +104,7 @@ export default function Ch29HouseBranchCircuits() {
         conservative, but the key lesson survives: doubling cross-section does{' '}
         <em className="text-text italic">not</em> double the usable current.
       </p>
-      <p className="mb-prose-3">
+      <p>
         NEC{' '}
         <Term
           def={
@@ -160,7 +160,7 @@ export default function Ch29HouseBranchCircuits() {
           <Cite id="awg-table-nec" in={SOURCES} />.
         </li>
       </ul>
-      <p className="mb-prose-3">
+      <p>
         Each step up the ladder roughly doubles the cross-section and adds 5–10 A of headroom —
         exactly the sublinear shape the heat-balance argument predicts. The same table extends to
         500 kcmil aluminium service entrances at the top end; everything in a residential branch
@@ -207,12 +207,12 @@ export default function Ch29HouseBranchCircuits() {
 
       <h2 className="chapter-h2">Romex, THHN, and the cable taxonomy</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Three insulation systems dominate residential and light-commercial wiring, and they are not
         interchangeable
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">NM-B</strong> (the trade name Romex covers most
         variants) is{' '}
         <Term
@@ -247,7 +247,7 @@ export default function Ch29HouseBranchCircuits() {
         protected interior locations — inside stud bays, attics, joist spaces — and is the workhorse
         of residential framing.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">UF-B</strong> is the underground-feeder cousin:{' '}
         <Term
           def={
@@ -266,7 +266,7 @@ export default function Ch29HouseBranchCircuits() {
         300.5 prescribes
         <Cite id="nec-2023" in={SOURCES} />. The jacket is grey. Article 340 governs it.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">THHN/THWN</strong> are individual conductors, not
         cables — single insulated wires pulled through conduit, with the four-letter code spelling
         out their insulation properties:{' '}
@@ -288,7 +288,7 @@ export default function Ch29HouseBranchCircuits() {
         application
         <Cite id="nec-2023" in={SOURCES} />. Article 310 covers conductor insulation types.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The colour conventions are not legal requirements at the conductor level, but they are
         universal in practice. Hot conductors are black, red, or blue;{' '}
         <Term
@@ -310,7 +310,7 @@ export default function Ch29HouseBranchCircuits() {
 
       <h2 className="chapter-h2">Voltage drop on long runs</h2>
 
-      <p className="mb-prose-3">
+      <p>
         NEC sets ampacity to keep the wire's <em className="text-text italic">insulation</em> from
         cooking, but a wire can be well within its thermal limit and still arrive at the load with a
         voltage too low to make appliances happy. That second constraint is{' '}
@@ -330,11 +330,11 @@ export default function Ch29HouseBranchCircuits() {
         mandate, keeping branch-circuit drop near 3 % and total feeder-plus-branch drop near 5 %
         <Cite id="nec-2023" in={SOURCES} />. For 120 V circuits, 3 % is 3.6 V.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The drop on a single-phase branch is the IR drop along the round-trip copper path:
       </p>
       <Formula tex="\\Delta V = 2 \\cdot I \\cdot R_{\\text{per metre}} \\cdot L" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\Delta V" /> is the voltage lost in the wire from panel to load (in volts),
         the factor of <M tex="2" /> accounts for the round-trip path (hot out plus neutral back),{' '}
         <M tex="I" /> is the load current (in amperes), <M tex="R_{\text{per metre}}" />
@@ -345,7 +345,7 @@ export default function Ch29HouseBranchCircuits() {
         mΩ/m
         <Cite id="awg-table-nec" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A worked example: a 14 AWG circuit, 30 m one-way, carrying 10 A. The drop is{' '}
         <M tex="2 \\cdot 10 \\cdot 0.00845 \\cdot 30 \\approx 5.07\\ \\text{V}" />, or about{' '}
         <strong className="text-text font-medium">4.2 %</strong> of 120 V. That is past the 3 %
@@ -406,7 +406,7 @@ export default function Ch29HouseBranchCircuits() {
 
       <h2 className="chapter-h2">The breaker/wire pairing rule</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The most important sentence in this chapter:{' '}
         <strong className="text-text font-medium">
           the breaker rating must never exceed the wire's ampacity.
@@ -420,7 +420,7 @@ export default function Ch29HouseBranchCircuits() {
         conductor shorts to a staple, a nail, or the adjacent neutral, drawing real fault current.
         The breaker now trips, but the damage is done.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The pairing rule goes one direction only. A 15 A breaker behind 12 AWG wire is fine — wasted
         copper, but perfectly safe; the breaker protects the wire even though the wire could carry
         more. A 30 A breaker behind 12 AWG is illegal under NEC Article 240, because the wire's
@@ -428,7 +428,7 @@ export default function Ch29HouseBranchCircuits() {
         for that current
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Article 240.4(D) lists the maximum breaker rating for each small gauge as a footnote,
         calling it <em className="text-text italic">small-conductor protection</em>: 14 AWG copper
         is fixed to 15 A regardless of any ampacity table that might say otherwise, 12 AWG to 20 A,
@@ -436,7 +436,7 @@ export default function Ch29HouseBranchCircuits() {
         failure mode just described. Article 240 in general is the section every electrician
         memorises before anything else.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Wire that already <em className="text-text italic">feels</em> warm to the touch under load
         is sending you a message. Receptacle screws that have darkened or browned around the
         connection have been running hot. NEC's hard limits are the floor; a thoughtful install adds
@@ -475,7 +475,7 @@ export default function Ch29HouseBranchCircuits() {
 
       <h2 className="chapter-h2">Aluminium and the old aluminium scare</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Copper is the default for branch circuits, but{' '}
         <Term
           def={
@@ -497,7 +497,7 @@ export default function Ch29HouseBranchCircuits() {
         needed ampacity with less cost and easier handling than an equivalent copper service
         conductor.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That sentence has a notorious asterisk. Between roughly{' '}
         <strong className="text-text font-medium">1965 and 1973</strong>, copper prices spiked and
         millions of U.S. houses were wired with solid-aluminium 15 A and 20 A branch circuits — the
@@ -506,7 +506,7 @@ export default function Ch29HouseBranchCircuits() {
         <Cite id="nec-2017-aluminum" in={SOURCES} />. The failure was not in the bulk metal but at
         the screw terminations on receptacles and switches.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three things went wrong at once. Aluminium forms a hard, electrically insulating oxide skin
         the instant it sees air; copper does too, but copper oxide is conductive enough to live
         with. Aluminium's coefficient of thermal expansion is markedly larger than that of the brass
@@ -518,7 +518,7 @@ export default function Ch29HouseBranchCircuits() {
         runaway thermal failure took the receptacle out — or worse, the studs behind it
         <Cite id="nec-2017-aluminum" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         One partial device-level response that emerged in the late 1970s was{' '}
         <Term
           def={
@@ -539,7 +539,7 @@ export default function Ch29HouseBranchCircuits() {
         copper/aluminium splices and device swaps alone are not equivalent
         <Cite id="nec-2017-aluminum" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Modern aluminium service entrances are well-behaved precisely because the failure mode was
         learned. The present-day alloy is AA-8000 series, which is more ductile and less prone to
         creep than the original 1350 utility-grade aluminium of the 1960s; lugs are
@@ -550,7 +550,7 @@ export default function Ch29HouseBranchCircuits() {
 
       <h2 className="chapter-h2">Why the kitchen gets two 20 A circuits</h2>
 
-      <p className="mb-prose-3">
+      <p>
         NEC Article 210.11(C) requires that every dwelling kitchen be served by{' '}
         <em className="text-text italic">at least two</em>{' '}
         <Term
@@ -572,7 +572,7 @@ export default function Ch29HouseBranchCircuits() {
         than 600 mm from one. It does not guarantee adjacent receptacles are on different breakers;
         the installer decides how to distribute the two required small-appliance circuits.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The arithmetic justifies the rule. Kitchen loads are intermittent but punishing: a typical
         toaster pulls ~1100 W, a microwave 1200 W, a coffee maker 1100 W, an electric kettle 1500 W.
         Any two of those run simultaneously on a single 15 A (1800 W) circuit will trip the breaker;
@@ -580,7 +580,7 @@ export default function Ch29HouseBranchCircuits() {
         W of total budget, and the redundancy means a tripped breaker on one circuit does not black
         out the whole room.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Article 210.11(C)(2) adds a dedicated 20 A laundry-room circuit; 210.11(C)(3) adds a
         dedicated 20 A bathroom-receptacle circuit (one shared circuit can serve all bathrooms, or
         each bathroom can have its own — both are NEC-legal)
@@ -604,7 +604,7 @@ export default function Ch29HouseBranchCircuits() {
         </Term>{' '}
         protection per Article 210.8.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The pattern across all of these is the same: zones with predictable concentrations of
         high-power intermittent loads get their own 20 A circuit, sized for plausible
         double-appliance use. The 80 % continuous-load rule of the next section then guarantees a
@@ -643,7 +643,7 @@ export default function Ch29HouseBranchCircuits() {
 
       <h2 className="chapter-h2">Continuous loads and the 80 % rule</h2>
 
-      <p className="mb-prose-3">
+      <p>
         NEC Article 100 defines a{' '}
         <Term
           def={
@@ -667,14 +667,14 @@ export default function Ch29HouseBranchCircuits() {
         <strong className="text-text font-medium">80 %</strong> of its breaker rating, because 1 /
         1.25 = 0.80.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The 80 % rule is what turns a 15 A breaker into a 12 A continuous budget, a 20 A breaker
         into 16 A, a 30 A into 24 A, and a 50 A into 40 A. In residential settings, this matters
         most for two specific loads: electric baseboard heaters, which can run for hours at full
         draw on a winter night, and EV chargers, which routinely charge for six or eight hours at
         the maximum current the EVSE has negotiated.
       </p>
-      <p className="mb-prose-3">
+      <p>
         EV chargers are the canonical residential 80 %-rule example, because the math comes out
         exactly to engineering-relevant numbers. A level-2 EVSE rated to charge at{' '}
         <strong className="text-text font-medium">32 A continuous</strong> requires the circuit be
@@ -686,7 +686,7 @@ export default function Ch29HouseBranchCircuits() {
         corresponds to a step up the wire ladder, mediated by the 80 % rule
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Outside continuous loads, the 80 % rule does not strictly apply — a 20 A circuit handling
         intermittent appliances can be loaded to a full 20 A in short bursts. But it is a useful
         design margin even there. NFPA 70E's task-energy framework for working on energised circuits
@@ -738,7 +738,7 @@ export default function Ch29HouseBranchCircuits() {
 
       <h2 className="chapter-h2">Putting it together</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Every branch circuit in the house is the same five decisions made together: pick the load,
         pick the breaker size that protects the wire, pick the wire gauge that the breaker permits,
         check the voltage drop over the actual run length, and check that any continuous portion of
@@ -747,7 +747,7 @@ export default function Ch29HouseBranchCircuits() {
         nuisance-trips it; choose the run too long for the gauge and the appliances at the far end
         run slow and warm.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The next chapter zooms in from the cable in the wall to the receptacle the cable lands at —
         switches, outlets, the three-way puzzle, and the NEMA configurations that distinguish a 15 A
         general-purpose outlet from a 50 A range receptacle. Same physics, smaller scale.

@@ -47,7 +47,7 @@ export default function Ch4HowAResistorWorks() {
         phone. There are roughly a hundred of them in a USB charger and thousands inside a laptop
         motherboard.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Chapter 3 was about resistance — the physical quantity, the <M>R = ρL/A</M> formula, the
         heat that comes out as electrons crash into the lattice. This chapter is about the physical
         part you can hold in your hand. What's inside the body. Why the stripes are coloured that
@@ -61,12 +61,12 @@ export default function Ch4HowAResistorWorks() {
 
       <h2 className="chapter-h2">The component, not the concept</h2>
 
-      <p className="mb-prose-3">
+      <p>
         In Chapter 3 we wrote down the macroscopic geometry rule
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="R = \dfrac{\rho L}{A}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="R" /> is the resistance (in ohms, Ω), <M tex="\rho" /> is the material's
         resistivity (in Ω·m; ≈ 1.7×10⁻⁸ for copper), <M tex="L" /> is the conductor length (in
         metres), and <M tex="A" /> is its cross-sectional area (in m²). Resistance is resistivity
@@ -77,7 +77,7 @@ export default function Ch4HowAResistorWorks() {
         catches fire. Everything you read in the rest of this chapter is about how manufacturers
         actually do that.
       </p>
-      <p className="mb-prose-3">
+      <p>
         There are two big families. <strong className="text-text font-medium">Fixed-value</strong>{' '}
         resistors — what you find by the thousand in any circuit — come as a moulded cylinder of
         ceramic with a thin film of conducting material wrapped around it (carbon, metal, or metal
@@ -96,14 +96,14 @@ export default function Ch4HowAResistorWorks() {
 
       <h2 className="chapter-h2">What's inside the body</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Crack open a five-cent through-hole resistor and you find a ceramic rod about a millimetre
         across and a centimetre long, with a thin spiral of conductive film deposited on its outer
         surface. The film is what does the work. The ceramic just holds it up and conducts heat out
         of it. Two wire leads are crimped onto end caps that contact the film, and the whole
         assembly is dipped in a tough protective coating onto which the colour stripes are painted.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The films differ in what they're made of.{' '}
         <em className="text-text italic">Carbon composition</em> is the oldest type — a slug of
         pressed carbon-graphite powder mixed with binder. Cheap, but noisy and prone to drifting in
@@ -136,7 +136,7 @@ export default function Ch4HowAResistorWorks() {
         precision analog circuit, almost every fixed resistor is a metal film
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         For higher power dissipation, two more families appear.{' '}
         <em className="text-text italic">Metal oxide</em> resistors use a film of tin oxide on
         ceramic — rugged, high operating temperature, often rated 1–5 W.{' '}
@@ -152,7 +152,7 @@ export default function Ch4HowAResistorWorks() {
 
       <BuildAResistorDemo figure="Fig. 4.1" />
 
-      <p className="mb-prose-3">
+      <p>
         The trade-offs are real but mostly about tolerance, noise, temperature stability, and power.
         A 1 kΩ carbon film and a 1 kΩ metal film look identical from a circuit-diagram standpoint —
         they obey Ohm's law equally. But the metal film will be within 0.5% of nominal across
@@ -162,7 +162,7 @@ export default function Ch4HowAResistorWorks() {
 
       <h2 className="chapter-h2">The colour code, and why values aren't arbitrary</h2>
 
-      <p className="mb-prose-3">
+      <p>
         IEC 60062 defines the colour code that lets you read a fixed resistor's value without a
         meter
         <Cite id="iec-60062-2016" in={SOURCES} />. Four bands is the standard: two digit bands, one
@@ -228,7 +228,7 @@ export default function Ch4HowAResistorWorks() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         Resistor values are not arbitrary numbers. They follow a geometric series chosen so that
         consecutive values are spaced by a fixed ratio. The E12 series — used for ±10% parts — has
         twelve values per decade, spaced by the twelfth root of 10 (≈1.21): 10, 12, 15, 18, 22, 27,
@@ -242,13 +242,13 @@ export default function Ch4HowAResistorWorks() {
 
       <h2 className="chapter-h2">Power, heat, and why ratings derate</h2>
 
-      <p className="mb-prose-3">
+      <p>
         When current <M tex="I" /> flows through a resistor of value <M tex="R" />, power is
         dissipated at the rate
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="P = I^2 R = \dfrac{V^2}{R}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P" /> is the power dissipated as heat in the resistor (in watts, W = J/s),{' '}
         <M tex="I" /> is the current through it (in amperes), <M tex="V" /> is the voltage across it
         (in volts), and <M tex="R" /> is its resistance (in ohms). The two forms are equivalent via{' '}
@@ -329,7 +329,7 @@ export default function Ch4HowAResistorWorks() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         The derating curve is part of every resistor datasheet. For most film resistors the allowed
         dissipation is 100% of rated up to about 70 °C ambient, then falls linearly to zero at the
         maximum body temperature (~155 °C). What that means in practice: a 1/4 W resistor inside a
@@ -343,7 +343,7 @@ export default function Ch4HowAResistorWorks() {
 
       <h2 className="chapter-h2">R is not constant: temperature coefficient</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The resistivity ρ that goes into <M tex="R = \rho L/A" /> is itself a function of
         temperature.{' '}
         <Term def="The empirical statement that the resistivity of a metal can be decomposed additively into a temperature-independent impurity/defect term and a temperature-dependent phonon-scattering term: ρ(T) = ρ_residual + ρ_phonon(T).">
@@ -353,7 +353,7 @@ export default function Ch4HowAResistorWorks() {
         <Cite id="matthiessen-1864" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="\rho(T) = \rho_{\text{residual}} + \rho_{\text{phonon}}(T)" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\rho(T)" /> is the metal's resistivity at temperature <M tex="T" /> (in Ω·m),{' '}
         <M tex="\rho_{\text{residual}}" /> is the temperature-independent scattering off impurities
         and lattice defects (Ω·m), <M tex="\rho_{\text{phonon}}(T)" /> is the temperature-dependent
@@ -365,7 +365,7 @@ export default function Ch4HowAResistorWorks() {
         <em className="text-text italic"> temperature coefficient of resistance</em>, or TCR,
         usually quoted in parts per million per kelvin.
       </p>
-      <p className="mb-prose-3">
+      <p>
         For copper, TCR ≈ +3900 ppm/K — a copper wire's resistance climbs by about 0.4% per kelvin
         near room temperature
         <Cite id="crc-resistivity" in={SOURCES} />. For pure tungsten the slope is steeper, around
@@ -378,7 +378,7 @@ export default function Ch4HowAResistorWorks() {
         alloy of the bench-standard resistor box
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Carbon-film resistors go the other way: TCR is small and slightly{' '}
         <em className="text-text italic">negative</em> (≈ −200 to −500 ppm/K). And at the extreme
         end of the spectrum sit thermistors and PTC polyswitches, engineered to have{' '}
@@ -393,7 +393,7 @@ export default function Ch4HowAResistorWorks() {
         <Cite id="steinhart-hart-1968" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="\dfrac{1}{T} = A + B \ln R + C (\ln R)^3" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="T" /> is the absolute temperature of the thermistor bead (in kelvin),{' '}
         <M tex="R" /> is its measured resistance (in ohms), and <M tex="A" />, <M tex="B" />,
         <M tex="C" /> are empirical fitting constants specific to a given thermistor part (units
@@ -401,7 +401,7 @@ export default function Ch4HowAResistorWorks() {
         NTCs are how every electronics enclosure measures its own temperature: read R, plug into
         Steinhart–Hart, get T.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The shape of the equation is worth unpacking. A semiconducting thermistor's resistance is
         dominated by the carrier population, which is thermally activated:{' '}
         <M tex="R \propto \exp(E_g / 2k_B T)" />
@@ -418,7 +418,7 @@ export default function Ch4HowAResistorWorks() {
 
       <RvsTemperatureDemo figure="Fig. 4.4" />
 
-      <p className="mb-prose-3">
+      <p>
         <Term def="Positive-temperature-coefficient device: a resistor whose R rises sharply with temperature, used as a self-resetting fuse. PTC polymer thermistors trip via a crystalline-to-amorphous transition in the polymer matrix.">
           Positive-temperature-coefficient (PTC)
         </Term>{' '}
@@ -432,7 +432,7 @@ export default function Ch4HowAResistorWorks() {
 
       <h2 className="chapter-h2">The variable cousins</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Every resistor we've discussed has a fixed R set at the factory. But for a great deal of
         everyday electronics, you want R to change on demand: the volume knob on a stereo, the gas
         pedal in a car, the joystick on a controller, the dimmer on a lamp. The simplest way to do
@@ -444,7 +444,7 @@ export default function Ch4HowAResistorWorks() {
 
       <VariableResistorsDemo figure="Fig. 4.5" />
 
-      <p className="mb-prose-3">
+      <p>
         A pot has three terminals: the two ends of the resistive track (A and B), and the wiper (W).
         Treat it as two resistors in series, with <M tex="R_{AW} + R_{WB} = R_{\text{total}}" />.
         Wire all three terminals as a voltage divider and the wiper sweeps an output voltage from 0
@@ -454,7 +454,7 @@ export default function Ch4HowAResistorWorks() {
         <em className="text-text italic"> trimpot</em>) is what calibrates the gain of a precision
         op-amp circuit; you set it once with a screwdriver and forget it.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The other variable cousins change R in response to a physical input.{' '}
         <em className="text-text italic">Thermistors</em> — both NTC and PTC — are resistors whose ρ
         depends strongly on temperature (above).{' '}
@@ -475,13 +475,13 @@ export default function Ch4HowAResistorWorks() {
 
       <h2 className="chapter-h2">The deep cut: Wiedemann–Franz</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Here is a thing that turns out to be deep. The metals with the lowest electrical resistivity
         — copper, silver, gold, aluminium — are also the metals with the highest{' '}
         <em className="text-text italic">thermal</em> conductivity. Choose a wire material to carry
         current and you have also, accidentally, chosen the best heat-sink. Why?
       </p>
-      <p className="mb-prose-3">
+      <p>
         Gustav Wiedemann and Rudolph Franz, in 1853, measured both κ (thermal conductivity, W/m·K)
         and σ (electrical conductivity, S/m) for a panel of metals at room temperature and observed
         that their ratio was the same constant for all of them — the{' '}
@@ -496,7 +496,7 @@ export default function Ch4HowAResistorWorks() {
         :
       </p>
       <Formula size="lg" tex="\dfrac{\kappa}{\sigma} = L_0 \, T" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\kappa" /> is the thermal conductivity (in W/(m·K)), <M tex="\sigma" /> is the
         electrical conductivity (in S/m), <M tex="T" /> is the absolute temperature (in kelvin), and{' '}
         <M tex="L_0" /> is the Lorenz number. With{' '}
@@ -537,7 +537,7 @@ export default function Ch4HowAResistorWorks() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         The physics is one sentence. In a metal, the same gas of free electrons carries both the
         electrical current (drifting in an applied E field) and the heat current (diffusing down a
         temperature gradient). Both transport coefficients are proportional to <M tex="n\tau/m" />,
@@ -552,7 +552,7 @@ export default function Ch4HowAResistorWorks() {
         A metal's free electrons carry the current and the heat. Same gas, two jobs.
       </Pullout>
 
-      <p className="mb-prose-3">
+      <p>
         Wiedemann–Franz is one of the cleanest free-electron-model results, and it holds for the
         simple metals (Cu, Ag, Au, Al) to within a few percent at room temperature. Transition
         metals like iron show modest deviations — additional scattering channels through the d-band
@@ -566,7 +566,7 @@ export default function Ch4HowAResistorWorks() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A real resistor is a ceramic cylinder with a film of carbon, metal, or metal oxide wrapped
         around it — or, for high power, a coil of nichrome or manganin wire.{' '}
         <M tex="R = \rho L/A" /> sets the value; the colour bands report it to two or three
@@ -578,7 +578,7 @@ export default function Ch4HowAResistorWorks() {
         resistor with one of its parameters left adjustable. And the Wiedemann–Franz law tells you,
         as a side benefit, why every wire material that's good at current is also good at heat.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Next chapter: leave the wire altogether. Two metal plates with a gap between them store
         charge — not in the metal, but in the field across the gap. The capacitor.
       </p>

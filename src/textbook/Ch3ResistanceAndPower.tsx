@@ -67,7 +67,7 @@ export default function Ch3ResistanceAndPower() {
         </Term>{' '}
         is the rate at which it happens.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This chapter is about the friction. Why a long wire resists more than a short one, why a
         thin wire resists more than a fat one, why some metals resist about as well as a soap bubble
         resists wind and others were specifically engineered to burn red at line voltage. The whole
@@ -79,7 +79,7 @@ export default function Ch3ResistanceAndPower() {
         What <em>resistance</em> is
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Start with the picture, before any equation. Resistance is electrical friction: a measure of
         how hard a material fights the passage of charge through it. Put the same voltage across a
         high-resistance path and only a trickle of current flows; across a low-resistance path, a
@@ -88,7 +88,7 @@ export default function Ch3ResistanceAndPower() {
         section turns that intuition into a number that depends only on the material and its shape.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         The microscopic{' '}
         <Term
           def={
@@ -106,7 +106,7 @@ export default function Ch3ResistanceAndPower() {
         the electric field driving it:
       </p>
       <Formula size="lg" tex="\vec{J} = \sigma\vec{E}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="J" /> is the current density vector (current per unit cross-sectional area, in
         A/m²), <M tex="E" /> is the local electric field driving the carriers (in V/m), and{' '}
         <M tex="\sigma" /> is the{' '}
@@ -135,7 +135,7 @@ export default function Ch3ResistanceAndPower() {
 
       <MicroscopicOhm3DDemo figure="Fig. 3.1" />
 
-      <p className="mb-prose-3">
+      <p>
         The picture above is what <M tex="\vec{J} = \sigma\vec{E}" /> looks like inside the wire.
         The orange arrow is the applied field; the pink arrow is the current density that the field
         drives, parallel to <M tex="\vec{E}" /> and longer or shorter depending on the material's σ.
@@ -147,13 +147,13 @@ export default function Ch3ResistanceAndPower() {
         different conductor.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Wrap that microscopic law up over a whole wire — a length <M tex="L" />, a cross-section{' '}
         <M tex="A" />, a uniform field along the axis — and you get the macroscopic version every
         electrical engineer carries around:
       </p>
       <Formula size="lg" tex="R = \dfrac{L}{\sigma A}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="R" /> is the wire's resistance (in ohms, Ω = V/A), <M tex="L" /> is the length
         of the wire along the current direction (in metres), <M tex="A" /> is the cross-sectional
         area (in m²), and <M tex="\sigma" />
@@ -167,7 +167,7 @@ export default function Ch3ResistanceAndPower() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
       <Formula size="lg" tex="V = IR" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V" /> is the potential difference across the resistor (in volts),{' '}
         <M tex="I" /> is the current through it (in amperes), and <M tex="R" /> is the resistance
         (in ohms). This is the operational form an engineer reaches for. Set any two and the third
@@ -176,7 +176,7 @@ export default function Ch3ResistanceAndPower() {
 
       <OhmsLawTwoViewsDemo figure="Fig. 3.2" />
 
-      <p className="mb-prose-3">
+      <p>
         The two panels above pull the same equation in opposite directions. On the left, the
         resistor sits at a fixed 5 Ω and you choose the current — voltage tracks linearly with slope
         equal to <M tex="R" />, the cleanest possible statement of <M tex="V = IR" />. On the right,
@@ -185,7 +185,7 @@ export default function Ch3ResistanceAndPower() {
         resistance restricts it downward.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         The expression <M tex="V = IR" /> is a statement about endpoints — total potential drop
         equals current times total resistance. But the drop doesn't happen at the endpoints. Inside
         a uniform wire the potential falls smoothly along the length, linearly, from the source
@@ -197,7 +197,7 @@ export default function Ch3ResistanceAndPower() {
 
       <h2 className="chapter-h2">Length adds, area divides</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Take a uniform wire of length <M tex="L" /> and cross-section <M tex="A" />, with a voltage{' '}
         <M tex="V" /> applied end to end. The field inside is <M tex="E = V/L" />, uniform along the
         axis. The current density is then <M tex="J = \sigma E = \sigma V/L" />. The total current —
@@ -205,7 +205,7 @@ export default function Ch3ResistanceAndPower() {
         <M tex="I = JA = \sigma AV/L" />. Comparing to <M tex="V = IR" />:
       </p>
       <Formula size="lg" tex="R = \dfrac{L}{\sigma A} = \dfrac{\rho L}{A}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="R" /> is the resistance (in ohms), <M tex="L" /> is the wire's length (in
         metres), <M tex="A" /> is its cross-sectional area (in m²), <M tex="\sigma" /> is the
         conductivity (in S/m), and <M tex="\rho = 1/\sigma" /> is the{' '}
@@ -233,7 +233,7 @@ export default function Ch3ResistanceAndPower() {
 
       <LengthVsResistanceDemo figure="Fig. 3.4" />
 
-      <p className="mb-prose-3">
+      <p>
         The length picture is the simpler of the two. Stretch the copper wire above and the
         resistance climbs in lockstep: from a few milliohms at 10 cm to a few tens of milliohms at
         10 m. Linearly, no surprises.
@@ -241,7 +241,7 @@ export default function Ch3ResistanceAndPower() {
 
       <AreaVsResistanceDemo figure="Fig. 3.5" />
 
-      <p className="mb-prose-3">
+      <p>
         The area picture is more dramatic because cross-section spans more decades in real
         engineering. A hair-thin 0.1 mm² wire and a finger-thick 10 mm² wire — both of the same
         material, both the same length — differ in resistance by a factor of one hundred. Power-line
@@ -285,7 +285,7 @@ export default function Ch3ResistanceAndPower() {
 
       <h2 className="chapter-h2">Material is destiny</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Geometry is half the story. The other half is the prefactor — the resistivity ρ of whatever
         the wire is made of — and across ordinary materials it spans an absurd range. The CRC
         Handbook tabulates <em className="text-text italic">twenty-three</em> orders of magnitude
@@ -297,7 +297,7 @@ export default function Ch3ResistanceAndPower() {
         Conductivity is a single number that bundles up everything about how charges navigate a
         material.
       </Pullout>
-      <p className="mb-prose-3">
+      <p>
         Silver is the king at <M tex="\sigma \approx 6.30\times 10^{7}\ \text{S/m}" />, with copper
         a hair behind at <M tex="5.96\times 10^{7}\ \text{S/m}" /> — the gap is small enough that
         copper wins on price every time
@@ -308,7 +308,7 @@ export default function Ch3ResistanceAndPower() {
         engineering constraint, that trade is worth making — almost every overhead transmission line
         in the world is aluminum.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Tungsten drops you to <M tex="1.79\times 10^{7}\ \text{S/m}" />, about a third as conductive
         as copper — but tungsten has the highest melting point of any metal, around{' '}
         <M tex="3700\ \text{K}" />, which is why every incandescent filament for the last century
@@ -324,7 +324,7 @@ export default function Ch3ResistanceAndPower() {
 
       <MaterialPickerDemo figure="Fig. 3.6" />
 
-      <p className="mb-prose-3">
+      <p>
         At a fixed scenario — 12 V across a meter of 2.5 mm² wire — copper carries close to two
         thousand amps (a short circuit, basically), while nichrome carries about two orders of
         magnitude less for the same applied voltage. Same geometry, same volts; the material alone
@@ -334,7 +334,7 @@ export default function Ch3ResistanceAndPower() {
 
       <h2 className="chapter-h2">Where the heat comes from</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The intuition first: power is not energy but the <em className="text-text italic">rate</em>{' '}
         at which energy is delivered or dissipated — the difference between a candle and a blowtorch
         burning the same fuel, one drawing it out over hours, the other all at once. In a resistor,
@@ -342,7 +342,7 @@ export default function Ch3ResistanceAndPower() {
         heater run on the same wall voltage; the heater simply converts energy fifteen times faster.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Now the bookkeeping. Power is the rate at which
         work is done, <M tex="P = dW/dt" />. Chapter 2 established the two pieces this rests on:
         voltage is the work done per coulomb moved through a potential difference,{' '}
@@ -350,7 +350,7 @@ export default function Ch3ResistanceAndPower() {
         The chain rule fuses them:
       </p>
       <Formula size="lg" tex="P = \dfrac{dW}{dt} = \dfrac{dW}{dq}\cdot\dfrac{dq}{dt} = V\cdot I" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P" /> is the instantaneous electrical power delivered to the element (in
         watts, W = J/s), <M tex="V" /> is the potential difference across it (V), and <M tex="I" />{' '}
         is the current through it (A). The units confirm it: joules per coulomb times coulombs per
@@ -361,7 +361,7 @@ export default function Ch3ResistanceAndPower() {
         specific case of a resistor.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Drude's collision picture is what makes resistance dissipative rather than reactive. Between
         collisions, the field does work on a free electron — the electron picks up kinetic energy at
         the rate <M tex="\vec{F}\cdot\vec{v}" />. At the next collision (every ~2×10⁻¹⁴ s in copper)
@@ -374,7 +374,7 @@ export default function Ch3ResistanceAndPower() {
 
       <DriftInCopper3DDemo figure="Fig. 3.7" />
 
-      <p className="mb-prose-3">
+      <p>
         The 3D view above puts numbers on the picture. The cyan electrons inside the copper bounce
         at{' '}
         <Term
@@ -398,12 +398,12 @@ export default function Ch3ResistanceAndPower() {
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Per unit volume, the rate of energy transfer from field to lattice is the dot product{' '}
         <M tex="\vec{J}\cdot\vec{E}" />:
       </p>
       <Formula size="lg" tex="p_v = \vec{J}\cdot\vec{E} = \sigma E^2" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="p_v" /> is the power dissipated per unit volume of conductor (in W/m³),{' '}
         <M tex="\vec{J}" /> is the current density vector (A/m²), <M tex="\vec{E}" /> is the local
         electric field (V/m), and <M tex="\sigma" /> the conductivity (S/m). The dot product is the
@@ -413,7 +413,7 @@ export default function Ch3ResistanceAndPower() {
         throughout, and the macroscopic power drops out:
       </p>
       <Formula size="lg" tex="P = \dfrac{\sigma A V^2}{L} = \dfrac{V^2}{R} = VI = I^2 R" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P" /> is the total power dissipated by the resistor (in watts, W = J/s),{' '}
         <M tex="V" /> is the voltage across it (in volts), <M tex="I" /> is the current through it
         (in amperes), <M tex="R" /> is its resistance (in ohms), and <M tex="L" />, <M tex="A" />,{' '}
@@ -451,7 +451,7 @@ export default function Ch3ResistanceAndPower() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Those four forms are algebraically identical, but they set a notorious trap for intuition.
         If resistance is "electrical friction," it feels like more resistance should always make more
         heat. Yet hang a <M tex="10{,}000\ \Omega" /> resistor and a <M tex="1\ \Omega" /> resistor
@@ -463,7 +463,7 @@ export default function Ch3ResistanceAndPower() {
         the current as <M tex="I = V/R" />, and the power falls with it
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Flip the constraint and the conclusion flips with it. When the same{' '}
         <em className="text-text italic">current</em> is forced through a string of components —
         anything wired in series — the form to read is <M tex="P = I^2 R" />, and now the{' '}
@@ -478,7 +478,7 @@ export default function Ch3ResistanceAndPower() {
 
       <JouleHeatingDemo figure="Fig. 3.8" />
 
-      <p className="mb-prose-3">
+      <p>
         The wire above warms from gray to dull red around{' '}
         <strong className="text-text font-medium">900 K</strong>, through cherry red and orange, and
         on to white-hot near <strong className="text-text font-medium">3000 K</strong>. The
@@ -561,7 +561,7 @@ export default function Ch3ResistanceAndPower() {
 
       <h2 className="chapter-h2">When the wire heats up</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The last section ended with the lattice soaking up energy and warming. That warming is not a
         passive side effect — it loops straight back into the resistance that produced it. A hotter
         lattice vibrates with larger amplitude, so each ion presents a bigger target for a passing
@@ -576,7 +576,7 @@ export default function Ch3ResistanceAndPower() {
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Engineers package that linear rise into a single material constant, the{' '}
         <Term
           def={
@@ -593,7 +593,7 @@ export default function Ch3ResistanceAndPower() {
         :
       </p>
       <Formula size="lg" tex="R(T) = R_0\,[\,1 + \alpha\,(T - T_0)\,]" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="R(T)" /> is the resistance at temperature <M tex="T" /> (in ohms),{' '}
         <M tex="R_0" /> is the resistance at a reference temperature <M tex="T_0" /> (in ohms, usually
         taken at 20 °C), <M tex="T" /> and <M tex="T_0" /> are temperatures (in kelvin or °C — only
@@ -607,7 +607,7 @@ export default function Ch3ResistanceAndPower() {
 
       <RvsTemperatureDemo figure="Fig. 3.9" />
 
-      <p className="mb-prose-3">
+      <p>
         The curves above sort materials by how hard their resistance tracks temperature. The pure
         metals — copper and tungsten — climb steadily, because hotter means more phonon scattering. A
         semiconductor thermistor runs the opposite way entirely: heating it liberates exponentially
@@ -617,7 +617,7 @@ export default function Ch3ResistanceAndPower() {
         semiconductors <M tex="n" /> dominates.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Push the temperature the other way and resistance falls. Cool a pure metal toward absolute
         zero and the phonons freeze out, leaving only scattering off impurities and defects;
         ultra-pure copper near 4 K can have a resistivity a thousand times below its room-temperature
@@ -633,7 +633,7 @@ export default function Ch3ResistanceAndPower() {
 
       <h2 className="chapter-h2">Series and parallel</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Two resistors in a circuit can be wired two ways. Put them in{' '}
         <Term
           def={
@@ -650,13 +650,13 @@ export default function Ch3ResistanceAndPower() {
         <M tex="V = IR_1 + IR_2 = I(R_1 + R_2)" />. The combined resistance is the sum:
       </p>
       <Formula size="lg" tex="R_{\text{series}} = R_1 + R_2" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="R_{\text{series}}" /> is the equivalent resistance seen by the source (in
         ohms), and <M tex="R_1" /> and <M tex="R_2" /> are the individual resistances on the loop
         (in ohms). The same current <M tex="I" /> passes through both, so their voltage drops simply
         stack.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Put them in{' '}
         <Term
           def={
@@ -673,7 +673,7 @@ export default function Ch3ResistanceAndPower() {
         <M tex="I = V/R_1 + V/R_2 = V(1/R_1 + 1/R_2)" />, so the reciprocals combine:
       </p>
       <Formula size="lg" tex="1 / R_{\text{parallel}} = 1/R_1 + 1/R_2" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="R_{\text{parallel}}" /> is the equivalent resistance of the two branches taken
         together (in ohms), and <M tex="R_1" />, <M tex="R_2" />
         are the individual branch resistances (in ohms). Conductances <M tex="1/R" /> (in siemens, S
@@ -684,7 +684,7 @@ export default function Ch3ResistanceAndPower() {
 
       <SeriesVsParallelDemo figure="Fig. 3.10" />
 
-      <p className="mb-prose-3">
+      <p>
         Real circuits rarely live at one extreme. A mixed network already wants both rules at once —
         a trunk in series with a parallel block, a parallel pair feeding a series load, or several
         branches running in parallel — and the only trick is to collapse it one nested block at a
@@ -693,7 +693,7 @@ export default function Ch3ResistanceAndPower() {
 
       <SeriesParallelMixDemo figure="Fig. 3.11" />
 
-      <p className="mb-prose-3">
+      <p>
         These rules are not arbitrary topology axioms — they are the same geometric{' '}
         <M tex="R = \rho L/A" /> from earlier in the chapter, looked at from a different angle.{' '}
         <em className="text-text italic">A long wire is many short wires in series.</em> Slice a
@@ -736,7 +736,7 @@ export default function Ch3ResistanceAndPower() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Resistance is geometry times material. Geometry contributes a factor of <M tex="L/A" /> —
         long-and-thin resists more, short-and-fat resists less. Material contributes{' '}
         <M tex="\rho = 1/\sigma" />, ranging from copper's{' '}
@@ -745,7 +745,7 @@ export default function Ch3ResistanceAndPower() {
         on charges that immediately scatter that energy into lattice vibrations:{' '}
         <M tex="P = VI = I^2 R = V^2/R" />. Every watt of resistive dissipation is a watt of heat.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Chapter 4 zooms in from resistance as a physical quantity to the resistor as a physical
         component — color codes, power ratings, tolerances, and the engineering choices that go into
         actually building one. Magnetism, the rotational partner of the electrostatic field we've

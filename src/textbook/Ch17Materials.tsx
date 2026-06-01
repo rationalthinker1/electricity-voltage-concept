@@ -46,7 +46,7 @@ export default function Ch17Materials() {
         the inductance of a coil skyrockets. We have been borrowing those numbers for many chapters
         without ever saying where they come from. This chapter opens the box.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The story is microscopic. A material is not a homogeneous slab of stuff — it's a dense
         lattice of atoms and molecules, each with its own electrons in orbit, its own little
         magnetic moment, its own capacity to be twisted around by an applied field. The "constants"
@@ -60,7 +60,7 @@ export default function Ch17Materials() {
         A <em>slider</em> you've been using all along
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         In vacuum, Maxwell's equations are written in terms of two universal constants:{' '}
         <M tex="\varepsilon_0" /> (the{' '}
         <Term
@@ -98,7 +98,7 @@ export default function Ch17Materials() {
         <M tex="\varepsilon = \varepsilon_0 \varepsilon_r" />, and every formula that contained μ₀
         keeps working if you replace μ₀ with <M tex="\mu = \mu_0 \mu_r" />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That sounds suspiciously convenient. Why does the same shape of equation describe a
         capacitor in vacuum and a capacitor full of glass, with only a numerical rescaling between
         them? The answer is that ε<sub>r</sub> and μ<sub>r</sub> are doing an enormous amount of
@@ -113,7 +113,7 @@ export default function Ch17Materials() {
         Polarization: how a material <em>lowers the field</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Take an insulator — glass, plastic, dry wood — and apply an electric field. The free
         electrons are locked in their bonds; they can't drift. But each atom or molecule is not a
         rigid point. Inside it, the electron cloud and the nucleus respond to the applied field by
@@ -124,7 +124,7 @@ export default function Ch17Materials() {
 
       <DipoleInFieldDemo figure="Fig. 17.1" />
 
-      <p className="mb-prose-3">
+      <p>
         That field of tilted dipoles is the material's{' '}
         <strong className="text-text font-medium">
           <Term
@@ -155,7 +155,7 @@ export default function Ch17Materials() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Those bound surface charges are negative on the side facing the applied <M tex="E" /> and
         positive on the far side — precisely the orientation needed to set up an internal field that
         <em className="text-text italic"> opposes</em> the applied one. The net field inside the
@@ -164,7 +164,7 @@ export default function Ch17Materials() {
       <Formula>
         E<sub>inside</sub> = E<sub>applied</sub> − P/ε₀ = E<sub>applied</sub> / ε<sub>r</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="E_{\text{inside}}" />
         is the macroscopic electric field within the dielectric (in V/m),{' '}
         <M tex="E_{\text{applied}}" />
@@ -174,7 +174,7 @@ export default function Ch17Materials() {
         free space, and <M tex="\varepsilon_r" />
         is the dimensionless relative permittivity of the material.
       </p>
-      <p className="mb-prose-3">
+      <p>
         with <M tex="\varepsilon_r = 1 + \chi_e" />
         , where <M tex="\chi_e" />
         is the dimensionless electric susceptibility (linking <M tex="P = \varepsilon_0 \chi_e E" />
@@ -218,7 +218,7 @@ export default function Ch17Materials() {
 
       <DipoleAlignment3DDemo figure="Fig. 17.2" />
 
-      <p className="mb-prose-3">
+      <p>
         Drag the block to rotate it. At <M tex="E_{\text{ext}} = 0" />
         the dipoles tumble isotropically — the mean of <M tex="\cos\theta" />
         over the population is zero, and so is the bulk <M tex="P" />. Crank up the field and the
@@ -237,14 +237,14 @@ export default function Ch17Materials() {
 
       <h2 className="chapter-h2">Bound charge, free charge, and the dielectric in a capacitor</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Here is the cleanest demonstration: put a slab of insulator between the plates of a charged
         capacitor and watch what changes.
       </p>
 
       <DielectricBetweenPlatesDemo figure="Fig. 17.3" />
 
-      <p className="mb-prose-3">
+      <p>
         Two things happen at once. The bound charge that appears on the dielectric's faces partially
         cancels the free charge on the plates — so the field inside the gap drops by exactly ε
         <sub>r</sub>. And because the voltage across the capacitor is the integral of <M tex="E" />{' '}
@@ -255,7 +255,7 @@ export default function Ch17Materials() {
       <Formula>
         C = ε<sub>r</sub> · C<sub>vacuum</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="C" /> is the capacitance with the dielectric in place (in farads),{' '}
         <M tex="C_{\text{vacuum}}" />
         is the capacitance of the same geometry with a vacuum gap (in farads), and{' '}
@@ -340,7 +340,7 @@ export default function Ch17Materials() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         Why is ε<sub>r</sub>(water) ≈ 80 — twenty times bigger than glass, and (in terms of χ
         <sub>e</sub>) a hundred and fifty thousand times that of air? Because water has a permanent
         dipole moment, built into its asymmetric molecular geometry. Apply a field and you don't
@@ -349,7 +349,7 @@ export default function Ch17Materials() {
 
       <WhyWaterPolarizesDemo figure="Fig. 17.4" />
 
-      <p className="mb-prose-3">
+      <p>
         Debye worked out the full theory in 1929 <Cite id="debye-1929" in={SOURCES} />. At zero
         field the molecules tumble randomly and the bulk polarization is zero. Apply a field and the
         equilibrium distribution shifts: the Boltzmann factor <M>exp(p·E / kT)</M>
@@ -380,7 +380,7 @@ export default function Ch17Materials() {
         The conductor as the <em>limiting case</em>: image charges
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Push ε<sub>r</sub> to infinity and the dielectric becomes a conductor. The bound charges
         that used to merely tilt now slide freely, and they slide exactly far enough to cancel the
         field inside the material to zero. What was a thin layer of bound surface charge on a
@@ -388,7 +388,7 @@ export default function Ch17Materials() {
         surface, the electric field must be perpendicular, because any tangential component would
         push the still-free electrons until it wasn't.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That boundary condition has a beautiful consequence for the field of a point charge sitting
         above a grounded metal plane. The induced surface charge on the plane redistributes itself
         in exactly the pattern that, above the plane, the total field looks identical to two point
@@ -404,7 +404,7 @@ export default function Ch17Materials() {
 
       <ImageChargeField3DDemo figure="Fig. 17.5" />
 
-      <p className="mb-prose-3">
+      <p>
         Drag the scene to orbit. Every field line leaving <M tex="+q" /> terminates somewhere on the
         plane, hitting it perpendicularly — and the induced surface-charge density σ peaks directly
         beneath the charge and falls off as <M>σ(r) = −qd/(2π(r²+d²)^(3/2))</M>. Integrate σ over
@@ -417,12 +417,12 @@ export default function Ch17Materials() {
         Three kinds of <em>magnetic response</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Magnetism in matter is messier than electric polarization, because there are three different
         microscopic mechanisms and they live in completely different regimes of strength.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">
           <Term
             def={
@@ -447,7 +447,7 @@ export default function Ch17Materials() {
         −10⁻⁵ — small enough that you only notice it in clean laboratory measurements.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">
           <Term
             def={
@@ -473,7 +473,7 @@ export default function Ch17Materials() {
         are paramagnetic, with χ<sub>m</sub> of order +10⁻⁵ to +10⁻³.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">
           <Term
             def={
@@ -539,7 +539,7 @@ export default function Ch17Materials() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         The two boxes look superficially similar — both are bags of magnetic moments responding to
         the same external field. But the paramagnet's arrows weakly tilt with <M tex="B" /> (and the
         thermal noise scrambles them right back), while the diamagnet's induced arrows point
@@ -552,7 +552,7 @@ export default function Ch17Materials() {
         Ferromagnets and the <em>hysteresis loop</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Pierre Weiss in 1907 proposed that ferromagnets aren't uniformly magnetized at all — they
         break up into microscopic{' '}
         <strong className="text-text font-medium">
@@ -574,7 +574,7 @@ export default function Ch17Materials() {
         <Cite id="weiss-1907" in={SOURCES} />. In an unmagnetized lump of iron the domains point
         every which way, cancelling on average. The lump as a whole has zero <M tex="M" />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Apply a field and the domains aligned with <M tex="B" /> grow at the expense of the others —
         the walls move. Crank <M tex="B" /> hard enough and every domain is aligned; the iron is
         <em className="text-text italic"> saturated</em>, with magnetization M<sub>s</sub>. Now ramp{' '}
@@ -589,7 +589,7 @@ export default function Ch17Materials() {
 
       <FerromagnetDemo figure="Fig. 17.7" />
 
-      <p className="mb-prose-3">
+      <p>
         Trace one full B sweep and the M-vs-B curve closes a loop — the{' '}
         <strong className="text-text font-medium">
           <Term
@@ -612,7 +612,7 @@ export default function Ch17Materials() {
         possible; for a permanent magnet you want it as large as possible. Two ends of the same
         physics, two completely different alloy recipes.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Heat a ferromagnet past its{' '}
         <strong className="text-text font-medium">
           <Term
@@ -733,7 +733,7 @@ export default function Ch17Materials() {
         The <em>big picture</em>: one number per material per response
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Every microscopic mechanism we've talked about — induced electronic polarization, permanent
         dipole alignment, orbital diamagnetism, paramagnetic Curie response, ferromagnetic domain
         alignment — ends up bundled into just two scalar numbers per material:
@@ -741,7 +741,7 @@ export default function Ch17Materials() {
       <Formula>
         ε<sub>r</sub> = 1 + χ<sub>e</sub>, μ<sub>r</sub> = 1 + χ<sub>m</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\varepsilon_r" />
         is the dimensionless relative permittivity (electric response), <M tex="\mu_r" />
         is the dimensionless relative permeability (magnetic response), <M tex="\chi_e" />
@@ -755,7 +755,7 @@ export default function Ch17Materials() {
 
       <SusceptibilityDemo figure="Fig. 17.8" />
 
-      <p className="mb-prose-3">
+      <p>
         Three or four orders of magnitude separate "air, basically vacuum" from "water, surprisingly
         responsive" from "ferroelectric, almost a different state of matter." On the magnetic side,
         copper and aluminum sit within parts-per-million of vacuum — that's why we draw a copper
@@ -765,7 +765,7 @@ export default function Ch17Materials() {
         laminations.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         With ε<sub>r</sub> and μ<sub>r</sub> in hand, every equation in this book still applies
         inside matter — just rescale ε₀ → ε₀ ε<sub>r</sub> and μ₀ → μ₀ μ<sub>r</sub>. The wave
         equation now gives
@@ -773,7 +773,7 @@ export default function Ch17Materials() {
       <Formula>
         v = c / √(ε<sub>r</sub> μ<sub>r</sub>) = c/n
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="v" /> is the phase speed of the EM wave inside the material (in m/s),{' '}
         <M tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light in vacuum,{' '}
         <M tex="\varepsilon_r" />
@@ -783,7 +783,7 @@ export default function Ch17Materials() {
         is the dimensionless refractive index. For non-magnetic materials, μ<sub>r</sub> ≈ 1 and n ≈
         √ε<sub>r</sub>.
       </p>
-      <p className="mb-prose-3">
+      <p>
         with <M tex="n" /> the <em className="text-text italic">refractive index</em> of the
         material. Light slowing in glass is not the photons taking a leisurely path — it's the
         electromagnetic wave coupling to the bound electrons, the same dipoles you saw rotating in
@@ -794,7 +794,7 @@ export default function Ch17Materials() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         That's where this textbook leaves you: not with electricity as a separate subject but as the
         wide gateway into electromagnetism, and electromagnetism in matter as the wide gateway into
         optics, condensed-matter physics, and chemistry. Two sliders. Sixteen chapters. One field.

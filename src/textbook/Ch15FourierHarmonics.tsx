@@ -49,7 +49,7 @@ export default function Ch15FourierHarmonics() {
         sound different from a violin or a flute playing the same note. The mix is the timbre. And
         the mix is exactly what the rest of this chapter is about.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Or look at a digital line on a circuit board. Probe a clock running at 100 MHz with an
         oscilloscope; the waveform on screen is a clean-ish square wave, edges climbing in a few
         hundred picoseconds. Now sweep a spectrum analyser across the same line. You don't see a
@@ -59,7 +59,7 @@ export default function Ch15FourierHarmonics() {
         <em className="text-text italic">sum</em> of sines at all those frequencies. Strip out the
         high ones with a filter and the edges go from picoseconds to nanoseconds.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Joseph Fourier published the theorem behind both observations in 1822, in a book on the
         conduction of heat. The theorem says: every reasonably-well-behaved periodic function can be
         written as a sum of sines and cosines at integer multiples of one fundamental frequency. The
@@ -69,7 +69,7 @@ export default function Ch15FourierHarmonics() {
 
       <h2 className="chapter-h2">Fourier 1822</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Jean-Baptiste Joseph Fourier was a French mathematician working for Napoleon's
         administration in Grenoble when he wrote{' '}
         <em className="text-text italic">Théorie analytique de la chaleur</em>
@@ -80,7 +80,7 @@ export default function Ch15FourierHarmonics() {
         exponentially-decaying time evolution — sum the evolved terms back up, and read off the
         answer.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The mathematical claim underneath the method was breathtaking: that{' '}
         <em className="text-text italic">any</em> reasonable periodic function on a finite interval
         could be written this way, no matter how spiky or how discontinuous. Lagrange, then the
@@ -91,7 +91,7 @@ export default function Ch15FourierHarmonics() {
         converged
         <Cite id="bracewell-2000" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The result became the foundation of signal processing, communications, audio engineering,
         image compression, optics, quantum mechanics, and power electronics. Every piece of working
         hardware in this textbook — capacitor, inductor, amplifier, antenna, generator, switching
@@ -104,14 +104,14 @@ export default function Ch15FourierHarmonics() {
 
       <h2 className="chapter-h2">The series formula</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Let <M tex="f(t)" /> be periodic with period <M tex="T" />, so f(t + T) = f(t) for all t.
         Define the fundamental angular frequency as <M tex="\omega_0 = 2\pi/T" />. Fourier's theorem
         says that f decomposes as
         <Cite id="oppenheim-willsky-1997" in={SOURCES} />:
       </p>
       <Formula tex="f(t) = \dfrac{a_0}{2} + \sum_{n=1}^{\infty} \left[ a_n \cos(n\omega_0 t) + b_n \sin(n\omega_0 t) \right]" />
-      <p className="mb-prose-3">
+      <p>
         Stare at that sum for a moment. It says: pick a list of sine and cosine waves whose periods{' '}
         <em className="text-text italic">fit evenly</em> into the interval T — one fits once, one
         twice, one three times, on up — choose the right amplitudes a<sub>n</sub> and b<sub>n</sub>,
@@ -126,14 +126,14 @@ export default function Ch15FourierHarmonics() {
         </Term>{' '}
         is not a choice — it is forced by the periodicity.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The <M tex="a_0/2" />
         term out front is just the DC offset — the constant cosine (cos(0) = 1) that the sum needs
         in case f has a nonzero mean. The factor of 1/2 isn't a mistake; it falls out of the same
         projection formula the other coefficients use, applied to the n = 0 case. Writing it that
         way keeps all of the a<sub>n</sub> formulas below uniform.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The integer <M tex="n" /> indexes the{' '}
         <Term def="A sinusoidal component of a periodic signal at an integer multiple of the fundamental frequency. The n-th harmonic is at nf₀.">
           harmonic
@@ -150,7 +150,7 @@ export default function Ch15FourierHarmonics() {
       </p>
       <Formula tex="a_n = \dfrac{2}{T} \int_0^T f(t)\, \cos(n\omega_0 t)\, dt" />
       <Formula tex="b_n = \dfrac{2}{T} \int_0^T f(t)\, \sin(n\omega_0 t)\, dt" />
-      <p className="mb-prose-3">
+      <p>
         These integrals look intimidating until you recognise them as{' '}
         <em className="text-text italic">dot products</em>. In ordinary 3D, the x-component of a
         vector <M tex="v" /> is <M tex="v \cdot \hat{x}" /> — the dot product with the unit vector
@@ -163,7 +163,7 @@ export default function Ch15FourierHarmonics() {
         </Term>
         ; it measures &ldquo;how much of <M tex="\cos(n\omega_0 t)" /> is in f.&rdquo;
       </p>
-      <p className="mb-prose-3">
+      <p>
         Where does the <M tex="2/T" /> out front come from? It is just normalisation by the length
         of the basis vector. In 3D, x̂ is a unit vector, so <M tex="\vec{v} \cdot \hat{x}" /> gives
         the x-component directly. The Fourier basis functions are{' '}
@@ -176,7 +176,7 @@ export default function Ch15FourierHarmonics() {
         length T, not T/2 — so its normaliser is 1/T, and to write it with the same 2/T formula as
         the other a<sub>n</sub> you carry an extra factor of 1/2 on the term itself.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The geometry behind these formulas is the same geometry that lets you decompose a 3D vector
         into its x, y, and z components. The sines and cosines{' '}
         {`{1, cos(ω₀t), sin(ω₀t), cos(2ω₀t), sin(2ω₀t), ...}`} form an orthonormal basis on the
@@ -191,7 +191,7 @@ export default function Ch15FourierHarmonics() {
         ; the series is f expanded in that basis
         <Cite id="bracewell-2000" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The <M tex="a_0/2" />
         term is the DC component — the mean value of f over one period. A function with zero average
         has a<sub>0</sub> = 0. If f is{' '}
@@ -204,12 +204,12 @@ export default function Ch15FourierHarmonics() {
         </Term>{' '}
         (f(−t) = −f(t)), only the sine terms survive. Symmetry kills half the work before you start.
       </p>
-      <p className="mb-prose-3">
+      <p>
         It is worth being explicit about the orthogonality identity that the whole construction
         rests on. For any positive integers m and n:
       </p>
       <Formula tex="\int_0^T \sin(m\omega_0 t) \cos(n\omega_0 t)\, dt = 0 \quad \text{(for all } m, n\text{)}" />
-      <p className="mb-prose-3">
+      <p>
         Why is this zero? The product-to-sum identity rewrites the integrand as{' '}
         <M tex="\tfrac{1}{2}[\sin((m+n)\omega_0 t) + \sin((m-n)\omega_0 t)]" /> — two pure sines at
         integer multiples of ω<sub>0</sub>. Every such sine completes an integer number of cycles in
@@ -259,12 +259,12 @@ export default function Ch15FourierHarmonics() {
 
       <h2 className="chapter-h2">Harmonic synthesis and the Gibbs overshoot</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A square wave with peak V₀ and period T has Fourier series
         <Cite id="oppenheim-willsky-1997" in={SOURCES} />:
       </p>
       <Formula tex="V(t) = \dfrac{4 V_0}{\pi}\left[ \sin(\omega_0 t) + \dfrac{\sin(3\omega_0 t)}{3} + \dfrac{\sin(5\omega_0 t)}{5} + \cdots \right]" />
-      <p className="mb-prose-3">
+      <p>
         Two features of this series cry out for an explanation. First,{' '}
         <em className="text-text italic">why only odd harmonics?</em> A square wave shifted by half
         a period is the negative of itself: f(t + T/2) = −f(t). Plug that into a sine of frequency
@@ -274,7 +274,7 @@ export default function Ch15FourierHarmonics() {
         The same argument forces all the a<sub>n</sub> (cosines) to vanish, because the square is
         also odd about t = 0.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Second, <em className="text-text italic">why amplitudes that fall as 1/n?</em> Each b
         <sub>n</sub> is the projection integral{' '}
         <M tex="(2/T) \int \text{sq}(t) \sin(n\omega_0 t)\, dt" />. Because the square is constant
@@ -287,7 +287,7 @@ export default function Ch15FourierHarmonics() {
         filters: it carries non-negligible energy out to very high harmonics, and any system that
         can't keep up will show distortion long before the bandlimit you might have expected.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Only the odd harmonics appear — a consequence of half-wave symmetry, f(t + T/2) = −f(t),
         which kills every even-n term. The amplitudes fall as 1/n: the 3rd harmonic is one-third the
         height of the fundamental, the 5th one-fifth, and so on. Truncate the series at any finite N
@@ -298,7 +298,7 @@ export default function Ch15FourierHarmonics() {
 
       <HarmonicSynthesisDemo figure="Fig. 15.1" />
 
-      <p className="mb-prose-3">
+      <p>
         Watch the demo. At N = 1 you have just the fundamental — a single smooth sine. At N = 3 the
         3rd harmonic is added and the top of the wave starts to flatten. By N = 11 you can already
         see square corners taking shape, and by N = 25 the ripple between corners is small. But the
@@ -312,7 +312,7 @@ export default function Ch15FourierHarmonics() {
         shrinks
         <Cite id="bracewell-2000" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Here is the intuition. A perfect step discontinuity is, in some sense, &ldquo;infinitely
         high frequency&rdquo; — you change V<sub>0</sub> volts in zero time, which a real signal
         cannot do. Any truncated Fourier sum is band-limited (it contains frequencies up to Nω
@@ -327,7 +327,7 @@ export default function Ch15FourierHarmonics() {
         images reconstructed from truncated k-space, as pre-echo in lossy audio codecs, and as the
         &ldquo;ringing&rdquo; on an oscilloscope step response that has been heavily filtered.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The triangle wave behaves differently. Its coefficients fall as 1/n², not 1/n, so the
         partial sum converges much faster — by N = 5 it is essentially indistinguishable from the
         target. Triangles, with continuous waveforms and only slope discontinuities, are kinder to
@@ -336,7 +336,7 @@ export default function Ch15FourierHarmonics() {
 
       <FourierSpectrumDemo figure="Fig. 15.2" />
 
-      <p className="mb-prose-3">
+      <p>
         The spectrum demo lets you compare six canonical waveforms side-by-side. A sine has one bar
         at the fundamental. Square and sawtooth have bars at all harmonics (or every odd one),
         falling as 1/n. Triangle's bars fall as 1/n² — a much &ldquo;cleaner&rdquo; spectrum. Half-
@@ -379,7 +379,7 @@ export default function Ch15FourierHarmonics() {
 
       <h2 className="chapter-h2">RMS and Parseval's theorem</h2>
 
-      <p className="mb-prose-3">
+      <p>
         For a pure sine of peak V<sub>peak</sub>, the{' '}
         <Term def="Root-mean-square. The square root of the mean of the square of a signal over one period. For a resistor, V_RMS is the DC voltage that delivers the same average power.">
           RMS value
@@ -389,7 +389,7 @@ export default function Ch15FourierHarmonics() {
         V&rdquo; UK mains has 325 V peak; the resistor dissipates I<sub>RMS</sub>²·R independent of
         waveform shape, but only if you compute I<sub>RMS</sub> correctly.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The <em className="text-text italic">only if</em> matters. For a non-sinusoidal periodic
         waveform, V<sub>RMS</sub> ≠ V<sub>peak</sub>/√2 in general.{' '}
         <Term def="The statement that the total mean-square value of a periodic signal equals the sum of squares of its Fourier coefficients: ⟨f²⟩ = (a₀/2)² + (1/2)Σ(a_n² + b_n²).">
@@ -398,7 +398,7 @@ export default function Ch15FourierHarmonics() {
         gives the correct identity, summing the energies of all harmonics:
       </p>
       <Formula tex="V_{RMS}^2 = \left(\dfrac{a_0}{2}\right)^2 + \dfrac{1}{2} \sum_{n=1}^{\infty} \left[a_n^2 + b_n^2\right]" />
-      <p className="mb-prose-3">
+      <p>
         This is Pythagoras in infinite dimensions. In 3D, the squared length of a vector is the sum
         of squared components: <M tex="\|\vec{v}\|^2 = x^2 + y^2 + z^2" />. Parseval says exactly
         the same thing for functions — the squared &ldquo;length&rdquo; of f (defined as the
@@ -410,12 +410,12 @@ export default function Ch15FourierHarmonics() {
         tripping over earlier: a sine of peak amplitude A has mean-square A²/2, because cos²
         averages to 1/2 over a period. Every harmonic carries half of its peak² of energy.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Equivalently, if you know the peak amplitudes V<sub>n</sub> of each harmonic and the DC
         offset V<sub>0</sub>:
       </p>
       <Formula tex="V_{RMS} = \sqrt{V_0^2 + \dfrac{1}{2} \sum V_n^2}" />
-      <p className="mb-prose-3">
+      <p>
         Read this as &ldquo;each harmonic is an independent source of mean-square energy.&rdquo;
         They add by squares — Pythagoras — not linearly. The fundamental and the 3rd harmonic don't
         constructively combine into something larger than √2× either of them, and they don't
@@ -424,17 +424,17 @@ export default function Ch15FourierHarmonics() {
         full V<sub>0</sub>² contributes directly (with no factor of 1/2). Everything else gets the
         cos² half-factor.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Each harmonic carries its own energy. The total mean-square is just the sum — Pythagoras in
         a basis of sines.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The geometric content is the same orthonormality that let us extract the coefficients in the
         first place: total mean-square energy is the sum of mean-square energies in each independent
         basis direction. The cross-terms vanish because the basis is orthogonal
         <Cite id="bracewell-2000" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The practical implication: a non-sinusoidal voltage delivers more RMS — and therefore more{' '}
         <M tex="I^{2}R" /> heating — into a resistive load than its fundamental alone would suggest.
         A 1 V<sub>peak</sub> square wave has V<sub>RMS</sub> = 1 V, not 0.707 V. The extra 41% comes
@@ -443,7 +443,7 @@ export default function Ch15FourierHarmonics() {
 
       <RMSOfComplexWaveDemo figure="Fig. 15.3" />
 
-      <p className="mb-prose-3">
+      <p>
         Two more shape descriptors come up in power engineering. The{' '}
         <Term def="V_RMS divided by V_avg (mean of |f|). For a pure sine, form factor = π/(2√2) ≈ 1.111. Deviations measure how peaky the waveform is.">
           form factor
@@ -464,7 +464,7 @@ export default function Ch15FourierHarmonics() {
 
       <h2 className="chapter-h2">Harmonics through a linear filter</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Chapter 12 introduced impedance and chapter 16 introduces the transfer function{' '}
         <M tex="H(j\omega)" />: the complex ratio of output phasor to input phasor at a single
         frequency ω, encoding both the gain <M tex="|H(j\omega)|" /> and the phase shift{' '}
@@ -476,7 +476,7 @@ export default function Ch15FourierHarmonics() {
         <Cite id="oppenheim-willsky-1997" in={SOURCES} />:
       </p>
       <Formula tex="\text{if } f_{in}(t) = \sum V_n \sin(n\omega_0 t + \phi_n),\ \text{then } f_{out}(t) = \sum |H(jn\omega_0)|\, V_n \sin\!\left(n\omega_0 t + \phi_n + \angle H(jn\omega_0)\right)" />
-      <p className="mb-prose-3">
+      <p>
         This formula is the entire reason filters are designable. The harmonics are orthogonal, so
         the filter can be analysed one frequency at a time: harmonic n enters at amplitude V
         <sub>n</sub>, gets multiplied by the complex number <M tex="H(jn\omega_0)" /> — which scales
@@ -486,7 +486,7 @@ export default function Ch15FourierHarmonics() {
         through. That uncoupling is exactly the same orthogonality that made the projection
         integrals work in the first place.
       </p>
-      <p className="mb-prose-3">
+      <p>
         If filters didn't have this property, designing one would require solving a system of
         equations that coupled all frequencies at once — intractable. Instead, you draw a single
         curve <M tex="|H(j\omega)|" /> versus ω (the{' '}
@@ -501,7 +501,7 @@ export default function Ch15FourierHarmonics() {
         the signal's harmonics. The whole field of filter design — Butterworth, Chebyshev, elliptic,
         Bessel — is built on this one observation.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Run a square wave through an RC low-pass with corner frequency f<sub>c</sub>. The
         fundamental at f<sub>0</sub> sees gain <M tex="1/\sqrt{1+(f_0/f_c)^2}" /> and phase{' '}
         <M tex="-\arctan(f_0/f_c)" />. The 3rd harmonic at 3f<sub>0</sub>
@@ -512,12 +512,12 @@ export default function Ch15FourierHarmonics() {
 
       <SquareThroughLPFDemo figure="Fig. 15.4" />
 
-      <p className="mb-prose-3">
+      <p>
         A square wave is just a list of sine waves with the right amplitudes. The low-pass filter
         takes the list and throws away the high-frequency entries.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         That single observation is why every PCB designer puts a small series resistor or a ferrite
         bead on a fast digital line. The resistor and the parasitic capacitance form an inadvertent
         low-pass that strips off the high harmonics — which are the ones radiating EMI, the ones
@@ -553,13 +553,13 @@ export default function Ch15FourierHarmonics() {
 
       <h2 className="chapter-h2">Harmonics in real circuits: the grid problem</h2>
 
-      <p className="mb-prose-3">
+      <p>
         For most of the 20th century, the loads on the electricity grid were resistive (incandescent
         lamps, resistive heaters) or linear-inductive (motors). Both drew current that was, to
         within a few percent, a clean sine in phase or slightly lagged from the voltage. The grid
         voltage stayed sinusoidal because no one was disturbing it.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Modern loads break the assumption. A switching power supply rectifies the AC line, dumps the
         result into a large electrolytic capacitor, and draws current from the line only at the
         peaks of each half-cycle — sharp pulses lasting a millisecond or two, repeated 120 times per
@@ -569,7 +569,7 @@ export default function Ch15FourierHarmonics() {
         the 50th
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Those harmonic currents flowing through the finite source impedance of the grid (transformer
         leakage inductance, line impedance) produce harmonic{' '}
         <em className="text-text italic">voltages</em> on the grid that every neighbour sees. The
@@ -581,7 +581,7 @@ export default function Ch15FourierHarmonics() {
 
       <THDAndDistortionDemo figure="Fig. 15.5" />
 
-      <p className="mb-prose-3">
+      <p>
         The shorthand for the problem is{' '}
         <Term def="Total harmonic distortion. The ratio of the RMS of all harmonic components (n ≥ 2) to the RMS of the fundamental, usually expressed as a percentage.">
           total harmonic distortion (THD)
@@ -589,7 +589,7 @@ export default function Ch15FourierHarmonics() {
         :
       </p>
       <Formula tex="\text{THD} = \dfrac{\sqrt{V_2^2 + V_3^2 + V_4^2 + \cdots}}{V_1}" />
-      <p className="mb-prose-3">
+      <p>
         THD is a Pythagoras ratio: the RMS &ldquo;length&rdquo; of everything above the fundamental,
         divided by the RMS of the fundamental itself. The squares-then-square-root structure is
         unavoidable because energies, not amplitudes, are what add across orthogonal harmonics — and
@@ -599,7 +599,7 @@ export default function Ch15FourierHarmonics() {
         fundamental — the &ldquo;intended&rdquo; signal — so THD literally answers &ldquo;what
         fraction of my signal is junk?&rdquo;
       </p>
-      <p className="mb-prose-3">
+      <p>
         with V<sub>n</sub> the RMS amplitude of the n-th harmonic and V<sub>1</sub> the RMS of the
         fundamental. Audio engineers quote it in percent; power engineers quote it in percent too,
         but reference the IEEE standard governing utility-side harmonic limits, which holds both
@@ -610,7 +610,7 @@ export default function Ch15FourierHarmonics() {
         (power-factor-correction circuits that pre-distort the load current so the drawn waveform
         stays sinusoidal).
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three more places harmonics bite. In a three-phase system, the 3rd, 9th, 15th, ...
         &ldquo;triplen&rdquo; harmonics from each phase all add up in the neutral wire instead of
         cancelling — a neutral that is sized for the &ldquo;balanced load&rdquo; assumption can
@@ -625,7 +625,7 @@ export default function Ch15FourierHarmonics() {
 
       <h2 className="chapter-h2">The Fast Fourier Transform</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Fourier's theorem is about periodic continuous functions. The{' '}
         <Term def="The Fourier transform of a finite sequence of N samples — converts N samples in time to N complex amplitudes in frequency.">
           discrete Fourier transform
@@ -635,7 +635,7 @@ export default function Ch15FourierHarmonics() {
         the Nyquist frequency. The formula is direct:
       </p>
       <Formula tex="X[k] = \sum_{n=0}^{N-1} x[n] \cdot e^{-j 2\pi k n / N}" />
-      <p className="mb-prose-3">
+      <p>
         Compare this with the continuous projection integral{' '}
         <M tex="a_k = (2/T) \int f(t) \cos(k\omega_0 t)\, dt" />. The structure is identical — a sum
         that pairs each sample of x with a complex sinusoid at frequency k. The complex exponential{' '}
@@ -646,14 +646,14 @@ export default function Ch15FourierHarmonics() {
         b<sub>n</sub>; the real and imaginary parts of X[k] hold the cosine and sine projections
         respectively.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Compute it naively and you have N multiplies and adds for each of the N output bins — a
         total of <M tex="N^{2}" />
         complex operations. For N = 1024 that's about a million; for N = 65536 it's about four
         billion. In the 1960s — when computers ran at megahertz, not gigahertz — that was
         prohibitive for any real-time signal processing.
       </p>
-      <p className="mb-prose-3">
+      <p>
         James Cooley (IBM) and John Tukey (Princeton) published in 1965 a recursive decomposition
         that brings the count down to <M tex="N \log_2 N" />
         <Cite id="cooley-tukey-1965" in={SOURCES} />. Their idea: split the N-point DFT into two
@@ -666,7 +666,7 @@ export default function Ch15FourierHarmonics() {
         </Term>{' '}
         (FFT).
       </p>
-      <p className="mb-prose-3">
+      <p>
         It's worth pausing on <em className="text-text italic">why</em> this divide-and-conquer even
         works. The DFT depends on the complex sinusoid <M tex="\omega_N = e^{-j 2\pi/N}" />
         , and these have a beautiful multiplicative structure: <M tex="\omega_N^2 = \omega_{N/2}" />
@@ -682,7 +682,7 @@ export default function Ch15FourierHarmonics() {
 
       <FFTAlgorithmAnimationDemo figure="Fig. 15.6" />
 
-      <p className="mb-prose-3">
+      <p>
         The speed-up is enormous. For N = 1024, the FFT runs in ~10 000 operations against the naive
         DFT's ~1 000 000 — a 100× speed-up. For N = 4096, the factor is 340×. For a megapoint
         transform, it's 26 000×. Without the FFT there would be no real-time digital audio
@@ -691,7 +691,7 @@ export default function Ch15FourierHarmonics() {
         <Cite id="oppenheim-willsky-1997" in={SOURCES} />. The 1965 paper is, in operational impact,
         one of the most consequential pieces of computer science of the 20th century.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Carl Friedrich Gauss apparently worked out an essentially equivalent algorithm by hand in
         1805, while computing the orbit of the asteroid Pallas, and left it unpublished in his
         notebooks; Cooley and Tukey re-invented it 160 years later and brought it into the silicon
@@ -726,7 +726,7 @@ export default function Ch15FourierHarmonics() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Every periodic signal decomposes into a sum of sines at integer multiples of one fundamental
         frequency. Fourier's coefficient formulas extract the amplitude of each harmonic by
         projecting the signal onto the corresponding sine or cosine; Parseval's theorem says the
@@ -741,7 +741,7 @@ export default function Ch15FourierHarmonics() {
         the PCB, onto the grid, into the audible spectrum — and the only way to manage them is to
         know what's there. The FFT is the standard tool for finding out.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Next chapter takes the same H(jω) machinery and uses it to design filters and op-amp
         circuits on purpose, plus the moment a wire becomes long enough that lumped analysis breaks
         down.

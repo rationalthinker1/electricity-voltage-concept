@@ -42,7 +42,7 @@ export default function Ch20Motors() {
         of electromagnetic machine that turns EV wheels, CNC spindles, washing-machine drums, robot
         casters, and electric toothbrush heads.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This chapter is about how it works. The bottom line is a single equation we already met in
         the magnetism chapter: a current in a magnetic field feels a force, and a current loop in a
         field feels a torque. Wrap that into a rotating bundle and you get a motor. The challenge —
@@ -54,7 +54,7 @@ export default function Ch20Motors() {
 
       <h2 className="chapter-h2">Force on a wire = torque on a coil</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The quantity a motor exists to produce is torque — twist. Think of a wrench: the same push
         applied farther from the bolt turns it harder, because torque is leverage, force acting at a
         distance from an axis. A motor's whole trick is to take the magnetic force on its
@@ -63,7 +63,7 @@ export default function Ch20Motors() {
         on a coil."
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         The magnetism chapter wrote down the{' '}
         <Term
           def={
@@ -82,13 +82,13 @@ export default function Ch20Motors() {
         <Cite id="feynman-II-13" in={SOURCES} />:
       </p>
       <Formula size="lg" id="force-on-wire" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="F" /> is the force on the wire segment (in newtons), <M tex="I" /> is the
         current flowing through it (in amperes), <M tex="L" /> is a vector along the wire of length
         equal to the segment (in metres) pointing in the direction of conventional current, and{' '}
         <M tex="B" /> is the magnetic field at the wire's location (in tesla).
       </p>
-      <p className="mb-prose-3">
+      <p>
         Bend the wire into a closed rectangular loop of <M tex="N" /> turns and area <M tex="A" />,
         place it in <M tex="B" />, and the two long sides experience equal-and-opposite forces
         displaced from the loop's central axis. Those forces don't cancel — they form a couple. The
@@ -100,7 +100,7 @@ export default function Ch20Motors() {
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula tex="\tau = N I A B \sin\theta" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\tau" /> is the magnitude of the torque on the loop (in N·m), <M tex="N" /> is
         the number of turns in the coil (dimensionless integer), <M tex="I" /> is the current in the
         coil (in amperes), <M tex="A" /> is the area enclosed by one turn (in m²), <M tex="B" /> is
@@ -147,7 +147,7 @@ export default function Ch20Motors() {
 
       <h2 className="chapter-h2">The brushed DC motor</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The first practical motor solves the sign-of-sin(θ) problem mechanically. Take the
         single-loop machine above and connect each end of the coil to a half-ring of conductor on
         the rotating shaft — a two-segment{' '}
@@ -169,7 +169,7 @@ export default function Ch20Motors() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         That's the brushed DC motor in one paragraph. It runs directly off a DC supply, the rotor
         naturally spins up until its{' '}
         <Term
@@ -187,7 +187,7 @@ export default function Ch20Motors() {
         the winding resistance absorbs. Cheap to build. Speed control by varying the duty cycle of a
         PWM switch. No special drive electronics required.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The brushes are also where it goes wrong. They are sliding electrical contacts, so they wear
         mechanically, arc during commutation, generate EMI, and demand maintenance. Dry, dusty, or
         low-pressure environments make that contact problem worse. Most modern applications that can
@@ -195,7 +195,7 @@ export default function Ch20Motors() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         That back-EMF is worth a closer look, because it is the single equation governing how a
         brushed DC motor behaves between the moment you connect it and the moment it reaches a
         steady running speed. In a frozen rotor (<M tex="\omega = 0" />
@@ -253,7 +253,7 @@ export default function Ch20Motors() {
 
       <h2 className="chapter-h2">Brushless DC and PMSM</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Invert the topology. Put the permanent magnets on the rotor — often sintered
         neodymium-iron-boron in high-performance machines — and put the windings on the outer
         stator. Now no current has to enter or leave the spinning part, so there's no mechanical
@@ -262,7 +262,7 @@ export default function Ch20Motors() {
         roughly where the rotor is and energize the right pair of stator coils at the right time
         <Cite id="krishnan-2010-bldc" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The simplest scheme — and the source of the name{' '}
         <em className="text-text italic">brushless DC</em> — uses three stator phases and a six-step
         commutation table. The controller drives one phase HIGH and one phase LOW (third phase
@@ -282,7 +282,7 @@ export default function Ch20Motors() {
 
       <BLDCCommutationDemo figure="Fig. 20.3" />
 
-      <p className="mb-prose-3">
+      <p>
         The full-fat version is called the{' '}
         <Term def="Permanent-Magnet Synchronous Machine. Like a BLDC but driven with smooth sinusoidal currents (not the 6-step trapezoidal pulses) for lower torque ripple. The motor in every modern EV traction drive.">
           PMSM
@@ -298,7 +298,7 @@ export default function Ch20Motors() {
         <Cite id="krishnan-2010-bldc" in={SOURCES} />.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Field-oriented control deserves a closer look, because it is the single algorithmic trick
         that turns three wiggling AC phases into the two clean control knobs an engineer wants. Two
         coordinate transforms — Clarke (3-phase to a stationary 2-axis frame) and Park (2-axis
@@ -342,7 +342,7 @@ export default function Ch20Motors() {
 
       <h2 className="chapter-h2">The induction motor — Tesla 1888</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Now eliminate the connection to the rotor entirely. No brushes, no permanent magnets, no
         slip rings — just a steel rotor with a cage of shorted copper or aluminium bars embedded
         near its surface. This is the{' '}
@@ -356,7 +356,7 @@ export default function Ch20Motors() {
         twentieth century
         <Cite id="tesla-1888" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three-phase stator currents — three coils 120° apart in space, fed three sinusoidal currents
         120° apart in time — produce a magnetic field that rotates around the bore at the{' '}
         <em className="text-text italic">
@@ -376,7 +376,7 @@ export default function Ch20Motors() {
         :
       </p>
       <Formula tex="n_s = 120\, f / p \quad (\text{RPM})" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="n_s" /> is the synchronous (stator-field) rotational speed in revolutions per
         minute, <M tex="f" /> is the AC line frequency (in Hz), and <M tex="p" /> is the total pole
         count of the machine (a dimensionless even integer: 2, 4, 6, …). The factor of 120 packages
@@ -392,7 +392,7 @@ export default function Ch20Motors() {
 
       <RotatingMagField3DDemo figure="Fig. 20.5" />
 
-      <p className="mb-prose-3">
+      <p>
         It is worth pausing on the algebraic miracle that makes the three-phase trick work. Each
         coil's contribution to the field at the bore centre is its instantaneous current times a
         unit vector pointing along its own radial axis. Sum the three contributions for the standard
@@ -409,7 +409,7 @@ export default function Ch20Motors() {
 
       <InductionMotorSlipDemo figure="Fig. 20.6" />
 
-      <p className="mb-prose-3">
+      <p>
         Here is the subtle point. If the rotor ever caught up exactly to synchronous speed, the
         relative motion of bar through field would drop to zero, the induced EMF would vanish, the
         bar currents would die, the torque would collapse, and the rotor would coast. So the rotor{' '}
@@ -431,13 +431,13 @@ export default function Ch20Motors() {
         :
       </p>
       <Formula tex="s = (n_s - n) / n_s" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="s" /> is the dimensionless slip (a pure ratio, often quoted as a percentage),{' '}
         <M tex="n_s" /> is the synchronous speed of the rotating stator field (in RPM, from the
         formula above), and <M tex="n" /> is the actual mechanical rotation speed of the rotor (in
         RPM).
       </p>
-      <p className="mb-prose-3">
+      <p>
         Typical full-load slip is 2–5 %. At no load, slip drops toward 0.1 % (just enough to
         overcome bearing friction and windage). Load it up and slip rises; the bar EMF rises with
         it; the bar currents rise; the torque rises. The machine self-regulates. There is no
@@ -481,7 +481,7 @@ export default function Ch20Motors() {
 
       <h2 className="chapter-h2">Synchronous and stepper motors</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Two more variants round out the family. The{' '}
         <Term
           def={
@@ -505,7 +505,7 @@ export default function Ch20Motors() {
 
       <SynchronousMotorDemo figure="Fig. 20.7" />
 
-      <p className="mb-prose-3">
+      <p>
         Synchronous motors are where you need precise speed: the spindle in a hard drive, the
         platter in a vinyl turntable, the rolling mill in a steel plant, the propeller shaft in an
         icebreaker. A clock running on a synchronous motor stays accurate over the long run, because
@@ -516,7 +516,7 @@ export default function Ch20Motors() {
         other means (a starting cage, a variable-frequency drive, or a small pony motor) before the
         rotor can lock onto the field.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The other branch is the{' '}
         <Term def="A motor that advances its rotor by a fixed angular increment per input pulse — typically 1.8° for a 200-step hybrid. Used for open-loop positioning in 3D printers, CNC tables, and dome telescopes.">
           stepper motor
@@ -537,7 +537,7 @@ export default function Ch20Motors() {
 
       <h2 className="chapter-h2">Torque, speed, and matching to a load</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A motor's headline rating is its <em className="text-text italic">torque-speed curve</em>:
         how much torque it produces as a function of how fast the shaft is turning. Each motor
         family has a distinctive shape, and an engineer picks a motor by finding the curve whose
@@ -546,7 +546,7 @@ export default function Ch20Motors() {
 
       <TorqueSpeedCurveDemo figure="Fig. 20.9" />
 
-      <p className="mb-prose-3">
+      <p>
         The DC brushed motor has a roughly linear curve: maximum torque at stall (zero speed, full
         current), torque falling linearly to zero at the no-load speed where back-EMF nearly equals
         supply voltage. The induction motor has a quasi-flat region just below synchronous speed,
@@ -558,7 +558,7 @@ export default function Ch20Motors() {
         above the <em className="text-text italic">pull-out frequency</em>
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Pumping water through a hydraulic load (torque <M tex="\propto \omega^2" />, the fan-law
         curve) wants a different motor than driving a positive-displacement compressor (constant
         torque vs <M tex="\omega" />
@@ -567,7 +567,7 @@ export default function Ch20Motors() {
         design operating point.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Choosing the curve is only half the job; the other half is choosing the{' '}
         <em className="text-text italic">operating point on it</em>. A motor is not equally
         efficient everywhere on its torque–speed plane. Copper losses scale as <M tex="I^2 R" /> —
@@ -581,7 +581,7 @@ export default function Ch20Motors() {
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         For an EV, the practical consequence is that the gearbox ratio is chosen to put the motor's
         operating point inside its bright sweet spot for the typical cruise condition. A
         single-speed reduction is often enough because a PMSM's sweet spot is broad and the inverter
@@ -621,7 +621,7 @@ export default function Ch20Motors() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Force on a current-carrying wire in a magnetic field gives torque on a coil. Brushes
         mechanically reverse the coil current every half-turn so the torque always pushes forward —
         that's the brushed DC motor. Move the magnets to the rotor and put the commutation in
@@ -633,7 +633,7 @@ export default function Ch20Motors() {
         the integral of pulse count. Same underlying physics — <M tex="\tau = NIAB \sin\theta" /> —
         six different ways to keep that <M tex="\sin" /> from going the wrong way.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Next chapter: spin one of these machines mechanically instead of electrically, and you get a
         generator. The rest of the global power infrastructure is built on the inverse of this
         chapter.

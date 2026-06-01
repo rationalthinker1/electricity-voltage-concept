@@ -55,7 +55,7 @@ export default function Ch1WhatIsElectricity() {
         </Term>
         , and a force between them.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This chapter is about the bottom layer: what charge actually is, why it produces a force
         that drops off as the inverse-square of distance, and why physicists in the 19th century
         stopped thinking about that force as a ghostly attraction and started thinking about it as a{' '}
@@ -67,11 +67,11 @@ export default function Ch1WhatIsElectricity() {
         Two kinds of <em>charge</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The simplest experimental fact in all of electricity: there are two kinds of charge, and
         they push on each other in opposite ways. Same kind: repel. Different kind: attract.
       </p>
-      <p className="mb-prose-3">
+      <p>
         What does it actually mean for an object to be{' '}
         <em className="text-text italic">positively charged</em> or{' '}
         <em className="text-text italic">negatively charged</em>? Ordinary matter is built out of
@@ -104,7 +104,7 @@ export default function Ch1WhatIsElectricity() {
         neutral atom has exactly as many electrons as protons, and the two cancel to zero{' '}
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         An object is <strong className="text-text font-medium">negatively charged</strong> when it
         carries a <em className="text-text italic">surplus</em> of electrons — more electrons than
         protons — and <strong className="text-text font-medium">positively charged</strong> when it
@@ -116,7 +116,7 @@ export default function Ch1WhatIsElectricity() {
         (negative), your hair with a matching deficit (positive), and the two attract{' '}
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         We label one sign positive and the other negative — but nothing in nature insists on which
         gets which name. Benjamin Franklin made the call in the 18th century and we've been stuck
         with it. (It is occasionally annoying. Conventional current flows in the direction{' '}
@@ -148,7 +148,7 @@ export default function Ch1WhatIsElectricity() {
         <TwoChargesDemo figure="Fig. 1.1" />
       </PredictThenObserve>
 
-      <p className="mb-prose-3">
+      <p>
         The force between two{' '}
         <Term
           def={
@@ -176,7 +176,7 @@ export default function Ch1WhatIsElectricity() {
         <Cite id="coulomb-1785" in={SOURCES} />:
       </p>
       <Formula size="lg" id="coulomb-force" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="F" /> is the magnitude of the force each charge exerts on the other (in
         newtons), <M tex="Q_{1}" /> and <M tex="Q_{2}" /> are the two charges (in coulombs, signed),{' '}
         <M tex="r" /> is the distance between them (in metres), and{' '}
@@ -186,7 +186,7 @@ export default function Ch1WhatIsElectricity() {
         <M tex="Q_{2}" /> have the same sign, <M tex="F" /> is positive (push apart); opposite
         signs, <M tex="F" /> is negative (pull together).
       </p>
-      <p className="mb-prose-3">
+      <p>
         The constant is <em className="text-text italic">enormous</em>. Two one-coulomb charges
         separated by one meter would push each other apart with about{' '}
         <strong className="text-text font-medium">9 billion newtons</strong> — roughly the weight of
@@ -196,7 +196,7 @@ export default function Ch1WhatIsElectricity() {
         elementary charge is <M tex="e = 1.602\,176\,634\times 10^{-19}\ \text{C}" />, an exact
         value by the 2019 SI redefinition <Cite id="codata-2018" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The reason daily life is full of static and not constant electrocution is that ordinary
         matter is exquisitely charge-neutral. The fractional excess of free charge needed to make a
         noticeable force is tiny. Drag a balloon across your hair and you transfer perhaps a few
@@ -241,13 +241,13 @@ export default function Ch1WhatIsElectricity() {
         Why exactly the <em>square</em>?
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Coulomb established the inverse-square form in 1785 by hanging a charged ball from a fine
         quartz fiber and measuring the angle of twist as he brought another charged ball nearer
         <Cite id="coulomb-1785" in={SOURCES} />. But the form is not an arbitrary fit. It's a direct
         consequence of the geometry of three-dimensional space.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Imagine the charge as a point spraying its "influence" outward equally in every direction.
         After traveling a distance <M tex="r" />, that influence is spread over the surface of a
         sphere of radius <M tex="r" />. The area of that sphere is <M tex="4\pi r^{2}" />. The
@@ -258,7 +258,7 @@ export default function Ch1WhatIsElectricity() {
         size="lg"
         tex="F \;\propto\; \dfrac{1}{r^{2}} \;=\; \dfrac{1}{4\pi r^{2}}\cdot 4\pi"
       />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="F" /> is the magnitude of the force (in newtons), <M tex="r" /> is the
         separation between the two charges (in metres), and the factor <M tex="4\pi r^{2}" /> is the
         surface area of a sphere of radius <M tex="r" /> (in m²) — making the proportionality
@@ -270,7 +270,7 @@ export default function Ch1WhatIsElectricity() {
         The inverse-square law is not a fact about charge. It is a fact about space being
         three-dimensional.
       </Pullout>
-      <p className="mb-prose-3">
+      <p>
         The Coulomb-and-geometry story leaves one experimental question open: is the exponent really
         exactly two? Modern null-cavity measurements have pushed the bound to roughly{' '}
         <M tex="\pm 3\times 10^{-16}" /> — any deviation from exactly 2 is smaller than three parts
@@ -349,13 +349,13 @@ export default function Ch1WhatIsElectricity() {
         From <em>force</em> to <em>field</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Newton hated the way his own gravitational law worked — instantaneous attraction across
         empty space, with no mechanism. "Action at a distance" he called it, and he didn't believe
         it. For two centuries everyone made do anyway, including with Coulomb's electrical version
         of the same algebra.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Michael Faraday, who had less mathematics than any of his peers and more imagination than
         most of them combined, proposed in the 1830s that the empty space around a charge is not, in
         fact, empty. It contains a{' '}
@@ -377,13 +377,13 @@ export default function Ch1WhatIsElectricity() {
 
       <FieldArrowsDemo figure="Fig. 1.3" />
 
-      <p className="mb-prose-3">
+      <p>
         Now make that precise. The arrows you just sampled are the electric field. The symbol is{' '}
         <M tex="\vec{E}" />, and its definition is direct — the force per unit charge a small test
         charge would feel at that point:
       </p>
       <Formula size="lg" id="electric-field-def" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\vec{E}" /> is the electric-field vector at the point of interest (units:{' '}
         <Term
           def={
@@ -403,12 +403,12 @@ export default function Ch1WhatIsElectricity() {
         positive charge. The N/C-versus-V/m identity falls out in one line
         <Cite id="hyperphysics-emag" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         With the field framework in hand, Coulomb's law takes a slightly different shape. A point
         charge <M tex="Q" /> produces a field whose magnitude at distance <M tex="r" /> from it is
       </p>
       <Formula size="lg" id="electric-field-point" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="|\vec{E}|" /> is the magnitude of the field (N/C), <M tex="k" /> is Coulomb's
         constant, <M tex="Q" /> is the source charge (signed, in coulombs), and <M tex="r" /> is the
         distance from the source charge to the point where the field is being evaluated (in metres).
@@ -421,7 +421,7 @@ export default function Ch1WhatIsElectricity() {
 
       <PointCharge3DDemo figure="Fig. 1.4" />
 
-      <p className="mb-prose-3">
+      <p>
         The field framework looks like bookkeeping at first — relabel the same algebra. But it pays
         off in two enormous ways. First, when there are <em className="text-text italic">many</em>{' '}
         charges, the field is the vector sum of each one's contribution. You compute one field, then
@@ -468,7 +468,7 @@ export default function Ch1WhatIsElectricity() {
 
       <h2 className="chapter-h2">Field patterns to carry forward</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Once you have a field, you can ask what the field{' '}
         <em className="text-text italic">looks like</em>. For one isolated charge it's just radial
         arrows, getting weaker by <M tex="1/r^{2}" />. For two charges, the patterns are more
@@ -480,7 +480,7 @@ export default function Ch1WhatIsElectricity() {
 
       <EquipotentialsDemo figure="Fig. 1.5" />
 
-      <p className="mb-prose-3">
+      <p>
         Threading through that field is a second structure worth naming:{' '}
         <Term
           def={
@@ -500,7 +500,7 @@ export default function Ch1WhatIsElectricity() {
         <M tex="V" /> means and why it's the variable everyone actually measures.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         A third pattern is worth flagging because the rest of the book will lean on it constantly.
         Take a flat conducting sheet and spread positive charge evenly over it; park a second sheet
         a short distance away and spread an equal amount of negative charge over that one. Away from
@@ -510,7 +510,7 @@ export default function Ch1WhatIsElectricity() {
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula size="lg" id="parallel-plate-field" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="|\vec{E}|" /> is the magnitude of the field between the plates (N/C),{' '}
         <M tex="\sigma" /> is the magnitude of the surface-charge density on each plate (in C/m²),
         and <M tex="\varepsilon_{0} \approx 8.854\times 10^{-12}\ \text{F/m}" /> is the permittivity
@@ -536,7 +536,7 @@ export default function Ch1WhatIsElectricity() {
 
       <ParallelPlateUniformFieldDemo figure="Fig. 1.6" />
 
-      <p className="mb-prose-3">
+      <p>
         The field arrows between the plates stay exactly the same length as the separation changes:
         the uniform field of an idealised parallel-plate pair depends only on the surface charge
         density σ — not on the gap. The voltage between the plates does change, because{' '}
@@ -575,7 +575,7 @@ export default function Ch1WhatIsElectricity() {
 
       <h2 className="chapter-h2">Conductors, insulators, and why your hair does that</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Materials come in two extreme types from the standpoint of charge mobility, with everything
         else on a sliding scale between them. In a{' '}
         <Term
@@ -606,7 +606,7 @@ export default function Ch1WhatIsElectricity() {
         — glass, dry plastic, dry air — every electron is locked into a chemical bond and cannot
         move more than the diameter of an atom.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Put extra charge on a conductor and the free electrons rearrange themselves until the field
         inside the conductor is exactly zero. (If it weren't zero, the free charges would feel a
         force, accelerate, and keep rearranging until it was. So in equilibrium it must be.) The
@@ -617,7 +617,7 @@ export default function Ch1WhatIsElectricity() {
 
       <ConductorRedistributionDemo figure="Fig. 1.7" />
 
-      <p className="mb-prose-3">
+      <p>
         This is why a metal cage shields its interior from electric fields (a Faraday cage), why
         your car keeps you relatively safe in a thunderstorm, and why the electrons inside a copper
         wire — which you'll meet in Chapter&nbsp;2 — sit there happily until something connects the
@@ -626,14 +626,14 @@ export default function Ch1WhatIsElectricity() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Charge is a property of matter. There are two kinds. Same kinds repel; opposites attract.
         The force between two point charges falls off as the square of the distance — for a
         geometric reason, not a numerological one. Around every charged object is a field that fills
         space and tells any other charge what to do. In a conductor, charges are free to move and
         rearrange themselves until the inside of the conductor has no field at all.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That is electrostatics — electricity standing still. In Chapter 2 we let it move.
       </p>
 

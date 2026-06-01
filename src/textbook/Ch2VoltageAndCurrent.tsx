@@ -22,6 +22,7 @@ import { ACElectronJitterDemo } from './demos/ACElectronJitter';
 import { CursorEFieldOnWireDemo } from './demos/CursorEFieldOnWire';
 import { DriftVelocityDemo } from './demos/DriftVelocity';
 import { LineIntegralVoltageDemo } from './demos/LineIntegralVoltage';
+import { PotentialFromFieldDemo } from './demos/PotentialFromField';
 import { SwitchAndBulbDemo } from './demos/SwitchAndBulb';
 import { TwoSpeedsDemo } from './demos/TwoSpeeds';
 import { VabWorkEnergyDemo } from './demos/VabWorkEnergy';
@@ -44,7 +45,7 @@ export default function Ch2VoltageAndCurrent() {
         <em className="text-text italic">difference</em> between the two contacts in your saliva,
         and current flowing between them as a result. Voltage is always between two things. Always.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This chapter is about the two quantities every electrician and every wall-outlet label talks
         about constantly: voltage and current. Both have intuitive analogies that get the algebra
         right and the picture wrong. We're going to do the algebra and then, more importantly, take
@@ -55,7 +56,7 @@ export default function Ch2VoltageAndCurrent() {
         Voltage isn't pressure. It's a <em>difference</em>.
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The standard plumbing analogy says{' '}
         <Term
           def={
@@ -82,7 +83,7 @@ export default function Ch2VoltageAndCurrent() {
         the distance, a reference. Move the reference and every "voltage" shifts by the same amount.
         The differences are unchanged.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The gravitational analogy is exact in all the parts that matter. A ball at the top of a hill
         has gravitational potential energy <M tex="mgh" />; let it roll and that energy converts to
         kinetic. A positive test charge at the high end of a voltage drop has electrical potential
@@ -90,7 +91,7 @@ export default function Ch2VoltageAndCurrent() {
         which, in a wire full of fixed obstacles, almost immediately becomes heat. The battery is
         the climber lifting the ball back up. Voltage is the height it lifted to.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That is the safer mental model: not a pipe being pressurized from behind, but a topographic
         map whose slopes already tell charges which way they would move. In a real circuit the
         electromagnetic field lives in and around the conductors before any one electron has crossed
@@ -104,7 +105,7 @@ export default function Ch2VoltageAndCurrent() {
 
       <h3 className="chapter-h3">The formal definition: a line integral of the field</h3>
 
-      <p className="mb-prose-3">
+      <p>
         The picture is one thing. To do anything with voltage — predict it from a charge
         distribution, compute the work a charge will gain crossing a gap, design a battery or a
         capacitor — you need a definition with sharper edges. The "height" in the analogy is the
@@ -113,14 +114,14 @@ export default function Ch2VoltageAndCurrent() {
         between them.
       </p>
       <Formula size="lg" tex="V_{ab} = V_b - V_a = -\int_a^b \vec{E}\cdot d\vec{\ell}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_a" /> and <M tex="V_b" /> are the potentials (in volts, J/C) at the two
         endpoints, <M tex="V_{ab}" /> is the potential difference between them, <M tex="E" /> is the
         electric field vector (in V/m, equivalently N/C), <M tex="d\ell" /> is the infinitesimal
         vector element of any path from <M tex="a" /> to <M tex="b" /> (in metres), and the integral
         runs along that path.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The minus sign is convention: walking <em className="text-text italic">against</em> the
         field gains you potential, the way climbing <em className="text-text italic"> against</em>{' '}
         gravity gains you altitude. For static charges the integral is path-independent{' '}
@@ -133,7 +134,7 @@ export default function Ch2VoltageAndCurrent() {
 
       <LineIntegralVoltageDemo figure="Fig. 2.1b" />
 
-      <p className="mb-prose-3">
+      <p>
         The integral sign hides a simple instruction: chop the path into pieces, multiply the
         field's along-path component by each little step, and add. The amber rectangles above{' '}
         <em className="text-text italic">are</em> that sum, and as you slide <M tex="N" /> upward
@@ -145,9 +146,64 @@ export default function Ch2VoltageAndCurrent() {
         have to actually evaluate.
       </p>
 
+      <h3 className="chapter-h3">What the integral accumulates</h3>
+
+      <p>
+        The difference formula <M tex="V_{ab}" /> is useful when you care about two specific places,
+        but the same integral also answers a more fundamental question: what is the potential at a
+        single point? To ask that, you must choose a reference — conventionally infinity, where the
+        field has fallen to zero — and integrate inward from there. The result is the absolute
+        potential at the point, written without endpoint subscripts:
+      </p>
+
+      <Formula size="lg" id="potential-from-field-integral" />
+
+      <p>
+        Read this carefully, because every symbol does physical work. <M tex="\vec{E}" /> is the
+        electric field vector at each location along the path. <M tex="d\vec{\ell}" /> is an
+        infinitesimal step vector pointing along the path. The dot product{' '}
+        <M tex="\vec{E} \cdot d\vec{\ell}" /> picks out only the component of the field that
+        lies <em className="text-text italic">parallel</em> to the step — field perpendicular to
+        your motion does no work, so it contributes nothing to the potential. The minus sign means
+        walking <em className="text-text italic">with</em> the field (downhill) lowers your potential,
+        while walking <em className="text-text italic">against</em> it (uphill) raises it.
+      </p>
+
+      <p>
+        Integration is the continuous version of addition. If you chop the path into{' '}
+        <M tex="N" /> finite pieces, each piece contributes{' '}
+        <M tex="-\vec{E}_i \cdot \Delta\vec{\ell}_i" /> and the total is approximately
+      </p>
+
+      <Formula size="lg" tex="V \approx -\sum_{i=1}^{N} \vec{E}_i \cdot \Delta\vec{\ell}_i" />
+
+      <p>
+        As <M tex="N" /> grows and each step shrinks toward zero, the approximation sharpens until
+        the staircase of rectangles becomes the smooth curve of the integral. That limiting process
+        — summing infinitely many infinitesimal contributions — is what the elongated "S" of the
+        integral sign represents. For a single point charge, carrying out the integral along any
+        radial line from infinity inward gives the familiar result{' '}
+        <M tex="V = kQ/r" />: the potential is simply the accumulated "field-work" per unit charge
+        stored in the space around the charge.
+      </p>
+
+      <PotentialFromFieldDemo figure="Fig. 2.1c" />
+
+      <p>
+        The demo above makes the accumulation visible. The radial path from the dashed reference ring
+        to the probe is the line along which the integral is evaluated. Each coloured segment is one
+        step <M tex="\Delta\vec{\ell}_i" />; its brightness shows how much that step contributes to
+        the total. The lower panel tracks the <em className="text-text italic">running sum</em> as
+        you move inward: the amber staircase is the Riemann approximation, while the smooth teal
+        curve is the exact integral. Drag <M tex="N" /> upward and the steps collapse onto the
+        curve; the integral is literally the limit of that refinement. Drag the probe closer to the
+        charge and the potential rises — more field, packed into a smaller radius, each piece adding
+        a larger share.
+      </p>
+
       <h3 className="chapter-h3">Voltage as energy per unit charge</h3>
 
-      <p className="mb-prose-3">
+      <p>
         The line integral is exact, but you'll rarely evaluate one. The way every working engineer
         holds voltage in their head — and the way every multimeter measures it — is operationally:
         as the energy it takes (or releases) per coulomb of charge moved from one point to the
@@ -155,14 +211,14 @@ export default function Ch2VoltageAndCurrent() {
         work
       </p>
       <Formula size="lg" id="work-charge-voltage" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="W" /> is the work done on the charge (in joules), <M tex="q" /> is the charge
         being moved (in coulombs, signed), and <M tex="V" /> is the potential difference between the
         start and end points (in volts). Equivalently, rearrange to read voltage off as
         work-per-charge:
       </p>
       <Formula size="lg" tex="V = \dfrac{W}{q} = \dfrac{\Delta U}{q}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\Delta U" /> is the change in electrical potential energy of the charge (in
         joules). One volt is one joule per coulomb. That single identity is why "1.5 V" on a battery
         is a statement about energy: it says the cell can deposit 1.5 joules of energy onto every
@@ -173,7 +229,7 @@ export default function Ch2VoltageAndCurrent() {
 
       <h3 className="chapter-h3">Work-energy bridge from Chapter 1</h3>
 
-      <p className="mb-prose-3">
+      <p>
         Chapter 1 gave the force law: a charge in an electric field feels{' '}
         <M tex="\vec{F}=q\vec{E}" />. Chapter 2 is the same story after the force has acted over a
         distance. Force times distance is work; work per charge is voltage. That is the bridge from
@@ -223,7 +279,7 @@ export default function Ch2VoltageAndCurrent() {
         </div>
       </figure>
 
-      <p className="mb-prose-3">
+      <p>
         The analogy should stop at energy bookkeeping. Water pressure is a useful crutch for some
         circuit arithmetic, but voltage is not the stuff moving through the wire. It is the
         potential-energy drop available to each coulomb as the field does work on charges already
@@ -232,7 +288,7 @@ export default function Ch2VoltageAndCurrent() {
 
       <VabWorkEnergyDemo figure="Fig. 2.2" />
 
-      <p className="mb-prose-3">
+      <p>
         The same three identities — <M tex="V_{ab} = V_b - V_a" />, <M tex="W = qV_{ab}" />, and{' '}
         <M tex="V = \Delta U/q" /> — are visible on one canvas above. Drag <M tex="V_a" /> and{' '}
         <M tex="V_b" /> and only their <em className="text-text italic">difference</em> matters:
@@ -243,7 +299,7 @@ export default function Ch2VoltageAndCurrent() {
         way.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         There is one more lever on that picture, and it is the one that defines the word. The total
         energy <M tex="W = qV_{ab}" /> depends on how big a charge you send across — but the{' '}
         <em className="text-text italic">voltage</em> does not. Divide the energy by the charge and
@@ -257,7 +313,7 @@ export default function Ch2VoltageAndCurrent() {
 
       <VoltageDrivesFlowDemo figure="Fig. 2.4" />
 
-      <p className="mb-prose-3">
+      <p>
         That operational picture has a knob the reader can already turn. Hook a battery of voltage{' '}
         <M tex="V" /> across a fixed resistive{' '}
         <Term
@@ -286,7 +342,7 @@ export default function Ch2VoltageAndCurrent() {
 
       <h3 className="chapter-h3">The cleanest case: a uniform field between two plates</h3>
 
-      <p className="mb-prose-3">
+      <p>
         The line integral and the W/q view are the same statement; the easiest place to see that is
         when the field is uniform, because the integral collapses to a single product. Inside a
         parallel-plate capacitor with the plates a distance <M tex="d" /> apart, the electric field
@@ -294,7 +350,7 @@ export default function Ch2VoltageAndCurrent() {
         plates is then
       </p>
       <Formula size="lg" id="voltage-uniform-field" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V" /> is the potential difference between the two plates (in volts),{' '}
         <M tex="E" /> is the magnitude of the uniform electric field in the gap (in V/m), and{' '}
         <M tex="d" /> is the gap distance (in metres). Voltage and field, in this geometry, are two
@@ -302,7 +358,7 @@ export default function Ch2VoltageAndCurrent() {
         other is then
       </p>
       <Formula size="lg" tex="W = qV = qEd" />
-      <p className="mb-prose-3">
+      <p>
         the product of charge, field, and distance — exactly Newton's{' '}
         <M tex="\text{work} = \text{force} \times \text{distance}" /> with <M tex="F = qE" /> from
         Ch.1. And for any intermediate height <M tex="h" /> off the bottom plate, the voltage
@@ -348,7 +404,7 @@ export default function Ch2VoltageAndCurrent() {
         What current actually <em>is</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Picture a toll booth on a one-lane bridge. Stand beside it and count the cars passing per
         minute: that count, with a direction attached, is the natural meaning of{' '}
         <em className="text-text italic">traffic</em>. Current is exactly the same idea applied to
@@ -357,7 +413,7 @@ export default function Ch2VoltageAndCurrent() {
         <em className="text-text italic">how badly</em> the charges want to move; current says{' '}
         <em className="text-text italic">how many</em> of them actually are.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <Term
           def={
             <>
@@ -388,13 +444,13 @@ export default function Ch2VoltageAndCurrent() {
         absurd in two paragraphs.
       </p>
       <Formula size="lg" id="current-def" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="I" /> is the current (in amperes, A = C/s), <M tex="Q" /> is the net charge
         that has crossed a chosen fixed cross-section (in coulombs), and <M tex="t" /> is time (in
         seconds). The sign of <M tex="I" /> follows the direction of conventional positive-charge
         flow across that surface.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Current has a direction. By the convention Benjamin Franklin set in the mid-eighteenth
         century — long before anyone knew electrons existed — current points the direction{' '}
         <em className="text-text italic">positive</em> charge would move. In an ordinary copper wire
@@ -416,7 +472,7 @@ export default function Ch2VoltageAndCurrent() {
         silently asks you to carry that inversion in your head. Most people learn to do it without
         noticing.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Which particles actually do the moving depends on the medium. In a metal the carriers are
         free electrons. In an{' '}
         <Term
@@ -437,7 +493,7 @@ export default function Ch2VoltageAndCurrent() {
         <em className="text-text italic">charge</em>, and the cross-section counts coulombs crossing
         it regardless of what is carrying them.
       </p>
-      <p className="mb-prose-3">
+      <p>
         With voltage and current in hand, you have the two quantities meters measure. You also have
         the setup for what is, on reflection, one of the strangest facts in classical physics — and
         the heart of this chapter. The electrons in a wire really do move when current flows. They
@@ -481,7 +537,7 @@ export default function Ch2VoltageAndCurrent() {
         The astonishing slowness of <em>electrons</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         In a copper wire, roughly one of each atom's electrons is loose — not bound to any
         particular nucleus, free to wander. That gives a free-electron density of about{' '}
         <M tex="n \approx 8.5\times 10^{28}\ /\text{m}^3" />{' '}
@@ -517,7 +573,7 @@ export default function Ch2VoltageAndCurrent() {
         </Term>{' '}
         in the direction opposite the field. That average drift is what current is made of.
       </p>
-      <p className="mb-prose-3">
+      <p>
         In two equations (the{' '}
         <Term
           def={
@@ -534,7 +590,7 @@ export default function Ch2VoltageAndCurrent() {
         ) <Cite id="drude-1900" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="v_d = \dfrac{I}{n\, q\, A}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="v_d" /> is the average drift speed of the carriers (in m/s), <M tex="I" /> is
         the current (in amperes), <M tex="n" /> is the free-carrier number density (in carriers per
         m³; <M tex="\approx 8.5\times 10^{28}\ /\text{m}^3" /> for copper{' '}
@@ -543,9 +599,9 @@ export default function Ch2VoltageAndCurrent() {
         charge <M tex="e \approx 1.602\times 10^{-19}\ \text{C}" />
         ), and <M tex="A" /> is the wire's cross-sectional area (in m²).
       </p>
-      <p className="mb-prose-3">Plug in numbers. One amp through a 2.5 mm² copper wire:</p>
+      <p>Plug in numbers. One amp through a 2.5 mm² copper wire:</p>
       <Formula tex="v_d = \dfrac{1}{(8.5\times 10^{28})(1.6\times 10^{-19})(2.5\times 10^{-6})} \approx 2.9\times 10^{-5}\ \text{m/s}" />
-      <p className="mb-prose-3">
+      <p>
         Three hundredths of a millimeter per second. A 12-gauge wire carrying about{' '}
         <strong className="text-text font-medium">1 A</strong> — roughly what a small bedside lamp
         draws — has a drift velocity of about{' '}
@@ -577,13 +633,13 @@ export default function Ch2VoltageAndCurrent() {
         <DriftVelocityDemo figure="Fig. 2.5" />
       </PredictThenObserve>
 
-      <p className="mb-prose-3">
+      <p>
         And yet the lamp at the far end of that extension cord turns on the instant you flip the
         switch. Whatever is getting from the switch to the bulb to make it glow, it is not the
         electrons that were sitting near the switch. They will not arrive for hours.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Before moving on, one demonstration of how directly those drifting electrons respond to{' '}
         <em className="text-text italic">any</em> electric field — not just the battery's. Bring an
         external charge near the wire and the free electrons inside feel it immediately. They pile
@@ -628,7 +684,7 @@ export default function Ch2VoltageAndCurrent() {
 
       <h2 className="chapter-h2">The two speeds in the same wire</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Inside a copper wire two completely different things can be said to "move," and they move at
         speeds that differ by nearly thirteen orders of magnitude. The electrons themselves drift at
         fractions of a millimeter per second. The{' '}
@@ -655,7 +711,7 @@ export default function Ch2VoltageAndCurrent() {
         you-thought-you-understood-this-but-you-didn't moment.
       </p>
       <Formula tex="v_{\text{signal}} / v_{\text{drift}} \approx 2\times 10^{8} / 3\times 10^{-5} \approx 10^{13}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="v_{\text{signal}}" /> is the propagation speed of the electromagnetic
         disturbance along the wire (in m/s, here about two-thirds the speed of light) and{' '}
         <M tex="v_{\text{drift}}" /> is the average drift speed of the conduction electrons
@@ -697,7 +753,7 @@ export default function Ch2VoltageAndCurrent() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         The signal is not made of electrons. It is the electromagnetic field reconfiguring itself,
         and that reconfiguration travels at near-c through the space around the wire. The electrons
         respond to the field locally, wherever they happen to be sitting. They start drifting in
@@ -705,7 +761,7 @@ export default function Ch2VoltageAndCurrent() {
         developed, becomes Chapter 9.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         The argument has one more counterintuitive case worth dwelling on. Most of the wires in your
         house don't carry DC at all — they carry 60 Hz alternating current, with the driving field
         reversing direction 120 times a second. An electron in an AC wire therefore doesn't even
@@ -718,7 +774,7 @@ export default function Ch2VoltageAndCurrent() {
 
       <ACElectronJitterDemo figure="Fig. 2.8" />
 
-      <p className="mb-prose-3">
+      <p>
         The same electron you started with stays essentially in place. It does not journey anywhere.
         And yet the wire is delivering hundreds of watts to the lamp at the other end. Whatever is
         carrying that energy — flowing from the wall outlet to the filament — has even less to do
@@ -730,11 +786,11 @@ export default function Ch2VoltageAndCurrent() {
         What actually lights the <em>bulb</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Here is the sequence, in order, when you flip a wall switch and a bulb on the far side of
         the room comes on:
       </p>
-      <p className="mb-prose-3">
+      <p>
         (1) The switch closes. (2) The electric field that was already present in the wires — held
         in place by the battery or the line voltage — reconfigures around the new geometry, and that
         reconfiguration propagates outward at near the speed of light. (3) Within nanoseconds the
@@ -742,7 +798,7 @@ export default function Ch2VoltageAndCurrent() {
         already there, begin to drift. (5) The drifting electrons collide with tungsten ions,
         dumping kinetic energy as heat. (6) The filament heats to ~2800 K and glows.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Zoom into the first microsecond. The instant the switch contacts meet, the boundary
         conditions of the circuit change, and an electromagnetic disturbance races along the wire at
         a large fraction of <M tex="c" />. Surface charges redistribute as that disturbance passes,
@@ -774,7 +830,7 @@ export default function Ch2VoltageAndCurrent() {
         <SwitchAndBulbDemo figure="Fig. 2.9" />
       </PredictThenObserve>
 
-      <p className="mb-prose-3">
+      <p>
         Notice what is not in that list. No electron travels from the switch to the bulb. No charge
         "flows through" the wire in any sense that resembles water through a pipe. The electrons in
         the filament were always there. The thing that propagated was the field, which is not made
@@ -786,7 +842,7 @@ export default function Ch2VoltageAndCurrent() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Voltage is a difference between two points — the line integral of E along any path between
         them, with a sign. Current is the rate of charge flow past a cross-section, by convention
         pointing the way positive charges would move. The actual carriers in a metal wire are
@@ -796,7 +852,7 @@ export default function Ch2VoltageAndCurrent() {
         essentially instantly while the electrons themselves are still settling in for a long, slow
         walk.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three quantities are still missing from this picture: how hard a wire pushes back against
         current, how that pushback turns into heat, and why a long thin wire pushes back more than a
         short fat one. Those are the subject of Chapter 3.

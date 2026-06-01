@@ -41,7 +41,7 @@ export default function Ch36HouseTroubleshooting() {
         that flags a tripped breaker. You are about to flip them off and on one at a time — twenty
         minutes of running back upstairs to test the toaster — and hope something works.
       </p>
-      <p className="mb-prose-3">
+      <p>
         There is a faster way, and it begins with the observation that a circuit's failure leaves a
         fingerprint. Hot-to-neutral reads one number; hot-to-ground reads another; neutral-to-ground
         reads a third. Those three numbers — twelve seconds of probing at the dead outlet — narrow
@@ -53,14 +53,14 @@ export default function Ch36HouseTroubleshooting() {
 
       <h2 className="chapter-h2">Four meters, four jobs</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The electrical aisle of a hardware store stocks four broad families of voltage-and-current
         instrument, and every one of them is the right tool for some questions and the wrong tool
         for others. Knowing which is which is half the troubleshooting skill.
       </p>
 
       <h3 className="chapter-h3">The non-contact voltage tester</h3>
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <Term
           def={
@@ -83,7 +83,7 @@ export default function Ch36HouseTroubleshooting() {
         within a finger's width of the conductor
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The trap with an NCVT is that it has four failure modes and you can never quite be sure
         which one is in play. The battery dies silently and the tool just stops beeping. Adjacent
         live conductors in the same box couple to the tested conductor and make a dead wire read
@@ -94,7 +94,7 @@ export default function Ch36HouseTroubleshooting() {
       </p>
 
       <h3 className="chapter-h3">The two-pole probe</h3>
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <Term
           def={
@@ -114,7 +114,7 @@ export default function Ch36HouseTroubleshooting() {
         selector; the tool autoranges from 12 V to 600 V AC. There is often no battery at all (the
         original Wiggy is powered by the circuit under test).
       </p>
-      <p className="mb-prose-3">
+      <p>
         The crucial property of a two-pole probe is its load impedance. Where a DMM presents 10 MΩ
         to the signal, a two-pole tester presents a few hundred ohms to a few kilo-ohms — enough to
         draw milliamps from the conductor under test, which is enough to collapse any
@@ -125,7 +125,7 @@ export default function Ch36HouseTroubleshooting() {
       </p>
 
       <h3 className="chapter-h3">The digital multimeter</h3>
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <Term
           def={
@@ -146,7 +146,7 @@ export default function Ch36HouseTroubleshooting() {
         circuit loading
         <Cite id="keysight-34465a-datasheet" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That high input impedance is what makes a DMM useful — it lets you measure the open-circuit
         voltage of a sensor or a high-impedance node without changing what you're measuring — and it
         is also what makes a DMM lie about phantom voltages on a floating wire. The voltage the DMM
@@ -154,7 +154,7 @@ export default function Ch36HouseTroubleshooting() {
         path's impedance and the meter's input impedance:
       </p>
       <Formula tex="V_{\text{dmm}} = V_{\text{source}} \times \dfrac{Z_{\text{dmm}}}{Z_{\text{dmm}} + Z_{\text{leak}}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{dmm}}" />
         is the voltage the meter displays (in volts AC), <M tex="V_{\text{source}}" />
         is the actual line voltage somewhere upstream in the building (in volts AC, typically 120 V
@@ -170,7 +170,7 @@ export default function Ch36HouseTroubleshooting() {
       </p>
 
       <h3 className="chapter-h3">The clamp meter</h3>
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <Term
           def={
@@ -192,7 +192,7 @@ export default function Ch36HouseTroubleshooting() {
         0–60 A range and 1 A in the 60–600 A range
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A clamp meter is the right tool for "is this circuit drawing what I think it is?" — the
         question that comes up every time you suspect a parasitic load, an undersized branch, or a
         stuck heating element. It is also the only one of the four meters that can measure current
@@ -237,7 +237,7 @@ export default function Ch36HouseTroubleshooting() {
 
       <h2 className="chapter-h2">The phantom-voltage trap, deeply</h2>
 
-      <p className="mb-prose-3">
+      <p>
         It is worth pausing on the phantom-voltage problem because it is the single most common
         cause of an electrician's "this doesn't make sense" moment, and the physics is unambiguous
         once you write the currents down. Imagine two wires running parallel inside a metal junction
@@ -246,7 +246,7 @@ export default function Ch36HouseTroubleshooting() {
         to no source at all: a switched-off light fixture, an abandoned cable, a receptacle that has
         been removed and capped. U is electrically floating.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two conductors separated by air-and-insulation form a parallel-plate capacitor. The
         capacitance is small — for two 12-AWG conductors lying alongside each other for six inches
         inside a steel box, C<sub>coupling</sub>
@@ -256,7 +256,7 @@ export default function Ch36HouseTroubleshooting() {
         finds it.
       </p>
       <Formula tex="I_{\text{leak}} = \omega \times C_{\text{coupling}} \times V_{\text{hot}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="I_{\text{leak}}" />
         is the displacement current the coupling capacitor injects into the floating wire U (in
         amperes, AC), <M tex="\omega = 2\pi f" /> is the angular frequency of the line (in rad/s; ω
@@ -266,7 +266,7 @@ export default function Ch36HouseTroubleshooting() {
         <sub>coupling</sub> = 50 pF and V<sub>hot</sub> = 120 V:
       </p>
       <Formula tex="I_{\text{leak}} = 377 \times 50\times 10^{-12} \times 120 \approx 2.3\ \mu\text{A}" />
-      <p className="mb-prose-3">
+      <p>
         That is the entire current the DMM is being asked to measure — 2.3 microamperes — and the
         meter cheerfully reports it as a voltage by multiplying it by its own 10 MΩ input impedance:
         2.3 µA × 10 MΩ ≈ 23 V. With slightly larger coupling (a longer parallel run, a tighter
@@ -275,7 +275,7 @@ export default function Ch36HouseTroubleshooting() {
         but because the available current behind them is microamperes — not enough to light an LED,
         not enough to shock you, certainly not enough to power anything you would call a load.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two cures, both standard practice. First, use a two-pole probe instead. Its load impedance —
         perhaps 3 kΩ from an internal solenoid or filament — pulls the voltage divider hard toward
         zero:{' '}
@@ -345,7 +345,7 @@ export default function Ch36HouseTroubleshooting() {
 
       <h2 className="chapter-h2">The dead-outlet diagnostic flowchart</h2>
 
-      <p className="mb-prose-3">
+      <p>
         With a two-pole probe (or a DMM with low-Z) in hand and the cover plate off a dead
         receptacle, the diagnostic question reduces to three measurements and a decision. The three
         probes are line-to-neutral (L-N), line-to-ground (L-G), and neutral-to-ground (N-G), and
@@ -356,7 +356,7 @@ export default function Ch36HouseTroubleshooting() {
       </p>
 
       <h3 className="chapter-h3">Branch A — L-N reads 120 V</h3>
-      <p className="mb-prose-3">
+      <p>
         The outlet is live. Both hot and neutral are intact all the way to the panel and bonded to
         the transformer secondary. The reason your appliance didn't work is on the appliance's side
         of the contacts — a blown fuse inside the toaster, a tripped internal thermal cutout, a worn
@@ -366,7 +366,7 @@ export default function Ch36HouseTroubleshooting() {
       </p>
 
       <h3 className="chapter-h3">Branch B — L-N reads 0 V, L-G reads 120 V</h3>
-      <p className="mb-prose-3">
+      <p>
         Hot is live, but the neutral has gone{' '}
         <Term
           def={
@@ -393,7 +393,7 @@ export default function Ch36HouseTroubleshooting() {
       <h3 className="chapter-h3">
         Branch C — L-N reads 120 V but N-G reads 5–20 V instead of ≈ 0 V
       </h3>
-      <p className="mb-prose-3">
+      <p>
         The outlet is live but the neutral has gained appreciable series resistance back to its bond
         point at the main panel. Normal load current — even a few amps — pushes the neutral wire's
         local potential up above ground by I × R<sub>neutral</sub>. Five to twenty volts of N-G
@@ -418,7 +418,7 @@ export default function Ch36HouseTroubleshooting() {
       </p>
 
       <h3 className="chapter-h3">Branch D — all three probes read 0 V</h3>
-      <p className="mb-prose-3">
+      <p>
         The branch is dead — no hot voltage at the outlet. The fault is upstream, in this order of
         likelihood:
       </p>
@@ -462,7 +462,7 @@ export default function Ch36HouseTroubleshooting() {
         </li>
       </ol>
 
-      <p className="mb-prose-3">
+      <p>
         That is the whole tree. Three probes, four branches, one next move. Every dead-outlet call
         an electrician takes resolves to one of these branches in under five minutes of measurement
         <Cite id="nec-2023" in={SOURCES} />. The reason readers spend two hours on the problem
@@ -510,7 +510,7 @@ export default function Ch36HouseTroubleshooting() {
 
       <h2 className="chapter-h2">Tripped breakers and what tripped them</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Once the flowchart points back to the panel, the next question is{' '}
         <em className="text-text italic">why</em> the breaker tripped. A residential
         thermal-magnetic breaker has two independent trip elements (Ch.28 introduced both), and an
@@ -520,7 +520,7 @@ export default function Ch36HouseTroubleshooting() {
       </p>
 
       <h3 className="chapter-h3">Thermal trip</h3>
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <Term
           def={
@@ -566,7 +566,7 @@ export default function Ch36HouseTroubleshooting() {
         in the thermal region is the inverse-square form
       </p>
       <Formula tex="t_{\text{trip}} = K \times (I / I_{\text{rating}})^{-2}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="t_{\text{trip}}" />
         is the time from current onset to mechanical release (in seconds), <M tex="I" /> is the
         actual current through the breaker (in amperes RMS), <M tex="I_{\text{rating}}" />
@@ -578,7 +578,7 @@ export default function Ch36HouseTroubleshooting() {
         inrush but punishes sustained overload
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A thermal-tripped breaker resets fine once the bimetal cools — ten to thirty seconds of
         waiting — but it will trip again if the load that caused the overload is still on. The
         diagnostic is: take the load off, reset the breaker, add loads back one at a time with a
@@ -587,7 +587,7 @@ export default function Ch36HouseTroubleshooting() {
       </p>
 
       <h3 className="chapter-h3">Magnetic trip</h3>
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <Term
           def={
@@ -609,7 +609,7 @@ export default function Ch36HouseTroubleshooting() {
         wire bridged to neutral or ground (a screw driven through a cable, a damaged extension cord
         crushed under a chair leg, a tool dropped across two terminals inside a panel).
       </p>
-      <p className="mb-prose-3">
+      <p>
         A magnetic-tripped breaker resets immediately because nothing has warmed up — but if you
         reset it without finding the short, it will trip again in a millisecond and dump another
         pulse of fault energy into whatever was already arcing. Two unrecovered magnetic trips in a
@@ -617,7 +617,7 @@ export default function Ch36HouseTroubleshooting() {
       </p>
 
       <h3 className="chapter-h3">AFCI or GFCI electronic trip</h3>
-      <p className="mb-prose-3">
+      <p>
         An{' '}
         <Term
           def={
@@ -678,7 +678,7 @@ export default function Ch36HouseTroubleshooting() {
 
       <h2 className="chapter-h2">The clamp meter and what's drawing what</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Once a circuit's running again, the next question is usually whether it's drawing what you'd
         expect. A clamp meter is the only tool that answers that question on a live, energised
         circuit without breaking anything to insert an ammeter. The technique is the walk-down:
@@ -687,7 +687,7 @@ export default function Ch36HouseTroubleshooting() {
         zero amps no matter the load), read the steady-state current, and then start removing loads
         one at a time and watching the delta.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A 1500 W heater drops the reading by 12.5 A. A 100 W incandescent bulb drops it by 0.83 A. A
         60 W LED bulb drops it by 0.5 A but with a power factor near 0.5, so the apparent VA drop is
         about 1 A. A refrigerator compressor on a 20-minute duty cycle drops the reading by 2–4 A
@@ -695,7 +695,7 @@ export default function Ch36HouseTroubleshooting() {
         meter, which means you can identify roughly any load from a 100 W lamp upward in this way
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Inside the panel, the technique generalises. Clamp the load conductor coming out of a single
         branch breaker and you read that branch's instantaneous current. Walk all the way down the
         panel one breaker at a time and you have a snapshot of the building's load distribution at
@@ -750,7 +750,7 @@ export default function Ch36HouseTroubleshooting() {
 
       <h2 className="chapter-h2">The "dead breaker" failure mode</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Sometimes the breaker handle reads ON, no LED is blinking, the panel directory says the
         right circuit, and the outlets are still dead. There is a failure mode of the breaker itself
         — uncommon but real — where the internal mechanism has lost continuity even though the
@@ -761,7 +761,7 @@ export default function Ch36HouseTroubleshooting() {
         thermally cycled tens of thousands of times across decades can develop this failure
         silently.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Diagnosis takes two measurements with the panel cover off (which is itself a job that
         requires PPE and a verify-dead step on the parts you don't intend to touch — every working
         electrician treats the inside of a live panel as a Category III environment). First, with
@@ -772,7 +772,7 @@ export default function Ch36HouseTroubleshooting() {
         bar. A live breaker reads 120 V (or 240 V on a two-pole breaker); a dead breaker reads 0 V
         even though the line-side lug reads 120 V to neutral.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Replacement is straightforward: kill the main, verify dead with the two-pole probe at the
         line side of the breaker in question, snap the old breaker off the bus stab, and snap a new
         one of the same manufacturer and same listing into its place — manufacturer test standards

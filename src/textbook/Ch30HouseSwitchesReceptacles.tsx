@@ -40,7 +40,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         means hot. Silver means neutral. Green means ground. Everything else in this chapter is just
         where those colours meet which side of which device.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Chapter 29 sized a branch circuit: a length of copper from a breaker to a string of outlets,
         chosen so that the wire stays cool while carrying its rated current. This chapter is about
         what happens at the far end of that wire — the receptacles you actually plug things into,
@@ -52,7 +52,7 @@ export default function Ch30HouseSwitchesReceptacles() {
 
       <h2 className="chapter-h2">The standard 5-15 duplex receptacle</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The workhorse of every American home is the{' '}
         <Term
           def={
@@ -83,7 +83,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         <Cite id="nema-wd-6" in={SOURCES} />. The face has two parallel vertical slots — the wider
         one is neutral, the narrower one is hot — and a round hole below for the equipment ground.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Inside the body of the receptacle sits a brass-coloured stamping that bridges the two hot
         slots, a silver-coloured stamping that bridges the two neutral slots, and a green stamping
         that ties the ground hole to the mounting strap. Each stamping is brought out to screw
@@ -172,7 +172,7 @@ export default function Ch30HouseSwitchesReceptacles() {
           conductor — bare copper or green insulation.
         </li>
       </ul>
-      <p className="mb-prose-3">
+      <p>
         Between the two brass screws — and between the two silver screws — sits a small stamped tab
         that joins them. It is scored so it can be twisted off with pliers. Snap the brass-side tab
         and the top and bottom outlets become independent on their hot side, so one half can be
@@ -192,7 +192,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         </Term>{' '}
         on the silver side is almost never broken; the neutrals stay common.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The dimensions of the slots and the body of the receptacle are defined by{' '}
         <strong className="text-text font-medium">NEMA WD 6</strong>
         <Cite id="nema-wd-6" in={SOURCES} />, and the temperature-rise, contact-resistance, and
@@ -203,7 +203,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         <Cite id="nec-2023" in={SOURCES} />, which simply requires that listed equipment be
         installed per its listing.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two physical termination methods are present on almost every modern receptacle. The screw
         terminals on the sides take a stripped conductor wrapped clockwise around the screw,
         tightened so the wrap closes as the screw seats. Behind the screws sit{' '}
@@ -225,7 +225,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         receptacles use a clamped back-wire that pinches the conductor with a screw-driven plate,
         combining the speed of a push-in with the retention of a screw terminal.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Not every receptacle in the house is a 5-15. The NEMA family covers everything from a phone
         charger to a dryer. Six patterns you will see most often:
       </p>
@@ -254,7 +254,7 @@ export default function Ch30HouseSwitchesReceptacles() {
           ranges, large welders, and the standard outlet for a level-2 EV charger.
         </li>
       </ul>
-      <p className="mb-prose-3">
+      <p>
         The numbering looks arbitrary but is not. The next section decodes it.
       </p>
 
@@ -289,7 +289,7 @@ export default function Ch30HouseSwitchesReceptacles() {
 
       <h2 className="chapter-h2">Decoding NEMA pattern numbers</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Every NEMA configuration is named <strong className="text-text font-medium">X-YYR</strong>{' '}
         for a receptacle or <strong className="text-text font-medium">X-YYP</strong> for a plug,
         where <M tex="X" /> is the configuration code and <M tex="YY" /> is the current rating in
@@ -316,7 +316,7 @@ export default function Ch30HouseSwitchesReceptacles() {
           neutral).
         </li>
       </ul>
-      <p className="mb-prose-3">
+      <p>
         The{' '}
         <Term
           def={
@@ -334,12 +334,12 @@ export default function Ch30HouseSwitchesReceptacles() {
         safety feature of the NEMA system — a 240 V appliance cannot be accidentally inserted into a
         120 V outlet, and a 50 A range plug cannot be jammed into a 15 A duplex.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The maximum continuous power a given receptacle can deliver follows directly from its
         voltage and current rating:
       </p>
       <Formula tex="P_{\\max} = V \\times I_{\\text{rated}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\max}" /> is the maximum steady-state power the receptacle can deliver (in
         watts), <M tex="V" /> is the nominal voltage at the outlet (in volts — 120 V for a
         5-pattern, 240 V for a 6-pattern, 240 V line-to-line for a 14-pattern), and{' '}
@@ -366,7 +366,7 @@ export default function Ch30HouseSwitchesReceptacles() {
           14-50: 240 × 50 = <strong className="text-text font-medium">12000 W</strong>
         </li>
       </ul>
-      <p className="mb-prose-3">
+      <p>
         These are nameplate peaks. For a continuous load — one drawing current for three or more
         hours, in the NEC's definition — only 80 % of the rating may be used in steady state
         <Cite id="nec-2023" in={SOURCES} />. A 50 A outlet's continuous rating is 40 A; a 20 A
@@ -375,7 +375,7 @@ export default function Ch30HouseSwitchesReceptacles() {
 
       <h2 className="chapter-h2">Daisy-chaining receptacles</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A typical bedroom branch circuit feeds a string of five or six duplex receptacles, all wired
         in a single run from the breaker. The wiring sequence is the same at every box: the incoming
         cable is stripped, the bare ground wraps clockwise around the green screw, the white neutral
@@ -386,14 +386,14 @@ export default function Ch30HouseSwitchesReceptacles() {
         <em className="text-text italic">other</em> green screw (or, more commonly, both grounds are
         pigtailed together with a third short jumper to the device).
       </p>
-      <p className="mb-prose-3">
+      <p>
         Because the brass-side break-off tab is intact, both brass screws are electrically common;
         the same is true on the silver side. The receptacle is therefore a pass-through on both
         conductors, and the next outlet downstream gets the same hot and the same neutral as this
         one. Topologically:
       </p>
       <Formula tex="V_{\\text{outlet}} \\approx V_{\\text{line}} - I_{\\text{branch}} \\times R_{\\text{run}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{outlet}}" /> is the voltage available at a given outlet (in volts),{' '}
         <M tex="V_{\text{line}}" /> is the nominal voltage at the panel (120 V for a standard
         branch), <M tex="I_{\text{branch}}" /> is the total current being drawn by everything
@@ -402,7 +402,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         gauge tables). Every outlet on the string sees the same nominal 120 V minus a small
         voltage-drop term that grows with the length of wire upstream of it.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Crucially, there is no <em className="text-text italic">hierarchy</em>. The first outlet on
         the chain doesn't "feed" the second the way a master feeds a slave. Each outlet is a
         parallel branch off the hot–neutral pair, and the load plugged into outlet #3 draws its
@@ -447,7 +447,7 @@ export default function Ch30HouseSwitchesReceptacles() {
 
       <h2 className="chapter-h2">Single-pole switches</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The simplest mechanical switch in residential wiring is the{' '}
         <Term
           def={
@@ -467,14 +467,14 @@ export default function Ch30HouseSwitchesReceptacles() {
         breaks them when the toggle is down. There is no electrical difference between the two
         screws — the switch is symmetric and either side can take the line.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The neutral does <em className="text-text italic">not</em> pass through the switch. It runs
         straight from the panel to the load and back, bypassing the switch box entirely on its way
         home. A switch interrupts <em className="text-text italic">only the hot</em>; the load is
         de-energised when the switch is open because no current can leave the panel, even though the
         neutral side of the load is still electrically tied to the system neutral.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That long-standing convention gained an important modern wrinkle when NEC 404.2(C) was added
         in the 2011 cycle and later refined. In many new switch-box installations, the rule now
         requires that a
@@ -495,7 +495,7 @@ export default function Ch30HouseSwitchesReceptacles() {
 
       <h2 className="chapter-h2">Three-way switches</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Stand at the bottom of a staircase. Flip the switch by the front door and the upstairs hall
         light comes on. Climb the stairs. Flip the switch at the top of the landing. The same light
         turns off. Either switch toggles the lamp regardless of where the other one was last left.
@@ -514,7 +514,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         </Term>
         .
       </p>
-      <p className="mb-prose-3">
+      <p>
         Counter-intuitively, a three-way switch is named for its terminal count, not its state
         count. It has three current-carrying screws: one{' '}
         <Term
@@ -546,7 +546,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         always connected to <em className="text-text italic">one</em> of the two travellers, and the
         toggle picks which one.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Wire two three-way switches with their commons at the line and the load and their travellers
         tied together between them, and the resulting circuit behaves like an XNOR: the load is on
         when the two switch selections match. Call switch 1's state <M tex="S_1 \in \{0,1\}" /> for
@@ -556,14 +556,14 @@ export default function Ch30HouseSwitchesReceptacles() {
         truth-table:
       </p>
       <Formula tex="\\text{load\\_state} = \\neg(S_1 \\oplus S_2)" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="S_1" /> and <M tex="S_2" /> are the binary states of the two switches (which
         traveller each is presently selecting; 0 or 1), <M tex="\oplus" /> is the XOR operator, and{' '}
         <M tex="\text{load\_state} \in \{0,1\}" /> is whether the lamp is on (1) or off (0).
         Flipping either switch alone inverts <M tex="\text{load\_state}" />, which is the whole
         point.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two physical topologies show up in the field. The first is{' '}
         <em className="text-text italic">line at switch 1, load at switch 2</em>: the hot enters the
         first switch's common, the two travellers run as a 3-wire cable to the second switch, and
@@ -573,14 +573,14 @@ export default function Ch30HouseSwitchesReceptacles() {
         runs to each switch. Electrically the two topologies are identical — only the path the
         cables physically take through the wall differs.
       </p>
-      <p className="mb-prose-3">
+      <p>
         It is much easier to <em className="text-text italic">see</em> the three-way wiring than to
         read about it, and easier still to misroute a wire yourself once and learn what goes wrong
         than to memorise the diagram. The canonical topology is just five wires: hot into the first
         switch's common, traveller-to-traveller between the two switches, the second switch's common
         out to the bulb, and neutral from the source straight to the bulb.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Once the wiring is right, the bulb lights when both switches point at the same traveller;
         flipping either one toggles the lamp. Two beginner mistakes account for most failures. The
         first is wiring both of switch 1's travellers to the{' '}
@@ -593,7 +593,7 @@ export default function Ch30HouseSwitchesReceptacles() {
 
       <ThreeWaySwitchBuilderDemo figure="Fig. 30.1" />
 
-      <p className="mb-prose-3">
+      <p>
         For three or more switches controlling a single load — a stairwell with a switch at the top,
         middle, and bottom — the two endpoints remain three-ways and any switch in between becomes a{' '}
         <Term
@@ -655,7 +655,7 @@ export default function Ch30HouseSwitchesReceptacles() {
 
       <h2 className="chapter-h2">Dimmers, phase cutting, and LED compatibility</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A wall{' '}
         <Term
           def={
@@ -690,7 +690,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         load receives less time-averaged power and dims accordingly
         <Cite id="lutron-dimmer-app-note" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two flavours of{' '}
         <Term
           def={
@@ -748,7 +748,7 @@ export default function Ch30HouseSwitchesReceptacles() {
           electronic low-voltage transformers.
         </li>
       </ul>
-      <p className="mb-prose-3">
+      <p>
         For a pure resistive load (an incandescent bulb, a heater), the RMS voltage delivered as a
         function of the conduction angle of the dimmer is a clean trigonometric expression. Define{' '}
         <Term
@@ -767,7 +767,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         conducts to π), the RMS voltage delivered to a resistive load is:
       </p>
       <Formula tex="V_{\\text{rms}} = V_{\\text{peak}} \\times \\sqrt{\\dfrac{\\alpha}{2\\pi} - \\dfrac{\\sin(2\\alpha)}{4\\pi}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{rms}}" /> is the root-mean-square voltage across the load (in volts),{' '}
         <M tex="V_{\text{peak}}" /> is the peak of the AC line waveform (in volts; for a nominal 120
         V_rms line, <M tex="V_{\\text{peak}} = 120 \\times \\sqrt{2} \\approx 170\\ \\text{V}" />
@@ -783,7 +783,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         as expected. At <M tex="\\alpha = 0" /> (the triac never fires),{' '}
         <M tex="V_{\\text{rms}} = 0" /> and the load is off.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The average power delivered to a purely resistive load follows from the usual identity{' '}
         <M tex="P = V_{\\text{rms}}^2/R" />, so cutting the conduction angle by half does{' '}
         <em className="text-text italic">not</em> halve the delivered power — it removes a chunk of
@@ -795,7 +795,7 @@ export default function Ch30HouseSwitchesReceptacles() {
 
       <DimmerWaveformDemo figure="Fig. 30.2" />
 
-      <p className="mb-prose-3">
+      <p>
         LEDs are not a resistive load. An{' '}
         <Term
           def={

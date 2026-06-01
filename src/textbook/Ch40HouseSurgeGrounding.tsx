@@ -37,7 +37,7 @@ export default function Ch40HouseSurgeGrounding() {
         microseconds is not 240 V. It is several kilovolts, and the only question is what part of
         the house dissipates the energy first.
       </p>
-      <p className="mb-prose-3">
+      <p>
         If nothing absorbs that surge at the entrance, it propagates through the panel on whatever
         path of least impedance it can find — hot to neutral, neutral to enclosure, enclosure to
         equipment ground — and the first semiconductor in its way pays the price. The
@@ -67,7 +67,7 @@ export default function Ch40HouseSurgeGrounding() {
 
       <h2 className="chapter-h2">What a lightning surge actually looks like</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Surge protection has its own waveform vocabulary, calibrated against the way real lightning
         energy actually reaches a building, and codified in IEEE C62.41 for residential and
         light-commercial service entrances
@@ -102,7 +102,7 @@ export default function Ch40HouseSurgeGrounding() {
         strokes
         <Cite id="ieee-c62-41" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Residential peak currents at the service entrance during direct or near-strikes typically
         fall in the 3–20 kA range; IEEE C62.41's Category C2 (service-entrance) test
         level is 10 kA for the 8/20 µs waveform (the highest-exposure C3 level reaches 20 kA)
@@ -112,7 +112,7 @@ export default function Ch40HouseSurgeGrounding() {
         an unprotected surge will rise well above the equipment's normal insulation rating
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The destructive part of the pulse is the rate of rise, not the peak amplitude. A standard
         1.2/50 µs waveform with a 5 kV peak slews at roughly 4 kV/µs over the rising edge. That
         dV/dt is enough to arc across any insulation gap of a few millimetres, and to inductively
@@ -120,7 +120,7 @@ export default function Ch40HouseSurgeGrounding() {
         the same thing through the unavoidable inductance of the service drop and the panel busbars,
       </p>
       <Formula tex="V_{\text{drop}} = L \times dI/dt" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{drop}}" />
         is the inductive voltage that appears across a length of conductor during a current
         transient (in volts), <M tex="L" /> is the self-inductance of that conductor segment (in
@@ -134,7 +134,7 @@ export default function Ch40HouseSurgeGrounding() {
         to be destructive. Six kilovolts across half a millimetre of varnish on a transformer
         winding is enough.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The total energy in such a pulse is small in absolute terms. Approximating{' '}
         <M tex="\tfrac{1}{2} L I^2" /> for <M tex="L = 5\ \mu\text{H}" /> and{' '}
         <M tex="I = 10\ \text{kA}" /> gives 250 J — about the energy of a baseball thrown hard. The
@@ -233,7 +233,7 @@ export default function Ch40HouseSurgeGrounding() {
 
       <h2 className="chapter-h2">The grounding electrode system</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Every house served by an overhead or underground utility line is required by NEC Article 250
         to have a physically conductive connection to local earth — a{' '}
         <Term
@@ -267,11 +267,11 @@ export default function Ch40HouseSurgeGrounding() {
         the reason a surge that arrives on the line can be diverted out of the building through the
         rod without lifting the equipment ground above the floor the occupant is standing on.
       </p>
-      <p className="mb-prose-3">
+      <p>
         NEC 250.52 lists the electrodes that may be used. The four that appear in residential
         construction:
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Ground rod.</strong> The default. A{' '}
         <Term
           def={
@@ -306,7 +306,7 @@ export default function Ch40HouseSurgeGrounding() {
         <Cite id="nec-2023" in={SOURCES} />. In practice almost every modern installation drives two
         rods six feet apart and stops measuring.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Concrete-encased electrode (Ufer).</strong> A{' '}
         <Term
           def={
@@ -333,7 +333,7 @@ export default function Ch40HouseSurgeGrounding() {
         <Cite id="nec-2023" in={SOURCES} />. The catch is that the rebar connection has to be made
         before the footing is poured; once the concrete sets, retrofitting is not practical.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Metal underground water pipe.</strong> NEC
         250.52(A)(1) permits a metal water service pipe in direct contact with the earth for at
         least ten feet to serve as a grounding electrode, provided it is supplemented by at least
@@ -344,7 +344,7 @@ export default function Ch40HouseSurgeGrounding() {
         any accidental energisation of the indoor plumbing is at the same potential as everything
         else.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Ground ring or plate electrode.</strong> A{' '}
         <Term
           def={
@@ -363,7 +363,7 @@ export default function Ch40HouseSurgeGrounding() {
         substation or telecom installations
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         All grounding electrodes present at a building must be bonded together to form one common
         grounding electrode system, with a single grounding electrode conductor running from the
         panel ground bar to the first electrode and bonding jumpers linking the others
@@ -372,12 +372,12 @@ export default function Ch40HouseSurgeGrounding() {
         neutral-to-ground bond anywhere downstream. (Subpanels keep neutral and ground separated for
         exactly this reason — see Ch.28.)
       </p>
-      <p className="mb-prose-3">
+      <p>
         For two rods of equal resistance in parallel, the standard parallel-resistance formula
         applies:
       </p>
       <Formula tex="R_{\text{GES,total}} = \dfrac{1}{1/R_1 + 1/R_2}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="R_{\text{GES,total}}" />
         is the combined 60 Hz resistance of the two rods seen from the panel (in ohms), and{' '}
         <M tex="R_1" />
@@ -426,13 +426,13 @@ export default function Ch40HouseSurgeGrounding() {
 
       <h2 className="chapter-h2">Type 1, Type 2, Type 3 SPDs</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Surge protective devices come in three categories under UL 1449, distinguished by where they
         install and how much energy they are rated to absorb
         <Cite id="ul-1449" in={SOURCES} />. The categories form a layered defence: each layer clamps
         whatever the layer before it let through.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Type 1 SPD.</strong> A{' '}
         <Term
           def={
@@ -457,7 +457,7 @@ export default function Ch40HouseSurgeGrounding() {
         meters as part of a rate-base surge program; the homeowner can also install them if the
         meter base is rated for line-side accessories.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Type 2 SPD.</strong> A{' '}
         <Term
           def={
@@ -480,13 +480,13 @@ export default function Ch40HouseSurgeGrounding() {
         <Cite id="ul-1449" in={SOURCES} />
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         NEC 230.67, added in the 2020 edition and tightened in 2023, now requires either a Type 1 or
         a Type 2 SPD on every new or replacement service for a one- or two-family dwelling. The code
         finally caught up with what manufacturers had been recommending for decades
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Type 3 SPD.</strong> A{' '}
         <Term
           def={
@@ -509,7 +509,7 @@ export default function Ch40HouseSurgeGrounding() {
         least 10 m of wire from the service disconnect, so the line inductance between the service
         entrance and the Type 3 helps de-rate the upstream surge before it arrives.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Each SPD carries a{' '}
         <Term
           def={
@@ -533,12 +533,12 @@ export default function Ch40HouseSurgeGrounding() {
         and well below the impulse rating of building wiring. That is the margin the layered
         installation is built around.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The let-through voltage at the protected equipment is the SPD's own clamping voltage plus
         the inductive voltage rise along its lead wires during the surge:
       </p>
       <Formula tex="V_{\text{let-through}} = V_{\text{clamp}} + L_{\text{lead}} \times dI/dt" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{let-through}}" />
         is the voltage the downstream equipment actually sees during the surge (in volts),{' '}
         <M tex="V_{\text{clamp}}" />
@@ -598,7 +598,7 @@ export default function Ch40HouseSurgeGrounding() {
 
       <h2 className="chapter-h2">Two rods are better than one (transient impedance)</h2>
 
-      <p className="mb-prose-3">
+      <p>
         NEC permits a single ground rod if it tests at no more than 25 Ω of resistance to earth at
         60 Hz — the rule of NEC 250.53(A)(2)
         <Cite id="nec-2023" in={SOURCES} />. From a steady-state 60 Hz perspective that is
@@ -607,7 +607,7 @@ export default function Ch40HouseSurgeGrounding() {
         reference near soil potential during ordinary operation. From a surge perspective it is not
         enough.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The reason is the{' '}
         <Term
           def={
@@ -630,7 +630,7 @@ export default function Ch40HouseSurgeGrounding() {
         corresponds to spectral content well above a megahertz, and the rod's inductive reactance at
         1 MHz is <M tex="\omega L \approx 38\,\Omega" /> — already comparable to its DC resistance.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The same <M tex="V = L \times dI/dt" /> that ran the service-drop calculation runs the rod's
         behaviour. A 10 kA surge rising in 8 µs through a 6 µH rod creates a 7.5 kV inductive
         voltage at the top of the rod, relative to remote earth, during the rising edge of the
@@ -639,7 +639,7 @@ export default function Ch40HouseSurgeGrounding() {
         equipment-ground potential inside the house is dragged up with it. Anything connected to
         that ground reference sees the rod's inductive rise as an additional surge stressor.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two rods six feet apart in parallel halve the lumped inductance (the parallel-inductor
         calculation of Try 40.2). They also offer two independent earth paths: if one rod's
         soil-interface ionises and arcs, the other continues to carry current. And the soil volumes
@@ -650,7 +650,7 @@ export default function Ch40HouseSurgeGrounding() {
         calibrated for 60 Hz fault clearing; the practical rule for surge protection is "drive two
         rods regardless of what one rod tests at."
       </p>
-      <p className="mb-prose-3">
+      <p>
         For the same reasons, the{' '}
         <Term
           def={
@@ -716,7 +716,7 @@ export default function Ch40HouseSurgeGrounding() {
 
       <h2 className="chapter-h2">Generator interlock kits</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A residential standby generator — a small unit at 5–10 kW for a portable, a permanent
         installation at 10–20 kW — connects to the house panel through one of two devices: a{' '}
         <Term
@@ -751,7 +751,7 @@ export default function Ch40HouseSurgeGrounding() {
         optional standby systems, requires it
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The failure the rule prevents is a{' '}
         <Term
           def={
@@ -777,7 +777,7 @@ export default function Ch40HouseSurgeGrounding() {
         before climbing — gets that several-kilovolt jolt when the homeowner cranks the generator
         <Cite id="ieee-c62-41" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The interlock kit's mechanical plate solves this by physically preventing the main breaker
         and the generator-feed breaker from both being on at the same time. To turn on generator
         power, the homeowner must first turn off the main breaker; sliding the plate to its other
@@ -787,7 +787,7 @@ export default function Ch40HouseSurgeGrounding() {
         use with the specific panel manufacturer
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         NFPA 70E's lockout/tagout discipline overlaps the same physics from the worker's side:
         linemen working on a de-energised line treat every "dead" line as live until they have
         personally tested it AND grounded it AND verified that no customer-side source can
@@ -798,7 +798,7 @@ export default function Ch40HouseSurgeGrounding() {
 
       <h2 className="chapter-h2">Isolated grounds and the truth about them</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Some equipment — laboratory instrumentation, medical equipment, recording-studio audio gear
         — ships with an{' '}
         <Term
@@ -823,7 +823,7 @@ export default function Ch40HouseSurgeGrounding() {
         wire or through metal conduit) to the next box and back to the panel through a series of
         intermediate connections.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The theory: shared building grounds carry small noise currents from motor brushes, dimmer
         switches, switching power supplies, and electromagnetic coupling along the conduit's
         exterior. Those currents develop millivolt voltage drops across each ground-bond connection,
@@ -833,7 +833,7 @@ export default function Ch40HouseSurgeGrounding() {
         the equipment ground at the IG receptacle is connected to the panel ground bar through only
         its own dedicated wire, with no other branches mixing into the same conductor along the way.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The practice: in the great majority of residential and commercial installations, the IG
         conductor ends up bonded to exactly the same panel ground bar that a conventional ground
         would have reached through the ordinary box-to-box bond. The only difference is the physical
@@ -845,7 +845,7 @@ export default function Ch40HouseSurgeGrounding() {
         is usually below the device's own self-induced noise floor; for high-end analog audio it may
         still be measurable.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Isolated-ground receptacles do not, in any case, isolate the equipment from earth potential.
         They are not the same as a{' '}
         <Term

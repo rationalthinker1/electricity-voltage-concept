@@ -92,6 +92,11 @@ export const FORMULAS = {
     plain: 'V_ab = −∫_a^b E·dℓ',
     name: 'Voltage as line integral of E',
   },
+  'potential-from-field-integral': {
+    tex: 'V = -\\int \\vec{E} \\cdot d\\vec{\\ell}',
+    plain: 'V = −∫ E·dℓ',
+    name: 'Electric potential from field integral',
+  },
   'voltage-energy-per-charge': {
     tex: 'V = \\dfrac{W}{q}',
     plain: 'V = W/q',

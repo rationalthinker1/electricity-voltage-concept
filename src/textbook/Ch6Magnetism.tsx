@@ -43,7 +43,7 @@ export default function Ch6Magnetism() {
         Europe and the rest of the century was spent figuring out what had just happened
         <Cite id="oersted-1820" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         What had happened was this: a current in a wire produces a{' '}
         <Term def="The vector field B that surrounds moving charge and exerts a sideways force on other moving charge via F = qv × B. SI units are tesla.">
           magnetic field
@@ -59,14 +59,14 @@ export default function Ch6Magnetism() {
         A second kind of <em>force</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Lodestones — naturally magnetized chunks of iron-bearing rock — were known in antiquity.
         Greek and Chinese writers describe them by the sixth century BCE; the Chinese had a working
         compass by the eleventh century. For most of recorded history magnetism and electricity were
         filed as two unrelated phenomena. A magnet pulls on iron. A rubbed amber rod pulls on lint.
         Different cause, different cure, different chapter.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Then Ørsted's compass moved. Within months Biot and Savart had measured how the field around
         a wire fell off with distance — what we now call the{' '}
         <Term def="The differential law giving the magnetic field dB at a point from a small current element I dℓ: dB = (μ₀/4π) I dℓ × r̂ / r². Integrate it around any current path and you get B.">
@@ -90,13 +90,13 @@ export default function Ch6Magnetism() {
         The field around a <em>wire</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         For a single, infinitely long, straight wire carrying current <M tex="I" />, the magnetic
         field is one of the cleanest formulas in classical physics. At a perpendicular distance{' '}
         <M tex="r" /> from the wire, the magnitude is
       </p>
       <Formula size="lg" tex="|\vec{B}| = \dfrac{\mu_0 I}{2\pi r}" />
-      <p className="mb-prose-3">
+      <p>
         and the direction is tangent to a circle around the wire — wrapping the wire like contour
         lines around a mountain. The{' '}
         <Term def="A mnemonic for the orientation of cross products in a right-handed coordinate system. For B around a wire: point your right thumb along the current and your fingers curl in the direction of B. For F = qv × B: fingers from v to B, thumb gives F.">
@@ -113,7 +113,7 @@ export default function Ch6Magnetism() {
         </Term>{' '}
         (T).
       </p>
-      <p className="mb-prose-3">
+      <p>
         Biot and Savart got there empirically by hanging a compass needle near a wire and measuring
         deflection vs. distance. Ampère got there from a force law between current elements that,
         integrated, gives the same answer and a great deal more. Both papers appeared within six
@@ -152,7 +152,7 @@ export default function Ch6Magnetism() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         The factor of <M tex="2\pi" /> is geometric, the same way the <M tex="4\pi" /> in Coulomb's
         law is geometric — it counts how field lines spread around a wire (cylindrically) instead of
         around a point (spherically). The fall-off here is <M tex="1/r" />, not <M tex="1/r^{2}" />.
@@ -164,7 +164,7 @@ export default function Ch6Magnetism() {
         Two wires that <em>talk</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Put two parallel wires near each other. Each carries a current. Each makes its own magnetic
         field. Each therefore sits in the field of the other and feels a force. The result is one of
         the most surprising facts in elementary electromagnetism:{' '}
@@ -173,9 +173,9 @@ export default function Ch6Magnetism() {
         </strong>{' '}
         The opposite of charges, and yet — for a deep reason — the same physics.
       </p>
-      <p className="mb-prose-3">The force per unit length on either wire works out to</p>
+      <p>The force per unit length on either wire works out to</p>
       <Formula size="lg" tex="\dfrac{F}{L} = \dfrac{\mu_0 I_1 I_2}{2\pi d}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="F" /> is the magnitude of the force one wire exerts on a segment of the other
         (in newtons), <M tex="L" /> is the length of that segment (in metres) so <M tex="F/L" /> has
         units of N/m, <M tex="I_1" /> and <M tex="I_2" /> are the currents in the two wires (in
@@ -191,7 +191,7 @@ export default function Ch6Magnetism() {
         based the ampere instead on the elementary charge <M tex="e" />, demoting μ₀ to a measured
         quantity.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The product structure is not mysterious — it's just <M tex="F = IL \times B" /> applied
         twice. Each wire sits in the field produced by the other: wire 2 feels its partner's field{' '}
         <M tex="B_1 = \mu_0 I_1 / (2\pi d)" /> (the 1/r law from the previous section), and the
@@ -237,7 +237,7 @@ export default function Ch6Magnetism() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         The result is striking enough that you might wonder why we never see two power lines pulling
         each other together. The answer is the size of <M tex="\mu_0" />: between two wires carrying
         100 A each, separated by a meter, the force is just <M tex="2\times 10^{-3}\,\text{N/m}" />{' '}
@@ -254,7 +254,7 @@ export default function Ch6Magnetism() {
         Force on a moving <em>charge</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Wires aren't the only things that feel magnetic forces — a single moving charge does too.
         The{' '}
         <Term def="The force on a charge q moving at velocity v through E and B fields: F = q(E + v × B). The full statement of how electromagnetic fields push charged particles around.">
@@ -263,7 +263,7 @@ export default function Ch6Magnetism() {
         law, the cleanest statement in all of magnetism, is
       </p>
       <Formula size="lg" tex="\vec{F} = q\,(\vec{v} \times \vec{B})" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="F" /> is the force vector on the charged particle (in newtons), <M tex="q" />{' '}
         is its charge (in coulombs, signed), <M tex="v" /> is its velocity vector (in m/s),{' '}
         <M tex="B" /> is the local magnetic flux density vector (in tesla), and <M tex="\times" />{' '}
@@ -271,7 +271,7 @@ export default function Ch6Magnetism() {
         <em className="text-text italic">both</em> the velocity and the field. The two facts worth
         pausing on:
       </p>
-      <p className="mb-prose-3">
+      <p>
         First, the force is always perpendicular to the velocity, so it does no work.{' '}
         <em className="text-text italic">
           Magnetism cannot speed a charge up or slow it down. It can only steer.
@@ -281,21 +281,21 @@ export default function Ch6Magnetism() {
         <M tex="F = qE" /> is parallel to <M tex="E" /> and does plenty of work.
       </p>
       <Pullout>Magnetism doesn't do work. It only steers.</Pullout>
-      <p className="mb-prose-3">
+      <p>
         Second, "perpendicular to <M tex="v" />" plus "constant magnitude" is the recipe for
         circular motion. A charged particle injected into a uniform magnetic field traces out a
         circle of radius
       </p>
       <Formula size="lg" tex="r = \dfrac{m v}{q B}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="r" /> is the radius of the circular orbit (in metres), <M tex="m" /> is the
         particle's mass (in kilograms), <M tex="v" /> is its speed perpendicular to <M tex="B" />{' '}
         (in m/s), <M tex="q" /> is its charge magnitude (in coulombs), and <M tex="B" /> is the
         magnetic flux density (in tesla).
       </p>
-      <p className="mb-prose-3">It goes around it with period</p>
+      <p>It goes around it with period</p>
       <Formula size="lg" tex="T = \dfrac{2\pi m}{q B}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="T" /> is the orbital period (in seconds) and <M tex="m" />, <M tex="q" />,{' '}
         <M tex="B" /> are as above — which, remarkably, has no <M tex="v" /> in it. Faster particles
         trace bigger circles in <em className="text-text italic">exactly</em>
@@ -371,7 +371,7 @@ export default function Ch6Magnetism() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         Inside an ordinary copper wire, the moving charges are conduction electrons, and the same
         Lorentz force still applies — but now in the presence of a billion-billion other charges and
         a fixed positive lattice. If you put a current-carrying conductor in a transverse{' '}
@@ -393,7 +393,7 @@ export default function Ch6Magnetism() {
         Solenoid: a <em>controllable</em> magnet
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Take a wire, coil it into a tight helix, run a current through it — a{' '}
         <Term def="A long helical coil of wire. When current flows, the turns reinforce each other inside to give a strong, nearly uniform B field along the axis (B = μ₀ n I); outside the field nearly cancels. The simplest practical electromagnet.">
           solenoid
@@ -403,11 +403,11 @@ export default function Ch6Magnetism() {
         magnetic field along the solenoid's axis — a permanent-magnet-like field that you can switch
         on and off, and whose strength you control with a knob.
       </p>
-      <p className="mb-prose-3">
+      <p>
         For a long solenoid (length much greater than radius), the field inside is
       </p>
       <Formula size="lg" tex="B = \mu_0 n I" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="B" /> is the magnetic flux density on the solenoid's axis (in tesla),{' '}
         <M tex="\mu_0 \approx 1.257\times 10^{-6}\,\text{T·m/A}" /> is the permeability of free
         space <Cite id="codata-2018" in={SOURCES} />,
@@ -427,7 +427,7 @@ export default function Ch6Magnetism() {
 
       <SolenoidDemo figure="Fig. 6.5" />
 
-      <p className="mb-prose-3">
+      <p>
         This is the simplest practical electromagnet. Wrap a few hundred turns of wire around a
         nail, hook it to a battery, and you have a magnet whose strength you can dial — and that you
         can shut off entirely by opening the switch. Add an iron core (whose atoms align with the
@@ -442,18 +442,18 @@ export default function Ch6Magnetism() {
         Magnetism is electricity in a different <em>reference frame</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Here is the deepest and most surprising thing about magnetism: it isn't actually a separate
         force at all. It's the relativistic shadow of the electrostatic Coulomb force.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Consider a long wire carrying a current to the right. In the lab frame, the wire is
         electrically neutral — there are equal densities of stationary positive ions and
         rightward-drifting negative electrons. The net electric field of the wire is zero. A test
         charge sitting next to it feels no electric force. But it does feel a magnetic force, if it
         happens to be moving — that's the Lorentz force law from the last section.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Now jump into a frame moving alongside the test charge. Special relativity tells you that
         lengths along the direction of motion contract, and the contraction depends on speed. The
         positive ions (originally stationary in the lab frame) and the electrons (originally
@@ -471,7 +471,7 @@ export default function Ch6Magnetism() {
         relativity consistent <Cite id="feynman-II-13" in={SOURCES} />
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This wasn't how Maxwell or Ampère thought about it. They had two coupled fields,{' '}
         <M tex="E" /> and <M tex="B" />, with their own equations. It took Einstein in 1905 to show
         that <M tex="E" /> and <M tex="B" /> transform into each other under a change of inertial
@@ -483,7 +483,7 @@ export default function Ch6Magnetism() {
         because there was nothing else to compare it to
         <Cite id="purcell-morin-2013" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         So when you look at a refrigerator magnet and feel its quiet pull, you're feeling the
         residue of an electrostatic interaction whose details have been rotated, by the act of
         putting the source charges in motion, out of the "electric" column and into the "magnetic"

@@ -42,7 +42,7 @@ export default function Ch32HouseSafety() {
         completely different outcomes. The variable that decides which of those things happens is
         not the voltage on the label.
       </p>
-      <p className="mb-prose-3">
+      <p>
         What kills you is current — specifically, milliamperes flowing through the trunk of your
         body and across the electrical pacing of the heart, for some number of milliseconds. Voltage
         matters only as the thing that drives that current through whatever resistance your skin and
@@ -58,7 +58,7 @@ export default function Ch32HouseSafety() {
 
       <h2 className="chapter-h2">Current is what hurts</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Take a 60 Hz sinusoidal current and pass it hand-to-hand through a healthy adult human. As
         you turn the current up from zero, the body passes through a series of physiological
         thresholds that are surprisingly sharp and surprisingly reproducible across the population.
@@ -66,7 +66,7 @@ export default function Ch32HouseSafety() {
         standard's classification for AC at 50/60 Hz
         <Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Below about 1 mA</strong> the current is
         imperceptible. The nerves carrying touch and pain do not fire; you have to be told the
         current is on. This is{' '}
@@ -83,7 +83,7 @@ export default function Ch32HouseSafety() {
         </Term>{' '}
         in the IEC notation.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">1–5 mA</strong> is the perception band. You feel a
         tingle in the skin under each contact point. It is uncomfortable but you can still let go of
         the conductor without difficulty. Children, who have smaller body mass and proportionally
@@ -102,7 +102,7 @@ export default function Ch32HouseSafety() {
         </Term>
         .
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">5–10 mA</strong> is the painful-but-survivable
         band that ends at the let-go threshold. The{' '}
         <Term
@@ -124,7 +124,7 @@ export default function Ch32HouseSafety() {
         16 mA for an average man at 60 Hz
         <Cite id="dalziel-1956" in={SOURCES} />. Above that, the involuntary contraction wins.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">10–25 mA</strong> is the{' '}
         <Term
           def={
@@ -159,7 +159,7 @@ export default function Ch32HouseSafety() {
         heart
         <Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">50–100 mA</strong> is the region where, at
         exposures of about one second or longer, the heart's electrical pacing desynchronises into{' '}
         <Term
@@ -182,14 +182,14 @@ export default function Ch32HouseSafety() {
         literature is most worried about, and the one the 100 mA / 1 s rule of thumb refers to
         <Cite id="dalziel-1956" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">100 mA – 1 A</strong>, sustained for a second or
         longer, makes ventricular fibrillation essentially certain in a healthy adult. Surface and
         internal burns become significant; if the contact involves a small conductor area the local
         current density is enough to vaporise tissue at the point of contact
         <Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">1–5 A</strong> moves out of the fibrillation
         regime into outright{' '}
         <Term
@@ -211,7 +211,7 @@ export default function Ch32HouseSafety() {
         a defibrillator deliberately stops a fibrillating heart so it can resume in rhythm — but the
         surrounding tissue burns from this exposure are severe.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Above 5 A</strong> tissue heating dominates the
         picture. Deep thermal burns along the current path, including the cooked-meat appearance of
         muscle around bone where the cross-section is narrowest, are the principal injury. Death, if
@@ -219,7 +219,7 @@ export default function Ch32HouseSafety() {
         on the heart
         <Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Plot all of that on log-log axes of current versus exposure time and you have the IEC
         60479-1 chart that every electrical-safety committee in the world uses to set its
         thresholds. The chart is the actual safety standard. Every other number in this chapter —
@@ -288,7 +288,7 @@ export default function Ch32HouseSafety() {
 
       <h2 className="chapter-h2">Why the 60 Hz threshold is the lowest</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The current-vs-time ladder above is specific to 50/60 Hz alternating current. That is not a
         coincidence — and it is not because the worldwide power grid happened to standardise on
         those frequencies. The pacing cells of the heart's sinoatrial node fire at roughly 1 Hz at
@@ -301,7 +301,7 @@ export default function Ch32HouseSafety() {
         contraction breaks down into fibrillation
         <Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Direct current is roughly four times safer for fibrillation thresholds at comparable
         exposures: IEC 60479-1 places the DC fibrillation threshold for one-second exposure at
         several hundred milliamperes rather than the 50–100 mA range of 60 Hz AC
@@ -311,7 +311,7 @@ export default function Ch32HouseSafety() {
         desynchronise the ventricles with a steady current than with one that hammers them
         rhythmically.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Frequencies well above 60 Hz are also progressively safer, for a different reason. As
         frequency climbs into the kilohertz range, the{' '}
         <Term
@@ -335,7 +335,7 @@ export default function Ch32HouseSafety() {
         scalpel at 500 kHz
         <Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The North-American 60 Hz residential supply, in other words, happens to sit in the most
         dangerous physiologically-accessible band on the spectrum. The grid was chosen for
         engineering reasons — transformer size, lamp flicker, motor design — and the cardiac
@@ -345,7 +345,7 @@ export default function Ch32HouseSafety() {
 
       <h2 className="chapter-h2">GFCI and the 5 mA / 25 ms standard</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Ch.28 introduced the{' '}
         <Term
           def={
@@ -364,7 +364,7 @@ export default function Ch32HouseSafety() {
         number chosen by committee. It is a direct readout of where the IEC 60479-1 chart sits at
         that exposure time.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Locate 5 mA on the current axis and 25 ms on the time axis of the IEC curve. The
         intersection lies inside zone AC-1: imperceptible, no reaction, certainly no fibrillation
         risk
@@ -377,11 +377,11 @@ export default function Ch32HouseSafety() {
         is a deliberate calibration that keeps the contact in zone AC-1 even with worst-case body
         resistance.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The current driving that test is fixed by Ohm's law applied to the body itself,
       </p>
       <Formula tex="I_{\\text{body}} = \\dfrac{V_{\\text{fault}}}{R_{\\text{body}}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="I_{\text{body}}" />
         is the current diverted from the normal hot-neutral loop into the body (in amperes),{' '}
         <M tex="V_{\text{fault}}" />
@@ -422,7 +422,7 @@ export default function Ch32HouseSafety() {
         dry it is about 1.2 mA — barely perceptible. The two-decade variation in R is the variation between
         "shock" and "death."
       </p>
-      <p className="mb-prose-3">
+      <p>
         The GFCI does not measure R<sub>body</sub>. It does not need to. It measures the residual
         current — the amount that has left through the hot wire but is not coming back on the
         neutral — and trips when that amount exceeds 5 mA regardless of why. Anything diverting more
@@ -463,7 +463,7 @@ export default function Ch32HouseSafety() {
 
       <h2 className="chapter-h2">AFCI and why arcs start fires</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The{' '}
         <Term
           def={
@@ -484,7 +484,7 @@ export default function Ch32HouseSafety() {
         AFCI requirements since NEC 1999 to address them
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two distinct arc topologies show up in damaged residential wiring. A{' '}
         <Term
           def={
@@ -520,14 +520,14 @@ export default function Ch32HouseSafety() {
         ground; the current is larger but the gap impedance keeps it well short of the magnetic trip
         threshold of an ordinary thermal-magnetic breaker.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Either kind of arc looks irregular on an oscilloscope: peaks of perhaps 30–80 A lasting
         fractions of a millisecond, separated by extinctions where the arc loses ionisation, with
         broadband noise riding on top of the 60 Hz fundamental. The instantaneous power dissipated
         in the arc gap is well-approximated by
       </p>
       <Formula tex="P_{\\text{arc}} \\approx V_{\\text{arc}} \\times I_{\\text{arc}} \\times \\delta" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{arc}}" />
         is the time-averaged power dissipated in the arc gap (in watts), <M tex="V_{\text{arc}}" />
         is the voltage drop across the arc itself (in volts; for low-current residential arcs
@@ -555,7 +555,7 @@ export default function Ch32HouseSafety() {
         enough to ignite the cord jacket immediately and, after that, anything else in the cavity —
         curtain fabric, blown-in cellulose, lath-and-plaster, framing lumber.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Per the National Fire Protection Association's annual fire-loss statistics,
         electrical-distribution and lighting-equipment fires kill several hundred people a year in
         U.S. homes and cost on the order of a billion dollars in direct property loss — a magnitude
@@ -566,7 +566,7 @@ export default function Ch32HouseSafety() {
         outdoor and bathroom circuits that are already covered by GFCI
         <Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The AFCI's microcontroller samples the branch current many thousand times per second and
         runs a signature classifier on the waveform: looking for the irregular pulse trains and
         broadband spectral noise of an arc, while rejecting the legitimate switching noise of
@@ -624,14 +624,14 @@ export default function Ch32HouseSafety() {
         Why a bird on a single wire is fine, and a squirrel between two wires isn't
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         A pigeon perches on a 138 kV transmission line, unharmed, while a squirrel that bridges the
         same line to a grounded crossarm is killed instantly. Both animals touched a conductor at
         thousands of volts above earth potential; only one of them died. The reason is the most
         useful idea in electrical safety and the one most often forgotten: voltage is a difference,
         not an absolute quantity.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The pigeon sits on a single conductor with both feet. Its entire body floats to whatever
         potential that conductor happens to carry — perhaps eighty thousand volts above local soil
         at that instant — but every cell in its body floats to the same potential. The potential
@@ -639,7 +639,7 @@ export default function Ch32HouseSafety() {
         voltage gradient along the few centimetres of wire between its two feet). With no potential
         difference, Ohm's law gives no current. Nothing happens.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The squirrel that climbs the pole and reaches one paw to the energised conductor while
         another paw is on a grounded steel crossarm has bridged the full 80 kV across its body. With
         an internal body resistance of a few hundred ohms wet — high-voltage exposure always
@@ -651,7 +651,7 @@ export default function Ch32HouseSafety() {
         sits at a different potential from that point of metal." Current only flows when two such
         points are bridged by something conductive.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The same logic is what lets utility linemen work{' '}
         <Term
           def={
@@ -688,7 +688,7 @@ export default function Ch32HouseSafety() {
         worker and any other point at a different potential during the operation
         <Cite id="osha-1910-269" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Inside a house, the same principle drives the{' '}
         <Term
           def={
@@ -714,7 +714,7 @@ export default function Ch32HouseSafety() {
 
       <h2 className="chapter-h2">PPE and arc-flash energy</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Everything up to this point has been about shock — current crossing a body that has become
         part of a circuit. There is a second hazard inside a panel that does not require contact at
         all. When a bolted short happens on a low-impedance bus, the resulting fault arc dumps
@@ -751,7 +751,7 @@ export default function Ch32HouseSafety() {
         direct contact with the bus
         <Cite id="nfpa-70e-2024" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The radiative-energy hazard is quantified as{' '}
         <Term
           def={
@@ -782,7 +782,7 @@ export default function Ch32HouseSafety() {
         Annex D approximates the radiative energy at distance d as
       </p>
       <Formula tex="E_{\\text{arc}} \\approx \\dfrac{V \\times I_{\\text{bolted}} \\times t_{\\text{clear}}}{4\\pi d^2}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="E_{\text{arc}}" />
         is the incident energy delivered to a surface at distance d during the arc (in joules per
         square metre; convert by 1 cal/cm² = 41 840 J/m² to compare with NFPA 70E's tabulated
@@ -813,7 +813,7 @@ export default function Ch32HouseSafety() {
         distance
         <Cite id="nfpa-70e-2024" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         NFPA 70E sorts that energy into{' '}
         <Term
           def={

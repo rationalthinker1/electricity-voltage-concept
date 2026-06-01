@@ -36,7 +36,7 @@ export default function Ch33HouseSmartMeter() {
         household or an industrial customer
         <Cite id="ansi-c12-1-2014" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         This chapter is about what is actually inside that small grey box and how the bill that
         arrives at the end of the month gets built from its readings. We will walk from the physics
         of the measurement — voltage and current sampled a few thousand times per second on each
@@ -51,7 +51,7 @@ export default function Ch33HouseSmartMeter() {
         What the meter <em>measures</em> — four quantities, not one
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Every modern revenue meter sits between two pairs of wires — line voltage in, load voltage
         out, with the current passing straight through — and samples both the instantaneous voltage{' '}
         <M tex="V(t)" /> across its terminals and the instantaneous current <M tex="I(t)" /> through
@@ -76,7 +76,7 @@ export default function Ch33HouseSmartMeter() {
         , in kilowatt-hours, the time integral of instantaneous power:
       </p>
       <Formula tex="\\text{kWh} = \\int V(t)\\, I(t)\\, dt" />
-      <p className="mb-prose-3">
+      <p>
         where the integral on the right runs over the billing period and yields joules (which the
         meter then divides by <M tex="3.6 \times 10^{6}" /> to display kilowatt-hours).{' '}
         <M tex="V(t)" /> is the instantaneous service voltage in volts, <M tex="I(t)" /> is the
@@ -86,7 +86,7 @@ export default function Ch33HouseSmartMeter() {
         integral is the cumulative energy delivered
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The second quantity is the{' '}
         <Term
           def={
@@ -104,7 +104,7 @@ export default function Ch33HouseSmartMeter() {
         current with their phase relationship ignored:
       </p>
       <Formula tex="\\text{kVAh} = \\int V_{\\text{rms}}\\, I_{\\text{rms}}\\, dt" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{rms}}" />
         and <M tex="I_{\text{rms}}" />
         are the running RMS values of the voltage and current waveforms (in volts and amperes),
@@ -112,7 +112,7 @@ export default function Ch33HouseSmartMeter() {
         the apparent power the supply has to deliver, regardless of whether that power is dissipated
         or merely sloshes back and forth.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The third quantity is the{' '}
         <Term
           def={
@@ -131,7 +131,7 @@ export default function Ch33HouseSmartMeter() {
         quarter cycle:
       </p>
       <Formula tex="\\text{kVARh} = \\int V(t)\\, I(t - \\pi/2\\omega)\\, dt" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\omega = 2\pi f" /> is the angular frequency of the line (377 rad/s in North
         America), and the quarter-cycle delay isolates the part of the current that is 90° out of
         phase with the voltage — the part that flows into and out of inductors and capacitors each
@@ -154,7 +154,7 @@ export default function Ch33HouseSmartMeter() {
         :
       </p>
       <Formula tex="\\text{kVA}^2 = \\text{kW}^2 + \\text{kVAR}^2" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\text{kVA}" /> is apparent power (in kilovolt-amperes), <M tex="\text{kW}" />{' '}
         is real power (in kilowatts — the work-doing component), and <M tex="\text{kVAR}" /> is
         reactive power (in kilovolt-amperes reactive — the sloshing component). The same Pythagorean
@@ -162,7 +162,7 @@ export default function Ch33HouseSmartMeter() {
         <M tex="\text{kVAh}^{2} = \text{kWh}^{2} + \text{kVARh}^{2}" />
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The fourth quantity is{' '}
         <Term
           def={
@@ -214,7 +214,7 @@ export default function Ch33HouseSmartMeter() {
         The induction-disk <em>legacy</em> meter
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Before microcontrollers were cheap enough to put on every house, every revenue meter on
         every street in North America was the same little glass-domed cylinder with an aluminium
         disk visibly spinning behind the face: the{' '}
@@ -237,7 +237,7 @@ export default function Ch33HouseSmartMeter() {
         currents, geometry, and a permanent magnet for braking
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two electromagnets drive the disk. The voltage coil is wound with many turns of thin wire
         and connects across the line; its flux through the disk is therefore proportional to the
         line voltage. The current coil is wound with few turns of thick wire and carries the full
@@ -250,7 +250,7 @@ export default function Ch33HouseSmartMeter() {
         phase difference in their flux contributions so that purely reactive current contributes
         zero net torque.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Without anything else, that torque would simply accelerate the disk forever. The trick that
         converts a torque-meter into an integrator is a permanent-magnet eddy-current brake: a
         horseshoe magnet straddles the edge of the disk on the opposite side from the drive coils,
@@ -264,7 +264,7 @@ export default function Ch33HouseSmartMeter() {
         ratio: a typical residential meter constant is one revolution per 2 watt-hours (Kh = 2), so
         500 revolutions is exactly one kilowatt-hour.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The induction-disk meter has no microcontroller, no ADC, no firmware to update, and no radio
         to compromise. Its accuracy is set by geometry — the spacing of the coils, the temperature
         stability of the brake magnet, the linearity of the eddy-current torque — and is typically
@@ -279,7 +279,7 @@ export default function Ch33HouseSmartMeter() {
         The solid-state <em>smart</em> meter
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Since roughly 2005, almost every new and replacement meter installed in North America has
         been solid-state. Strip the housing off a modern{' '}
         <Term
@@ -316,7 +316,7 @@ export default function Ch33HouseSmartMeter() {
         a ZigBee link for in-home display
         <Cite id="ansi-c12-20-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The signal-chain is straightforward. The{' '}
         <Term
           def={
@@ -339,7 +339,7 @@ export default function Ch33HouseSmartMeter() {
         <Cite id="ansi-c12-1-2014" in={SOURCES} />. Each register is written to non-volatile memory
         every few seconds so a power outage does not lose the running total.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The radio reports back to the utility — usually once every fifteen minutes, sometimes every
         five minutes in newer deployments — through the{' '}
         <Term
@@ -365,7 +365,7 @@ export default function Ch33HouseSmartMeter() {
         showing how the readings could be intercepted, but the standards have since hardened
         <Cite id="ansi-c12-20-2015" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         ANSI C12.20 defines several{' '}
         <Term
           def={
@@ -421,7 +421,7 @@ export default function Ch33HouseSmartMeter() {
 
       <h2 className="chapter-h2">The bill itself — tariffs, demand, time-of-use</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Residential bills in North America are dominated by a single per-kilowatt-hour charge — a
         flat rate of roughly <strong className="text-text font-medium">$0.12 to $0.30</strong> per
         kWh depending on geography and season, plus a small fixed monthly "service" or "customer"
@@ -432,7 +432,7 @@ export default function Ch33HouseSmartMeter() {
         country's residential customers have lived under this structure for a century, and many
         still do.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Increasingly, however, residential tariffs are{' '}
         <Term
           def={
@@ -457,7 +457,7 @@ export default function Ch33HouseSmartMeter() {
         against the rate schedule one interval at a time
         <Cite id="ansi-c12-1-2014" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Industrial and large-commercial customers see a structurally different bill. In addition to
         a per-kWh energy charge (often itself time-of-use), they pay a{' '}
         <Term
@@ -482,7 +482,7 @@ export default function Ch33HouseSmartMeter() {
         current imposes on the utility's wires upstream
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Residential customers are usually exempted from both demand charges and power-factor
         penalties because their loads are mostly resistive (heat, lights, electronics with
         power-factor-corrected supplies) and because the residential diversity factor — peaks at
@@ -581,7 +581,7 @@ export default function Ch33HouseSmartMeter() {
         Net metering, feed-in, and <em>bidirectional</em> flow
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         A rooftop PV array changes the meter's life. On a sunny weekday around noon, the panels
         produce more power than the house consumes, and the surplus flows backward through the meter
         and onto the service drop. The meter — designed from the start as a bidirectional sensor —
@@ -592,7 +592,7 @@ export default function Ch33HouseSmartMeter() {
         single register — a system that worked perfectly well for the first generation of grid-tied
         solar but is no longer the dominant approach.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three different tariff structures handle the bidirectional flow. The simplest, and the
         structure most common in the U.S. through the 2010s, is{' '}
         <Term
@@ -611,7 +611,7 @@ export default function Ch33HouseSmartMeter() {
         retail rate:
       </p>
       <Formula tex="\\text{Bill} = R \\times (\\text{kWh}_{\\text{in}} - \\text{kWh}_{\\text{out}})" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="R" /> is the per-kWh retail rate (in $/kWh),{' '}
         <M tex="\text{kWh}_{\text{in}}" />
         is total energy imported from the grid during the billing period (in kWh), and{' '}
@@ -620,7 +620,7 @@ export default function Ch33HouseSmartMeter() {
         month, the bill goes to zero (or to the fixed charge alone), and the surplus rolls forward
         as a credit to the next month.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A{' '}
         <Term
           def={
@@ -655,7 +655,7 @@ export default function Ch33HouseSmartMeter() {
         value of self-consumption":
       </p>
       <Formula tex="\\text{Bill} = R_{\\text{peak}} \\times \\text{kWh}_{\\text{peak,in}} + R_{\\text{off}} \\times \\text{kWh}_{\\text{off,in}} - R_{\\text{export}} \\times \\text{kWh}_{\\text{out}}" />
-      <p className="mb-prose-3">
+      <p>
         where <M tex="R_{\text{peak}}" />
         and <M tex="R_{\text{off}}" />
         are the peak and off-peak per-kWh retail rates (in $/kWh),{' '}
@@ -672,7 +672,7 @@ export default function Ch33HouseSmartMeter() {
         peak
         <Cite id="ansi-c12-1-2014" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Whatever the tariff, the physical interconnection between the customer's PV inverter and the
         utility's wires is governed by{' '}
         <Term
@@ -750,7 +750,7 @@ export default function Ch33HouseSmartMeter() {
         What the meter does <em>not</em> measure
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The meter measures true energy crossing its terminals. It does not care what happens to that
         energy on either side: not whether the load is a 100 W lamp or a 100 W laptop charger, not
         whether the imported energy comes from the coal plant or the wind farm down the road, not
@@ -765,7 +765,7 @@ export default function Ch33HouseSmartMeter() {
         Most of the residential load — lights, electronics, small kitchen appliances — is
         statistically indistinguishable.
       </p>
-      <p className="mb-prose-3">
+      <p>
         What the meter has historically <em className="text-text italic">not</em> measured, but
         increasingly does, is the time resolution. Older mechanical meters integrated continuously
         but were read once a month by a human, so the utility's only data point was a monthly total.
@@ -778,7 +778,7 @@ export default function Ch33HouseSmartMeter() {
         <Cite id="ansi-c12-20-2015" in={SOURCES} />. Utility data-handling rules in most
         jurisdictions restrict the sharing and retention of interval data for this reason.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The meter also does not measure what the meter cannot reach. Energy that bypasses the meter
         — by an illegal jumper around the meter base, by a tap upstream of the service entrance, by
         a current sneak path through a buried neutral on a corroded grounding rod — is not
@@ -795,7 +795,7 @@ export default function Ch33HouseSmartMeter() {
         What we have so <em>far</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The grey box on the side of the house — once a spinning aluminium disk behind a glass dome,
         now a microcontroller behind an LCD — samples voltage and current a few thousand times a
         second per phase, multiplies them four different ways, and accumulates four energies in

@@ -39,7 +39,7 @@ export default function Ch24RectifiersAndInverters() {
         Delivery controller IC negotiating the voltage with whatever you plugged in
         <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Or, if you prefer the other direction: walk around the side of a house with solar panels on
         the roof. The panels produce something like 400 V DC. The grid wants 240 V at 60 Hz, in
         phase, with the right amount of reactive support, and with the legal obligation to
@@ -54,7 +54,7 @@ export default function Ch24RectifiersAndInverters() {
         The <em>diode</em> — a one-way valve
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Every rectifier in the world is built around one component: the{' '}
         <Term
           def={
@@ -76,7 +76,7 @@ export default function Ch24RectifiersAndInverters() {
         emitted nothing. The trick survived almost unchanged for fifty years, then got replaced
         wholesale by a piece of doped silicon.
       </p>
-      <p className="mb-prose-3">
+      <p>
         William Shockley wrote down the underlying physics of the semiconductor diode in 1949
         <Cite id="shockley-1949" in={SOURCES} />. Joining a p-type slab (excess holes) to an n-type
         slab (excess electrons) creates a depletion region across the junction; an applied voltage
@@ -86,7 +86,7 @@ export default function Ch24RectifiersAndInverters() {
       <Formula>
         I = I<sub>s</sub> ( exp(V / (n V<sub>T</sub>)) − 1 )
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <strong className="text-text font-medium">I</strong> is the current through the diode
         (in amperes), <strong className="text-text font-medium">V</strong> is the voltage across it
         (in volts, positive in the forward direction), <strong className="text-text font-medium">I
@@ -110,7 +110,7 @@ export default function Ch24RectifiersAndInverters() {
         0.7 V it is conducting tens of milliamps. That is what an engineer means when they write
         "the diode drops 0.7 V."
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three flavours matter for power conversion. A standard silicon diode has{' '}
         <Term
           def={
@@ -161,7 +161,7 @@ export default function Ch24RectifiersAndInverters() {
 
       <DiodeCharacteristicDemo figure="Fig. 24.1" />
 
-      <p className="mb-prose-3">
+      <p>
         Sweep V on the plot. The Si curve barely conducts until ~0.6 V, then climbs almost
         vertically. The Schottky's knee is a quarter-volt lower. The Zener is identical to the Si
         diode forward but adds a second knee at −5.1 V reverse — past that, current can flow
@@ -173,7 +173,7 @@ export default function Ch24RectifiersAndInverters() {
         <em>Half-wave, full-wave, bridge</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Put a single diode in series with an AC source and a load. On the positive half-cycle the
         diode conducts and current flows; on the negative half it blocks. The output is a series of
         positive half-sinusoids with gaps in between — pulsating, ugly, but unambiguously positive.
@@ -195,7 +195,7 @@ export default function Ch24RectifiersAndInverters() {
         </M>
         .
       </p>
-      <p className="mb-prose-3">
+      <p>
         The{' '}
         <Term
           def={
@@ -219,7 +219,7 @@ export default function Ch24RectifiersAndInverters() {
         filter
         <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The{' '}
         <Term
           def={
@@ -243,7 +243,7 @@ export default function Ch24RectifiersAndInverters() {
         are sold for pennies and appear in every wall-wart, every car alternator output, every USB
         charger.
       </p>
-      <p className="mb-prose-3">
+      <p>
         On its own, the bridge still produces a pulsating output — full-wave-rectified sine humps at
         twice the line frequency. To turn that into smooth DC, you parallel the output with a large{' '}
         <Term
@@ -275,7 +275,7 @@ export default function Ch24RectifiersAndInverters() {
 
       <BridgeRectifierDemo figure="Fig. 24.2" />
 
-      <p className="mb-prose-3">
+      <p>
         Crank up C and the orange trace flattens out. Drop R<sub>load</sub> (more current) and
         ripple grows. The ripple frequency is 120 Hz (twice the 60 Hz line), as expected — every
         half-cycle gets used.
@@ -316,13 +316,13 @@ export default function Ch24RectifiersAndInverters() {
         Regulating the <em>rough DC</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The output of a bridge rectifier is "DC" the way a bumpy dirt road is "flat." Its average
         voltage drifts with the load. Its ripple modulates every signal connected to it. Its
         absolute level depends on the mains voltage, which itself wanders ±5 % around its nominal.
         Most digital chips will not tolerate a power rail that does any of this.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The simplest fix is a{' '}
         <Term
           def={
@@ -346,7 +346,7 @@ export default function Ch24RectifiersAndInverters() {
       <Formula>
         P<sub>diss</sub> = (V<sub>in</sub> − V<sub>out</sub>) · I<sub>load</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{diss}}" />
         is the power burned as heat in the pass transistor (in watts), <M tex="V_{\text{in}}" />
         is the regulator's input voltage (in volts), <M tex="V_{\text{out}}" />
@@ -354,7 +354,7 @@ export default function Ch24RectifiersAndInverters() {
         is the current flowing through the load (in amperes; the same current also flows through the
         pass transistor in series).
       </p>
-      <p className="mb-prose-3">
+      <p>
         The efficiency is just η = V<sub>out</sub>/V<sub>in</sub>. Stepping 12 V down to 5 V wastes
         58% of every input watt. Stepping 24 V down to 3.3 V wastes 86%. There is also a minimum
         operating margin: a standard LM7805 needs at least about{' '}
@@ -414,7 +414,7 @@ export default function Ch24RectifiersAndInverters() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         Linear regulators still win where switching noise is unacceptable: precision analog
         front-ends, audio amplifiers, low-jitter clock generators, photodetectors near the noise
         floor. But for any task that puts a watt or more through a large step-down ratio, they are
@@ -425,7 +425,7 @@ export default function Ch24RectifiersAndInverters() {
         <em>Switch-mode</em>: buck, boost, flyback
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Think of a switch-mode regulator as a dimmer switch for DC. Instead of burning the excess
         voltage as heat, the converter chops the input on and off at high speed and lets an
         inductor average the chopped waveform. If the switch is on for half of each cycle, the
@@ -434,7 +434,7 @@ export default function Ch24RectifiersAndInverters() {
         is either fully on (zero voltage drop) or fully off (zero current). The "wasted" middle
         ground that cooks the linear regulator is never visited.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Now make that intuition formal. A
         <strong className="text-text font-medium"> high-side switch</strong> (a MOSFET) opens and
         closes at tens or hundreds of kilohertz; the result is a square-wave version of V
@@ -458,7 +458,7 @@ export default function Ch24RectifiersAndInverters() {
         otherwise the inductor current would grow without bound
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Apply that to the canonical{' '}
         <Term
           def={
@@ -494,7 +494,7 @@ export default function Ch24RectifiersAndInverters() {
       <Formula>
         V<sub>out</sub> = D · V<sub>in</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_{\text{in}}" />
         is the buck converter's DC input voltage (in volts), <M tex="V_{\text{out}}" />
         is the regulated DC output voltage (in volts), and{' '}
@@ -502,7 +502,7 @@ export default function Ch24RectifiersAndInverters() {
         is the duty cycle — the fraction of each switching period the high-side switch is closed
         (dimensionless, between 0 and 1).
       </p>
-      <p className="mb-prose-3">
+      <p>
         The output is just the input scaled by the duty cycle. No power is dissipated by the
         switching action itself (in the limit of an ideal switch with zero on-resistance), so the
         whole conversion is almost lossless
@@ -514,7 +514,7 @@ export default function Ch24RectifiersAndInverters() {
 
       <BuckConverterDemo figure="Fig. 24.4" />
 
-      <p className="mb-prose-3">
+      <p>
         Flip the topology around and the same physics gives you a{' '}
         <Term
           def={
@@ -604,7 +604,7 @@ export default function Ch24RectifiersAndInverters() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         The{' '}
         <Term
           def={
@@ -630,7 +630,7 @@ export default function Ch24RectifiersAndInverters() {
 
       <FlybackConverterDemo figure="Fig. 24.6" />
 
-      <p className="mb-prose-3">
+      <p>
         High-power AC chopping is the territory of one more device family. In 1956 a Bell Labs team
         (Moll, Tanenbaum, Goldey, Holonyak) published the analysis of the four-layer PNPN switch
         <Cite id="moll-tanenbaum-goldey-holonyak-1956" in={SOURCES} />; General Electric
@@ -694,7 +694,7 @@ export default function Ch24RectifiersAndInverters() {
         DC back to AC — the <em>inverter</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Run the trick backwards. Take a DC source, chop it into a square wave at line frequency, and
         you get rough AC. Chop it at a much higher frequency and modulate the duty cycle with a
         sinusoidal reference, and the average — after a small LC filter — is a clean sine wave. That
@@ -714,7 +714,7 @@ export default function Ch24RectifiersAndInverters() {
         uninterruptible-power supply, every variable-frequency motor drive, every electric vehicle's
         traction system.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The standard topology is the{' '}
         <Term
           def={
@@ -749,7 +749,7 @@ export default function Ch24RectifiersAndInverters() {
         — a stream of pulses whose moving average traces a sine wave
         <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         After LC filtering, the output is a sinusoid of peak <M tex="m \cdot V_{\text{DC}}" />
         , where <M tex="m \in [0, 1]" /> is the modulation index. Setting the reference frequency to
         60 Hz gives you grid-compatible AC; setting it to a variable rate gives you a motor drive.
@@ -762,7 +762,7 @@ export default function Ch24RectifiersAndInverters() {
 
       <PWMInverterOutputDemo figure="Fig. 24.8" />
 
-      <p className="mb-prose-3">
+      <p>
         The two sliders in the spectrum view tell the engineering story. Raise the carrier frequency
         and the harmonic cluster slides rightward — further from the 60 Hz fundamental — so the LC
         output filter that has to attenuate it can be smaller and lighter for the same residual
@@ -814,7 +814,7 @@ export default function Ch24RectifiersAndInverters() {
         Grid-tie inverters and <em>HVDC</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         A standalone inverter (a UPS, say) drives its own load and sets its own voltage. A grid-tie
         inverter is in a different game: the grid is already there, already at 240 V and 60 Hz, and
         the inverter has to push current onto a stiff voltage source it does not control. That makes
@@ -822,7 +822,7 @@ export default function Ch24RectifiersAndInverters() {
         inject a sinusoidal current whose amplitude is set by the available DC power (from the
         panels or the battery) and whose phase is set by the firmware.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Multiply V<sub>grid</sub>(t) by I<sub>inj</sub>(t) and average over a cycle and you get two
         terms: a real-power term proportional to <M tex="\cos(\theta)" /> and a reactive-power term
         proportional to <M tex="\sin(\theta)" />, where <M tex="\theta" /> is the phase shift
@@ -837,7 +837,7 @@ export default function Ch24RectifiersAndInverters() {
 
       <GridTieInverterDemo figure="Fig. 24.9" />
 
-      <p className="mb-prose-3">
+      <p>
         Two non-obvious requirements come bundled with grid-tie operation. The first is{' '}
         <Term
           def={
@@ -862,7 +862,7 @@ export default function Ch24RectifiersAndInverters() {
         absent)
         <Cite id="mohan-undeland-robbins-2003" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The second is{' '}
         <Term
           def={
@@ -882,7 +882,7 @@ export default function Ch24RectifiersAndInverters() {
         switching pulse. Lose lock and the injected current goes out of phase, real power swings
         wildly, and the inverter trips.
       </p>
-      <p className="mb-prose-3">
+      <p>
         At the very top of the power scale, the same physics shows up as{' '}
         <Term
           def={
@@ -909,7 +909,7 @@ export default function Ch24RectifiersAndInverters() {
       </p>
 
       <h2 className="chapter-h2">What we have so far</h2>
-      <p className="mb-prose-3">
+      <p>
         Every diode is a one-way valve. Four of them in a bridge, plus a capacitor, give you cheap
         pulsating DC. A linear regulator turns that into clean DC by burning the excess as heat; a
         switch-mode regulator does the same job by chopping at high frequency and using an

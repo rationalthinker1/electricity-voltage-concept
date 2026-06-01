@@ -47,7 +47,7 @@ export default function Ch23Transformers() {
         the same physics that Michael Faraday demonstrated to the Royal Society in 1831
         <Cite id="faraday-1832" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A transformer is the simplest application of induction. Two coils share a magnetic core;
         alternating current in one drives an alternating flux through both; the second coil sees a
         voltage proportional to its turns count. That single fact — written in one line of
@@ -61,7 +61,7 @@ export default function Ch23Transformers() {
 
       <h2 className="chapter-h2">Two coils, one core</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The whole device reduces to one idea you can hold without any math: count the turns, scale
         the voltage. Two coils share the same magnetic flux through a common core, so each turn sees
         the same induced voltage; a coil with twice as many turns simply adds up twice the voltage.
@@ -69,7 +69,7 @@ export default function Ch23Transformers() {
         voltage steps up or down. Everything below is that sentence made precise.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Wind a coil of <M tex="N_p" />
         turns around one leg of a ring-shaped iron core, and a second coil of <M tex="N_s" />
         turns around another leg of the same ring. Drive the first coil — the{' '}
@@ -109,14 +109,14 @@ export default function Ch23Transformers() {
       <Formula>
         V<sub>s</sub>(t) = − N<sub>s</sub> dΦ / dt
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_s(t)" />
         is the instantaneous secondary terminal voltage (in volts), <M tex="N_s" />
         is the number of turns on the secondary winding (dimensionless), and <M tex="d\Phi/dt" /> is
         the time rate of change of the magnetic flux threading each turn of the core (in webers per
         second, equivalently volts).
       </p>
-      <p className="mb-prose-3">
+      <p>
         Apply the same logic to the primary. If the core's magnetic resistance (reluctance) is small
         enough that we can ignore the small magnetizing current — the ideal-transformer
         approximation — the primary's terminal voltage is also balanced by its own induced EMF
@@ -125,20 +125,20 @@ export default function Ch23Transformers() {
       <Formula>
         V<sub>p</sub>(t) = − N<sub>p</sub> dΦ / dt
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_p(t)" />
         is the instantaneous primary terminal voltage (in volts), <M tex="N_p" />
         is the number of turns on the primary winding (dimensionless), and <M tex="d\Phi/dt" /> is
         the same shared core flux (in webers per second) that threads both windings.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Divide the two equations and the <M tex="d\Phi/dt" /> cancels. What survives is the most
         famous one-liner in electrical engineering:
       </p>
       <Formula>
         V<sub>s</sub> / V<sub>p</sub> = N<sub>s</sub> / N<sub>p</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_p" />
         and <M tex="V_s" />
         are the primary and secondary terminal voltages (in volts, RMS or peak — the ratio holds
@@ -147,7 +147,7 @@ export default function Ch23Transformers() {
         are the corresponding turn counts (dimensionless integers). The whole expression is a pure
         ratio with no units.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The voltage ratio between the two coils equals the ratio of their turn counts. Wind 200
         turns on the primary and 20 turns on the secondary, drive the primary at 240 V, and the
         secondary sits at 24 V — independent of frequency, independent of the actual flux waveform,
@@ -158,7 +158,7 @@ export default function Ch23Transformers() {
 
       <TurnsRatioDemo figure="Fig. 23.1" />
 
-      <p className="mb-prose-3">
+      <p>
         Notice what the picture says about <em className="text-text italic">energy</em>. The flux in
         the core is set entirely by the primary's applied voltage divided by its turn count:{' '}
         <M>
@@ -184,7 +184,7 @@ export default function Ch23Transformers() {
 
       <h2 className="chapter-h2">The ideal transformer and the current ratio</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Connect a resistive load <M tex="R" /> to the secondary. The secondary now carries a current{' '}
         <M tex="I_s = V_s/R" />. That current also creates magnetic flux in the core — and by Lenz's
         law it opposes the primary's flux. To maintain the same core flux (which the primary's
@@ -208,7 +208,7 @@ export default function Ch23Transformers() {
       <Formula>
         V<sub>p</sub> I<sub>p</sub> = V<sub>s</sub> I<sub>s</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V_p" />
         , <M tex="V_s" />
         are the primary and secondary terminal voltages (in volts) and <M tex="I_p" />
@@ -216,7 +216,7 @@ export default function Ch23Transformers() {
         are the corresponding winding currents (in amperes). Both sides have units of watts: real
         power into the primary equals real power delivered by the secondary in the ideal limit.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Combine that with <M tex="V_s/V_p = N_s/N_p" />
         and the current ratio falls out as the <em className="text-text italic">inverse</em> of the
         turns ratio:
@@ -224,7 +224,7 @@ export default function Ch23Transformers() {
       <Formula>
         I<sub>s</sub> / I<sub>p</sub> = N<sub>p</sub> / N<sub>s</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="I_p" />
         and <M tex="I_s" />
         are the primary and secondary winding currents (in amperes), and <M tex="N_p" />
@@ -232,7 +232,7 @@ export default function Ch23Transformers() {
         are the turn counts (dimensionless). The current ratio is the reciprocal of the voltage
         ratio: whichever side has more turns carries less current.
       </p>
-      <p className="mb-prose-3">
+      <p>
         A 10:1{' '}
         <Term
           def={
@@ -265,7 +265,7 @@ export default function Ch23Transformers() {
 
       <TwoCoilTransformerDemo figure="Fig. 23.2" />
 
-      <p className="mb-prose-3">
+      <p>
         Real transformers approach this ideal closely. A large utility power transformer runs at
         99–99.5 % efficiency under nameplate load — the remaining 0.5–1 % shows up as heat in the
         core and copper and is dumped into the mineral-oil bath surrounding the windings
@@ -369,7 +369,7 @@ export default function Ch23Transformers() {
 
       <h2 className="chapter-h2">Stanley 1886 and the rise of AC distribution</h2>
 
-      <p className="mb-prose-3">
+      <p>
         On 20 March 1886, in the village of Great Barrington, Massachusetts, William Stanley Jr.
         switched on the first practical alternating-current distribution system in the world. A
         steam-driven Siemens generator produced 500 V AC at a small powerhouse. The current ran 1.2
@@ -381,7 +381,7 @@ export default function Ch23Transformers() {
         demonstration, the most important engineering question of the late 19th century: how do you
         move electric power more than a kilometre at a time?
       </p>
-      <p className="mb-prose-3">
+      <p>
         The answer Stanley proved in the field, and Westinghouse (employing Tesla on the motor side)
         commercialised in the years that followed, was: use AC, transform up to high voltage for the
         transmission line, transform back down at the load. Edison's competing DC system couldn't
@@ -395,7 +395,7 @@ export default function Ch23Transformers() {
         Edison's DC needed a power station every mile. Stanley's AC could span a continent.
       </Pullout>
 
-      <p className="mb-prose-3">
+      <p>
         The reason is brutal arithmetic. The power dissipated in a transmission line of resistance{' '}
         <M tex="R" />
         carrying current <M tex="I" /> is <M tex="P_{\text{loss}} = I^{2}R" />
@@ -405,14 +405,14 @@ export default function Ch23Transformers() {
       <Formula>
         P<sub>loss</sub> = (P / V)² · R = P² R / V²
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="P_{\text{loss}}" />
         is the I²R power dissipated in the line (in watts), <M tex="P" /> is the real power being
         delivered to the far end (in watts), <M tex="V" /> is the line voltage at which that power
         is sent (in volts), and <M tex="R" /> is the total resistance of the transmission line (in
         ohms).
       </p>
-      <p className="mb-prose-3">
+      <p>
         Quadratic in 1/V. Double the line voltage and the loss falls by a factor of four. Raise it
         tenfold and the loss drops a hundredfold. That is why the wires running the length of a
         continent operate at 230, 345, 500, or even 765 kV — the higher the better, until the air
@@ -465,7 +465,7 @@ export default function Ch23Transformers() {
 
       <h2 className="chapter-h2">Impedance transformation</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The voltage and current ratios combine into a useful third law about{' '}
         <Term
           def={
@@ -488,14 +488,14 @@ export default function Ch23Transformers() {
       <Formula>
         Z<sub>p</sub> = (N<sub>p</sub> / N<sub>s</sub>)² · Z<sub>L</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="Z_p" />
         is the impedance seen looking into the primary terminals (in ohms), <M tex="Z_L" />
         is the actual load impedance connected to the secondary (in ohms), and <M tex="N_p/N_s" />
         is the primary-to-secondary turns ratio (dimensionless). Both impedances may be complex; the
         multiplication is on the complex value.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The square comes from the fact that the turns ratio appears once in voltage and once
         (inversely) in current. A 20:1 step-down transformer makes an 8 Ω speaker look like 8 · 400
         = 3.2 kΩ when seen from the primary. That is exactly why audio output transformers exist: a
@@ -508,7 +508,7 @@ export default function Ch23Transformers() {
 
       <ImpedanceReflectionDemo figure="Fig. 23.4" />
 
-      <p className="mb-prose-3">
+      <p>
         The same principle drives every RF matching network, every switching-supply transformer
         (whose winding ratio is dictated by both the input/output voltage ratio and the desired
         source impedance the controller sees), and every push-pull audio amplifier. In all of these
@@ -546,7 +546,7 @@ export default function Ch23Transformers() {
 
       <h2 className="chapter-h2">Autotransformers: one winding instead of two</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Everything so far has assumed two electrically separate windings sharing one core. Rewire
         the same iron: a single continuous winding with a <em className="text-text italic">tap</em>{' '}
         brought out at a fraction <M tex="k" /> of the way down. Feed the full winding from the
@@ -576,7 +576,7 @@ export default function Ch23Transformers() {
 
       <AutotransformerDemo figure="Fig. 23.5" />
 
-      <p className="mb-prose-3">
+      <p>
         For small voltage steps the saving is dramatic: a 2:1 (k = 0.5) autotransformer uses about
         half the copper and iron of an equivalent two-winding transformer; a 10 % step (k = 0.9)
         uses a tenth. Grid operators take advantage of this routinely — the 345/138 kV interconnect
@@ -591,7 +591,7 @@ export default function Ch23Transformers() {
 
       <h2 className="chapter-h2">Real transformer non-idealities</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The ideal-transformer story above is exact in a fictional universe where the core has
         infinite permeability, zero electrical conductivity, and zero hysteresis; the windings have
         zero resistance; and every line of magnetic flux generated by one coil threads every turn of
@@ -599,14 +599,14 @@ export default function Ch23Transformers() {
         bundled into four named loss/limitation mechanisms
         <Cite id="mclyman-2004" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">Copper losses</strong> are the simplest: each
         winding has a finite resistance R<sub>cu</sub>, and the current flowing through it
         dissipates <M tex="I^{2}R" /> as heat. This is the dominant loss in a transformer operating
         near its rated load; sizing the wire (and therefore the window area in the core) trades
         against material cost.
       </p>
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">
           <Term
             def={
@@ -672,7 +672,7 @@ export default function Ch23Transformers() {
 
       <CoreLossesDemo figure="Fig. 23.6" />
 
-      <p className="mb-prose-3">
+      <p>
         With the four loss mechanisms named, the designer's real task is that they trade against one
         another: for a fixed target output, primary turns, core area, peak flux density, and winding
         copper diameter cannot all be optimised at once, and the dominant loss flips from copper to
@@ -681,7 +681,7 @@ export default function Ch23Transformers() {
 
       <TransformerDesignerDemo figure="Fig. 23.7" />
 
-      <p className="mb-prose-3">
+      <p>
         Adjacent to saturation lives one more practical non-ideality:{' '}
         <em className="text-text italic">inrush</em>. Because the core flux is the time-integral of
         the applied primary voltage, the instant at which a transformer is first energised sets the
@@ -697,7 +697,7 @@ export default function Ch23Transformers() {
 
       <InRushCurrentDemo figure="Fig. 23.8" />
 
-      <p className="mb-prose-3">
+      <p>
         That spike is why the breaker upstream of a large transformer has an{' '}
         <em className="text-text italic">inverse-time</em>
         trip curve rather than an instantaneous one: the inrush is brief, decaying within ten or
@@ -739,7 +739,7 @@ export default function Ch23Transformers() {
         }
       />
 
-      <p className="mb-prose-3">
+      <p>
         <strong className="text-text font-medium">
           <Term
             def={
@@ -764,14 +764,14 @@ export default function Ch23Transformers() {
 
       <TransformerFlux3DDemo figure="Fig. 23.9" />
 
-      <p className="mb-prose-3">
+      <p>
         Finally there is the <em className="text-text italic">magnetizing current</em> — the small
         current the primary must draw, even at no-load, to establish the core flux against the
         core's finite permeability. In a power-grid transformer it's typically 1–5 % of rated
         current. In a small consumer unit (wall-wart) it can be a much larger fraction, which is why
         a linear transformer-based wall-wart stays warm even when no load is plugged in.
       </p>
-      <p className="mb-prose-3">
+      <p>
         All four effects together drag practical transformer efficiency down from the ideal 100 % to
         typical values of 97–99.5 % for large units and 85–97 % for smaller ones
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />. Charles Proteus Steinmetz
@@ -784,7 +784,7 @@ export default function Ch23Transformers() {
 
       <h2 className="chapter-h2">The grid as a transformer hierarchy</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Zoom out to the continent. Electric power leaves the stator terminals of a 1 GW nuclear or
         thermal generator at around 25 kV — limited by what the stator insulation can withstand. A
         <em className="text-text italic"> generator step-up transformer</em>, sitting on a concrete
@@ -794,7 +794,7 @@ export default function Ch23Transformers() {
         aluminium-conductor steel-reinforced (ACSR) cable carry the energy at those voltages with a
         few percent total I²R loss along the way.
       </p>
-      <p className="mb-prose-3">
+      <p>
         At a regional <em className="text-text italic">bulk substation</em>, a second transformer
         steps the voltage down to roughly 138 kV for sub-transmission to the city. A third step at a{' '}
         <em className="text-text italic">distribution substation</em> drops the voltage further to
@@ -808,7 +808,7 @@ export default function Ch23Transformers() {
 
       <GridHierarchyDemo figure="Fig. 23.10" />
 
-      <p className="mb-prose-3">
+      <p>
         Across this whole hierarchy the total transmission and distribution losses run around 5–8 %
         of the energy generated. That number is what makes large-scale electrification economically
         viable: 95 % of the kilowatts leaving the plant actually reach a useful load on the other
@@ -817,7 +817,7 @@ export default function Ch23Transformers() {
 
       <h2 className="chapter-h2">The frequency lever — and why your charger is small</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The same one-line transformer equation —{' '}
         <M tex="V = 4.44 \cdot f \cdot N \cdot B \cdot A" /> — has a property that the designers of
         every power supply since the 1970s have exploited mercilessly. Hold the voltage, the turn
@@ -831,7 +831,7 @@ export default function Ch23Transformers() {
 
       <HighFrequencyTransformerDemo figure="Fig. 23.11" />
 
-      <p className="mb-prose-3">
+      <p>
         This is the single trick behind the gram-scale phone charger in your bag, the 400 Hz
         electrical system on any commercial aircraft (six times lighter than a 60 Hz system of the
         same rating), and every modern electric-vehicle traction inverter. The trade-offs do not
@@ -845,7 +845,7 @@ export default function Ch23Transformers() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         A transformer is two coils sharing one magnetic core. Faraday's law applied independently to
         each coil gives a voltage ratio equal to the turns ratio: <M tex="V_s/V_p = N_s/N_p" />.
         Power balance (in the ideal limit) gives the inverse current ratio. Combine and an impedance
@@ -856,7 +856,7 @@ export default function Ch23Transformers() {
         efficiency. The entire 20th-century electric power grid is built on those four equations and
         the iron sheets that make them work.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Next chapter: the silicon at the bottom of the chain — the rectifiers and inverters that
         swap between AC and DC, which is what every chip in your laptop ultimately wants.
       </p>

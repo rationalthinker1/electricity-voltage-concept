@@ -36,7 +36,7 @@ export default function Ch10Maxwell() {
         the radio's antenna, and converted back into sound. The physics is not abstract — it is
         sitting in your kitchen.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Up to now you've met each law in its own setting. Gauss's law for the electric field
         appeared in Chapter&nbsp;1, the moment we asked how a point charge sprays its influence into
         a sphere of empty space. The no-monopole rule for the magnetic field was implicit in
@@ -46,7 +46,7 @@ export default function Ch10Maxwell() {
         picture self-consistent, with the displacement-current term tying off a hole that Ampère
         alone could not close.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Today they all stand together. Four equations. One field. The whole book up to this point is
         the four lines that follow — and the wave equation that drops out when you put them in a
         blender
@@ -57,7 +57,7 @@ export default function Ch10Maxwell() {
         Four laws on <em>one</em> page
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Maxwell published the unified theory in 1865
         <Cite id="maxwell-1865" in={SOURCES} />. The modern integral form, which is the easiest to
         look at:
@@ -72,7 +72,7 @@ export default function Ch10Maxwell() {
       <Formula>
         ∮ B · dℓ = μ₀ ( I<sub>enc</sub> + ε₀ dΦ<sub>E</sub>/dt )
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="E" /> is the electric field (in V/m, a vector at each point) and <M tex="B" />{' '}
         is the magnetic field (in teslas); <M tex="dA" /> is the outward-normal area element on a
         closed surface (in m²) and <M tex="d\ell" /> is the tangent line element around a closed
@@ -87,7 +87,7 @@ export default function Ch10Maxwell() {
         permittivity and permeability
         <Cite id="codata-2018" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two surface integrals ({' '}
         <Term
           def={
@@ -108,7 +108,7 @@ export default function Ch10Maxwell() {
         loud and you have everything classical electromagnetism knows
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Two{' '}
         <Term
           def={
@@ -138,7 +138,7 @@ export default function Ch10Maxwell() {
         too clean to be accidental.
       </p>
 
-      <p className="mb-prose-3">
+      <p>
         Before we treat each equation on its own, it's worth seeing all four sitting in the same
         region of space at once — the <em className="text-text italic">same</em> box for all four
         laws: a point charge inside (Gauss for E), a bar magnet inside (Gauss for B, with every
@@ -155,7 +155,7 @@ export default function Ch10Maxwell() {
         Gauss's law for <M tex="E" />
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The first equation —{' '}
         <Term
           def={
@@ -178,7 +178,7 @@ export default function Ch10Maxwell() {
 
       <GaussELawDemo figure="Fig. 10.2" />
 
-      <p className="mb-prose-3">
+      <p>
         The physical content is straightforward:{' '}
         <strong className="text-text font-medium">
           the only way for a closed surface to have net E flux out of it is if there's net charge
@@ -225,12 +225,12 @@ export default function Ch10Maxwell() {
         Gauss's law for <M tex="B" />
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         The second equation looks anemic next to the first — there's no source term on the right.
         That's the point.
       </p>
       <Formula>∮ B · dA = 0</Formula>
-      <p className="mb-prose-3">
+      <p>
         Every closed surface, anywhere in the universe, has exactly zero net magnetic flux through
         it. Equivalently: every B-field line is a closed loop. There are no isolated magnetic
         sources from which lines emerge or into which they disappear.{' '}
@@ -254,7 +254,7 @@ export default function Ch10Maxwell() {
 
       <GaussBLawDemo figure="Fig. 10.3" />
 
-      <p className="mb-prose-3">
+      <p>
         This is an experimental fact — not a derivation. Cut a bar magnet in half and you do not get
         a north pole and a south pole; you get two smaller bar magnets, each with both poles.
         Decades of searches with extraordinary sensitivity have failed to find a single isolated
@@ -295,7 +295,7 @@ export default function Ch10Maxwell() {
 
       <h2 className="chapter-h2">Faraday's law</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The third equation —{' '}
         <Term
           def={
@@ -315,7 +315,7 @@ export default function Ch10Maxwell() {
       <Formula>
         ∮ E · dℓ = − dΦ<sub>B</sub>/dt
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         A magnetic flux that changes in time produces a circulating electric field. Equivalently:{' '}
         <strong className="text-text font-medium">a time-varying B is itself a source of E</strong>{' '}
         — you don't need charges to make an electric field, only a changing magnetic one
@@ -324,7 +324,7 @@ export default function Ch10Maxwell() {
 
       <FaradayLawDemo figure="Fig. 10.4" />
 
-      <p className="mb-prose-3">
+      <p>
         The minus sign is the one piece of bookkeeping that is not optional. It encodes Lenz's law:
         the induced EMF always points in the direction whose induced current would{' '}
         <em className="text-text italic">oppose</em> the change in flux. If the universe let the
@@ -364,7 +364,7 @@ export default function Ch10Maxwell() {
           </>
         }
       />
-      <p className="mb-prose-3">
+      <p>
         Faraday's law also retires, finally, the picture of E as a quantity that lives only near
         charges. Static charges make E, yes — but a magnet you wave around in empty space also makes
         E. The field is sourced by <em className="text-text italic">two</em> things now: charge
@@ -373,7 +373,7 @@ export default function Ch10Maxwell() {
 
       <h2 className="chapter-h2">Ampère–Maxwell law</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The fourth equation — the{' '}
         <Term
           def={
@@ -393,7 +393,7 @@ export default function Ch10Maxwell() {
       <Formula>
         ∮ B · dℓ = μ₀ I<sub>enc</sub>
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         Current sources circulating B. Beautiful — but, Maxwell noticed in 1865,{' '}
         <em className="text-text italic">broken</em> in any situation where the current isn't
         continuous. The canonical counter-example is a parallel-plate capacitor in the middle of
@@ -404,11 +404,11 @@ export default function Ch10Maxwell() {
         depending on where you draw the surface
         <Cite id="maxwell-1865" in={SOURCES} />.
       </p>
-      <p className="mb-prose-3">Maxwell's fix was to add a second term:</p>
+      <p>Maxwell's fix was to add a second term:</p>
       <Formula>
         ∮ B · dℓ = μ₀ ( I<sub>enc</sub> + ε₀ dΦ<sub>E</sub>/dt )
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         The term{' '}
         <M>
           ε₀ dΦ<sub>E</sub>/dt
@@ -478,7 +478,7 @@ export default function Ch10Maxwell() {
         The displacement current isn't a current. It's the universe insisting that changing electric
         fields make magnetic ones.
       </Pullout>
-      <p className="mb-prose-3">
+      <p>
         This was Maxwell's stroke of genius, and the moment electromagnetism became one theory. Now
         both curl equations are symmetric: a changing B sources circulating E (Faraday), and a
         changing E sources circulating B (Ampère–Maxwell). The two of them, taken together, can
@@ -490,13 +490,13 @@ export default function Ch10Maxwell() {
         The four together → <em>light</em>
       </h2>
 
-      <p className="mb-prose-3">
+      <p>
         Take the two curl equations, far from any charges or currents — pure vacuum,{' '}
         <M>ρ = 0, J = 0</M>:
       </p>
       <Formula>∇ × E = − ∂B/∂t</Formula>
       <Formula>∇ × B = μ₀ ε₀ ∂E/∂t</Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\nabla \times" /> denotes the curl operator, <M tex="\partial B/\partial t" />{' '}
         and <M tex="\partial E/\partial t" />
         are the partial derivatives of the fields with respect to time at a fixed point in space (in
@@ -508,7 +508,7 @@ export default function Ch10Maxwell() {
         After the dust settles:
       </p>
       <Formula>∇² E = μ₀ ε₀ ∂²E/∂t²</Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="\nabla^{2}E" /> is the vector Laplacian of the electric field (the sum of its
         three second spatial derivatives, in V/m³) and <M tex="\partial^{2}E/\partial t^{2}" /> is
         the second derivative of E with respect to time at a fixed point in space (in V/(m·s²)).
@@ -529,7 +529,7 @@ export default function Ch10Maxwell() {
         B, propagating together through vacuum, with phase speed
       </p>
       <Formula>v = 1 / √(μ₀ ε₀)</Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="v" /> is the propagation speed of the wave (in m/s) and{' '}
         <M tex="\mu_0, \varepsilon_0" /> are the two vacuum constants introduced in §1. Maxwell
         plugged in the experimental values of μ₀ and ε₀ — the latter measured purely from
@@ -547,7 +547,7 @@ export default function Ch10Maxwell() {
 
       <EMWaveSpeedDemo figure="Fig. 10.7" />
 
-      <p className="mb-prose-3">
+      <p>
         With modern CODATA values
         <Cite id="codata-2018" in={SOURCES} />, the calculated speed matches the measured speed to
         within the experimental uncertainty. After the 1983 SI redefinition, the speed of light is
@@ -585,7 +585,7 @@ export default function Ch10Maxwell() {
           </>
         }
       />
-      <p className="mb-prose-3">
+      <p>
         Chapter&nbsp;9's electromagnetic waves are the natural sequel: they're solutions to the very
         wave equation we just derived. Everything from radio to X-rays, from photonics to wireless
         networks, from sunlight reaching your retina to the cosmic microwave background, lives in

@@ -98,7 +98,7 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
 
       <SyllabusCard chapter={chapter} />
 
-      <div className="mt-xl text-7 text-text-dim mx-auto leading-5">{children}</div>
+      <div className="chapter-prose mt-xl text-7 text-text-dim mx-auto leading-5">{children}</div>
 
       {labs.length > 0 && (
         <aside className="pt-2xl mx-auto">

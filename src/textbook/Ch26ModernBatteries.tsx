@@ -43,14 +43,14 @@ export default function Ch26ModernBatteries() {
         stack on a Toyota Mirai and the chemistry has dispensed with stored reactants altogether:
         hydrogen comes from a 700-bar tank, oxygen comes from the air, the only product is water.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Three radically different working systems, all heirs to Volta's pile. This chapter is a tour
         through the actual chemistries powering modern life: lead-acid (Planté 1859), nickel-based
         cells, the Whittingham–Goodenough–Yoshino lithium-ion revolution (Nobel 2019), and the
         non-battery cousins — supercapacitors and fuel cells — that share the same two-electrode
         architecture but lean differently on the trade-offs of energy, power, and refuelling.
       </p>
-      <p className="mb-prose-3">
+      <p>
         One number recurs throughout, so meet it now: <em className="text-text italic">energy
         density</em> — more precisely <em className="text-text italic">specific energy</em>, the
         energy a cell stores per kilogram of its own mass, measured in watt-hours per kilogram
@@ -61,7 +61,7 @@ export default function Ch26ModernBatteries() {
 
       <h2 className="chapter-h2">Beyond Volta: the first rechargeable cell</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Volta's pile and its descendants (Daniell, Leclanché, Weston) all had one limitation: once
         the chemistry ran forward, the cell was finished. The Frenchman Gaston Planté changed that
         in 1859 by building a cell whose reaction could be run backwards with an external power
@@ -76,7 +76,7 @@ export default function Ch26ModernBatteries() {
         </Term>{' '}
         (rechargeable) cell.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Planté presented his apparatus to the Académie des Sciences in 1860 and the design diffused
         slowly through the next decades. By the 1880s, the &quot;lead-acid accumulator&quot; was a
         standard piece of laboratory equipment; by the 1890s, it was the energy buffer for the new
@@ -92,7 +92,7 @@ export default function Ch26ModernBatteries() {
 
       <h2 className="chapter-h2">Lead-acid</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The lead-acid cell is unusual among rechargeables in that{' '}
         <em className="text-text italic">both</em> electrodes are made of lead in different
         oxidation states, and <em className="text-text italic">both</em> produce the same discharge
@@ -103,7 +103,7 @@ export default function Ch26ModernBatteries() {
       </p>
       <Formula>Pb + HSO₄⁻ → PbSO₄ + H⁺ + 2e⁻ (anode)</Formula>
       <Formula>PbO₂ + 3H⁺ + HSO₄⁻ + 2e⁻ → PbSO₄ + 2H₂O (cathode)</Formula>
-      <p className="mb-prose-3">
+      <p>
         Summed:{' '}
         <M tex="\text{Pb} + \text{PbO}_2 + 2\,\text{H}_2\text{SO}_4 \to 2\,\text{PbSO}_4 + 2\,\text{H}_2\text{O}" />
         . The acid gets diluted as discharge progresses — its specific gravity drops from about 1.27
@@ -116,7 +116,7 @@ export default function Ch26ModernBatteries() {
 
       <LeadAcidCellDemo figure="Fig. 26.1" />
 
-      <p className="mb-prose-3">
+      <p>
         Cell voltage is set by the standard reduction potentials of the two Pb couples: E°(Pb/PbSO₄)
         = −0.36 V and E°(PbO₂/PbSO₄) = +1.69 V, giving an open-circuit voltage of{' '}
         <strong className="text-text font-medium">~2.05 V per cell</strong> — the highest of any
@@ -158,7 +158,7 @@ export default function Ch26ModernBatteries() {
 
       <h2 className="chapter-h2">The lithium-ion revolution</h2>
 
-      <p className="mb-prose-3">
+      <p>
         The breakthrough came from three people working in three different decades. Stanley
         Whittingham, at Exxon Research in 1976, built the first rechargeable lithium cell: metallic
         lithium anode, titanium-disulphide (TiS₂) cathode, lithium-perchlorate-in-dioxolane
@@ -173,7 +173,7 @@ export default function Ch26ModernBatteries() {
         that eventually pierced the separator and shorted the cell — often catastrophically. Exxon
         shelved the project after several lab fires.
       </p>
-      <p className="mb-prose-3">
+      <p>
         John Goodenough, at Oxford in 1980, identified a fundamentally better cathode:
         lithium-cobalt oxide LiCoO₂, which could reversibly release and reabsorb Li⁺ ions while
         maintaining its layered crystal structure
@@ -183,7 +183,7 @@ export default function Ch26ModernBatteries() {
         But the dendrite problem with the lithium anode was still there; commercial deployment
         remained out of reach.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Akira Yoshino, at Asahi Kasei in 1985, made the final critical move: he replaced the
         metallic lithium anode with a{' '}
         <Term def="A graphite or graphite-like carbon host that can reversibly accept Li⁺ ions between its layers. Replacing the dendrite-prone metallic-lithium anode with a carbon intercalation anode (Yoshino 1985) was the breakthrough that made Li-ion safe enough to commercialise.">
@@ -200,7 +200,7 @@ export default function Ch26ModernBatteries() {
 
       <LiIonIntercalationDemo figure="Fig. 26.2" />
 
-      <p className="mb-prose-3">
+      <p>
         The trick is{' '}
         <Term def="Reversible insertion of guest ions (here, Li⁺) into the spaces between the layers of a host crystal lattice (here, graphite on the anode or LiCoO₂ on the cathode) without breaking apart the host. The host lattice keeps its structure across hundreds of charge cycles — the secret to Li-ion's long life.">
           intercalation
@@ -256,7 +256,7 @@ export default function Ch26ModernBatteries() {
 
       <h2 className="chapter-h2">The Li-ion chemistry tree</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Goodenough's LiCoO₂ was the original Li-ion cathode and is still found in consumer
         electronics (your phone is almost certainly an LCO derivative). But the LCO recipe is
         expensive (cobalt is scarce and ethically fraught to source) and thermally unstable above
@@ -296,7 +296,7 @@ export default function Ch26ModernBatteries() {
 
       <ChemistryComparisonDemo figure="Fig. 26.3" />
 
-      <p className="mb-prose-3">
+      <p>
         All four share the intercalation principle: Li⁺ ions move in and out of a host lattice, no
         dissolution of electrode material, reversible over many cycles. They differ in the cathode
         crystal structure, which sets the cell voltage (~3.2–3.7 V), the practical capacity per
@@ -310,7 +310,7 @@ export default function Ch26ModernBatteries() {
 
       <h2 className="chapter-h2">Supercapacitors</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Step sideways from chemistry for a moment. A supercapacitor — also called an EDLC (electric
         double-layer capacitor) or ultracapacitor — looks like a battery from the outside but isn't
         one. There is no chemical reaction. Inside is a sandwich of two porous-carbon electrodes
@@ -326,7 +326,7 @@ export default function Ch26ModernBatteries() {
         gap is angstroms and the surface area is enormous, so the capacitance per cell reaches
         thousands of farads.
       </p>
-      <p className="mb-prose-3">
+      <p>
         The dominant difference from a battery shows up in the discharge curve. A battery sits on a
         roughly flat voltage plateau set by its half-reaction thermodynamics. A capacitor's voltage
         falls linearly with charge — V = Q/C — because there is no chemistry, only field. For a
@@ -335,7 +335,7 @@ export default function Ch26ModernBatteries() {
       <Formula>
         V(t) = V<sub>0</sub> − (I / C) · t
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         where <M tex="V(t)" /> is the terminal voltage at time t (in volts), <M tex="V_0" />
         is the initial fully-charged voltage (in volts), <M tex="I" /> is the constant discharge
         current (in amperes; positive when current flows out of the capacitor), <M tex="C" /> is the
@@ -346,7 +346,7 @@ export default function Ch26ModernBatteries() {
 
       <SupercapacitorDemo figure="Fig. 26.4" />
 
-      <p className="mb-prose-3">
+      <p>
         Two practical consequences. First, supercapacitors charge and discharge at speeds limited
         only by their ESR — milliseconds to seconds, not hours — and survive hundreds of thousands
         of cycles (no chemistry to wear out). Second, their energy density is an order of magnitude
@@ -387,7 +387,7 @@ export default function Ch26ModernBatteries() {
 
       <h2 className="chapter-h2">Fuel cells: a battery you keep refilling</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Step sideways again. A fuel cell has the same two-electrode architecture as a battery, but
         the reactants are stored externally and fed to the electrodes continuously instead of being
         sealed inside from the factory. The canonical version is the{' '}
@@ -406,7 +406,7 @@ export default function Ch26ModernBatteries() {
       <Formula>
         ½O<sub>2</sub> + 2H⁺ + 2e⁻ → H<sub>2</sub>O (cathode)
       </Formula>
-      <p className="mb-prose-3">
+      <p>
         Net:{' '}
         <M tex="\text{H}_2 + \tfrac{1}{2}\text{O}_2 \to \text{H}_2\text{O} + \text{electricity} + \text{heat}" />
         . The protons cross the Nafion membrane to balance charge; the electrons travel through the
@@ -420,7 +420,7 @@ export default function Ch26ModernBatteries() {
 
       <FuelCellDemo figure="Fig. 26.5" />
 
-      <p className="mb-prose-3">
+      <p>
         The current-voltage relationship — the{' '}
         <Term def="The plot of cell voltage vs current density for an electrochemical cell (fuel cell, battery, electrolyzer). Three regions: activation loss at low current (logarithmic), ohmic loss in the middle (linear), mass-transport loss at high current (sharply curving down toward a limiting current). Tells you the cell's efficiency vs power-density trade-off.">
           polarization curve
@@ -434,7 +434,7 @@ export default function Ch26ModernBatteries() {
         0.6–0.7 V per cell — meaning thermodynamic efficiency of ~60% (relative to the H₂ heating
         value), better than any heat engine, with water as the only emission.
       </p>
-      <p className="mb-prose-3">
+      <p>
         Stack hundreds of cells in series for higher voltage. A Toyota Mirai's fuel-cell stack has
         ~370 cells in series, delivering ~245 V at peak power and ~114 kW peak. Compressed hydrogen
         (~5 kg in two 700-bar tanks) gives roughly 650 km of range. The catch is the fuel: green
@@ -476,7 +476,7 @@ export default function Ch26ModernBatteries() {
 
       <h2 className="chapter-h2">What we have so far</h2>
 
-      <p className="mb-prose-3">
+      <p>
         Lead-acid: 1859 chemistry, two lead-based plates in dilute H₂SO₄, ~2 V per cell, low energy
         density but excellent specific power, still the universal car starter. Lithium-ion: three
         sequential breakthroughs (Whittingham 1976, Goodenough 1980, Yoshino 1985), Li⁺ shuttling
@@ -489,7 +489,7 @@ export default function Ch26ModernBatteries() {
         descend from Volta's two-electrode pile; the chemistry has changed beyond recognition, but
         the architecture hasn't.
       </p>
-      <p className="mb-prose-3">
+      <p>
         That ends the materials thread of the textbook. We have gone from <M>F = kQ_1Q_2/r²</M> in
         Chapter 1 through capacitors, magnetism, induction, Maxwell, special relativity, circuits,
         motors, generators, and now the chemistry that powers them. The whole edifice rests on the
