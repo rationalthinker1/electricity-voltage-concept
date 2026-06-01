@@ -213,7 +213,7 @@ export const CHAPTERS: ChapterEntry[] = [
     subtitle: 'The component, not just the concept.',
     blurb:
       'Ch.3 was about resistance as a physical quantity. This chapter is about the physical part you can hold in your hand: the actual resistor, made of carbon film or metal oxide or wound wire, with a power rating, a tolerance band, a temperature coefficient, and a colour code. Plus the variable cousins — pots, thermistors, photoresistors — that change R on demand.',
-    relatedLabs: ['resistance', 'ohms-law', 'joule', 'drift'],
+    relatedLabs: ['resistance', 'ohms-law', 'joule', 'drift', 'resistivity-measurement'],
     sources: [
       'griffiths-2017',
       'crc-resistivity',

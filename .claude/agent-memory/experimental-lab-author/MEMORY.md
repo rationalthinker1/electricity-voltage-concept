@@ -5,3 +5,4 @@
 - [Ch.2 experimental lab inventory](project_ch2_lab_inventory.md) — E2.1 faraday-generator (software, PhET Generator); complements the six ch2 equation labs
 - [TopNav appendix-label quirk](project_topnav_appendix_label.md) — TopNav.tsx hardcodes "Lab N · appendix" for every /labs/* — pre-existing, misleading for experimental labs, candidate for a small follow-up edit
 - [External tools known to work](reference_external_tools.md) — PhET, Tracker (Open Source Physics), Falstad, GeoGebra, ITU-R P.2040, Network Cell Info Lite, iOS Field Test Mode
+- [Ch.3 experimental lab inventory](project_ch3_lab_inventory.md) — E3.1 falstad-ohms-law (software, Falstad), E3.2 resistivity-measurement (hands-on, pencil graphite + water bath); gaps listed
